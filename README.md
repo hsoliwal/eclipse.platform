@@ -1,3 +1,41 @@
+<div align="center">
+
+## M³ × Eclipse Platform
+
+**Workspace resources, jobs and team workflows make excellent correctness-first workloads.**
+
+[![M3 research target](https://img.shields.io/badge/M%C2%B3-desktop%20research%20target-4b62b7?style=flat-square)](https://github.com/hsoliwal/M3jdk21)
+[![Evidence first](https://img.shields.io/badge/acceptance-tests%20%2B%20measurements-287b57?style=flat-square)](https://github.com/hsoliwal/M3jdk21/blob/master/m3/release/BENCHMARK_AND_COMPATIBILITY_SPEC.md)
+
+**[M3 runtime programme](https://github.com/hsoliwal/M3jdk21)** · **[Technical paper](https://github.com/hsoliwal/M3jdk21/blob/master/m3/papers/M3_SHARED_STRUCTURE_AND_REUSABLE_COMPUTATION.md)** · **[Source invitation](#come-inspect-the-code)**
+
+</div>
+
+> [!NOTE]
+> **This is an experimental downstream fork of [the upstream Eclipse Platform project](https://github.com/eclipse-platform/eclipse.platform).** M3 String, regex, precompute and collection integration are **engineering directions**, not verified deployment, performance, compatibility or upstream-endorsement claims. Preserve original licensing, copyright, API behavior and native/UI contracts.
+
+### Engineering questions for this fork
+
+| Surface | What to investigate | Non-negotiable contract |
+| --- | --- | --- |
+| **Workspace resources** | Compare repeated scans, metadata reuse and lookup plans | IResource semantics, refresh behavior and change notifications |
+| **Jobs and scheduling** | Measure contention and reused computation | ISchedulingRule correctness and cancellation |
+| **Team/merge** | Use reproducible patch and compare/merge workloads | No loss of content, history or diff/merge semantics |
+
+**Approach:** inventory first; copy/derive only with license and provenance; qualify reusable recipes in Synexia; port into the appropriate runtime/product owner; then test with representative desktop projects and publish CPU, allocation, retained-memory, startup and responsiveness numbers, including regressions. No Synexia runtime dependency.
+
+### Come inspect the code
+
+> **Java, JNI, SWT, workbenches, widgets, real code: open the repositories.** Bring a failing case, a performance counterexample, a profiler trace or a better algorithm. Challenge the design on the merits of source, tests and evidence—not slogans or a résumé.
+
+**Explore the family:** [M3JDK21](https://github.com/hsoliwal/M3jdk21) · [SWT](https://github.com/hsoliwal/eclipse.platform.swt) · [Eclipse Platform](https://github.com/hsoliwal/eclipse.platform) · [Platform UI](https://github.com/hsoliwal/eclipse.platform.ui) · [Nebula](https://github.com/hsoliwal/nebula) · [GEF Classic](https://github.com/hsoliwal/gef-classic).
+
+**Contribute here:** [issues](https://github.com/hsoliwal/eclipse.platform/issues) · [pull requests](https://github.com/hsoliwal/eclipse.platform/pulls) · [M3 compatibility and benchmark contract](https://github.com/hsoliwal/M3jdk21/blob/master/m3/release/BENCHMARK_AND_COMPATIBILITY_SPEC.md).
+
+The remainder of this README retains the existing M3 fork notes and the **original upstream Eclipse Platform documentation**. Nothing in this introduction rebrands upstream work as M3-authored code.
+
+---
+
 ## M3 direction in this fork
 
 M3 is based on the idea that shared immutable structure and indexed metadata can
