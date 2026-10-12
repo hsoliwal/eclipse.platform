@@ -69,16 +69,16 @@ public class ElementTreeWriter {
 		/* wrap the IElementInfoFlattener in an IDataFlattener */
 		IDataFlattener f = new IDataFlattener() {
 			@Override
-			public void writeData(IPath path, Object data, DataOutput output) throws IOException {
+			public void writeData(boolean rootNode, Object data, DataOutput output) throws IOException {
 				// never write the root node of an ElementTree
 				//because it contains the parent backpointer.
-				if (!IPath.ROOT.equals(path)) {
-					flattener.writeElement(path, data, output);
+				if (!rootNode) {
+					flattener.writeElement(data, output);
 				}
 			}
 
 			@Override
-			public Object readData(IPath path, DataInput input) {
+			public Object readData(boolean rootNode, DataInput input) {
 				return null;
 			}
 		};
@@ -102,7 +102,7 @@ public class ElementTreeWriter {
 		int numTrees = trees.length;
 		Map<ElementTree, Deque<Integer>> indicesByTree = new HashMap<>();
 		for (int i = 0; i < numTrees; i++) {
-			indicesByTree.computeIfAbsent(trees[i], k -> new ArrayDeque<>()).push(i);
+			indicesByTree.computeIfAbsent(trees[i], _ -> new ArrayDeque<>()).push(i);
 		}
 
 		/* write the order array */

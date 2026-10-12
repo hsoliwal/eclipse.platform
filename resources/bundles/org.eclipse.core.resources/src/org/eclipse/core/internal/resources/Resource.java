@@ -101,7 +101,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		}
 
 		final ResourceProxy proxy = new ResourceProxy();
-		IElementContentVisitor elementVisitor = (tree, requestor, contents) -> {
+		IElementContentVisitor elementVisitor = (_, requestor, contents) -> {
 			ResourceInfo info = (ResourceInfo) contents;
 			if (!isMember(getFlags(info), memberFlags)) {
 				return false;
@@ -221,7 +221,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		// Check if the file exists.
 		URI resolved = getPathVariableManager().resolveURI(localLocation);
 		IFileStore store = EFS.getStore(resolved);
-		IFileInfo fileInfo = store.fetchInfo(EFS.IGNORE_NAME_CASE, null);
+		IFileInfo fileInfo = FileSystemResourceManager.fetchInfoIgnoringNameCase(store);
 		boolean localExists = fileInfo.exists();
 		if (!allowMissingLocal && !localExists) {
 			String msg = NLS.bind(Messages.links_localDoesNotExist, store.toString());
