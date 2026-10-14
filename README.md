@@ -86,6 +86,67 @@ Team provides Java interfaces such as `IResourceDiff` and `IDiff` to implement a
 Terminal provides Java interfaces such as `ITerminalConnector` and `ITerminalViewControl` to implement an embeddable terminal widget with support for local, SSH, and Telnet connections.
 
 
+## Working with this checkout
+
+### Choose the right repository
+
+This checkout contains core Platform services and integrations. SWT widgets and
+native libraries live in the separate
+[SWT repository](https://github.com/hsoliwal/eclipse.platform.swt); JFace,
+editors and the workbench live in
+[Platform UI](https://github.com/hsoliwal/eclipse.platform.ui).
+For an assembled Eclipse SDK, use the
+[SDK aggregator](https://github.com/hsoliwal/eclipse.platform.releng.aggregator)
+and its recorded submodule revisions.
+
+In addition to the modules above, [ant/](ant/) contains Ant integration and
+[ua/](ua/) contains user assistance. The [root POM](pom.xml) is the build's
+module inventory. Start with the affected component's bundles and tests rather
+than treating every directory as an independent Java application.
+
+### Build and test
+
+Use the Oomph setup below for an Eclipse/PDE workspace. It provisions the
+upstream Platform development environment; check which Git remote and branch
+you are editing when working on this fork.
+
+For a command-line build, run from the repository root:
+
+```sh
+mvn clean verify
+```
+
+The checked-in [Jenkinsfile](Jenkinsfile) selects JDK 25. Use it as the
+reference JDK for reproducing this revision's CI, rather than assuming older
+Java requirements in historical notes still describe the build.
+[.mvn/maven.config](.mvn/maven.config) enables
+`build-individual-bundles`; the [POM](pom.xml) uses that profile to resolve
+the Eclipse Platform parent from `repo.eclipse.org` when it is not available
+in a sibling aggregator checkout. Parent/target resolution therefore requires
+access to the configured Eclipse repositories.
+
+Some tests need a graphical display. Jenkins wraps the build in Xvnc; a
+command-line build is not necessarily display-free. The Jenkins lane also
+enables `bree-libs`, `api-check` and `javadoc`. Consult its full command
+when reproducing those checks, including the corresponding toolchain setup.
+
+Read `**/target/surefire-reports/TEST-*.xml` for test results,
+`**/target/apianalysis/*.xml` for API analysis, and
+`**/target/compilelogs/*.xml` for compiler diagnostics. Jenkins uses
+`maven.test.failure.ignore=true`, so the Maven exit status alone does not
+establish that tests passed.
+
+### Before opening a contribution
+
+- Read [coding conventions](docs/Coding_Conventions.md),
+  [API guidance](docs/API_Central.md) and
+  [version numbering](docs/VersionNumbering.md) for the affected component
+- Send fork-specific changes to
+  [hsoliwal/eclipse.platform](https://github.com/hsoliwal/eclipse.platform/pulls);
+  upstream contributions follow [CONTRIBUTING.md](CONTRIBUTING.md)
+- Include the affected bundle, exact revision, JDK/OS/display setup, command and
+  test-report results. State explicitly when build or UI checks were not run
+
 ## How to Contribute
 
 Contributions are most welcome. There are many ways to contribute, from entering high quality bug reports, to contributing code or documentation changes.
