@@ -1,3 +1,13 @@
+## Start exploring this fork
+
+Understand Eclipse Platform's workspace, runtime and integration services through a source-guided tour, focused test examples and a compact command reference.
+
+**[Start here: concepts, source map and build guide](docs/FORK_GUIDE.md)** · **[Command cheat sheet](docs/COMMAND_CHEATSHEET.md)**
+
+The guide distinguishes existing M3 analysis overlays from verified Platform changes, explains the current JDK 25 build setup, and separates component tests from full SDK assembly. Existing fork notes and upstream documentation follow unchanged.
+
+---
+
 <div align="center">
 
 ## M³ × Eclipse Platform
