@@ -179,3 +179,7 @@ Contact the project developers via the project's "dev" list.
 ## License
 
 [Eclipse Public License (EPL) 2.0](https://www.eclipse.org/legal/epl-2.0/)
+
+## Pinned project, module and package reference
+
+The [source reference](docs/source-reference/README.md) maps every metadata-backed project/module path and recognized Java namespace at the documented revision. It includes selected build/API/lifecycle contracts and an explicit [coverage ledger](docs/source-reference/COVERAGE.md). Structural accounting is not a claim of complete package semantics, successful builds or verified M3 integration.
