@@ -86,3 +86,53 @@ For changes to public APIs, use [API Central](API_Central.md),
 and [version numbering](VersionNumbering.md). Preserve existing licenses, notices
 and upstream attribution. Send fork-specific findings to this fork and follow
 [CONTRIBUTING](../CONTRIBUTING.md) for upstream contributions.
+
+## Debugging exercise: a file changes but a resource listener misses it
+
+Start with a disposable test workspace, a project and one file. The goal is to
+distinguish filesystem visibility, workspace notification and consumer behavior,
+rather than fixing all three by repeatedly refreshing the entire workspace.
+
+1. Read [IWorkspace](../resources/bundles/org.eclipse.core.resources/src/org/eclipse/core/resources/IWorkspace.java)
+   and register the listener with an explicit event mask. Its one-argument
+   registration includes POST_CHANGE, PRE_CLOSE and PRE_DELETE, not every event.
+   Remove the listener when its owner is disposed.
+2. Inspect the event type before reading its payload.
+   [IResourceChangeEvent](../resources/bundles/org.eclipse.core.resources/src/org/eclipse/core/resources/IResourceChangeEvent.java)
+   distinguishes a workspace-rooted delta for POST_CHANGE from the project handle
+   supplied for PRE_CLOSE/PRE_DELETE. Do not assume every event contains a delta.
+3. For an observed delta, separate `getKind()` from `getFlags()`.
+   [IResourceDelta](../resources/bundles/org.eclipse.core.resources/src/org/eclipse/core/resources/IResourceDelta.java)
+   uses ADDED/REMOVED/CHANGED for the kind, and CONTENT, MOVED_FROM, MOVED_TO and
+   MARKERS as flags. A marker-only change is not a content edit. Follow move paths
+   before interpreting a remove/add pair as unrelated resources.
+4. Compare editing through the workspace API with editing the underlying file
+   outside Eclipse and then refreshing it. Capture which event, path, kind and flags
+   arrive in each case. Wait using the existing test helpers, not arbitrary sleeps.
+5. Use [IResourceChangeListenerTest](../resources/tests/org.eclipse.core.tests.resources/src/org/eclipse/core/tests/resources/IResourceChangeListenerTest.java)
+   as the fixture and assertion reference. It includes delta verification plus
+   build/refresh synchronization helpers. Use its disposable test resources;
+   do not run workspace-deleting fixture code against a real development workspace.
+6. If a listener needs to perform a subsequent resource change, respect the event's
+   mutation contract: POST_CHANGE notification closes the workspace for changes.
+   Arrange follow-up work after notification, with an appropriate scheduling rule,
+   rather than mutating the workspace inside that callback.
+
+A candidate targeted command, unexecuted here, is:
+
+```sh
+mvn verify -pl :org.eclipse.core.resources,:org.eclipse.core.tests.resources -Pbuild-individual-bundles -Dtest=IResourceChangeListenerTest
+```
+
+| Symptom | First distinction to check | Useful evidence |
+| --- | --- | --- |
+| No callback | Registration lifetime and event mask versus whether the workspace saw the external edit | Mask, refresh completion, listener registration/removal |
+| Callback but no content edit | Delta kind versus CONTENT/MARKERS flags | Event type, resource path, kind and flags |
+| Change rejected during callback | Notification-time mutation restrictions versus scheduling-rule coverage | Event type and exception stack |
+| Duplicate processing | One logical change may appear in multiple notifications; listener work must tolerate this | Ordered event trace and consumer state |
+| Maven stops before tests | Parent/target resolution versus an assertion failure | First resolution error and presence/absence of test reports |
+
+Do not repair missing notifications by editing workspace metadata directly.
+`IWorkspace` reserves that area for Platform/API access. API annotations such as
+`@noimplement` and `@noextend` also matter: consuming these interfaces does not
+authorize replacing their implementations.
