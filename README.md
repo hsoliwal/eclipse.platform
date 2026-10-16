@@ -1,3 +1,115 @@
+<!-- fork-homepage-detail:v1:start -->
+# Eclipse Platform: workspace and runtime foundations
+
+Eclipse Platform supplies the services behind Eclipse-based applications: workspace
+files and projects, background jobs, launch/debug infrastructure, team integration,
+terminals and help. Use this repository to understand or change those services.
+For native widgets use SWT; for viewers, editors and workbench presentation use
+Platform UI; for assembling the full SDK use the releng aggregator.
+
+[Source map](#platform-source-map) · [Concepts](#platform-key-concepts) ·
+[Quickstart](#platform-quickstart) · [Worked example](#platform-worked-example) ·
+[Detailed reference](docs/source-reference/README.md)
+
+## Platform source map
+
+| Question | Implementation owner | What to inspect |
+| --- | --- | --- |
+| How are projects/files represented? | [resources/](resources/) | Workspace resources, filesystem adapters and resource tests |
+| How is background work coordinated? | [runtime/](runtime/) | Jobs, scheduling rules, runtime services and their tests |
+| How are programs launched/debugged? | [debug/](debug/) | Launch configuration, breakpoints and debug model |
+| How do compare/merge and synchronization work? | [team/](team/) | Team providers, diffs, synchronization and merge integration |
+| Where are terminal/help integrations? | [terminal/](terminal/) and [ua/](ua/) | Connectors, help, cheatsheets and their owning bundles |
+
+The [root reactor](pom.xml) defines the build modules. A directory is not
+automatically a standalone application or an exported API.
+
+## Platform key concepts
+
+- **Workspace / resource:** Eclipse's model of projects, folders and files; its
+  notifications and refresh rules are distinct from arbitrary filesystem I/O.
+- **Job:** schedulable background work. Cancellation is cooperative, and a sampled
+  job state can change immediately after it is read.
+- **Scheduling rule:** declares conflicting work; it is part of concurrency
+  correctness, not simply a priority or a performance hint.
+- **Bundle / extension:** an OSGi deployment unit and an Eclipse contribution
+  mechanism. Check the manifest and extension declarations before changing an API.
+- **Tycho / target platform:** Maven tooling and the resolved Eclipse dependency
+  set used to build bundles and run their test harnesses.
+
+## Platform fork status
+
+This is the downstream [hsoliwal fork](https://github.com/hsoliwal/eclipse.platform)
+of [Eclipse Platform](https://github.com/eclipse-platform/eclipse.platform).
+The checkout contains the established Platform implementations, an isolated
+[M3 recipe/inventory sidecar](.m3/README.md), and a
+[source-reference coverage ledger](docs/source-reference/COVERAGE.md).
+The sidecar's inventory/build lanes and the M3 research direction below do not
+establish that runtime integration or performance improvements are qualified.
+The reference explicitly separates structural inventory from complete API semantics.
+
+## Platform quickstart
+
+For the inspected revision, [Jenkins](Jenkinsfile) selects JDK 25. Prepare Maven,
+network access to Eclipse parent/p2 repositories and a display for UI-dependent
+tests. The existing Oomph instructions below provision an upstream workspace;
+confirm the remote and branch when working on this fork.
+
+```sh
+git clone https://github.com/hsoliwal/eclipse.platform.git
+cd eclipse.platform
+git rev-parse HEAD
+java -version
+mvn -version
+mvn clean verify
+```
+
+These are source-checked entry points, not a recorded successful build. Read
+[the Maven defaults](.mvn/maven.config) and [POM](pom.xml) if parent resolution
+fails; the individual-bundle profile supports remote parent resolution.
+
+## Platform cheat sheet
+
+```sh
+# Locate scheduling contracts and their tests without running a build.
+git grep -n -e 'ISchedulingRule' -e 'isCanceled' -- runtime
+# Locate resource notification entry points.
+git grep -n 'IResourceChangeListener' -- resources
+# Inspect the ordinary build/test reports after a run.
+find . -path '*/target/surefire-reports/TEST-*.xml' -print
+```
+
+An API baseline failure belongs with `target/apianalysis`; a native/display failure
+belongs with the harness environment. Jenkins allows test failures to be collected,
+so a zero Maven exit code alone is not a passing-test receipt.
+
+## Platform worked example
+
+**Trace a cancellation before changing the scheduler.** Open
+[Job.java](runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/runtime/jobs/Job.java)
+and [ISchedulingRule.java](runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/runtime/jobs/ISchedulingRule.java).
+
+1. Follow `schedule()` into the managed lifecycle rather than calling a job's
+   implementation as an ordinary method.
+2. Read `cancel()`: a running job may not stop immediately. Its work must observe
+   cancellation through the progress monitor and finish appropriately.
+3. Treat `getState()` as a recent observation, not a lock or completion guarantee.
+4. Before adding shared-resource work, check the scheduling rule's conflict and
+   containment contracts. A faster run that violates them is not equivalent.
+5. Reproduce completion, cancellation and conflicting jobs in the owning runtime
+   tests; record command, test counts and reports. This tour itself ran no tests.
+
+Continue with [API guidance](docs/API_Central.md),
+[coding conventions](docs/Coding_Conventions.md) and
+[the pinned source reference](docs/source-reference/README.md).
+The original project introduction, contribution instructions and license follow.
+
+> Source tour checked at [`6d3bbf2ae2c3`](https://github.com/hsoliwal/eclipse.platform/tree/6d3bbf2ae2c362713f94d9662d262fcdfa2cecc0). Commands describe that revision; recheck build configuration when changing revisions. Build/UI/performance verification was not run for this README update.
+
+---
+
+<!-- fork-homepage-detail:v1:end -->
+
 <div align="center">
 
 ## M³ × Eclipse Platform
@@ -86,6 +198,67 @@ Team provides Java interfaces such as `IResourceDiff` and `IDiff` to implement a
 Terminal provides Java interfaces such as `ITerminalConnector` and `ITerminalViewControl` to implement an embeddable terminal widget with support for local, SSH, and Telnet connections.
 
 
+## Working with this checkout
+
+### Choose the right repository
+
+This checkout contains core Platform services and integrations. SWT widgets and
+native libraries live in the separate
+[SWT repository](https://github.com/hsoliwal/eclipse.platform.swt); JFace,
+editors and the workbench live in
+[Platform UI](https://github.com/hsoliwal/eclipse.platform.ui).
+For an assembled Eclipse SDK, use the
+[SDK aggregator](https://github.com/hsoliwal/eclipse.platform.releng.aggregator)
+and its recorded submodule revisions.
+
+In addition to the modules above, [ant/](ant/) contains Ant integration and
+[ua/](ua/) contains user assistance. The [root POM](pom.xml) is the build's
+module inventory. Start with the affected component's bundles and tests rather
+than treating every directory as an independent Java application.
+
+### Build and test
+
+Use the Oomph setup below for an Eclipse/PDE workspace. It provisions the
+upstream Platform development environment; check which Git remote and branch
+you are editing when working on this fork.
+
+For a command-line build, run from the repository root:
+
+```sh
+mvn clean verify
+```
+
+The checked-in [Jenkinsfile](Jenkinsfile) selects JDK 25. Use it as the
+reference JDK for reproducing this revision's CI, rather than assuming older
+Java requirements in historical notes still describe the build.
+[.mvn/maven.config](.mvn/maven.config) enables
+`build-individual-bundles`; the [POM](pom.xml) uses that profile to resolve
+the Eclipse Platform parent from `repo.eclipse.org` when it is not available
+in a sibling aggregator checkout. Parent/target resolution therefore requires
+access to the configured Eclipse repositories.
+
+Some tests need a graphical display. Jenkins wraps the build in Xvnc; a
+command-line build is not necessarily display-free. The Jenkins lane also
+enables `bree-libs`, `api-check` and `javadoc`. Consult its full command
+when reproducing those checks, including the corresponding toolchain setup.
+
+Read `**/target/surefire-reports/TEST-*.xml` for test results,
+`**/target/apianalysis/*.xml` for API analysis, and
+`**/target/compilelogs/*.xml` for compiler diagnostics. Jenkins uses
+`maven.test.failure.ignore=true`, so the Maven exit status alone does not
+establish that tests passed.
+
+### Before opening a contribution
+
+- Read [coding conventions](docs/Coding_Conventions.md),
+  [API guidance](docs/API_Central.md) and
+  [version numbering](docs/VersionNumbering.md) for the affected component
+- Send fork-specific changes to
+  [hsoliwal/eclipse.platform](https://github.com/hsoliwal/eclipse.platform/pulls);
+  upstream contributions follow [CONTRIBUTING.md](CONTRIBUTING.md)
+- Include the affected bundle, exact revision, JDK/OS/display setup, command and
+  test-report results. State explicitly when build or UI checks were not run
+
 ## How to Contribute
 
 Contributions are most welcome. There are many ways to contribute, from entering high quality bug reports, to contributing code or documentation changes.
@@ -118,3 +291,7 @@ Contact the project developers via the project's "dev" list.
 ## License
 
 [Eclipse Public License (EPL) 2.0](https://www.eclipse.org/legal/epl-2.0/)
+
+## Pinned project, module and package reference
+
+The [source reference](docs/source-reference/README.md) maps every metadata-backed project/module path and recognized Java namespace at the documented revision. It includes selected build/API/lifecycle contracts and an explicit [coverage ledger](docs/source-reference/COVERAGE.md). Structural accounting is not a claim of complete package semantics, successful builds or verified M3 integration.
