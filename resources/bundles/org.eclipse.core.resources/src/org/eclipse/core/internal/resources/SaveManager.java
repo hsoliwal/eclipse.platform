@@ -581,7 +581,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		// Delete the snapshot files, if any.
 		IPath location = workspace.getMetaArea().getSnapshotLocationFor(workspace.getRoot());
 		java.io.File target = location.toFile().getParentFile();
-		FilenameFilter filter = (dir, name) -> {
+		FilenameFilter filter = (_, name) -> {
 			if (!name.endsWith(LocalMetaArea.F_SNAP)) {
 				return false;
 			}
@@ -620,11 +620,10 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	}
 
 	/**
-	 * @see IElementInfoFlattener#readElement(IPath, DataInput)
+	 * @see IElementInfoFlattener#readElement(DataInput)
 	 */
 	@Override
-	public Object readElement(IPath path, DataInput input) throws IOException {
-		Assert.isNotNull(path);
+	public Object readElement(DataInput input) throws IOException {
 		Assert.isNotNull(input);
 		// read the flags and pull out the type.
 		int flags = input.readInt();
@@ -714,7 +713,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		IPath location = workspace.getMetaArea().getTreeLocationFor(workspace.getRoot(), false);
 		valuables.add(location.lastSegment());
 		java.io.File target = location.toFile().getParentFile();
-		FilenameFilter filter = (dir, name) -> name.endsWith(LocalMetaArea.F_TREE);
+		FilenameFilter filter = (_, name) -> name.endsWith(LocalMetaArea.F_TREE);
 		String[] candidates = target.list(filter);
 		if (candidates != null) {
 			removeFiles(target, candidates, valuables);
@@ -1603,7 +1602,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		/* first build a table of ElementTree -> Number of duplicates */
 		Map<ElementTree, Integer> duplicateCount = new LinkedHashMap<>(numTrees * 2 + 1);
 		for (ElementTree tree : trees) {
-			duplicateCount.compute(tree, (k, duplicates) -> (duplicates == null ? 0 : duplicates) + 1);
+			duplicateCount.compute(tree, (_, duplicates) -> (duplicates == null ? 0 : duplicates) + 1);
 		}
 
 		/* find the oldest tree (a descendent of all other trees) */
@@ -1734,6 +1733,13 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	}
 
 	/**
+	 * Whether a trace option that prints the marker or sync info save times is enabled.
+	 */
+	private static boolean isMeasuringPersistTimes() {
+		return Policy.DEBUG_SAVE || Policy.DEBUG_SAVE_MARKERS || Policy.DEBUG_SAVE_SYNCINFO;
+	}
+
+	/**
 	 * Visit the given resource (to depth infinite) and write out extra information
 	 * like markers and sync info. To be called during a full save and project save.
 	 *
@@ -1770,26 +1776,31 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			// on the number of statements printed out as we would get 2 statements
 			// for each resource otherwise.
 			final long[] saveTimes = new long[2];
+			final boolean measure = isMeasuringPersistTimes();
 
 			// Create the visitor
-			IElementContentVisitor visitor = (tree, requestor, elementContents) -> {
+			IElementContentVisitor visitor = (_, requestor, elementContents) -> {
 				ResourceInfo info = (ResourceInfo) elementContents;
 				if (info != null) {
 					try {
 						// save the markers
-						long start = System.currentTimeMillis();
+						long start = measure ? System.currentTimeMillis() : 0;
 						markerManager.save(info, requestor, markersOutput, writtenTypes);
-						long markerSaveTime = System.currentTimeMillis() - start;
-						saveTimes[0] += markerSaveTime;
-						persistMarkers += markerSaveTime;
+						if (measure) {
+							long markerSaveTime = System.currentTimeMillis() - start;
+							saveTimes[0] += markerSaveTime;
+							persistMarkers += markerSaveTime;
+						}
 						// save the sync info - if we have the workspace root then the output stream
 						// will be null
 						if (syncInfoOutput != null) {
-							start = System.currentTimeMillis();
+							start = measure ? System.currentTimeMillis() : 0;
 							synchronizer.saveSyncInfo(info, requestor, syncInfoOutput, writtenPartners);
-							long syncInfoSaveTime = System.currentTimeMillis() - start;
-							saveTimes[1] += syncInfoSaveTime;
-							persistSyncInfo += syncInfoSaveTime;
+							if (measure) {
+								long syncInfoSaveTime = System.currentTimeMillis() - start;
+								saveTimes[1] += syncInfoSaveTime;
+								persistSyncInfo += syncInfoSaveTime;
+							}
 						}
 					} catch (IOException e) {
 						throw new WrappedRuntimeException(e);
@@ -1919,25 +1930,30 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 				// on the number of statements printed out as we would get 2 statements
 				// for each resource otherwise.
 				final long[] snapTimes = new long[2];
+				final boolean measure = isMeasuringPersistTimes();
 
-				IElementContentVisitor visitor = (tree, requestor, elementContents) -> {
+				IElementContentVisitor visitor = (_, requestor, elementContents) -> {
 					ResourceInfo info = (ResourceInfo) elementContents;
 					if (info != null) {
 						try {
 							// save the markers
-							long start = System.currentTimeMillis();
+							long start = measure ? System.currentTimeMillis() : 0;
 							markerManager.snap(info, requestor, markersOutput);
-							long markerSnapTime = System.currentTimeMillis() - start;
-							snapTimes[0] += markerSnapTime;
-							persistMarkers += markerSnapTime;
+							if (measure) {
+								long markerSnapTime = System.currentTimeMillis() - start;
+								snapTimes[0] += markerSnapTime;
+								persistMarkers += markerSnapTime;
+							}
 							// save the sync info - if we have the workspace root then the output stream
 							// will be null
 							if (syncInfoOutput != null) {
-								start = System.currentTimeMillis();
+								start = measure ? System.currentTimeMillis() : 0;
 								synchronizer.snapSyncInfo(info, requestor, syncInfoOutput);
-								long syncInfoSnapTime = System.currentTimeMillis() - start;
-								snapTimes[1] += syncInfoSnapTime;
-								persistSyncInfo += syncInfoSnapTime;
+								if (measure) {
+									long syncInfoSnapTime = System.currentTimeMillis() - start;
+									snapTimes[1] += syncInfoSnapTime;
+									persistSyncInfo += syncInfoSnapTime;
+								}
 							}
 						} catch (IOException e) {
 							throw new WrappedRuntimeException(e);
@@ -2013,8 +2029,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	}
 
 	@Override
-	public void writeElement(IPath path, Object element, DataOutput output) throws IOException {
-		Assert.isNotNull(path);
+	public void writeElement(Object element, DataOutput output) throws IOException {
 		Assert.isNotNull(element);
 		Assert.isNotNull(output);
 		ResourceInfo info = (ResourceInfo) element;

@@ -15,6 +15,7 @@ package org.eclipse.compare.unifieddiff.internal;
 
 import static org.eclipse.compare.unifieddiff.internal.UnifiedDiffManager.error;
 import static org.eclipse.compare.unifieddiff.internal.UnifiedDiffManager.isOverlay;
+import static org.eclipse.compare.unifieddiff.internal.UnifiedDiffText.clampDetailedDiffLength;
 import static org.eclipse.compare.unifieddiff.internal.UnifiedDiffText.countLines;
 import static org.eclipse.compare.unifieddiff.internal.UnifiedDiffText.mapOffsetToTabExpanded;
 import static org.eclipse.compare.unifieddiff.internal.UnifiedDiffText.mergeStyleRanges;
@@ -33,6 +34,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import org.eclipse.compare.internal.CompareMessages;
+import org.eclipse.compare.internal.DiffColors;
 import org.eclipse.compare.unifieddiff.UnifiedDiffMode;
 import org.eclipse.compare.unifieddiff.internal.UnifiedDiffManager.UnifiedDiff;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -86,6 +88,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 
 	private Color deletionBackgroundColor;
 	private Color detailedDiffColor;
+	private Color borderColor;
 	private Color foldSeparatorColor;
 	private Color foldButtonColor;
 	private boolean lastIsOverlay;
@@ -101,6 +104,10 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 				detailedDiffColor.dispose();
 			}
 			detailedDiffColor = null;
+			if (borderColor != null && !borderColor.isDisposed()) {
+				borderColor.dispose();
+			}
+			borderColor = null;
 			if (foldSeparatorColor != null && !foldSeparatorColor.isDisposed()) {
 				foldSeparatorColor.dispose();
 			}
@@ -140,6 +147,9 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 			if (this.deletionBackgroundColor != null && !this.deletionBackgroundColor.isDisposed()) {
 				this.deletionBackgroundColor.dispose();
 			}
+			if (this.borderColor != null && !this.borderColor.isDisposed()) {
+				this.borderColor.dispose();
+			}
 			if (this.foldSeparatorColor != null && !this.foldSeparatorColor.isDisposed()) {
 				this.foldSeparatorColor.dispose();
 			}
@@ -147,8 +157,9 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 				this.foldButtonColor.dispose();
 			}
 			// the word-level diff is tinted stronger so it stands out against the band
-			this.detailedDiffColor = new Color(interpolate(deletionColor, background, 0.8));
-			this.deletionBackgroundColor = new Color(interpolate(deletionColor, background, 0.9));
+			this.detailedDiffColor = new Color(interpolate(deletionColor, background, DiffColors.TEXT_FILL_SCALE));
+			this.deletionBackgroundColor = new Color(interpolate(deletionColor, background, DiffColors.FILL_SCALE));
+			this.borderColor = new Color(UnifiedDiffText.borderColor(deletionColor, background));
 			this.foldSeparatorColor = new Color(separatorBackground(background));
 			this.foldButtonColor = new Color(buttonBackground(background));
 			lastIsOverlay = isOverlay;
@@ -317,13 +328,13 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 			throws BadLocationException {
 		int end = doc.getLength();
 		if (offset >= end && !startsLine(doc, end)) {
-			return new UnifiedDiffFooterCodeMining(doc, this, diff, tabWidth, this.deletionBackgroundColor, this.detailedDiffColor, tv);
+			return new UnifiedDiffFooterCodeMining(doc, this, diff, tabWidth, this.deletionBackgroundColor, this.detailedDiffColor, this.borderColor, tv);
 		}
 		// a position must not reach beyond the document, otherwise the annotation model
 		// silently drops it
 		int start = Math.min(offset, end);
 		return new UnifiedDiffLineHeaderCodeMining(new Position(start, start < end ? 1 : 0), this, diff, tabWidth,
-				this.deletionBackgroundColor, this.detailedDiffColor, tv);
+				this.deletionBackgroundColor, this.detailedDiffColor, this.borderColor, tv);
 	}
 
 	private static boolean startsLine(IDocument doc, int offset) throws BadLocationException {
@@ -411,7 +422,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		public FoldedRegionCodeMining(Position position, ICodeMiningProvider provider, ITextViewer viewer,
 				Annotation foldAnnotation, int foldableLines, boolean collapsed, Color separatorColor,
 				Color buttonColor) throws BadLocationException {
-			super(position, provider, e -> {
+			super(position, provider, _ -> {
 				if (collapsed) {
 					UnifiedDiffManager.expandFoldRegion(viewer, foldAnnotation);
 				} else {
@@ -497,6 +508,18 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		String getLabel();
 	}
 
+	/** Draws the thin top and bottom border of a code-mining band. */
+	private static void drawBandBorder(GC gc, Color borderColor, int y, int width, int height) {
+		if (borderColor == null || borderColor.isDisposed() || width <= 0 || height <= 0) {
+			return;
+		}
+		Color previousBackground = gc.getBackground();
+		gc.setBackground(borderColor);
+		gc.fillRectangle(0, y, width, 1); // top
+		gc.fillRectangle(0, y + height - 1, width, 1); // bottom
+		gc.setBackground(previousBackground);
+	}
+
 	static class MouseClickConsumer implements Consumer<MouseEvent> {
 
 		private final ITextViewer viewer;
@@ -537,6 +560,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		private final String unifiedDiffLabel;
 		private final Color deletionBackgroundColor;
 		private final Color detailedDiffColor;
+		private final Color borderColor;
 		private final int tabWidth;
 		private final ITextViewer viewer;
 		private UnifiedDiff diff;
@@ -547,10 +571,11 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 
 		public UnifiedDiffFooterCodeMining(IDocument document, ICodeMiningProvider provider,
 				UnifiedDiff diff, int tabWidth, Color deletionBackgroundColor, Color detailedDiffColor,
-				ITextViewer viewer) {
+				Color borderColor, ITextViewer viewer) {
 			super(document, provider, new MouseClickConsumer(viewer));
 			this.deletionBackgroundColor = deletionBackgroundColor;
 			this.detailedDiffColor = detailedDiffColor;
+			this.borderColor = borderColor;
 			this.tabWidth = tabWidth;
 			this.viewer = viewer;
 			if (diff.mode.equals(UnifiedDiffMode.REPLACE_MODE)) {
@@ -602,7 +627,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		}
 
 		private void clearStyledFonts() {
-			styledFonts.forEach((font, map) -> map.forEach((style, f) -> f.dispose()));
+			styledFonts.forEach((_, map) -> map.forEach((_, f) -> f.dispose()));
 			styledFonts.clear();
 		}
 
@@ -641,6 +666,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 			if (ranges.isEmpty()) {
 				// no syntax coloring available; fall back to plain rendering
 				result = super.draw(gc, textWidget, color, x, y);
+				drawBandBorder(gc, this.borderColor, y, textWidget.getBounds().width, lastRectangle.height);
 				return result;
 			}
 
@@ -649,6 +675,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 			fillDetailedDiffBackgrounds(gc, textWidget, label, ranges, x, y);
 			gc.setFont(font);
 			drawStyleRanges(gc, textWidget, ranges, label, styledFonts, x, y, null);
+			drawBandBorder(gc, this.borderColor, y, textWidget.getBounds().width, lastRectangle.height);
 			return result;
 		}
 
@@ -738,7 +765,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		}
 	}
 
-	static List<StyleRange> createDetailedDiffBackgroundRanges(UnifiedDiff diff, int tabWidth, Color detailedDiffColor) {
+	public static List<StyleRange> createDetailedDiffBackgroundRanges(UnifiedDiff diff, int tabWidth, Color detailedDiffColor) {
 		List<StyleRange> ranges = new ArrayList<>();
 		String diffStr = diff.mode.equals(UnifiedDiffMode.REPLACE_MODE) ? diff.leftStr : diff.rightStr;
 		String trimmedDiffStr = removeTrailingNewLines(diffStr);
@@ -759,17 +786,15 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 			if (detailedDiffStr.trim().length() == 0) {
 				continue;
 			}
-			if (detailedDiffStart + detailedDiffLength >= trimmedDiffStr.length()) {
-				int delta = diffStr.length() - trimmedDiffStr.length();
-				if (detailedDiffLength <= delta) {
-					continue;
-				}
-				detailedDiffLength -= delta;
+			detailedDiffLength = clampDetailedDiffLength(detailedDiffStart, detailedDiffLength, trimmedDiffStr.length());
+			if (detailedDiffLength <= 0) {
+				continue;
 			}
 			int expandedStart = mapOffsetToTabExpanded(diffStr, detailedDiffStart, tabWidth);
 			int expandedEnd = mapOffsetToTabExpanded(diffStr, detailedDiffStart + detailedDiffLength, tabWidth);
 			int expandedLength = expandedEnd - expandedStart;
-			if (expandedStart >= 0 && expandedLength > 0 && expandedStart + expandedLength <= labelLength) {
+			expandedLength = clampDetailedDiffLength(expandedStart, expandedLength, labelLength);
+			if (expandedStart >= 0 && expandedLength > 0) {
 				StyleRange bgRange = new StyleRange();
 				bgRange.start = expandedStart;
 				bgRange.length = expandedLength;
@@ -896,6 +921,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		private final String unifiedDiffLabel;
 		private final Color deletionBackgroundColor;
 		private final Color detailedDiffColor;
+		private final Color borderColor;
 		private final UnifiedDiff diff;
 		private final int tabWidth;
 		private ITextViewer viewer;
@@ -910,8 +936,8 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		private final HashMap<Font, Map<Integer /* style */, Font>> styledFonts = new HashMap<>();
 
 		public UnifiedDiffLineHeaderCodeMining(Position position, ICodeMiningProvider provider, UnifiedDiff diff,
-				int tabWidth, Color deletionBackgroundColor, Color detailedDiffColor, ITextViewer viewer)
-				throws BadLocationException {
+				int tabWidth, Color deletionBackgroundColor, Color detailedDiffColor, Color borderColor,
+				ITextViewer viewer) throws BadLocationException {
 			super(position, provider, new MouseClickConsumer(viewer));
 			if (diff.mode.equals(UnifiedDiffMode.REPLACE_MODE)) {
 				this.unifiedDiffLabel = removeTrailingNewLines(replaceTabWithSpaces(diff.leftStr, tabWidth));
@@ -920,6 +946,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 			}
 			this.deletionBackgroundColor = deletionBackgroundColor;
 			this.detailedDiffColor = detailedDiffColor;
+			this.borderColor = borderColor;
 			this.diff = diff;
 			this.tabWidth = tabWidth;
 			this.viewer = viewer;
@@ -940,7 +967,6 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 					|| diff.mode.equals(UnifiedDiffMode.REVERT_MODE);
 			String fullDiffStr = useRight ? diff.rightStr : diff.leftStr;
 			String diffStr = removeTrailingNewLines(fullDiffStr);
-			int diffStrDelta = fullDiffStr.length() - diffStr.length();
 			List<DetailedDiffRange> result = new ArrayList<>();
 			for (var detailedDiff : diff.detailedDiffs) {
 				String detailedDiffStr = useRight ? detailedDiff.rightStr : detailedDiff.leftStr;
@@ -949,11 +975,9 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 				if (detailedDiffStr.trim().length() == 0) {
 					continue;
 				}
-				if (detailedDiffStart + detailedDiffLength >= diffStr.length()) {
-					if (detailedDiffLength <= diffStrDelta) {
-						continue;
-					}
-					detailedDiffLength -= diffStrDelta;
+				detailedDiffLength = clampDetailedDiffLength(detailedDiffStart, detailedDiffLength, diffStr.length());
+				if (detailedDiffLength <= 0) {
+					continue;
 				}
 				// String#split drops trailing empty strings, so it must not be used to
 				// count lines: a prefix ending with \n starts the next line
@@ -1022,8 +1046,8 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		}
 
 		private void clearStyledFonts() {
-			styledFonts.forEach((font1, styledFonts1) -> {
-				styledFonts1.forEach((style, styledFont) -> {
+			styledFonts.forEach((_, styledFonts1) -> {
+				styledFonts1.forEach((_, styledFont) -> {
 					styledFont.dispose();
 				});
 				styledFonts1.clear();
@@ -1079,6 +1103,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 					gc.drawString(f.str(), x + f.x(), y + f.y(), true);
 				}
 				if (!fontIsDisposed) {
+					drawBandBorder(gc, this.borderColor, y, textWidget.getBounds().width, lastRectangle.height);
 					lastRectangle = new Rectangle(x, y, lastRectangle.width, lastRectangle.height);
 					return new Point(lastRectangle.width, lastRectangle.height);
 				}
@@ -1212,11 +1237,13 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 				// still rendered. backgrounds/foregrounds are intentionally left unset
 				// so the next paint takes the full slow path again.
 				result = super.draw(gc, textWidget, color, x, y);
+				drawBandBorder(gc, this.borderColor, y, textWidget.getBounds().width, result.y);
 				return result;
 			}
 			foregrounds = new ArrayList<>();
 			gc.setFont(cachedFont);
 			drawStyleRanges(gc, textWidget, ranges, label, styledFonts, x, y, foregrounds::add);
+			drawBandBorder(gc, this.borderColor, y, textWidget.getBounds().width, lastRectangle.height);
 			return result;
 		}
 
@@ -1228,19 +1255,19 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 			return delim.length();
 		}
 
-		private static class RangeInfo {
+		public static class RangeInfo {
 			int rangeIndex;
 			int offset;
 			Point position;
 
-			RangeInfo(int rangeIndex, int offset, Point position) {
+			public RangeInfo(int rangeIndex, int offset, Point position) {
 				this.rangeIndex = rangeIndex;
 				this.offset = offset;
 				this.position = position;
 			}
 		}
 
-		private Point getPositionForOffset(StyledText tw, GC gc, int offset, String str, List<StyleRange> ranges,
+		public Point getPositionForOffset(StyledText tw, GC gc, int offset, String str, List<StyleRange> ranges,
 				RangeInfo rangeInfo) {
 			String sub = str.substring(0, offset);
 			Point result = null;
@@ -1268,7 +1295,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 							}
 						}
 						int lfIdx = sub.lastIndexOf("\n"); //$NON-NLS-1$
-						if (lfIdx > 0) {
+						if (lfIdx >= 0) {
 							if (lfIdx == sub.length() - 1 && isLastForCurrentOffset(ranges, i, offset)) {
 								sub = sub.substring(0, lfIdx);
 							} else {
@@ -1408,8 +1435,8 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		// already set
 		if (styleRange.font == null && styleRange.fontStyle > 0) {
 			StyleRange newRange = (StyleRange) styleRange.clone();
-			newRange.font = styledFonts.computeIfAbsent(baseFont, f -> new HashMap<>())
-					.computeIfAbsent(Integer.valueOf(styleRange.fontStyle), s -> {
+			newRange.font = styledFonts.computeIfAbsent(baseFont, _ -> new HashMap<>())
+					.computeIfAbsent(Integer.valueOf(styleRange.fontStyle), _ -> {
 						FontData[] fontDatas = baseFont.getFontData();
 						for (FontData fontData : fontDatas) {
 							fontData.setStyle(styleRange.fontStyle);
@@ -1423,17 +1450,6 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 
 	// from inner class ColorPalette in TextMergeViewer
 	static RGB interpolate(RGB fg, RGB bg, double scale) {
-		if (fg != null && bg != null) {
-			return new RGB((int) ((1.0 - scale) * fg.red + scale * bg.red),
-					(int) ((1.0 - scale) * fg.green + scale * bg.green),
-					(int) ((1.0 - scale) * fg.blue + scale * bg.blue));
-		}
-		if (fg != null) {
-			return fg;
-		}
-		if (bg != null) {
-			return bg;
-		}
-		return new RGB(128, 128, 128); // a gray
+		return UnifiedDiffText.interpolate(fg, bg, scale);
 	}
 }

@@ -44,6 +44,10 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.junit.jupiter.api.Test;
 
 public class LinkTest {
+	// Ensure a suitable logging backend for SLF4J is present in the test runtime.
+	// This variable ensures the dependency is not removed later.
+	@SuppressWarnings("unused")
+	private static org.slf4j.simple.SimpleLogger loggerBackEnd;
 
 	@Test
 	public void testAllLinks() {
