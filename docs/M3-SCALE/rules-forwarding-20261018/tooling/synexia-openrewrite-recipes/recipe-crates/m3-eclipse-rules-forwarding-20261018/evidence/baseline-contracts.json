@@ -1,0 +1,17 @@
+{
+  "stage": "baseline-contracts",
+  "command": [
+    "/tmp/m3-toolchain/apache-maven-3.9.12/bin/mvn",
+    "-o",
+    "-B",
+    "-ntp",
+    "-Dmaven.repo.local=/root/.m2/repository",
+    "-f",
+    "/tmp/eclipse-m3-20261018/synexia/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/pom.xml",
+    "-Dproof.source.root=/tmp/eclipse-m3-20261018/rules-reproduction/baseline",
+    "-Dproof.build.directory=/tmp/eclipse-m3-20261018/rules-reproduction/baseline-contracts",
+    "test"
+  ],
+  "exit_code": 0,
+  "log_sha256": "ba5993f50ea84ba283388f5f2ec9124839af0be358bf264a6474f5c9173d6d1c"
+}

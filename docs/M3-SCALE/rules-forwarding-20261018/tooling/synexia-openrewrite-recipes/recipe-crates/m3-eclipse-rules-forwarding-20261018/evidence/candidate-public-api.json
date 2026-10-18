@@ -1,0 +1,13 @@
+{
+  "stage": "candidate-public-api",
+  "command": [
+    "/tmp/m3-toolchain/jdk-21.0.12.1+1/bin/javap",
+    "-public",
+    "-s",
+    "-classpath",
+    "/tmp/eclipse-m3-20261018/rules-reproduction/candidate-bundle-classes",
+    "org.eclipse.core.runtime.jobs.MultiRule"
+  ],
+  "exit_code": 0,
+  "log_sha256": "c95d34ee88fc7917162c7cb31db9a43fe28ef90aafcd7c44b30f17a1e0ead3f2"
+}

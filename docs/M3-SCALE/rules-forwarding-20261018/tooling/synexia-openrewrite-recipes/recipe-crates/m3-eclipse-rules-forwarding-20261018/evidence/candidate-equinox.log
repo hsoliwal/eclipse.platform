@@ -1,0 +1,2 @@
+MULTIRULE_OSGI_CLIENT assertions=14
+EQUINOX_RESOLVED runtime=3.24.300.v20260721-1251 host=3.15.900.qualifier candidate=true installedDependencies=1 internalPackageExported=false

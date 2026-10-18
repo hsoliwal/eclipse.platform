@@ -1,0 +1,21 @@
+Eclipse Jobs M3 compound scheduling rule forwarding
+
+New recipe/proof documentation and independently authored proof code:
+Copyright 2026 Hitesh Soliwal and Contributors to the Synexia Project.
+SPDX-License-Identifier: Apache-2.0
+
+The MultiRule and ISchedulingRule preimages are exact Eclipse Platform sources at
+69291c18babd233a94b742798b3d1078979bf78c. MultiRule's forwarding postimage and the
+derived M3Rules implementation retain the Eclipse Public License 2.0 and IBM
+copyright/contributor notices. Their EPL-2.0 licensing is not changed by the
+Apache-2.0 license of the recipe which emits them.
+
+Unchanged upstream test fixtures and build metadata are identified in SOURCE_PINS.json;
+they are compiled from the pinned Eclipse checkout, not relicensed or reimplemented.
+
+JobsEquinoxProof and the reproduction flow reuse the established JFace array proof
+in hsoliwal/com.synexia at 140c263a90f9803b9c46103c63355a286e0515f0, recipe crate
+m3-jface-array-forwarding-20261017 (Apache-2.0). Existing snapshot recipe owners
+remain canonical in synexia-openrewrite-recipes/src/main/java/com/synexia/rewrite.
+
+LICENSE-APACHE-2.0 and LICENSE-EPL-2.0 contain the applicable license texts.
