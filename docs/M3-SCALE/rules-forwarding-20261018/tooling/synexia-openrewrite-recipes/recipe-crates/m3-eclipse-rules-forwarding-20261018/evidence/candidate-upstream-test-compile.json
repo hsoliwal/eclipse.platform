@@ -1,0 +1,21 @@
+{
+  "stage": "candidate-upstream-test-compile",
+  "command": [
+    "/tmp/m3-toolchain/jdk-21.0.12.1+1/bin/javac",
+    "--release",
+    "17",
+    "-Xlint:all",
+    "-cp",
+    "/tmp/eclipse-m3-20261018/rules-reproduction/candidate-bundle-classes:/tmp/eclipse-m3-20261018/toolchain/eclipse-deps/org.eclipse.equinox.common-3.21.0.jar:/tmp/eclipse-m3-20261018/toolchain/eclipse-deps/org.eclipse.osgi-3.24.300.jar:/tmp/eclipse-m3-20261018/toolchain/eclipse-deps/assertj-core-3.27.5.jar:/tmp/m3-toolchain/pcollections-test-deps/junit-platform-console-standalone-1.10.2.jar",
+    "-d",
+    "/tmp/eclipse-m3-20261018/rules-reproduction/candidate-upstream-test-classes",
+    "/tmp/eclipse-m3-20261018/forks/eclipse.platform/runtime/tests/org.eclipse.core.tests.runtime/src/org/eclipse/core/tests/runtime/jobs/MultiRuleTest.java",
+    "/tmp/eclipse-m3-20261018/forks/eclipse.platform/runtime/tests/org.eclipse.core.tests.runtime/src/org/eclipse/core/tests/runtime/jobs/AbstractJobTest.java",
+    "/tmp/eclipse-m3-20261018/forks/eclipse.platform/runtime/tests/org.eclipse.core.tests.runtime/src/org/eclipse/core/tests/runtime/jobs/FussyProgressProvider.java",
+    "/tmp/eclipse-m3-20261018/forks/eclipse.platform/runtime/tests/org.eclipse.core.tests.runtime/src/org/eclipse/core/tests/runtime/jobs/PathRule.java",
+    "/tmp/eclipse-m3-20261018/forks/eclipse.platform/runtime/tests/org.eclipse.core.tests.harness/src/org/eclipse/core/tests/harness/FussyProgressMonitor.java",
+    "/tmp/eclipse-m3-20261018/forks/eclipse.platform/runtime/tests/org.eclipse.core.tests.harness/src/org/eclipse/core/tests/harness/TestProgressMonitor.java"
+  ],
+  "exit_code": 0,
+  "log_sha256": "ade6d17c7dbbc44b60baea2e445f52480eac8cc4cd7d239f17c461183e56d705"
+}

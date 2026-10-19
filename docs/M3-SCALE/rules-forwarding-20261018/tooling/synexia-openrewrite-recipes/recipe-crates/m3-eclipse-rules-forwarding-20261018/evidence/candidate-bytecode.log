@@ -1,0 +1,59 @@
+Compiled from "MultiRule.java"
+public class org.eclipse.core.runtime.jobs.MultiRule implements org.eclipse.core.runtime.jobs.ISchedulingRule {
+  private final org.eclipse.core.runtime.jobs.ISchedulingRule[] rules;
+
+  public static org.eclipse.core.runtime.jobs.ISchedulingRule combine(org.eclipse.core.runtime.jobs.ISchedulingRule[]);
+    Code:
+       0: aload_0
+       1: invokestatic  #1                  // Method org/eclipse/core/internal/jobs/m3/M3Rules.combine:([Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+       4: areturn
+
+  public static org.eclipse.core.runtime.jobs.ISchedulingRule combine(org.eclipse.core.runtime.jobs.ISchedulingRule, org.eclipse.core.runtime.jobs.ISchedulingRule);
+    Code:
+       0: aload_0
+       1: aload_1
+       2: invokestatic  #7                  // Method org/eclipse/core/internal/jobs/m3/M3Rules.combine:(Lorg/eclipse/core/runtime/jobs/ISchedulingRule;Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+       5: areturn
+
+  public org.eclipse.core.runtime.jobs.MultiRule(org.eclipse.core.runtime.jobs.ISchedulingRule...);
+    Code:
+       0: aload_0
+       1: invokespecial #10                 // Method java/lang/Object."<init>":()V
+       4: aload_0
+       5: aload_1
+       6: invokestatic  #16                 // Method org/eclipse/core/internal/jobs/m3/M3Rules.flatten:([Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)[Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+       9: putfield      #20                 // Field rules:[Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+      12: return
+
+  public org.eclipse.core.runtime.jobs.ISchedulingRule[] getChildren();
+    Code:
+       0: aload_0
+       1: getfield      #20                 // Field rules:[Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+       4: invokestatic  #26                 // Method org/eclipse/core/internal/jobs/m3/M3Rules.children:([Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)[Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+       7: areturn
+
+  public boolean contains(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    Code:
+       0: aload_0
+       1: aload_0
+       2: getfield      #20                 // Field rules:[Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+       5: aload_1
+       6: invokestatic  #29                 // Method org/eclipse/core/internal/jobs/m3/M3Rules.contains:(Lorg/eclipse/core/runtime/jobs/MultiRule;[Lorg/eclipse/core/runtime/jobs/ISchedulingRule;Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Z
+       9: ireturn
+
+  public boolean isConflicting(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    Code:
+       0: aload_0
+       1: aload_0
+       2: getfield      #20                 // Field rules:[Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+       5: aload_1
+       6: invokestatic  #33                 // Method org/eclipse/core/internal/jobs/m3/M3Rules.isConflicting:(Lorg/eclipse/core/runtime/jobs/MultiRule;[Lorg/eclipse/core/runtime/jobs/ISchedulingRule;Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Z
+       9: ireturn
+
+  public java.lang.String toString();
+    Code:
+       0: aload_0
+       1: getfield      #20                 // Field rules:[Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+       4: invokestatic  #36                 // Method org/eclipse/core/internal/jobs/m3/M3Rules.describe:([Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Ljava/lang/String;
+       7: areturn
+}

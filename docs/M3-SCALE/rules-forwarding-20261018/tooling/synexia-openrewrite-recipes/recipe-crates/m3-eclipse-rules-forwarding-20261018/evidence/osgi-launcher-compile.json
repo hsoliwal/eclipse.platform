@@ -1,0 +1,17 @@
+{
+  "stage": "osgi-launcher-compile",
+  "command": [
+    "/tmp/m3-toolchain/jdk-21.0.12.1+1/bin/javac",
+    "--release",
+    "17",
+    "-Xlint:all",
+    "-Werror",
+    "-cp",
+    "/tmp/eclipse-m3-20261018/toolchain/eclipse-deps/org.eclipse.osgi-3.24.300.jar",
+    "-d",
+    "/tmp/eclipse-m3-20261018/rules-reproduction/osgi-launcher",
+    "/tmp/eclipse-m3-20261018/synexia/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/JobsEquinoxProof.java"
+  ],
+  "exit_code": 0,
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

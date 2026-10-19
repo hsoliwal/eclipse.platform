@@ -1,0 +1,17 @@
+{
+  "stage": "recipe-sdk",
+  "command": [
+    "/tmp/m3-toolchain/apache-maven-3.9.12/bin/mvn",
+    "-o",
+    "-B",
+    "-ntp",
+    "-Dmaven.repo.local=/root/.m2/repository",
+    "-f",
+    "/tmp/eclipse-m3-20261018/synexia/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/pom.xml",
+    "-Dcanonical.classpath=/tmp/eclipse-m3-20261018/rules-reproduction/baseline-contracts/classes",
+    "-Dmaterialize.dir=/tmp/eclipse-m3-20261018/rules-reproduction/generated/runtime",
+    "test"
+  ],
+  "exit_code": 0,
+  "log_sha256": "e30bbaa0391b77c902b00bd6e85412a60430f53203b5e20c94607e7c904acaaa"
+}

@@ -1,0 +1,17 @@
+{
+  "stage": "osgi-client-compile",
+  "command": [
+    "/tmp/m3-toolchain/jdk-21.0.12.1+1/bin/javac",
+    "--release",
+    "17",
+    "-Xlint:all",
+    "-Werror",
+    "-cp",
+    "/tmp/eclipse-m3-20261018/rules-reproduction/baseline-bundle-classes:/tmp/eclipse-m3-20261018/toolchain/eclipse-deps/org.eclipse.equinox.common-3.21.0.jar",
+    "-d",
+    "/tmp/eclipse-m3-20261018/rules-reproduction/osgi-client",
+    "/tmp/eclipse-m3-20261018/synexia/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/MultiRuleOsgiClient.java"
+  ],
+  "exit_code": 0,
+  "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

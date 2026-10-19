@@ -1,0 +1,23 @@
+Compiled from "MultiRule.java"
+public class org.eclipse.core.runtime.jobs.MultiRule implements org.eclipse.core.runtime.jobs.ISchedulingRule {
+  public static org.eclipse.core.runtime.jobs.ISchedulingRule combine(org.eclipse.core.runtime.jobs.ISchedulingRule[]);
+    descriptor: ([Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+
+  public static org.eclipse.core.runtime.jobs.ISchedulingRule combine(org.eclipse.core.runtime.jobs.ISchedulingRule, org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+
+  public org.eclipse.core.runtime.jobs.MultiRule(org.eclipse.core.runtime.jobs.ISchedulingRule...);
+    descriptor: ([Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)V
+
+  public org.eclipse.core.runtime.jobs.ISchedulingRule[] getChildren();
+    descriptor: ()[Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+
+  public boolean contains(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Z
+
+  public boolean isConflicting(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Z
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+}

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-FileCopyrightText: 2026 Hitesh Soliwal and Contributors to the Synexia Project -->
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+ <modelVersion>4.0.0</modelVersion>
+ <groupId>com.synexia.m3</groupId><artifactId>eclipse-rules-contract-proof</artifactId><version>1.0-SNAPSHOT</version>
+ <properties>
+  <maven.compiler.release>17</maven.compiler.release><project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  <proof.source.root>${project.basedir}/inputs</proof.source.root>
+  <proof.build.directory>${project.basedir}/target</proof.build.directory>
+ </properties>
+ <dependencies>
+  <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter-api</artifactId><version>5.10.2</version><scope>test</scope></dependency>
+  <dependency><groupId>org.junit.jupiter</groupId><artifactId>junit-jupiter-engine</artifactId><version>5.10.2</version><scope>test</scope></dependency>
+ </dependencies>
+ <build>
+  <directory>${proof.build.directory}</directory>
+  <sourceDirectory>${proof.source.root}/runtime/bundles/org.eclipse.core.jobs/src</sourceDirectory>
+  <plugins>
+   <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-resources-plugin</artifactId><version>3.3.1</version></plugin>
+   <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><version>3.13.0</version>
+    <configuration><release>17</release><proc>none</proc><compilerArgs><arg>-Xlint:all</arg><arg>-Werror</arg></compilerArgs>
+     <includes><include>org/eclipse/core/runtime/jobs/ISchedulingRule.java</include><include>org/eclipse/core/runtime/jobs/MultiRule.java</include><include>org/eclipse/core/internal/jobs/m3/M3Rules.java</include></includes>
+    </configuration>
+   </plugin>
+   <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-surefire-plugin</artifactId><version>3.2.5</version>
+    <configuration><useModulePath>false</useModulePath><failIfNoTests>true</failIfNoTests></configuration>
+   </plugin>
+  </plugins>
+ </build>
+</project>

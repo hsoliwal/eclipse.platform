@@ -1,0 +1,13 @@
+{
+  "stage": "candidate-bytecode",
+  "command": [
+    "/tmp/m3-toolchain/jdk-21.0.12.1+1/bin/javap",
+    "-private",
+    "-c",
+    "-classpath",
+    "/tmp/eclipse-m3-20261018/rules-reproduction/candidate-bundle-classes",
+    "org.eclipse.core.runtime.jobs.MultiRule"
+  ],
+  "exit_code": 0,
+  "log_sha256": "95576ab0b266d1abfc9fa879e94228415d8fcc018d983831e056521056822856"
+}

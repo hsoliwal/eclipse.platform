@@ -1,0 +1,17 @@
+{
+  "stage": "candidate-contracts",
+  "command": [
+    "/tmp/m3-toolchain/apache-maven-3.9.12/bin/mvn",
+    "-o",
+    "-B",
+    "-ntp",
+    "-Dmaven.repo.local=/root/.m2/repository",
+    "-f",
+    "/tmp/eclipse-m3-20261018/synexia/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/pom.xml",
+    "-Dproof.source.root=/tmp/eclipse-m3-20261018/rules-reproduction/candidate",
+    "-Dproof.build.directory=/tmp/eclipse-m3-20261018/rules-reproduction/candidate-contracts",
+    "test"
+  ],
+  "exit_code": 0,
+  "log_sha256": "6c480fa9cf7424ee7fe26ebc48732772adaef893ed83fc41f9d7068751dff110"
+}

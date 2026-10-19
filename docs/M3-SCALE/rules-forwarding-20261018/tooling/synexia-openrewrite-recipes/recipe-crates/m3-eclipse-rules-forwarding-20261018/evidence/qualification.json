@@ -1,0 +1,24 @@
+{
+  "scope": "Complete MultiRule forwarding owner",
+  "target_revision": "69291c18babd233a94b742798b3d1078979bf78c",
+  "emitted": [
+    {
+      "path": "runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/m3/M3Rules.java",
+      "sha256": "512dfb312e823062fd456f0c08840f752bd58fd01740ccd5ee6b58a827d3d2fc"
+    },
+    {
+      "path": "runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/runtime/jobs/MultiRule.java",
+      "sha256": "ec0994c463c5de742f222036d66efbf1ef074ab46c06e36b98ac0bd3c8189fbf"
+    }
+  ],
+  "recipe_sdk_tests": 5,
+  "frozen_contract_tests_per_variant": 13,
+  "full_bundle_tests_per_variant": 16,
+  "original_upstream_tests_included": 3,
+  "real_equinox": true,
+  "osgi_client_assertions_per_variant": 14,
+  "public_api_equal": true,
+  "forwarding_call_sites": 7,
+  "whole_eclipse_qualified": false,
+  "full_tycho_pde_ci_qualified": false
+}

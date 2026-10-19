@@ -1,0 +1,23 @@
+{
+  "stage": "candidate-full-bundle-tests",
+  "command": [
+    "/tmp/m3-toolchain/jdk-21.0.12.1+1/bin/java",
+    "-jar",
+    "/tmp/m3-toolchain/pcollections-test-deps/junit-platform-console-standalone-1.10.2.jar",
+    "execute",
+    "--disable-ansi-colors",
+    "--class-path",
+    "/tmp/eclipse-m3-20261018/rules-reproduction/candidate-upstream-test-classes:/tmp/eclipse-m3-20261018/rules-reproduction/candidate-contracts/test-classes:/tmp/eclipse-m3-20261018/rules-reproduction/candidate-bundle-classes:/tmp/eclipse-m3-20261018/toolchain/eclipse-deps/org.eclipse.equinox.common-3.21.0.jar:/tmp/eclipse-m3-20261018/toolchain/eclipse-deps/org.eclipse.osgi-3.24.300.jar:/tmp/eclipse-m3-20261018/toolchain/eclipse-deps/assertj-core-3.27.5.jar:/tmp/m3-toolchain/pcollections-test-deps/junit-platform-console-standalone-1.10.2.jar",
+    "--select-class",
+    "org.eclipse.core.tests.runtime.jobs.MultiRuleTest",
+    "--select-class",
+    "com.synexia.eclipse.contract.MultiRuleContractTest",
+    "--fail-if-no-tests",
+    "--reports-dir",
+    "/tmp/eclipse-m3-20261018/rules-reproduction/evidence/candidate-junit",
+    "--details",
+    "summary"
+  ],
+  "exit_code": 0,
+  "log_sha256": "6f0da6336228dea4b7729e6ee8f0bb4fe2288530bd664dcdb68e4bbd10eaf328"
+}

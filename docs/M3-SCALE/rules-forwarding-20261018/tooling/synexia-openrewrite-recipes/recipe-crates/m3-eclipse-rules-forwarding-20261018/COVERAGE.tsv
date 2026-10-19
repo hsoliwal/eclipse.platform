@@ -1,0 +1,4 @@
+component	pinned_source	status	next_gate
+Jobs MultiRule	eclipse.platform@69291c18babd233a94b742798b3d1078979bf78c	all 7 operations forward; 13 frozen client tests and 3 unchanged upstream tests per variant; full Jobs compile and real Equinox qualified	full Tycho/PDE platform CI
+Jobs scheduler and queues	eclipse.platform@69291c18babd233a94b742798b3d1078979bf78c	existing implementation retained; entire bundle compiled for linkage only	independent effect/lifecycle and scheduling-order contracts before migration
+Remaining Eclipse framework	eclipse.platform/platform.ui/platform.swt pinned separately	not claimed as complete by this rules packet	independent source-owner migrations and complete SDK integration
