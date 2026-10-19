@@ -1,0 +1,113 @@
+{
+  "schema": "M3_ECLIPSE_JOB_QUEUE_SOURCE_PINS_V1",
+  "sourceRepository": "https://github.com/hsoliwal/com.synexia",
+  "canonicalInventoryRevision": "6291b100548f7850279f49e693621d6460be25f9",
+  "recipe": "com.synexia.eclipse.JobQueueForwarding20261019",
+  "recipeClass": "com.synexia.rewrite.M3HashPinnedJavaSnapshotRecipe",
+  "physicalEditScope": "PACKAGE",
+  "targetRepository": "https://github.com/hsoliwal/eclipse.platform",
+  "targetRevision": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+  "receiverMergeCommit": "0708647baec7b8122c55685e7ac3cab759ab23b9",
+  "receiverMergeTreeIdentity": "fcfe2ef28458bba9d69519544171050f9e090f9c",
+  "recipePhysicalRoot": "runtime",
+  "bundleVersion": "3.15.901.qualifier",
+  "bundleRequiredExecutionEnvironment": "JavaSE-17",
+  "unchangedManifestGitBlob": "7c47d72409e23e801d73edca70427ba0269e7289",
+  "targets": [
+    {
+      "targetPath": "bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/JobQueue.java",
+      "beforeSha256": "96089bb406f2a3b9573c2a6a196c0806ecc564254b3ae1343bb0dac793e86d01",
+      "afterSha256": "b7e5e148c62e2e6f9574e27cd7ff418a1c98454199c0b955beb077a0a3e8b592",
+      "template": "JobQueue.java.txt",
+      "emittedGitBlob": "46e399693506b771d2d403285819966900bc5771",
+      "emittedBytes": 3364
+    },
+    {
+      "targetPath": "bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/M3JobQueue.java",
+      "beforeSha256": "ABSENT",
+      "afterSha256": "791329d5c9ffd7bff03e74efbf7986811270255621645dbea6f61cb1f0408a22",
+      "template": "M3JobQueue.java.txt",
+      "emittedGitBlob": "366ffd68b4e6313ab487e41dc17dd93f6dd595a1",
+      "emittedBytes": 3874
+    }
+  ],
+  "unchangedCanonicalOwners": [
+    {
+      "repository": "hsoliwal/com.synexia",
+      "sourceCommit": "6291b100548f7850279f49e693621d6460be25f9",
+      "path": "synexia-openrewrite-recipes/src/main/java/com/synexia/rewrite/M3EditScope.java",
+      "gitBlob": "274360816db1e44a2f1796a3bc5cdeff6b0ce6db",
+      "sha256": "962d37d62d740c3e8055c365a048ae7ee0479c26a9f6bbfe741e540d6c1134ab",
+      "disposition": "UNCHANGED_CANONICAL_OWNER"
+    },
+    {
+      "repository": "hsoliwal/com.synexia",
+      "sourceCommit": "6291b100548f7850279f49e693621d6460be25f9",
+      "path": "synexia-openrewrite-recipes/src/main/java/com/synexia/rewrite/M3ScopeInference.java",
+      "gitBlob": "d24729950508857280ea1b56d4e930f05137ec85",
+      "sha256": "13660b59f60ec2941ec19e9bc8964ffd4b04689cdc33cd19711fba14b8da09a4",
+      "disposition": "UNCHANGED_CANONICAL_OWNER"
+    },
+    {
+      "repository": "hsoliwal/com.synexia",
+      "sourceCommit": "6291b100548f7850279f49e693621d6460be25f9",
+      "path": "synexia-openrewrite-recipes/src/main/java/com/synexia/rewrite/M3HashPinnedJavaSnapshotRecipe.java",
+      "gitBlob": "3bdeeaea9a212fe0c7d1f544510f87c4cd49eb40",
+      "sha256": "67f7b81126e4736c7b61b444fa6545153a61e23c012975ca796fcee623ab6625",
+      "disposition": "UNCHANGED_CANONICAL_OWNER"
+    }
+  ],
+  "existingProofAndLicenseLineage": [
+    {
+      "sourceRepository": "https://github.com/hsoliwal/com.synexia",
+      "sourcePath": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/pom.xml",
+      "gitBlob": "5de0088589aa48734adba0a9039221108071dd98",
+      "sha256": "b166dc2fa4cd0434b62d808ffb344a3760f71dbe9b3cc712e63aeb9ec12f2087",
+      "license": "Apache-2.0"
+    },
+    {
+      "sourceRepository": "https://github.com/hsoliwal/com.synexia",
+      "sourcePath": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/src/test/java/com/synexia/rewrite/M3EclipseRulesForwardingRecipeTest.java",
+      "gitBlob": "7aacaa7052edf5b86a02ee063e8971144e6a457d",
+      "sha256": "4dd8600339b2444d3a9255c34191a1d8d7fd34a9c296b366a35b2c877f390972",
+      "license": "Apache-2.0"
+    },
+    {
+      "sourceRepository": "https://github.com/hsoliwal/com.synexia",
+      "sourcePath": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/JobsEquinoxProof.java",
+      "gitBlob": "9c1a5c4d5f07dccc64dba35c3dabdf8d4451cc0b",
+      "sha256": "cc2ac150e7ad4ef93c8c52c665ff3fe991ce77807471ebfe11b5f365967c978d",
+      "license": "Apache-2.0"
+    },
+    {
+      "sourceRepository": "https://github.com/hsoliwal/com.synexia",
+      "sourcePath": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/LICENSE-APACHE-2.0",
+      "gitBlob": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "license": "Apache-2.0"
+    },
+    {
+      "sourceRepository": "https://github.com/hsoliwal/com.synexia",
+      "sourcePath": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/LICENSE-EPL-2.0",
+      "gitBlob": "d3087e4c54047062ddcc0b6ecd606711bb246ab8",
+      "sha256": "721c2da257578bace3332b14d8ea06643d7d26753e7ef25a837b4e904edc0bf5",
+      "license": "EPL-2.0"
+    }
+  ],
+  "baselineBundleInventory": "proof/baseline-bundle-files.json",
+  "upstreamTestInventory": "proof/upstream-source-pins.json",
+  "actualDependencies": "proof/inputs/dependency-jars.json",
+  "compilerSettings": "proof/inputs/org.eclipse.core.jobs.org.eclipse.jdt.core.prefs",
+  "actualSDKReceipt": "evidence/recipe-final/receipt.json",
+  "runtimeReceipt": "evidence/candidate-final/receipt.json",
+  "originalBehaviorSeal": "proof/contract-seal.json",
+  "proseAmendment": "proof/contract-prose-amendment.json",
+  "license": "EPL-2.0 for Eclipse-derived sources; Apache-2.0 for original proof and metadata",
+  "scopeLimits": [
+    "No JobManager/WorkerPool/OrderedLock implementation change",
+    "No full Tycho reactor or hosted CI claim",
+    "No performance claim",
+    "No new dependency or export",
+    "No target manifest change"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "M3_JOB_QUEUE_CONTRACT_PROSE_AMENDMENT_V1",
+  "capturedUtc": "2026-10-19T04:56:50.018335+00:00",
+  "reason": "Completed unmodified baseline javac log contains eight production warnings plus one unchanged test warning; initial -Werror log stopped after three diagnostics. Final candidate has exactly the same complete diagnostics.",
+  "originalLogicalPath": "CONTRACT.md",
+  "originalSealedPath": "evidence/contract-prose-amendment/CONTRACT.md",
+  "originalSha256": "26bee61c1f28b84e08310458c0481e06854773ad33fa00771bbb54627dfac5ec",
+  "currentPath": "CONTRACT.md",
+  "currentSha256": "e671594af22e8e2e6a42b9e013e74665ac4d7ff8df55dee919fd30606ba154eb",
+  "unchangedBehavioralAssertions": true,
+  "originalSealValidatedViaArchivedProse": [
+    "CONTRACT.md",
+    "proof/src/test/java/org/eclipse/core/internal/jobs/JobQueueContractTest.java",
+    "proof/src/test/java/org/eclipse/core/internal/jobs/M3JobQueueOwnershipTest.java",
+    "proof/upstream-tests.txt",
+    "proof/upstream-source-pins.json"
+  ]
+}

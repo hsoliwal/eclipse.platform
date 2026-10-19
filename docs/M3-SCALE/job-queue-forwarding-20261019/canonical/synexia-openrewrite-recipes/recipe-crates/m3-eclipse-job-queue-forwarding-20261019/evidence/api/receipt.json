@@ -1,0 +1,392 @@
+{
+  "schema": "M3_JOB_QUEUE_JDK_API_V1",
+  "baselineClasses": 48,
+  "candidateClasses": 49,
+  "identicalPublicProtectedSurfaces": 47,
+  "unchangedOriginalClassBytes": 45,
+  "removedPrivateIteratorImplementation": [
+    "org/eclipse/core/internal/jobs/JobQueue$2.class"
+  ],
+  "addedOwnerAndIterator": [
+    "org/eclipse/core/internal/jobs/M3JobQueue$1.class",
+    "org/eclipse/core/internal/jobs/M3JobQueue.class"
+  ],
+  "allClassMajorVersions": 61,
+  "publicProtectedApiSha256": "7a7e8ffe3ec4983af93c107088b298a5829c10d717197b6507ebb92de2279fe9",
+  "facadeAndHeadStaticOwnerCalls": [
+    "27: invokestatic  #27                 // Method org/eclipse/core/internal/jobs/M3JobQueue.initializeHead:(Lorg/eclipse/core/internal/jobs/InternalJob;)V",
+    "4: invokestatic  #36                 // Method org/eclipse/core/internal/jobs/M3JobQueue.clear:(Lorg/eclipse/core/internal/jobs/InternalJob;)V",
+    "4: invokestatic  #39                 // Method org/eclipse/core/internal/jobs/M3JobQueue.dequeue:(Lorg/eclipse/core/internal/jobs/InternalJob;)Lorg/eclipse/core/internal/jobs/InternalJob;",
+    "13: invokestatic  #43                 // Method org/eclipse/core/internal/jobs/M3JobQueue.enqueue:(Lorg/eclipse/core/internal/jobs/InternalJob;ZZLorg/eclipse/core/internal/jobs/InternalJob;)V",
+    "1: invokestatic  #47                 // Method org/eclipse/core/internal/jobs/M3JobQueue.remove:(Lorg/eclipse/core/internal/jobs/InternalJob;)V",
+    "13: invokestatic  #50                 // Method org/eclipse/core/internal/jobs/M3JobQueue.resort:(Lorg/eclipse/core/internal/jobs/InternalJob;ZZLorg/eclipse/core/internal/jobs/InternalJob;)V",
+    "4: invokestatic  #53                 // Method org/eclipse/core/internal/jobs/M3JobQueue.isEmpty:(Lorg/eclipse/core/internal/jobs/InternalJob;)Z",
+    "4: invokestatic  #57                 // Method org/eclipse/core/internal/jobs/M3JobQueue.peek:(Lorg/eclipse/core/internal/jobs/InternalJob;)Lorg/eclipse/core/internal/jobs/InternalJob;",
+    "1: invokestatic  #60                 // Method org/eclipse/core/internal/jobs/M3JobQueue.iterator:(Lorg/eclipse/core/internal/jobs/JobQueue;)Ljava/util/Iterator;",
+    "1: invokestatic  #64                 // Method org/eclipse/core/internal/jobs/M3JobQueue.toString:(Lorg/eclipse/core/internal/jobs/JobQueue;)Ljava/lang/String;",
+    "0: invokestatic  #13                 // Method org/eclipse/core/internal/jobs/M3JobQueue.headResult:()Lorg/eclipse/core/runtime/IStatus;"
+  ],
+  "oneArgumentConstructor": "delegates to original two-argument constructor",
+  "commands": [
+    {
+      "name": "baseline",
+      "command": [
+        "/tmp/eclipse-m3-20261019/toolchain/jdk21/bin/javap",
+        "-protected",
+        "-s",
+        "-constants",
+        "-classpath",
+        "/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-final-build/classes:/tmp/eclipse-m3-20261019/toolchain/eclipse-deps/org.eclipse.equinox.common-3.21.0.jar:/tmp/eclipse-m3-20261019/toolchain/eclipse-deps/org.eclipse.osgi-3.24.300.jar",
+        "org.eclipse.core.internal.jobs.Deadlock",
+        "org.eclipse.core.internal.jobs.DeadlockDetector",
+        "org.eclipse.core.internal.jobs.ImplicitJobs",
+        "org.eclipse.core.internal.jobs.InternalJob",
+        "org.eclipse.core.internal.jobs.InternalJobGroup",
+        "org.eclipse.core.internal.jobs.InternalWorker",
+        "org.eclipse.core.internal.jobs.JobActivator",
+        "org.eclipse.core.internal.jobs.JobChangeEvent",
+        "org.eclipse.core.internal.jobs.JobListeners$IListenerDoit",
+        "org.eclipse.core.internal.jobs.JobListeners",
+        "org.eclipse.core.internal.jobs.JobManager$1",
+        "org.eclipse.core.internal.jobs.JobManager$2",
+        "org.eclipse.core.internal.jobs.JobManager$3",
+        "org.eclipse.core.internal.jobs.JobManager$4",
+        "org.eclipse.core.internal.jobs.JobManager$5",
+        "org.eclipse.core.internal.jobs.JobManager",
+        "org.eclipse.core.internal.jobs.JobMessages",
+        "org.eclipse.core.internal.jobs.JobOSGiUtils",
+        "org.eclipse.core.internal.jobs.JobQueue$1",
+        "org.eclipse.core.internal.jobs.JobQueue",
+        "org.eclipse.core.internal.jobs.JobStatus",
+        "org.eclipse.core.internal.jobs.LockManager$LockState",
+        "org.eclipse.core.internal.jobs.LockManager",
+        "org.eclipse.core.internal.jobs.ObjectMap",
+        "org.eclipse.core.internal.jobs.OrderedLock",
+        "org.eclipse.core.internal.jobs.Semaphore",
+        "org.eclipse.core.internal.jobs.ThreadJob",
+        "org.eclipse.core.internal.jobs.Worker",
+        "org.eclipse.core.internal.jobs.WorkerPool",
+        "org.eclipse.core.internal.jobs.m3.M3Rules",
+        "org.eclipse.core.runtime.jobs.IJobChangeEvent",
+        "org.eclipse.core.runtime.jobs.IJobChangeListener$1",
+        "org.eclipse.core.runtime.jobs.IJobChangeListener",
+        "org.eclipse.core.runtime.jobs.IJobFunction",
+        "org.eclipse.core.runtime.jobs.IJobManager",
+        "org.eclipse.core.runtime.jobs.IJobStatus",
+        "org.eclipse.core.runtime.jobs.ILock",
+        "org.eclipse.core.runtime.jobs.ISchedulableOperation",
+        "org.eclipse.core.runtime.jobs.ISchedulingRule",
+        "org.eclipse.core.runtime.jobs.Job$1",
+        "org.eclipse.core.runtime.jobs.Job$2",
+        "org.eclipse.core.runtime.jobs.Job",
+        "org.eclipse.core.runtime.jobs.JobChangeAdapter",
+        "org.eclipse.core.runtime.jobs.JobGroup",
+        "org.eclipse.core.runtime.jobs.LockListener",
+        "org.eclipse.core.runtime.jobs.MultiRule",
+        "org.eclipse.core.runtime.jobs.ProgressProvider"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "candidate",
+      "command": [
+        "/tmp/eclipse-m3-20261019/toolchain/jdk21/bin/javap",
+        "-protected",
+        "-s",
+        "-constants",
+        "-classpath",
+        "/tmp/eclipse-m3-20261019/job-queue-authoring/candidate-final-build/classes:/tmp/eclipse-m3-20261019/toolchain/eclipse-deps/org.eclipse.equinox.common-3.21.0.jar:/tmp/eclipse-m3-20261019/toolchain/eclipse-deps/org.eclipse.osgi-3.24.300.jar",
+        "org.eclipse.core.internal.jobs.Deadlock",
+        "org.eclipse.core.internal.jobs.DeadlockDetector",
+        "org.eclipse.core.internal.jobs.ImplicitJobs",
+        "org.eclipse.core.internal.jobs.InternalJob",
+        "org.eclipse.core.internal.jobs.InternalJobGroup",
+        "org.eclipse.core.internal.jobs.InternalWorker",
+        "org.eclipse.core.internal.jobs.JobActivator",
+        "org.eclipse.core.internal.jobs.JobChangeEvent",
+        "org.eclipse.core.internal.jobs.JobListeners$IListenerDoit",
+        "org.eclipse.core.internal.jobs.JobListeners",
+        "org.eclipse.core.internal.jobs.JobManager$1",
+        "org.eclipse.core.internal.jobs.JobManager$2",
+        "org.eclipse.core.internal.jobs.JobManager$3",
+        "org.eclipse.core.internal.jobs.JobManager$4",
+        "org.eclipse.core.internal.jobs.JobManager$5",
+        "org.eclipse.core.internal.jobs.JobManager",
+        "org.eclipse.core.internal.jobs.JobMessages",
+        "org.eclipse.core.internal.jobs.JobOSGiUtils",
+        "org.eclipse.core.internal.jobs.JobQueue$1",
+        "org.eclipse.core.internal.jobs.JobQueue",
+        "org.eclipse.core.internal.jobs.JobStatus",
+        "org.eclipse.core.internal.jobs.LockManager$LockState",
+        "org.eclipse.core.internal.jobs.LockManager",
+        "org.eclipse.core.internal.jobs.ObjectMap",
+        "org.eclipse.core.internal.jobs.OrderedLock",
+        "org.eclipse.core.internal.jobs.Semaphore",
+        "org.eclipse.core.internal.jobs.ThreadJob",
+        "org.eclipse.core.internal.jobs.Worker",
+        "org.eclipse.core.internal.jobs.WorkerPool",
+        "org.eclipse.core.internal.jobs.m3.M3Rules",
+        "org.eclipse.core.runtime.jobs.IJobChangeEvent",
+        "org.eclipse.core.runtime.jobs.IJobChangeListener$1",
+        "org.eclipse.core.runtime.jobs.IJobChangeListener",
+        "org.eclipse.core.runtime.jobs.IJobFunction",
+        "org.eclipse.core.runtime.jobs.IJobManager",
+        "org.eclipse.core.runtime.jobs.IJobStatus",
+        "org.eclipse.core.runtime.jobs.ILock",
+        "org.eclipse.core.runtime.jobs.ISchedulableOperation",
+        "org.eclipse.core.runtime.jobs.ISchedulingRule",
+        "org.eclipse.core.runtime.jobs.Job$1",
+        "org.eclipse.core.runtime.jobs.Job$2",
+        "org.eclipse.core.runtime.jobs.Job",
+        "org.eclipse.core.runtime.jobs.JobChangeAdapter",
+        "org.eclipse.core.runtime.jobs.JobGroup",
+        "org.eclipse.core.runtime.jobs.LockListener",
+        "org.eclipse.core.runtime.jobs.MultiRule",
+        "org.eclipse.core.runtime.jobs.ProgressProvider"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "candidate-forwarding",
+      "command": [
+        "/tmp/eclipse-m3-20261019/toolchain/jdk21/bin/javap",
+        "-c",
+        "-p",
+        "-s",
+        "-classpath",
+        "/tmp/eclipse-m3-20261019/job-queue-authoring/candidate-final-build/classes",
+        "org.eclipse.core.internal.jobs.JobQueue",
+        "org.eclipse.core.internal.jobs.JobQueue$1"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "baseline-iterator",
+      "command": [
+        "/tmp/eclipse-m3-20261019/toolchain/jdk21/bin/javap",
+        "-c",
+        "-p",
+        "-s",
+        "-classpath",
+        "/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-final-build/classes",
+        "org.eclipse.core.internal.jobs.JobQueue$2"
+      ],
+      "exitCode": 0
+    },
+    {
+      "name": "candidate-iterator",
+      "command": [
+        "/tmp/eclipse-m3-20261019/toolchain/jdk21/bin/javap",
+        "-c",
+        "-p",
+        "-s",
+        "-classpath",
+        "/tmp/eclipse-m3-20261019/job-queue-authoring/candidate-final-build/classes",
+        "org.eclipse.core.internal.jobs.M3JobQueue$1"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "classPins": {
+    "org/eclipse/core/internal/jobs/Deadlock.class": {
+      "baseline": "7822a41c05b1dd6a42e267d936dba1f433623be61645b71b64847bc3b320a17f",
+      "candidate": "7822a41c05b1dd6a42e267d936dba1f433623be61645b71b64847bc3b320a17f"
+    },
+    "org/eclipse/core/internal/jobs/DeadlockDetector.class": {
+      "baseline": "e4ce380bf2fafa99bb315ba40d8efb32bd62671cfb603d36de01ea7a6821fcc1",
+      "candidate": "e4ce380bf2fafa99bb315ba40d8efb32bd62671cfb603d36de01ea7a6821fcc1"
+    },
+    "org/eclipse/core/internal/jobs/ImplicitJobs.class": {
+      "baseline": "a18edd3ef4043af6d0c2454ec35159819a7554e986f58bd2d4b9cfb4f5389c89",
+      "candidate": "a18edd3ef4043af6d0c2454ec35159819a7554e986f58bd2d4b9cfb4f5389c89"
+    },
+    "org/eclipse/core/internal/jobs/InternalJob.class": {
+      "baseline": "0d45d7646b5dc64154ae99df8cf14c971c9190047f10f55c3fdd636e2f555433",
+      "candidate": "0d45d7646b5dc64154ae99df8cf14c971c9190047f10f55c3fdd636e2f555433"
+    },
+    "org/eclipse/core/internal/jobs/InternalJobGroup.class": {
+      "baseline": "7b00df0b21863662005e21b2ebd510fb77e5b7a12908e6fb776f3b6213f2fd57",
+      "candidate": "7b00df0b21863662005e21b2ebd510fb77e5b7a12908e6fb776f3b6213f2fd57"
+    },
+    "org/eclipse/core/internal/jobs/InternalWorker.class": {
+      "baseline": "dadc6c9f510460204d6fd36d571f5088d6c5816c635356e4695656e4b94fcd98",
+      "candidate": "dadc6c9f510460204d6fd36d571f5088d6c5816c635356e4695656e4b94fcd98"
+    },
+    "org/eclipse/core/internal/jobs/JobActivator.class": {
+      "baseline": "88b4583660a2086b0324cda7af3616ab8dca133930ed28a39db190625060acb2",
+      "candidate": "88b4583660a2086b0324cda7af3616ab8dca133930ed28a39db190625060acb2"
+    },
+    "org/eclipse/core/internal/jobs/JobChangeEvent.class": {
+      "baseline": "68db69cb6cb0da014f5edc1f74ab9bca442c6641364fd5351735392ca49c3670",
+      "candidate": "68db69cb6cb0da014f5edc1f74ab9bca442c6641364fd5351735392ca49c3670"
+    },
+    "org/eclipse/core/internal/jobs/JobListeners$IListenerDoit.class": {
+      "baseline": "826ac653420213610fc251d6e20032a17aacfb4f846128cbe2a57c4c1c173041",
+      "candidate": "826ac653420213610fc251d6e20032a17aacfb4f846128cbe2a57c4c1c173041"
+    },
+    "org/eclipse/core/internal/jobs/JobListeners.class": {
+      "baseline": "9d45451afbd650685b14caca3525a15a3af22820341e3c535b64eb28959c1c41",
+      "candidate": "9d45451afbd650685b14caca3525a15a3af22820341e3c535b64eb28959c1c41"
+    },
+    "org/eclipse/core/internal/jobs/JobManager$1.class": {
+      "baseline": "3bc24d83209198b6779c79cc20d223d50736b3d706f197561465295937ae0e86",
+      "candidate": "3bc24d83209198b6779c79cc20d223d50736b3d706f197561465295937ae0e86"
+    },
+    "org/eclipse/core/internal/jobs/JobManager$2.class": {
+      "baseline": "67d697aeeb131815390b74fd48a8f7f721827ee28b7144f8042036aa1fd11f2c",
+      "candidate": "67d697aeeb131815390b74fd48a8f7f721827ee28b7144f8042036aa1fd11f2c"
+    },
+    "org/eclipse/core/internal/jobs/JobManager$3.class": {
+      "baseline": "4e085ea0449e99c8a9754bb4ef806e59d564080ff1ceb91a1278c30f2a741e37",
+      "candidate": "4e085ea0449e99c8a9754bb4ef806e59d564080ff1ceb91a1278c30f2a741e37"
+    },
+    "org/eclipse/core/internal/jobs/JobManager$4.class": {
+      "baseline": "181e2085defaf0266a9166ccaa8f7cc3b9cbe73706383959cc71d3ca5f0870af",
+      "candidate": "181e2085defaf0266a9166ccaa8f7cc3b9cbe73706383959cc71d3ca5f0870af"
+    },
+    "org/eclipse/core/internal/jobs/JobManager$5.class": {
+      "baseline": "c3ec66814d4208ce3cd36bf3e1a28b777073b12918850778a67e0db3fe89b5a6",
+      "candidate": "c3ec66814d4208ce3cd36bf3e1a28b777073b12918850778a67e0db3fe89b5a6"
+    },
+    "org/eclipse/core/internal/jobs/JobManager.class": {
+      "baseline": "c638b629a3fb15ee9616466ed477caa59c0292bfe53d9d44bf2182dce49d93c4",
+      "candidate": "c638b629a3fb15ee9616466ed477caa59c0292bfe53d9d44bf2182dce49d93c4"
+    },
+    "org/eclipse/core/internal/jobs/JobMessages.class": {
+      "baseline": "55190f7786e9af7c8008162835a412bf33845ce8b55b779f382c15f8a9df1ab0",
+      "candidate": "55190f7786e9af7c8008162835a412bf33845ce8b55b779f382c15f8a9df1ab0"
+    },
+    "org/eclipse/core/internal/jobs/JobOSGiUtils.class": {
+      "baseline": "84f858e78d499c93504287ae8016b79bf7d9d4dba751d9721d5fa6969036882d",
+      "candidate": "84f858e78d499c93504287ae8016b79bf7d9d4dba751d9721d5fa6969036882d"
+    },
+    "org/eclipse/core/internal/jobs/JobQueue$1.class": {
+      "baseline": "2982ae8295f0eb38225adb905c7b7bbd5e0e43087ebec450b5a50e3927f87467",
+      "candidate": "c86546e62f14cfb8b59678b5abab557825e438839fd6d7f720d390395c3b512e"
+    },
+    "org/eclipse/core/internal/jobs/JobQueue$2.class": {
+      "baseline": "a352f94dff4787133365a4785645cdb0aa4eb7c58c135e243dddaf95117c62a8",
+      "candidate": null
+    },
+    "org/eclipse/core/internal/jobs/JobQueue.class": {
+      "baseline": "611dfdcc73b08d36c1d21a7ad7e4ba9447e57c9ac5c12e38778d259948c6d776",
+      "candidate": "055bc1de970f20191cf65590dae29448a86c372f2d088b0a2ce287863ce46791"
+    },
+    "org/eclipse/core/internal/jobs/JobStatus.class": {
+      "baseline": "1c64e73066455cd0a7e297d5af01a25eee7936e41048a590ade77d64716ec26d",
+      "candidate": "1c64e73066455cd0a7e297d5af01a25eee7936e41048a590ade77d64716ec26d"
+    },
+    "org/eclipse/core/internal/jobs/LockManager$LockState.class": {
+      "baseline": "bb52789df9c1a64d0d3e18cc11cb02848f769bef9e5b7c9077881e0199fb7540",
+      "candidate": "bb52789df9c1a64d0d3e18cc11cb02848f769bef9e5b7c9077881e0199fb7540"
+    },
+    "org/eclipse/core/internal/jobs/LockManager.class": {
+      "baseline": "e0fc8c6ca19da3da7b813c6b89e86f6d115cb4b60db30392ade1f7c319744e9e",
+      "candidate": "e0fc8c6ca19da3da7b813c6b89e86f6d115cb4b60db30392ade1f7c319744e9e"
+    },
+    "org/eclipse/core/internal/jobs/M3JobQueue$1.class": {
+      "baseline": null,
+      "candidate": "cd4132f5052c4e162b516e3dece84e341f9701e1a9591235510b4578d4864f15"
+    },
+    "org/eclipse/core/internal/jobs/M3JobQueue.class": {
+      "baseline": null,
+      "candidate": "a513add7b2b90c21dc9b0c563469f047a0256960b120aebaeb04d5bf5dadd9c6"
+    },
+    "org/eclipse/core/internal/jobs/ObjectMap.class": {
+      "baseline": "070b71748f8c02da6418d9a4587477cf55780905acbcbcd5c8c2e6f26373a949",
+      "candidate": "070b71748f8c02da6418d9a4587477cf55780905acbcbcd5c8c2e6f26373a949"
+    },
+    "org/eclipse/core/internal/jobs/OrderedLock.class": {
+      "baseline": "d9cf95608d80d170227316a81be9d30ddeea63dc01b38c6fbf7168273f1f45d8",
+      "candidate": "d9cf95608d80d170227316a81be9d30ddeea63dc01b38c6fbf7168273f1f45d8"
+    },
+    "org/eclipse/core/internal/jobs/Semaphore.class": {
+      "baseline": "0a3085f5d7cf57b17be43afa2d41fd2b90448ce153fa28518d417c1b22410dbf",
+      "candidate": "0a3085f5d7cf57b17be43afa2d41fd2b90448ce153fa28518d417c1b22410dbf"
+    },
+    "org/eclipse/core/internal/jobs/ThreadJob.class": {
+      "baseline": "9104190f9a3e802932f768d77474fccc4a478525db13ca78228053c0d9f9f4eb",
+      "candidate": "9104190f9a3e802932f768d77474fccc4a478525db13ca78228053c0d9f9f4eb"
+    },
+    "org/eclipse/core/internal/jobs/Worker.class": {
+      "baseline": "3dbd6870418f193dd4735760ed895014473b85c55ec4c48a3f921bddd95ff0e1",
+      "candidate": "3dbd6870418f193dd4735760ed895014473b85c55ec4c48a3f921bddd95ff0e1"
+    },
+    "org/eclipse/core/internal/jobs/WorkerPool.class": {
+      "baseline": "4d1bdeb1de2a677ae877f1f7537971188b64b1427aff97aae56ca8e8f41a5e34",
+      "candidate": "4d1bdeb1de2a677ae877f1f7537971188b64b1427aff97aae56ca8e8f41a5e34"
+    },
+    "org/eclipse/core/internal/jobs/m3/M3Rules.class": {
+      "baseline": "d06277795ec5743aa2620301173658dcc2b0719431549eee9f0bda93a84cae1a",
+      "candidate": "d06277795ec5743aa2620301173658dcc2b0719431549eee9f0bda93a84cae1a"
+    },
+    "org/eclipse/core/runtime/jobs/IJobChangeEvent.class": {
+      "baseline": "fa29ad738a7af60b1b6aa3aa2d488479bf397e80a67c5477a61c283d81e8bd01",
+      "candidate": "fa29ad738a7af60b1b6aa3aa2d488479bf397e80a67c5477a61c283d81e8bd01"
+    },
+    "org/eclipse/core/runtime/jobs/IJobChangeListener$1.class": {
+      "baseline": "350e3613a33b5cafa058c2353f901e793bc663765814655a0e0e2e70e6be0880",
+      "candidate": "350e3613a33b5cafa058c2353f901e793bc663765814655a0e0e2e70e6be0880"
+    },
+    "org/eclipse/core/runtime/jobs/IJobChangeListener.class": {
+      "baseline": "7d32524be534193afb5cf54a59de1a716af7edd12482dbc1217ddd3cb2b52994",
+      "candidate": "7d32524be534193afb5cf54a59de1a716af7edd12482dbc1217ddd3cb2b52994"
+    },
+    "org/eclipse/core/runtime/jobs/IJobFunction.class": {
+      "baseline": "16e1489071fdaa703440967203ec0916f64e4aed5c1285c8331002a1d0303f49",
+      "candidate": "16e1489071fdaa703440967203ec0916f64e4aed5c1285c8331002a1d0303f49"
+    },
+    "org/eclipse/core/runtime/jobs/IJobManager.class": {
+      "baseline": "bffa1670be86db0fd53e50ad8084b6e53a1e32d89bc6503abd0da33b41259943",
+      "candidate": "bffa1670be86db0fd53e50ad8084b6e53a1e32d89bc6503abd0da33b41259943"
+    },
+    "org/eclipse/core/runtime/jobs/IJobStatus.class": {
+      "baseline": "f6936c67203983268223edb69417860a671362c58b7f0958b6dc7b1289b76272",
+      "candidate": "f6936c67203983268223edb69417860a671362c58b7f0958b6dc7b1289b76272"
+    },
+    "org/eclipse/core/runtime/jobs/ILock.class": {
+      "baseline": "ee5d0d90b4f2694a985d293887e5c4cea07b9cbd2078fc4708f586c7d362576e",
+      "candidate": "ee5d0d90b4f2694a985d293887e5c4cea07b9cbd2078fc4708f586c7d362576e"
+    },
+    "org/eclipse/core/runtime/jobs/ISchedulableOperation.class": {
+      "baseline": "88f925d30500a8f2be819699bf3a3011f70bce71abd08d0878dac70d4f85318b",
+      "candidate": "88f925d30500a8f2be819699bf3a3011f70bce71abd08d0878dac70d4f85318b"
+    },
+    "org/eclipse/core/runtime/jobs/ISchedulingRule.class": {
+      "baseline": "5641db69eaee5a4072dcbbe558e585a2a94793ef550e72c57c1201e1c41806ae",
+      "candidate": "5641db69eaee5a4072dcbbe558e585a2a94793ef550e72c57c1201e1c41806ae"
+    },
+    "org/eclipse/core/runtime/jobs/Job$1.class": {
+      "baseline": "e8eb96c55ef5d512880eae06886686f83a044e331dd3ff3a57e5b3f30dcf007c",
+      "candidate": "e8eb96c55ef5d512880eae06886686f83a044e331dd3ff3a57e5b3f30dcf007c"
+    },
+    "org/eclipse/core/runtime/jobs/Job$2.class": {
+      "baseline": "3ce9aa5ea47e63a61e69b197cb45cb5ccd736600e36e0694c724e926ae71aab4",
+      "candidate": "3ce9aa5ea47e63a61e69b197cb45cb5ccd736600e36e0694c724e926ae71aab4"
+    },
+    "org/eclipse/core/runtime/jobs/Job.class": {
+      "baseline": "3a4c3c5e36f963a1530d314fd55c52efe4b9753808ef5b51789e09f8794a2d93",
+      "candidate": "3a4c3c5e36f963a1530d314fd55c52efe4b9753808ef5b51789e09f8794a2d93"
+    },
+    "org/eclipse/core/runtime/jobs/JobChangeAdapter.class": {
+      "baseline": "3b63e16e4e64ae6df8b0ef63b923a0fb570376110528fd3fe7f22fadd506c176",
+      "candidate": "3b63e16e4e64ae6df8b0ef63b923a0fb570376110528fd3fe7f22fadd506c176"
+    },
+    "org/eclipse/core/runtime/jobs/JobGroup.class": {
+      "baseline": "8c453ed81b3bc57578783ec2241b23a105eb91037bfea9b0aa74806857022c1c",
+      "candidate": "8c453ed81b3bc57578783ec2241b23a105eb91037bfea9b0aa74806857022c1c"
+    },
+    "org/eclipse/core/runtime/jobs/LockListener.class": {
+      "baseline": "c080b4d774b491570791c0e2395cd2a9a537dfd6bea48e1d2f48f867d93120d2",
+      "candidate": "c080b4d774b491570791c0e2395cd2a9a537dfd6bea48e1d2f48f867d93120d2"
+    },
+    "org/eclipse/core/runtime/jobs/MultiRule.class": {
+      "baseline": "fc7585ae08cd2370e5c73d2794faee09c120f33fb77a47559d6f5246d7c30a8a",
+      "candidate": "fc7585ae08cd2370e5c73d2794faee09c120f33fb77a47559d6f5246d7c30a8a"
+    },
+    "org/eclipse/core/runtime/jobs/ProgressProvider.class": {
+      "baseline": "f0d543efea42d790372594434704979c93d0067c7d6a17c02808b1b96631eb01",
+      "candidate": "f0d543efea42d790372594434704979c93d0067c7d6a17c02808b1b96631eb01"
+    }
+  }
+}

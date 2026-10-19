@@ -1,0 +1,19 @@
+{
+  "schema": "M3_JOB_QUEUE_ACTUAL_SDK_V1",
+  "tests": 8,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "exitCode": 0,
+  "owner": "com.synexia.rewrite.M3HashPinnedJavaSnapshotRecipe",
+  "outputSha256": {
+    "bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/M3JobQueue.java": "71492e5849e319a01c9e82256b2378aa39e98c34a717199c4f8ae256671acadb",
+    "bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/JobQueue.java": "82f84eeb3ea09cc83adf47cba9d22f550a89fb71c4e40736f74411bd88ec070e"
+  },
+  "candidateChangedPaths": [
+    "src/org/eclipse/core/internal/jobs/JobQueue.java",
+    "src/org/eclipse/core/internal/jobs/M3JobQueue.java"
+  ],
+  "candidateRemovedPaths": [],
+  "materialization": "Only actual Recipe.run changeset after.printAll bytes"
+}

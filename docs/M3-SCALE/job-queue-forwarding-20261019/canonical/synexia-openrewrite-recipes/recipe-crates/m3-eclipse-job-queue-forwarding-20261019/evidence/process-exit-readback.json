@@ -1,0 +1,126 @@
+{
+  "schema": "M3_JOB_QUEUE_ACTUAL_PROCESS_EXIT_READBACK_V1",
+  "authority": "Completed exec sessions resumed using write_stdin; no test reruns",
+  "gates": [
+    {
+      "gate": "baseline-initial-compiler",
+      "session": 23721,
+      "expected": 1,
+      "exitCode": 1,
+      "output": "",
+      "matches": true
+    },
+    {
+      "gate": "baseline-initial-rule-fixture",
+      "session": 74396,
+      "expected": 1,
+      "exitCode": 1,
+      "output": "",
+      "matches": true
+    },
+    {
+      "gate": "baseline-contract",
+      "session": 93965,
+      "expected": 0,
+      "exitCode": 0,
+      "output": "",
+      "matches": true
+    },
+    {
+      "gate": "baseline-owner-red",
+      "session": 87906,
+      "expected": 1,
+      "exitCode": 1,
+      "output": "",
+      "matches": true
+    },
+    {
+      "gate": "baseline-source-closure",
+      "session": 75307,
+      "expected": 1,
+      "exitCode": 1,
+      "output": "",
+      "matches": true
+    },
+    {
+      "gate": "baseline-final",
+      "session": 2811,
+      "expected": 0,
+      "exitCode": 0,
+      "output": "",
+      "matches": true
+    },
+    {
+      "gate": "sdk-before-notice",
+      "session": 2346,
+      "expected": 0,
+      "exitCode": 0,
+      "output": "",
+      "matches": true
+    },
+    {
+      "gate": "candidate-before-notice",
+      "session": 55161,
+      "expected": 0,
+      "exitCode": 0,
+      "output": "",
+      "matches": true
+    },
+    {
+      "gate": "ecj-original-pair",
+      "session": 75875,
+      "expected": 0,
+      "exitCode": 0,
+      "output": "{\"mode\": \"baseline\", \"sourceCount\": 36, \"exitCode\": 0}\n{\"mode\": \"candidate\", \"sourceCount\": 37, \"exitCode\": 0}\n",
+      "matches": true
+    },
+    {
+      "gate": "notice-red",
+      "session": 95462,
+      "expected": 1,
+      "exitCode": 1,
+      "output": "",
+      "matches": true
+    },
+    {
+      "gate": "sdk-final",
+      "session": 28486,
+      "expected": 0,
+      "exitCode": 0,
+      "output": "",
+      "matches": true
+    },
+    {
+      "gate": "candidate-final",
+      "session": 55755,
+      "expected": 0,
+      "exitCode": 0,
+      "output": "",
+      "matches": true
+    },
+    {
+      "gate": "ecj-final",
+      "session": 39227,
+      "expected": 0,
+      "exitCode": 0,
+      "output": "{\"sourceCount\": 37, \"exitCode\": 0}\n",
+      "matches": true
+    },
+    {
+      "gate": "osgi-package",
+      "session": 14382,
+      "expected": 0,
+      "exitCode": 0,
+      "output": "Compiled genuine client against original baseline and packaged both source-built bundles\n",
+      "matches": true
+    },
+    {
+      "gate": "osgi-pair",
+      "session": 9211,
+      "expected": 0,
+      "exitCode": 0,
+      "output": "{\"mode\": \"candidate\", \"exitCode\": 0}\n",
+      "matches": true
+    }
+  ]
+}

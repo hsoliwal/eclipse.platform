@@ -1,0 +1,388 @@
+// SPDX-FileCopyrightText: 2026 Hitesh Soliwal and Contributors to the Synexia Project
+// SPDX-License-Identifier: Apache-2.0
+package org.eclipse.core.internal.jobs;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+import java.util.function.LongSupplier;
+import java.util.function.Predicate;
+import org.eclipse.core.runtime.AssertionFailedException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.ISchedulingRule;
+import org.junit.jupiter.api.Test;
+
+/** Frozen observations against the actual unmodified Eclipse queue and jobs. */
+public class JobQueueContractTest {
+    private final List<String> events = new ArrayList<>();
+
+    private final class Entry extends InternalJob {
+        final String id;
+        LongSupplier stamps;
+        Runnable stampEffect = () -> { };
+        Runnable ruleEffect = () -> { };
+        Runnable textEffect = () -> { };
+        Entry(String id, long start) { super(id); this.id = id; setStartTime(start); }
+        @Override long getWaitQueueStamp() {
+            events.add(id + ".stamp");
+            stampEffect.run();
+            return stamps == null ? super.getWaitQueueStamp() : stamps.getAsLong();
+        }
+        @Override protected ISchedulingRule getRule() {
+            events.add(id + ".rule"); ruleEffect.run(); return super.getRule();
+        }
+        @Override protected IStatus run(IProgressMonitor monitor) { return Status.OK_STATUS; }
+        @Override public String toString() { events.add(id + ".text"); textEffect.run(); return id; }
+        // Deliberately equal values: the queue must preserve object identity.
+        @Override public boolean equals(Object other) { return other instanceof JobQueueContractTest.Entry; }
+        @Override public int hashCode() { return 7; }
+    }
+
+    private final class Rule implements ISchedulingRule {
+        final String id;
+        Predicate<ISchedulingRule> conflict = other -> false;
+        Rule(String id) { this.id = id; }
+        @Override public boolean contains(ISchedulingRule other) { return this == other; }
+        @Override public boolean isConflicting(ISchedulingRule other) {
+            events.add(id + ".conflict(" + (other instanceof Rule rule ? rule.id : "validation") + ")");
+            return this == other || conflict.test(other);
+        }
+    }
+
+    private Entry entry(String name, long start) { return new Entry(name, start); }
+    private Rule rule(Entry entry) {
+        Rule rule = new Rule(entry.id); entry.setRule(rule); return rule;
+    }
+    private static List<InternalJob> drain(JobQueue queue) {
+        List<InternalJob> result = new ArrayList<>();
+        while (!queue.isEmpty()) {
+            assertTrue(result.size() < 2048, "bounded drain");
+            InternalJob peek = queue.peek();
+            InternalJob value = queue.dequeue();
+            assertSame(peek, value);
+            assertNull(value.next()); assertNull(value.previous());
+            result.add(value);
+        }
+        assertNull(queue.peek()); assertNull(queue.dequeue());
+        return result;
+    }
+    private static void identities(List<? extends InternalJob> actual, InternalJob... expected) {
+        assertEquals(expected.length, actual.size());
+        for (int i = 0; i < expected.length; i++) assertSame(expected[i], actual.get(i), "identity at " + i);
+    }
+
+    @Test void originalPublicProtectedSurfaceAndThreeInstanceFields() throws Exception {
+        assertTrue(Modifier.isPublic(JobQueue.class.getModifiers()));
+        assertTrue(Modifier.isFinal(JobQueue.class.getModifiers()));
+        assertSame(Object.class, JobQueue.class.getSuperclass());
+        assertArrayEquals(new Class<?>[] { Iterable.class }, JobQueue.class.getInterfaces());
+        assertEquals(3, JobQueue.class.getDeclaredFields().length);
+        var dummy = JobQueue.class.getDeclaredField("dummy");
+        assertEquals(Modifier.PROTECTED | Modifier.FINAL, dummy.getModifiers());
+        assertSame(InternalJob.class, dummy.getType());
+        for (String name : List.of("allowConflictOvertaking", "allowPriorityOvertaking")) {
+            var field = JobQueue.class.getDeclaredField(name);
+            assertEquals(Modifier.PRIVATE | Modifier.FINAL, field.getModifiers());
+            assertSame(boolean.class, field.getType());
+        }
+        assertEquals(2, JobQueue.class.getConstructors().length);
+        JobQueue.class.getConstructor(boolean.class);
+        JobQueue.class.getConstructor(boolean.class, boolean.class);
+    }
+
+    @Test void emptyHeadAndConstructors() throws Exception {
+        for (boolean conflicts : List.of(false, true)) for (boolean priorities : List.of(false, true)) {
+            JobQueue queue = new JobQueue(conflicts, priorities);
+            assertNotNull(queue.dummy); assertSame(queue.dummy, queue.dummy.next());
+            assertSame(queue.dummy, queue.dummy.previous());
+            assertEquals("Queue-Head", queue.dummy.getName());
+            assertSame(Status.OK_STATUS, queue.dummy.run(null));
+            assertTrue(queue.isEmpty()); assertNull(queue.peek()); assertNull(queue.dequeue());
+            assertEquals("[]", queue.toString());
+        }
+        for (boolean conflicts : List.of(false, true)) {
+            var field = JobQueue.class.getDeclaredField("allowPriorityOvertaking"); field.setAccessible(true);
+            assertTrue(field.getBoolean(new JobQueue(conflicts)));
+        }
+    }
+
+    @Test void threeManagerModesAndFourthCombinationPreserveOrdering() {
+        for (boolean conflicts : List.of(false, true)) for (boolean priorities : List.of(false, true)) {
+            JobQueue queue = new JobQueue(conflicts, priorities);
+            Entry a = entry("a", 30), b = entry("b", 10), c = entry("c", 20);
+            queue.enqueue(a); queue.enqueue(b); queue.enqueue(c);
+            identities(drain(queue), priorities ? new Entry[] { b, c, a } : new Entry[] { c, b, a });
+        }
+    }
+
+    @Test void equalPriorityIsStableWithDistinctButEqualObjects() {
+        for (boolean conflicts : List.of(false, true)) {
+            JobQueue queue = new JobQueue(conflicts);
+            Entry a = entry("a", 10), b = entry("b", 10), c = entry("c", 10);
+            assertEquals(a, b); assertNotSame(a, b);
+            queue.enqueue(a); queue.enqueue(b); queue.enqueue(c);
+            identities(drain(queue), a, b, c);
+        }
+    }
+
+    @Test void randomPriorityPermutationsAgreeWithStableTimeOrdering() {
+        for (int seed = 0; seed < 48; seed++) {
+            Random random = new Random(seed);
+            JobQueue queue = new JobQueue(true);
+            List<Entry> insertion = new ArrayList<>();
+            for (int i = 0; i < 64; i++) {
+                Entry entry = entry("s" + seed + "/" + i, random.nextInt(9));
+                insertion.add(entry); queue.enqueue(entry);
+            }
+            List<Entry> expected = new ArrayList<>(insertion);
+            expected.sort(java.util.Comparator.comparingLong(InternalJob::getStartTime));
+            identities(drain(queue), expected.toArray(InternalJob[]::new));
+        }
+    }
+
+    @Test void conflictCallbackReceiverIsExistingRuleAndOccursBeforeLinking() {
+        JobQueue queue = new JobQueue(false);
+        Entry old = entry("old", 20), fresh = entry("new", 10);
+        Rule oldRule = rule(old); rule(fresh);
+        oldRule.conflict = other -> {
+            assertNull(fresh.next()); assertNull(fresh.previous()); assertSame(old, queue.peek()); return true;
+        };
+        queue.enqueue(old); events.clear(); queue.enqueue(fresh);
+        assertEquals(List.of("new.stamp", "old.rule", "old.conflict(new)"), events);
+        identities(drain(queue), old, fresh);
+    }
+
+    @Test void priorityStopDoesNotCallRules() {
+        JobQueue queue = new JobQueue(false);
+        Entry old = entry("old", 10), fresh = entry("new", 20);
+        rule(old); rule(fresh); queue.enqueue(old); events.clear(); queue.enqueue(fresh);
+        assertEquals(List.of("new.stamp"), events);
+        identities(drain(queue), old, fresh);
+    }
+
+    @Test void allowConflictOvertakingSkipsBothRuleLookupAndConflictCall() {
+        for (boolean priorities : List.of(false, true)) {
+            JobQueue queue = new JobQueue(true, priorities);
+            Entry old = entry("old", 20), fresh = entry("new", 10);
+            Rule oldRule = rule(old); rule(fresh); oldRule.conflict = other -> { fail("conflict callback bypass"); return true; };
+            queue.enqueue(old); events.clear(); queue.enqueue(fresh);
+            assertEquals(List.of("new.stamp"), events);
+            identities(drain(queue), fresh, old);
+        }
+    }
+
+    @Test void noPriorityOvertakingModeStillHonorsConflictBarrier() {
+        JobQueue queue = new JobQueue(false, false);
+        Entry old = entry("old", 10), fresh = entry("new", 30);
+        Rule oldRule = rule(old); rule(fresh); oldRule.conflict = other -> true;
+        queue.enqueue(old); events.clear(); queue.enqueue(fresh);
+        assertEquals(List.of("new.stamp", "old.rule", "old.conflict(new)"), events);
+        identities(drain(queue), old, fresh);
+    }
+
+    @Test void positiveEarlierWaitStampBypassesPriorityAndConflictInEveryMode() {
+        for (boolean conflicts : List.of(false, true)) for (boolean priorities : List.of(false, true)) {
+            JobQueue queue = new JobQueue(conflicts, priorities);
+            Entry old = entry("old", 10), fresh = entry("new", 30);
+            old.setWaitQueueStamp(20); fresh.setWaitQueueStamp(10);
+            Rule oldRule = rule(old); rule(fresh); oldRule.conflict = other -> { fail("stamp bypass"); return true; };
+            queue.enqueue(old); events.clear(); queue.enqueue(fresh);
+            assertEquals(List.of("new.stamp", "new.stamp", "old.stamp"), events);
+            identities(drain(queue), fresh, old);
+        }
+    }
+
+    @Test void zeroAndNegativeWaitStampsReadOnceAndDoNotReadExistingStamp() {
+        for (long stamp : new long[] { -1, 0, Long.MIN_VALUE }) {
+            JobQueue queue = new JobQueue(false);
+            Entry old = entry("old", 10), fresh = entry("new", 30);
+            fresh.setWaitQueueStamp(stamp); old.setWaitQueueStamp(Long.MAX_VALUE);
+            queue.enqueue(old); events.clear(); queue.enqueue(fresh);
+            assertEquals(List.of("new.stamp"), events);
+            identities(drain(queue), old, fresh);
+        }
+    }
+
+    @Test void equalAndLaterPositiveWaitStampsFallThroughToPriority() {
+        for (long stamp : new long[] { 20, 21, Long.MAX_VALUE }) {
+            JobQueue queue = new JobQueue(false);
+            Entry old = entry("old", 10), fresh = entry("new", 30);
+            old.setWaitQueueStamp(20); fresh.setWaitQueueStamp(stamp);
+            queue.enqueue(old); events.clear(); queue.enqueue(fresh);
+            assertEquals(List.of("new.stamp", "new.stamp", "old.stamp"), events);
+            identities(drain(queue), old, fresh);
+        }
+    }
+
+    @Test void waitStampReadsRemainLiveRatherThanCached() {
+        JobQueue queue = new JobQueue(false);
+        Entry old = entry("old", 10), fresh = entry("new", 30);
+        old.setWaitQueueStamp(10);
+        var stamps = new java.util.ArrayDeque<Long>(List.of(1L, 20L)); fresh.stamps = stamps::remove;
+        queue.enqueue(old); events.clear(); queue.enqueue(fresh);
+        assertEquals(List.of("new.stamp", "new.stamp", "old.stamp"), events); assertTrue(stamps.isEmpty());
+        identities(drain(queue), old, fresh);
+    }
+
+    @Test void priorityIsReadAfterLiveWaitStampSideEffect() {
+        JobQueue queue = new JobQueue(false);
+        Entry old = entry("old", 20), fresh = entry("new", 10);
+        rule(old); rule(fresh); fresh.stampEffect = () -> old.setStartTime(0);
+        queue.enqueue(old); events.clear(); queue.enqueue(fresh);
+        assertEquals(List.of("new.stamp"), events);
+        identities(drain(queue), old, fresh);
+    }
+
+    @Test void conflictAndRuleExceptionsPropagateWithoutPartialInsertion() {
+        for (boolean fromRuleLookup : List.of(false, true)) {
+            JobQueue queue = new JobQueue(false);
+            Entry old = entry("old", 20), fresh = entry("new", 10);
+            Rule oldRule = rule(old); rule(fresh);
+            IllegalStateException failure = new IllegalStateException("rule refusal");
+            if (fromRuleLookup) old.ruleEffect = () -> { throw failure; };
+            else oldRule.conflict = other -> { throw failure; };
+            queue.enqueue(old); events.clear();
+            assertSame(failure, assertThrows(IllegalStateException.class, () -> queue.enqueue(fresh)));
+            assertNull(fresh.next()); assertNull(fresh.previous()); assertSame(old, queue.peek());
+            assertSame(old, queue.dequeue()); assertTrue(queue.isEmpty());
+        }
+    }
+
+    @Test void stampExceptionPropagatesBeforePriorityAndRules() {
+        JobQueue queue = new JobQueue(false);
+        Entry old = entry("old", 20), fresh = entry("new", 10);
+        RuntimeException failure = new RuntimeException("stamp refusal"); fresh.stampEffect = () -> { throw failure; };
+        queue.enqueue(old); events.clear();
+        assertSame(failure, assertThrows(RuntimeException.class, () -> queue.enqueue(fresh)));
+        assertEquals(List.of("new.stamp"), events); assertNull(fresh.next()); assertNull(fresh.previous());
+        identities(drain(queue), old);
+    }
+
+    @Test void callbackClearIsObservedByTheRestOfTheSameInsertion() {
+        JobQueue queue = new JobQueue(false);
+        Entry old = entry("old", 20), fresh = entry("new", 10);
+        Rule oldRule = rule(old); rule(fresh); oldRule.conflict = other -> { queue.clear(); return false; };
+        queue.enqueue(old); events.clear(); queue.enqueue(fresh);
+        assertEquals(List.of("new.stamp", "old.rule", "old.conflict(new)"), events);
+        assertSame(queue.dummy, old.next()); assertSame(queue.dummy, old.previous());
+        identities(drain(queue), fresh);
+    }
+
+    @Test void enqueueRejectsNullAndBothKindsOfOccupiedLinksBeforeCallbacks() {
+        JobQueue queue = new JobQueue(false);
+        assertThrows(NullPointerException.class, () -> queue.enqueue(null));
+        for (boolean nextLink : List.of(false, true)) {
+            Entry bad = entry("bad", 0);
+            if (nextLink) bad.setNext(queue.dummy); else bad.setPrevious(queue.dummy);
+            events.clear(); assertThrows(AssertionFailedException.class, () -> queue.enqueue(bad));
+            assertTrue(events.isEmpty()); assertTrue(queue.isEmpty());
+        }
+        Entry good = entry("good", 0); queue.enqueue(good); events.clear();
+        assertThrows(AssertionFailedException.class, () -> queue.enqueue(good)); assertTrue(events.isEmpty());
+        identities(drain(queue), good);
+    }
+
+    @Test void removeUsesTheEntryLinksEvenWhenItBelongsToAnotherQueue() {
+        JobQueue first = new JobQueue(false), second = new JobQueue(false);
+        Entry a = entry("a", 10), b = entry("b", 20), c = entry("c", 30);
+        first.enqueue(a); first.enqueue(b); first.enqueue(c);
+        second.remove(b); assertNull(b.next()); assertNull(b.previous());
+        assertTrue(second.isEmpty()); identities(drain(first), a, c);
+        second.remove(b); assertNull(b.next()); assertNull(b.previous());
+        assertThrows(NullPointerException.class, () -> second.remove(null));
+    }
+
+    @Test void clearDetachesOnlyHeadAndRetainsOldEntryLinks() {
+        JobQueue queue = new JobQueue(false);
+        Entry a = entry("a", 10), b = entry("b", 20);
+        queue.enqueue(a); queue.enqueue(b);
+        InternalJob an = a.next(), ap = a.previous(), bn = b.next(), bp = b.previous();
+        queue.clear(); assertTrue(queue.isEmpty()); assertSame(queue.dummy, queue.dummy.next());
+        assertSame(queue.dummy, queue.dummy.previous());
+        assertSame(an, a.next()); assertSame(ap, a.previous()); assertSame(bn, b.next()); assertSame(bp, b.previous());
+        assertThrows(AssertionFailedException.class, () -> queue.enqueue(a));
+        queue.clear(); assertTrue(queue.isEmpty());
+    }
+
+    @Test void resortRemovesAndReinsertsAndAcceptsDetachedEntry() {
+        JobQueue queue = new JobQueue(false);
+        Entry a = entry("a", 10), b = entry("b", 20), c = entry("c", 30);
+        queue.enqueue(a); queue.enqueue(b); queue.enqueue(c); c.setStartTime(0); queue.resort(c);
+        identities(drain(queue), c, a, b);
+        queue.resort(b); identities(drain(queue), b);
+        assertThrows(NullPointerException.class, () -> queue.resort(null));
+    }
+
+    @Test void resortFailureLeavesEntryRemovedRatherThanRollingBack() {
+        JobQueue queue = new JobQueue(false);
+        Entry a = entry("a", 10), b = entry("b", 20);
+        queue.enqueue(a); queue.enqueue(b);
+        RuntimeException failure = new RuntimeException("resort stamp"); b.stampEffect = () -> { throw failure; };
+        assertSame(failure, assertThrows(RuntimeException.class, () -> queue.resort(b)));
+        assertNull(b.next()); assertNull(b.previous()); identities(drain(queue), a);
+    }
+
+    @Test void iteratorHasNextAdvancesAndNextOnlyReturnsCurrentPointer() {
+        JobQueue queue = new JobQueue(false);
+        Entry a = entry("a", 10), b = entry("b", 20), c = entry("c", 30);
+        queue.enqueue(a); queue.enqueue(b); queue.enqueue(c);
+        Iterator<InternalJob> iterator = queue.iterator();
+        assertSame(queue.dummy, iterator.next());
+        assertTrue(iterator.hasNext()); assertSame(a, iterator.next()); assertSame(a, iterator.next());
+        assertTrue(iterator.hasNext()); assertTrue(iterator.hasNext()); assertSame(c, iterator.next());
+        assertFalse(iterator.hasNext()); assertNull(iterator.next());
+        assertThrows(NullPointerException.class, iterator::hasNext);
+        identities(drain(queue), a, b, c);
+    }
+
+    @Test void emptyIteratorAndRemoveExceptionsArePreserved() {
+        JobQueue queue = new JobQueue(false); Iterator<InternalJob> iterator = queue.iterator();
+        assertSame(queue.dummy, iterator.next()); assertThrows(UnsupportedOperationException.class, iterator::remove);
+        assertFalse(iterator.hasNext()); assertNull(iterator.next());
+        assertThrows(UnsupportedOperationException.class, iterator::remove);
+        assertThrows(NullPointerException.class, iterator::hasNext);
+    }
+
+    @Test void iteratorsRemainLiveAcrossQueueChanges() {
+        JobQueue queue = new JobQueue(false);
+        Entry a = entry("a", 10), b = entry("b", 20), c = entry("c", 30);
+        queue.enqueue(a); queue.enqueue(b);
+        Iterator<InternalJob> first = queue.iterator(), second = queue.iterator();
+        assertTrue(first.hasNext()); assertSame(a, first.next()); queue.enqueue(c);
+        List<InternalJob> rest = new ArrayList<>(); first.forEachRemaining(rest::add); identities(rest, b, c);
+        queue.clear(); assertFalse(second.hasNext());
+        assertThrows(NullPointerException.class, first::hasNext);
+    }
+
+    @Test void removingIteratorCurrentEntryRetainsTheOriginalNullTerminationOddity() {
+        JobQueue queue = new JobQueue(false);
+        Entry a = entry("a", 10), b = entry("b", 20); queue.enqueue(a); queue.enqueue(b);
+        Iterator<InternalJob> iterator = queue.iterator(); assertTrue(iterator.hasNext()); assertSame(a, iterator.next());
+        queue.remove(a); assertFalse(iterator.hasNext()); assertNull(iterator.next());
+        assertThrows(NullPointerException.class, iterator::hasNext); identities(drain(queue), b);
+    }
+
+    @Test void toStringCollectsIdentitySnapshotBeforeElementTextEffects() {
+        JobQueue queue = new JobQueue(false);
+        Entry a = entry("a", 10), b = entry("b", 20); queue.enqueue(a); queue.enqueue(b);
+        a.textEffect = () -> queue.remove(b); events.clear();
+        assertEquals("[a, b]", queue.toString()); assertEquals(List.of("a.text", "b.text"), events);
+        identities(drain(queue), a);
+    }
+
+    @Test void iterableDefaultsKeepQueueOrderAndNullConsumerFailure() {
+        JobQueue queue = new JobQueue(false);
+        Entry a = entry("a", 10), b = entry("b", 20); queue.enqueue(a); queue.enqueue(b);
+        List<InternalJob> list = new ArrayList<>(); queue.forEach(list::add); identities(list, a, b);
+        list.clear(); queue.spliterator().forEachRemaining(list::add); identities(list, a, b);
+        assertThrows(NullPointerException.class, () -> queue.forEach(null));
+        assertThrows(NullPointerException.class, () -> queue.iterator().forEachRemaining(null));
+        identities(drain(queue), a, b);
+    }
+}

@@ -1,0 +1,133 @@
+/*******************************************************************************
+ * Copyright (c) 2003, 2025 IBM Corporation and others.
+ *
+ * This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License 2.0
+ * which accompanies this distribution, and is available at
+ * https://www.eclipse.org/legal/epl-2.0/
+ *
+ * SPDX-License-Identifier: EPL-2.0
+ *
+ * Contributors:
+ *     IBM - Initial API and implementation
+ *     Hitesh Soliwal - Stateless M3 owner extracted from JobQueue
+ *******************************************************************************/
+package org.eclipse.core.internal.jobs;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import org.eclipse.core.runtime.Assert;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+
+/**
+ * Stateless owner of the original Eclipse intrusive queue operations. The facade
+ * retains its head and modes; jobs retain their original links and live hooks.
+ */
+final class M3JobQueue {
+	private M3JobQueue() {
+	}
+
+	static IStatus headResult() {
+		return Status.OK_STATUS;
+	}
+
+	static void initializeHead(InternalJob dummy) {
+		dummy.setNext(dummy);
+		dummy.setPrevious(dummy);
+	}
+
+	static void clear(InternalJob dummy) {
+		dummy.setNext(dummy);
+		dummy.setPrevious(dummy);
+	}
+
+	static InternalJob dequeue(InternalJob dummy) {
+		InternalJob toRemove = dummy.previous();
+		if (toRemove == dummy) {
+			return null;
+		}
+		return toRemove.remove();
+	}
+
+	static void enqueue(InternalJob dummy, boolean allowConflictOvertaking,
+			boolean allowPriorityOvertaking, InternalJob newEntry) {
+		Assert.isTrue(newEntry.next() == null);
+		Assert.isTrue(newEntry.previous() == null);
+		InternalJob tail = dummy.next();
+		while (canOvertake(dummy, allowConflictOvertaking, allowPriorityOvertaking, newEntry, tail)) {
+			tail = tail.next();
+		}
+		final InternalJob tailPrevious = tail.previous();
+		newEntry.setNext(tail);
+		newEntry.setPrevious(tailPrevious);
+		tailPrevious.setNext(newEntry);
+		tail.setPrevious(newEntry);
+	}
+
+	private static boolean canOvertake(InternalJob dummy, boolean allowConflictOvertaking,
+			boolean allowPriorityOvertaking, InternalJob newEntry, InternalJob queueEntry) {
+		if (queueEntry == dummy) {
+			return false;
+		}
+		if (newEntry.getWaitQueueStamp() > 0 && newEntry.getWaitQueueStamp() < queueEntry.getWaitQueueStamp()) {
+			return true;
+		}
+		if (allowPriorityOvertaking && queueEntry.compareTo(newEntry) >= 0) {
+			return false;
+		}
+		return allowConflictOvertaking || !newEntry.isConflicting(queueEntry);
+	}
+
+	static void remove(InternalJob toRemove) {
+		toRemove.remove();
+	}
+
+	static void resort(InternalJob dummy, boolean allowConflictOvertaking,
+			boolean allowPriorityOvertaking, InternalJob entry) {
+		remove(entry);
+		enqueue(dummy, allowConflictOvertaking, allowPriorityOvertaking, entry);
+	}
+
+	static boolean isEmpty(InternalJob dummy) {
+		return dummy.next() == dummy;
+	}
+
+	static InternalJob peek(InternalJob dummy) {
+		return dummy.previous() == dummy ? null : dummy.previous();
+	}
+
+	static Iterator<InternalJob> iterator(JobQueue queue) {
+		// Retain the same facade reachability and advancing hasNext semantics.
+		return new Iterator<>() {
+			InternalJob pointer = queue.dummy;
+
+			@Override
+			public boolean hasNext() {
+				if (pointer.previous() == queue.dummy) {
+					pointer = null;
+				} else {
+					pointer = pointer.previous();
+				}
+				return pointer != null;
+			}
+
+			@Override
+			public InternalJob next() {
+				return pointer;
+			}
+
+			@Override
+			public void remove() {
+				throw new UnsupportedOperationException();
+			}
+		};
+	}
+
+	static String toString(JobQueue queue) {
+		List<InternalJob> all = new ArrayList<>();
+		iterator(queue).forEachRemaining(all::add);
+		return all.toString();
+	}
+}

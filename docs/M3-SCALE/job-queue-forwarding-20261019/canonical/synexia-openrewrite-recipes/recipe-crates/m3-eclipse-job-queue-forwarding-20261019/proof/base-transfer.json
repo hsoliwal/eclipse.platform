@@ -1,0 +1,17 @@
+{
+  "schema": "M3_JOB_QUEUE_BASE_TRANSFER_V1",
+  "repository": "hsoliwal/eclipse.platform",
+  "base": "52f3d67e43402c5a65207109c2b37b68b5bbd74e",
+  "head": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+  "status": "ahead",
+  "totalCommits": 1,
+  "changedFiles": [
+    {
+      "path": "runtime/bundles/org.eclipse.core.jobs/META-INF/MANIFEST.MF",
+      "status": "modified",
+      "gitBlob": "7c47d72409e23e801d73edca70427ba0269e7289",
+      "patch": "@@ -2,7 +2,7 @@ Manifest-Version: 1.0\n Bundle-ManifestVersion: 2\n Bundle-Name: %pluginName\n Bundle-SymbolicName: org.eclipse.core.jobs; singleton:=true\n-Bundle-Version: 3.15.900.qualifier\n+Bundle-Version: 3.15.901.qualifier\n Bundle-Vendor: %providerName\n Bundle-Localization: plugin\n Export-Package: org.eclipse.core.internal.jobs;x-friends:=\"org.eclipse.core.tests.runtime.jobs\","
+    }
+  ],
+  "authority": "https://api.github.com/repos/hsoliwal/eclipse.platform/compare/52f3d67e43402c5a65207109c2b37b68b5bbd74e...c962a6fa6c9e0845714d14709ec19f023d8c2731"
+}

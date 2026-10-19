@@ -1,0 +1,6 @@
+category	source	revision_or_blob	fit	decision
+intrusive Jobs priority queue	eclipse.platform/runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/JobQueue.java	0a4c0940b5cdfe1b3a586895ad59b8ae1695fe8a	Exact callbacks, identity, links, iterator and modes	ADMITTED semantic donor
+class-backed Java snapshot recipe	com.synexia/M3HashPinnedJavaSnapshotRecipe.java	3bdeeaea9a212fe0c7d1f544510f87c4cd49eb40	Existing pinned Java emitter and refusal/fixed-point owner	REUSED UNCHANGED
+M3 exact-score priority frontier	synexia-primitives/LongLazyPriorityFrontier.java	63b800324034f0fcb626e7d6e62a2c1cb23ba064	Stable exact scores and IDs; no arbitrary live Jobs callbacks	EXISTING but not interchangeable for this contract
+M3 bulk provider scheduler	synexia-tornadovm-m3/BulkScheduler.java	99884e7a88ac723d2db0692bbc8efd4760832973	Same-work provider selection; not JobManager intrusive state	EXISTING but outside this receiver contract
+M3 semaphore primitive queue	synexia-primitives/PrimitiveSemaphoreMpmcQueue.java	e3df63561821d8c0f773426e0515175d18adce89	Primitive bounded MPMC queue with two semaphores	EXISTING but no compatible JobQueue API/effects

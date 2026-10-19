@@ -1,0 +1,29 @@
+{
+  "schema": "M3_JOB_QUEUE_CATEGORY_DONOR_INVENTORY_V1",
+  "canonicalRevision": "6291b100548f7850279f49e693621d6460be25f9",
+  "scope": "bounded actual existing Java owner inventory; not an exhaustive absence claim",
+  "existingSources": [
+    {
+      "path": "synexia-tornadovm-m3/src/main/java/com/synexia/tornadom3/BulkScheduler.java",
+      "gitBlob": "99884e7a88ac723d2db0692bbc8efd4760832973",
+      "url": "https://github.com/hsoliwal/com.synexia/blob/6291b100548f7850279f49e693621d6460be25f9/synexia-tornadovm-m3/src/main/java/com/synexia/tornadom3/BulkScheduler.java",
+      "sha256": "2847c5645d03e2898c7646a9a089810d6c8c634ff75500aaab52351c0162bf57",
+      "bytes": 3857
+    },
+    {
+      "path": "synexia-primitives/src/main/java/com/synexia/primitives/LongLazyPriorityFrontier.java",
+      "gitBlob": "63b800324034f0fcb626e7d6e62a2c1cb23ba064",
+      "url": "https://github.com/hsoliwal/com.synexia/blob/6291b100548f7850279f49e693621d6460be25f9/synexia-primitives/src/main/java/com/synexia/primitives/LongLazyPriorityFrontier.java",
+      "sha256": "3565836b77baab512f882fb88007078837e0fa6e4c0d633272f1bdef39a8d0a2",
+      "bytes": 9247
+    },
+    {
+      "path": "synexia-primitives/src/main/java/com/synexia/primitives/PrimitiveSemaphoreMpmcQueue.java",
+      "gitBlob": "e3df63561821d8c0f773426e0515175d18adce89",
+      "url": "https://github.com/hsoliwal/com.synexia/blob/6291b100548f7850279f49e693621d6460be25f9/synexia-primitives/src/main/java/com/synexia/primitives/PrimitiveSemaphoreMpmcQueue.java",
+      "sha256": "1f607fcbfc4093356bb2896f438f366292c81c913ac8328c4a2379edacf2dd31",
+      "bytes": 3954
+    }
+  ],
+  "semanticDonor": "Exact c962 Eclipse JobQueue, blob 0a4c0940b5cdfe1b3a586895ad59b8ae1695fe8a"
+}

@@ -1,0 +1,144 @@
+Compiled from "JobQueue.java"
+public final class org.eclipse.core.internal.jobs.JobQueue implements java.lang.Iterable<org.eclipse.core.internal.jobs.InternalJob> {
+  protected final org.eclipse.core.internal.jobs.InternalJob dummy;
+    descriptor: Lorg/eclipse/core/internal/jobs/InternalJob;
+
+  private final boolean allowConflictOvertaking;
+    descriptor: Z
+
+  private final boolean allowPriorityOvertaking;
+    descriptor: Z
+
+  public org.eclipse.core.internal.jobs.JobQueue(boolean);
+    descriptor: (Z)V
+    Code:
+       0: aload_0
+       1: iload_1
+       2: iconst_1
+       3: invokespecial #1                  // Method "<init>":(ZZ)V
+       6: return
+
+  public org.eclipse.core.internal.jobs.JobQueue(boolean, boolean);
+    descriptor: (ZZ)V
+    Code:
+       0: aload_0
+       1: invokespecial #7                  // Method java/lang/Object."<init>":()V
+       4: aload_0
+       5: iload_2
+       6: putfield      #12                 // Field allowPriorityOvertaking:Z
+       9: aload_0
+      10: new           #16                 // class org/eclipse/core/internal/jobs/JobQueue$1
+      13: dup
+      14: aload_0
+      15: ldc           #18                 // String Queue-Head
+      17: invokespecial #20                 // Method org/eclipse/core/internal/jobs/JobQueue$1."<init>":(Lorg/eclipse/core/internal/jobs/JobQueue;Ljava/lang/String;)V
+      20: putfield      #23                 // Field dummy:Lorg/eclipse/core/internal/jobs/InternalJob;
+      23: aload_0
+      24: getfield      #23                 // Field dummy:Lorg/eclipse/core/internal/jobs/InternalJob;
+      27: invokestatic  #27                 // Method org/eclipse/core/internal/jobs/M3JobQueue.initializeHead:(Lorg/eclipse/core/internal/jobs/InternalJob;)V
+      30: aload_0
+      31: iload_1
+      32: putfield      #33                 // Field allowConflictOvertaking:Z
+      35: return
+
+  public void clear();
+    descriptor: ()V
+    Code:
+       0: aload_0
+       1: getfield      #23                 // Field dummy:Lorg/eclipse/core/internal/jobs/InternalJob;
+       4: invokestatic  #36                 // Method org/eclipse/core/internal/jobs/M3JobQueue.clear:(Lorg/eclipse/core/internal/jobs/InternalJob;)V
+       7: return
+
+  public org.eclipse.core.internal.jobs.InternalJob dequeue();
+    descriptor: ()Lorg/eclipse/core/internal/jobs/InternalJob;
+    Code:
+       0: aload_0
+       1: getfield      #23                 // Field dummy:Lorg/eclipse/core/internal/jobs/InternalJob;
+       4: invokestatic  #39                 // Method org/eclipse/core/internal/jobs/M3JobQueue.dequeue:(Lorg/eclipse/core/internal/jobs/InternalJob;)Lorg/eclipse/core/internal/jobs/InternalJob;
+       7: areturn
+
+  public void enqueue(org.eclipse.core.internal.jobs.InternalJob);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;)V
+    Code:
+       0: aload_0
+       1: getfield      #23                 // Field dummy:Lorg/eclipse/core/internal/jobs/InternalJob;
+       4: aload_0
+       5: getfield      #33                 // Field allowConflictOvertaking:Z
+       8: aload_0
+       9: getfield      #12                 // Field allowPriorityOvertaking:Z
+      12: aload_1
+      13: invokestatic  #43                 // Method org/eclipse/core/internal/jobs/M3JobQueue.enqueue:(Lorg/eclipse/core/internal/jobs/InternalJob;ZZLorg/eclipse/core/internal/jobs/InternalJob;)V
+      16: return
+
+  public void remove(org.eclipse.core.internal.jobs.InternalJob);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;)V
+    Code:
+       0: aload_1
+       1: invokestatic  #47                 // Method org/eclipse/core/internal/jobs/M3JobQueue.remove:(Lorg/eclipse/core/internal/jobs/InternalJob;)V
+       4: return
+
+  public void resort(org.eclipse.core.internal.jobs.InternalJob);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;)V
+    Code:
+       0: aload_0
+       1: getfield      #23                 // Field dummy:Lorg/eclipse/core/internal/jobs/InternalJob;
+       4: aload_0
+       5: getfield      #33                 // Field allowConflictOvertaking:Z
+       8: aload_0
+       9: getfield      #12                 // Field allowPriorityOvertaking:Z
+      12: aload_1
+      13: invokestatic  #50                 // Method org/eclipse/core/internal/jobs/M3JobQueue.resort:(Lorg/eclipse/core/internal/jobs/InternalJob;ZZLorg/eclipse/core/internal/jobs/InternalJob;)V
+      16: return
+
+  public boolean isEmpty();
+    descriptor: ()Z
+    Code:
+       0: aload_0
+       1: getfield      #23                 // Field dummy:Lorg/eclipse/core/internal/jobs/InternalJob;
+       4: invokestatic  #53                 // Method org/eclipse/core/internal/jobs/M3JobQueue.isEmpty:(Lorg/eclipse/core/internal/jobs/InternalJob;)Z
+       7: ireturn
+
+  public org.eclipse.core.internal.jobs.InternalJob peek();
+    descriptor: ()Lorg/eclipse/core/internal/jobs/InternalJob;
+    Code:
+       0: aload_0
+       1: getfield      #23                 // Field dummy:Lorg/eclipse/core/internal/jobs/InternalJob;
+       4: invokestatic  #57                 // Method org/eclipse/core/internal/jobs/M3JobQueue.peek:(Lorg/eclipse/core/internal/jobs/InternalJob;)Lorg/eclipse/core/internal/jobs/InternalJob;
+       7: areturn
+
+  public java.util.Iterator<org.eclipse.core.internal.jobs.InternalJob> iterator();
+    descriptor: ()Ljava/util/Iterator;
+    Code:
+       0: aload_0
+       1: invokestatic  #60                 // Method org/eclipse/core/internal/jobs/M3JobQueue.iterator:(Lorg/eclipse/core/internal/jobs/JobQueue;)Ljava/util/Iterator;
+       4: areturn
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+    Code:
+       0: aload_0
+       1: invokestatic  #64                 // Method org/eclipse/core/internal/jobs/M3JobQueue.toString:(Lorg/eclipse/core/internal/jobs/JobQueue;)Ljava/lang/String;
+       4: areturn
+}
+Compiled from "JobQueue.java"
+class org.eclipse.core.internal.jobs.JobQueue$1 extends org.eclipse.core.internal.jobs.InternalJob {
+  final org.eclipse.core.internal.jobs.JobQueue this$0;
+    descriptor: Lorg/eclipse/core/internal/jobs/JobQueue;
+
+  org.eclipse.core.internal.jobs.JobQueue$1(org.eclipse.core.internal.jobs.JobQueue, java.lang.String);
+    descriptor: (Lorg/eclipse/core/internal/jobs/JobQueue;Ljava/lang/String;)V
+    Code:
+       0: aload_0
+       1: aload_1
+       2: putfield      #1                  // Field this$0:Lorg/eclipse/core/internal/jobs/JobQueue;
+       5: aload_0
+       6: aload_2
+       7: invokespecial #7                  // Method org/eclipse/core/internal/jobs/InternalJob."<init>":(Ljava/lang/String;)V
+      10: return
+
+  public org.eclipse.core.runtime.IStatus run(org.eclipse.core.runtime.IProgressMonitor);
+    descriptor: (Lorg/eclipse/core/runtime/IProgressMonitor;)Lorg/eclipse/core/runtime/IStatus;
+    Code:
+       0: invokestatic  #13                 // Method org/eclipse/core/internal/jobs/M3JobQueue.headResult:()Lorg/eclipse/core/runtime/IStatus;
+       3: areturn
+}

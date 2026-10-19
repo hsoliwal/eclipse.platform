@@ -1,0 +1,17 @@
+{
+  "schema": "M3_JOB_QUEUE_GENUINE_EQUINOX_V1",
+  "command": [
+    "/tmp/eclipse-m3-20261019/toolchain/jdk21/bin/java",
+    "-cp",
+    "/tmp/eclipse-m3-20261019/toolchain/eclipse-deps/org.eclipse.osgi-3.24.300.jar:/tmp/eclipse-m3-20261019/job-queue-authoring/osgi/JobQueueEquinoxProof",
+    "JobQueueEquinoxProof",
+    "/tmp/eclipse-m3-20261019/job-queue-authoring/osgi/baseline-storage",
+    "/tmp/eclipse-m3-20261019/toolchain/eclipse-deps/org.eclipse.equinox.common-3.21.0.jar",
+    "/tmp/eclipse-m3-20261019/job-queue-authoring/osgi/baseline-jobs.jar",
+    "/tmp/eclipse-m3-20261019/job-queue-authoring/osgi/client.jar",
+    "false"
+  ],
+  "exitCode": 0,
+  "mode": "baseline",
+  "capturedUtc": "2026-10-19T04:50:50.036952+00:00"
+}

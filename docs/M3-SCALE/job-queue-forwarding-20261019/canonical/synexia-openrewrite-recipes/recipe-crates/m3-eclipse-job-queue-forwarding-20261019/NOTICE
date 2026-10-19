@@ -1,0 +1,47 @@
+M3 Eclipse JobQueue forwarding, 2026-10-19
+
+Original proof code, recipe metadata and documentation:
+Copyright (c) 2026 Hitesh Soliwal and Contributors to the Synexia Project.
+Licensed under Apache-2.0. See LICENSE-APACHE-2.0.
+
+The exact semantic donor and all unchanged Eclipse runtime test/support snapshots
+are from https://github.com/hsoliwal/eclipse.platform at
+c962a6fa6c9e0845714d14709ec19f023d8c2731. Those sources and their derived receiver
+outputs remain under EPL-2.0. See LICENSE-EPL-2.0 and the preserved notices in each
+file. The JobQueue donor's original notice is:
+
+Copyright (c) 2003, 2012 IBM Corporation and others.
+Contributors: IBM - Initial API and implementation.
+
+The complete original notice is retained byte-for-byte at the beginning of both
+final templates. A separate 2026 line attributes forwarding/extraction modifications.
+The first withheld templates contained an unsupported 2025 donor end year. Their
+exact bytes are preserved only in evidence/candidate-before-notice-correction as
+a historical counterexample; this NOTICE supplies the correct original lineage.
+Those historical files are not receiver outputs.
+
+The original full bundle compiler preferences and c962 manifest are unchanged
+Eclipse snapshots. All 13 actual upstream test/support files retain their own
+copyright and contributor notices; proof/upstream-source-pins.json maps each to
+its exact source path and Git blob. No proprietary algorithm is substituted or
+redistributed as a donor.
+
+M3HashPinnedJavaSnapshotRecipe, M3EditScope and M3ScopeInference remain the existing
+canonical Synexia owners; this crate references and compiles their pinned sources
+without modifying or duplicating them. The SDK test and Maven proof layout adapt
+the existing m3-eclipse-rules-forwarding-20261018 crate, and JobQueueEquinoxProof
+adapts that crate's JobsEquinoxProof. Their exact donor identities are recorded in
+SOURCE_PINS.json. This preserves one canonical recipe implementation.
+
+Compiler/JUnit/javap/Equinox logs and Git facts are recorded proof output. Copyright
+and licenses in diagnostic excerpts or upstream snippets remain with their owners;
+the first-party metadata designation does not relicense third-party material.
+Dependency acquisition records preserve genuine artifact identities and public
+origins. Temurin/OpenJDK, Maven, OpenRewrite, JUnit, Eclipse/Equinox, ECJ and AssertJ
+binaries are not included. See proof/inputs/dependency-jars.json and the original
+acquisition receipts for exact versions and checksums. No authentication material
+is part of the packet.
+
+No speedup, unrestricted semantic equivalence, full Tycho/PDE qualification,
+hosted CI pass or whole-Eclipse completion is asserted. The qualification scope
+and every preserved refusal are explicit in CONTRACT.md, README.md and evidence/.

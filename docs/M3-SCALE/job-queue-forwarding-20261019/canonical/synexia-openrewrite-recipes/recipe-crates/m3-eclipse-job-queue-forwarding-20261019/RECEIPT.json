@@ -1,0 +1,103 @@
+{
+  "schema": "M3_ECLIPSE_JOB_QUEUE_QUALIFICATION_V1",
+  "status": "QUALIFIED_BOUNDED_RECEIVER_CUT",
+  "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+  "targetRoot": "runtime",
+  "outputPins": [
+    {
+      "targetPath": "bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/JobQueue.java",
+      "beforeSha256": "96089bb406f2a3b9573c2a6a196c0806ecc564254b3ae1343bb0dac793e86d01",
+      "afterSha256": "b7e5e148c62e2e6f9574e27cd7ff418a1c98454199c0b955beb077a0a3e8b592",
+      "template": "JobQueue.java.txt",
+      "emittedGitBlob": "46e399693506b771d2d403285819966900bc5771",
+      "emittedBytes": 3364
+    },
+    {
+      "targetPath": "bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/M3JobQueue.java",
+      "beforeSha256": "ABSENT",
+      "afterSha256": "791329d5c9ffd7bff03e74efbf7986811270255621645dbea6f61cb1f0408a22",
+      "template": "M3JobQueue.java.txt",
+      "emittedGitBlob": "366ffd68b4e6313ab487e41dc17dd93f6dd595a1",
+      "emittedBytes": 3874
+    }
+  ],
+  "actualGates": {
+    "originalBaseline": {
+      "tests": 38,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "originalOwnerCounterexample": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 1,
+      "skipped": 0,
+      "expected": "ClassNotFoundException because M3JobQueue is absent"
+    },
+    "finalSDK": {
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "finalCandidate": {
+      "tests": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "javac": {
+      "baselineSources": 36,
+      "candidateSources": 37,
+      "release": 17,
+      "runtimeJdk": "Temurin 21.0.12.1+1",
+      "productionWarningsPerVariant": 8,
+      "unchangedUpstreamTestWarningsPerVariant": 1,
+      "exactWarningParity": true
+    },
+    "ecj": {
+      "baselineSources": 36,
+      "candidateSources": 37,
+      "errors": 0,
+      "warnings": 0,
+      "unchangedCompilerPreferences": true
+    },
+    "api": {
+      "identicalOriginalSurfaces": 47,
+      "unchangedOriginalClassFiles": 45,
+      "unchangedTestClassFiles": 52,
+      "productionClassMajorVersion": 61
+    },
+    "equinox": {
+      "baselineExit": 0,
+      "candidateExit": 0,
+      "sameBaselineCompiledClient": true,
+      "jobsVersion": "3.15.901.qualifier",
+      "frameworkVersion": "3.24.300.v20260721-1251"
+    }
+  },
+  "preservation": {
+    "cleanOriginalWorktrees": 13,
+    "unchangedSharedSdkOwners": 4,
+    "frozenCompositionVerifierUnchanged": true
+  },
+  "failureHistory": [
+    "evidence/baseline-initial-compiler-refusal",
+    "evidence/baseline-initial-rule-fixture-refusal",
+    "evidence/baseline-test-source-closure-refusal",
+    "evidence/baseline-owner-expected-red",
+    "evidence/notice-expected-red"
+  ],
+  "proseCorrection": "proof/contract-prose-amendment.json",
+  "independentReview": "evidence/independent-review.json",
+  "unexecutedOrOutOfScope": [
+    "full Platform Tycho/PDE reactor",
+    "hosted receiving CI",
+    "performance benchmark",
+    "OrderedLock forwarding",
+    "whole-Eclipse completion",
+    "additional end-to-end rerun of consolidated reproduction guide"
+  ],
+  "remoteMutations": false
+}

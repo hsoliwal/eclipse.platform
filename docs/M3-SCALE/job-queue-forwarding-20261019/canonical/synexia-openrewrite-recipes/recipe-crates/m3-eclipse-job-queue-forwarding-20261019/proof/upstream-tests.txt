@@ -1,0 +1,8 @@
+org.eclipse.core.tests.runtime.jobs.JobTest#testAsynchJobConflict
+org.eclipse.core.tests.runtime.jobs.JobTest#testRescheduleWaiting
+org.eclipse.core.tests.runtime.jobs.JobTest#testRescheduleSimple
+org.eclipse.core.tests.runtime.jobs.JobTest#testRescheduleDelay
+org.eclipse.core.tests.runtime.jobs.JobTest#testCancelAboutToSchedule
+org.eclipse.core.tests.runtime.jobs.JobTest#testCancelFromAboutToRun
+org.eclipse.core.tests.runtime.jobs.JobTest#testJoinWithTimeout
+org.eclipse.core.tests.runtime.jobs.JobTest#testSetRule

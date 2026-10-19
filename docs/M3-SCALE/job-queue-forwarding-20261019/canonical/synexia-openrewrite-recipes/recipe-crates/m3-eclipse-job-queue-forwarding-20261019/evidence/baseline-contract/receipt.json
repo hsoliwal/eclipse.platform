@@ -1,0 +1,13 @@
+{
+  "tests": 30,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "exitCode": 0,
+  "schema": "M3_JOB_QUEUE_REAL_BASELINE_V1",
+  "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+  "gate": "baseline-contract",
+  "testSourceSha256": "591f66e9ebffe0888afea2494e5f10a083d3a4d6c5c393f173927b95e04d6870",
+  "capturedUtc": "2026-10-19T04:34:28.023201+00:00",
+  "candidateTemplatesExist": false
+}

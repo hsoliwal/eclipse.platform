@@ -1,0 +1,132 @@
+[
+  {
+    "path": "proof/src/test/java/org/eclipse/core/tests/harness/FussyProgressMonitor.java",
+    "sourceRepository": "https://github.com/hsoliwal/eclipse.platform",
+    "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+    "sourcePath": "runtime/tests/org.eclipse.core.tests.harness/src/org/eclipse/core/tests/harness/FussyProgressMonitor.java",
+    "gitBlob": "d45eb00117313e07ef4138ab061950ea9731535b",
+    "sha256": "9aee0fdc36f13213fc11e0cf4ab5ae16d9fcfaf559041ec599dd87169a8d919f",
+    "license": "EPL-2.0",
+    "copiedFromReceiverHead": "52f3d67e43402c5a65207109c2b37b68b5bbd74e"
+  },
+  {
+    "path": "proof/src/test/java/org/eclipse/core/tests/harness/TestBarrier2.java",
+    "sourceRepository": "https://github.com/hsoliwal/eclipse.platform",
+    "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+    "sourcePath": "runtime/tests/org.eclipse.core.tests.harness/src/org/eclipse/core/tests/harness/TestBarrier2.java",
+    "gitBlob": "30fb4baa89d3693bdcbcb594e21d97ebca0c342f",
+    "sha256": "2f9a611e26662e1621879769b4020890df4117060affe1d41b2f7f3e71cf79a7",
+    "license": "EPL-2.0",
+    "copiedFromReceiverHead": "52f3d67e43402c5a65207109c2b37b68b5bbd74e"
+  },
+  {
+    "path": "proof/src/test/java/org/eclipse/core/tests/harness/TestJob.java",
+    "sourceRepository": "https://github.com/hsoliwal/eclipse.platform",
+    "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+    "sourcePath": "runtime/tests/org.eclipse.core.tests.harness/src/org/eclipse/core/tests/harness/TestJob.java",
+    "gitBlob": "6d6a08a6cc3d0c14c60dc7f7ca29497e6e30a9ce",
+    "sha256": "b25d39b3f9d3cd8d9254682ae1c05bec34efd688e1ba98fa01edcbe3eca24773",
+    "license": "EPL-2.0",
+    "copiedFromReceiverHead": "52f3d67e43402c5a65207109c2b37b68b5bbd74e"
+  },
+  {
+    "path": "proof/src/test/java/org/eclipse/core/tests/harness/TestProgressMonitor.java",
+    "sourceRepository": "https://github.com/hsoliwal/eclipse.platform",
+    "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+    "sourcePath": "runtime/tests/org.eclipse.core.tests.harness/src/org/eclipse/core/tests/harness/TestProgressMonitor.java",
+    "gitBlob": "5b719e983df7f77922756acc325ca29f77e6b8d5",
+    "sha256": "4f8aa81137db260cd4e20c2bb728a6757e043af209215b62f53b816c7e9fc9e7",
+    "license": "EPL-2.0",
+    "copiedFromReceiverHead": "52f3d67e43402c5a65207109c2b37b68b5bbd74e"
+  },
+  {
+    "path": "proof/src/test/java/org/eclipse/core/tests/runtime/jobs/AbstractJobTest.java",
+    "sourceRepository": "https://github.com/hsoliwal/eclipse.platform",
+    "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+    "sourcePath": "runtime/tests/org.eclipse.core.tests.runtime/src/org/eclipse/core/tests/runtime/jobs/AbstractJobTest.java",
+    "gitBlob": "13204ec3a7fb2a7e03332d8a4d9aadaf5cdfe403",
+    "sha256": "b740be8dd8b32f496d8894ff4c2ccd2c81d16edcd005e2486209bf3a6cb26f2e",
+    "license": "EPL-2.0",
+    "copiedFromReceiverHead": "52f3d67e43402c5a65207109c2b37b68b5bbd74e"
+  },
+  {
+    "path": "proof/src/test/java/org/eclipse/core/tests/runtime/jobs/AsynchExecThread.java",
+    "sourceRepository": "https://github.com/hsoliwal/eclipse.platform",
+    "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+    "sourcePath": "runtime/tests/org.eclipse.core.tests.runtime/src/org/eclipse/core/tests/runtime/jobs/AsynchExecThread.java",
+    "gitBlob": "19d21fd864604eef788f5812eaf9a7bcbdd05585",
+    "sha256": "650a5e4535bbafee69340a014e5f8155cd7966fd771600e37c5d46bada0f3d15",
+    "license": "EPL-2.0",
+    "copiedFromReceiverHead": "52f3d67e43402c5a65207109c2b37b68b5bbd74e"
+  },
+  {
+    "path": "proof/src/test/java/org/eclipse/core/tests/runtime/jobs/AsynchTestJob.java",
+    "sourceRepository": "https://github.com/hsoliwal/eclipse.platform",
+    "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+    "sourcePath": "runtime/tests/org.eclipse.core.tests.runtime/src/org/eclipse/core/tests/runtime/jobs/AsynchTestJob.java",
+    "gitBlob": "dd3e5852059ee30bed74d205b70ee642d0cbe6be",
+    "sha256": "8ad7d2741d59596bf2ebbd0553ca573f5b78b125b7d7ccb18b8bb6b1507b29a2",
+    "license": "EPL-2.0",
+    "copiedFromReceiverHead": "52f3d67e43402c5a65207109c2b37b68b5bbd74e"
+  },
+  {
+    "path": "proof/src/test/java/org/eclipse/core/tests/runtime/jobs/FussyProgressProvider.java",
+    "sourceRepository": "https://github.com/hsoliwal/eclipse.platform",
+    "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+    "sourcePath": "runtime/tests/org.eclipse.core.tests.runtime/src/org/eclipse/core/tests/runtime/jobs/FussyProgressProvider.java",
+    "gitBlob": "2229d4e393832c5ee5633639b5fb1b181b446e3d",
+    "sha256": "34d3efd915e9c274ba69947d63bcb68c68be28a5195aea9dcf0335a272c0fd40",
+    "license": "EPL-2.0",
+    "copiedFromReceiverHead": "52f3d67e43402c5a65207109c2b37b68b5bbd74e"
+  },
+  {
+    "path": "proof/src/test/java/org/eclipse/core/tests/runtime/jobs/IdentityRule.java",
+    "sourceRepository": "https://github.com/hsoliwal/eclipse.platform",
+    "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+    "sourcePath": "runtime/tests/org.eclipse.core.tests.runtime/src/org/eclipse/core/tests/runtime/jobs/IdentityRule.java",
+    "gitBlob": "6898cfec38caf67ac208ed7604b1a6c46baf7272",
+    "sha256": "d6228db5bdaa3bfd4b18a4730d73a75aea1be0b34a6a976f95b06e01ca0947e5",
+    "license": "EPL-2.0",
+    "copiedFromReceiverHead": "52f3d67e43402c5a65207109c2b37b68b5bbd74e"
+  },
+  {
+    "path": "proof/src/test/java/org/eclipse/core/tests/runtime/jobs/JobQueueTest.java",
+    "sourceRepository": "https://github.com/hsoliwal/eclipse.platform",
+    "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+    "sourcePath": "runtime/tests/org.eclipse.core.tests.runtime/src/org/eclipse/core/tests/runtime/jobs/JobQueueTest.java",
+    "gitBlob": "cc5477b270462d8890777832ee127736d775008e",
+    "sha256": "119d748ce5d45e3247bf1f0fdb4fc2ce1063e731c0d873068c431e24cf4e6525",
+    "license": "EPL-2.0",
+    "copiedFromReceiverHead": "52f3d67e43402c5a65207109c2b37b68b5bbd74e"
+  },
+  {
+    "path": "proof/src/test/java/org/eclipse/core/tests/runtime/jobs/JobTest.java",
+    "sourceRepository": "https://github.com/hsoliwal/eclipse.platform",
+    "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+    "sourcePath": "runtime/tests/org.eclipse.core.tests.runtime/src/org/eclipse/core/tests/runtime/jobs/JobTest.java",
+    "gitBlob": "c21946a4cea0713864e2a5ecb83cb7631372611a",
+    "sha256": "50e0986a9dd7512cbc615274d14f342df4789f023c40552a8ee6dc56cdb4cdf6",
+    "license": "EPL-2.0",
+    "copiedFromReceiverHead": "52f3d67e43402c5a65207109c2b37b68b5bbd74e"
+  },
+  {
+    "path": "proof/src/test/java/org/eclipse/core/tests/runtime/jobs/PathRule.java",
+    "sourceRepository": "https://github.com/hsoliwal/eclipse.platform",
+    "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+    "sourcePath": "runtime/tests/org.eclipse.core.tests.runtime/src/org/eclipse/core/tests/runtime/jobs/PathRule.java",
+    "gitBlob": "4403c445aae187746d5dd8413d6970e396e0a2de",
+    "sha256": "439c6c51c4c5f0142ea2732bd71fb5cf2e210633337abdcb572b172905da657f",
+    "license": "EPL-2.0",
+    "copiedFromReceiverHead": "52f3d67e43402c5a65207109c2b37b68b5bbd74e"
+  },
+  {
+    "path": "proof/src/test/java/org/eclipse/core/tests/runtime/jobs/TestLockListener.java",
+    "sourceRepository": "https://github.com/hsoliwal/eclipse.platform",
+    "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+    "sourcePath": "runtime/tests/org.eclipse.core.tests.runtime/src/org/eclipse/core/tests/runtime/jobs/TestLockListener.java",
+    "gitBlob": "2010740bc523b727c3ff7805e9977f553a976772",
+    "sha256": "8a1f9a8850aa50dce15225ea2bc19ac3fd0a5c224f38c81843e33276503dc538",
+    "license": "EPL-2.0",
+    "copiedFromReceiverHead": "52f3d67e43402c5a65207109c2b37b68b5bbd74e"
+  }
+]

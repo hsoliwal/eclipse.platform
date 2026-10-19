@@ -1,0 +1,11 @@
+{
+  "schema": "M3_JOB_QUEUE_PRE_NOTICE_CORRECTION_V1",
+  "runtimeTests": 39,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "exitCode": 0,
+  "status": "runtime-qualified but withheld for incorrect donor copyright year",
+  "reviewFinding": "authored templates changed original 2003, 2012 to unsupported 2003, 2025",
+  "correction": "restore complete exact original notice and add separate 2026 modification attribution"
+}

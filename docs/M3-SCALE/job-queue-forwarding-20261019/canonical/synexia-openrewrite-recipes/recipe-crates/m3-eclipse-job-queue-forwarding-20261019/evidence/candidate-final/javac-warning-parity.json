@@ -1,0 +1,19 @@
+{
+  "schema": "M3_JOB_QUEUE_JAVAC_WARNING_PARITY_V1",
+  "baselineCandidateExactNormalizedEquality": true,
+  "productionWarnings": 8,
+  "upstreamTestWarnings": 1,
+  "initialWerrorReportedOnly": 3,
+  "normalization": "Only the absolute bundle and crate roots are replaced by labels; severity, source, location and message remain exact.",
+  "warnings": [
+    "[WARNING] ${JOBS_BUNDLE}/src/org/eclipse/core/runtime/jobs/Job.java:[182,27] create(java.lang.String,org.eclipse.core.runtime.ICoreRunnable) in org.eclipse.core.runtime.jobs.Job is potentially ambiguous with create(java.lang.String,org.eclipse.core.runtime.jobs.IJobFunction) in org.eclipse.core.runtime.jobs.Job",
+    "[WARNING] ${JOBS_BUNDLE}/src/org/eclipse/core/runtime/jobs/Job.java:[230,27] createSystem(java.lang.String,org.eclipse.core.runtime.ICoreRunnable) in org.eclipse.core.runtime.jobs.Job is potentially ambiguous with createSystem(java.lang.String,org.eclipse.core.runtime.jobs.IJobFunction) in org.eclipse.core.runtime.jobs.Job",
+    "[WARNING] ${JOBS_BUNDLE}/src/org/eclipse/core/internal/jobs/JobManager.java:[447,25] possible fall-through into case",
+    "[WARNING] ${JOBS_BUNDLE}/src/org/eclipse/core/internal/jobs/JobManager.java:[490,25] possible fall-through into case",
+    "[WARNING] ${JOBS_BUNDLE}/src/org/eclipse/core/internal/jobs/JobManager.java:[511,25] possible fall-through into case",
+    "[WARNING] ${JOBS_BUNDLE}/src/org/eclipse/core/internal/jobs/ObjectMap.java:[107,48] unchecked conversion",
+    "[WARNING] ${JOBS_BUNDLE}/src/org/eclipse/core/internal/jobs/ObjectMap.java:[54,23] possible 'this' escape before subclass is fully initialized",
+    "[WARNING] ${JOBS_BUNDLE}/src/org/eclipse/core/internal/jobs/Worker.java:[35,43] possible 'this' escape before subclass is fully initialized",
+    "[WARNING] ${CRATE}/proof/src/test/java/org/eclipse/core/tests/harness/FussyProgressMonitor.java:[54,24] possible 'this' escape before subclass is fully initialized"
+  ]
+}

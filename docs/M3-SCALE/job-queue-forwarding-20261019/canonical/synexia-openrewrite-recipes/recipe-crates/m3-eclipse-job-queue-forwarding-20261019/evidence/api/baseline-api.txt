@@ -1,0 +1,1185 @@
+Compiled from "Deadlock.java"
+class org.eclipse.core.internal.jobs.Deadlock {
+  public org.eclipse.core.internal.jobs.Deadlock(java.lang.Thread[], org.eclipse.core.runtime.jobs.ISchedulingRule[], java.lang.Thread);
+    descriptor: ([Ljava/lang/Thread;[Lorg/eclipse/core/runtime/jobs/ISchedulingRule;Ljava/lang/Thread;)V
+
+  public org.eclipse.core.runtime.jobs.ISchedulingRule[] getLocks();
+    descriptor: ()[Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+
+  public java.lang.Thread getCandidate();
+    descriptor: ()Ljava/lang/Thread;
+
+  public java.lang.Thread[] getThreads();
+    descriptor: ()[Ljava/lang/Thread;
+}
+Compiled from "DeadlockDetector.java"
+public class org.eclipse.core.internal.jobs.DeadlockDetector {
+  public org.eclipse.core.internal.jobs.DeadlockDetector();
+    descriptor: ()V
+
+  public static void runSilent(java.lang.Runnable);
+    descriptor: (Ljava/lang/Runnable;)V
+
+  public java.lang.String toDebugString();
+    descriptor: ()Ljava/lang/String;
+}
+Compiled from "ImplicitJobs.java"
+class org.eclipse.core.internal.jobs.ImplicitJobs {
+  protected org.eclipse.core.internal.jobs.JobManager manager;
+    descriptor: Lorg/eclipse/core/internal/jobs/JobManager;
+}
+Compiled from "InternalJob.java"
+public abstract class org.eclipse.core.internal.jobs.InternalJob extends org.eclipse.core.runtime.PlatformObject implements java.lang.Comparable<org.eclipse.core.internal.jobs.InternalJob> {
+  protected static final org.eclipse.core.internal.jobs.JobManager manager;
+    descriptor: Lorg/eclipse/core/internal/jobs/JobManager;
+  protected org.eclipse.core.internal.jobs.InternalJob(java.lang.String);
+    descriptor: (Ljava/lang/String;)V
+
+  protected void addJobChangeListener(org.eclipse.core.runtime.jobs.IJobChangeListener);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeListener;)V
+
+  protected boolean belongsTo(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  protected boolean cancel();
+    descriptor: ()Z
+
+  protected void canceling();
+    descriptor: ()V
+
+  public final int compareTo(org.eclipse.core.internal.jobs.InternalJob);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;)I
+
+  protected void done(org.eclipse.core.runtime.IStatus);
+    descriptor: (Lorg/eclipse/core/runtime/IStatus;)V
+
+  protected java.lang.String getName();
+    descriptor: ()Ljava/lang/String;
+
+  protected int getPriority();
+    descriptor: ()I
+
+  protected java.lang.Object getProperty(org.eclipse.core.runtime.QualifiedName);
+    descriptor: (Lorg/eclipse/core/runtime/QualifiedName;)Ljava/lang/Object;
+
+  protected org.eclipse.core.runtime.IStatus getResult();
+    descriptor: ()Lorg/eclipse/core/runtime/IStatus;
+
+  protected org.eclipse.core.runtime.jobs.ISchedulingRule getRule();
+    descriptor: ()Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+
+  protected int getState();
+    descriptor: ()I
+
+  protected java.lang.Thread getThread();
+    descriptor: ()Ljava/lang/Thread;
+
+  protected org.eclipse.core.runtime.jobs.JobGroup getJobGroup();
+    descriptor: ()Lorg/eclipse/core/runtime/jobs/JobGroup;
+
+  protected boolean isBlocking();
+    descriptor: ()Z
+
+  protected boolean isSystem();
+    descriptor: ()Z
+
+  protected boolean isUser();
+    descriptor: ()Z
+
+  protected void join() throws java.lang.InterruptedException;
+    descriptor: ()V
+
+  protected boolean join(long, org.eclipse.core.runtime.IProgressMonitor) throws java.lang.InterruptedException, org.eclipse.core.runtime.OperationCanceledException;
+    descriptor: (JLorg/eclipse/core/runtime/IProgressMonitor;)Z
+
+  protected void removeJobChangeListener(org.eclipse.core.runtime.jobs.IJobChangeListener);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeListener;)V
+
+  protected abstract org.eclipse.core.runtime.IStatus run(org.eclipse.core.runtime.IProgressMonitor);
+    descriptor: (Lorg/eclipse/core/runtime/IProgressMonitor;)Lorg/eclipse/core/runtime/IStatus;
+
+  protected void schedule(long);
+    descriptor: (J)V
+
+  protected void setName(java.lang.String);
+    descriptor: (Ljava/lang/String;)V
+
+  protected void setPriority(int);
+    descriptor: (I)V
+
+  protected void setProgressGroup(org.eclipse.core.runtime.IProgressMonitor, int);
+    descriptor: (Lorg/eclipse/core/runtime/IProgressMonitor;I)V
+
+  protected void setProperty(org.eclipse.core.runtime.QualifiedName, java.lang.Object);
+    descriptor: (Lorg/eclipse/core/runtime/QualifiedName;Ljava/lang/Object;)V
+
+  protected void setRule(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)V
+
+  protected void setSystem(boolean);
+    descriptor: (Z)V
+
+  protected void setThread(java.lang.Thread);
+    descriptor: (Ljava/lang/Thread;)V
+
+  protected void setUser(boolean);
+    descriptor: (Z)V
+
+  protected void setJobGroup(org.eclipse.core.runtime.jobs.JobGroup);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/JobGroup;)V
+
+  protected boolean shouldSchedule();
+    descriptor: ()Z
+
+  protected boolean sleep();
+    descriptor: ()Z
+
+  protected org.eclipse.core.runtime.jobs.Job yieldRule(org.eclipse.core.runtime.IProgressMonitor);
+    descriptor: (Lorg/eclipse/core/runtime/IProgressMonitor;)Lorg/eclipse/core/runtime/jobs/Job;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  protected void wakeUp(long);
+    descriptor: (J)V
+
+  public int compareTo(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)I
+}
+Compiled from "InternalJobGroup.java"
+public class org.eclipse.core.internal.jobs.InternalJobGroup {
+  protected org.eclipse.core.internal.jobs.InternalJobGroup(java.lang.String, int, int);
+    descriptor: (Ljava/lang/String;II)V
+
+  protected java.lang.String getName();
+    descriptor: ()Ljava/lang/String;
+
+  protected int getMaxThreads();
+    descriptor: ()I
+
+  protected org.eclipse.core.runtime.MultiStatus getResult();
+    descriptor: ()Lorg/eclipse/core/runtime/MultiStatus;
+
+  protected int getState();
+    descriptor: ()I
+
+  protected java.util.List<org.eclipse.core.runtime.jobs.Job> getActiveJobs();
+    descriptor: ()Ljava/util/List;
+
+  protected void cancel();
+    descriptor: ()V
+
+  protected boolean join(long, org.eclipse.core.runtime.IProgressMonitor) throws java.lang.InterruptedException, org.eclipse.core.runtime.OperationCanceledException;
+    descriptor: (JLorg/eclipse/core/runtime/IProgressMonitor;)Z
+
+  protected boolean shouldCancel(org.eclipse.core.runtime.IStatus, int, int);
+    descriptor: (Lorg/eclipse/core/runtime/IStatus;II)Z
+
+  protected org.eclipse.core.runtime.MultiStatus computeGroupResult(java.util.List<org.eclipse.core.runtime.IStatus>);
+    descriptor: (Ljava/util/List;)Lorg/eclipse/core/runtime/MultiStatus;
+}
+Compiled from "InternalWorker.java"
+public class org.eclipse.core.internal.jobs.InternalWorker extends java.lang.Thread {
+  public void run();
+    descriptor: ()V
+}
+Compiled from "JobActivator.java"
+public class org.eclipse.core.internal.jobs.JobActivator implements org.osgi.framework.BundleActivator {
+  public org.eclipse.core.internal.jobs.JobActivator();
+    descriptor: ()V
+
+  public void start(org.osgi.framework.BundleContext) throws java.lang.Exception;
+    descriptor: (Lorg/osgi/framework/BundleContext;)V
+
+  public void stop(org.osgi.framework.BundleContext) throws java.lang.Exception;
+    descriptor: (Lorg/osgi/framework/BundleContext;)V
+}
+Compiled from "JobChangeEvent.java"
+public class org.eclipse.core.internal.jobs.JobChangeEvent implements org.eclipse.core.runtime.jobs.IJobChangeEvent {
+  public long getDelay();
+    descriptor: ()J
+
+  public org.eclipse.core.runtime.jobs.Job getJob();
+    descriptor: ()Lorg/eclipse/core/runtime/jobs/Job;
+
+  public org.eclipse.core.runtime.IStatus getResult();
+    descriptor: ()Lorg/eclipse/core/runtime/IStatus;
+
+  public org.eclipse.core.runtime.IStatus getJobGroupResult();
+    descriptor: ()Lorg/eclipse/core/runtime/IStatus;
+}
+Compiled from "JobListeners.java"
+interface org.eclipse.core.internal.jobs.JobListeners$IListenerDoit {
+  public abstract void notify(org.eclipse.core.runtime.jobs.IJobChangeListener, org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeListener;Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+}
+Compiled from "JobListeners.java"
+public class org.eclipse.core.internal.jobs.JobListeners {
+  public static volatile int jobListenerTimeout;
+    descriptor: I
+  protected final org.eclipse.core.runtime.ListenerList<org.eclipse.core.runtime.jobs.IJobChangeListener> global;
+    descriptor: Lorg/eclipse/core/runtime/ListenerList;
+  public org.eclipse.core.internal.jobs.JobListeners();
+    descriptor: ()V
+
+  public void add(org.eclipse.core.runtime.jobs.IJobChangeListener);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeListener;)V
+
+  public void remove(org.eclipse.core.runtime.jobs.IJobChangeListener);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeListener;)V
+
+  public void queueAboutToRun(org.eclipse.core.runtime.jobs.Job);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/Job;)V
+
+  public void queueAwake(org.eclipse.core.runtime.jobs.Job);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/Job;)V
+
+  public void queueDone(org.eclipse.core.runtime.jobs.Job, org.eclipse.core.runtime.IStatus, boolean);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/Job;Lorg/eclipse/core/runtime/IStatus;Z)V
+
+  public void queueRunning(org.eclipse.core.runtime.jobs.Job);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/Job;)V
+
+  public void queueScheduled(org.eclipse.core.runtime.jobs.Job, long, boolean);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/Job;JZ)V
+
+  public void queueSleeping(org.eclipse.core.runtime.jobs.Job);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/Job;)V
+
+  public static void resetJobListenerTimeout();
+    descriptor: ()V
+
+  public static int getJobListenerTimeout();
+    descriptor: ()I
+
+  public static void setJobListenerTimeout(int);
+    descriptor: (I)V
+}
+Compiled from "JobManager.java"
+class org.eclipse.core.internal.jobs.JobManager$1 implements org.eclipse.core.runtime.jobs.ISchedulingRule {
+  public boolean contains(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Z
+
+  public boolean isConflicting(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Z
+}
+Compiled from "JobManager.java"
+class org.eclipse.core.internal.jobs.JobManager$2 extends org.eclipse.core.runtime.jobs.JobChangeAdapter {
+  public void done(org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+}
+Compiled from "JobManager.java"
+class org.eclipse.core.internal.jobs.JobManager$3 extends org.eclipse.core.runtime.jobs.JobChangeAdapter {
+  public void done(org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+
+  public void running(org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+
+  public void scheduled(org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+}
+Compiled from "JobManager.java"
+class org.eclipse.core.internal.jobs.JobManager$4 extends org.eclipse.core.runtime.ProgressMonitorWrapper {
+  public boolean isCanceled();
+    descriptor: ()Z
+}
+Compiled from "JobManager.java"
+class org.eclipse.core.internal.jobs.JobManager$5 extends org.eclipse.core.internal.jobs.ThreadJob {
+}
+Compiled from "JobManager.java"
+public class org.eclipse.core.internal.jobs.JobManager implements org.eclipse.core.runtime.jobs.IJobManager,org.eclipse.osgi.service.debug.DebugOptionsListener {
+  public static final java.lang.String PI_JOBS = "org.eclipse.core.jobs";
+    descriptor: Ljava/lang/String;
+  public static final int PLUGIN_ERROR = 2;
+    descriptor: I
+  public static final long MAX_WAIT_INTERVAL = 100l;
+    descriptor: J
+  public static void debug(java.lang.String);
+    descriptor: (Ljava/lang/String;)V
+
+  public static java.lang.String printState(org.eclipse.core.runtime.jobs.Job);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/Job;)Ljava/lang/String;
+
+  public static java.lang.String printState(int);
+    descriptor: (I)Ljava/lang/String;
+
+  public static void shutdown();
+    descriptor: ()V
+
+  public void addJobChangeListener(org.eclipse.core.runtime.jobs.IJobChangeListener);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeListener;)V
+
+  public void beginRule(org.eclipse.core.runtime.jobs.ISchedulingRule, org.eclipse.core.runtime.IProgressMonitor);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;Lorg/eclipse/core/runtime/IProgressMonitor;)V
+
+  protected boolean cancel(org.eclipse.core.internal.jobs.InternalJob);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;)Z
+
+  public void cancel(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)V
+
+  protected org.eclipse.core.runtime.IProgressMonitor createMonitor(org.eclipse.core.internal.jobs.InternalJob, org.eclipse.core.runtime.IProgressMonitor, int);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;Lorg/eclipse/core/runtime/IProgressMonitor;I)Lorg/eclipse/core/runtime/IProgressMonitor;
+
+  public org.eclipse.core.runtime.IProgressMonitor createProgressGroup();
+    descriptor: ()Lorg/eclipse/core/runtime/IProgressMonitor;
+
+  public org.eclipse.core.runtime.jobs.Job currentJob();
+    descriptor: ()Lorg/eclipse/core/runtime/jobs/Job;
+
+  public org.eclipse.core.runtime.jobs.ISchedulingRule currentRule();
+    descriptor: ()Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+
+  protected void endJob(org.eclipse.core.internal.jobs.InternalJob, org.eclipse.core.runtime.IStatus, boolean, boolean);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;Lorg/eclipse/core/runtime/IStatus;ZZ)V
+
+  public void endRule(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)V
+
+  public org.eclipse.core.runtime.jobs.Job[] find(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)[Lorg/eclipse/core/runtime/jobs/Job;
+
+  protected org.eclipse.core.internal.jobs.InternalJob findBlockingJob(org.eclipse.core.internal.jobs.InternalJob);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;)Lorg/eclipse/core/internal/jobs/InternalJob;
+
+  public org.eclipse.core.internal.jobs.LockManager getLockManager();
+    descriptor: ()Lorg/eclipse/core/internal/jobs/LockManager;
+
+  protected boolean isActive();
+    descriptor: ()Z
+
+  protected boolean isBlocking(org.eclipse.core.internal.jobs.InternalJob);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;)Z
+
+  public boolean isIdle();
+    descriptor: ()Z
+
+  public boolean isSuspended();
+    descriptor: ()Z
+
+  protected boolean join(org.eclipse.core.internal.jobs.InternalJob, long, org.eclipse.core.runtime.IProgressMonitor) throws java.lang.InterruptedException;
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;JLorg/eclipse/core/runtime/IProgressMonitor;)Z
+
+  public void join(java.lang.Object, org.eclipse.core.runtime.IProgressMonitor) throws java.lang.InterruptedException, org.eclipse.core.runtime.OperationCanceledException;
+    descriptor: (Ljava/lang/Object;Lorg/eclipse/core/runtime/IProgressMonitor;)V
+
+  public org.eclipse.core.runtime.jobs.ILock newLock();
+    descriptor: ()Lorg/eclipse/core/runtime/jobs/ILock;
+
+  public long now();
+    descriptor: ()J
+
+  public void optionsChanged(org.eclipse.osgi.service.debug.DebugOptions);
+    descriptor: (Lorg/eclipse/osgi/service/debug/DebugOptions;)V
+
+  public void removeJobChangeListener(org.eclipse.core.runtime.jobs.IJobChangeListener);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeListener;)V
+
+  public final void resume();
+    descriptor: ()V
+
+  public final void resume(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)V
+
+  protected org.eclipse.core.internal.jobs.InternalJob runNow(org.eclipse.core.internal.jobs.ThreadJob, boolean);
+    descriptor: (Lorg/eclipse/core/internal/jobs/ThreadJob;Z)Lorg/eclipse/core/internal/jobs/InternalJob;
+
+  protected void schedule(org.eclipse.core.internal.jobs.InternalJob, long);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;J)V
+
+  protected boolean scheduleInternal(org.eclipse.core.internal.jobs.InternalJob, long, boolean);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;JZ)Z
+
+  public void setLockListener(org.eclipse.core.runtime.jobs.LockListener);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/LockListener;)V
+
+  protected void setPriority(org.eclipse.core.internal.jobs.InternalJob, int);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;I)V
+
+  public void setProgressProvider(org.eclipse.core.runtime.jobs.ProgressProvider);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ProgressProvider;)V
+
+  public void setRule(org.eclipse.core.internal.jobs.InternalJob, org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)V
+
+  protected boolean sleep(org.eclipse.core.internal.jobs.InternalJob);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;)Z
+
+  public void sleep(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)V
+
+  protected long sleepHint();
+    descriptor: ()J
+
+  protected org.eclipse.core.runtime.jobs.Job yieldRule(org.eclipse.core.internal.jobs.InternalJob, org.eclipse.core.runtime.IProgressMonitor);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;Lorg/eclipse/core/runtime/IProgressMonitor;)Lorg/eclipse/core/runtime/jobs/Job;
+
+  protected org.eclipse.core.runtime.jobs.Job startJob(org.eclipse.core.internal.jobs.Worker);
+    descriptor: (Lorg/eclipse/core/internal/jobs/Worker;)Lorg/eclipse/core/runtime/jobs/Job;
+
+  public final void suspend();
+    descriptor: ()V
+
+  public final void suspend(org.eclipse.core.runtime.jobs.ISchedulingRule, org.eclipse.core.runtime.IProgressMonitor);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;Lorg/eclipse/core/runtime/IProgressMonitor;)V
+
+  public void transferRule(org.eclipse.core.runtime.jobs.ISchedulingRule, java.lang.Thread);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;Ljava/lang/Thread;)V
+
+  protected void wakeUp(org.eclipse.core.internal.jobs.InternalJob, long);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;J)V
+
+  public void wakeUp(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)V
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+}
+Compiled from "JobMessages.java"
+public class org.eclipse.core.internal.jobs.JobMessages extends org.eclipse.osgi.util.NLS {
+  public static java.lang.String JobManager_suspended_problem;
+    descriptor: Ljava/lang/String;
+  public static java.lang.String jobs_blocked0;
+    descriptor: Ljava/lang/String;
+  public static java.lang.String jobs_blocked1;
+    descriptor: Ljava/lang/String;
+  public static java.lang.String jobs_unblocked;
+    descriptor: Ljava/lang/String;
+  public static java.lang.String jobs_internalError;
+    descriptor: Ljava/lang/String;
+  public static java.lang.String jobs_waitFamSub;
+    descriptor: Ljava/lang/String;
+  public static java.lang.String jobs_waitFamSubOne;
+    descriptor: Ljava/lang/String;
+  public static java.lang.String jobs_returnNoStatus;
+    descriptor: Ljava/lang/String;
+  public static java.lang.String meta_pluginProblems;
+    descriptor: Ljava/lang/String;
+  public org.eclipse.core.internal.jobs.JobMessages();
+    descriptor: ()V
+
+  public static void reloadMessages();
+    descriptor: ()V
+
+  public static void message(java.lang.String);
+    descriptor: (Ljava/lang/String;)V
+}
+Compiled from "JobOSGiUtils.java"
+class org.eclipse.core.internal.jobs.JobOSGiUtils {
+  public static org.eclipse.core.internal.jobs.JobOSGiUtils getDefault();
+    descriptor: ()Lorg/eclipse/core/internal/jobs/JobOSGiUtils;
+
+  public java.lang.String getBundleId(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Ljava/lang/String;
+}
+Compiled from "JobQueue.java"
+class org.eclipse.core.internal.jobs.JobQueue$1 extends org.eclipse.core.internal.jobs.InternalJob {
+  public org.eclipse.core.runtime.IStatus run(org.eclipse.core.runtime.IProgressMonitor);
+    descriptor: (Lorg/eclipse/core/runtime/IProgressMonitor;)Lorg/eclipse/core/runtime/IStatus;
+}
+Compiled from "JobQueue.java"
+public final class org.eclipse.core.internal.jobs.JobQueue implements java.lang.Iterable<org.eclipse.core.internal.jobs.InternalJob> {
+  protected final org.eclipse.core.internal.jobs.InternalJob dummy;
+    descriptor: Lorg/eclipse/core/internal/jobs/InternalJob;
+  public org.eclipse.core.internal.jobs.JobQueue(boolean);
+    descriptor: (Z)V
+
+  public org.eclipse.core.internal.jobs.JobQueue(boolean, boolean);
+    descriptor: (ZZ)V
+
+  public void clear();
+    descriptor: ()V
+
+  public org.eclipse.core.internal.jobs.InternalJob dequeue();
+    descriptor: ()Lorg/eclipse/core/internal/jobs/InternalJob;
+
+  public void enqueue(org.eclipse.core.internal.jobs.InternalJob);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;)V
+
+  public void remove(org.eclipse.core.internal.jobs.InternalJob);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;)V
+
+  public void resort(org.eclipse.core.internal.jobs.InternalJob);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;)V
+
+  public boolean isEmpty();
+    descriptor: ()Z
+
+  public org.eclipse.core.internal.jobs.InternalJob peek();
+    descriptor: ()Lorg/eclipse/core/internal/jobs/InternalJob;
+
+  public java.util.Iterator<org.eclipse.core.internal.jobs.InternalJob> iterator();
+    descriptor: ()Ljava/util/Iterator;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+}
+Compiled from "JobStatus.java"
+public class org.eclipse.core.internal.jobs.JobStatus extends org.eclipse.core.runtime.Status implements org.eclipse.core.runtime.jobs.IJobStatus {
+  public org.eclipse.core.internal.jobs.JobStatus(int, org.eclipse.core.runtime.jobs.Job, java.lang.String);
+    descriptor: (ILorg/eclipse/core/runtime/jobs/Job;Ljava/lang/String;)V
+
+  public org.eclipse.core.runtime.jobs.Job getJob();
+    descriptor: ()Lorg/eclipse/core/runtime/jobs/Job;
+}
+Compiled from "LockManager.java"
+class org.eclipse.core.internal.jobs.LockManager$LockState {
+  protected static org.eclipse.core.internal.jobs.LockManager$LockState suspend(org.eclipse.core.internal.jobs.OrderedLock);
+    descriptor: (Lorg/eclipse/core/internal/jobs/OrderedLock;)Lorg/eclipse/core/internal/jobs/LockManager$LockState;
+
+  public boolean resume();
+    descriptor: ()Z
+}
+Compiled from "LockManager.java"
+public class org.eclipse.core.internal.jobs.LockManager {
+  protected volatile org.eclipse.core.runtime.jobs.LockListener lockListener;
+    descriptor: Lorg/eclipse/core/runtime/jobs/LockListener;
+  public org.eclipse.core.internal.jobs.LockManager();
+    descriptor: ()V
+
+  public void aboutToRelease();
+    descriptor: ()V
+
+  public boolean canBlock();
+    descriptor: ()Z
+
+  public boolean aboutToWait(java.lang.Thread);
+    descriptor: (Ljava/lang/Thread;)Z
+
+  public boolean isEmpty();
+    descriptor: ()Z
+
+  public boolean isLockOwner();
+    descriptor: ()Z
+
+  public synchronized org.eclipse.core.internal.jobs.OrderedLock newLock();
+    descriptor: ()Lorg/eclipse/core/internal/jobs/OrderedLock;
+
+  public void setLockListener(org.eclipse.core.runtime.jobs.LockListener);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/LockListener;)V
+}
+Compiled from "ObjectMap.java"
+public class org.eclipse.core.internal.jobs.ObjectMap<K, V> implements java.util.Map<K, V> {
+  protected static final int DEFAULT_SIZE = 16;
+    descriptor: I
+  protected static final int GROW_SIZE = 10;
+    descriptor: I
+  protected int count;
+    descriptor: I
+  protected java.lang.Object[] elements;
+    descriptor: [Ljava/lang/Object;
+  public org.eclipse.core.internal.jobs.ObjectMap(int);
+    descriptor: (I)V
+
+  public org.eclipse.core.internal.jobs.ObjectMap(java.util.Map<K, V>);
+    descriptor: (Ljava/util/Map;)V
+
+  public void clear();
+    descriptor: ()V
+
+  public boolean containsKey(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public boolean containsValue(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public java.util.Set<java.util.Map$Entry<K, V>> entrySet();
+    descriptor: ()Ljava/util/Set;
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public V get(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Ljava/lang/Object;
+
+  protected void grow();
+    descriptor: ()V
+
+  public int hashCode();
+    descriptor: ()I
+
+  public boolean isEmpty();
+    descriptor: ()Z
+
+  public java.util.Set<K> keySet();
+    descriptor: ()Ljava/util/Set;
+
+  public V put(K, V);
+    descriptor: (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+
+  public void putAll(java.util.Map<? extends K, ? extends V>);
+    descriptor: (Ljava/util/Map;)V
+
+  public V remove(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Ljava/lang/Object;
+
+  public int size();
+    descriptor: ()I
+
+  public java.util.Collection<V> values();
+    descriptor: ()Ljava/util/Collection;
+}
+Compiled from "OrderedLock.java"
+public class org.eclipse.core.internal.jobs.OrderedLock implements org.eclipse.core.runtime.jobs.ILock,org.eclipse.core.runtime.jobs.ISchedulingRule {
+  public void acquire();
+    descriptor: ()V
+
+  public boolean acquire(long) throws java.lang.InterruptedException;
+    descriptor: (J)Z
+
+  public boolean contains(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Z
+
+  protected int forceRelease();
+    descriptor: ()I
+
+  public int getDepth();
+    descriptor: ()I
+
+  public boolean isConflicting(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Z
+
+  public void release();
+    descriptor: ()V
+
+  protected void setDepth(int);
+    descriptor: (I)V
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+}
+Compiled from "Semaphore.java"
+public class org.eclipse.core.internal.jobs.Semaphore {
+  protected long notifications;
+    descriptor: J
+  protected java.lang.Runnable runnable;
+    descriptor: Ljava/lang/Runnable;
+  public org.eclipse.core.internal.jobs.Semaphore(java.lang.Runnable);
+    descriptor: (Ljava/lang/Runnable;)V
+
+  public synchronized boolean acquire(long) throws java.lang.InterruptedException;
+    descriptor: (J)Z
+
+  public synchronized boolean attempt();
+    descriptor: ()Z
+
+  public boolean equals(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public int hashCode();
+    descriptor: ()I
+
+  public synchronized void release();
+    descriptor: ()V
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+}
+Compiled from "ThreadJob.java"
+class org.eclipse.core.internal.jobs.ThreadJob extends org.eclipse.core.runtime.jobs.Job {
+  protected boolean acquireRule;
+    descriptor: Z
+  protected boolean isRunning;
+    descriptor: Z
+  protected org.eclipse.core.runtime.jobs.Job realJob;
+    descriptor: Lorg/eclipse/core/runtime/jobs/Job;
+  public org.eclipse.core.runtime.IStatus run(org.eclipse.core.runtime.IProgressMonitor);
+    descriptor: (Lorg/eclipse/core/runtime/IProgressMonitor;)Lorg/eclipse/core/runtime/IStatus;
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public boolean shouldSchedule();
+    descriptor: ()Z
+}
+Compiled from "Worker.java"
+public class org.eclipse.core.internal.jobs.Worker extends java.lang.Thread {
+  public org.eclipse.core.internal.jobs.Worker(org.eclipse.core.internal.jobs.WorkerPool);
+    descriptor: (Lorg/eclipse/core/internal/jobs/WorkerPool;)V
+
+  public org.eclipse.core.runtime.jobs.Job currentJob();
+    descriptor: ()Lorg/eclipse/core/runtime/jobs/Job;
+
+  public void run();
+    descriptor: ()V
+}
+Compiled from "WorkerPool.java"
+class org.eclipse.core.internal.jobs.WorkerPool {
+  protected final java.lang.ClassLoader defaultContextLoader;
+    descriptor: Ljava/lang/ClassLoader;
+  protected org.eclipse.core.internal.jobs.WorkerPool(org.eclipse.core.internal.jobs.JobManager);
+    descriptor: (Lorg/eclipse/core/internal/jobs/JobManager;)V
+
+  protected void endJob(org.eclipse.core.internal.jobs.InternalJob, org.eclipse.core.runtime.IStatus);
+    descriptor: (Lorg/eclipse/core/internal/jobs/InternalJob;Lorg/eclipse/core/runtime/IStatus;)V
+
+  protected synchronized void endWorker(org.eclipse.core.internal.jobs.Worker);
+    descriptor: (Lorg/eclipse/core/internal/jobs/Worker;)V
+
+  protected synchronized void jobQueued();
+    descriptor: ()V
+
+  protected synchronized void shutdown();
+    descriptor: ()V
+
+  protected org.eclipse.core.internal.jobs.InternalJob startJob(org.eclipse.core.internal.jobs.Worker);
+    descriptor: (Lorg/eclipse/core/internal/jobs/Worker;)Lorg/eclipse/core/internal/jobs/InternalJob;
+}
+Compiled from "M3Rules.java"
+public final class org.eclipse.core.internal.jobs.m3.M3Rules {
+  public static org.eclipse.core.runtime.jobs.ISchedulingRule combine(org.eclipse.core.runtime.jobs.ISchedulingRule[]);
+    descriptor: ([Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+
+  public static org.eclipse.core.runtime.jobs.ISchedulingRule combine(org.eclipse.core.runtime.jobs.ISchedulingRule, org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+
+  public static org.eclipse.core.runtime.jobs.ISchedulingRule[] flatten(org.eclipse.core.runtime.jobs.ISchedulingRule[]);
+    descriptor: ([Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)[Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+
+  public static org.eclipse.core.runtime.jobs.ISchedulingRule[] children(org.eclipse.core.runtime.jobs.ISchedulingRule[]);
+    descriptor: ([Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)[Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+
+  public static boolean contains(org.eclipse.core.runtime.jobs.MultiRule, org.eclipse.core.runtime.jobs.ISchedulingRule[], org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/MultiRule;[Lorg/eclipse/core/runtime/jobs/ISchedulingRule;Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Z
+
+  public static boolean isConflicting(org.eclipse.core.runtime.jobs.MultiRule, org.eclipse.core.runtime.jobs.ISchedulingRule[], org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/MultiRule;[Lorg/eclipse/core/runtime/jobs/ISchedulingRule;Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Z
+
+  public static java.lang.String describe(org.eclipse.core.runtime.jobs.ISchedulingRule[]);
+    descriptor: ([Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Ljava/lang/String;
+}
+Compiled from "IJobChangeEvent.java"
+public interface org.eclipse.core.runtime.jobs.IJobChangeEvent {
+  public abstract long getDelay();
+    descriptor: ()J
+
+  public abstract org.eclipse.core.runtime.jobs.Job getJob();
+    descriptor: ()Lorg/eclipse/core/runtime/jobs/Job;
+
+  public abstract org.eclipse.core.runtime.IStatus getResult();
+    descriptor: ()Lorg/eclipse/core/runtime/IStatus;
+
+  public abstract org.eclipse.core.runtime.IStatus getJobGroupResult();
+    descriptor: ()Lorg/eclipse/core/runtime/IStatus;
+}
+Compiled from "IJobChangeListener.java"
+class org.eclipse.core.runtime.jobs.IJobChangeListener$1 extends org.eclipse.core.runtime.jobs.JobChangeAdapter {
+  public void done(org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+}
+Compiled from "IJobChangeListener.java"
+public interface org.eclipse.core.runtime.jobs.IJobChangeListener {
+  public abstract void aboutToRun(org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+
+  public abstract void awake(org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+
+  public abstract void done(org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+
+  public abstract void running(org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+
+  public abstract void scheduled(org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+
+  public abstract void sleeping(org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+
+  public static org.eclipse.core.runtime.jobs.IJobChangeListener onDone(java.util.function.Consumer<org.eclipse.core.runtime.jobs.IJobChangeEvent>);
+    descriptor: (Ljava/util/function/Consumer;)Lorg/eclipse/core/runtime/jobs/IJobChangeListener;
+}
+Compiled from "IJobFunction.java"
+public interface org.eclipse.core.runtime.jobs.IJobFunction {
+  public abstract org.eclipse.core.runtime.IStatus run(org.eclipse.core.runtime.IProgressMonitor);
+    descriptor: (Lorg/eclipse/core/runtime/IProgressMonitor;)Lorg/eclipse/core/runtime/IStatus;
+}
+Compiled from "IJobManager.java"
+public interface org.eclipse.core.runtime.jobs.IJobManager {
+  public static final java.lang.String PROP_USE_DAEMON_THREADS = "eclipse.jobs.daemon";
+    descriptor: Ljava/lang/String;
+  public abstract void addJobChangeListener(org.eclipse.core.runtime.jobs.IJobChangeListener);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeListener;)V
+
+  public abstract void beginRule(org.eclipse.core.runtime.jobs.ISchedulingRule, org.eclipse.core.runtime.IProgressMonitor);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;Lorg/eclipse/core/runtime/IProgressMonitor;)V
+
+  public abstract void cancel(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)V
+
+  public abstract org.eclipse.core.runtime.IProgressMonitor createProgressGroup();
+    descriptor: ()Lorg/eclipse/core/runtime/IProgressMonitor;
+
+  public abstract org.eclipse.core.runtime.jobs.ISchedulingRule currentRule();
+    descriptor: ()Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+
+  public abstract org.eclipse.core.runtime.jobs.Job currentJob();
+    descriptor: ()Lorg/eclipse/core/runtime/jobs/Job;
+
+  public abstract void endRule(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)V
+
+  public abstract org.eclipse.core.runtime.jobs.Job[] find(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)[Lorg/eclipse/core/runtime/jobs/Job;
+
+  public abstract boolean isIdle();
+    descriptor: ()Z
+
+  public abstract boolean isSuspended();
+    descriptor: ()Z
+
+  public abstract void join(java.lang.Object, org.eclipse.core.runtime.IProgressMonitor) throws java.lang.InterruptedException, org.eclipse.core.runtime.OperationCanceledException;
+    descriptor: (Ljava/lang/Object;Lorg/eclipse/core/runtime/IProgressMonitor;)V
+
+  public abstract org.eclipse.core.runtime.jobs.ILock newLock();
+    descriptor: ()Lorg/eclipse/core/runtime/jobs/ILock;
+
+  public abstract void removeJobChangeListener(org.eclipse.core.runtime.jobs.IJobChangeListener);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeListener;)V
+
+  public abstract void resume(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)V
+
+  public abstract void resume();
+    descriptor: ()V
+
+  public abstract void setLockListener(org.eclipse.core.runtime.jobs.LockListener);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/LockListener;)V
+
+  public abstract void setProgressProvider(org.eclipse.core.runtime.jobs.ProgressProvider);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ProgressProvider;)V
+
+  public abstract void suspend();
+    descriptor: ()V
+
+  public abstract void suspend(org.eclipse.core.runtime.jobs.ISchedulingRule, org.eclipse.core.runtime.IProgressMonitor);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;Lorg/eclipse/core/runtime/IProgressMonitor;)V
+
+  public abstract void sleep(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)V
+
+  public abstract void transferRule(org.eclipse.core.runtime.jobs.ISchedulingRule, java.lang.Thread);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;Ljava/lang/Thread;)V
+
+  public abstract void wakeUp(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)V
+}
+Compiled from "IJobStatus.java"
+public interface org.eclipse.core.runtime.jobs.IJobStatus extends org.eclipse.core.runtime.IStatus {
+  public abstract org.eclipse.core.runtime.jobs.Job getJob();
+    descriptor: ()Lorg/eclipse/core/runtime/jobs/Job;
+}
+Compiled from "ILock.java"
+public interface org.eclipse.core.runtime.jobs.ILock {
+  public abstract boolean acquire(long) throws java.lang.InterruptedException;
+    descriptor: (J)Z
+
+  public abstract void acquire();
+    descriptor: ()V
+
+  public abstract int getDepth();
+    descriptor: ()I
+
+  public abstract void release();
+    descriptor: ()V
+}
+Compiled from "ISchedulableOperation.java"
+public interface org.eclipse.core.runtime.jobs.ISchedulableOperation {
+  public abstract org.eclipse.core.runtime.jobs.ISchedulingRule getSchedulingRule();
+    descriptor: ()Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+}
+Compiled from "ISchedulingRule.java"
+public interface org.eclipse.core.runtime.jobs.ISchedulingRule {
+  public abstract boolean contains(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Z
+
+  public abstract boolean isConflicting(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Z
+}
+Compiled from "Job.java"
+class org.eclipse.core.runtime.jobs.Job$1 extends org.eclipse.core.runtime.jobs.Job {
+  protected org.eclipse.core.runtime.IStatus run(org.eclipse.core.runtime.IProgressMonitor);
+    descriptor: (Lorg/eclipse/core/runtime/IProgressMonitor;)Lorg/eclipse/core/runtime/IStatus;
+}
+Compiled from "Job.java"
+class org.eclipse.core.runtime.jobs.Job$2 extends org.eclipse.core.runtime.jobs.Job {
+  protected org.eclipse.core.runtime.IStatus run(org.eclipse.core.runtime.IProgressMonitor);
+    descriptor: (Lorg/eclipse/core/runtime/IProgressMonitor;)Lorg/eclipse/core/runtime/IStatus;
+}
+Compiled from "Job.java"
+public abstract class org.eclipse.core.runtime.jobs.Job extends org.eclipse.core.internal.jobs.InternalJob {
+  public static final org.eclipse.core.runtime.IStatus ASYNC_FINISH;
+    descriptor: Lorg/eclipse/core/runtime/IStatus;
+  public static final int INTERACTIVE = 10;
+    descriptor: I
+  public static final int SHORT = 20;
+    descriptor: I
+  public static final int LONG = 30;
+    descriptor: I
+  public static final int BUILD = 40;
+    descriptor: I
+  public static final int DECORATE = 50;
+    descriptor: I
+  public static final int NONE = 0;
+    descriptor: I
+  public static final int SLEEPING = 1;
+    descriptor: I
+  public static final int WAITING = 2;
+    descriptor: I
+  public static final int RUNNING = 4;
+    descriptor: I
+  public static final org.eclipse.core.runtime.jobs.IJobManager getJobManager();
+    descriptor: ()Lorg/eclipse/core/runtime/jobs/IJobManager;
+
+  public static org.eclipse.core.runtime.jobs.Job create(java.lang.String, org.eclipse.core.runtime.jobs.IJobFunction);
+    descriptor: (Ljava/lang/String;Lorg/eclipse/core/runtime/jobs/IJobFunction;)Lorg/eclipse/core/runtime/jobs/Job;
+
+  public static org.eclipse.core.runtime.jobs.Job create(java.lang.String, org.eclipse.core.runtime.ICoreRunnable);
+    descriptor: (Ljava/lang/String;Lorg/eclipse/core/runtime/ICoreRunnable;)Lorg/eclipse/core/runtime/jobs/Job;
+
+  public static org.eclipse.core.runtime.jobs.Job createSystem(java.lang.String, org.eclipse.core.runtime.jobs.IJobFunction);
+    descriptor: (Ljava/lang/String;Lorg/eclipse/core/runtime/jobs/IJobFunction;)Lorg/eclipse/core/runtime/jobs/Job;
+
+  public static org.eclipse.core.runtime.jobs.Job createSystem(java.lang.String, org.eclipse.core.runtime.ICoreRunnable);
+    descriptor: (Ljava/lang/String;Lorg/eclipse/core/runtime/ICoreRunnable;)Lorg/eclipse/core/runtime/jobs/Job;
+
+  public org.eclipse.core.runtime.jobs.Job(java.lang.String);
+    descriptor: (Ljava/lang/String;)V
+
+  public final void addJobChangeListener(org.eclipse.core.runtime.jobs.IJobChangeListener);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeListener;)V
+
+  public boolean belongsTo(java.lang.Object);
+    descriptor: (Ljava/lang/Object;)Z
+
+  public final boolean cancel();
+    descriptor: ()Z
+
+  protected void canceling();
+    descriptor: ()V
+
+  public final void done(org.eclipse.core.runtime.IStatus);
+    descriptor: (Lorg/eclipse/core/runtime/IStatus;)V
+
+  public final java.lang.String getName();
+    descriptor: ()Ljava/lang/String;
+
+  public final int getPriority();
+    descriptor: ()I
+
+  public final java.lang.Object getProperty(org.eclipse.core.runtime.QualifiedName);
+    descriptor: (Lorg/eclipse/core/runtime/QualifiedName;)Ljava/lang/Object;
+
+  public final org.eclipse.core.runtime.IStatus getResult();
+    descriptor: ()Lorg/eclipse/core/runtime/IStatus;
+
+  public final org.eclipse.core.runtime.jobs.ISchedulingRule getRule();
+    descriptor: ()Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+
+  public final int getState();
+    descriptor: ()I
+
+  public final java.lang.Thread getThread();
+    descriptor: ()Ljava/lang/Thread;
+
+  public final org.eclipse.core.runtime.jobs.JobGroup getJobGroup();
+    descriptor: ()Lorg/eclipse/core/runtime/jobs/JobGroup;
+
+  public final boolean isBlocking();
+    descriptor: ()Z
+
+  public final boolean isSystem();
+    descriptor: ()Z
+
+  public final boolean isUser();
+    descriptor: ()Z
+
+  public final void join() throws java.lang.InterruptedException;
+    descriptor: ()V
+
+  public final boolean join(long, org.eclipse.core.runtime.IProgressMonitor) throws java.lang.InterruptedException, org.eclipse.core.runtime.OperationCanceledException;
+    descriptor: (JLorg/eclipse/core/runtime/IProgressMonitor;)Z
+
+  public final void removeJobChangeListener(org.eclipse.core.runtime.jobs.IJobChangeListener);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeListener;)V
+
+  protected abstract org.eclipse.core.runtime.IStatus run(org.eclipse.core.runtime.IProgressMonitor);
+    descriptor: (Lorg/eclipse/core/runtime/IProgressMonitor;)Lorg/eclipse/core/runtime/IStatus;
+
+  public final void schedule();
+    descriptor: ()V
+
+  public final void schedule(long);
+    descriptor: (J)V
+
+  public final void setName(java.lang.String);
+    descriptor: (Ljava/lang/String;)V
+
+  public final void setPriority(int);
+    descriptor: (I)V
+
+  public final void setProgressGroup(org.eclipse.core.runtime.IProgressMonitor, int);
+    descriptor: (Lorg/eclipse/core/runtime/IProgressMonitor;I)V
+
+  public void setProperty(org.eclipse.core.runtime.QualifiedName, java.lang.Object);
+    descriptor: (Lorg/eclipse/core/runtime/QualifiedName;Ljava/lang/Object;)V
+
+  public final void setRule(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)V
+
+  public final void setSystem(boolean);
+    descriptor: (Z)V
+
+  public final void setUser(boolean);
+    descriptor: (Z)V
+
+  public final void setThread(java.lang.Thread);
+    descriptor: (Ljava/lang/Thread;)V
+
+  public final void setJobGroup(org.eclipse.core.runtime.jobs.JobGroup);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/JobGroup;)V
+
+  public boolean shouldRun();
+    descriptor: ()Z
+
+  public boolean shouldSchedule();
+    descriptor: ()Z
+
+  public final boolean sleep();
+    descriptor: ()Z
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+
+  public final void wakeUp();
+    descriptor: ()V
+
+  public final void wakeUp(long);
+    descriptor: (J)V
+
+  public org.eclipse.core.runtime.jobs.Job yieldRule(org.eclipse.core.runtime.IProgressMonitor);
+    descriptor: (Lorg/eclipse/core/runtime/IProgressMonitor;)Lorg/eclipse/core/runtime/jobs/Job;
+}
+Compiled from "JobChangeAdapter.java"
+public class org.eclipse.core.runtime.jobs.JobChangeAdapter implements org.eclipse.core.runtime.jobs.IJobChangeListener {
+  public org.eclipse.core.runtime.jobs.JobChangeAdapter();
+    descriptor: ()V
+
+  public void aboutToRun(org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+
+  public void awake(org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+
+  public void done(org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+
+  public void running(org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+
+  public void scheduled(org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+
+  public void sleeping(org.eclipse.core.runtime.jobs.IJobChangeEvent);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/IJobChangeEvent;)V
+}
+Compiled from "JobGroup.java"
+public class org.eclipse.core.runtime.jobs.JobGroup extends org.eclipse.core.internal.jobs.InternalJobGroup {
+  public static final int NONE = 0;
+    descriptor: I
+  public static final int ACTIVE = 1;
+    descriptor: I
+  public static final int CANCELING = 2;
+    descriptor: I
+  public org.eclipse.core.runtime.jobs.JobGroup(java.lang.String, int, int);
+    descriptor: (Ljava/lang/String;II)V
+
+  public final java.lang.String getName();
+    descriptor: ()Ljava/lang/String;
+
+  public final int getMaxThreads();
+    descriptor: ()I
+
+  public final org.eclipse.core.runtime.MultiStatus getResult();
+    descriptor: ()Lorg/eclipse/core/runtime/MultiStatus;
+
+  public final int getState();
+    descriptor: ()I
+
+  public final java.util.List<org.eclipse.core.runtime.jobs.Job> getActiveJobs();
+    descriptor: ()Ljava/util/List;
+
+  public final void cancel();
+    descriptor: ()V
+
+  public final boolean join(long, org.eclipse.core.runtime.IProgressMonitor) throws java.lang.InterruptedException, org.eclipse.core.runtime.OperationCanceledException;
+    descriptor: (JLorg/eclipse/core/runtime/IProgressMonitor;)Z
+
+  protected boolean shouldCancel(org.eclipse.core.runtime.IStatus, int, int);
+    descriptor: (Lorg/eclipse/core/runtime/IStatus;II)Z
+
+  protected org.eclipse.core.runtime.MultiStatus computeGroupResult(java.util.List<org.eclipse.core.runtime.IStatus>);
+    descriptor: (Ljava/util/List;)Lorg/eclipse/core/runtime/MultiStatus;
+}
+Compiled from "LockListener.java"
+public class org.eclipse.core.runtime.jobs.LockListener {
+  public org.eclipse.core.runtime.jobs.LockListener();
+    descriptor: ()V
+
+  public boolean aboutToWait(java.lang.Thread);
+    descriptor: (Ljava/lang/Thread;)Z
+
+  public void aboutToRelease();
+    descriptor: ()V
+
+  public boolean canBlock();
+    descriptor: ()Z
+
+  protected final boolean isLockOwnerThread();
+    descriptor: ()Z
+}
+Compiled from "MultiRule.java"
+public class org.eclipse.core.runtime.jobs.MultiRule implements org.eclipse.core.runtime.jobs.ISchedulingRule {
+  public static org.eclipse.core.runtime.jobs.ISchedulingRule combine(org.eclipse.core.runtime.jobs.ISchedulingRule[]);
+    descriptor: ([Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+
+  public static org.eclipse.core.runtime.jobs.ISchedulingRule combine(org.eclipse.core.runtime.jobs.ISchedulingRule, org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+
+  public org.eclipse.core.runtime.jobs.MultiRule(org.eclipse.core.runtime.jobs.ISchedulingRule...);
+    descriptor: ([Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)V
+
+  public org.eclipse.core.runtime.jobs.ISchedulingRule[] getChildren();
+    descriptor: ()[Lorg/eclipse/core/runtime/jobs/ISchedulingRule;
+
+  public boolean contains(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Z
+
+  public boolean isConflicting(org.eclipse.core.runtime.jobs.ISchedulingRule);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/ISchedulingRule;)Z
+
+  public java.lang.String toString();
+    descriptor: ()Ljava/lang/String;
+}
+Compiled from "ProgressProvider.java"
+public abstract class org.eclipse.core.runtime.jobs.ProgressProvider {
+  public org.eclipse.core.runtime.jobs.ProgressProvider();
+    descriptor: ()V
+
+  public abstract org.eclipse.core.runtime.IProgressMonitor createMonitor(org.eclipse.core.runtime.jobs.Job);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/Job;)Lorg/eclipse/core/runtime/IProgressMonitor;
+
+  public org.eclipse.core.runtime.IProgressMonitor createProgressGroup();
+    descriptor: ()Lorg/eclipse/core/runtime/IProgressMonitor;
+
+  public org.eclipse.core.runtime.IProgressMonitor createMonitor(org.eclipse.core.runtime.jobs.Job, org.eclipse.core.runtime.IProgressMonitor, int);
+    descriptor: (Lorg/eclipse/core/runtime/jobs/Job;Lorg/eclipse/core/runtime/IProgressMonitor;I)Lorg/eclipse/core/runtime/IProgressMonitor;
+
+  public org.eclipse.core.runtime.IProgressMonitor getDefaultMonitor();
+    descriptor: ()Lorg/eclipse/core/runtime/IProgressMonitor;
+
+  public org.eclipse.core.runtime.IProgressMonitor monitorFor(org.eclipse.core.runtime.IProgressMonitor);
+    descriptor: (Lorg/eclipse/core/runtime/IProgressMonitor;)Lorg/eclipse/core/runtime/IProgressMonitor;
+}

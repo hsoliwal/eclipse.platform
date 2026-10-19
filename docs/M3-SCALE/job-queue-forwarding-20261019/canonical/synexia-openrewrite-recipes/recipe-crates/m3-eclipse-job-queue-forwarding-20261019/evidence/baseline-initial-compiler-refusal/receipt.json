@@ -1,0 +1,26 @@
+{
+  "schema": "M3_JOB_QUEUE_BASELINE_REFUSAL_V1",
+  "stage": "full actual Jobs javac --release 17 -Xlint:all -Werror",
+  "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+  "exitCode": 1,
+  "productionSources": 36,
+  "testsRun": 0,
+  "observedWarnings": [
+    {
+      "path": "src/org/eclipse/core/runtime/jobs/Job.java",
+      "line": 182,
+      "kind": "overloads"
+    },
+    {
+      "path": "src/org/eclipse/core/runtime/jobs/Job.java",
+      "line": 230,
+      "kind": "overloads"
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/ObjectMap.java",
+      "line": 107,
+      "kind": "unchecked"
+    }
+  ],
+  "ruling": "Keep all warnings visible and compare exact baseline/candidate warning identities. No original source change."
+}

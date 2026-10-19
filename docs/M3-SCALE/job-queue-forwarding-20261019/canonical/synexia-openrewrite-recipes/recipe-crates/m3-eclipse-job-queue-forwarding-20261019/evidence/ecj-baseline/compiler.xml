@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 10/18/26, 11:41:51 PM COT -->
+<!DOCTYPE compiler PUBLIC "-//Eclipse.org//DTD Eclipse JDT 3.2.006 Compiler//EN" "https://www.eclipse.org/jdt/core/compiler_32_006.dtd">
+<compiler copyright="Copyright IBM Corp 2000, 2020. All rights reserved." name="Eclipse Compiler for Java(TM)" version="v20260826-1225, 3.46.100">
+	<command_line>
+		<argument value="-properties"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/.settings/org.eclipse.jdt.core.prefs"/>
+		<argument value="--release"/>
+		<argument value="17"/>
+		<argument value="-proc:none"/>
+		<argument value="-d"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes"/>
+		<argument value="-cp"/>
+		<argument value="/tmp/eclipse-m3-20261019/toolchain/eclipse-deps/org.eclipse.equinox.common-3.21.0.jar:/tmp/eclipse-m3-20261019/toolchain/eclipse-deps/org.eclipse.osgi-3.24.300.jar"/>
+		<argument value="-log"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/compiler.xml"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/Deadlock.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/DeadlockDetector.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/ImplicitJobs.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/InternalJob.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/InternalJobGroup.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/InternalWorker.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobActivator.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobChangeEvent.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobListeners.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobManager.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobMessages.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobOSGiUtils.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobQueue.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobStatus.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/LockManager.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/ObjectMap.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/OrderedLock.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/Semaphore.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/ThreadJob.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/Worker.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/WorkerPool.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/m3/M3Rules.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/IJobChangeEvent.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/IJobChangeListener.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/IJobFunction.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/IJobManager.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/IJobStatus.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/ILock.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/ISchedulableOperation.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/ISchedulingRule.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/Job.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/JobChangeAdapter.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/JobGroup.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/LockListener.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/MultiRule.java"/>
+		<argument value="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/ProgressProvider.java"/>
+	</command_line>
+	<options>
+		<option key="org.eclipse.jdt.core.compiler.annotation.inheritNullAnnotations" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.annotation.missingNonNullByDefaultAnnotation" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.annotation.nonnull" value="org.eclipse.jdt.annotation.NonNull"/>
+		<option key="org.eclipse.jdt.core.compiler.annotation.nonnull.secondary" value=""/>
+		<option key="org.eclipse.jdt.core.compiler.annotation.nonnullbydefault" value="org.eclipse.jdt.annotation.NonNullByDefault"/>
+		<option key="org.eclipse.jdt.core.compiler.annotation.nonnullbydefault.secondary" value=""/>
+		<option key="org.eclipse.jdt.core.compiler.annotation.notowning" value="org.eclipse.jdt.annotation.NotOwning"/>
+		<option key="org.eclipse.jdt.core.compiler.annotation.nullable" value="org.eclipse.jdt.annotation.Nullable"/>
+		<option key="org.eclipse.jdt.core.compiler.annotation.nullable.secondary" value=""/>
+		<option key="org.eclipse.jdt.core.compiler.annotation.nullanalysis" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.annotation.owning" value="org.eclipse.jdt.annotation.Owning"/>
+		<option key="org.eclipse.jdt.core.compiler.annotation.resourceanalysis" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode" value="enabled"/>
+		<option key="org.eclipse.jdt.core.compiler.codegen.lambda.genericSignature" value="do not generate"/>
+		<option key="org.eclipse.jdt.core.compiler.codegen.methodParameters" value="do not generate"/>
+		<option key="org.eclipse.jdt.core.compiler.codegen.shareCommonFinallyBlocks" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.codegen.targetPlatform" value="17"/>
+		<option key="org.eclipse.jdt.core.compiler.codegen.unusedLocal" value="preserve"/>
+		<option key="org.eclipse.jdt.core.compiler.codegen.useStringConcatFactory" value="enabled"/>
+		<option key="org.eclipse.jdt.core.compiler.codegen.validateOperandStack" value="enabled"/>
+		<option key="org.eclipse.jdt.core.compiler.compliance" value="17"/>
+		<option key="org.eclipse.jdt.core.compiler.debug.lineNumber" value="generate"/>
+		<option key="org.eclipse.jdt.core.compiler.debug.localVariable" value="generate"/>
+		<option key="org.eclipse.jdt.core.compiler.debug.sourceFile" value="generate"/>
+		<option key="org.eclipse.jdt.core.compiler.doc.comment.support" value="enabled"/>
+		<option key="org.eclipse.jdt.core.compiler.emulateJavacBug8031744" value="enabled"/>
+		<option key="org.eclipse.jdt.core.compiler.generateClassFiles" value="enabled"/>
+		<option key="org.eclipse.jdt.core.compiler.ignoreUnnamedModuleForSplitPackage" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.maxProblemPerUnit" value="100"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.APILeak" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.annotatedTypeArgumentToUnannotated" value="info"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.annotationSuperInterface" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.assertIdentifier" value="error"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.autoboxing" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.comparingIdentical" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.deadCode" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.deadCodeInTrivialIfStatement" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.deprecation" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.deprecationInDeprecatedCode" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.deprecationWhenOverridingDeprecatedMethod" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.discouragedReference" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.emptyStatement" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.enablePreviewFeatures" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.enumIdentifier" value="error"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.explicitlyClosedAutoCloseable" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.fallthroughCase" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.fatalOptionalError" value="enabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.fieldHiding" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.finalParameterBound" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.finallyBlockNotCompletingNormally" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.forbiddenReference" value="error"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.hiddenCatchBlock" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.includeNullInfoFromAsserts" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.incompatibleNonInheritedInterfaceMethod" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.incompatibleOwningContract" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.incompleteEnumSwitch" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.indirectStaticAccess" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.insufficientResourceAnalysis" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.invalidJavadoc" value="error"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.invalidJavadocTags" value="enabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.invalidJavadocTagsDeprecatedRef" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.invalidJavadocTagsNotVisibleRef" value="enabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.invalidJavadocTagsVisibility" value="private"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.localVariableHiding" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.memberOfDeprecatedTypeNotDeprecated" value="info"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.methodWithConstructorName" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.missingDefaultCase" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.missingDeprecatedAnnotation" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.missingEnumCaseDespiteDefault" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.missingHashCodeMethod" value="error"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.missingJavadocComments" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.missingJavadocCommentsOverriding" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.missingJavadocCommentsVisibility" value="public"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.missingJavadocTagDescription" value="return_tag"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.missingJavadocTags" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.missingJavadocTagsMethodTypeParameters" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.missingJavadocTagsOverriding" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.missingJavadocTagsVisibility" value="protected"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.missingOverrideAnnotation" value="error"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.missingOverrideAnnotationForInterfaceMethodImplementation" value="enabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.missingSerialVersion" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.missingSynchronizedOnInheritedMethod" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.noEffectAssignment" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.noImplicitStringConversion" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.nonExternalizedStringLiteral" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.nonnullParameterAnnotationDropped" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.nonnullTypeVariableFromLegacyInvocation" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.nullAnnotationInferenceConflict" value="error"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.nullReference" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.nullSpecViolation" value="error"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.nullUncheckedConversion" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.overridingMethodWithoutSuperInvocation" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.overridingPackageDefaultMethod" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.parameterAssignment" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.pessimisticNullAnalysisForFreeTypeVariables" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.possibleAccidentalBooleanAssignment" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.potentialNullReference" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.potentiallyUnclosedCloseable" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.rawTypeReference" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.redundantNullAnnotation" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.redundantNullCheck" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.redundantSpecificationOfTypeArguments" value="error"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.redundantSuperinterface" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.reportMethodCanBePotentiallyStatic" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.reportMethodCanBeStatic" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.reportPreviewFeatures" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.specialParameterHidingField" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.staticAccessReceiver" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.suppressOptionalErrors" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.suppressWarnings" value="enabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.suppressWarningsNotFullyAnalysed" value="info"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.syntacticNullAnalysisForFields" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.syntheticAccessEmulation" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.tasks" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.terminalDeprecation" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.typeParameterHiding" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unavoidableGenericTypeProblems" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.uncheckedTypeOperation" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unclosedCloseable" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.undocumentedEmptyBlock" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unhandledWarningToken" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.uninternedIdentityComparison" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unlikelyCollectionMethodArgumentType" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unlikelyCollectionMethodArgumentTypeStrict" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unlikelyEqualsArgumentType" value="info"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unnecessaryElse" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unnecessaryTypeCheck" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unqualifiedFieldAccess" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unstableAutoModuleName" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedDeclaredThrownException" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedDeclaredThrownExceptionExemptExceptionAndThrowable" value="enabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedDeclaredThrownExceptionIncludeDocCommentReference" value="enabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedDeclaredThrownExceptionWhenOverriding" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedExceptionParameter" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedImport" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedLabel" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedLambdaParameter" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedLocal" value="error"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedObjectAllocation" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedParameter" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedParameterIncludeDocCommentReference" value="enabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedParameterWhenImplementingAbstract" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedParameterWhenOverridingConcrete" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedPrivateMember" value="error"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedTypeArgumentsForMethodInvocation" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedTypeParameter" value="ignore"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.unusedWarningToken" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.problem.varargsArgumentNeedCast" value="warning"/>
+		<option key="org.eclipse.jdt.core.compiler.processAnnotations" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.release" value="enabled"/>
+		<option key="org.eclipse.jdt.core.compiler.source" value="17"/>
+		<option key="org.eclipse.jdt.core.compiler.storeAnnotations" value="disabled"/>
+		<option key="org.eclipse.jdt.core.compiler.taskCaseSensitive" value="enabled"/>
+		<option key="org.eclipse.jdt.core.compiler.taskPriorities" value=""/>
+		<option key="org.eclipse.jdt.core.compiler.taskTags" value=""/>
+	</options>
+	<classpaths>
+		<classpath id="JAR" path="/tmp/eclipse-m3-20261019/toolchain/jdk21/lib/jrt-fs.jar"/>
+		<classpath id="JAR" path="/tmp/eclipse-m3-20261019/toolchain/eclipse-deps/org.eclipse.equinox.common-3.21.0.jar"/>
+		<classpath id="JAR" path="/tmp/eclipse-m3-20261019/toolchain/eclipse-deps/org.eclipse.osgi-3.24.300.jar"/>
+	</classpaths>
+	<sources>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/Deadlock.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/Deadlock.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/DeadlockDetector.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/DeadlockDetector.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/ImplicitJobs.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/ImplicitJobs.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/InternalJob.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/InternalJob.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/InternalJobGroup.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/InternalJobGroup.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/InternalWorker.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/InternalWorker.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobActivator.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/JobActivator.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobChangeEvent.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/JobChangeEvent.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobListeners.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/JobListeners.class"/>
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/JobListeners$IListenerDoit.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobManager.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/JobManager.class"/>
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/JobManager$3.class"/>
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/JobManager$2.class"/>
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/JobManager$1.class"/>
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/JobManager$5.class"/>
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/JobManager$4.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobMessages.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/JobMessages.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobOSGiUtils.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/JobOSGiUtils.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobQueue.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/JobQueue$2.class"/>
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/JobQueue.class"/>
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/JobQueue$1.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobStatus.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/JobStatus.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/LockManager.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/LockManager.class"/>
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/LockManager$LockState.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/ObjectMap.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/ObjectMap.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/OrderedLock.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/OrderedLock.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/Semaphore.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/Semaphore.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/ThreadJob.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/ThreadJob.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/Worker.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/Worker.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/WorkerPool.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/WorkerPool.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/internal/jobs/m3" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/m3/M3Rules.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/internal/jobs/m3/M3Rules.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/runtime/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/IJobChangeEvent.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/runtime/jobs/IJobChangeEvent.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/runtime/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/IJobChangeListener.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/runtime/jobs/IJobChangeListener.class"/>
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/runtime/jobs/IJobChangeListener$1.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/runtime/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/IJobFunction.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/runtime/jobs/IJobFunction.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/runtime/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/IJobManager.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/runtime/jobs/IJobManager.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/runtime/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/IJobStatus.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/runtime/jobs/IJobStatus.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/runtime/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/ILock.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/runtime/jobs/ILock.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/runtime/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/ISchedulableOperation.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/runtime/jobs/ISchedulableOperation.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/runtime/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/ISchedulingRule.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/runtime/jobs/ISchedulingRule.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/runtime/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/Job.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/runtime/jobs/Job$2.class"/>
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/runtime/jobs/Job$1.class"/>
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/runtime/jobs/Job.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/runtime/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/JobChangeAdapter.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/runtime/jobs/JobChangeAdapter.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/runtime/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/JobGroup.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/runtime/jobs/JobGroup.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/runtime/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/LockListener.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/runtime/jobs/LockListener.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/runtime/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/MultiRule.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/runtime/jobs/MultiRule.class"/>
+		</source>
+		<source output="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes" package="org/eclipse/core/runtime/jobs" path="/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/ProgressProvider.java">
+			<classfile path="/tmp/eclipse-m3-20261019/job-queue-authoring/ecj-baseline/classes/org/eclipse/core/runtime/jobs/ProgressProvider.class"/>
+		</source>
+	</sources>
+	<stats>
+	</stats>
+</compiler>

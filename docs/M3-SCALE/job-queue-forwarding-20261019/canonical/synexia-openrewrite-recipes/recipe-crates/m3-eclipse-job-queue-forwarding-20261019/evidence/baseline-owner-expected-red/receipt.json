@@ -1,0 +1,13 @@
+{
+  "tests": 1,
+  "failures": 0,
+  "errors": 1,
+  "skipped": 0,
+  "exitCode": 1,
+  "schema": "M3_JOB_QUEUE_REAL_BASELINE_V1",
+  "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+  "gate": "baseline-owner-expected-red",
+  "testSourceSha256": "19e70bb412a671322e58ff461cde4d6b010c19a0a17c4098bf508cfb2a8548e6",
+  "capturedUtc": "2026-10-19T04:34:28.023477+00:00",
+  "candidateTemplatesExist": false
+}

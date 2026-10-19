@@ -1,0 +1,51 @@
+{
+  "schema": "M3_JOB_QUEUE_OSGI_INPUTS_V1",
+  "commands": [
+    {
+      "command": [
+        "/tmp/eclipse-m3-20261019/toolchain/jdk21/bin/javac",
+        "--release",
+        "17",
+        "-Xlint:all",
+        "-Werror",
+        "-cp",
+        "/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-final-build/classes:/tmp/eclipse-m3-20261019/toolchain/eclipse-deps/org.eclipse.equinox.common-3.21.0.jar:/tmp/eclipse-m3-20261019/toolchain/eclipse-deps/org.eclipse.osgi-3.24.300.jar",
+        "-d",
+        "/tmp/eclipse-m3-20261019/job-queue-authoring/osgi/JobQueueOsgiClient",
+        "/tmp/eclipse-m3-20261019/synexia/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-job-queue-forwarding-20261019/proof/JobQueueOsgiClient.java"
+      ],
+      "exitCode": 0
+    },
+    {
+      "command": [
+        "/tmp/eclipse-m3-20261019/toolchain/jdk21/bin/javac",
+        "--release",
+        "17",
+        "-Xlint:all",
+        "-Werror",
+        "-cp",
+        "/tmp/eclipse-m3-20261019/job-queue-authoring/baseline-final-build/classes:/tmp/eclipse-m3-20261019/toolchain/eclipse-deps/org.eclipse.equinox.common-3.21.0.jar:/tmp/eclipse-m3-20261019/toolchain/eclipse-deps/org.eclipse.osgi-3.24.300.jar",
+        "-d",
+        "/tmp/eclipse-m3-20261019/job-queue-authoring/osgi/JobQueueEquinoxProof",
+        "/tmp/eclipse-m3-20261019/synexia/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-job-queue-forwarding-20261019/proof/JobQueueEquinoxProof.java"
+      ],
+      "exitCode": 0
+    }
+  ],
+  "jars": {
+    "baseline-jobs.jar": {
+      "sha256": "aeb2a5de18f8b1424942bb5f379c936ca204af224946bbee122e537302de3f04",
+      "bytes": 107543
+    },
+    "candidate-jobs.jar": {
+      "sha256": "2bc456cde1c60475100331cf46bcf10878e45a1e1e4a2c2bd3b7e3f1f1cf1298",
+      "bytes": 108636
+    },
+    "client.jar": {
+      "sha256": "7fa2ee8a379ea355cb3a872a5a64bfc2d4f88d027286d92711b1e0b0900126f0",
+      "bytes": 5743
+    }
+  },
+  "jarSource": "actual baseline and actual SDK-emitted candidate compiled classes, exact source resources and c962 manifest",
+  "clientCompiledAgainst": "unchanged baseline classes"
+}

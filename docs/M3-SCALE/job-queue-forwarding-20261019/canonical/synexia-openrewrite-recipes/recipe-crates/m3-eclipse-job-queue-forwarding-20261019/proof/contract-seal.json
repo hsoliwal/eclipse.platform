@@ -1,0 +1,27 @@
+{
+  "schema": "M3_JOB_QUEUE_CONTRACT_SEAL_V1",
+  "sealedUtc": "2026-10-19T04:37:20.892948+00:00",
+  "candidateTemplatesExist": false,
+  "files": [
+    {
+      "path": "CONTRACT.md",
+      "sha256": "26bee61c1f28b84e08310458c0481e06854773ad33fa00771bbb54627dfac5ec"
+    },
+    {
+      "path": "proof/src/test/java/org/eclipse/core/internal/jobs/JobQueueContractTest.java",
+      "sha256": "591f66e9ebffe0888afea2494e5f10a083d3a4d6c5c393f173927b95e04d6870"
+    },
+    {
+      "path": "proof/src/test/java/org/eclipse/core/internal/jobs/M3JobQueueOwnershipTest.java",
+      "sha256": "19e70bb412a671322e58ff461cde4d6b010c19a0a17c4098bf508cfb2a8548e6"
+    },
+    {
+      "path": "proof/upstream-tests.txt",
+      "sha256": "2078a0cf1ce4fb454c6c4c4f14f2e0bd6a88c15758b9401e6863066020db56c5"
+    },
+    {
+      "path": "proof/upstream-source-pins.json",
+      "sha256": "74e7f6a0403f854188f53834e36445f1e87d0bbc97e24898adfc42d8d90a04cd"
+    }
+  ]
+}

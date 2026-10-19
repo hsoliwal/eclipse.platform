@@ -1,0 +1,8 @@
+{
+  "schema": "M3_JOB_QUEUE_BASELINE_REFUSAL_V1",
+  "stage": "unchanged selected upstream JobTest source closure",
+  "exitCode": 1,
+  "testsRun": 0,
+  "missingActualUpstreamSource": "AsynchExecThread.java",
+  "ruling": "Include the exact upstream support class; no test or production source edits."
+}

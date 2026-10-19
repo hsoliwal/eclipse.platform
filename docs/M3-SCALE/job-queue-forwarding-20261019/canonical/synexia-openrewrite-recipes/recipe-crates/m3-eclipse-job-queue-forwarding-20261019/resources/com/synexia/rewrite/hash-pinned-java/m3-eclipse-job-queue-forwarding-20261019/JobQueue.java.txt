@@ -1,0 +1,124 @@
+/*******************************************************************************
+ *  Copyright (c) 2003, 2012 IBM Corporation and others.
+ *
+ *  This program and the accompanying materials
+ *  are made available under the terms of the Eclipse Public License 2.0
+ *  which accompanies this distribution, and is available at
+ *  https://www.eclipse.org/legal/epl-2.0/
+ *
+ *  SPDX-License-Identifier: EPL-2.0
+ *
+ *  Contributors:
+ *     IBM - Initial API and implementation
+ *******************************************************************************/
+// Copyright (c) 2026 Hitesh Soliwal and Contributors to the Synexia Project.
+// M3 forwarding with original queue state.
+package org.eclipse.core.internal.jobs;
+
+import java.util.Iterator;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+
+/**
+ * A linked list based priority queue.
+ */
+public final class JobQueue implements Iterable<InternalJob> {
+	/**
+	 * The dummy entry sits between the head and the tail of the queue.
+	 * dummy.previous() is the head, and dummy.next() is the tail.
+	 */
+	protected final InternalJob dummy;
+
+	/**
+	 * If true, conflicting jobs will be allowed to overtake others in the
+	 * queue that have lower priority. If false, higher priority jumps can only
+	 * move up the queue by overtaking jobs that they don't conflict with.
+	 */
+	private final boolean allowConflictOvertaking;
+
+	private final boolean allowPriorityOvertaking;
+
+	/**
+	 * Create a new job queue.
+	 */
+	public JobQueue(boolean allowConflictOvertaking) {
+		this(allowConflictOvertaking, true);
+	}
+
+	/**
+	 * Create a new job queue.
+	 */
+	public JobQueue(boolean allowConflictOvertaking, boolean allowPriorityOvertaking) {
+		this.allowPriorityOvertaking = allowPriorityOvertaking;
+		// Retain the original anonymous head identity and facade-owned state.
+		dummy = new InternalJob("Queue-Head") { //$NON-NLS-1$
+			@Override
+			public IStatus run(IProgressMonitor m) {
+				return M3JobQueue.headResult();
+			}
+		};
+		M3JobQueue.initializeHead(dummy);
+		this.allowConflictOvertaking = allowConflictOvertaking;
+	}
+
+	/**
+	 * remove all elements
+	 */
+	public void clear() {
+		M3JobQueue.clear(dummy);
+	}
+
+	/**
+	 * Return and remove the element with highest priority, or null if empty.
+	 */
+	public InternalJob dequeue() {
+		return M3JobQueue.dequeue(dummy);
+	}
+
+	/**
+	 * Adds an item to the queue
+	 */
+	public void enqueue(InternalJob newEntry) {
+		M3JobQueue.enqueue(dummy, allowConflictOvertaking, allowPriorityOvertaking, newEntry);
+	}
+
+	/**
+	 * Removes the given element from the queue.
+	 */
+	public void remove(InternalJob toRemove) {
+		M3JobQueue.remove(toRemove);
+	}
+
+	/**
+	 * The given object has changed priority. Reshuffle the heap until it is
+	 * valid.
+	 */
+	public void resort(InternalJob entry) {
+		M3JobQueue.resort(dummy, allowConflictOvertaking, allowPriorityOvertaking, entry);
+	}
+
+	/**
+	 * Returns true if the queue is empty, and false otherwise.
+	 */
+	public boolean isEmpty() {
+		return M3JobQueue.isEmpty(dummy);
+	}
+
+	/**
+	 * Return greatest element without removing it, or null if empty
+	 */
+	public InternalJob peek() {
+		return M3JobQueue.peek(dummy);
+	}
+
+	@Override
+	public Iterator<InternalJob> iterator() {
+		return M3JobQueue.iterator(this);
+	}
+
+	/** for debugging only **/
+	@Override
+	public String toString() {
+		return M3JobQueue.toString(this);
+	}
+}

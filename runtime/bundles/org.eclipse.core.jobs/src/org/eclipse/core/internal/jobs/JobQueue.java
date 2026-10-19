@@ -11,10 +11,13 @@
  *  Contributors:
  *     IBM - Initial API and implementation
  *******************************************************************************/
+// Copyright (c) 2026 Hitesh Soliwal and Contributors to the Synexia Project.
+// M3 forwarding with original queue state.
 package org.eclipse.core.internal.jobs;
 
-import java.util.*;
-import org.eclipse.core.runtime.*;
+import java.util.Iterator;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 
 /**
  * A linked list based priority queue.
@@ -47,15 +50,14 @@ public final class JobQueue implements Iterable<InternalJob> {
 	 */
 	public JobQueue(boolean allowConflictOvertaking, boolean allowPriorityOvertaking) {
 		this.allowPriorityOvertaking = allowPriorityOvertaking;
-		//compareTo on dummy is never called
-		dummy = new InternalJob("Queue-Head") {//$NON-NLS-1$
+		// Retain the original anonymous head identity and facade-owned state.
+		dummy = new InternalJob("Queue-Head") { //$NON-NLS-1$
 			@Override
 			public IStatus run(IProgressMonitor m) {
-				return Status.OK_STATUS;
+				return M3JobQueue.headResult();
 			}
 		};
-		dummy.setNext(dummy);
-		dummy.setPrevious(dummy);
+		M3JobQueue.initializeHead(dummy);
 		this.allowConflictOvertaking = allowConflictOvertaking;
 	}
 
@@ -63,69 +65,28 @@ public final class JobQueue implements Iterable<InternalJob> {
 	 * remove all elements
 	 */
 	public void clear() {
-		dummy.setNext(dummy);
-		dummy.setPrevious(dummy);
+		M3JobQueue.clear(dummy);
 	}
 
 	/**
 	 * Return and remove the element with highest priority, or null if empty.
 	 */
 	public InternalJob dequeue() {
-		InternalJob toRemove = dummy.previous();
-		if (toRemove == dummy) {
-			return null;
-		}
-		return toRemove.remove();
+		return M3JobQueue.dequeue(dummy);
 	}
 
 	/**
 	 * Adds an item to the queue
 	 */
 	public void enqueue(InternalJob newEntry) {
-		//assert new entry is does not already belong to some other data structure
-		Assert.isTrue(newEntry.next() == null);
-		Assert.isTrue(newEntry.previous() == null);
-		InternalJob tail = dummy.next();
-		//overtake lower priority jobs. Only overtake conflicting jobs if allowed to
-		while (canOvertake(newEntry, tail)) {
-			tail = tail.next();
-		}
-		//new entry is smaller than tail
-		final InternalJob tailPrevious = tail.previous();
-		newEntry.setNext(tail);
-		newEntry.setPrevious(tailPrevious);
-		tailPrevious.setNext(newEntry);
-		tail.setPrevious(newEntry);
-	}
-
-	/**
-	 * Returns whether the new entry to overtake the existing queue entry.
-	 * @param newEntry The entry to be added to the queue
-	 * @param queueEntry The existing queue entry
-	 */
-	private boolean canOvertake(InternalJob newEntry, InternalJob queueEntry) {
-		//can never go past the end of the queue
-		if (queueEntry == dummy) {
-			return false;
-		}
-		//if the new entry was already in the wait queue, ensure it is re-inserted in correct position (bug 211799)
-		if (newEntry.getWaitQueueStamp() > 0 && newEntry.getWaitQueueStamp() < queueEntry.getWaitQueueStamp()) {
-			return true;
-		}
-		//if the new entry has lower priority, there is no need to overtake the existing entry
-		if (allowPriorityOvertaking && queueEntry.compareTo(newEntry) >= 0) {
-			return false;
-		}
-		//the new entry has higher priority, but only overtake the existing entry if the queue allows it
-		return allowConflictOvertaking || !newEntry.isConflicting(queueEntry);
+		M3JobQueue.enqueue(dummy, allowConflictOvertaking, allowPriorityOvertaking, newEntry);
 	}
 
 	/**
 	 * Removes the given element from the queue.
 	 */
 	public void remove(InternalJob toRemove) {
-		toRemove.remove();
-		//previous of toRemove might now bubble up
+		M3JobQueue.remove(toRemove);
 	}
 
 	/**
@@ -133,57 +94,31 @@ public final class JobQueue implements Iterable<InternalJob> {
 	 * valid.
 	 */
 	public void resort(InternalJob entry) {
-		remove(entry);
-		enqueue(entry);
+		M3JobQueue.resort(dummy, allowConflictOvertaking, allowPriorityOvertaking, entry);
 	}
 
 	/**
 	 * Returns true if the queue is empty, and false otherwise.
 	 */
 	public boolean isEmpty() {
-		return dummy.next() == dummy;
+		return M3JobQueue.isEmpty(dummy);
 	}
 
 	/**
 	 * Return greatest element without removing it, or null if empty
 	 */
 	public InternalJob peek() {
-		return dummy.previous() == dummy ? null : dummy.previous();
+		return M3JobQueue.peek(dummy);
 	}
 
 	@Override
 	public Iterator<InternalJob> iterator() {
-		return new Iterator<>() {
-			InternalJob pointer = dummy;
-
-			@Override
-			public boolean hasNext() {
-				if (pointer.previous() == dummy) {
-					pointer = null;
-				} else {
-					pointer = pointer.previous();
-				}
-				return pointer != null;
-			}
-
-			@Override
-			public InternalJob next() {
-				return pointer;
-			}
-
-			@Override
-			public void remove() {
-				throw new UnsupportedOperationException();
-			}
-
-		};
+		return M3JobQueue.iterator(this);
 	}
 
 	/** for debugging only **/
 	@Override
 	public String toString() {
-		List<InternalJob> all = new ArrayList<>();
-		iterator().forEachRemaining(all::add);
-		return all.toString();
+		return M3JobQueue.toString(this);
 	}
 }

@@ -1,0 +1,27 @@
+{
+  "schema": "M3_GENUINE_TEST_DEPENDENCY_V1",
+  "source_target": "eclipse.platform.releng.prereqs.sdk/eclipse-sdk-prereqs.target:324-328",
+  "target_aggregator_commit": "f1c1343f92f68a53dd3593fd3f98a3137e8003c0",
+  "artifacts": [
+    {
+      "coordinate": "org.assertj:assertj-core:3.27.7",
+      "extension": "jar",
+      "url": "https://repo.maven.apache.org/maven2/org/assertj/assertj-core/3.27.7/assertj-core-3.27.7.jar",
+      "checksum_url": "https://repo.maven.apache.org/maven2/org/assertj/assertj-core/3.27.7/assertj-core-3.27.7.jar.sha1",
+      "sha1": "2f4f64f054c9d618d4b1d89e7611559f5e2cfff7",
+      "sha256": "c4a445426c3c2861666863b842cc4ec7bbb1c4226fefd370b6d2fe83d6c4ff0f",
+      "bytes": 1399383,
+      "path": "/tmp/eclipse-m3-20261019/toolchain/test-deps/assertj-core-3.27.7.jar"
+    },
+    {
+      "coordinate": "org.assertj:assertj-core:3.27.7",
+      "extension": "pom",
+      "url": "https://repo.maven.apache.org/maven2/org/assertj/assertj-core/3.27.7/assertj-core-3.27.7.pom",
+      "checksum_url": "https://repo.maven.apache.org/maven2/org/assertj/assertj-core/3.27.7/assertj-core-3.27.7.pom.sha1",
+      "sha1": "085b34b36ca531996a44596c8cde4e47a916c51d",
+      "sha256": "95a10dcfb3ba9aad4d0b5e9c523a8d583377bee5ecd4ba37e19e55a34667f079",
+      "bytes": 3804,
+      "path": "/tmp/eclipse-m3-20261019/toolchain/test-deps/assertj-core-3.27.7.pom"
+    }
+  ]
+}

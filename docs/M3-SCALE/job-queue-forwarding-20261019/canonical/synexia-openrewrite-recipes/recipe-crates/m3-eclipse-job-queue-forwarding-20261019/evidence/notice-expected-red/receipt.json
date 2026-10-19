@@ -1,0 +1,11 @@
+{
+  "schema": "M3_JOB_QUEUE_NOTICE_REFUSAL_V1",
+  "tests": 1,
+  "failures": 1,
+  "errors": 0,
+  "skipped": 0,
+  "exitCode": 1,
+  "assertion": "exact original donor notice",
+  "finding": "Independent review found unsupported 2025 donor end-year in authored templates",
+  "scope": "source/license preservation; no behavioral contract changed"
+}

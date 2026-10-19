@@ -1,0 +1,2 @@
+OSGI_CLIENT_PASS queueIdentity=true liveIterator=true conflictWait=true sleepingWakeCancel=true
+EQUINOX_PASS framework=3.24.300.v20260721-1251 jobs=3.15.901.qualifier candidate=true actualHostWiring=true

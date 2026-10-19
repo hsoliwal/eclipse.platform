@@ -1,0 +1,72 @@
+Compiled from "M3JobQueue.java"
+class org.eclipse.core.internal.jobs.M3JobQueue$1 implements java.util.Iterator<org.eclipse.core.internal.jobs.InternalJob> {
+  org.eclipse.core.internal.jobs.InternalJob pointer;
+    descriptor: Lorg/eclipse/core/internal/jobs/InternalJob;
+
+  final org.eclipse.core.internal.jobs.JobQueue val$queue;
+    descriptor: Lorg/eclipse/core/internal/jobs/JobQueue;
+
+  org.eclipse.core.internal.jobs.M3JobQueue$1(org.eclipse.core.internal.jobs.JobQueue);
+    descriptor: (Lorg/eclipse/core/internal/jobs/JobQueue;)V
+    Code:
+       0: aload_0
+       1: aload_1
+       2: putfield      #1                  // Field val$queue:Lorg/eclipse/core/internal/jobs/JobQueue;
+       5: aload_0
+       6: invokespecial #7                  // Method java/lang/Object."<init>":()V
+       9: aload_0
+      10: aload_0
+      11: getfield      #1                  // Field val$queue:Lorg/eclipse/core/internal/jobs/JobQueue;
+      14: getfield      #13                 // Field org/eclipse/core/internal/jobs/JobQueue.dummy:Lorg/eclipse/core/internal/jobs/InternalJob;
+      17: putfield      #19                 // Field pointer:Lorg/eclipse/core/internal/jobs/InternalJob;
+      20: return
+
+  public boolean hasNext();
+    descriptor: ()Z
+    Code:
+       0: aload_0
+       1: getfield      #19                 // Field pointer:Lorg/eclipse/core/internal/jobs/InternalJob;
+       4: invokevirtual #22                 // Method org/eclipse/core/internal/jobs/InternalJob.previous:()Lorg/eclipse/core/internal/jobs/InternalJob;
+       7: aload_0
+       8: getfield      #1                  // Field val$queue:Lorg/eclipse/core/internal/jobs/JobQueue;
+      11: getfield      #13                 // Field org/eclipse/core/internal/jobs/JobQueue.dummy:Lorg/eclipse/core/internal/jobs/InternalJob;
+      14: if_acmpne     25
+      17: aload_0
+      18: aconst_null
+      19: putfield      #19                 // Field pointer:Lorg/eclipse/core/internal/jobs/InternalJob;
+      22: goto          36
+      25: aload_0
+      26: aload_0
+      27: getfield      #19                 // Field pointer:Lorg/eclipse/core/internal/jobs/InternalJob;
+      30: invokevirtual #22                 // Method org/eclipse/core/internal/jobs/InternalJob.previous:()Lorg/eclipse/core/internal/jobs/InternalJob;
+      33: putfield      #19                 // Field pointer:Lorg/eclipse/core/internal/jobs/InternalJob;
+      36: aload_0
+      37: getfield      #19                 // Field pointer:Lorg/eclipse/core/internal/jobs/InternalJob;
+      40: ifnull        47
+      43: iconst_1
+      44: goto          48
+      47: iconst_0
+      48: ireturn
+
+  public org.eclipse.core.internal.jobs.InternalJob next();
+    descriptor: ()Lorg/eclipse/core/internal/jobs/InternalJob;
+    Code:
+       0: aload_0
+       1: getfield      #19                 // Field pointer:Lorg/eclipse/core/internal/jobs/InternalJob;
+       4: areturn
+
+  public void remove();
+    descriptor: ()V
+    Code:
+       0: new           #28                 // class java/lang/UnsupportedOperationException
+       3: dup
+       4: invokespecial #30                 // Method java/lang/UnsupportedOperationException."<init>":()V
+       7: athrow
+
+  public java.lang.Object next();
+    descriptor: ()Ljava/lang/Object;
+    Code:
+       0: aload_0
+       1: invokevirtual #31                 // Method next:()Lorg/eclipse/core/internal/jobs/InternalJob;
+       4: areturn
+}

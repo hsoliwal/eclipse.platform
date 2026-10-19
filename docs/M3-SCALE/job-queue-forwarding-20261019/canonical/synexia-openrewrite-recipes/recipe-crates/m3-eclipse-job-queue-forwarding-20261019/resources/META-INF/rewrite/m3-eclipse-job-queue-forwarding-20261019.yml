@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2026 Hitesh Soliwal and Contributors to the Synexia Project
+# SPDX-License-Identifier: Apache-2.0
+type: specs.openrewrite.org/v1beta/recipe
+name: com.synexia.eclipse.JobQueueForwarding20261019
+displayName: M3 Eclipse JobQueue forwarding
+description: Preserve the exact intrusive Jobs queue contract in a stateless same-package owner with a forwarding facade.
+recipeList:
+  - com.synexia.rewrite.M3HashPinnedJavaSnapshotRecipe:
+      crateName: m3-eclipse-job-queue-forwarding-20261019

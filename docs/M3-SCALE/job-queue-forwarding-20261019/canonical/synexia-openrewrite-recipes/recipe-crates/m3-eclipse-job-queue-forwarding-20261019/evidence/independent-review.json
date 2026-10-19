@@ -1,0 +1,11 @@
+{
+  "schema": "M3_JOB_QUEUE_INDEPENDENT_REVIEW_V1",
+  "reviewer": "/root/toolchain_and_receipts",
+  "scope": "Read-only exact donor, two templates, frozen contract and actual InternalJob semantics",
+  "materialRuntimeFindings": [],
+  "provenanceFinding": "Original donor end year is 2012, not the unsupported 2025 in initial templates",
+  "resolution": "Exact original notice restored; separate 2026 attribution; observed notice RED 1/1/0/0 then final real SDK 9/0/0/0 and final candidate 39/0/0/0",
+  "noReviewerEditsOrTests": true,
+  "iteratorBytecodeReadback": "Two fields retained: InternalJob pointer and final JobQueue reference; same instruction sequence after private implementation/field-name relocation",
+  "facadeBytecodeReadback": "11 static M3 calls cover nine operations, head initialization and dummy run; one-argument constructor delegates to two-argument constructor"
+}

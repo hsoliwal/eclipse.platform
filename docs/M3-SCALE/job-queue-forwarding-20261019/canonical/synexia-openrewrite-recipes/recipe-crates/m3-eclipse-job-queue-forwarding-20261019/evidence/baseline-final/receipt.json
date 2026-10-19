@@ -1,0 +1,17 @@
+{
+  "schema": "M3_JOB_QUEUE_REAL_BASELINE_V1",
+  "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+  "exitCode": 0,
+  "tests": 38,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "productionSources": 36,
+  "testSources": 15,
+  "independentContracts": 28,
+  "upstreamQueueTests": 2,
+  "upstreamJobManagerRegressions": 8,
+  "javacRelease": 17,
+  "runtimeJdk": "Temurin 21.0.12.1+1",
+  "candidateTemplatesWereAbsentAtTestStart": true
+}

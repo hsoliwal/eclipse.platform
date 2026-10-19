@@ -1,0 +1,370 @@
+{
+  "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+  "sourceRoot": "runtime/bundles/org.eclipse.core.jobs",
+  "files": [
+    {
+      "path": ".classpath",
+      "mode": "100644",
+      "gitBlob": "81fe078c20c05db46a8281fbb1a72875a5322b45",
+      "sha256": "14bd863f6f090dd4c5d9de028c15c8ab425306f427391eaa6842f210c6c788c8",
+      "bytes": 368
+    },
+    {
+      "path": ".options",
+      "mode": "100644",
+      "gitBlob": "e554fb29ff0cfb863520d520dd58e2b7a5924f7e",
+      "sha256": "0a7f1a7e52206e830bb29d9ec21a9a44dafdb2509f8d38f20b0d9e9e06b63a99",
+      "bytes": 1089
+    },
+    {
+      "path": ".project",
+      "mode": "100644",
+      "gitBlob": "eac5e6eeee2a8250fed71e82408996db4b7f7039",
+      "sha256": "98a1605a4668d3703a9a8541b9bb5349186597b522c8d9df2ddc57675f1621c2",
+      "bytes": 844
+    },
+    {
+      "path": ".settings/org.eclipse.core.resources.prefs",
+      "mode": "100644",
+      "gitBlob": "99f26c0203a7844de00dbfc56e6a35d8ed3c022c",
+      "sha256": "4238e4eafab8309d5f1ee3c167db1e6bf254d5587daa652f1495da7c3942b4c4",
+      "bytes": 55
+    },
+    {
+      "path": ".settings/org.eclipse.core.runtime.prefs",
+      "mode": "100644",
+      "gitBlob": "5a0ad22d2a76684139fad95f6b8d209c7cd0d078",
+      "sha256": "4abe58d28a66c1a1de1f55984cc3b36977ac2cffe71dc9b4d82184125b48c15a",
+      "bytes": 48
+    },
+    {
+      "path": ".settings/org.eclipse.jdt.core.prefs",
+      "mode": "100644",
+      "gitBlob": "20ba5deb6f441a802218cc133a9200d3a30cbcbf",
+      "sha256": "ed649da10ef9bb6b601195a78e2109fc9e22ddd12eb67b2038dae9834cfee0bb",
+      "bytes": 36200
+    },
+    {
+      "path": ".settings/org.eclipse.jdt.ui.prefs",
+      "mode": "100644",
+      "gitBlob": "1b8e4d8746cfcba15375602ececb194fd494f8ba",
+      "sha256": "895fae1f4b9189cce9af5a65c62f570e25725246bb91dcc1dea840752a31a39e",
+      "bytes": 12676
+    },
+    {
+      "path": ".settings/org.eclipse.pde.prefs",
+      "mode": "100644",
+      "gitBlob": "6e2b78fc1a08b3b87b773dcac4b5935ab08db7c6",
+      "sha256": "2431b9240ea835ed5c54f5f4bc0bad0881e3c052162a58b91683efe3b2a705ca",
+      "bytes": 35
+    },
+    {
+      "path": "META-INF/MANIFEST.MF",
+      "mode": "100644",
+      "gitBlob": "7c47d72409e23e801d73edca70427ba0269e7289",
+      "sha256": "928e59ba6505a8f7352a693f7d9cd048869180a686c3167081a188aee903aeb8",
+      "bytes": 807
+    },
+    {
+      "path": "about.html",
+      "mode": "100644",
+      "gitBlob": "164f781a8fd2195f87c3d3d49946d56bce58992f",
+      "sha256": "ee66d2fb3b4c0d2ed2e7f698bc9ed4e3d6cf77fa5caf40ad03296125db1ac5f0",
+      "bytes": 1460
+    },
+    {
+      "path": "build.properties",
+      "mode": "100644",
+      "gitBlob": "c38abaeb3d9d7fc9678089c466021d2ab2db95c3",
+      "sha256": "aa0650a30be4bd58ba9141f5f73f5348db31d08f91979fd1820d54ebc417cc65",
+      "bytes": 763
+    },
+    {
+      "path": "forceQualifierUpdate.txt",
+      "mode": "100644",
+      "gitBlob": "b74ecc67266165222ad018d5f9fa1d5835237cd6",
+      "sha256": "e60142abd2d76926ff6a093ff7014364d0de5fa84097d0ebaf25f4473167ed1b",
+      "bytes": 286
+    },
+    {
+      "path": "plugin.properties",
+      "mode": "100644",
+      "gitBlob": "fac7b749d580072a6130c6f2e86ecdabf5101b02",
+      "sha256": "6646708ab0db12448785f85beed6919243174bcd3462483cfbc07b68dd7493c8",
+      "bytes": 653
+    },
+    {
+      "path": "plugin.xml",
+      "mode": "100644",
+      "gitBlob": "60fd36db0eb2f6736ecb894c0b74c0089ba6d1ff",
+      "sha256": "59b350edaddc0c90a7b4fdceca9bf6deb5d40d9bfa22792b0f122b2b7c1165dd",
+      "bytes": 405
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/Deadlock.java",
+      "mode": "100644",
+      "gitBlob": "f5b5ce84a54f8ab22e81f157f6e24109e25d36fc",
+      "sha256": "97eee5548c37a6f6f5f915fae0d325ef50599d222d1ca407093bcf53b9bf8b41",
+      "bytes": 1570
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/DeadlockDetector.java",
+      "mode": "100644",
+      "gitBlob": "d65d992a4bc0bc85dd7b0cbb50135f227da8b34a",
+      "sha256": "04bc72a3bcb2c5443f073790c737d64f9664bf47fe1abf8d1d91aac7ffd50e7b",
+      "bytes": 27078
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/ImplicitJobs.java",
+      "mode": "100644",
+      "gitBlob": "b8db9d1ed10451281f4e542054f2f0ca580dab86",
+      "sha256": "01f59a2ae7ea9350065088b1604de756eba79ac4c74ca9ccbe48e01dd8434d30",
+      "bytes": 9313
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/InternalJob.java",
+      "mode": "100644",
+      "gitBlob": "850cead55127938529e1108aa94b20c3ac6ffbf7",
+      "sha256": "a68b0d3e905e0def6d6d83d57faca71ee75de72930bd77613d48b46a44e3cdc6",
+      "bytes": 15195
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/InternalJobGroup.java",
+      "mode": "100644",
+      "gitBlob": "a3daa24f38327f13c8fb6850209cc71beaa24c9a",
+      "sha256": "b008665544ceb7949987e75b1dbdeadd5922975907d647f58d68afbb2999633c",
+      "bytes": 12429
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/InternalWorker.java",
+      "mode": "100644",
+      "gitBlob": "557ab70eb82392c7817cba3af7c4ddde9ecfc1c1",
+      "sha256": "cfb202dd9313be7a9626f4b0ce039762522d553784355746bb6fc1340a02ce10",
+      "bytes": 2162
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/JobActivator.java",
+      "mode": "100644",
+      "gitBlob": "16d4dbde808fbad16b20d43ca4ded7db9a67e54d",
+      "sha256": "1b2ded33b13effa488027f57c73603f35616689f4da2ed6eab7564145a010ab2",
+      "bytes": 2226
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/JobChangeEvent.java",
+      "mode": "100644",
+      "gitBlob": "a848e9bdad018813354b381872faa8016fe37f53",
+      "sha256": "23fae1973af144a16aa653e8fc22456bb02df488fe7334c2e339821bd7552222",
+      "bytes": 2519
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/JobListeners.java",
+      "mode": "100644",
+      "gitBlob": "c0dfe10d7aea550ab3be0894d915178f7f23f1a2",
+      "sha256": "91aa2b7d7a58535bcf4ffc346f911c0804097ad95e3aa129292a47ca8bbfbdd3",
+      "bytes": 8042
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/JobManager.java",
+      "mode": "100644",
+      "gitBlob": "35c65144e03a52c0bfc3b2391e61cc950e51035e",
+      "sha256": "38b263c2c94c545d23a48aba1363a1848efd1dcf23836e05c499b5ca5453c902",
+      "bytes": 65670
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/JobMessages.java",
+      "mode": "100644",
+      "gitBlob": "de321eebf53d9f20a79b6d36262d1e4f38b646ea",
+      "sha256": "60f786e5a1c8bb65c79541419028f9bae1fe4a2a4f36fcd44a0baddd3a9e2df9",
+      "bytes": 1873
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/JobOSGiUtils.java",
+      "mode": "100644",
+      "gitBlob": "dc071cebd8b5b40b25a8c4d979c01b80fcbea752",
+      "sha256": "ab8c67d6486744d52b937f6ee710779da5c302432bd85ee937b6705e2ebeaf7b",
+      "bytes": 3753
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/JobQueue.java",
+      "mode": "100644",
+      "gitBlob": "0a4c0940b5cdfe1b3a586895ad59b8ae1695fe8a",
+      "sha256": "96089bb406f2a3b9573c2a6a196c0806ecc564254b3ae1343bb0dac793e86d01",
+      "bytes": 5149
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/JobStatus.java",
+      "mode": "100644",
+      "gitBlob": "7a7b1e6bd004cc7a8cead86320063aa59fcb940f",
+      "sha256": "6b768418cf811fb14ddbbdea2bf94c676c1d958d0d025003972d707cc9446310",
+      "bytes": 1145
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/LockManager.java",
+      "mode": "100644",
+      "gitBlob": "9d8a68348fb388c513a2a29b16b66dcf37949413",
+      "sha256": "1923fe4a5abbbda0d0be94f9d1826d659d468f21c4d79ddb109860ee9a646a73",
+      "bytes": 9441
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/ObjectMap.java",
+      "mode": "100644",
+      "gitBlob": "b7976bf4bd087210b5be8e15ee2e890879fb9125",
+      "sha256": "b0ca2d0ae3610568fb595860f064321a155191f081f4d4c4d7779a530068e76b",
+      "bytes": 7739
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/OrderedLock.java",
+      "mode": "100644",
+      "gitBlob": "4f045bda651f1d1a8af59c3844b5083e3057d68c",
+      "sha256": "1b1181b7fb0840eb71a33075bc89b3da77ee5d58f092de02fdc8fb5bf6e8af8b",
+      "bytes": 10930
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/Semaphore.java",
+      "mode": "100644",
+      "gitBlob": "1bcba3e4c6c5e5dbc174f6d01525e39721e5b8c6",
+      "sha256": "4b7ecbdd6c75fa14d8dd09462bc0a185e1c6b1664b5b175cb56d1f28aedf130a",
+      "bytes": 2242
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/ThreadJob.java",
+      "mode": "100644",
+      "gitBlob": "a7e50344b5b8eafcbe33303903eb0bea2823d9e1",
+      "sha256": "4ee9c283a024c282c164e08ee5ea8b7f63d3939ea3f1818f11e6440724ca5127",
+      "bytes": 19188
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/Worker.java",
+      "mode": "100644",
+      "gitBlob": "3a73d1cb2cb2dcf2ec0332d958c2d9421e9711f2",
+      "sha256": "3e872e7df8b406af4b5c0b939f4b4180c06eb025829f26d1b64f8afb6c38e18a",
+      "bytes": 3782
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/WorkerPool.java",
+      "mode": "100644",
+      "gitBlob": "9eabb0e2609e1f06cc88d0559ac84095f249a014",
+      "sha256": "9e40108723c9ea8b01a1db2ca0d3f2a4cb870c8c926479c47cadddffc6d86d88",
+      "bytes": 8690
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/m3/M3Rules.java",
+      "mode": "100644",
+      "gitBlob": "e9804316372c01291136080e2b5a3bbd26e2505e",
+      "sha256": "512dfb312e823062fd456f0c08840f752bd58fd01740ccd5ee6b58a827d3d2fc",
+      "bytes": 4809
+    },
+    {
+      "path": "src/org/eclipse/core/internal/jobs/messages.properties",
+      "mode": "100644",
+      "gitBlob": "20ba65880237372bb3f8ef25b99e18e0ef5894b1",
+      "sha256": "c882ad7ce79714e3a25a906e6a90656ff05aa333459ecaa985d22745e61c69e4",
+      "bytes": 1241
+    },
+    {
+      "path": "src/org/eclipse/core/runtime/jobs/IJobChangeEvent.java",
+      "mode": "100644",
+      "gitBlob": "9a105343b402271e851c0f582733c7534a4eef2c",
+      "sha256": "41d0183a2801139504b421f4388865c385b24185e0d07f71b0950e304ae4aeac",
+      "bytes": 2010
+    },
+    {
+      "path": "src/org/eclipse/core/runtime/jobs/IJobChangeListener.java",
+      "mode": "100644",
+      "gitBlob": "de64624963b55a9ca666eb5763106974450e9148",
+      "sha256": "6cad7e54199417f3b89408fddcc5df9db03984105fd16885580ca6bc60556c98",
+      "bytes": 4283
+    },
+    {
+      "path": "src/org/eclipse/core/runtime/jobs/IJobFunction.java",
+      "mode": "100644",
+      "gitBlob": "f4e48492178ecc4cf2bdb909110d7ffd370cc1b6",
+      "sha256": "19dfb988b8911536e1b6e0f8843b041c83ebbbb11a495f79d2b9f5e3198a6836",
+      "bytes": 2456
+    },
+    {
+      "path": "src/org/eclipse/core/runtime/jobs/IJobManager.java",
+      "mode": "100644",
+      "gitBlob": "15f5521c592e2ff0d3084ad667a3879e7eddb04e",
+      "sha256": "cde6a0b7f39c92d8ffdaae614b1248be2bf59d33e625a80fe836720735cb12e8",
+      "bytes": 17889
+    },
+    {
+      "path": "src/org/eclipse/core/runtime/jobs/IJobStatus.java",
+      "mode": "100644",
+      "gitBlob": "2ded2ff4879e3f874826f8ad7dfe9ac8bfb6d5a3",
+      "sha256": "deb64c75ce1ff8bf1ac5a8d4275fae087295ed548afc967cae335c6faf1e3d23",
+      "bytes": 1058
+    },
+    {
+      "path": "src/org/eclipse/core/runtime/jobs/ILock.java",
+      "mode": "100644",
+      "gitBlob": "b74b9d9840c8b12a4dc504f9075b6bfcdb4333a8",
+      "sha256": "a0365c5ca62e8639f4b27d6af297dbe4092a648845676e53feac99a9db34dfc9",
+      "bytes": 4598
+    },
+    {
+      "path": "src/org/eclipse/core/runtime/jobs/ISchedulableOperation.java",
+      "mode": "100644",
+      "gitBlob": "9b34f93291ef6f5eb3e893115260e690fafe4d5a",
+      "sha256": "6d2c5c74304094eb4ac168bd1d21e8e36a5b2f481ce59752d98adc2a5f95c3ca",
+      "bytes": 1652
+    },
+    {
+      "path": "src/org/eclipse/core/runtime/jobs/ISchedulingRule.java",
+      "mode": "100644",
+      "gitBlob": "671abb111807b78377eeb5a6e48695854eaedcc9",
+      "sha256": "4eca892b5be91919352d890bdd452e9601dba23d00c7ccb69043054c0fc82de0",
+      "bytes": 3329
+    },
+    {
+      "path": "src/org/eclipse/core/runtime/jobs/Job.java",
+      "mode": "100644",
+      "gitBlob": "86651cf5f0f2c3bb772a11085ef32ced37302e2e",
+      "sha256": "c4806faba6972feda245853331703c3ba758c0df0850297a67a612685283ba36",
+      "bytes": 34637
+    },
+    {
+      "path": "src/org/eclipse/core/runtime/jobs/JobChangeAdapter.java",
+      "mode": "100644",
+      "gitBlob": "76f19355167a62a354685f4094b726d7eef4db2a",
+      "sha256": "ddfb1cbf44f30cfe4765b7d88982343bccc14694fecf8afafc1bcab55245f7f4",
+      "bytes": 1466
+    },
+    {
+      "path": "src/org/eclipse/core/runtime/jobs/JobGroup.java",
+      "mode": "100644",
+      "gitBlob": "f01f4ac9a3db88566f41846a71afdaf62b33e4cd",
+      "sha256": "3a7ba90f4e88f0205fa544cb71ad88e2c004d1bcd3df8d2509a8b3745af2ce5f",
+      "bytes": 13123
+    },
+    {
+      "path": "src/org/eclipse/core/runtime/jobs/LockListener.java",
+      "mode": "100644",
+      "gitBlob": "a2a31926d9c4210f60529a009698341f9d42644f",
+      "sha256": "35d03ddf9176c915ba51b3d86f1f857fdca70ae8ef65a526752471e1ae5a64af",
+      "bytes": 2695
+    },
+    {
+      "path": "src/org/eclipse/core/runtime/jobs/MultiRule.java",
+      "mode": "100644",
+      "gitBlob": "fe2b0dccd8b837146bc1f648745bf2cf4e2af111",
+      "sha256": "ec0994c463c5de742f222036d66efbf1ef074ab46c06e36b98ac0bd3c8189fbf",
+      "bytes": 3376
+    },
+    {
+      "path": "src/org/eclipse/core/runtime/jobs/ProgressProvider.java",
+      "mode": "100644",
+      "gitBlob": "1c5edd439ee2e33b5a934033494904f64be6ddf5",
+      "sha256": "52b80040e77ae7433e7bab6e01b02753aa9b47e9eb02da5ed331d4d8703f8060",
+      "bytes": 4589
+    },
+    {
+      "path": "src/org/eclipse/core/runtime/jobs/package.html",
+      "mode": "100644",
+      "gitBlob": "50d7e859dffc2d1c384e63f67ae6090786cb3fb5",
+      "sha256": "0b6bd31d99dfb7b7680c52168183414013d6d3c0e27c4d231ba90510bdb983ec",
+      "bytes": 815
+    }
+  ]
+}

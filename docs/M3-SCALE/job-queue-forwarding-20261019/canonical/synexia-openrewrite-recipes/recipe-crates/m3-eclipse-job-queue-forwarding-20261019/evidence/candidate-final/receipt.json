@@ -1,0 +1,14 @@
+{
+  "schema": "M3_JOB_QUEUE_RUNTIME_FINAL_V1",
+  "tests": 39,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "exitCode": 0,
+  "productionSources": 37,
+  "testSources": 15,
+  "javacRelease": 17,
+  "baselineTests": 38,
+  "additionalCandidateTest": "M3JobQueueOwnershipTest",
+  "baselineContractSha256": "591f66e9ebffe0888afea2494e5f10a083d3a4d6c5c393f173927b95e04d6870"
+}

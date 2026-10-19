@@ -1,0 +1,55 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------< com.synexia.m3:eclipse-job-queue-runtime-proof >-----------
+[INFO] Building eclipse-job-queue-runtime-proof 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ eclipse-job-queue-runtime-proof ---
+[INFO] Copying 2 resources from ../../../../../job-queue-authoring/baseline-bundle/src to ../../../../../job-queue-authoring/baseline-final-build/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ eclipse-job-queue-runtime-proof ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 36 source files with javac [debug release 17] to ../../../../../job-queue-authoring/baseline-final-build/classes
+[WARNING] /tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/Job.java:[182,27] create(java.lang.String,org.eclipse.core.runtime.ICoreRunnable) in org.eclipse.core.runtime.jobs.Job is potentially ambiguous with create(java.lang.String,org.eclipse.core.runtime.jobs.IJobFunction) in org.eclipse.core.runtime.jobs.Job
+[WARNING] /tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/runtime/jobs/Job.java:[230,27] createSystem(java.lang.String,org.eclipse.core.runtime.ICoreRunnable) in org.eclipse.core.runtime.jobs.Job is potentially ambiguous with createSystem(java.lang.String,org.eclipse.core.runtime.jobs.IJobFunction) in org.eclipse.core.runtime.jobs.Job
+[WARNING] /tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobManager.java:[447,25] possible fall-through into case
+[WARNING] /tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobManager.java:[490,25] possible fall-through into case
+[WARNING] /tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/JobManager.java:[511,25] possible fall-through into case
+[WARNING] /tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/ObjectMap.java:[107,48] unchecked conversion
+  required: java.util.Set<java.util.Map.Entry<K,V>>
+  found:    java.util.Set
+[WARNING] /tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/ObjectMap.java:[54,23] possible 'this' escape before subclass is fully initialized
+[WARNING] /tmp/eclipse-m3-20261019/job-queue-authoring/baseline-bundle/src/org/eclipse/core/internal/jobs/Worker.java:[35,43] possible 'this' escape before subclass is fully initialized
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ eclipse-job-queue-runtime-proof ---
+[INFO] skip non existing resourceDirectory /tmp/eclipse-m3-20261019/synexia/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-job-queue-forwarding-20261019/proof/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ eclipse-job-queue-runtime-proof ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 15 source files with javac [debug release 17] to ../../../../../job-queue-authoring/baseline-final-build/test-classes
+[WARNING] /tmp/eclipse-m3-20261019/synexia/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-job-queue-forwarding-20261019/proof/src/test/java/org/eclipse/core/tests/harness/FussyProgressMonitor.java:[54,24] possible 'this' escape before subclass is fully initialized
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ eclipse-job-queue-runtime-proof ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.eclipse.core.tests.runtime.jobs.JobTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.397 s -- in org.eclipse.core.tests.runtime.jobs.JobTest
+[INFO] Running org.eclipse.core.tests.runtime.jobs.JobQueueTest
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in org.eclipse.core.tests.runtime.jobs.JobQueueTest
+[INFO] Running org.eclipse.core.internal.jobs.JobQueueContractTest
+[INFO] Tests run: 28, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.087 s -- in org.eclipse.core.internal.jobs.JobQueueContractTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 38, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  5.728 s
+[INFO] Finished at: 2026-10-18T23:36:33-05:00
+[INFO] ------------------------------------------------------------------------

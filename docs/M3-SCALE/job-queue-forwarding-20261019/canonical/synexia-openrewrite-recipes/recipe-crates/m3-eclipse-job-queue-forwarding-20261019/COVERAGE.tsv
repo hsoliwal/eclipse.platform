@@ -1,0 +1,4 @@
+component	pinned_source	status	next_gate
+JobQueue facade and same-package M3 owner	eclipse.platform@c962a6fa6c9e0845714d14709ec19f023d8c2731	2 actual SDK outputs; 38 baseline and 39 candidate tests; exact APIs; full Jobs compile and real Equinox qualified	Receiving Platform Tycho/PDE and hosted CI
+Remaining Jobs scheduler and locks	eclipse.platform@c962a6fa6c9e0845714d14709ec19f023d8c2731	Original implementation retained; selected scheduling regressions and full bundle linkage exercised	Independent contract and existing-owner admission before another forwarding cut
+Remaining Eclipse framework	Separately pinned existing receivers	Not claimed complete by this bounded queue packet	Continue qualified owner migrations and final composition

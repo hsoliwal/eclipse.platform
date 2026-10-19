@@ -1,0 +1,65 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------< com.synexia.m3:eclipse-job-queue-runtime-proof >-----------
+[INFO] Building eclipse-job-queue-runtime-proof 1.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ eclipse-job-queue-runtime-proof ---
+[INFO] Copying 2 resources from ../../../../../job-queue-authoring/baseline-bundle/src to ../../../../../job-queue-authoring/baseline-build/classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ eclipse-job-queue-runtime-proof ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ eclipse-job-queue-runtime-proof ---
+[INFO] skip non existing resourceDirectory /tmp/eclipse-m3-20261019/synexia/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-job-queue-forwarding-20261019/proof/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ eclipse-job-queue-runtime-proof ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- surefire:3.2.5:test (default-test) @ eclipse-job-queue-runtime-proof ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running org.eclipse.core.internal.jobs.M3JobQueueOwnershipTest
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.043 s <<< FAILURE! -- in org.eclipse.core.internal.jobs.M3JobQueueOwnershipTest
+[ERROR] org.eclipse.core.internal.jobs.M3JobQueueOwnershipTest.actualCandidateHasOneStatelessPackagePrivateOwner -- Time elapsed: 0.022 s <<< ERROR!
+java.lang.ClassNotFoundException: org.eclipse.core.internal.jobs.M3JobQueue
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:641)
+	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:188)
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:526)
+	at java.base/java.lang.Class.forName0(Native Method)
+	at java.base/java.lang.Class.forName(Class.java:423)
+	at java.base/java.lang.Class.forName(Class.java:414)
+	at org.eclipse.core.internal.jobs.M3JobQueueOwnershipTest.actualCandidateHasOneStatelessPackagePrivateOwner(M3JobQueueOwnershipTest.java:12)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1596)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   M3JobQueueOwnershipTest.actualCandidateHasOneStatelessPackagePrivateOwner:12 » ClassNotFound org.eclipse.core.internal.jobs.M3JobQueue
+[INFO] 
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.068 s
+[INFO] Finished at: 2026-10-18T23:33:17-05:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:3.2.5:test (default-test) on project eclipse-job-queue-runtime-proof: 
+[ERROR] 
+[ERROR] Please refer to /tmp/eclipse-m3-20261019/job-queue-authoring/baseline-build/surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

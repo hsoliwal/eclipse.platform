@@ -1,0 +1,12 @@
+{
+  "schema": "M3_JOB_QUEUE_BASELINE_REFUSAL_V1",
+  "stage": "real original queue JUnit baseline",
+  "sourceCommit": "c962a6fa6c9e0845714d14709ec19f023d8c2731",
+  "exitCode": 1,
+  "tests": 30,
+  "failures": 0,
+  "errors": 8,
+  "skipped": 0,
+  "signature": "ClassCastException: JobManager$1 cannot be cast to JobQueueContractTest$Rule during actual JobManager.validateRule",
+  "ruling": "Log foreign validation rules safely; preserve every enqueue and callback assertion unchanged. Candidate does not yet exist."
+}
