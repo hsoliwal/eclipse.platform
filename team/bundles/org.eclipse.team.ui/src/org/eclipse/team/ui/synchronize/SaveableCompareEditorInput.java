@@ -231,7 +231,7 @@ public abstract class SaveableCompareEditorInput extends CompareEditorInput impl
 
 		if (getSaveable() instanceof SaveableComparison) {
 			SaveableComparison scm = (SaveableComparison) saveable;
-			propertyListener = (_, propId) -> {
+			propertyListener = (unused, propId) -> {
 				if (propId == SaveableComparison.PROP_DIRTY) {
 					setDirty(saveable.isDirty());
 				}
@@ -497,7 +497,7 @@ public abstract class SaveableCompareEditorInput extends CompareEditorInput impl
 			dsp.addPropertyChangeListener(pcl);
 			Control c= newViewer.getControl();
 			c.addDisposeListener(
-				_ -> dsp.removePropertyChangeListener(pcl)
+				unused -> dsp.removePropertyChangeListener(pcl)
 			);
 		}
 		return newViewer;

@@ -86,7 +86,7 @@ public class XMLCompareEditCopyIdMapDialog extends StatusDialog {
 
 		fIdMapText= new Text(inner, SWT.BORDER);
 		fIdMapText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		fIdMapText.addModifyListener(_ -> doValidation());
+		fIdMapText.addModifyListener(unused -> doValidation());
 
 		fIdMapText.setFocus();
 

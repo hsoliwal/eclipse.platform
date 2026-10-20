@@ -98,7 +98,7 @@ public class IOConsoleTests {
 	private final Queue<IStatus> loggedErrors = new ConcurrentLinkedQueue<>();
 
 	/** Listener to count error messages while testing. */
-	private final ILogListener errorLogListener = (IStatus status, String _) -> {
+	private final ILogListener errorLogListener = (IStatus status, String unused) -> {
 		if (status.matches(IStatus.ERROR)) {
 			loggedErrors.add(status);
 		}
@@ -326,9 +326,9 @@ public class IOConsoleTests {
 		final IOConsoleTestUtil c = getTestUtil("Test input file");
 		// open default output stream to match usual behavior where two output
 		// streams are open and to prevent premature console closing
-		try (IOConsoleOutputStream _ = c.getDefaultOutputStream()) {
+		try (IOConsoleOutputStream unused = c.getDefaultOutputStream()) {
 			try (InputStream in = new ByteArrayInputStream(new byte[0])) {
-				try (InputStream _ = c.getConsole().getInputStream()) {
+				try (InputStream unused2 = c.getConsole().getInputStream()) {
 					// just close input stream
 				}
 				c.getConsole().setInputStream(in);

@@ -90,7 +90,7 @@ public class Bug_303517 {
 		// Core.resources still thinks the file exists
 		assertThat(f).matches(IResource::exists, "exists");
 		assertThrows(CoreException.class, () -> {
-			try (InputStream _ = f.getContents()) {
+			try (InputStream unused = f.getContents()) {
 			}
 		});
 
@@ -114,7 +114,7 @@ public class Bug_303517 {
 		// Touch on file-system
 		touchInFilesystem(f);
 		CoreException exception = assertThrows(CoreException.class, () -> {
-			try (InputStream _ = f.getContents(false)) {
+			try (InputStream unused = f.getContents(false)) {
 			}
 		});
 		// File is out-of-sync, so this is good.
@@ -125,7 +125,7 @@ public class Bug_303517 {
 		Job.getJobManager().join(ResourcesPlugin.FAMILY_AUTO_REFRESH, createTestMonitor());
 
 		// File is now in sync.
-		try (InputStream _ = f.getContents(false)) {
+		try (InputStream unused = f.getContents(false)) {
 		}
 	}
 
@@ -153,7 +153,7 @@ public class Bug_303517 {
 		// with IResourceStatus.RESOURCE_NOT_FOUND error code.
 		f.getLocation().toFile().delete();
 		CoreException exception = assertThrows(CoreException.class, () -> {
-			try (InputStream _ = f.getContents(true)) {
+			try (InputStream unused = f.getContents(true)) {
 			}
 		});
 		assertEquals(IResourceStatus.RESOURCE_NOT_FOUND, exception.getStatus().getCode());

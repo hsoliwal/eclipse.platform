@@ -1498,7 +1498,7 @@ public class TestRunnerViewPart extends ViewPart {
 	}
 
 	private void addResizeListener(Composite parent) {
-		parent.addControlListener(ControlListener.controlResizedAdapter(_ -> {
+		parent.addControlListener(ControlListener.controlResizedAdapter(unused -> {
 			computeOrientation();
 		}));
 	}
@@ -1633,7 +1633,7 @@ public class TestRunnerViewPart extends ViewPart {
 
 		fActivateOnErrorAction = new ActivateOnErrorAction();
 		viewMenu.add(fActivateOnErrorAction);
-		fViewMenuListener = _ -> fActivateOnErrorAction.update();
+		fViewMenuListener = unused -> fActivateOnErrorAction.update();
 
 		viewMenu.addMenuListener(fViewMenuListener);
 

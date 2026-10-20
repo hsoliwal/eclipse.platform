@@ -41,10 +41,10 @@ public class ImageManager {
 			Viewer v = getViewer(configuration);
 			if (v != null) {
 				// It is best to dispose the images when the view is disposed (see bug 198383)
-				v.getControl().addDisposeListener(_ -> newRegistry.dispose());
+				v.getControl().addDisposeListener(unused -> newRegistry.dispose());
 			} else {
 				// The viewer wasn't available so we'll dispose when the context is disposed
-				context.getCache().addCacheListener(_ -> newRegistry.dispose());
+				context.getCache().addCacheListener(unused -> newRegistry.dispose());
 			}
 			manager = newRegistry;
 		}

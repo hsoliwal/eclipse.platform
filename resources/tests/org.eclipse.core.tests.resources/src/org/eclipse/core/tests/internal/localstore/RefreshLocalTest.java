@@ -176,7 +176,7 @@ public class RefreshLocalTest implements ICoreConstants {
 		IFile file = project.getFile("file");
 		final IFile hackFile = file;
 		final Workspace workspace = (Workspace) getWorkspace();
-		IWorkspaceRunnable operation = _ -> {
+		IWorkspaceRunnable operation = unused -> {
 			workspace.createResource(hackFile, false);
 			((Resource) hackFile).getResourceInfo(false, true).set(M_LOCAL_EXISTS);
 		};

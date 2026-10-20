@@ -479,14 +479,14 @@ public class MoveTest {
 		IFile ghostFile = project.getFile("ghost");
 		final IFile hackFile = ghostFile;
 		final Workspace workspace = (Workspace) getWorkspace();
-		IWorkspaceRunnable operation = _ -> workspace.createResource(hackFile, false);
+		IWorkspaceRunnable operation = unused -> workspace.createResource(hackFile, false);
 		workspace.run(operation, null);
 		IFile fileDestination = project.getFile("destination");
 		assertThrows(CoreException.class, () -> ghostFile.move(fileDestination.getFullPath(), true, null));
 
 		/* move file over a phantom */
 		assertTrue(ghostFile.exists());
-		operation = _ -> ((Resource) hackFile).convertToPhantom();
+		operation = unused -> ((Resource) hackFile).convertToPhantom();
 		workspace.run(operation, null);
 		assertFalse(ghostFile.exists());
 		ResourceInfo info = ((File) ghostFile).getResourceInfo(true, false);

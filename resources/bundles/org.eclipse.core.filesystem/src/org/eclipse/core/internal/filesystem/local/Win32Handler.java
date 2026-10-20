@@ -268,8 +268,8 @@ public class Win32Handler extends NativeHandler {
 				// Determine the real type of the link target and follow-links to the eventual target
 				fileInfo.setDirectory(Files.isDirectory(path));
 			}
-		} catch (NoSuchFileException _) { // file just does not exist
-		} catch (IOException _) {
+		} catch (NoSuchFileException unused) { // file just does not exist
+		} catch (IOException unused) {
 			// Leave alone and continue.
 			fileInfo.setError(IFileInfo.IO_ERROR);
 		}

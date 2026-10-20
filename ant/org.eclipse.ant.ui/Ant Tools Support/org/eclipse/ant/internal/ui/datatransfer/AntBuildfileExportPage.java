@@ -210,7 +210,7 @@ public class AntBuildfileExportPage extends WizardPage {
 		junitdirText.setText("junit"); //$NON-NLS-1$
 		junitdirText.setLayoutData(data);
 
-		ModifyListener listener = _ -> updateEnablement();
+		ModifyListener listener = unused -> updateEnablement();
 		buildfilenameText.addModifyListener(listener);
 		junitdirText.addModifyListener(listener);
 	}

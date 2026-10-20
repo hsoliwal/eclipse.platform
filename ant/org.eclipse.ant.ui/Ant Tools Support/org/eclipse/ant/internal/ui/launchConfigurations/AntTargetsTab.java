@@ -505,7 +505,7 @@ public class AntTargetsTab extends AbstractLaunchConfigurationTab {
 			}
 			final CoreException[] exceptions = new CoreException[1];
 			try {
-				IRunnableWithProgress operation = _ -> {
+				IRunnableWithProgress operation = unused -> {
 					try {
 						fAllTargets = AntUtil.getTargets(expandedLocation, fLaunchConfiguration);
 					}

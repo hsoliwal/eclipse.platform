@@ -244,7 +244,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 			fControl.addMouseListener(this);
 			fControl.addMouseMoveListener(this);
 			fControl.addDisposeListener(
-				_ -> fControl= null
+				unused -> fControl= null
 			);
 		}
 

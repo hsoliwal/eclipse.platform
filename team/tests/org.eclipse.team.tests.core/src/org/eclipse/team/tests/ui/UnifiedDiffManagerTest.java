@@ -99,7 +99,7 @@ public class UnifiedDiffManagerTest {
 	private IFile file;
 	private ITextEditor editor;
 	private final List<IStatus> loggedErrors = synchronizedList(new ArrayList<>());
-	private final ILogListener logListener = (status, _) -> {
+	private final ILogListener logListener = (status, unused) -> {
 		if (status.getSeverity() == IStatus.ERROR) {
 			loggedErrors.add(status);
 		}

@@ -1,0 +1,175 @@
+repo	kind	path	line	text
+eclipse.platform	unnamed_decl	resources/bundles/org.eclipse.core.filesystem/src/org/eclipse/core/internal/filesystem/local/Win32Handler.java	271	  } catch (NoSuchFileException _) { // file just does not exist
+eclipse.platform	unnamed_decl	resources/bundles/org.eclipse.core.filesystem/src/org/eclipse/core/internal/filesystem/local/Win32Handler.java	272	  } catch (IOException _) {
+eclipse.platform	unnamed_decl	resources/bundles/org.eclipse.core.resources/src/org/eclipse/core/internal/localstore/SafeChunkyOutputStream.java	88	  try (OutputStream _ = out) {
+eclipse.platform	unnamed_decl	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/CompareUIPlugin.java	1911	     try (InputStream _ = new BufferedInputStream(is)) {
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.launching/src/org/eclipse/ant/internal/launching/debug/model/AntLineBreakpoint.java	73	  IWorkspaceRunnable wr = _ -> {
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.launching/src/org/eclipse/ant/internal/launching/launchConfigurations/ContributedClasspathEntriesEntry.java	188	     String[] names = bundleFolder.list((_, name) -> name.endsWith(".jar")); //$NON-NLS-1$
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Ant Editor/org/eclipse/ant/internal/ui/editor/AntEditorCompletionProcessor.java	1764	   IRunnableWithProgress runnable = _ -> {
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Ant Editor/org/eclipse/ant/internal/ui/editor/TaskDescriptionProvider.java	114	   IRunnableWithProgress runnable = _ -> fgDefault.initialize();
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Ant Editor/org/eclipse/ant/internal/ui/editor/templates/AntTemplateInformationControlCreator.java	32	  fControl.addDisposeListener(_ -> fControl = null);
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Ant Tools Support/org/eclipse/ant/internal/ui/console/JavacMarkerCreator.java	111	  IWorkspaceRunnable wr = _ -> {
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Ant Tools Support/org/eclipse/ant/internal/ui/datatransfer/AntBuildfileExportPage.java	213	  ModifyListener listener = _ -> updateEnablement();
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Ant Tools Support/org/eclipse/ant/internal/ui/datatransfer/AntNewJavaProjectPage.java	109	 private final ModifyListener fNameModifyListener = _ -> setPageComplete(validatePage());
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Ant Tools Support/org/eclipse/ant/internal/ui/datatransfer/AntNewJavaProjectPage.java	89	 private final ModifyListener fLocationModifyListener = _ -> {
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Ant Tools Support/org/eclipse/ant/internal/ui/datatransfer/BuildFileCreator.java	284	  FilenameFilter filter = (_, name) -> name.endsWith(".xml"); //$NON-NLS-1$
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Ant Tools Support/org/eclipse/ant/internal/ui/launchConfigurations/AntTargetsTab.java	508	    IRunnableWithProgress operation = _ -> {
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Ant Tools Support/org/eclipse/ant/internal/ui/model/AntModelCore.java	78	  IWorkspaceRunnable runnable = _ -> {
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Ant Tools Support/org/eclipse/ant/internal/ui/preferences/AddCustomDialog.java	141	  nameField.addModifyListener(_ -> updateStatus());
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Ant Tools Support/org/eclipse/ant/internal/ui/preferences/AddCustomDialog.java	291	  ISelectionChangedListener listener = _ -> updateStatus();
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Ant Tools Support/org/eclipse/ant/internal/ui/preferences/AddCustomDialog.java	297	  selectionGroup.addDoubleClickListener(_ -> {
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Ant Tools Support/org/eclipse/ant/internal/ui/preferences/AddPropertyDialog.java	68	  fNameText.addModifyListener(_ -> updateButtons());
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Ant Tools Support/org/eclipse/ant/internal/ui/preferences/AddPropertyDialog.java	80	  fValueText.addModifyListener(_ -> updateButtons());
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Ant Tools Support/org/eclipse/ant/internal/ui/preferences/AntClasspathPage.java	161	  File[] matches = location.listFiles((FilenameFilter) (_, name) -> name.toLowerCase().endsWith(extension));
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Ant Tools Support/org/eclipse/ant/internal/ui/preferences/AntPreviewerUpdater.java	95	  viewer.getTextWidget().addDisposeListener(_ -> {
+eclipse.platform	unnamed_lambda	ant/org.eclipse.ant.ui/Remote Ant Support/org/eclipse/ant/internal/ui/antsupport/inputhandler/SWTInputHandler.java	132	   fText.addModifyListener(_ -> validateInput());
+eclipse.platform	unnamed_lambda	debug/org.eclipse.debug.examples.core/src/org/eclipse/debug/examples/core/pda/breakpoints/PDALineBreakpoint.java	64	  IWorkspaceRunnable runnable = _ -> {
+eclipse.platform	unnamed_lambda	debug/org.eclipse.debug.examples.core/src/org/eclipse/debug/examples/core/pda/breakpoints/PDARunToLineBreakpoint.java	39	  IWorkspaceRunnable runnable = _ -> {
+eclipse.platform	unnamed_lambda	debug/org.eclipse.debug.examples.core/src/org/eclipse/debug/examples/core/pda/breakpoints/PDAWatchpoint.java	69	  IWorkspaceRunnable runnable = _ -> {
+eclipse.platform	unnamed_lambda	debug/org.eclipse.debug.examples.ui/src/org/eclipse/debug/examples/ui/midi/launcher/MidiMainTab.java	81	  fFileText.addModifyListener(_ -> updateLaunchConfigurationDialog());
+eclipse.platform	unnamed_lambda	debug/org.eclipse.debug.examples.ui/src/org/eclipse/debug/examples/ui/pda/adapters/PDAVirtualFindAction.java	264	  IModelDeltaVisitor deltaCounter = (delta, _) -> {
+eclipse.platform	unnamed_lambda	debug/org.eclipse.debug.examples.ui/src/org/eclipse/debug/examples/ui/pda/launcher/PDAMainTab.java	76	  fProgramText.addModifyListener(_ -> updateLaunchConfigurationDialog());
+eclipse.platform	unnamed_lambda	debug/org.eclipse.unittest.ui/src/org/eclipse/unittest/internal/ui/CompareResultDialog.java	305	  control.addDisposeListener(_ -> compareConfiguration.dispose());
+eclipse.platform	unnamed_lambda	debug/org.eclipse.unittest.ui/src/org/eclipse/unittest/internal/ui/CompareResultsAction.java	56	   fOpenDialog.getShell().addDisposeListener(_ -> fOpenDialog = null);
+eclipse.platform	unnamed_lambda	debug/org.eclipse.unittest.ui/src/org/eclipse/unittest/internal/ui/CounterPanel.java	57	  addDisposeListener(_ -> disposeIcons());
+eclipse.platform	unnamed_lambda	debug/org.eclipse.unittest.ui/src/org/eclipse/unittest/internal/ui/FailureTableDisplay.java	38	  fTable.getParent().addDisposeListener(_ -> disposeIcons());
+eclipse.platform	unnamed_lambda	debug/org.eclipse.unittest.ui/src/org/eclipse/unittest/internal/ui/FailureTraceUIBlock.java	91	  handler.addOpenListener(_ -> {
+eclipse.platform	unnamed_lambda	debug/org.eclipse.unittest.ui/src/org/eclipse/unittest/internal/ui/ProgressIcons.java	89	  return progressIcons.computeIfAbsent(key, _ -> {
+eclipse.platform	unnamed_lambda	debug/org.eclipse.unittest.ui/src/org/eclipse/unittest/internal/ui/TestRunnerViewPart.java	1501	  parent.addControlListener(ControlListener.controlResizedAdapter(_ -> {
+eclipse.platform	unnamed_lambda	debug/org.eclipse.unittest.ui/src/org/eclipse/unittest/internal/ui/TestRunnerViewPart.java	1636	  fViewMenuListener = _ -> fActivateOnErrorAction.update();
+eclipse.platform	unnamed_lambda	debug/org.eclipse.unittest.ui/src/org/eclipse/unittest/internal/ui/history/HistoryDialog.java	102	  fRemoveButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
+eclipse.platform	unnamed_lambda	debug/org.eclipse.unittest.ui/src/org/eclipse/unittest/internal/ui/history/HistoryDialog.java	109	  importButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
+eclipse.platform	unnamed_lambda	debug/org.eclipse.unittest.ui/src/org/eclipse/unittest/internal/ui/history/HistoryDialog.java	130	  fExportButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(_ -> {
+eclipse.platform	unnamed_lambda	debug/org.eclipse.unittest.ui/src/org/eclipse/unittest/internal/ui/history/HistoryDialog.java	170	      .map(_ -> "👁️").orElse(""); //$NON-NLS-1$ //$NON-NLS-2$
+eclipse.platform	unnamed_lambda	debug/org.eclipse.unittest.ui/src/org/eclipse/unittest/internal/ui/history/HistoryDialog.java	200	      .map(_ -> "🏃").orElse(""); //$NON-NLS-1$ //$NON-NLS-2$
+eclipse.platform	unnamed_lambda	resources/bundles/org.eclipse.core.filesystem/src/org/eclipse/core/internal/filesystem/local/LocalFile.java	299	    _ -> true, // if maximumPoolSize would be exceeded, don't throw RejectedExecutionException
+eclipse.platform	unnamed_lambda	resources/bundles/org.eclipse.core.resources/src/org/eclipse/core/internal/events/BuildManager.java	116	   return deltas.computeIfAbsent(project, _ -> calculator.get());
+eclipse.platform	unnamed_lambda	resources/bundles/org.eclipse.core.resources/src/org/eclipse/core/internal/events/NotificationManager.java	51	  private final ICoreRunnable noop = _ -> {
+eclipse.platform	unnamed_lambda	resources/bundles/org.eclipse.core.resources/src/org/eclipse/core/internal/utils/FileUtil.java	119	     String[] names = realPath.toFile().list((_, n) -> n.equalsIgnoreCase(segment));
+eclipse.platform	unnamed_lambda	resources/bundles/org.eclipse.core.resources/src/org/eclipse/core/internal/watson/ElementTree.java	771	  IElementContentVisitor visitor = (_, elementID, elementContents) -> {
+eclipse.platform	unnamed_lambda	resources/bundles/org.eclipse.core.resources/src/org/eclipse/core/internal/watson/ElementTreeWriter.java	105	   indicesByTree.computeIfAbsent(trees[i], _ -> new ArrayDeque<>()).push(i);
+eclipse.platform	unnamed_lambda	resources/examples/org.eclipse.ui.examples.filesystem/src/org/eclipse/ui/examples/filesystem/NestedProjectCreator.java	72	  context.run(true, true, _ -> result[0] = findNestedProjects(projects));
+eclipse.platform	unnamed_lambda	runtime/bundles/org.eclipse.core.tools/src/org/eclipse/core/tools/metadata/MetadataTreeView.java	168	  viewer.addDoubleClickListener(_ -> dumpFileAction.run());
+eclipse.platform	unnamed_lambda	runtime/bundles/org.eclipse.core.tools/src/org/eclipse/core/tools/nls/ConvertMessageBundleAction.java	47	   IRunnableWithProgress runnable = _ -> pAction.run();
+eclipse.platform	unnamed_lambda	runtime/bundles/org.eclipse.core.tools/src/org/eclipse/core/tools/nls/RemoveUnusedMessagesAction.java	47	   IRunnableWithProgress runnable = _ -> pAction.run();
+eclipse.platform	unnamed_lambda	runtime/bundles/org.eclipse.core.tools/src/org/eclipse/core/tools/runtime/PluginDependencyView.java	115	     _ -> new PluginDependencyGraphNode(bundle));
+eclipse.platform	unnamed_lambda	runtime/bundles/org.eclipse.core.tools/src/org/eclipse/core/tools/runtime/PluginDependencyView.java	127	      _ -> new PluginDependencyGraphNode(capabilityProvider));
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/CompareEditorInput.java	575	   control.addDisposeListener(_ -> handleDispose());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/CompareEditorInput.java	955	    _ -> dsp.removePropertyChangeListener(fDirtyStateListener)
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/CompareViewerPane.java	103	  addDisposeListener(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/CompareViewerSwitchingPane.java	94	   _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/EditionSelectionDialog.java	801	   _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/contentmergeviewer/ContentMergeViewer.java	247	    _ -> fControl= null
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/contentmergeviewer/TextMergeViewer.java	2822	  te.addListener(SWT.ZoomChanged, _ -> resetCachedLineHeights(viewer));
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/contentmergeviewer/TextMergeViewer.java	2860	   _ -> syncViewport(viewer)
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/contentmergeviewer/TextMergeViewer.java	4552	   tp.getSourceViewer().addTextListener(_ -> resetCachedLineHeights(tp));
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/contentmergeviewer/TextMergeViewer.java	518	    v.getControl().addDisposeListener(_ -> v.removeSelectionChangedListener(InternalOutlineViewerCreator.this));
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/AdapterFactory.java	29	   return (T) (IContributorResourceAdapter) _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/AddFromHistoryDialog.java	247	   _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/CompareContentViewerSwitchingPane.java	147	  labelOptimized.addDisposeListener(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/ComparePreferencePage.java	353	   _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/ComparePreferencePage.java	460	  c.addDisposeListener(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/ComparePreferencePage.java	484	  c.addDisposeListener(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/CompareWithOtherResourceDialog.java	281	   text.addModifyListener(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/ImageCanvas.java	43	  sb.addListener(SWT.Selection, _ -> repaint());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/ImageCanvas.java	47	  sb.addListener(SWT.Selection, _ -> repaint());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/ImageCanvas.java	49	  addListener(SWT.Resize, _ -> updateScrollbars());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/ImageMergeViewer.java	107	     canvas.addDisposeListener(_ -> nonNullImage.dispose());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/Utilities.java	924	   item.addDisposeListener(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/patch/InputPatchPage.java	454	  fPatchFileNameField.addModifyListener(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/patch/InputPatchPage.java	481	  fPatchURLField.addModifyListener(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/patch/InputPatchPage.java	505	  fTreeViewer.addSelectionChangedListener(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/patch/PatchCompareEditorInput.java	266	     element.addContentChangeListener(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/patch/PatchTargetPage.java	190	  fPatchTargets.addDoubleClickListener(_ -> ((PatchWizard)getWizard()).showPage(getNextPage()));
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/patch/PatchTargetPage.java	94	  useWorkspaceAsTarget.addListener(SWT.Selection, _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/internal/patch/PreviewPatchPage2.java	472	   _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/structuremergeviewer/DiffTreeViewer.java	252	  addSelectionChangedListener(_ -> updateActions());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/unifieddiff/internal/UnifiedDiffCodeMiningProvider.java	1049	   styledFonts.forEach((_, styledFonts1) -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/unifieddiff/internal/UnifiedDiffCodeMiningProvider.java	1050	    styledFonts1.forEach((_, styledFont) -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/unifieddiff/internal/UnifiedDiffCodeMiningProvider.java	1438	   newRange.font = styledFonts.computeIfAbsent(baseFont, _ -> new HashMap<>())
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/unifieddiff/internal/UnifiedDiffCodeMiningProvider.java	1439	     .computeIfAbsent(Integer.valueOf(styleRange.fontStyle), _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/unifieddiff/internal/UnifiedDiffCodeMiningProvider.java	425	   super(position, provider, _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/unifieddiff/internal/UnifiedDiffCodeMiningProvider.java	630	   styledFonts.forEach((_, map) -> map.forEach((_, f) -> f.dispose()));
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/unifieddiff/internal/UnifiedDiffManager.java	1930	   ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.core/src/org/eclipse/team/core/variants/ThreeWaySynchronizer.java	60	 private final IFlushOperation flushOperation = (info, _) -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.core/src/org/eclipse/team/internal/core/subscribers/SubscriberEventHandler.java	102	  scopeChangeListener = (scope1, _, _) -> reset(new ResourceTraversal[0], scope1.getTraversals());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/actions/ConfigureProjectAction.java	35	  run(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/actions/ProgressDialogRunnableContext.java	74	   return (_, _, runnable) -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/actions/TeamAction.java	134	 private final ISelectionListener selectionListener = (_, selection) -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/dialogs/PreferencePageContainerDialog.java	155	  composite.addHelpListener(_ -> currentPage.performHelp());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/dialogs/PreferencePageContainerDialog.java	275	  fMessageLabel.addDisposeListener(_ -> JFaceResources.getFontRegistry().removeListener(fontListener));
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/history/LocalHistoryTableProvider.java	69	  private final IPropertyChangeListener themeListener = _ -> LocalHistoryTableProvider.this.viewer.refresh();
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/history/ShowLocalHistory.java	52	   PlatformUI.getWorkbench().getProgressService().busyCursorWhile(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/mapping/CommonViewerAdvisor.java	277	  scope.addScopeChangeListener((_, _, _) -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/mapping/FuzzFactorDialog.java	78	  valueText.addModifyListener(_ -> validateInput());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/mapping/ModelCompareEditorInput.java	80	  contextListener = _ -> closeEditor(true);
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/mapping/ResourceCompareInputChangeNotifier.java	205	  context.getCache().addCacheListener(_ -> dispose());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/preferences/FileTypeTable.java	220	  filterText.addModifyListener(_ -> fTableViewer.refresh());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/preferences/IgnorePreferencePage.java	81	  ignoreTable.addListener(SWT.Selection, _ -> handleSelection());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/preferences/IgnorePreferencePage.java	92	  addButton.addListener(SWT.Selection, _ -> addIgnore());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/preferences/IgnorePreferencePage.java	97	  removeButton.addListener(SWT.Selection, _ -> removeIgnore());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/preferences/TextPreferencePage.java	176	  fTable.getViewer().getControl().addListener(SWT.Selection, _ -> handleSelection());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/preferences/TextPreferencePage.java	212	  addExtensionButton.addListener(SWT.Selection, _ -> addExtension());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/preferences/TextPreferencePage.java	213	  addNameButton.addListener(SWT.Selection, _ -> addName());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/preferences/TextPreferencePage.java	216	  fChangeButton.addListener(SWT.Selection, _ -> changePattern());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/preferences/TextPreferencePage.java	219	  fRemoveButton.addListener(SWT.Selection, _ -> removePattern());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/ActiveChangeSetCollector.java	101	   provider.performUpdate(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/ActiveChangeSetCollector.java	122	    provider.performUpdate(_ -> add(outOfSync.toArray(new SyncInfo[outOfSync.size()])), true, true);
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/ActiveChangeSetCollector.java	455	  provider.performUpdate(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/ActiveChangeSetCollector.java	74	   provider.performUpdate(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/ActiveChangeSetCollector.java	82	   provider.performUpdate(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/ActiveChangeSetCollector.java	91	   provider.performUpdate(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/ConfigureSynchronizeScheduleComposite.java	154	  timeInterval.addModifyListener(_ -> updateEnablements());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/GlobalRefreshResourceSelectionPage.java	112	  fViewer.addCheckStateListener(_ -> updateOKStatus());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/ImageManager.java	44	    v.getControl().addDisposeListener(_ -> newRegistry.dispose());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/ImageManager.java	47	    context.getCache().addCacheListener(_ -> newRegistry.dispose());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/LocalResourceSaveableComparison.java	99	    contentChangeListener = _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/SaveablesCompareEditorInput.java	177	   fLeftPropertyListener = (_, propId) -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/SaveablesCompareEditorInput.java	187	   fRightPropertyListener = (_, propId) -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/SaveablesCompareEditorInput.java	354	   c.addDisposeListener(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/StructuredViewerAdvisor.java	143	  viewer.getControl().addDisposeListener(_ -> StructuredViewerAdvisor.this.dispose());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/StructuredViewerAdvisor.java	172	  viewer.addSelectionChangedListener(_ -> updateActionBars(viewer.getStructuredSelection()));
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/TreeViewerAdvisor.java	229	  modelRoot.addCompareInputChangeListener(_ -> getActionGroup().modelChanged(modelRoot));
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/actions/PinParticipantAction.java	57	    PlatformUI.getWorkbench().getProgressService().busyCursorWhile(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/actions/RemoveFromViewAction.java	73	     collector.run(_ -> collector.getWorkingSetSyncInfoSet().removeAll(set.getResources()));
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/actions/RemoveSynchronizeParticipantAction.java	67	   PlatformUI.getWorkbench().getProgressService().busyCursorWhile(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/actions/StatusLineContributionGroup.java	66	  item.addListener(SWT.MouseDown, _ -> configuration.setMode(mode));
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/synchronize/patch/ApplyPatchModelCompareEditorInput.java	96	    cvp.addSelectionChangedListener(_ -> feed1(cein));
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ConfigureProjectWizardMainPage.java	167	  viewer.addDoubleClickListener(_ -> getWizard().getContainer().showPage(getNextPage()));
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ExportProjectSetLocationPage.java	116	  fileCombo.addListener(SWT.Modify, _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ExportProjectSetLocationPage.java	128	  browseButton.addListener(SWT.Selection, _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ExportProjectSetLocationPage.java	156	  workspaceRadio.addListener(SWT.Selection, _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ExportProjectSetLocationPage.java	171	  workspaceText.addListener(SWT.Modify, _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ExportProjectSetLocationPage.java	182	  wsBrowseButton.addListener(SWT.Selection, _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ExportProjectSetLocationPage.java	392	   wsFilenameText.addModifyListener(_ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ExportProjectSetLocationPage.java	98	  fileRadio.addListener(SWT.Selection, _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ExportProjectSetMainPage.java	413	   selectAll.addListener(SWT.Selection, _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ExportProjectSetMainPage.java	429	   deselectAll.addListener(SWT.Selection, _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ExportProjectSetMainPage.java	579	   selectAll.addListener(SWT.Selection, _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ExportProjectSetMainPage.java	604	   deselectAll.addListener(SWT.Selection, _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ExportProjectSetMainPage.java	621	   newWorkingSet.addListener(SWT.Selection, _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ExportProjectSetMainPage.java	628	      propListener = _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ImportProjectSetMainPage.java	132	  fileCombo.addListener(SWT.Modify, _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ImportProjectSetMainPage.java	156	  urlCombo.addListener(SWT.Modify, _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ImportProjectSetMainPage.java	166	  browseButton.addListener(SWT.Selection, _ -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ProjectSelectionPage.java	82	  projectViewer.addSelectionChangedListener(_ -> updateEnablements());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/ui/PageSaveablePart.java	158	      _ -> dsp.removePropertyChangeListener(fDirtyStateListener)
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/ui/history/RevisionAnnotationController.java	318	  ((IRevisionRulerColumn)revisionRuler).getControl().addDisposeListener(_ -> dispose());
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/ui/synchronize/ModelParticipantAction.java	59	  configuration.getPage().getViewer().getControl().addDisposeListener(_ -> getConfiguration().getSite().getSelectionProvider().removeSelectionChangedListener(ModelParticipantAction.this));
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/ui/synchronize/SaveableCompareEditorInput.java	234	   propertyListener = (_, propId) -> {
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/ui/synchronize/SaveableCompareEditorInput.java	500	    _ -> dsp.removePropertyChangeListener(pcl)
+eclipse.platform	unnamed_lambda	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/ui/synchronize/SynchronizeModelAction.java	85	  configuration.getPage().getViewer().getControl().addDisposeListener(_ -> selectionProvider.removeSelectionChangedListener(SynchronizeModelAction.this));
+eclipse.platform	unnamed_lambda	team/examples/org.eclipse.compare.examples.xml/src/org/eclipse/compare/examples/xml/XMLCompareAddIdMapDialog.java	100	  fIdMapExtText.addModifyListener(_ -> doValidation());
+eclipse.platform	unnamed_lambda	team/examples/org.eclipse.compare.examples.xml/src/org/eclipse/compare/examples/xml/XMLCompareAddIdMapDialog.java	89	  fIdMapText.addModifyListener(_ -> doValidation());
+eclipse.platform	unnamed_lambda	team/examples/org.eclipse.compare.examples.xml/src/org/eclipse/compare/examples/xml/XMLCompareEditCopyIdMapDialog.java	89	  fIdMapText.addModifyListener(_ -> doValidation());
+eclipse.platform	unnamed_lambda	team/examples/org.eclipse.compare.examples.xml/src/org/eclipse/compare/examples/xml/XMLCompareEditMappingDialog.java	105	  fSignatureText.addModifyListener(_ -> doValidation());
+eclipse.platform	unnamed_lambda	team/examples/org.eclipse.compare.examples.xml/src/org/eclipse/compare/examples/xml/XMLCompareEditMappingDialog.java	115	  fIdAttributeText.addModifyListener(_ -> doValidation());
+eclipse.platform	unnamed_lambda	team/examples/org.eclipse.compare.examples.xml/src/org/eclipse/compare/examples/xml/XMLCompareEditMappingDialog.java	93	  fElementText.addModifyListener(_ -> doValidation());
+eclipse.platform	unnamed_lambda	team/examples/org.eclipse.compare.examples.xml/src/org/eclipse/compare/examples/xml/XMLCompareEditOrderedDialog.java	100	  fSignatureText.addModifyListener(_ -> doValidation());
+eclipse.platform	unnamed_lambda	team/examples/org.eclipse.compare.examples.xml/src/org/eclipse/compare/examples/xml/XMLCompareEditOrderedDialog.java	88	  fElementText.addModifyListener(_ -> doValidation());
+eclipse.platform	unnamed_lambda	team/examples/org.eclipse.team.examples.filesystem/src/org/eclipse/team/examples/filesystem/ui/ConfigurationWizard.java	109	   return adapter.cast((IConfigurationWizardExtension) (_, projects) -> setProjects(projects));
+eclipse.platform	unnamed_lambda	team/examples/org.eclipse.team.examples.filesystem/src/org/eclipse/team/examples/filesystem/ui/FileSystemMainPage.java	229	  browse.addListener(SWT.Selection, _ -> {
+eclipse.platform	unnamed_lambda	team/examples/org.eclipse.team.examples.filesystem/src/org/eclipse/team/examples/filesystem/ui/ShowHistoryAction.java	40	   new ProgressMonitorDialog(shell).run(true, true, _ -> {
+eclipse.platform	unnamed_lambda	team/examples/org.eclipse.team.examples.filesystem/src/org/eclipse/team/examples/pessimistic/PessimisticFilesystemProvider.java	643	       (IWorkspaceRunnable) _ -> {
+eclipse.platform	unnamed_lambda	team/examples/org.eclipse.team.examples.filesystem/src/org/eclipse/team/examples/pessimistic/ui/DisconnectAction.java	55	    IWorkspaceRunnable runnable1= _ -> {
+eclipse.platform	unnamed_lambda	terminal/bundles/org.eclipse.terminal.connector.local/src/org/eclipse/terminal/connector/local/launcher/LocalLauncherHandler.java	76	  delegate.execute(properties).whenComplete((_, e) -> {

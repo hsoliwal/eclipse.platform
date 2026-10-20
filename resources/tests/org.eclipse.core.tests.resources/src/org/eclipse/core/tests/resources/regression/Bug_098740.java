@@ -40,7 +40,7 @@ public class Bug_098740 {
 		createInWorkspace(project);
 		project.close(createTestMonitor());
 		assertThrows(CoreException.class, () -> project.members());
-		IResourceVisitor visitor = _ -> true;
+		IResourceVisitor visitor = unused -> true;
 		assertThrows(CoreException.class, () -> project.accept(visitor, IResource.DEPTH_INFINITE, IResource.NONE));
 	}
 

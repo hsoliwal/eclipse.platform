@@ -155,7 +155,7 @@ public abstract class PageSaveablePart extends SaveablePartAdapter implements IC
 					dsp.addPropertyChangeListener(fDirtyStateListener);
 					Control c= newViewer.getControl();
 					c.addDisposeListener(
-						_ -> dsp.removePropertyChangeListener(fDirtyStateListener)
+						unused -> dsp.removePropertyChangeListener(fDirtyStateListener)
 					);
 					hookContentChangeListener((ICompareInput)input);
 				}

@@ -92,7 +92,7 @@ class AntPreviewerUpdater {
 				viewer.getDocument().set(contents);
 			}
 		};
-		viewer.getTextWidget().addDisposeListener(_ -> {
+		viewer.getTextWidget().addDisposeListener(unused -> {
 			preferenceStore.removePropertyChangeListener(propertyChangeListener);
 			JFaceResources.getFontRegistry().removeListener(fontChangeListener);
 		});

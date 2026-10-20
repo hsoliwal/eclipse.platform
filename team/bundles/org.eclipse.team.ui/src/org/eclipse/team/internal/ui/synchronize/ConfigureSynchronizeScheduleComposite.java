@@ -151,7 +151,7 @@ public class ConfigureSynchronizeScheduleComposite extends Composite {
 		gridData = new GridData();
 		gridData.widthHint = 35;
 		timeInterval.setLayoutData(gridData);
-		timeInterval.addModifyListener(_ -> updateEnablements());
+		timeInterval.addModifyListener(unused -> updateEnablements());
 		timeInterval.addVerifyListener(e -> {
 			String string = e.text;
 			char[] chars = new char[string.length()];
