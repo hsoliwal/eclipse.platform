@@ -11,6 +11,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *     Patrick Chuong (Texas Instruments) - Improve usability of the breakpoint view (Bug 238956)
+ *     Synexia - breakpoints held in an M3SortedLane: O(1) membership, binary-search insert, window copies
  *****************************************************************/
 package org.eclipse.debug.internal.ui.views.breakpoints;
 
@@ -617,18 +618,16 @@ public class BreakpointContainer extends ElementContentProvider implements IAdap
 	}
 
 	/**
-	 * Re-checks the order around a breakpoint whose sort key may have changed (its
-	 * label, line or attributes). Synexia - M3 sorted lanes.
+	 * Re-checks the order around breakpoints whose sort keys may have changed
+	 * (labels, lines or attributes), in this container and its child containers.
+	 * Synexia - M3 sorted lanes.
 	 *
-	 * @param breakpoint the changed breakpoint
+	 * @param breakpoints the changed breakpoints
 	 */
-	public void breakpointChanged(IBreakpoint breakpoint) {
-		if (!fBreakpoints.contains(breakpoint)) {
-			return;
-		}
-		fBreakpoints.elementChanged(breakpoint);
+	public void breakpointsChanged(IBreakpoint[] breakpoints) {
+		fBreakpoints.elementsChanged(breakpoints);
 		for (BreakpointContainer container : fChildContainers) {
-			container.breakpointChanged(breakpoint);
+			container.breakpointsChanged(breakpoints);
 		}
 	}
 

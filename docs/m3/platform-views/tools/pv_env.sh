@@ -26,6 +26,7 @@ for a in org.eclipse.equinox.common org.eclipse.core.runtime org.eclipse.core.jo
          org.eclipse.jface.text org.eclipse.text org.eclipse.ui.workbench org.eclipse.ui.ide; do
   DEPS="$DEPS;$(pv_jar $a)"
 done
+DEPS="$DEPS;$M2/org/osgi/org.osgi.service.prefs/1.1.2/org.osgi.service.prefs-1.1.2.jar"
 export DEPS=${DEPS#;}
 export JUNIT=$M2/org/junit/platform/junit-platform-console-standalone/1.11.4/junit-platform-console-standalone-1.11.4.jar
 export JACOCO_AGENT=$M2/org/jacoco/org.jacoco.agent/0.8.15/org.jacoco.agent-0.8.15-runtime.jar

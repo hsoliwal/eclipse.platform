@@ -54,6 +54,9 @@ public final class M3SortedLane<E> extends AbstractList<E> implements RandomAcce
 	 */
 	static final boolean LINEAR_INSERT = Boolean.getBoolean("org.eclipse.debug.ui.m3.linearInsert"); //$NON-NLS-1$
 
+	/** Change batches larger than this mark the order unknown instead of re-checking each element. */
+	public static final int CHANGE_SCAN_LIMIT = 32;
+
 	private static final Object[] NO_ITEMS = {};
 	private static final byte[] NO_BITS = {};
 	private static final Object NULL_KEY = new Object();
@@ -65,6 +68,11 @@ public final class M3SortedLane<E> extends AbstractList<E> implements RandomAcce
 	private int inversions;
 	private Comparator<Object> order;
 	private int epoch;
+	/**
+	 * The inversion bits are unknown (a large batch of key changes): the next
+	 * sorted insert recomputes them, mutations until then skip them.
+	 */
+	private boolean stale;
 	/** Membership table: power-of-two capacity, at most half full, linear probing. */
 	private Object[] table = NO_ITEMS;
 
@@ -103,12 +111,24 @@ public final class M3SortedLane<E> extends AbstractList<E> implements RandomAcce
 		if (!contains(o)) {
 			return -1;
 		}
-		for (int i = 0; i < size; i++) {
-			if (Objects.equals(o, items[i])) {
+		return scan(o, 0);
+	}
+
+	/* first index at or after from holding an element equal to o, or -1 (locals: the loop calls equals) */
+	private int scan(Object o, int from) {
+		Object[] es = items;
+		int n = size;
+		for (int i = from; i < n; i++) {
+			if (Objects.equals(o, es[i])) {
 				return i;
 			}
 		}
-		return -1; // unreachable while hashCode/equals agree
+		return -1;
+	}
+
+	/* whether the inversion bits are maintained on mutation */
+	private boolean tracking() {
+		return order != null && !stale;
 	}
 
 	@Override
@@ -119,7 +139,7 @@ public final class M3SortedLane<E> extends AbstractList<E> implements RandomAcce
 		items[index] = element;
 		size++;
 		tableAdd(element);
-		if (order != null) {
+		if (tracking()) {
 			insertBits(index);
 		}
 		modCount++;
@@ -136,7 +156,7 @@ public final class M3SortedLane<E> extends AbstractList<E> implements RandomAcce
 	public E remove(int index) {
 		Objects.checkIndex(index, size);
 		Object removed = items[index];
-		if (order != null) {
+		if (tracking()) {
 			removeBits(index);
 		}
 		System.arraycopy(items, index + 1, items, index, size - index - 1);
@@ -171,17 +191,18 @@ public final class M3SortedLane<E> extends AbstractList<E> implements RandomAcce
 	public boolean removeAll(Collection<?> c) {
 		Objects.requireNonNull(c);
 		Collection<?> gone = c instanceof M3SortedLane || c.size() <= 8 ? c : copyOf(c);
+		boolean bits = tracking();
 		int w = 0;
 		int prevKept = -1;
 		boolean runInOrder = true; // every pair from the previous kept element up to r is in order
 		for (int r = 0; r < size; r++) {
 			Object e = items[r];
-			boolean pairInOrder = order == null || r == 0 || inverted[r - 1] == 0;
+			boolean pairInOrder = !bits || r == 0 || inverted[r - 1] == 0;
 			if (gone.contains(e)) {
 				runInOrder &= pairInOrder;
 				continue;
 			}
-			if (order != null && w > 0) {
+			if (bits && w > 0) {
 				// read the old pair bit before the compacted pair (w - 1 <= r - 1) is written
 				byte bit;
 				if (prevKept == r - 1) {
@@ -199,12 +220,12 @@ public final class M3SortedLane<E> extends AbstractList<E> implements RandomAcce
 			return false;
 		}
 		Arrays.fill(items, w, size, null);
-		if (order != null) {
+		if (bits) {
 			Arrays.fill(inverted, Math.max(0, w - 1), Math.max(0, size - 1), (byte) 0);
 		}
 		size = w;
 		rebuildTable(); // one O(n) pass; the membership table is not touched while it answers gone.contains
-		if (order != null) {
+		if (bits) {
 			recount();
 		}
 		modCount++;
@@ -217,6 +238,7 @@ public final class M3SortedLane<E> extends AbstractList<E> implements RandomAcce
 		Arrays.fill(inverted, (byte) 0);
 		size = 0;
 		inversions = 0;
+		stale = false;
 		table = NO_ITEMS;
 		modCount++;
 	}
@@ -258,7 +280,7 @@ public final class M3SortedLane<E> extends AbstractList<E> implements RandomAcce
 		}
 		int index = size;
 		if (comparator != null) {
-			if (comparator != order || orderEpoch != epoch) {
+			if (comparator != order || orderEpoch != epoch || stale) {
 				track(comparator, orderEpoch);
 			}
 			index = inversions == 0 && !LINEAR_INSERT ? lowerBound(element) : backwardScan(element);
@@ -273,18 +295,44 @@ public final class M3SortedLane<E> extends AbstractList<E> implements RandomAcce
 	 * @param element the element whose key changed
 	 */
 	public void elementChanged(Object element) {
-		if (order == null) {
+		if (!tracking() || !contains(element)) {
 			return;
 		}
-		int index = indexOf(element);
-		if (index < 0) {
+		// every occurrence: a list may hold the same element more than once (addAll)
+		for (int index = scan(element, 0); index >= 0; index = scan(element, index + 1)) {
+			if (index > 0) {
+				setBit(index - 1, bit(items[index - 1], items[index]));
+			}
+			if (index < size - 1) {
+				setBit(index, bit(items[index], items[index + 1]));
+			}
+		}
+	}
+
+	/**
+	 * Re-checks the order after the sort keys of {@code elements} changed. Up to
+	 * {@link #CHANGE_SCAN_LIMIT} elements are re-checked in place (two
+	 * comparisons each); a larger batch that touches this lane only marks the
+	 * order unknown, and the next sorted insert recomputes it with one pass of
+	 * {@code size - 1} comparisons, about the cost of one classic scan.
+	 *
+	 * @param elements the elements whose keys changed
+	 */
+	public void elementsChanged(Object[] elements) {
+		if (!tracking()) {
 			return;
 		}
-		if (index > 0) {
-			setBit(index - 1, bit(items[index - 1], items[index]));
+		if (elements.length > CHANGE_SCAN_LIMIT) {
+			for (Object e : elements) {
+				if (contains(e)) {
+					stale = true;
+					return;
+				}
+			}
+			return;
 		}
-		if (index < size - 1) {
-			setBit(index, bit(items[index], items[index + 1]));
+		for (Object e : elements) {
+			elementChanged(e);
 		}
 	}
 
@@ -311,7 +359,7 @@ public final class M3SortedLane<E> extends AbstractList<E> implements RandomAcce
 
 	/** @return whether no adjacent pair is inverted under the tracked comparator */
 	public boolean isSorted() {
-		return order == null || inversions == 0;
+		return order == null || !stale && inversions == 0;
 	}
 
 	private int lowerBound(Object element) {
@@ -340,6 +388,7 @@ public final class M3SortedLane<E> extends AbstractList<E> implements RandomAcce
 
 	private void track(Comparator<Object> comparator, int orderEpoch) {
 		order = comparator;
+		stale = false;
 		epoch = orderEpoch;
 		inverted = size > 1 ? new byte[items.length] : inverted;
 		for (int i = 0; i < size - 1; i++) {

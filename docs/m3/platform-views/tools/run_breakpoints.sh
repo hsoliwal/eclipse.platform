@@ -28,7 +28,7 @@ if [ "$what" = test ] || [ "$what" = all ]; then
   for mode in default linear; do
     P=""; [ $mode = linear ] && P="-Dorg.eclipse.debug.ui.m3.linearInsert=true"
     "$J" $P -javaagent:"$JACOCO_AGENT"=destfile="$R/jacoco-test-$mode.exec",includes="$INC" -jar "$JUNIT" execute \
-      --class-path "$CPO" --select-class org.eclipse.debug.tests.m3.M3SortedLaneTest --details=summary --disable-banner 2>&1 \
+      --class-path "$CPO" --select-class org.eclipse.debug.tests.m3.M3SortedLaneTest --select-class org.eclipse.debug.tests.m3.BreakpointContainerLaneTest --details=summary --disable-banner 2>&1 \
       | grep -E 'tests (successful|failed|found)' | sed "s/^/$mode: /"
   done
   B=$WT/debug/org.eclipse.debug.ui/ui

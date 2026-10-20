@@ -65,7 +65,7 @@ public final class M3BreakpointsDifferential {
 				line.append("remove ").append(k).append('\n'); //$NON-NLS-1$
 				FakeBreakpoints.dump(s.remove(k), "  ", line); //$NON-NLS-1$
 			} else if (op < 75) {
-				int k = 1 + s.random.nextInt(5);
+				int k = 1 + s.random.nextInt(op < 58 ? 60 : 5); // batches above the lane's scan limit too
 				line.append("change ").append(k).append('\n'); //$NON-NLS-1$
 				s.change(k);
 			} else if (op < 80) {

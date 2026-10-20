@@ -13,6 +13,7 @@
  *     IBM Corporation - ongoing enhancements and bug fixing
  *     Wind River Systems - ongoing enhancements and bug fixing
  *     Wind River System (Randy Rohrbach) - non standard model breakpoint filtering (Bug 333517)
+ *     Synexia - child counts and pages without copies; O(1) membership and order re-check on breakpoint changes
  *****************************************************************/
 package org.eclipse.debug.internal.ui.model.elements;
 
@@ -528,9 +529,7 @@ public class BreakpointManagerContentProvider extends ElementContentProvider
 				fInput, getSelectionFilter(fInput, getDebugContext()), breakpoints);
 
 			synchronized (this) {
-				for (IBreakpoint bp : breakpoints) {
-					fContainer.breakpointChanged(bp);
-				}
+				fContainer.breakpointsChanged(breakpoints);
 				ModelDelta delta = new ModelDelta(fInput, IModelDelta.NO_CHANGE);
 
 				// If the change caused a breakpoint to be added (installed) or remove (un-installed) update accordingly.

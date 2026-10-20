@@ -124,8 +124,10 @@ public class M3SortedLaneTest {
 				Item e = r.nextInt(10) == 0 && !oracle.isEmpty() ? (Item) pick(r, oracle) : new Item(nextId++, r.nextInt(50));
 				Comparator<Object> c = r.nextInt(20) == 0 ? null : order;
 				tracked |= c != null;
-				trackedEpoch = c != null ? epoch : trackedEpoch;
-				assertEquals(oracleInsert(oracle, e, c), lane.insertSorted(e, c, epoch), what);
+				int expected = oracleInsert(oracle, e, c);
+				assertEquals(expected, lane.insertSorted(e, c, epoch), what);
+				// a rejected insert (null or already present) returns before the lane looks at the order
+				trackedEpoch = c != null && expected >= 0 ? epoch : trackedEpoch;
 			} else if (op < 40 && !oracle.isEmpty()) {
 				int i = r.nextInt(oracle.size());
 				assertSame(oracle.remove(i), lane.remove(i), what);
@@ -133,11 +135,24 @@ public class M3SortedLaneTest {
 				Object o = r.nextBoolean() && !oracle.isEmpty() ? pick(r, oracle) : new Item(-1 - r.nextInt(5), 0);
 				assertEquals(oracle.remove(o), lane.remove(o), what);
 			} else if (op < 55 && !oracle.isEmpty()) {
-				// a key changes in place, then the owner reports it
-				Item e = (Item) pick(r, oracle);
-				e.key = r.nextInt(50);
-				lane.elementChanged(e);
-				lane.elementChanged(new Item(-7, 0)); // absent: no effect
+				// keys change in place, then the owner reports them: one, a few, or a batch above the scan limit
+				int kind = r.nextInt(4);
+				if (kind == 0) {
+					Item e = (Item) pick(r, oracle);
+					e.key = r.nextInt(50);
+					lane.elementChanged(e);
+					lane.elementChanged(new Item(-7, 0)); // absent: no effect
+				} else {
+					int n = kind == 3 ? M3SortedLane.CHANGE_SCAN_LIMIT + 1 + r.nextInt(8) : 1 + r.nextInt(3);
+					Object[] changed = new Object[n];
+					for (int i = 0; i < n; i++) {
+						Item e = r.nextInt(6) == 0 ? new Item(-9, 0) : (Item) pick(r, oracle);
+						e.key = r.nextInt(50);
+						changed[i] = e;
+					}
+					lane.elementsChanged(changed);
+					lane.elementsChanged(kind == 3 ? absent(M3SortedLane.CHANGE_SCAN_LIMIT + 1) : new Object[0]);
+				}
 			} else if (op < 58) {
 				order.descending = !order.descending;
 				epoch++;
@@ -191,9 +206,20 @@ public class M3SortedLaneTest {
 		assertArrayEquals(oracle.toArray(), lane.toArray());
 	}
 
+	private static Object[] absent(int n) {
+		Object[] items = new Object[n];
+		for (int i = 0; i < n; i++) {
+			items[i] = new Item(-100 - i, 0);
+		}
+		return items;
+	}
+
 	private static Object pick(Random r, List<Object> list) {
 		Object o = list.get(r.nextInt(list.size()));
-		return o == null ? list.get(0) : o;
+		for (int i = 0; o == null && i < list.size(); i++) {
+			o = list.get(i);
+		}
+		return o == null ? new Item(-5, 0) : o; // an absent item when the list holds only nulls
 	}
 
 	@Test

@@ -62,14 +62,14 @@ public final class M3BreakpointsScript {
 		this.grouped = grouped;
 		this.files = files;
 		this.root = newRoot();
-		this.changedHook = method(BreakpointContainer.class, "breakpointChanged", IBreakpoint.class); //$NON-NLS-1$
+		this.changedHook = method(BreakpointContainer.class, "breakpointsChanged", IBreakpoint[].class); //$NON-NLS-1$
 		this.childCount = method(ElementContentProvider.class, "getChildCount", Object.class, IPresentationContext.class, //$NON-NLS-1$
 				IViewerUpdate.class);
 		this.childPage = method(ElementContentProvider.class, "getChildren", Object.class, int.class, int.class, //$NON-NLS-1$
 				IPresentationContext.class, IViewerUpdate.class);
 	}
 
-	/** @return whether the lane hook {@code breakpointChanged} exists (the lane implementation is on the class path) */
+	/** @return whether the lane hook {@code breakpointsChanged} exists (the lane implementation is on the class path) */
 	public boolean lanes() {
 		return changedHook != null;
 	}
@@ -121,17 +121,19 @@ public final class M3BreakpointsScript {
 
 	/** Lines move (an edit above them): the content provider's breakpointsChanged re-checks their order. */
 	public void change(int k) {
+		List<IBreakpoint> changed = new ArrayList<>();
 		for (int i = 0; i < k && !present.isEmpty(); i++) {
 			Bp bp = present.get(random.nextInt(present.size()));
 			bp.line = 1 + random.nextInt(5000);
-			notifyChanged(bp);
+			changed.add(bp);
 		}
+		notifyChanged(changed.toArray(new IBreakpoint[0]));
 	}
 
-	void notifyChanged(Bp bp) {
+	void notifyChanged(IBreakpoint[] bps) {
 		if (changedHook != null) {
 			try {
-				changedHook.invoke(root, bp);
+				changedHook.invoke(root, (Object) bps);
 			} catch (ReflectiveOperationException e) {
 				throw new IllegalStateException(e);
 			}
