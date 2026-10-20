@@ -1,0 +1,11 @@
+# Copyright (c) 2026 Synexia, Hitesh Soliwal (hsoliwal@gmail.com) and others.
+# SPDX-License-Identifier: Apache-2.0 OR EPL-2.0
+# View template spec (brief rule 27); inventory row in docs/m3/platform-views/ECLIPSE_PLATFORM_VIEW_INVENTORY.tsv.
+view.id=org.eclipse.debug.ui.BreakpointView
+element=IBreakpoint
+source=debug-events
+lanes=id:long, model:label, type:label, label:label, line:int, created:long, enabled:bits, category:int
+group=none
+sort=model, type, label, line
+presentation=tree
+label=DebugModelPresentation

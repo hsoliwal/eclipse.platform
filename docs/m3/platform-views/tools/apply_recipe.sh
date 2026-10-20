@@ -12,6 +12,7 @@ mkdir -p "$RC"
 "$JAVA_HOME/bin/javac" --release 17 -parameters -nowarn -proc:none -cp "$CP" -d "$RC" \
   $(find "$WT/docs/m3/platform-views/recipe/src" -name '*.java')
 CPR="$(cygpath -w "$WT/docs/m3/platform-views/recipe");$RC;$CP"
+[ -n "$EXTRA_RECIPE_DIR" ] && CPR="$(cygpath -w "$EXTRA_RECIPE_DIR");$CPR"
 NAME=$1; shift
 for pass in 1 2; do
   echo "recipe pass $pass: $("$JAVA_HOME/bin/java" -Xmx1g -Djava.io.tmpdir="$(cygpath -w "$OUT/tmp")" -cp "$CPR" \
