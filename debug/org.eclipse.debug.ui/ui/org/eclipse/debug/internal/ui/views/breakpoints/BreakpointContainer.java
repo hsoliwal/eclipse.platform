@@ -44,7 +44,7 @@ public class BreakpointContainer extends ElementContentProvider implements IAdap
 	/**
 	 * Child breakpoints - inserting new element into this collection should use the insertBreakpoint method
 	 */
-	final private List<IBreakpoint> fBreakpoints = new ArrayList<>();
+	final private org.eclipse.debug.internal.ui.m3.M3SortedLane<IBreakpoint> fBreakpoints = new org.eclipse.debug.internal.ui.m3.M3SortedLane<>();
 
 	/**
 	 * Child containers - inserting new element into this container should use the insertChildContainer method
@@ -157,20 +157,7 @@ public class BreakpointContainer extends ElementContentProvider implements IAdap
 	 * @return the index of the breakpoint in the cache, -1 if the breakpoint already exist
 	 */
 	private int insertBreakpoint(IBreakpoint breakpoint) {
-		if (fBreakpoints.contains(breakpoint) || breakpoint == null) {
-			return -1;
-		}
-		int index = fBreakpoints.size();
-		for (; fComparator != null && index > 0; index--) {
-			if (fComparator.compare(fBreakpoints.get(index-1), breakpoint) < 0) {
-				break;
-			}
-		}
-		if (index < 0) {
-			index = 0;
-		}
-		fBreakpoints.add(index, breakpoint);
-		return index;
+		return fBreakpoints.insertSorted(breakpoint, fComparator, fComparator == null ? 0 : fComparator.orderEpoch());
 	}
 
 	/**
@@ -536,6 +523,33 @@ public class BreakpointContainer extends ElementContentProvider implements IAdap
 	}
 
 	/**
+	 * Returns the number of children without copying them. Synexia - M3 sorted
+	 * lanes.
+	 *
+	 * @return the number of child containers, or of breakpoints when there are
+	 *         no child containers
+	 */
+	public int getChildrenCount() {
+		return fChildContainers.isEmpty() ? fBreakpoints.size() : fChildContainers.size();
+	}
+
+	/**
+	 * Returns the children from {@code index}, at most {@code length} of them,
+	 * clipped like {@code getElements}: {@code null} when {@code index} is past the
+	 * end. Only the requested window is copied. Synexia - M3 sorted lanes.
+	 *
+	 * @param index  the first child
+	 * @param length the number of children wanted
+	 * @return the children, or {@code null}
+	 */
+	public Object[] getChildrenRange(int index, int length) {
+		if (fChildContainers.isEmpty()) {
+			return fBreakpoints.range(index, length);
+		}
+		return getElements(getContainers(), index, length);
+	}
+
+	/**
 	 * Returns the index of the given child element (breakpoint or container.
 	 *
 	 * @param child Child to calculate index of.
@@ -602,6 +616,22 @@ public class BreakpointContainer extends ElementContentProvider implements IAdap
 		return new BreakpointContainer[0];
 	}
 
+	/**
+	 * Re-checks the order around a breakpoint whose sort key may have changed (its
+	 * label, line or attributes). Synexia - M3 sorted lanes.
+	 *
+	 * @param breakpoint the changed breakpoint
+	 */
+	public void breakpointChanged(IBreakpoint breakpoint) {
+		if (!fBreakpoints.contains(breakpoint)) {
+			return;
+		}
+		fBreakpoints.elementChanged(breakpoint);
+		for (BreakpointContainer container : fChildContainers) {
+			container.breakpointChanged(breakpoint);
+		}
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof BreakpointContainer container) {
@@ -619,12 +649,12 @@ public class BreakpointContainer extends ElementContentProvider implements IAdap
 
 	@Override
 	protected int getChildCount(Object element, IPresentationContext context, IViewerUpdate monitor) throws CoreException {
-		return getChildren().length;
+		return getChildrenCount();
 	}
 
 	@Override
 	protected Object[] getChildren(Object parent, int index, int length, IPresentationContext context, IViewerUpdate monitor) throws CoreException {
-		return getElements(getChildren(), index, length);
+		return getChildrenRange(index, length);
 	}
 
 	@Override

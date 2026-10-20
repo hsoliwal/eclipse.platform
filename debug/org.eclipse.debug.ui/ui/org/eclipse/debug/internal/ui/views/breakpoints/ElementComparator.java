@@ -47,6 +47,18 @@ public class ElementComparator implements Comparator<Object> {
 		}
 	}
 
+	/**
+	 * Returns a value that changes whenever this comparator orders breakpoints
+	 * differently: the breakpoint sorting order preference. Synexia - M3 sorted
+	 * lanes.
+	 *
+	 * @return the order epoch
+	 */
+	protected int orderEpoch() {
+		DebugUIPlugin plugin = DebugUIPlugin.getDefault();
+		return plugin == null ? 0 : plugin.getPreferenceStore().getInt(IInternalDebugUIConstants.PREF_BREAKPOINT_SORTING_ORDER);
+	}
+
 	@Override
 	public int compare(Object arg0, Object arg1) {
 		IBreakpoint bp0 = (IBreakpoint)DebugPlugin.getAdapter(arg0, IBreakpoint.class);

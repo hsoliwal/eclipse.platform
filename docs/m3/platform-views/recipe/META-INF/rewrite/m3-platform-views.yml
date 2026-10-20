@@ -64,18 +64,10 @@ recipeList:
       methodName: getChildren
       parameterCount: 5
       bodySource: "{\n\t\tObject input = monitor.getViewerInput();\n\t\tif (input instanceof DefaultBreakpointsViewInput bpManagerInput) {\n\t\t\tInputData inputData = getInputData(bpManagerInput);\n\t\t\tif (inputData != null) {\n\t\t\t\treturn inputData.fContainer.getChildrenRange(index, length);\n\t\t\t}\n\t\t}\n\n\t\treturn EMPTY;\n\t}"
-  # B1.6 a change re-checks the order of the changed breakpoints first, and tests membership in O(1) instead of O(n*m)
-  - com.synexia.openrewrite.viewport.M3InsertStatements:
+  # B1.6 a change first re-checks the order of the changed breakpoints, then tests membership in O(1) instead of O(n*m)
+  #      (body replacement: the anchors sit inside synchronized, where M3InsertStatements does not descend)
+  - com.synexia.openrewrite.viewport.M3ReplaceMethodBody:
       declaringClasses: [org.eclipse.debug.internal.ui.model.elements.BreakpointManagerContentProvider$InputData, org.eclipse.debug.internal.ui.model.elements.BreakpointManagerContentProvider.InputData, org.eclipse.debug.internal.ui.model.elements.InputData]
       methodName: breakpointsChanged
       parameterCount: 1
-      anchor: "ModelDelta delta = new ModelDelta(fInput, IModelDelta.NO_CHANGE);"
-      position: BEFORE
-      statements: "\t\t\t\tfor (IBreakpoint bp : breakpoints) {\n\t\t\t\t\tfContainer.breakpointChanged(bp);\n\t\t\t\t}"
-  - com.synexia.openrewrite.viewport.M3InsertStatements:
-      declaringClasses: [org.eclipse.debug.internal.ui.model.elements.BreakpointManagerContentProvider$InputData, org.eclipse.debug.internal.ui.model.elements.BreakpointManagerContentProvider.InputData, org.eclipse.debug.internal.ui.model.elements.InputData]
-      methodName: breakpointsChanged
-      parameterCount: 1
-      anchor: "List<IBreakpoint> filteredAsList = Arrays.asList(filteredBreakpoints);"
-      position: AFTER
-      statements: "\t\t\t\tfilteredAsList = org.eclipse.debug.internal.ui.m3.M3SortedLane.of(filteredAsList);"
+      bodySource: "{\n\n\n\t\t\tIBreakpoint[] filteredBreakpoints = filterBreakpoints(\n\t\t\t\tfInput, getSelectionFilter(fInput, getDebugContext()), breakpoints);\n\n\t\t\tsynchronized (this) {\n\t\t\t\tfor (IBreakpoint bp : breakpoints) {\n\t\t\t\t\tfContainer.breakpointChanged(bp);\n\t\t\t\t}\n\t\t\t\tModelDelta delta = new ModelDelta(fInput, IModelDelta.NO_CHANGE);\n\n\t\t\t\t// If the change caused a breakpoint to be added (installed) or remove (un-installed) update accordingly.\n\t\t\t\tList<IBreakpoint> removed = new ArrayList<>();\n\t\t\t\tList<IBreakpoint> added = new ArrayList<>();\n\t\t\t\tList<IBreakpoint> filteredAsList = Arrays.asList(filteredBreakpoints);\n\t\t\t\tfilteredAsList = org.eclipse.debug.internal.ui.m3.M3SortedLane.of(filteredAsList);\n\t\t\t\tfor (IBreakpoint bp : breakpoints) {\n\t\t\t\t\tboolean oldContainedBp = fContainer.contains(bp);\n\t\t\t\t\tboolean newContained = filteredAsList.contains(bp);\n\t\t\t\t\tif (oldContainedBp && !newContained) {\n\t\t\t\t\t\tremoved.add(bp);\n\t\t\t\t\t} else if (!oldContainedBp && newContained) {\n\t\t\t\t\t\tadded.add(bp);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tif (!added.isEmpty()) {\n\t\t\t\t\tbreakpointsAdded(added.toArray(new IBreakpoint[added.size()]));\n\t\t\t\t}\n\t\t\t\tif (!removed.isEmpty()) {\n\t\t\t\t\tbreakpointsRemoved(removed.toArray(new IBreakpoint[removed.size()]));\n\t\t\t\t}\n\t\t\t\tfor (IBreakpoint filteredBreakpoint : filteredBreakpoints) {\n\t\t\t\t\tappendModelDelta(fContainer, delta, IModelDelta.STATE | IModelDelta.CONTENT, filteredBreakpoint); // content flag triggers detail refresh\n\t\t\t\t}\n\n\t\t\t\tif (DebugUIPlugin.DEBUG_BREAKPOINT_DELTAS) {\n\t\t\t\t\tDebugUIPlugin.trace(\"POST BREAKPOINT DELTA (breakpointsChanged)\\n\"); //$NON-NLS-1$\n\t\t\t\t}\n\t\t\t\tpostModelChanged(delta, false);\n\t\t\t}\n\t\t}"

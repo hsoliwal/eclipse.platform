@@ -528,12 +528,16 @@ public class BreakpointManagerContentProvider extends ElementContentProvider
 				fInput, getSelectionFilter(fInput, getDebugContext()), breakpoints);
 
 			synchronized (this) {
+				for (IBreakpoint bp : breakpoints) {
+					fContainer.breakpointChanged(bp);
+				}
 				ModelDelta delta = new ModelDelta(fInput, IModelDelta.NO_CHANGE);
 
 				// If the change caused a breakpoint to be added (installed) or remove (un-installed) update accordingly.
 				List<IBreakpoint> removed = new ArrayList<>();
 				List<IBreakpoint> added = new ArrayList<>();
 				List<IBreakpoint> filteredAsList = Arrays.asList(filteredBreakpoints);
+				filteredAsList = org.eclipse.debug.internal.ui.m3.M3SortedLane.of(filteredAsList);
 				for (IBreakpoint bp : breakpoints) {
 					boolean oldContainedBp = fContainer.contains(bp);
 					boolean newContained = filteredAsList.contains(bp);
@@ -975,7 +979,7 @@ public class BreakpointManagerContentProvider extends ElementContentProvider
 		if (input instanceof DefaultBreakpointsViewInput bpManagerInput) {
 			InputData inputData = getInputData(bpManagerInput);
 			if (inputData != null) {
-				return inputData.fContainer.getChildren().length;
+				return inputData.fContainer.getChildrenCount();
 			}
 		}
 		return 0;
@@ -987,8 +991,7 @@ public class BreakpointManagerContentProvider extends ElementContentProvider
 		if (input instanceof DefaultBreakpointsViewInput bpManagerInput) {
 			InputData inputData = getInputData(bpManagerInput);
 			if (inputData != null) {
-				Object[] children =  inputData.fContainer.getChildren();
-				return getElements(children, index, length);
+				return inputData.fContainer.getChildrenRange(index, length);
 			}
 		}
 
