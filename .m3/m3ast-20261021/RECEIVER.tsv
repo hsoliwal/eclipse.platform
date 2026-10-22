@@ -1,0 +1,9 @@
+schema	M3_ECLIPSE_BUILD_SOURCE_GATE_V1
+repository	hsoliwal/eclipse.platform
+source_ref	master
+root_path	pom.xml
+root_sha256	b8d7beae551a65c51eca0748a4a1b6504ee8f95c844c69c0d9ff46b14370b0c1
+original_build	ECLIPSE_RESOURCES_TYCHO
+canonical_recipe	com.synexia.eclipse.EstateAstEclipsePlatform20261021
+canonical_commit	b77c892d7519c6aa037c2b5cebd8658867ea712b
+status	HOLD_NATIVE_AND_SEMANTIC_GATES
