@@ -466,7 +466,7 @@ public class DiffTreeViewer extends TreeViewer {
 	 *
 	 * @since 2.0
 	 */
-	protected void expandSelection() {
+	public void expandSelection() {
 		ISelection selection= getSelection();
 		if (selection instanceof IStructuredSelection) {
 			Iterator<?> elements= ((IStructuredSelection) selection).iterator();
