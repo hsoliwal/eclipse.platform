@@ -1,0 +1,4 @@
+GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
+JaCoCo Coverage Report,org.eclipse.debug.internal.ui.views.breakpoints,ElementComparator,279,6,47,1,78,3,29,1,5,1
+JaCoCo Coverage Report,org.eclipse.debug.internal.ui.views.breakpoints,BreakpointContainer,258,649,30,72,53,144,32,58,9,30
+JaCoCo Coverage Report,org.eclipse.debug.internal.ui.m3,M3SortedLane,0,1374,1,191,0,246,1,133,0,38

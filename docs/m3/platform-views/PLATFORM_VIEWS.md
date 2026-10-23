@@ -113,3 +113,12 @@ initial input, input switch). The differential must also count zero full refresh
    resize sweep with counters), 99% coverage on new code, and an `OPTIMIZATION_LEDGER.tsv` row.
 3. **List missing forks.** `MISSING_FORKS.md` records the repos "all of Eclipse" needs but the user has not forked:
    jdt.ui, pde, EGit.
+
+## Status
+
+| Leaf | View | Result | Evidence |
+|---|---|---|---|
+| B1 (837f1026ef) | Breakpoints | One store per container, held in an `M3SortedLane`: O(1) membership, binary-search insert identical to the stock scan, window pages, O(n+m) change batches. At 10^4 breakpoints: build 6,963 -> 38 ms, adding 100 more 132 -> 0.46 ms, 100 pages 21 -> 2.4 ms, allocation 7.48 GB -> 51 MB. Removal is unchanged (60 -> 67 ms for 10^4, linear equals scan on both sides). The retained model grows by about 13 bytes per breakpoint (membership table). The differential has 0 mismatches in 390,850 lines. | `breakpoints/`, `OPTIMIZATION_LEDGER.tsv` |
+
+The delta census is unchanged by B1. The Breakpoints view had no rebuild site on its change path: B1 removes O(n^2)
+work from the delta path, not rebuild calls.

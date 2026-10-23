@@ -11,6 +11,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *     Patrick Chuong (Texas Instruments) - Improve usability of the breakpoint view (Bug 238956)
+ *     Synexia - breakpoints held in an M3SortedLane: O(1) membership, binary-search insert, window copies
  *****************************************************************/
 package org.eclipse.debug.internal.ui.views.breakpoints;
 
@@ -44,7 +45,7 @@ public class BreakpointContainer extends ElementContentProvider implements IAdap
 	/**
 	 * Child breakpoints - inserting new element into this collection should use the insertBreakpoint method
 	 */
-	final private List<IBreakpoint> fBreakpoints = new ArrayList<>();
+	final private org.eclipse.debug.internal.ui.m3.M3SortedLane<IBreakpoint> fBreakpoints = new org.eclipse.debug.internal.ui.m3.M3SortedLane<>();
 
 	/**
 	 * Child containers - inserting new element into this container should use the insertChildContainer method
@@ -157,20 +158,7 @@ public class BreakpointContainer extends ElementContentProvider implements IAdap
 	 * @return the index of the breakpoint in the cache, -1 if the breakpoint already exist
 	 */
 	private int insertBreakpoint(IBreakpoint breakpoint) {
-		if (fBreakpoints.contains(breakpoint) || breakpoint == null) {
-			return -1;
-		}
-		int index = fBreakpoints.size();
-		for (; fComparator != null && index > 0; index--) {
-			if (fComparator.compare(fBreakpoints.get(index-1), breakpoint) < 0) {
-				break;
-			}
-		}
-		if (index < 0) {
-			index = 0;
-		}
-		fBreakpoints.add(index, breakpoint);
-		return index;
+		return fBreakpoints.insertSorted(breakpoint, fComparator, fComparator == null ? 0 : fComparator.orderEpoch());
 	}
 
 	/**
@@ -536,6 +524,33 @@ public class BreakpointContainer extends ElementContentProvider implements IAdap
 	}
 
 	/**
+	 * Returns the number of children without copying them. Synexia - M3 sorted
+	 * lanes.
+	 *
+	 * @return the number of child containers, or of breakpoints when there are
+	 *         no child containers
+	 */
+	public int getChildrenCount() {
+		return fChildContainers.isEmpty() ? fBreakpoints.size() : fChildContainers.size();
+	}
+
+	/**
+	 * Returns the children from {@code index}, at most {@code length} of them,
+	 * clipped like {@code getElements}: {@code null} when {@code index} is past the
+	 * end. Only the requested window is copied. Synexia - M3 sorted lanes.
+	 *
+	 * @param index  the first child
+	 * @param length the number of children wanted
+	 * @return the children, or {@code null}
+	 */
+	public Object[] getChildrenRange(int index, int length) {
+		if (fChildContainers.isEmpty()) {
+			return fBreakpoints.range(index, length);
+		}
+		return getElements(getContainers(), index, length);
+	}
+
+	/**
 	 * Returns the index of the given child element (breakpoint or container.
 	 *
 	 * @param child Child to calculate index of.
@@ -602,6 +617,20 @@ public class BreakpointContainer extends ElementContentProvider implements IAdap
 		return new BreakpointContainer[0];
 	}
 
+	/**
+	 * Re-checks the order around breakpoints whose sort keys may have changed
+	 * (labels, lines or attributes), in this container and its child containers.
+	 * Synexia - M3 sorted lanes.
+	 *
+	 * @param breakpoints the changed breakpoints
+	 */
+	public void breakpointsChanged(IBreakpoint[] breakpoints) {
+		fBreakpoints.elementsChanged(breakpoints);
+		for (BreakpointContainer container : fChildContainers) {
+			container.breakpointsChanged(breakpoints);
+		}
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof BreakpointContainer container) {
@@ -619,12 +648,12 @@ public class BreakpointContainer extends ElementContentProvider implements IAdap
 
 	@Override
 	protected int getChildCount(Object element, IPresentationContext context, IViewerUpdate monitor) throws CoreException {
-		return getChildren().length;
+		return getChildrenCount();
 	}
 
 	@Override
 	protected Object[] getChildren(Object parent, int index, int length, IPresentationContext context, IViewerUpdate monitor) throws CoreException {
-		return getElements(getChildren(), index, length);
+		return getChildrenRange(index, length);
 	}
 
 	@Override

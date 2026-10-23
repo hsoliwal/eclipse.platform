@@ -1,0 +1,73 @@
+# Copyright (c) 2026 Synexia, Hitesh Soliwal (hsoliwal@gmail.com) and others.
+# SPDX-License-Identifier: Apache-2.0 OR EPL-2.0
+---
+type: specs.openrewrite.org/v1beta/recipe
+name: com.synexia.openrewrite.platformviews.BreakpointsViewLanes
+displayName: Breakpoints view on lanes (leaf B1)
+description: >-
+  The Breakpoints view keeps its breakpoints in BreakpointContainer lists that it scans linearly: an equals scan per
+  contains, a comparator scan per insert, a full copy per child count and per page of children. The list becomes an
+  M3SortedLane (same List contract, O(1) membership, binary-search insert while sorted, window copies), and the
+  content provider asks for counts and pages without copying (docs/m3/platform-views/breakpoints/DESIGN.md).
+recipeList:
+  # B1.1 the per-container breakpoint list becomes a lane (same List contract)
+  - com.synexia.openrewrite.platformviews.M3ReplaceFieldDeclaration:
+      declaringClasses: [org.eclipse.debug.internal.ui.views.breakpoints.BreakpointContainer]
+      fieldName: fBreakpoints
+      fieldSource: "final private org.eclipse.debug.internal.ui.m3.M3SortedLane<IBreakpoint> fBreakpoints = new org.eclipse.debug.internal.ui.m3.M3SortedLane<>();"
+  # B1.2 insert where the backward comparator scan inserts, O(log n) comparisons while the lane is sorted
+  - com.synexia.openrewrite.viewport.M3ReplaceMethodBody:
+      declaringClasses: [org.eclipse.debug.internal.ui.views.breakpoints.BreakpointContainer]
+      methodName: insertBreakpoint
+      parameterCount: 1
+      bodySource: "{\n\t\treturn fBreakpoints.insertSorted(breakpoint, fComparator, fComparator == null ? 0 : fComparator.orderEpoch());\n\t}"
+  # B1.3 child count and one page of children without copying every child
+  - com.synexia.openrewrite.viewport.M3AddMemberIfMissing:
+      declaringClasses: [org.eclipse.debug.internal.ui.views.breakpoints.BreakpointContainer]
+      memberName: breakpointsChanged
+      beforeMethod: equals
+      memberSource: "\t/**\n\t * Re-checks the order around breakpoints whose sort keys may have changed\n\t * (labels, lines or attributes), in this container and its child containers.\n\t * Synexia - M3 sorted lanes.\n\t *\n\t * @param breakpoints the changed breakpoints\n\t */\n\tpublic void breakpointsChanged(IBreakpoint[] breakpoints) {\n\t\tfBreakpoints.elementsChanged(breakpoints);\n\t\tfor (BreakpointContainer container : fChildContainers) {\n\t\t\tcontainer.breakpointsChanged(breakpoints);\n\t\t}\n\t}\n"
+  - com.synexia.openrewrite.viewport.M3AddMemberIfMissing:
+      declaringClasses: [org.eclipse.debug.internal.ui.views.breakpoints.BreakpointContainer]
+      memberName: getChildrenCount
+      beforeMethod: getChildIndex
+      memberSource: "\t/**\n\t * Returns the number of children without copying them. Synexia - M3 sorted\n\t * lanes.\n\t *\n\t * @return the number of child containers, or of breakpoints when there are\n\t *         no child containers\n\t */\n\tpublic int getChildrenCount() {\n\t\treturn fChildContainers.isEmpty() ? fBreakpoints.size() : fChildContainers.size();\n\t}\n"
+  - com.synexia.openrewrite.viewport.M3AddMemberIfMissing:
+      declaringClasses: [org.eclipse.debug.internal.ui.views.breakpoints.BreakpointContainer]
+      memberName: getChildrenRange
+      beforeMethod: getChildIndex
+      memberSource: "\t/**\n\t * Returns the children from {@code index}, at most {@code length} of them,\n\t * clipped like {@code getElements}: {@code null} when {@code index} is past the\n\t * end. Only the requested window is copied. Synexia - M3 sorted lanes.\n\t *\n\t * @param index  the first child\n\t * @param length the number of children wanted\n\t * @return the children, or {@code null}\n\t */\n\tpublic Object[] getChildrenRange(int index, int length) {\n\t\tif (fChildContainers.isEmpty()) {\n\t\t\treturn fBreakpoints.range(index, length);\n\t\t}\n\t\treturn getElements(getContainers(), index, length);\n\t}\n"
+  - com.synexia.openrewrite.viewport.M3ReplaceMethodBody:
+      declaringClasses: [org.eclipse.debug.internal.ui.views.breakpoints.BreakpointContainer]
+      methodName: getChildCount
+      parameterCount: 3
+      bodySource: "{\n\t\treturn getChildrenCount();\n\t}"
+  - com.synexia.openrewrite.viewport.M3ReplaceMethodBody:
+      declaringClasses: [org.eclipse.debug.internal.ui.views.breakpoints.BreakpointContainer]
+      methodName: getChildren
+      parameterCount: 5
+      bodySource: "{\n\t\treturn getChildrenRange(index, length);\n\t}"
+  # B1.4 the order epoch: the sorting-order preference the comparator reads on every comparison
+  - com.synexia.openrewrite.viewport.M3AddMemberIfMissing:
+      declaringClasses: [org.eclipse.debug.internal.ui.views.breakpoints.ElementComparator]
+      memberName: orderEpoch
+      beforeMethod: compare
+      memberSource: "\t/**\n\t * Returns a value that changes whenever this comparator orders breakpoints\n\t * differently: the breakpoint sorting order preference. Synexia - M3 sorted\n\t * lanes.\n\t *\n\t * @return the order epoch\n\t */\n\tprotected int orderEpoch() {\n\t\treturn DebugUIPlugin.getDefault().getPreferenceStore().getInt(IInternalDebugUIConstants.PREF_BREAKPOINT_SORTING_ORDER);\n\t}\n"
+  # B1.5 the content provider asks the container for counts and pages instead of copying all children
+  - com.synexia.openrewrite.viewport.M3ReplaceMethodBody:
+      declaringClasses: [org.eclipse.debug.internal.ui.model.elements.BreakpointManagerContentProvider]
+      methodName: getChildCount
+      parameterCount: 3
+      bodySource: "{\n\t\tObject input = monitor.getViewerInput();\n\t\tif (input instanceof DefaultBreakpointsViewInput bpManagerInput) {\n\t\t\tInputData inputData = getInputData(bpManagerInput);\n\t\t\tif (inputData != null) {\n\t\t\t\treturn inputData.fContainer.getChildrenCount();\n\t\t\t}\n\t\t}\n\t\treturn 0;\n\t}"
+  - com.synexia.openrewrite.viewport.M3ReplaceMethodBody:
+      declaringClasses: [org.eclipse.debug.internal.ui.model.elements.BreakpointManagerContentProvider]
+      methodName: getChildren
+      parameterCount: 5
+      bodySource: "{\n\t\tObject input = monitor.getViewerInput();\n\t\tif (input instanceof DefaultBreakpointsViewInput bpManagerInput) {\n\t\t\tInputData inputData = getInputData(bpManagerInput);\n\t\t\tif (inputData != null) {\n\t\t\t\treturn inputData.fContainer.getChildrenRange(index, length);\n\t\t\t}\n\t\t}\n\n\t\treturn EMPTY;\n\t}"
+  # B1.6 a change first re-checks the order of the changed breakpoints, then tests membership in O(1) instead of O(n*m)
+  #      (body replacement: the anchors sit inside synchronized, where M3InsertStatements does not descend)
+  - com.synexia.openrewrite.viewport.M3ReplaceMethodBody:
+      declaringClasses: [org.eclipse.debug.internal.ui.model.elements.BreakpointManagerContentProvider$InputData, org.eclipse.debug.internal.ui.model.elements.BreakpointManagerContentProvider.InputData, org.eclipse.debug.internal.ui.model.elements.InputData]
+      methodName: breakpointsChanged
+      parameterCount: 1
+      bodySource: "{\n\n\n\t\t\tIBreakpoint[] filteredBreakpoints = filterBreakpoints(\n\t\t\t\tfInput, getSelectionFilter(fInput, getDebugContext()), breakpoints);\n\n\t\t\tsynchronized (this) {\n\t\t\t\tfContainer.breakpointsChanged(breakpoints);\n\t\t\t\tModelDelta delta = new ModelDelta(fInput, IModelDelta.NO_CHANGE);\n\n\t\t\t\t// If the change caused a breakpoint to be added (installed) or remove (un-installed) update accordingly.\n\t\t\t\tList<IBreakpoint> removed = new ArrayList<>();\n\t\t\t\tList<IBreakpoint> added = new ArrayList<>();\n\t\t\t\tList<IBreakpoint> filteredAsList = Arrays.asList(filteredBreakpoints);\n\t\t\t\tfilteredAsList = org.eclipse.debug.internal.ui.m3.M3SortedLane.of(filteredAsList);\n\t\t\t\tfor (IBreakpoint bp : breakpoints) {\n\t\t\t\t\tboolean oldContainedBp = fContainer.contains(bp);\n\t\t\t\t\tboolean newContained = filteredAsList.contains(bp);\n\t\t\t\t\tif (oldContainedBp && !newContained) {\n\t\t\t\t\t\tremoved.add(bp);\n\t\t\t\t\t} else if (!oldContainedBp && newContained) {\n\t\t\t\t\t\tadded.add(bp);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t\tif (!added.isEmpty()) {\n\t\t\t\t\tbreakpointsAdded(added.toArray(new IBreakpoint[added.size()]));\n\t\t\t\t}\n\t\t\t\tif (!removed.isEmpty()) {\n\t\t\t\t\tbreakpointsRemoved(removed.toArray(new IBreakpoint[removed.size()]));\n\t\t\t\t}\n\t\t\t\tfor (IBreakpoint filteredBreakpoint : filteredBreakpoints) {\n\t\t\t\t\tappendModelDelta(fContainer, delta, IModelDelta.STATE | IModelDelta.CONTENT, filteredBreakpoint); // content flag triggers detail refresh\n\t\t\t\t}\n\n\t\t\t\tif (DebugUIPlugin.DEBUG_BREAKPOINT_DELTAS) {\n\t\t\t\t\tDebugUIPlugin.trace(\"POST BREAKPOINT DELTA (breakpointsChanged)\\n\"); //$NON-NLS-1$\n\t\t\t\t}\n\t\t\t\tpostModelChanged(delta, false);\n\t\t\t}\n\t\t}"

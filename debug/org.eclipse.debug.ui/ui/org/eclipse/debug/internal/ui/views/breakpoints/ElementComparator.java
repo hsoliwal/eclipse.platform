@@ -12,6 +12,7 @@
  *     Patrick Chuong (Texas Instruments) - Initial API and implementation (Bug 238956)
  *     Pawel Piech (Windriver) - Ongoing bug fixes and enhancements (Bug 311457)
  *     IBM Corporation - bug fixing
+ *     Synexia - order epoch for the M3 sorted lanes of the Breakpoints view
  *****************************************************************/
 package org.eclipse.debug.internal.ui.views.breakpoints;
 
@@ -45,6 +46,17 @@ public class ElementComparator implements Comparator<Object> {
 		if (context instanceof DebugModelPresentationContext) {
 			fContext = (DebugModelPresentationContext) context;
 		}
+	}
+
+	/**
+	 * Returns a value that changes whenever this comparator orders breakpoints
+	 * differently: the breakpoint sorting order preference. Synexia - M3 sorted
+	 * lanes.
+	 *
+	 * @return the order epoch
+	 */
+	protected int orderEpoch() {
+		return DebugUIPlugin.getDefault().getPreferenceStore().getInt(IInternalDebugUIConstants.PREF_BREAKPOINT_SORTING_ORDER);
 	}
 
 	@Override

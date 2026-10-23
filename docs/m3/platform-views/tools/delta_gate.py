@@ -56,7 +56,11 @@ ROOTS = {
         "antModelChanged", "registryChanged", "memoryRenderingBindingsChanged", "sessionStarted", "sessionEnded",
         "sessionStopped", "sessionTerminated", "testAdded", "runningBegins", "testStarted", "testEnded",
         "testFailed", "testReran", "sessionLaunched", "sessionRemoved", "sessionAdded", "handleChanges",
-        "propertyChanged", "patternMatched", "contextEvent_model"},
+        "propertyChanged", "patternMatched", "contextEvent_model",
+        # JDT, PDE, EGit model listeners
+        "elementChanged", "typeHierarchyChanged", "reconciled", "modelsChanged", "stateResolved", "stateChanged",
+        "targetChanged", "onIndexChanged", "onRefsChanged", "onConfigChanged", "onWorkingTreeModified",
+        "repositoryChanged", "indexDiffChanged", "onRepositoryChanged", "refsChanged"},
     "INPUT": {"selectionChanged", "debugContextChanged", "partActivated", "partVisible", "partInputChanged",
               "inputChanged", "contextActivated", "contextEvent"},
     "PREF": {"propertyChange", "preferenceChange"},
