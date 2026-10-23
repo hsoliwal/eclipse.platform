@@ -361,7 +361,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 	 * Mapping of handles (java.lang.Long) to absolute paths
 	 * (java.lang.String).
 	 */
-	protected Map<Long, Handle> fHandleValueToHandle;
+	protected Map<Long, Handle> fHandleValueToHandle; //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 	protected IRefreshResult refreshResult;
 
 	/*
@@ -434,7 +434,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 		long[] handles;
 		// synchronized: in order to protect the map during iteration
 		synchronized (fHandleValueToHandle) {
-			Set<Long> keys = fHandleValueToHandle.keySet();
+			Set<Long> keys = fHandleValueToHandle.keySet(); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 			int size = keys.size();
 			if (size == 0) {
 				// This is dangerous: the documentation of WaitForMultipleObjects says that the

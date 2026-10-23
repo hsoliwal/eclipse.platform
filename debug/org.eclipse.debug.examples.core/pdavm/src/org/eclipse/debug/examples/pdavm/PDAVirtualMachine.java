@@ -76,7 +76,7 @@ public class PDAVirtualMachine {
 		String fName;
 		int fBitOffset;
 		int fBitCount;
-		Map<String, Integer> fMnemonics = new LinkedHashMap<>(0); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW
+		Map<String, Integer> fMnemonics = new LinkedHashMap<>(0); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 	}
 
 	Map<String, Register> fRegisters = new LinkedHashMap<>(0); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW
@@ -147,7 +147,7 @@ public class PDAVirtualMachine {
 		String[] fThreadCode;
 
 		/** PDAThread copy of the labels. */
-		Map<String, Integer> fThreadLabels;
+		Map<String, Integer> fThreadLabels; //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 		/** The stack of stack frames (the control stack) */
 		final List<Frame> fFrames = new LinkedList<>();
@@ -179,7 +179,7 @@ public class PDAVirtualMachine {
 		}
 	}
 
-	final Map<Integer, PDAThread> fThreads = new LinkedHashMap<>(); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW
+	final Map<Integer, PDAThread> fThreads = new LinkedHashMap<>(); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	int fNextThreadId = 1;
 
@@ -191,7 +191,7 @@ public class PDAVirtualMachine {
 	final String[] fCode;
 
 	/** A mapping of labels to indicies in the code array */
-	final Map<String, Integer> fLabels;
+	final Map<String, Integer> fLabels; //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	/** Each stack frame is a mapping of variable names to values. */
 	class Frame {
@@ -281,7 +281,7 @@ public class PDAVirtualMachine {
 	 * Breakpoints are stored per each each line of code.  The boolean indicates
 	 * whether the whole VM should suspend or just the triggering thread.
 	 */
-	final Map<Integer, Boolean> fBreakpoints = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	final Map<Integer, Boolean> fBreakpoints = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	/**
 	 * The suspend flag is true if the VM should suspend running the program and
@@ -327,7 +327,7 @@ public class PDAVirtualMachine {
 	OutputStream fEventStream;
 
 	/** The eventstops table holds which events cause suspends and which do not. */
-	final Map<String, Boolean> fEventStops = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	final Map<String, Boolean> fEventStops = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 	{
 		fEventStops.put("unimpinstr", Boolean.FALSE); //$NON-NLS-1$
 		fEventStops.put("nosuchlabel", Boolean.FALSE); //$NON-NLS-1$
@@ -343,7 +343,7 @@ public class PDAVirtualMachine {
 	 * <li>N = 2 is write watch</li>
 	 * <li>N = 3 is both, etc.</li>
 	 */
-	final Map<String, Integer> fWatchpoints = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	final Map<String, Integer> fWatchpoints = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	public static void main(String[] args) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String programFile = args.length >= 1 ? args[0] : null;
@@ -419,7 +419,7 @@ public class PDAVirtualMachine {
 	 * Initializes the labels map
 	 */
 	Map<String, Integer> mapLabels(String[] code) {
-		Map<String, Integer> labels = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		Map<String, Integer> labels = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		for (int i = 0; i < code.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (code[i].length() != 0 && code[i].charAt(0) == ':') {
 				labels.put(code[i].substring(1), Integer.valueOf(i));

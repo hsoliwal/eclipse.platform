@@ -297,7 +297,7 @@ abstract public class ContentTests extends AbstractViewerModelTest implements IT
 	}
 
 	private boolean areCapturedChildrenUpdatesComplete(List<IViewerUpdate> capturedUpdates, int childCount) {
-		List<Integer> expectedChildren = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<Integer> expectedChildren = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		for (int i = 0; i < childCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			expectedChildren.add(Integer.valueOf(i));
 		}

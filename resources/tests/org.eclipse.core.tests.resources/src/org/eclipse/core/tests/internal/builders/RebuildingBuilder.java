@@ -35,11 +35,11 @@ public class RebuildingBuilder extends TestBuilder {
 	private boolean propagateRebuild;
 	private boolean processOtherBuilders;
 
-	Map<IProject, Integer> projectToRebuild = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	Map<IProject, Integer> projectToRebuild = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	List<IProject> projectsBuilt = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-	List<Integer> buildKinds = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	List<Integer> buildKinds = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	BuilderRuleCallback callback = new BuilderRuleCallback() {
 		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD

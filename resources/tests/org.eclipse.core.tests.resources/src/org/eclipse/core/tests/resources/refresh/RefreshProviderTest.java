@@ -136,7 +136,7 @@ public class RefreshProviderTest {
 		String name = "testProjectCreateDelete";
 		final int maxRuns = 1000;
 		int i = 0;
-		Map<Integer, Throwable> fails = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		Map<Integer, Throwable> fails = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		for (; i < maxRuns; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (i % 50 == 0) {
 				TestUtil.waitForJobs(testInfo.getDisplayName(), 5, 100);

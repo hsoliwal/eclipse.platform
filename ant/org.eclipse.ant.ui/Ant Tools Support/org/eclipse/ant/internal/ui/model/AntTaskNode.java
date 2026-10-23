@@ -184,7 +184,7 @@ public class AntTaskNode extends AntElementNode {
 		if (textToSearch == null || textToSearch.length() == 0 || identifier.length() == 0) {
 			return null;
 		}
-		List<Integer> results = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<Integer> results = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		RuntimeConfigurable wrapper = getTask().getRuntimeConfigurableWrapper();
 		Map<String, Object> attributeMap = wrapper.getAttributeMap();
 		String lineSep = System.lineSeparator();

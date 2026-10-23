@@ -87,7 +87,7 @@ public class AntAugmentTaskNode extends AntTaskNode {
 			if (text == null || text.length() == 0) {
 				return null;
 			}
-			ArrayList<Integer> list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			ArrayList<Integer> list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 			int idx = text.indexOf(attrId);
 			if (idx > -1) {
 				list.add(Integer.valueOf(getOffset() + idx));

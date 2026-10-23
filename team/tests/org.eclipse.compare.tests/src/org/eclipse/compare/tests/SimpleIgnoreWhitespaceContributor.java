@@ -23,7 +23,7 @@ import org.eclipse.jface.text.IDocument;
 public class SimpleIgnoreWhitespaceContributor implements IIgnoreWhitespaceContributor {
 
 	private final IDocument document;
-	private final TreeMap<Integer /* start offset */, Integer /* end offset */> literalsByOffset = new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW
+	private final TreeMap<Integer /* start offset */, Integer /* end offset */> literalsByOffset = new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	public SimpleIgnoreWhitespaceContributor(IDocument document) {
 		this.document = document;

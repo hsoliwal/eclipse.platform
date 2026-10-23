@@ -86,7 +86,7 @@ public class OccurrencesFinder {
 		}
 		List<Position> positions = new ArrayList<>(usages.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		for (IAntElement currentNode : usages) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
-			List<Integer> offsets = currentNode.computeIdentifierOffsets(identifier);
+			List<Integer> offsets = currentNode.computeIdentifierOffsets(identifier); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 			if (offsets != null) {
 				for (Integer offset : offsets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					positions.add(new Position(offset.intValue(), length));

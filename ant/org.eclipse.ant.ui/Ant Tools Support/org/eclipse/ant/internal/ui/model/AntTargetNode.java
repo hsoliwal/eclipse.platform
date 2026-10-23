@@ -179,7 +179,7 @@ public class AntTargetNode extends AntElementNode {
 		if (textToSearch == null || textToSearch.length() == 0 || identifier.length() == 0) {
 			return null;
 		}
-		List<Integer> results = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<Integer> results = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		if (getTargetName().equals(identifier)) {
 			int nameOffset = textToSearch.indexOf(IAntCoreConstants.NAME);
 			nameOffset = textToSearch.indexOf(identifier, nameOffset);

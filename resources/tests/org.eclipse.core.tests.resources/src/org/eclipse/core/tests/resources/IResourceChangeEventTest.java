@@ -179,7 +179,7 @@ public class IResourceChangeEventTest {
 	 * Verifies that the marker deltas have the right changes.
 	 */
 	protected void verifyDeltas(IMarkerDelta[] deltas) {
-		Map<Long, Integer> deltaIdToKind = Map.of(marker1.getId(), IResourceDelta.ADDED, //
+		Map<Long, Integer> deltaIdToKind = Map.of(marker1.getId(), IResourceDelta.ADDED, // //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 				marker2.getId(), IResourceDelta.REMOVED, //
 				marker3.getId(), IResourceDelta.CHANGED);
 		assertThat(deltas).hasSize(3).allSatisfy(delta -> {

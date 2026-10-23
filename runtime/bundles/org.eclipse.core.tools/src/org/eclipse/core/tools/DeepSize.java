@@ -81,10 +81,10 @@ public class DeepSize {
 	public static final int OBJECT_HEADER_SIZE = HEADER_SIZE;
 	public static final int POINTER_SIZE = 4;
 	int byteSize;
-	final Map<Class<?>, Integer> counts = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	final Map<Class<?>, Integer> counts = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	Set<String> ignoreTypeNames = null;
-	final Map<Object, Integer> sizes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	final Map<Object, Integer> sizes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	/**
 	 * Adds an object to the ignore set. Returns true if the object

@@ -241,10 +241,10 @@ public class TextPreferencePage extends PreferencePage implements IWorkbenchPref
 	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean performOk() {
 		final ArrayList<String> extensionsList= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
-		final ArrayList<Integer> extensionsModesList= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		final ArrayList<Integer> extensionsModesList= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 
 		final ArrayList<String> namesList= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
-		final ArrayList<Integer> namesModesList= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		final ArrayList<Integer> namesModesList= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 
 		for (FileTypeTable.Item item : fItems) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (item instanceof FileTypeTable.Extension) {

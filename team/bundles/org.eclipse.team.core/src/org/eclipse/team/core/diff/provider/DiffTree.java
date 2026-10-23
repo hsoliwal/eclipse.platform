@@ -67,7 +67,7 @@ public class DiffTree implements IDiffTree {
 
 	private  boolean lockedForModification;
 
-	private Map<Integer, Set<IPath>> propertyChanges = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	private Map<Integer, Set<IPath>> propertyChanges = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	/**
 	 * Create an empty diff tree.
@@ -239,7 +239,7 @@ public class DiffTree implements IDiffTree {
 
 		final DiffChangeEvent event = getChangeEvent();
 		resetChanges();
-		final Map<Integer, Set<IPath>> propertyChanges = this.propertyChanges;
+		final Map<Integer, Set<IPath>> propertyChanges = this.propertyChanges; //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		this.propertyChanges = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 		if(event.isEmpty() && ! event.isReset() && propertyChanges.isEmpty()) {

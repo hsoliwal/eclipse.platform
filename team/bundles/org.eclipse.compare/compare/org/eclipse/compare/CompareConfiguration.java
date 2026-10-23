@@ -151,7 +151,7 @@ public class CompareConfiguration {
 	private final DefaultLabelProvider labelProvider = new DefaultLabelProvider();
 	private boolean fDisposed;
 	private LocalResourceManager fResourceManager;
-	private final Set<Integer> fIgnoredChanges = new HashSet<>(6); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<Integer> fIgnoredChanges = new HashSet<>(6); //FLLDCIM: MARK — M03 M3_SET_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	private class DefaultLabelProvider extends LabelProvider implements ICompareInputLabelProvider, ILabelProviderListener { //FLLDCIM: MARK — T24  IMPLEMENTS
 		private final Map<ICompareInput, ICompareInputLabelProvider> labelProviders = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW

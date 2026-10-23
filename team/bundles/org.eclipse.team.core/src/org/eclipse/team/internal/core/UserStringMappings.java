@@ -41,7 +41,7 @@ public class UserStringMappings {
 
 	private final String fKey;
 
-	private Map<String, Integer> fMap;
+	private Map<String, Integer> fMap; //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	public UserStringMappings(String key) {
 		fKey = key;
@@ -57,7 +57,7 @@ public class UserStringMappings {
 
 	public void addStringMappings(String[] names, int[] types) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isTrue(names.length == types.length);
-		final Map<String, Integer> map = referenceMap();
+		final Map<String, Integer> map = referenceMap(); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 
 		for (int i = 0; i < names.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int type = types[i];
@@ -112,7 +112,7 @@ public class UserStringMappings {
 	}
 
 	protected Map<String, Integer> loadMappingsFromPreferences() {
-		final Map<String, Integer> result = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		final Map<String, Integer> result = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 
 		if (!nodeAccessibleAndExists(fKey)) {
 			return result;

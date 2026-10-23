@@ -381,7 +381,7 @@ public class CompareOpenPerformanceTest {
 	}
 
 	private static long median(List<long[]> samples, int index) {
-		List<Long> values = new ArrayList<>(samples.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<Long> values = new ArrayList<>(samples.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		for (long[] sample : samples) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			values.add(sample[index]);
 		}

@@ -96,7 +96,7 @@ public class dumper {
 	 *            to dump
 	 */
 	private static void dumpDfm(IDfm dfm) {
-		HashMap<IDfm, Integer> map = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		HashMap<IDfm, Integer> map = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		dumpDfm(dfm, map, 0);
 		LinkedList<State> list = new LinkedList<>();
 		Iterator<Entry<IDfm, Integer>> it = map.entrySet().iterator();
@@ -111,7 +111,7 @@ public class dumper {
 		}
 	}
 
-	private static void print(State state, HashMap<IDfm, Integer> map) {
+	private static void print(State state, HashMap<IDfm, Integer> map) { //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES PARAMETER
 		System.out.print("  S" + state.n.intValue() //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ (state.dfm.isAccepting() ? "*  " : "  ")); //$NON-NLS-1$ //$NON-NLS-2$
 		for (String accept : state.dfm.getAccepts()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
@@ -122,7 +122,7 @@ public class dumper {
 		System.out.println();
 	}
 
-	private static int dumpDfm(IDfm dfm, HashMap<IDfm, Integer> map, int num) {
+	private static int dumpDfm(IDfm dfm, HashMap<IDfm, Integer> map, int num) { //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES PARAMETER
 		if (!map.containsKey(dfm)) {
 			map.put(dfm, Integer.valueOf(num++));
 			for (String accept : dfm.getAccepts()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP

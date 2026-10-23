@@ -110,7 +110,7 @@ public class RebuildTest {
 		assertEquals(2, b2.buildsCount());
 		assertEquals(2, b3.buildsCount());
 
-		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD,
+		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD, //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 				IncrementalProjectBuilder.INCREMENTAL_BUILD);
 		assertEquals(expectedKinds, b1.buildKinds());
 		assertEquals(expectedKinds, b2.buildKinds());
@@ -240,7 +240,7 @@ public class RebuildTest {
 		assertEquals(3, b1.buildsCount());
 		assertEquals(3, b2.buildsCount());
 		assertEquals(3, b3.buildsCount());
-		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD,
+		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD, //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 				IncrementalProjectBuilder.INCREMENTAL_BUILD, IncrementalProjectBuilder.INCREMENTAL_BUILD);
 		assertEquals(expectedKinds, b1.buildKinds());
 		assertEquals(expectedKinds, b2.buildKinds());
@@ -363,7 +363,7 @@ public class RebuildTest {
 		assertEquals(2, b1.buildsCount());
 		assertEquals(2, b2.buildsCount());
 		assertEquals(2, b3.buildsCount());
-		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD, IncrementalProjectBuilder.INCREMENTAL_BUILD);
+		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD, IncrementalProjectBuilder.INCREMENTAL_BUILD); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		assertEquals(expectedKinds, b1.buildKinds());
 		assertEquals(expectedKinds, b2.buildKinds());
 		assertEquals(expectedKinds, b3.buildKinds());
@@ -489,7 +489,7 @@ public class RebuildTest {
 		assertEquals(1, b1.buildsCount());
 		assertEquals(1, b2.buildsCount());
 		assertEquals(1, b3.buildsCount());
-		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD);
+		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		assertEquals(expectedKinds, b1.buildKinds());
 		assertEquals(expectedKinds, b2.buildKinds());
 		assertEquals(expectedKinds, b3.buildKinds());
@@ -646,7 +646,7 @@ public class RebuildTest {
 		assertEquals(2, b5.buildsCount());
 		assertEquals(2, b6.buildsCount());
 
-		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD,
+		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD, //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 				IncrementalProjectBuilder.INCREMENTAL_BUILD);
 		assertEquals(expectedKinds, b1.buildKinds());
 		assertEquals(expectedKinds, b2.buildKinds());
@@ -781,7 +781,7 @@ public class RebuildTest {
 		assertEquals(2, b5.buildsCount());
 		assertEquals(2, b6.buildsCount());
 
-		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD,
+		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD, //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 				IncrementalProjectBuilder.INCREMENTAL_BUILD, IncrementalProjectBuilder.INCREMENTAL_BUILD);
 		assertEquals(expectedKinds, b1.buildKinds());
 		assertEquals(expectedKinds, b2.buildKinds());
@@ -928,7 +928,7 @@ public class RebuildTest {
 		assertEquals(1, b5.buildsCount());
 		assertEquals(1, b6.buildsCount());
 
-		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD,
+		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD, //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 				IncrementalProjectBuilder.INCREMENTAL_BUILD, IncrementalProjectBuilder.INCREMENTAL_BUILD,
 				IncrementalProjectBuilder.INCREMENTAL_BUILD);
 		assertEquals(expectedKinds, b1.buildKinds());
@@ -1099,7 +1099,7 @@ public class RebuildTest {
 		assertEquals(1, b5.buildsCount());
 		assertEquals(1, b6.buildsCount());
 
-		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD,
+		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD, //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 				IncrementalProjectBuilder.INCREMENTAL_BUILD);
 		assertEquals(expectedKinds, b1.buildKinds());
 		assertEquals(expectedKinds, b2.buildKinds());
@@ -1240,7 +1240,7 @@ public class RebuildTest {
 		assertEquals(1, b5.buildsCount());
 		assertEquals(1, b6.buildsCount());
 
-		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD, IncrementalProjectBuilder.INCREMENTAL_BUILD);
+		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD, IncrementalProjectBuilder.INCREMENTAL_BUILD); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		assertEquals(expectedKinds, b1.buildKinds());
 		assertEquals(expectedKinds, b2.buildKinds());
 		assertEquals(expectedKinds, b3.buildKinds());
@@ -1412,7 +1412,7 @@ public class RebuildTest {
 		assertEquals(1, b5.buildsCount());
 		assertEquals(1, b6.buildsCount());
 
-		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD,
+		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD, //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 				IncrementalProjectBuilder.INCREMENTAL_BUILD);
 		assertEquals(expectedKinds, b1.buildKinds());
 		assertEquals(expectedKinds, b2.buildKinds());
@@ -1579,7 +1579,7 @@ public class RebuildTest {
 		assertEquals(1, b2.buildsCount());
 		assertEquals(1, b3.buildsCount());
 
-		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD,
+		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD, //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 				IncrementalProjectBuilder.INCREMENTAL_BUILD);
 		assertEquals(expectedKinds, b1.buildKinds());
 
@@ -1782,7 +1782,7 @@ public class RebuildTest {
 		assertEquals(1, b2.buildsCount());
 		assertEquals(1, b3.buildsCount());
 
-		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD,
+		List<Integer> expectedKinds = List.of(IncrementalProjectBuilder.FULL_BUILD, //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 				IncrementalProjectBuilder.INCREMENTAL_BUILD);
 		assertEquals(expectedKinds, b1.buildKinds());
 

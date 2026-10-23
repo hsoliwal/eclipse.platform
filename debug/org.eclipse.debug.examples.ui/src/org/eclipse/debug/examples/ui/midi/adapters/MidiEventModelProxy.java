@@ -23,7 +23,7 @@ import org.eclipse.debug.internal.ui.viewers.provisional.AbstractModelProxy;
 import org.eclipse.jface.viewers.TreePath;
 
 public class MidiEventModelProxy extends AbstractModelProxy implements ICheckboxModelProxy {
-	static Map<TreePath, Boolean> gChecked = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	static Map<TreePath, Boolean> gChecked = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 
 	@Override

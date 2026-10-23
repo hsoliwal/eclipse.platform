@@ -175,7 +175,7 @@ public class ContentDescriptionPerformanceTest {
 			flushDescriptionCache();
 			describeAllFiles();
 		}
-		List<Long> times = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<Long> times = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		exercise(() -> {
 			flushDescriptionCache();
 			long before = System.nanoTime();
@@ -196,7 +196,7 @@ public class ContentDescriptionPerformanceTest {
 		for (int i = 0; i < WARMUP_ROUNDS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			describeAllFiles();
 		}
-		List<Long> times = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<Long> times = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		exercise(() -> {
 			long before = System.nanoTime();
 			int described = describeAllFiles();
@@ -212,7 +212,7 @@ public class ContentDescriptionPerformanceTest {
 		for (int i = 0; i < WARMUP_ROUNDS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			runLookupBatch(matcher, names);
 		}
-		List<Long> times = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<Long> times = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		exercise(() -> times.add(runLookupBatch(matcher, names)), MIN_ROUNDS, LOOKUP_MAX_ROUNDS,
 				MAX_MEASURE_TIME_MS);
 		reportTimings(label + " [per " + LOOKUP_BATCH + " look-ups]", times); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT

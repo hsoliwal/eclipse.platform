@@ -74,7 +74,7 @@ public class FileContentManager implements IFileContentManager {
 
 		@Override
 		protected Map<String, Integer> loadMappingsFromPreferences() {
-			final Map<String, Integer> result= super.loadMappingsFromPreferences();
+			final Map<String, Integer> result= super.loadMappingsFromPreferences(); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 			if (loadMappingsFromOldWorkspace(result)) {
 				try {
 					InstanceScope.INSTANCE.getNode(TeamPlugin.ID).flush();
@@ -93,7 +93,7 @@ public class FileContentManager implements IFileContentManager {
 		 * @return true if the workspace was a 2.0 one and the old mappings have
 		 * been added to the map, false otherwise.
 		 */
-		private boolean loadMappingsFromOldWorkspace(Map<String, Integer> map) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		private boolean loadMappingsFromOldWorkspace(Map<String, Integer> map) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES PARAMETER
 			// File name of the persisted file type information
 			String STATE_FILE = ".fileTypes"; //$NON-NLS-1$
 			IPath pluginStateLocation = TeamPlugin.getPlugin().getStateLocation().append(STATE_FILE);
@@ -122,7 +122,7 @@ public class FileContentManager implements IFileContentManager {
 		 * @throws IOException if an I/O problem occurs
 		 */
 		private Map<String, Integer> readOldFormatExtensionMappings(DataInputStream input) throws IOException {
-			final Map<String, Integer> result= new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW
+			final Map<String, Integer> result= new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 			int numberOfMappings = 0;
 			try {
 				numberOfMappings = input.readInt();
@@ -275,7 +275,7 @@ public class FileContentManager implements IFileContentManager {
 	}
 
 	private IStringMapping [] getMappings(UserStringMappings userMappings, PluginStringMappings pluginMappings) {
-		final Map<String, Integer> mappings= new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		final Map<String, Integer> mappings= new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		if (pluginMappings != null) {
 			mappings.putAll(pluginMappings.referenceMap());
 		}

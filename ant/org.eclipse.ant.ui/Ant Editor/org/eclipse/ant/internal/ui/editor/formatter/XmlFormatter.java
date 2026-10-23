@@ -206,7 +206,7 @@ public class XmlFormatter {
 	}
 
 	private static int[] variablesToOffsets(TemplateVariable[] variables, int start) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
-		List<Integer> list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<Integer> list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		for (int i = 0; i != variables.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int[] offsets = variables[i].getOffsets();
 			for (int j = 0; j != offsets.length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP

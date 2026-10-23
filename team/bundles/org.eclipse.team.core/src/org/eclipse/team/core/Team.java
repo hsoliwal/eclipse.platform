@@ -101,7 +101,7 @@ public final class Team {
 
 
 	// The ignore list that is read at startup from the persisted file
-	protected static SortedMap<String, Boolean> globalIgnore, pluginIgnore;
+	protected static SortedMap<String, Boolean> globalIgnore, pluginIgnore; //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 	private static WildcardStringMatcher[] ignoreMatchers;
 
 	private final static FileContentManager fFileContentManager;
@@ -331,7 +331,7 @@ public final class Team {
 	 *
 	 * Reads the ignores currently defined by extensions.
 	 */
-	private static void initializePluginIgnores(SortedMap<String, Boolean> pIgnore, SortedMap<String, Boolean> gIgnore) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+	private static void initializePluginIgnores(SortedMap<String, Boolean> pIgnore, SortedMap<String, Boolean> gIgnore) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES PARAMETER
 		TeamPlugin plugin = TeamPlugin.getPlugin();
 		if (plugin != null) {
 			IExtensionPoint extension = Platform.getExtensionRegistry().getExtensionPoint(TeamPlugin.ID, TeamPlugin.IGNORE_EXTENSION);
@@ -533,8 +533,8 @@ public final class Team {
 	 * @since 3.0
 	 */
 	public static IIgnoreInfo[] getDefaultIgnores() {
-		SortedMap<String, Boolean> gIgnore = new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW
-		SortedMap<String, Boolean> pIgnore = new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW
+		SortedMap<String, Boolean> gIgnore = new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
+		SortedMap<String, Boolean> pIgnore = new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		initializePluginIgnores(pIgnore, gIgnore);
 		return getIgnoreInfo(gIgnore);
 	}

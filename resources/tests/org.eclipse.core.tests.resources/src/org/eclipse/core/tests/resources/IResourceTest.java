@@ -1608,7 +1608,7 @@ public class IResourceTest {
 
 		// setup
 		IResource[] resources = buildResources(getWorkspace().getRoot(), "/1/", "/1/1", "/1/2", "/1/3", "/2/", "/2/1");
-		final Map<IPath, Long> table = new HashMap<>(resources.length); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		final Map<IPath, Long> table = new HashMap<>(resources.length); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 
 		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() != IResource.ROOT) {
@@ -1673,7 +1673,7 @@ public class IResourceTest {
 		}
 
 		// touch all the resources. this will update the modification stamp
-		final Map<IPath, Long> tempTable = new HashMap<>(resources.length); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		final Map<IPath, Long> tempTable = new HashMap<>(resources.length); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() != IResource.ROOT) {
 				resource.touch(createTestMonitor());

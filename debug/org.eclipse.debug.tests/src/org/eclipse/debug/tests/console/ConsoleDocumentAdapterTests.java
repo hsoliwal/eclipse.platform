@@ -1075,7 +1075,7 @@ public class ConsoleDocumentAdapterTests {
 	 */
 	private static void checkLineMapping(IDocumentAdapter docAdapter, Random rand) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final int n = docAdapter.getLineCount();
-		final List<Integer> lines = new ArrayList<>(n); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		final List<Integer> lines = new ArrayList<>(n); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		for (int i = 0; i < n; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			lines.add(i);
 		}

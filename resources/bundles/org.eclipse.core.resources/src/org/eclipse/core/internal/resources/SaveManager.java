@@ -1600,7 +1600,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		ElementTree[] sorted = new ElementTree[numTrees];
 
 		/* first build a table of ElementTree -> Number of duplicates */
-		Map<ElementTree, Integer> duplicateCount = new LinkedHashMap<>(numTrees * 2 + 1); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW
+		Map<ElementTree, Integer> duplicateCount = new LinkedHashMap<>(numTrees * 2 + 1); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		for (ElementTree tree : trees) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			duplicateCount.compute(tree, (unused, duplicates) -> (duplicates == null ? 0 : duplicates) + 1);
 		}

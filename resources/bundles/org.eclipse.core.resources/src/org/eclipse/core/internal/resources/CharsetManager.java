@@ -76,7 +76,7 @@ public class CharsetManager implements IManager {
 			return CharsetManager.class == family;
 		}
 
-		public void addChanges(Map<IProject, Boolean> newChanges) {
+		public void addChanges(Map<IProject, Boolean> newChanges) { //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES PARAMETER
 			if (newChanges.isEmpty()) {
 				return;
 			}
@@ -194,13 +194,13 @@ public class CharsetManager implements IManager {
 			return resourceChanges;
 		}
 
-		private void processEntryChanges(IResourceDelta projectDelta, Map<IProject, Boolean> projectsToSave) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		private void processEntryChanges(IResourceDelta projectDelta, Map<IProject, Boolean> projectsToSave) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES PARAMETER
 			// check each resource with user-set encoding to see if it has
 			// been moved/deleted or if derived state has been changed
 			IProject currentProject = (IProject) projectDelta.getResource();
 			Preferences projectRegularPrefs = getPreferences(currentProject, false, false, true);
 			Preferences projectDerivedPrefs = getPreferences(currentProject, false, true, true);
-			Map<Boolean, String[]> affectedResourcesMap = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+			Map<Boolean, String[]> affectedResourcesMap = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 			try {
 				// no regular preferences for this project
 				if (projectRegularPrefs == null) {
@@ -276,7 +276,7 @@ public class CharsetManager implements IManager {
 			}
 			IResourceDelta[] projectDeltas = delta.getAffectedChildren();
 			// process each project in the delta
-			Map<IProject, Boolean> projectsToSave = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+			Map<IProject, Boolean> projectsToSave = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 			for (IResourceDelta projectDelta : projectDeltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				//nothing to do if a project has been added/removed/moved
 				if (projectDelta.getKind() == IResourceDelta.CHANGED && (projectDelta.getFlags() & IResourceDelta.OPEN) == 0) {
@@ -460,7 +460,7 @@ public class CharsetManager implements IManager {
 				prefsChanged = true;
 			}
 			if (prefsChanged) {
-				Map<IProject, Boolean> projectsToSave = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+				Map<IProject, Boolean> projectsToSave = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 				// this is internal change so do not notify charset delta job
 				projectsToSave.put(project, Boolean.TRUE);
 				job.addChanges(projectsToSave);
@@ -580,7 +580,7 @@ public class CharsetManager implements IManager {
 				}
 			}
 			if (prefsChanged) {
-				Map<IProject, Boolean> projectsToSave = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+				Map<IProject, Boolean> projectsToSave = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 				// this is internal change so do not notify charset delta job
 				projectsToSave.put(project, Boolean.TRUE);
 				job.addChanges(projectsToSave);

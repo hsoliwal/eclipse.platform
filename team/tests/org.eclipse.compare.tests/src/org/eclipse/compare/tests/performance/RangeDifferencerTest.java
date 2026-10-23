@@ -45,7 +45,7 @@ public class RangeDifferencerTest {
 	private static final int WARMUP = 5;
 	private static final long SANITY_BOUND_MILLIS = 10_000;
 
-	private static final List<Long> durations = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private static final List<Long> durations = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	/*
 	 * Creates a document with 5000 lines. Parameter code determines where
@@ -113,7 +113,7 @@ public class RangeDifferencerTest {
 		if (durations.isEmpty()) {
 			return;
 		}
-		List<Long> sorted = new ArrayList<>(durations); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<Long> sorted = new ArrayList<>(durations); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		Collections.sort(sorted); //FLLDCIM: MARK — M16 SORT_LANE CALL
 		int n = sorted.size();
 		long median = n % 2 == 1 ? sorted.get(n / 2) : (sorted.get(n / 2 - 1) + sorted.get(n / 2)) / 2;

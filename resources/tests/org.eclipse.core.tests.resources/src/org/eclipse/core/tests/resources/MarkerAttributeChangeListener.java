@@ -31,7 +31,7 @@ import org.eclipse.core.runtime.CoreException;
  */
 public class MarkerAttributeChangeListener implements IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 	//Map of (Long(id) -> Map of (String(attribute key) -> Object(attribute value)))
-	private final Map<Long, Map<String, Object>> attributeMap = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	private final Map<Long, Map<String, Object>> attributeMap = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	//cache the exception because it can't be thrown from a listener
 	private AssertionError error;

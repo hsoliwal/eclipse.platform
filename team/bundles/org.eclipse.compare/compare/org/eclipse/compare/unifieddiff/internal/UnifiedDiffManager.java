@@ -516,7 +516,7 @@ public class UnifiedDiffManager {
 		long stamp = modificationStamp(document);
 		Collection<Position> collapsed = getCollapsedFoldRegions(viewer).values();
 		Map<Annotation, ShadowedFold> shadowed = getShadowedEditorFolds(tw);
-		Set<Integer> presentStarts = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		Set<Integer> presentStarts = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		List<Annotation> toHide = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		for (Iterator<Annotation> it = projectionModel.getAnnotationIterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Annotation annotation = it.next();

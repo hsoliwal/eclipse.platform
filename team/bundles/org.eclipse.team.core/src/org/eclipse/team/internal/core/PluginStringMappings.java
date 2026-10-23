@@ -29,7 +29,7 @@ public class PluginStringMappings {
 	private final String fExtensionID;
 	private final String fAttributeName;
 
-	private SortedMap<String, Integer> fMappings;
+	private SortedMap<String, Integer> fMappings; //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	public PluginStringMappings(String extensionID, String stringAttributeName) {
 		fExtensionID= extensionID;
@@ -42,7 +42,7 @@ public class PluginStringMappings {
 	 */
 	private SortedMap<String, Integer> loadPluginPatterns() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
-		final SortedMap<String, Integer> result= new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW
+		final SortedMap<String, Integer> result= new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 
 		final TeamPlugin plugin = TeamPlugin.getPlugin();
 		if (plugin == null) {
@@ -82,7 +82,7 @@ public class PluginStringMappings {
 	}
 
 	public int getType(String filename) {
-		final Map<String, Integer> mappings= referenceMap();
+		final Map<String, Integer> mappings= referenceMap(); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		return mappings.containsKey(filename) ? mappings.get(filename).intValue() : Team.UNKNOWN;
 	}
 }

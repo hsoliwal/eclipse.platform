@@ -73,8 +73,8 @@ public class HistoryStoreTest {
 	private final FileStoreAutoDeleteExtension fileStoreExtension = new FileStoreAutoDeleteExtension();
 
 	static class LogListenerVerifier implements ILogListener {
-		List<Integer> actual = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
-		List<Integer> expected = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<Integer> actual = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
+		List<Integer> expected = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 		void addExpected(int statusCode) {
 			expected.add(Integer.valueOf(statusCode));

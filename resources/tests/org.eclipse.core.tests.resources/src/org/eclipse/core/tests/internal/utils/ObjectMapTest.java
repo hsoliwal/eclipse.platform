@@ -115,7 +115,7 @@ public class ObjectMapTest {
 	public void testKeySet() {
 		Object[] values = new Object[MAXIMUM];
 		ObjectMap<Integer, Object> map = populateMap(values);
-		Set<Integer> keys = map.keySet();
+		Set<Integer> keys = map.keySet(); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		assertThat(keys).hasSize(MAXIMUM);
 	}
 

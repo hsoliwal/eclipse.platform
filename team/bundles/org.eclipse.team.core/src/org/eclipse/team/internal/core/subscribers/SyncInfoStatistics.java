@@ -24,7 +24,7 @@ import org.eclipse.team.core.synchronize.SyncInfo;
  */
 public class SyncInfoStatistics {
 	//	{int sync kind -> int number of infos with that sync kind in this sync set}
-	protected Map<Integer, Long> stats = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	protected Map<Integer, Long> stats = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	/**
 	 * Count this sync kind. Only the type of the sync info is stored.

@@ -254,7 +254,7 @@ public class UnifiedDiffCodeMiningProviderTest {
 		installCodeMinings(provider);
 		assertTrue(open(withChangedLines(45)).isOK());
 		assertThat(collapsedRegions()).as("the regions start collapsed").isNotEmpty();
-		Map<Integer, Integer> collapsedAnchors = bandAnchorsByRegion();
+		Map<Integer, Integer> collapsedAnchors = bandAnchorsByRegion(); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		assertThat(collapsedAnchors).as("there is a band to follow").isNotEmpty();
 
 		viewer.doOperation(ProjectionViewer.EXPAND_ALL);
@@ -271,7 +271,7 @@ public class UnifiedDiffCodeMiningProviderTest {
 	 * comparison across a toggle that decides whether the band moved.
 	 */
 	private Map<Integer, Integer> bandAnchorsByRegion() throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
-		Map<Integer, Integer> anchors = new LinkedHashMap<>(); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW
+		Map<Integer, Integer> anchors = new LinkedHashMap<>(); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		for (ICodeMining mining : provide()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!(mining instanceof FoldedRegionCodeMining band)) {
 				continue;
@@ -517,7 +517,7 @@ public class UnifiedDiffCodeMiningProviderTest {
 			ImageData data = image.getImageData(zoom);
 			RGB detailedRgb = detailedDiffColor.getRGB();
 
-			List<Integer> paintedLastColumns = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			List<Integer> paintedLastColumns = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 			for (int lineIndex = 0; lineIndex < 8; lineIndex++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int yTop = lineIndex * (lineHeight + lineSpacing);
 				int lastColumn = lastColumnWithInBand(data, detailedRgb, yTop, yTop + lineHeight);
@@ -669,7 +669,7 @@ public class UnifiedDiffCodeMiningProviderTest {
 	 */
 	private void assertMinings(List<ICodeMining> minings, List<UnifiedDiff> diffs) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		List<UnifiedDiff> shown = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
-		List<Integer> expanders = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<Integer> expanders = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		for (ICodeMining mining : minings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (mining instanceof UnifiedDiffLineHeaderCodeMining overlay) {
 				shown.add(overlay.getUnifiedDiff());

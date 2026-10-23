@@ -627,7 +627,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		}
 
 		private void clearStyledFonts() {
-			styledFonts.forEach((unused, map) -> map.forEach((unused2, f) -> f.dispose()));
+			styledFonts.forEach((unused, map) -> map.forEach((unused2, f) -> f.dispose())); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES PARAMETER
 			styledFonts.clear();
 		}
 
@@ -1046,7 +1046,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		}
 
 		private void clearStyledFonts() {
-			styledFonts.forEach((unused, styledFonts1) -> {
+			styledFonts.forEach((unused, styledFonts1) -> { //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES PARAMETER
 				styledFonts1.forEach((unused3, styledFont) -> {
 					styledFont.dispose();
 				});

@@ -67,7 +67,7 @@ extends FileModificationValidator {
 		int reloadCount = 0;
 		int checkoutFailCount = 0;
 
-		Map<IFile, Integer> validateEditStatusMap = new HashMap<>(files.length); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		Map<IFile, Integer> validateEditStatusMap = new HashMap<>(files.length); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 
 		for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (fProvider.isControlled(file) ) {
@@ -301,7 +301,7 @@ extends FileModificationValidator {
 	/*
 	 * Convenience method to set the validate edit status for the given resource.
 	 */
-	private static void setValidateEditStatus(Map<IFile, Integer> map, IFile resource, int status) {
+	private static void setValidateEditStatus(Map<IFile, Integer> map, IFile resource, int status) { //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES PARAMETER
 		map.put(resource, Integer.valueOf(status));
 	}
 

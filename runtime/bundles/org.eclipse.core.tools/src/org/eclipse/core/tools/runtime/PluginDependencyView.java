@@ -45,7 +45,7 @@ import org.osgi.framework.wiring.BundleWiring;
 public class PluginDependencyView extends SpyView implements ISelectionListener {
 
 	private TextViewer viewer;
-	private Map<Long, PluginDependencyGraphNode> dependencyGraph = null;
+	private Map<Long, PluginDependencyGraphNode> dependencyGraph = null; //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	/** The id by which this view is known in the plug-in registry */
 	public static final String VIEW_ID = PluginDependencyView.class.getName();

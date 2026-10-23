@@ -91,7 +91,7 @@ public class PDADebugTarget extends PDADebugElement implements IDebugTarget, IBr
 	private boolean fTerminated = false;
 
 	// threads
-	private final Map<Integer, PDAThread> fThreads = Collections.synchronizedMap(new LinkedHashMap<>()); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW
+	private final Map<Integer, PDAThread> fThreads = Collections.synchronizedMap(new LinkedHashMap<>()); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	// event dispatch job
 	private final EventDispatchJob fEventDispatch;

@@ -4544,7 +4544,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			return 0;
 		}
 		StyledText w = tp.getSourceViewer().getTextWidget();
-		List<Integer> lineHeights = this.lineHeightsByViewer.get(tp);
+		List<Integer> lineHeights = this.lineHeightsByViewer.get(tp); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		if (lineHeights == null) {
 			lineHeights = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			lineHeights.addAll(Collections.nCopies(w.getLineCount(), null));
@@ -4576,7 +4576,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 	private void resetCachedLineHeights(MergeSourceViewer mergeViewer) {
 		StyledText styledText = mergeViewer.getSourceViewer().getTextWidget();
-		List<Integer> lineHeightsList = lineHeightsByViewer.get(mergeViewer);
+		List<Integer> lineHeightsList = lineHeightsByViewer.get(mergeViewer); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		if (lineHeightsList != null) {
 			lineHeightsList.clear();
 			lineHeightsList.addAll(Collections.nCopies(styledText.getLineCount(), null));

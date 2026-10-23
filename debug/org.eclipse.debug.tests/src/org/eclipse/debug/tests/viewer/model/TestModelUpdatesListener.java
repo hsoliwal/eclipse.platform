@@ -263,7 +263,7 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 	}
 
 	public void addChildreUpdate(TreePath path, int index) {
-		Set<Integer> childrenIndexes = fChildrenUpdatesScheduled.get(path);
+		Set<Integer> childrenIndexes = fChildrenUpdatesScheduled.get(path); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		if (childrenIndexes == null) {
 			childrenIndexes = new TreeSet<>();
 			fChildrenUpdatesScheduled.put(path, childrenIndexes);
@@ -410,7 +410,7 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 					fChildCountUpdatesScheduled.add(path);
 				}
 				if ((flags & CHILDREN_UPDATES) != 0) {
-					Set<Integer> childrenIndexes = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+					Set<Integer> childrenIndexes = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 					for (int i = 0; i < children.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (!isFiltered(children[i], filters)) {
 							childrenIndexes.add(Integer.valueOf(i));

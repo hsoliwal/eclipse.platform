@@ -510,7 +510,7 @@ public class ResourceInfo implements IElementTreeData, ICoreConstants, IStringPo
 	/** for debugging only **/
 	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String toString() {
-		Map<String, Integer> flagsMap = new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW
+		Map<String, Integer> flagsMap = new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		Field[] fields = ICoreConstants.class.getFields();
 		for (Field field : fields) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String name = field.getName();

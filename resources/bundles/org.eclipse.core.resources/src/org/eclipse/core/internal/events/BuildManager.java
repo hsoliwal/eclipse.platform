@@ -199,7 +199,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	 * immediately, "false" to continue build and start project build again after
 	 * all builders were done. If no value is set, no rebuild is requested.
 	 */
-	private final Map<IProject, Boolean> restartBuildImmediately;
+	private final Map<IProject, Boolean> restartBuildImmediately; //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	// Shows if we are in the parallel build loop or not
 	boolean parallelBuild;
