@@ -18,6 +18,7 @@ package org.eclipse.team.internal.ui.dialogs;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.ListenerList;
 import org.eclipse.jface.dialogs.Dialog;
@@ -367,6 +368,8 @@ public class PreferencePageContainerDialog extends TrayDialog
 		}
 	}
 
+	private static final Pattern TITLE_PATTERN = Pattern.compile("&"); //$NON-NLS-1$
+
 	@Override
 	public void updateMessage() {
 		if (currentPage != null) {
@@ -387,7 +390,7 @@ public class PreferencePageContainerDialog extends TrayDialog
 				} else {
 					//remove mnemonic see bug 75886
 					String title = currentPage.getTitle();
-					title = title.replaceAll("&", "");//$NON-NLS-1$ //$NON-NLS-2$
+					title = TITLE_PATTERN.matcher(title).replaceAll("");//$NON-NLS-1$
 					setMessage(title);
 				}
 			} else {
