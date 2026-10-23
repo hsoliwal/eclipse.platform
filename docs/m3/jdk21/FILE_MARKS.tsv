@@ -726,12 +726,6 @@ debug/org.eclipse.unittest.ui/src/org/eclipse/unittest/model/ITestRunSession.jav
 debug/org.eclipse.unittest.ui/src/org/eclipse/unittest/model/ITestSuiteElement.java	debug/org.eclipse.unittest.ui	0	0	0	JAVA21_CLEAN
 debug/org.eclipse.unittest.ui/src/org/eclipse/unittest/ui/ConfigureViewerSupport.java	debug/org.eclipse.unittest.ui	0	0	0	JAVA21_CLEAN
 debug/org.eclipse.unittest.ui/src/org/eclipse/unittest/ui/ITestViewSupport.java	debug/org.eclipse.unittest.ui	0	0	0	JAVA21_CLEAN
-resources/bundles/org.eclipse.core.filesystem/src-gen/com/microsoft/windows/FILETIME.java	resources/bundles/org.eclipse.core.filesystem	0	0	3	RESIDUE
-resources/bundles/org.eclipse.core.filesystem/src-gen/com/microsoft/windows/FileAPI$shared.java	resources/bundles/org.eclipse.core.filesystem	0	0	54	RESIDUE
-resources/bundles/org.eclipse.core.filesystem/src-gen/com/microsoft/windows/FileAPI.java	resources/bundles/org.eclipse.core.filesystem	0	0	45	RESIDUE
-resources/bundles/org.eclipse.core.filesystem/src-gen/com/microsoft/windows/WIN32_FIND_DATAW.java	resources/bundles/org.eclipse.core.filesystem	0	0	3	RESIDUE
-resources/bundles/org.eclipse.core.filesystem/src-gen/com/microsoft/windows/_FILETIME.java	resources/bundles/org.eclipse.core.filesystem	0	0	28	RESIDUE
-resources/bundles/org.eclipse.core.filesystem/src-gen/com/microsoft/windows/_WIN32_FIND_DATAW.java	resources/bundles/org.eclipse.core.filesystem	0	0	89	RESIDUE
 resources/bundles/org.eclipse.core.filesystem/src/org/eclipse/core/filesystem/EFS.java	resources/bundles/org.eclipse.core.filesystem	0	0	0	JAVA21_CLEAN
 resources/bundles/org.eclipse.core.filesystem/src/org/eclipse/core/filesystem/IFileInfo.java	resources/bundles/org.eclipse.core.filesystem	0	0	0	JAVA21_CLEAN
 resources/bundles/org.eclipse.core.filesystem/src/org/eclipse/core/filesystem/IFileStore.java	resources/bundles/org.eclipse.core.filesystem	0	0	0	JAVA21_CLEAN
@@ -756,7 +750,7 @@ resources/bundles/org.eclipse.core.filesystem/src/org/eclipse/core/internal/file
 resources/bundles/org.eclipse.core.filesystem/src/org/eclipse/core/internal/filesystem/local/LocalFileNativesManager.java	resources/bundles/org.eclipse.core.filesystem	0	0	0	JAVA21_CLEAN
 resources/bundles/org.eclipse.core.filesystem/src/org/eclipse/core/internal/filesystem/local/LocalFileSystem.java	resources/bundles/org.eclipse.core.filesystem	0	0	0	JAVA21_CLEAN
 resources/bundles/org.eclipse.core.filesystem/src/org/eclipse/core/internal/filesystem/local/NativeHandler.java	resources/bundles/org.eclipse.core.filesystem	0	0	0	JAVA21_CLEAN
-resources/bundles/org.eclipse.core.filesystem/src/org/eclipse/core/internal/filesystem/local/Win32Handler.java	resources/bundles/org.eclipse.core.filesystem	2	0	33	RESIDUE
+resources/bundles/org.eclipse.core.filesystem/src/org/eclipse/core/internal/filesystem/local/Win32Handler.java	resources/bundles/org.eclipse.core.filesystem	2	0	0	RENAMED
 resources/bundles/org.eclipse.core.filesystem/src/org/eclipse/core/internal/filesystem/local/linux/LinuxFileFlags.java	resources/bundles/org.eclipse.core.filesystem	0	0	0	JAVA21_CLEAN
 resources/bundles/org.eclipse.core.filesystem/src/org/eclipse/core/internal/filesystem/local/linux/LinuxFileHandler.java	resources/bundles/org.eclipse.core.filesystem	0	0	0	JAVA21_CLEAN
 resources/bundles/org.eclipse.core.filesystem/src/org/eclipse/core/internal/filesystem/local/linux/LinuxFileNatives.java	resources/bundles/org.eclipse.core.filesystem	0	0	0	JAVA21_CLEAN
