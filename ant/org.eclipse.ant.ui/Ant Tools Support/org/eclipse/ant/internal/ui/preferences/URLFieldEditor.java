@@ -51,7 +51,7 @@ public class URLFieldEditor extends StringButtonFieldEditor {
 	/*
 	 * Opens the directory chooser dialog and returns the <code>URL</code> of the selected directory.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected String changePressed() {
 		URL url = null;
 		try {
@@ -63,7 +63,7 @@ public class URLFieldEditor extends StringButtonFieldEditor {
 		File f = null;
 		if (url != null) {
 			f = new File(url.getFile());
-			if (!f.exists()) {
+			if (!f.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				f = null;
 			}
 		}

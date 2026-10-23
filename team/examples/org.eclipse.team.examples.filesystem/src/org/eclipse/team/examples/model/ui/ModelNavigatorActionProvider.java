@@ -61,13 +61,13 @@ public class ModelNavigatorActionProvider extends CommonActionProvider {
 		createActions();
 	}
 
-	private void createActions() {
+	private void createActions() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		deleteAction = new Action("Delete") {
 			@Override
 			public void run() {
 				IStructuredSelection selection = (IStructuredSelection)getContext().getSelection();
 				try {
-					for (Iterator iter = selection.iterator(); iter.hasNext();) {
+					for (Iterator iter = selection.iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						Object element = iter.next();
 						if (element instanceof ModelObject) {
 							ModelObject mo = (ModelObject) element;
@@ -134,7 +134,7 @@ public class ModelNavigatorActionProvider extends CommonActionProvider {
 			}
 		};
 		newMoeAction = new Action("Create MOE File") {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void run() {
 				ModelObjectDefinitionFile modFile = getSelectedModFile();
 				if (modFile != null) {
@@ -155,7 +155,7 @@ public class ModelNavigatorActionProvider extends CommonActionProvider {
 			}
 
 			private String promptForPath(ModelContainer parent) {
-				InputDialog dialog = new InputDialog(getShell(), "Enter Path", "Enter the path of the new model element relative to " + parent.getPath(), "New Element", null);
+				InputDialog dialog = new InputDialog(getShell(), "Enter Path", "Enter the path of the new model element relative to " + parent.getPath(), "New Element", null); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				int result = dialog.open();
 				if (result == Window.OK) {
 					return dialog.getValue();
@@ -167,7 +167,7 @@ public class ModelNavigatorActionProvider extends CommonActionProvider {
 			@Override
 			public void run() {
 				IStructuredSelection selection = (IStructuredSelection)getContext().getSelection();
-				for (Iterator iter = selection.iterator(); iter.hasNext();) {
+				for (Iterator iter = selection.iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Object element = iter.next();
 					if (element instanceof ModelObjectDefinitionFile) {
 						ModelObjectDefinitionFile mo = (ModelObjectDefinitionFile) element;

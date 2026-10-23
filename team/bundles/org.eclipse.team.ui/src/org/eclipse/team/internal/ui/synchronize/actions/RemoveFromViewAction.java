@@ -35,7 +35,7 @@ import org.eclipse.team.ui.synchronize.SynchronizeModelOperation;
 /**
  * Remove the selected elements from the page
  */
-public class RemoveFromViewAction extends SynchronizeModelAction {
+public class RemoveFromViewAction extends SynchronizeModelAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 	public RemoveFromViewAction(ISynchronizePageConfiguration configuration) {
 		super(null, configuration);
@@ -50,9 +50,9 @@ public class RemoveFromViewAction extends SynchronizeModelAction {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected SynchronizeModelOperation getSubscriberOperation(ISynchronizePageConfiguration configuration, IDiffElement[] elements) {
-		return new SynchronizeModelOperation(configuration, elements) {
+		return new SynchronizeModelOperation(configuration, elements) { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 				SyncInfoSet set = getSyncInfoSet();
@@ -70,7 +70,7 @@ public class RemoveFromViewAction extends SynchronizeModelAction {
 				ISynchronizePage page = getConfiguration().getPage();
 				if (page instanceof SubscriberParticipantPage) {
 					final WorkingSetFilteredSyncInfoCollector collector = ((SubscriberParticipantPage)page).getCollector();
-					collector.run(unused -> collector.getWorkingSetSyncInfoSet().removeAll(set.getResources()));
+					collector.run(unused -> collector.getWorkingSetSyncInfoSet().removeAll(set.getResources())); //FLLDCIM: MARK — T09  LAMBDA
 				}
 			}
 		};

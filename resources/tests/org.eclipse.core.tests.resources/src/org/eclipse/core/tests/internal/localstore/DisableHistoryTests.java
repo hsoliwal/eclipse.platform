@@ -70,7 +70,7 @@ public class DisableHistoryTests {
 		writeContents(file, "edit 1");
 		writeContents(file, "edit 2");
 		IFileState[] history = file.getHistory(null);
-		assertEquals(0, history.length, "Unexpected history after disable: " + toString(history));
+		assertEquals(0, history.length, "Unexpected history after disable: " + toString(history)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Test
@@ -80,12 +80,12 @@ public class DisableHistoryTests {
 		writeContents(file, "edit 1");
 		writeContents(file, "edit 2");
 		IFileState[] history = file.getHistory(null);
-		assertEquals(2, history.length, "Unexpected history before disable: " + toString(history));
+		assertEquals(2, history.length, "Unexpected history before disable: " + toString(history)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		setHistoryDisablePreference(true);
 		setRestricted(file);
 		writeContents(file, "edit 3");
 		history = file.getHistory(null);
-		assertEquals(2, history.length, "Unexpected history after disable: " + toString(history));
+		assertEquals(2, history.length, "Unexpected history after disable: " + toString(history)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Test
@@ -95,19 +95,19 @@ public class DisableHistoryTests {
 		writeContents(file, "edit 1");
 		writeContents(file, "edit 2");
 		IFileState[] history = file.getHistory(null);
-		assertEquals(2, history.length, "Unexpected history before disable: " + toString(history));
+		assertEquals(2, history.length, "Unexpected history before disable: " + toString(history)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		setHistoryDisablePreference(true);
 		setRestricted(file);
 		IFile movedFile = project.getFile("test2.txt");
 		file.move(movedFile.getFullPath(), IResource.FORCE, null);
 		history = movedFile.getHistory(null);
-		assertEquals(2, history.length, "Unexpected history after move: " + toString(history));
+		assertEquals(2, history.length, "Unexpected history after move: " + toString(history)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		writeContents(movedFile, "edit 3");
 		history = movedFile.getHistory(null);
-		assertEquals(2, history.length, "Unexpected history after edit: " + toString(history));
+		assertEquals(2, history.length, "Unexpected history after edit: " + toString(history)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDisableHistoryBeforeMovingParentFolder() throws Exception {
 		IFolder folder = project.getFolder("test_folder");
 		folder.create(true, true, null);
@@ -116,17 +116,17 @@ public class DisableHistoryTests {
 		writeContents(file, "edit 1");
 		writeContents(file, "edit 2");
 		IFileState[] history = file.getHistory(null);
-		assertEquals(2, history.length, "Unexpected history before disable: " + toString(history));
+		assertEquals(2, history.length, "Unexpected history before disable: " + toString(history)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		setHistoryDisablePreference(true);
 		setRestricted(file);
 		IFolder movedFolder = project.getFolder("test_folder2");
 		folder.move(movedFolder.getFullPath(), true, null);
 		IFile movedFile = movedFolder.getFile("test.txt");
 		history = movedFile.getHistory(null);
-		assertEquals(2, history.length, "Unexpected history after move: " + toString(history));
+		assertEquals(2, history.length, "Unexpected history after move: " + toString(history)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		writeContents(movedFile, "edit 3");
 		history = movedFile.getHistory(null);
-		assertEquals(2, history.length, "Unexpected history after edit: " + toString(history));
+		assertEquals(2, history.length, "Unexpected history after edit: " + toString(history)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Test
@@ -136,13 +136,13 @@ public class DisableHistoryTests {
 		writeContents(file, "edit 1");
 		writeContents(file, "edit 2");
 		IFileState[] history = file.getHistory(null);
-		assertEquals(2, history.length, "Unexpected history before disable: " + toString(history));
+		assertEquals(2, history.length, "Unexpected history before disable: " + toString(history)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		setHistoryDisablePreference(true);
 		setRestricted(file);
 		writeContents(file, "edit 3");
 		file.delete(true, null);
 		history = file.getHistory(null);
-		assertEquals(2, history.length, "Unexpected history after delete: " + toString(history));
+		assertEquals(2, history.length, "Unexpected history after delete: " + toString(history)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Test
@@ -154,13 +154,13 @@ public class DisableHistoryTests {
 		writeContents(file, "edit 1");
 		writeContents(file, "edit 2");
 		IFileState[] history = file.getHistory(null);
-		assertEquals(2, history.length, "Unexpected history before disable: " + toString(history));
+		assertEquals(2, history.length, "Unexpected history before disable: " + toString(history)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		setHistoryDisablePreference(true);
 		setRestricted(file);
 		writeContents(file, "edit 3");
 		folder.delete(true, null);
 		history = file.getHistory(null);
-		assertEquals(2, history.length, "Unexpected history after delete: " + toString(history));
+		assertEquals(2, history.length, "Unexpected history after delete: " + toString(history)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Test
@@ -171,7 +171,7 @@ public class DisableHistoryTests {
 		writeContents(file, "edit 1");
 		writeContents(file, "edit 2");
 		IFileState[] history = file.getHistory(null);
-		assertEquals(2, history.length, "Unexpected history for unrestricted file: " + toString(history));
+		assertEquals(2, history.length, "Unexpected history for unrestricted file: " + toString(history)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Test
@@ -183,11 +183,11 @@ public class DisableHistoryTests {
 		writeContents(file, "edit 1");
 		writeContents(file, "edit 2");
 		IFileState[] history = file.getHistory(null);
-		assertEquals(0, history.length, "Unexpected history after disable: " + toString(history));
+		assertEquals(0, history.length, "Unexpected history after disable: " + toString(history)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		file.setContentRestricted(false);
 		writeContents(file, "edit 3");
 		history = file.getHistory(null);
-		assertEquals(1, history.length, "Unexpected history after unrestricting file: " + toString(history));
+		assertEquals(1, history.length, "Unexpected history after unrestricting file: " + toString(history)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private void writeContents(IFile file, String contents) throws CoreException {

@@ -42,7 +42,7 @@ public class RefreshModelParticipantJob extends RefreshParticipantJob {
 	private int groupTicks;
 
 	public static class ChangeDescription implements IChangeDescription, IDiffChangeListener {
-		Map<IPath, IDiff> changes = new HashMap<>();
+		Map<IPath, IDiff> changes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 		@Override
 		public int getChangeCount() {
@@ -52,11 +52,11 @@ public class RefreshModelParticipantJob extends RefreshParticipantJob {
 		@Override
 		public void diffsChanged(IDiffChangeEvent event, IProgressMonitor monitor) {
 			IDiff[] additions = event.getAdditions();
-			for (IDiff node : additions) {
+			for (IDiff node : additions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				changes.put(node.getPath(), node);
 			}
 			IDiff[] changed = event.getChanges();
-			for (IDiff node : changed) {
+			for (IDiff node : changed) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				changes.put(node.getPath(), node);
 			}
 		}

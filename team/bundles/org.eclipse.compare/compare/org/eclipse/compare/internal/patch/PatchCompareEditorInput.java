@@ -54,7 +54,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
-public abstract class PatchCompareEditorInput extends CompareEditorInput {
+public abstract class PatchCompareEditorInput extends CompareEditorInput { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	private static final String IMAGE_CACHE_KEY = "IMAGE_CACHE"; //$NON-NLS-1$
 
@@ -76,7 +76,7 @@ public abstract class PatchCompareEditorInput extends CompareEditorInput {
 			wrappedProvider = labelProvider;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public String getText(Object element) {
 			String text = wrappedProvider.getText(element);
 			if (element instanceof PatchDiffNode node){
@@ -106,7 +106,7 @@ public abstract class PatchCompareEditorInput extends CompareEditorInput {
 						text = NLS.bind(PatchMessages.Diff_2Args,
 								text,
 								NLS.bind(hunkNode.isAllContextIgnored() ? PatchMessages.PreviewPatchPage_AllContextIgnored : PatchMessages.PreviewPatchPage_FuzzUsed,
-										hunkNode.getHunkResult().getFuzz() + "")); //$NON-NLS-1$
+										hunkNode.getHunkResult().getFuzz() + "")); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 				}
 				if (getPatcher().isRetargeted(node.getPatchElement())) {
@@ -207,21 +207,21 @@ public abstract class PatchCompareEditorInput extends CompareEditorInput {
 	 */
 	protected void updateTree() {
 		if (getViewer() != null && !getViewer().getControl().isDisposed()) {
-			getViewer().refresh(true);
+			getViewer().refresh(true); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		}
 	}
 
 	/**
 	 * Build the diff tree.
 	 */
-	protected void buildTree(){
+	protected void buildTree(){ //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// Reset the input node so it is empty
 		if (getRoot().hasChildren()) {
 			resetRoot();
 		}
 		// Reset the input of the viewer so the old state is no longer used
-		getViewer().setInput(getRoot());
+		getViewer().setInput(getRoot()); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 
 		// Refresh the patcher state
 		getPatcher().refresh();
@@ -234,40 +234,40 @@ public abstract class PatchCompareEditorInput extends CompareEditorInput {
 		}
 
 		// Refresh the viewer
-		getViewer().refresh();
+		getViewer().refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 	}
 
 	private void processDiffs(FilePatch2[] diffs) {
-		for (FilePatch2 diff : diffs) {
+		for (FilePatch2 diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			processDiff(diff, getRoot());
 		}
 	}
 
 	private void processProjects(DiffProject[] diffProjects) {
 		//create diffProject nodes
-		for (DiffProject diffProject : diffProjects) {
+		for (DiffProject diffProject : diffProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			PatchProjectDiffNode projectNode = new PatchProjectDiffNode(getRoot(), diffProject, getPatcher().getConfiguration());
 			FilePatch2[] diffs = diffProject.getFileDiffs();
-			for (FilePatch2 fileDiff : diffs) {
+			for (FilePatch2 fileDiff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				processDiff(fileDiff, projectNode);
 			}
 		}
 	}
 
-	private void processDiff(FilePatch2 diff, DiffNode parent) {
+	private void processDiff(FilePatch2 diff, DiffNode parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		FileDiffResult diffResult = getPatcher().getDiffResult(diff);
 		PatchFileDiffNode node = PatchFileDiffNode.createDiffNode(parent, diffResult);
 		HunkResult[] hunkResults = diffResult.getHunkResults();
-		for (HunkResult hunkResult : hunkResults) {
+		for (HunkResult hunkResult : hunkResults) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!hunkResult.isOK()) {
 				HunkDiffNode hunkNode = HunkDiffNode.createDiffNode(node, hunkResult, true);
 				Object left = hunkNode.getLeft();
 				if (left instanceof UnmatchedHunkTypedElement element) {
-					element.addContentChangeListener(unused -> {
+					element.addContentChangeListener(unused -> { //FLLDCIM: MARK — T37  LAMBDA
 						if (getViewer() == null || getViewer().getControl().isDisposed()) {
 							return;
 						}
-						getViewer().refresh(true);
+						getViewer().refresh(true); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 					});
 				}
 			} else if (showMatched) {
@@ -276,7 +276,7 @@ public abstract class PatchCompareEditorInput extends CompareEditorInput {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Viewer createDiffViewer(Composite parent) {
 		viewer =  new DiffTreeViewer(parent, getCompareConfiguration()){
 			@Override
@@ -285,9 +285,9 @@ public abstract class PatchCompareEditorInput extends CompareEditorInput {
 			}
 		};
 
-		viewer.setLabelProvider(new PatcherCompareEditorLabelProvider((ILabelProvider)viewer.getLabelProvider()));
+		viewer.setLabelProvider(new PatcherCompareEditorLabelProvider((ILabelProvider)viewer.getLabelProvider())); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 		viewer.getTree().setData(CompareUI.COMPARE_VIEWER_TITLE, PatchMessages.PatcherCompareEditorInput_PatchContents);
-		viewer.addOpenListener(event -> {
+		viewer.addOpenListener(event -> { //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
 			IStructuredSelection sel= (IStructuredSelection) event.getSelection();
 			Object obj= sel.getFirstElement();
 			if (obj instanceof HunkDiffNode) {
@@ -303,13 +303,13 @@ public abstract class PatchCompareEditorInput extends CompareEditorInput {
 				getCompareConfiguration().setRightLabel(PatchMessages.PatcherCompareEditorInput_AfterPatch);
 			}
 		});
-		viewer.setFilters(getFilters());
-		viewer.setInput(root);
+		viewer.setFilters(getFilters()); //FLLDCIM: MARK — T23 FILTER_LANE CALL
+		viewer.setInput(root); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		return viewer;
 	}
 
 	private ViewerFilter[] getFilters() {
-		return new ViewerFilter[] { new ViewerFilter() {
+		return new ViewerFilter[] { new ViewerFilter() { //FLLDCIM: MARK — T23  ANONYMOUS
 			@Override
 			public boolean select(Viewer v, Object parentElement, Object element) {
 				if (element instanceof PatchDiffNode node) {
@@ -342,7 +342,7 @@ public abstract class PatchCompareEditorInput extends CompareEditorInput {
 			tbm.removeAll();
 
 			tbm.add(new Separator("contributed")); //$NON-NLS-1$
-			for (Action action : actions) {
+			for (Action action : actions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				tbm.appendToGroup("contributed", action); //$NON-NLS-1$
 			}
 
@@ -360,7 +360,7 @@ public abstract class PatchCompareEditorInput extends CompareEditorInput {
 
 	public void resetRoot() {
 		IDiffElement[] children = root.getChildren();
-		for (IDiffElement child : children) {
+		for (IDiffElement child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			root.remove(child);
 		}
 	}
@@ -393,7 +393,7 @@ public abstract class PatchCompareEditorInput extends CompareEditorInput {
 		boolean atLeastOneIsEnabled = false;
 		if (getViewer() != null) {
 			IDiffElement[] elements = getRoot().getChildren();
-			for (IDiffElement element : elements) {
+			for (IDiffElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (isEnabled(element)) {
 					atLeastOneIsEnabled = true;
 					break;

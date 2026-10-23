@@ -48,7 +48,7 @@ public class OpenLaunchConfigurationDialogTests extends PerformanceTestCaseJunit
 		// cold run
 		ILaunchConfiguration configuration = getLaunchConfiguration("big"); //$NON-NLS-1$
 		IStructuredSelection selection = new StructuredSelection(configuration);
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 10; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			openLCD(selection, fgIdentifier, 20);
 		}
 
@@ -62,7 +62,7 @@ public class OpenLaunchConfigurationDialogTests extends PerformanceTestCaseJunit
 		ILaunchConfiguration configuration = getLaunchConfiguration("big"); //$NON-NLS-1$
 		IStructuredSelection selection = new StructuredSelection(configuration);
 		tagAsSummary("Open LCD on Targets tab", Dimension.ELAPSED_PROCESS); //$NON-NLS-1$
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 10; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			openLCD(selection, fgIdentifier, 20);
 		}
 
@@ -71,15 +71,15 @@ public class OpenLaunchConfigurationDialogTests extends PerformanceTestCaseJunit
 	}
 
 	private ILaunchConfiguration getLaunchConfiguration(String buildFileName) {
-		IFile file = getJavaProject().getProject().getFolder("launchConfigurations").getFile(buildFileName + ".launch"); //$NON-NLS-1$ //$NON-NLS-2$
+		IFile file = getJavaProject().getProject().getFolder("launchConfigurations").getFile(buildFileName + ".launch"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		ILaunchConfiguration config = getLaunchManager().getLaunchConfiguration(file);
-		assertTrue(config.exists(), "Could not find launch configuration for " + buildFileName); //$NON-NLS-1$
+		assertTrue(config.exists(), "Could not find launch configuration for " + buildFileName); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return config;
 	}
 
 	private void openLCD(final IStructuredSelection selection, final String groupIdentifier, int numberOfOpens) {
 		startMeasuring();
-		for (int i = 0; i < numberOfOpens; i++) {
+		for (int i = 0; i < numberOfOpens; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// set a status to go to the targets tab
 			IStatus status = new Status(IStatus.INFO, IAntUIConstants.PLUGIN_ID, IAntUIConstants.STATUS_INIT_RUN_ANT, "", null); //$NON-NLS-1$
 			LaunchConfigurationsDialog dialog = new LaunchConfigurationsDialog(DebugUIPlugin.getShell(), DebugUIPlugin.getDefault().getLaunchConfigurationManager().getLaunchGroup(groupIdentifier));

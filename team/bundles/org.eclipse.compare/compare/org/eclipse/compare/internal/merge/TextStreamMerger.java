@@ -31,7 +31,7 @@ import org.eclipse.core.runtime.Status;
  */
 public class TextStreamMerger implements IStreamMerger {
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus merge(OutputStream output, String outputEncoding, InputStream ancestor, String ancestorEncoding, InputStream target, String targetEncoding, InputStream other, String otherEncoding, IProgressMonitor monitor) {
 
 		LineComparator a, t, o;
@@ -54,12 +54,12 @@ public class TextStreamMerger implements IStreamMerger {
 
 			RangeDifference[] diffs= RangeDifferencer.findRanges(monitor, a, t, o);
 
-			for (RangeDifference rd : diffs) {
+			for (RangeDifference rd : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				switch (rd.kind()) {
 				case RangeDifference.ANCESTOR: // pseudo conflict
 				case RangeDifference.NOCHANGE:
 				case RangeDifference.RIGHT:
-					for (int j= rd.rightStart(); j < rd.rightEnd(); j++) {
+					for (int j= rd.rightStart(); j < rd.rightEnd(); j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						String s= o.getLine(j);
 						output.write(s.getBytes(outputEncoding));
 						output.write(lineSeparator.getBytes(outputEncoding));
@@ -67,7 +67,7 @@ public class TextStreamMerger implements IStreamMerger {
 					break;
 
 				case RangeDifference.LEFT:
-					for (int j= rd.leftStart(); j < rd.leftEnd(); j++) {
+					for (int j= rd.leftStart(); j < rd.leftEnd(); j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						String s= t.getLine(j);
 						output.write(s.getBytes(outputEncoding));
 						output.write(lineSeparator.getBytes(outputEncoding));

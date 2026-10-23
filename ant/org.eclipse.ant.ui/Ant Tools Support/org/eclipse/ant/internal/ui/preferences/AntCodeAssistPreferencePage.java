@@ -39,7 +39,7 @@ public class AntCodeAssistPreferencePage extends AbstractAntEditorPreferencePage
 	@Override
 	protected OverlayPreferenceStore createOverlayStore() {
 
-		ArrayList<OverlayPreferenceStore.OverlayKey> overlayKeys = new ArrayList<>();
+		ArrayList<OverlayPreferenceStore.OverlayKey> overlayKeys = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN, AntEditorPreferenceConstants.CODEASSIST_AUTOACTIVATION));
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.INT, AntEditorPreferenceConstants.CODEASSIST_AUTOACTIVATION_DELAY));
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN, AntEditorPreferenceConstants.CODEASSIST_AUTOINSERT));
@@ -51,7 +51,7 @@ public class AntCodeAssistPreferencePage extends AbstractAntEditorPreferencePage
 		return new OverlayPreferenceStore(getPreferenceStore(), keys);
 	}
 
-	private Control createContentAssistPage(Composite parent) {
+	private Control createContentAssistPage(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Font font = parent.getFont();
 		Composite contentAssistComposite = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
@@ -67,7 +67,7 @@ public class AntCodeAssistPreferencePage extends AbstractAntEditorPreferencePage
 
 		text = AntPreferencesMessages.AntCodeAssistPreferencePage__Enable_auto_activation_2;
 		final Button autoactivation = addCheckBox(contentAssistComposite, text, AntEditorPreferenceConstants.CODEASSIST_AUTOACTIVATION, 0);
-		autoactivation.addSelectionListener(new SelectionAdapter() {
+		autoactivation.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				updateAutoactivationControls();

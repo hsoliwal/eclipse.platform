@@ -24,12 +24,12 @@ import org.eclipse.core.runtime.IPath;
  */
 public class ChangeDescription {
 
-	private final List<IResource> addedRoots = new ArrayList<>();
-	private final List<IResource> changedFiles = new ArrayList<>();
-	private final List<IResource> closedProjects = new ArrayList<>();
-	private final List<IResource> copiedRoots = new ArrayList<>();
-	private final List<IResource> movedRoots = new ArrayList<>();
-	private final List<IResource> removedRoots = new ArrayList<>();
+	private final List<IResource> addedRoots = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private final List<IResource> changedFiles = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private final List<IResource> closedProjects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private final List<IResource> copiedRoots = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private final List<IResource> movedRoots = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private final List<IResource> removedRoots = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	private IResource createSourceResource(IResourceDelta delta) {
 		IPath sourcePath = delta.getMovedFromPath();
@@ -48,7 +48,7 @@ public class ChangeDescription {
 
 	private void ensureResourceCovered(IResource resource, List<IResource> list) {
 		IPath path = resource.getFullPath();
-		for (IResource root : list) {
+		for (IResource root : list) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (root.getFullPath().isPrefixOf(path)) {
 				return;
 			}
@@ -57,7 +57,7 @@ public class ChangeDescription {
 	}
 
 	public IResource[] getRootResources() {
-		Set<IResource> result = new HashSet<>();
+		Set<IResource> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		result.addAll(addedRoots);
 		result.addAll(changedFiles);
 		result.addAll(closedProjects);

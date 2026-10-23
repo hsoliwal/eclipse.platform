@@ -64,9 +64,9 @@ public abstract class AbstractResourceVariantTree implements IResourceVariantTre
 	 */
 	@Override
 	public IResource[] refresh(IResource[] resources, int depth, IProgressMonitor monitor) throws TeamException {
-		List<IResource> changedResources = new ArrayList<>();
+		List<IResource> changedResources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		monitor.beginTask(null, 100 * resources.length);
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource[] changed = refresh(resource, depth, Policy.subMonitorFor(monitor, 100));
 			changedResources.addAll(Arrays.asList(changed));
 		}
@@ -90,7 +90,7 @@ public abstract class AbstractResourceVariantTree implements IResourceVariantTre
 	 * @return the resource's whose variants have changed
 	 * @throws TeamException if an error occurs
 	 */
-	protected IResource[] refresh(IResource resource, int depth, IProgressMonitor monitor) throws TeamException {
+	protected IResource[] refresh(IResource resource, int depth, IProgressMonitor monitor) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource[] changedResources = null;
 		SubMonitor mon = SubMonitor.convert(monitor, 100);
 		try {
@@ -122,7 +122,7 @@ public abstract class AbstractResourceVariantTree implements IResourceVariantTre
 	 * @throws TeamException if an error occurs
 	 */
 	protected IResource[] collectChanges(IResource local, IResourceVariant remote, int depth, IProgressMonitor monitor) throws TeamException {
-		List<IResource> changedResources = new ArrayList<>();
+		List<IResource> changedResources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		collectChanges(local, remote, changedResources, depth, monitor);
 		return changedResources.toArray(new IResource[changedResources.size()]);
 	}
@@ -177,7 +177,7 @@ public abstract class AbstractResourceVariantTree implements IResourceVariantTre
 	 */
 	protected abstract boolean setVariant(IResource local, IResourceVariant remote) throws TeamException;
 
-	private void collectChanges(IResource local, IResourceVariant remote, Collection<IResource> changedResources, int depth, IProgressMonitor monitor) throws TeamException {
+	private void collectChanges(IResource local, IResourceVariant remote, Collection<IResource> changedResources, int depth, IProgressMonitor monitor) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean changed = setVariant(local, remote);
 		if (changed) {
 			changedResources.add(local);
@@ -186,7 +186,7 @@ public abstract class AbstractResourceVariantTree implements IResourceVariantTre
 			return;
 		}
 		Map<IResource, IResourceVariant> children = mergedMembers(local, remote, monitor);
-		for (IResource localChild : children.keySet()) {
+		for (IResource localChild : children.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResourceVariant remoteChild = children.get(localChild);
 			collectChanges(localChild, remoteChild, changedResources,
 					depth == IResource.DEPTH_INFINITE ? IResource.DEPTH_INFINITE : IResource.DEPTH_ZERO,
@@ -198,10 +198,10 @@ public abstract class AbstractResourceVariantTree implements IResourceVariantTre
 		monitor.worked(1);
 	}
 
-	private Map<IResource, IResourceVariant> mergedMembers(IResource local, IResourceVariant remote, IProgressMonitor progress) throws TeamException {
+	private Map<IResource, IResourceVariant> mergedMembers(IResource local, IResourceVariant remote, IProgressMonitor progress) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// {IResource -> IResourceVariant}
-		Map<IResource, IResourceVariant> mergedResources = new HashMap<>();
+		Map<IResource, IResourceVariant> mergedResources = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 		IResourceVariant[] remoteChildren;
 		if (remote == null) {
@@ -214,13 +214,13 @@ public abstract class AbstractResourceVariantTree implements IResourceVariantTre
 		IResource[] localChildren = members(local);
 
 		if (remoteChildren.length > 0 || localChildren.length > 0) {
-			Set<String> allSet = new HashSet<>(20);
+			Set<String> allSet = new HashSet<>(20); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			Map<String, IResource> localSet = null;
 			Map<String, IResourceVariant> remoteSet = null;
 
 			if (localChildren.length > 0) {
-				localSet = new HashMap<>(10);
-				for (IResource localChild : localChildren) {
+				localSet = new HashMap<>(10); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+				for (IResource localChild : localChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String name = localChild.getName();
 					localSet.put(name, localChild);
 					allSet.add(name);
@@ -228,15 +228,15 @@ public abstract class AbstractResourceVariantTree implements IResourceVariantTre
 			}
 
 			if (remoteChildren.length > 0) {
-				remoteSet = new HashMap<>(10);
-				for (IResourceVariant remoteChild : remoteChildren) {
+				remoteSet = new HashMap<>(10); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+				for (IResourceVariant remoteChild : remoteChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String name = remoteChild.getName();
 					remoteSet.put(name, remoteChild);
 					allSet.add(name);
 				}
 			}
 
-			for (String keyChildName : allSet) {
+			for (String keyChildName : allSet) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Policy.checkCanceled(progress);
 
 				IResource localChild =

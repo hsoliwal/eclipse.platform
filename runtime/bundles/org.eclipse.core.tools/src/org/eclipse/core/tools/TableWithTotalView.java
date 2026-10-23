@@ -52,14 +52,14 @@ public abstract class TableWithTotalView extends ViewPart implements ISelectionP
 
 	abstract protected void createContextMenu();
 
-	private SelectionListener getColumnListener() {
+	private SelectionListener getColumnListener() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		return new SelectionListener() {
 			@Override
 			public void widgetDefaultSelected(SelectionEvent event) {
 				// do nothing
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void widgetSelected(SelectionEvent event) {
 				// column selected - need to sort
 				int column = viewer.getTable().indexOf((TableColumn) event.widget);
@@ -94,14 +94,14 @@ public abstract class TableWithTotalView extends ViewPart implements ISelectionP
 				if (viewer.getContentProvider() instanceof IFlattable) {
 					((IFlattable) viewer.getContentProvider()).setFlat(flat);
 				}
-				viewer.refresh();
+				viewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 				viewer.setSelection(selection);
 			}
 		};
 	}
 
 	protected ControlListener getColumnResizeListener() {
-		return new ControlListener() {
+		return new ControlListener() { //FLLDCIM: MARK — T11  ANONYMOUS
 			@Override
 			public void controlMoved(ControlEvent event) {
 				// do nothing
@@ -116,7 +116,7 @@ public abstract class TableWithTotalView extends ViewPart implements ISelectionP
 		};
 	}
 
-	private void createTables(Composite parent) {
+	private void createTables(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// create a first table, that will display all the data
 		tableTree = new Table(parent, SWT.V_SCROLL | SWT.MULTI | SWT.FULL_SELECTION | SWT.HIDE_SELECTION);
 		tableTree.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -142,16 +142,16 @@ public abstract class TableWithTotalView extends ViewPart implements ISelectionP
 		//create the columns for the two tables
 		ColumnLayoutData[] columnLayout = getColumnLayout();
 		String[] headers = getColumnHeaders();
-		for (int i = 0; i < getColumnHeaders().length; i++) {
+		for (int i = 0; i < getColumnHeaders().length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// column for the first table
 			tableLayout.addColumnData(columnLayout[i]);
 			TableColumn column = new TableColumn(table, SWT.NONE, i);
 			column.setResizable(true);
 			column.setText(headers[i]);
-			column.addSelectionListener(headerListener);
+			column.addSelectionListener(headerListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			// "connect" the two tables so the width of their column evolve simultaneously
 			// more precisely here, only the resize of the first table will trigger a resize of the second one
-			column.addControlListener(columnResizeListener);
+			column.addControlListener(columnResizeListener); //FLLDCIM: MARK — T11 VIEWPORT_RESIZE_DELTA CALL
 
 			// column for the second table
 			totalLayout.addColumnData(columnLayout[i]);
@@ -168,7 +168,7 @@ public abstract class TableWithTotalView extends ViewPart implements ISelectionP
 
 	protected abstract String getStatusLineMessage(Object element);
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createPartControl(Composite parent) {
 		Composite composite = new Composite(parent, 0);
 		// crete a grid layout of one column
@@ -182,9 +182,9 @@ public abstract class TableWithTotalView extends ViewPart implements ISelectionP
 		//create the viewer
 		viewer = new TableViewer(tableTree);
 		viewer.setContentProvider(getContentProvider());
-		viewer.setLabelProvider(getLabelProvider());
+		viewer.setLabelProvider(getLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 		viewer.setComparator(getSorter(0));
-		viewer.addSelectionChangedListener(getTableListener());
+		viewer.addSelectionChangedListener(getTableListener()); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 
 		createCommonActions();
 		createActions();
@@ -194,23 +194,23 @@ public abstract class TableWithTotalView extends ViewPart implements ISelectionP
 
 	abstract protected String[] computeTotalLine(Iterator<PerformanceStats> elements);
 
-	private void createCommonActions() {
+	private void createCommonActions() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		copyAction = new Action() {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void run() {
 				IStructuredSelection selection = viewer.getStructuredSelection();
 				String result = ""; //$NON-NLS-1$
 				String[] columnHeaders = getColumnHeaders();
-				for (String columnHeader : columnHeaders) {
-					result += columnHeader + ","; //$NON-NLS-1$
+				for (String columnHeader : columnHeaders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					result += columnHeader + ","; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				result += "\n\n"; //$NON-NLS-1$
 
 				ITableLabelProvider labelProvider = (ITableLabelProvider) viewer.getLabelProvider();
-				for (Iterator<?> iterator = selection.iterator(); iterator.hasNext();) {
+				for (Iterator<?> iterator = selection.iterator(); iterator.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Object selectedItem = iterator.next();
-					for (int i = 0; i < columnHeaders.length; i++) {
-						result += labelProvider.getColumnText(selectedItem, i) + ","; //$NON-NLS-1$
+					for (int i = 0; i < columnHeaders.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+						result += labelProvider.getColumnText(selectedItem, i) + ","; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 					result += "\n"; //$NON-NLS-1$
 				}
@@ -232,7 +232,7 @@ public abstract class TableWithTotalView extends ViewPart implements ISelectionP
 	}
 
 	protected ISelectionChangedListener getTableListener() {
-		return e -> {
+		return e -> { //FLLDCIM: MARK — T04  LAMBDA
 			IStructuredSelection selection = (IStructuredSelection) e.getSelection();
 			copyAction.setEnabled(!selection.isEmpty());
 			if (selection.size() == 1) {

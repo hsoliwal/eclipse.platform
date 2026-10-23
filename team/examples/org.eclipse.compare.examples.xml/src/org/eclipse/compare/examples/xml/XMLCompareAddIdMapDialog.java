@@ -67,7 +67,7 @@ public class XMLCompareAddIdMapDialog extends StatusDialog {
 	 * @param ancestor the parent composite to contain the dialog area
 	 * @return the dialog area control
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createDialogArea(Composite ancestor) {
 		Composite composite= (Composite) super.createDialogArea(ancestor);
 
@@ -86,7 +86,7 @@ public class XMLCompareAddIdMapDialog extends StatusDialog {
 		data.widthHint = convertWidthInCharsToPixels(30);
 		fIdMapText.setLayoutData(data);
 		fIdMapText.setText(fIdMap.getName());
-		fIdMapText.addModifyListener(unused -> doValidation());
+		fIdMapText.addModifyListener(unused -> doValidation()); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 
 		label= new Label(inner, SWT.NULL);
 		label.setText(XMLCompareMessages.XMLCompareAddIdMapDialog_extlabel);
@@ -97,7 +97,7 @@ public class XMLCompareAddIdMapDialog extends StatusDialog {
 		data.widthHint = convertWidthInCharsToPixels(30);
 		fIdMapExtText.setLayoutData(data);
 		fIdMapExtText.setText(fIdMap.getExtension());
-		fIdMapExtText.addModifyListener(unused -> doValidation());
+		fIdMapExtText.addModifyListener(unused -> doValidation()); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 
 
 		fIdMapText.setFocus();
@@ -108,7 +108,7 @@ public class XMLCompareAddIdMapDialog extends StatusDialog {
 	/**
 	 * Validate user input
 	 */
-	private void doValidation() {
+	private void doValidation() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		StatusInfo status= new StatusInfo();
 		String newText= fIdMapText.getText();
 		if (newText.length() == 0)

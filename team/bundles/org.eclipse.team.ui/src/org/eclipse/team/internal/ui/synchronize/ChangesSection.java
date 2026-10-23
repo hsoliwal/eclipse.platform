@@ -58,7 +58,7 @@ public class ChangesSection extends Composite {
 	 * @param page the page showing this section
 	 * @param configuration the configuration for the synchronize page
 	 */
-	public ChangesSection(Composite parent, AbstractSynchronizePage page, ISynchronizePageConfiguration configuration) {
+	public ChangesSection(Composite parent, AbstractSynchronizePage page, ISynchronizePageConfiguration configuration) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super(parent, SWT.NONE);
 		this.page = page;
 		this.configuration = configuration;
@@ -115,7 +115,7 @@ public class ChangesSection extends Composite {
 	}
 
 	protected void initializeChangesViewer() {
-		TeamUIPlugin.getStandardDisplay().asyncExec(() -> {
+		TeamUIPlugin.getStandardDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			Control control = ChangesSection.this.getChangesViewer().getControl();
 			if (!getContainer().isDisposed() && !control.isDisposed()) {
 				getContainer().showPage(control);

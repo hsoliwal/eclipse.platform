@@ -60,26 +60,26 @@ public class IResourceDeltaTest {
 	@BeforeEach
 	public void setUp() throws Exception {
 		// Create some resource handles
-		project1 = getWorkspace().getRoot().getProject("Project" + 1);
-		project2 = getWorkspace().getRoot().getProject("Project" + 2);
-		folder1 = project1.getFolder("Folder" + 1);
-		folder2 = folder1.getFolder("Folder" + 2);
-		folder3 = folder1.getFolder("Folder" + 3);
-		file1 = folder1.getFile("File" + 1);
-		file2 = folder1.getFile("File" + 2);
-		file3 = folder2.getFile("File" + 3);
-		file4 = folder1.getFile("File" + 4);//doesn't exist initially
+		project1 = getWorkspace().getRoot().getProject("Project" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		project2 = getWorkspace().getRoot().getProject("Project" + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		folder1 = project1.getFolder("Folder" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		folder2 = folder1.getFolder("Folder" + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		folder3 = folder1.getFolder("Folder" + 3); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		file1 = folder1.getFile("File" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		file2 = folder1.getFile("File" + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		file3 = folder2.getFile("File" + 3); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		file4 = folder1.getFile("File" + 4);//doesn't exist initially //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		allResources = new IResource[] {project1, project2, folder1, folder2, folder3, file1, file2, file3};
 
 		// Create and open the resources
-		IWorkspaceRunnable body = unused -> createInWorkspace(allResources);
+		IWorkspaceRunnable body = unused -> createInWorkspace(allResources); //FLLDCIM: MARK — T09  LAMBDA
 		getWorkspace().run(body, createTestMonitor());
 	}
 
 	/**
 	 * Tests the IResourceDelta#findMember method.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFindMember() throws CoreException {
 		/*
 		 * The following changes will occur:
@@ -87,7 +87,7 @@ public class IResourceDeltaTest {
 		 * - delete folder2 (which deletes file3)
 		 * - add file4 below folder1
 		 */
-		IResourceChangeListener listener = event -> {
+		IResourceChangeListener listener = event -> { //FLLDCIM: MARK — T07  LAMBDA
 			//delta relative to root
 			IResourceDelta delta = event.getDelta();
 			assertNotNull(delta.findMember(project1.getFullPath()));
@@ -119,7 +119,7 @@ public class IResourceDeltaTest {
 		getWorkspace().addResourceChangeListener(listener);
 
 		//do the work
-		IWorkspaceRunnable body = unused -> {
+		IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			file1.setContents(createRandomContentsStream(), true, true, createTestMonitor());
 			folder2.delete(true, createTestMonitor());
 			file4.create(createRandomContentsStream(), true, createTestMonitor());

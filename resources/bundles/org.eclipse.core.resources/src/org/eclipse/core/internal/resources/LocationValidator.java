@@ -60,7 +60,7 @@ public class LocationValidator {
 	/**
 	 * Check that the location is absolute
 	 */
-	private IStatus validateAbsolute(URI location, boolean error) {
+	private IStatus validateAbsolute(URI location, boolean error) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!location.isAbsolute()) {
 			String message;
 			String schemeSpecificPart = location.getSchemeSpecificPart();
@@ -101,7 +101,7 @@ public class LocationValidator {
 		return validateLinkLocationURI(resource, URIUtil.toURI(location));
 	}
 
-	public IStatus validateLinkLocationURI(IResource resource, URI unresolvedLocation) {
+	public IStatus validateLinkLocationURI(IResource resource, URI unresolvedLocation) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String schemeSpecificPart = unresolvedLocation.getSchemeSpecificPart();
 		if (schemeSpecificPart == null || schemeSpecificPart.isEmpty()) {
 			return new ResourceStatus(IResourceStatus.INVALID_VALUE, resource.getFullPath(), Messages.links_noPath);
@@ -166,7 +166,7 @@ public class LocationValidator {
 
 		// Iterate over each known project and ensure that the location does not
 		// conflict with any project locations or linked resource locations
-		for (IProject project : workspace.getRoot().getProjects(IContainer.INCLUDE_HIDDEN)) {
+		for (IProject project : workspace.getRoot().getProjects(IContainer.INCLUDE_HIDDEN)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// since we are iterating over the project in the workspace, we
 			// know that they have been created before and must have a description
 			IProjectDescription desc = ((Project) project).internalGetDescription();
@@ -188,7 +188,7 @@ public class LocationValidator {
 			if (children == null) {
 				continue;
 			}
-			for (IResource child : children) {
+			for (IResource child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (child.isLinked()) {
 					testLocation = child.getLocationURI();
 					if (testLocation != null && FileUtil.isOverlapping(location, testLocation)) {
@@ -204,7 +204,7 @@ public class LocationValidator {
 	/* (non-Javadoc)
 	 * @see IWorkspace#validateName(String, int)
 	 */
-	public IStatus validateName(String segment, int type) {
+	public IStatus validateName(String segment, int type) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String message;
 
 		/* segment must not be null */
@@ -221,7 +221,7 @@ public class LocationValidator {
 
 		/* test invalid characters */
 		char[] chars = OS.INVALID_RESOURCE_CHARACTERS;
-		for (char c : chars) {
+		for (char c : chars) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (segment.indexOf(c) != -1) {
 				message = NLS.bind(Messages.resources_invalidCharInName, String.valueOf(c), segment);
 				return new ResourceStatus(IResourceStatus.INVALID_VALUE, null, message);
@@ -243,7 +243,7 @@ public class LocationValidator {
 	 * a leaf resource when it is known that the parent exists (and thus its parent path
 	 * must already be valid).
 	 */
-	public IStatus validatePath(IPath path, int type, boolean lastSegmentOnly) {
+	public IStatus validatePath(IPath path, int type, boolean lastSegmentOnly) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String message;
 
 		/* path must not be null */
@@ -295,7 +295,7 @@ public class LocationValidator {
 				return status;
 			}
 			// ignore first segment (the project)
-			for (int i = 1; i < segmentCount; i++) {
+			for (int i = 1; i < segmentCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				status = validateName(path.segment(i), fileFolderType);
 				if (!status.isOK()) {
 					return status;
@@ -319,7 +319,7 @@ public class LocationValidator {
 		return validatePath(IPath.fromOSString(path), type, false);
 	}
 
-	public IStatus validateProjectLocation(IProject context, IPath unresolvedLocation) {
+	public IStatus validateProjectLocation(IProject context, IPath unresolvedLocation) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (unresolvedLocation == null) {
 			return validateProjectLocationURI(context, null);
 		}
@@ -345,7 +345,7 @@ public class LocationValidator {
 	/* (non-Javadoc)
 	 * @see IWorkspace#validateProjectLocationURI(IProject, URI)
 	 */
-	public IStatus validateProjectLocationURI(IProject context, URI unresolvedLocation) {
+	public IStatus validateProjectLocationURI(IProject context, URI unresolvedLocation) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (context == null && unresolvedLocation == null) {
 			throw new IllegalArgumentException("Either a project or a location must be provided"); //$NON-NLS-1$
 		}
@@ -413,7 +413,7 @@ public class LocationValidator {
 		// Iterate over each known project and ensure that the location does not
 		// conflict with any of their already defined locations.
 		IProject[] projects = workspace.getRoot().getProjects(IContainer.INCLUDE_HIDDEN);
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			URI testLocation = project.getLocationURI();
 			if (context != null && project.equals(context)) {
 				//tolerate locations being the same if this is the project being tested
@@ -442,7 +442,7 @@ public class LocationValidator {
 				//ignore projects that cannot be accessed
 			}
 			if (children != null) {
-				for (IResource child : children) {
+				for (IResource child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (child.isLinked()) {
 						URI testLocation = child.getLocationURI();
 						if (testLocation != null && FileUtil.isPrefixOf(testLocation, location)) {
@@ -465,7 +465,7 @@ public class LocationValidator {
 		if (EFS.SCHEME_FILE.equals(location.getScheme())) {
 			IPath pathPart = IPath.fromOSString(location.getSchemeSpecificPart());
 			int segmentCount = pathPart.segmentCount();
-			for (int i = 0; i < segmentCount; i++) {
+			for (int i = 0; i < segmentCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IStatus result = validateName(pathPart.segment(i), IResource.PROJECT);
 				if (!result.isOK()) {
 					return result;

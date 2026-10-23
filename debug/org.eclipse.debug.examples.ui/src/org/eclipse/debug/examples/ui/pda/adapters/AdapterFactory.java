@@ -33,7 +33,7 @@ public class AdapterFactory implements IAdapterFactory {
 	private static IModelProxyFactory fgFactory = new ModelProxyFactory();
 	private static IViewActionProvider fgViewActionProvider = new PDAViewActionProvider();
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Override
 	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 		if (IElementContentProvider.class.equals(adapterType)) {

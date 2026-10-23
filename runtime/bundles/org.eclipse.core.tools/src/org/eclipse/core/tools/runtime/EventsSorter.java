@@ -65,7 +65,7 @@ public class EventsSorter extends ViewerComparator implements ISorter {
 		reversed = newReversed;
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Override
 	public void sort(final Viewer viewer, Object[] elements) {
 		@SuppressWarnings("rawtypes")
@@ -76,7 +76,7 @@ public class EventsSorter extends ViewerComparator implements ISorter {
 			 * Compares two stats objects, sorting first by the main column of this sorter,
 			 * then by subsequent columns, depending on the column sort order.
 			 */
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public int compare(PerformanceStats s1, PerformanceStats s2) {
 				//always sort failures above non-failures
 				if (s1.isFailure() && !s2.isFailure()) {
@@ -87,7 +87,7 @@ public class EventsSorter extends ViewerComparator implements ISorter {
 				}
 				int[] columnSortOrder = SORT_ORDERS_BY_COLUMN[columnNumber];
 				int result = 0;
-				for (int element : columnSortOrder) {
+				for (int element : columnSortOrder) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					result = compareColumnValue(element, s1, s2);
 					if (result != 0) {
 						break;

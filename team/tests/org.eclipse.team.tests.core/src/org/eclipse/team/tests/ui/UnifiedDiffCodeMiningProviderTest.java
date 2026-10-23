@@ -100,7 +100,7 @@ public class UnifiedDiffCodeMiningProviderTest {
 	private IDocument document;
 	private IAnnotationModel model;
 	private UnifiedDiffCodeMiningProvider provider;
-	private final List<CompletableFuture<List<? extends ICodeMining>>> pendingRequests = new ArrayList<>();
+	private final List<CompletableFuture<List<? extends ICodeMining>>> pendingRequests = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	@BeforeEach
 	public void setUp() {
@@ -133,7 +133,7 @@ public class UnifiedDiffCodeMiningProviderTest {
 	 * one before it, so the provider can be asked at any point in between and must
 	 * answer from the current diffs and folds, never from what it finds attached.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMiningsFollowTheDiffsAndFoldsThroughAReopen() throws Exception {
 		installCodeMinings(provider);
 		assertTrue(open(withChangedLines(10, 45)).isOK());
@@ -183,25 +183,25 @@ public class UnifiedDiffCodeMiningProviderTest {
 	 * above the caption it would claim the gap is before a line that is still
 	 * there, so it belongs to the first line after the region.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTheExpanderSitsInTheGapAndNotAboveTheCaption() throws Exception {
 		installCodeMinings(provider);
 		assertTrue(open(withChangedLines(10, 45)).isOK());
 		List<Position> collapsed = collapsedRegions();
 		assertThat(collapsed).as("the unchanged regions are collapsed").isNotEmpty();
 
-		for (ICodeMining mining : provide()) {
+		for (ICodeMining mining : provide()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!(mining instanceof FoldedRegionCodeMining expander)) {
 				continue;
 			}
 			assertTrue(expander.isExpander(), "every band of a collapsed region shows it rather than hides it");
 			int anchor = expander.getPosition().getOffset();
 			Position region = regionEndingBefore(collapsed, anchor);
-			assertNotNull(region, "every expander belongs to a collapsed region, but none ends before " + anchor);
+			assertNotNull(region, "every expander belongs to a collapsed region, but none ends before " + anchor); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			int captionLine = document.getLineOfOffset(region.getOffset());
 			int anchorLine = document.getLineOfOffset(anchor);
 			assertTrue(anchorLine > captionLine,
-					"the expander must be drawn below the caption line " + captionLine + ", not above it at line "
+					"the expander must be drawn below the caption line " + captionLine + ", not above it at line " //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							+ anchorLine);
 			assertEquals(document.getLineOfOffset(region.getOffset() + region.getLength() - 1) + 1, anchorLine,
 					"the expander belongs to the first line after the region");
@@ -212,7 +212,7 @@ public class UnifiedDiffCodeMiningProviderTest {
 	 * A region the user expanded can be hidden again: its band stays where it was
 	 * and turns into a collapsing one.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAnExpandedRegionOffersToHideItselfAgain() throws Exception {
 		installCodeMinings(provider);
 		assertTrue(open(withChangedLines(10, 45)).isOK());
@@ -223,14 +223,14 @@ public class UnifiedDiffCodeMiningProviderTest {
 		waitForPendingWork();
 		assertThat(collapsedRegions()).as("nothing is collapsed any more").isEmpty();
 
-		List<FoldedRegionCodeMining> bands = new ArrayList<>();
-		for (ICodeMining mining : provide()) {
+		List<FoldedRegionCodeMining> bands = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ICodeMining mining : provide()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (mining instanceof FoldedRegionCodeMining band) {
 				bands.add(band);
 			}
 		}
 		assertEquals(regions, bands.size(), "every expanded region keeps a band to hide it again");
-		for (FoldedRegionCodeMining band : bands) {
+		for (FoldedRegionCodeMining band : bands) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertFalse(band.isExpander(), "an expanded region's band hides it rather than showing it");
 			assertThat(band.getLabel()).as("the label offers to hide the lines").contains("Hide");
 			int anchorLine = document.getLineOfOffset(band.getPosition().getOffset());
@@ -254,7 +254,7 @@ public class UnifiedDiffCodeMiningProviderTest {
 		installCodeMinings(provider);
 		assertTrue(open(withChangedLines(45)).isOK());
 		assertThat(collapsedRegions()).as("the regions start collapsed").isNotEmpty();
-		Map<Integer, Integer> collapsedAnchors = bandAnchorsByRegion();
+		Map<Integer, Integer> collapsedAnchors = bandAnchorsByRegion(); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		assertThat(collapsedAnchors).as("there is a band to follow").isNotEmpty();
 
 		viewer.doOperation(ProjectionViewer.EXPAND_ALL);
@@ -270,15 +270,15 @@ public class UnifiedDiffCodeMiningProviderTest {
 	 * visible while it is collapsed, so both are accepted here and it is the
 	 * comparison across a toggle that decides whether the band moved.
 	 */
-	private Map<Integer, Integer> bandAnchorsByRegion() throws Exception {
-		Map<Integer, Integer> anchors = new LinkedHashMap<>();
-		for (ICodeMining mining : provide()) {
+	private Map<Integer, Integer> bandAnchorsByRegion() throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		Map<Integer, Integer> anchors = new LinkedHashMap<>(); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
+		for (ICodeMining mining : provide()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!(mining instanceof FoldedRegionCodeMining band)) {
 				continue;
 			}
 			int anchorLine = document.getLineOfOffset(band.getPosition().getOffset());
 			Integer captionLine = null;
-			for (FoldRegion region : allRegions()) {
+			for (FoldRegion region : allRegions()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Position position = region.position();
 				int first = document.getLineOfOffset(position.getOffset());
 				int last = document.getLineOfOffset(position.getOffset() + position.getLength() - 1);
@@ -286,14 +286,14 @@ public class UnifiedDiffCodeMiningProviderTest {
 					captionLine = Integer.valueOf(first);
 				}
 			}
-			assertNotNull(captionLine, "the band on line " + anchorLine + " belongs to no region");
+			assertNotNull(captionLine, "the band on line " + anchorLine + " belongs to no region"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			anchors.put(captionLine, Integer.valueOf(anchorLine));
 		}
 		return anchors;
 	}
 
 	/** Hiding a region again puts it back the way the first open had it. */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testHidingAnExpandedRegionCollapsesItAgain() throws Exception {
 		installCodeMinings(provider);
 		assertTrue(open(withChangedLines(10, 45)).isOK());
@@ -304,7 +304,7 @@ public class UnifiedDiffCodeMiningProviderTest {
 		waitForPendingWork();
 		assertThat(collapsedRegions()).isEmpty();
 
-		for (ICodeMining mining : provide()) {
+		for (ICodeMining mining : provide()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (mining instanceof FoldedRegionCodeMining band) {
 				band.getAction().accept(null);
 			}
@@ -321,7 +321,7 @@ public class UnifiedDiffCodeMiningProviderTest {
 	 * to the end of the document therefore has to stop above the last line that
 	 * carries content.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTheBandOfTheLastRegionSitsOnALineThatCanBePainted() throws Exception {
 		assertEquals(0, document.getLineLength(document.getNumberOfLines() - 1),
 				"the document under test ends in a line delimiter");
@@ -329,17 +329,17 @@ public class UnifiedDiffCodeMiningProviderTest {
 		assertTrue(open(withChangedLines(10)).isOK());
 		assertThat(collapsedRegions()).as("the unchanged regions are collapsed").isNotEmpty();
 
-		List<FoldedRegionCodeMining> bands = new ArrayList<>();
-		for (ICodeMining mining : provide()) {
+		List<FoldedRegionCodeMining> bands = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ICodeMining mining : provide()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (mining instanceof FoldedRegionCodeMining band) {
 				bands.add(band);
 			}
 		}
 		assertEquals(allRegions().size(), bands.size(), "every region keeps its band");
-		for (FoldedRegionCodeMining band : bands) {
+		for (FoldedRegionCodeMining band : bands) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int anchor = band.getPosition().getOffset();
 			assertTrue(anchor < document.getLength(),
-					"a band anchored at the end of the document is never painted, but one sits at " + anchor);
+					"a band anchored at the end of the document is never painted, but one sits at " + anchor); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			assertThat(document.getLineLength(document.getLineOfOffset(anchor)))
 					.as("the band's line has something to repaint").isPositive();
 		}
@@ -347,7 +347,7 @@ public class UnifiedDiffCodeMiningProviderTest {
 
 	/** The collapsed region whose last line is the one before the given offset. */
 	private Position regionEndingBefore(List<Position> collapsed, int anchor) throws BadLocationException {
-		for (Position region : collapsed) {
+		for (Position region : collapsed) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int lastLine = document.getLineOfOffset(region.getOffset() + region.getLength() - 1);
 			if (document.getLineOffset(lastLine + 1) == anchor) {
 				return region;
@@ -363,7 +363,7 @@ public class UnifiedDiffCodeMiningProviderTest {
 	 * old minings never renders, and the framework keeps believing they are
 	 * attached. The rebuilt minings must still all reach the editor.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testReopeningNextToAnAsynchronousProviderKeepsEveryMining() throws Exception {
 		installCodeMinings(provider, new PendingProvider());
 		String changed = withChangedLines(10, 45);
@@ -394,11 +394,11 @@ public class UnifiedDiffCodeMiningProviderTest {
 
 		IStatus status = UnifiedDiffManager.open(viewer, document, model, null, "line 0\nline 1\n", MODE, null, null,
 				null, true, CONTEXT_LINES);
-		assertTrue(status.isOK(), "open() should succeed: " + status);
+		assertTrue(status.isOK(), "open() should succeed: " + status); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		List<ICodeMining> minings = provide();
-		List<UnifiedDiffFooterCodeMining> footers = new ArrayList<>();
-		for (ICodeMining mining : minings) {
+		List<UnifiedDiffFooterCodeMining> footers = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ICodeMining mining : minings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (mining instanceof UnifiedDiffFooterCodeMining footer) {
 				footers.add(footer);
 			}
@@ -413,19 +413,19 @@ public class UnifiedDiffCodeMiningProviderTest {
 	 * {@link UnifiedDiffFooterCodeMining#draw(GC, org.eclipse.swt.custom.StyledText, Color, int, int)}
 	 * paints.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFooterMiningDetailedDiffUsesStyledTextPosition() throws Exception {
 		// several bold keywords, so the bold/regular difference clearly exceeds a space
 		String keywords = "public public public public public public public public";
-		switchToDocument(new Document("line 0\n" + keywords));
+		switchToDocument(new Document("line 0\n" + keywords)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-		IStatus status = UnifiedDiffManager.open(viewer, document, model, null, "line 0\n" + keywords + " changed\n",
+		IStatus status = UnifiedDiffManager.open(viewer, document, model, null, "line 0\n" + keywords + " changed\n", //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				MODE, null, null, null, true, CONTEXT_LINES);
-		assertTrue(status.isOK(), "open() should succeed: " + status);
+		assertTrue(status.isOK(), "open() should succeed: " + status); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		List<ICodeMining> minings = provide();
 		UnifiedDiffFooterCodeMining footer = null;
-		for (ICodeMining mining : minings) {
+		for (ICodeMining mining : minings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (mining instanceof UnifiedDiffFooterCodeMining f) {
 				footer = f;
 			}
@@ -445,14 +445,14 @@ public class UnifiedDiffCodeMiningProviderTest {
 
 			Font baseFont = viewer.getTextWidget().getFont();
 			FontData[] boldData = baseFont.getFontData();
-			for (FontData fontData : boldData) {
+			for (FontData fontData : boldData) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fontData.setStyle(SWT.BOLD);
 			}
 			boldFont = new Font(display, boldData);
 			// stringExtent measures at the display zoom, getImageData() at 100%
 			int zoom = display.getPrimaryMonitor().getZoom();
 			gc.setFont(baseFont);
-			int baseWidth = gc.stringExtent(keywords + " ").x * 100 / zoom;
+			int baseWidth = gc.stringExtent(keywords + " ").x * 100 / zoom; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			gc.setFont(boldFont);
 			int boldWidth = gc.stringExtent(keywords).x * 100 / zoom;
 			assumeTrue(boldWidth > baseWidth, "the viewer font renders bold no wider than regular, "
@@ -482,18 +482,18 @@ public class UnifiedDiffCodeMiningProviderTest {
 	 * highlight at the line start instead of accumulating the width of the
 	 * preceding lines, which would make the highlight cascade to the right.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFooterMiningMultiLineDetailedDiffResetsPerLine() throws Exception {
 		switchToDocument(new Document("line 0\nx"));
 
 		String target = "line 0\nalpha alpha\nbravo bravo\ncarol carol\n";
 		IStatus status = UnifiedDiffManager.open(viewer, document, model, null, target, MODE, null, null, null, true,
 				CONTEXT_LINES);
-		assertTrue(status.isOK(), "open() should succeed: " + status);
+		assertTrue(status.isOK(), "open() should succeed: " + status); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		List<ICodeMining> minings = provide();
 		UnifiedDiffFooterCodeMining footer = null;
-		for (ICodeMining mining : minings) {
+		for (ICodeMining mining : minings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (mining instanceof UnifiedDiffFooterCodeMining f) {
 				footer = f;
 			}
@@ -517,8 +517,8 @@ public class UnifiedDiffCodeMiningProviderTest {
 			ImageData data = image.getImageData(zoom);
 			RGB detailedRgb = detailedDiffColor.getRGB();
 
-			List<Integer> paintedLastColumns = new ArrayList<>();
-			for (int lineIndex = 0; lineIndex < 8; lineIndex++) {
+			List<Integer> paintedLastColumns = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
+			for (int lineIndex = 0; lineIndex < 8; lineIndex++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int yTop = lineIndex * (lineHeight + lineSpacing);
 				int lastColumn = lastColumnWithInBand(data, detailedRgb, yTop, yTop + lineHeight);
 				if (lastColumn >= 0) {
@@ -549,8 +549,8 @@ public class UnifiedDiffCodeMiningProviderTest {
 	private static int lastColumnWithInBand(ImageData data, RGB target, int yTop, int yBottom) {
 		int bottom = Math.min(yBottom, data.height);
 		int last = -1;
-		for (int x = 0; x < data.width; x++) {
-			for (int y = Math.max(0, yTop); y < bottom; y++) {
+		for (int x = 0; x < data.width; x++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (int y = Math.max(0, yTop); y < bottom; y++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				RGB rgb = data.palette.getRGB(data.getPixel(x, y));
 				if (Math.abs(rgb.red - target.red) <= 2 && Math.abs(rgb.green - target.green) <= 2
 						&& Math.abs(rgb.blue - target.blue) <= 2) {
@@ -569,8 +569,8 @@ public class UnifiedDiffCodeMiningProviderTest {
 	private static int firstColumnWith(Image image, Color color) {
 		ImageData data = image.getImageData();
 		RGB target = color.getRGB();
-		for (int x = 0; x < data.width; x++) {
-			for (int y = 0; y < data.height; y++) {
+		for (int x = 0; x < data.width; x++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (int y = 0; y < data.height; y++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				RGB rgb = data.palette.getRGB(data.getPixel(x, y));
 				if (Math.abs(rgb.red - target.red) <= 2 && Math.abs(rgb.green - target.green) <= 2
 						&& Math.abs(rgb.blue - target.blue) <= 2) {
@@ -586,9 +586,9 @@ public class UnifiedDiffCodeMiningProviderTest {
 	/**
 	 * A test configuration that colors all text and renders {@code public} in bold.
 	 */
-	private static SourceViewerConfiguration syntaxColoringConfiguration() {
+	private static SourceViewerConfiguration syntaxColoringConfiguration() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		return new SourceViewerConfiguration() {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public IPresentationReconciler getPresentationReconciler(ISourceViewer sourceViewer) {
 				PresentationReconciler reconciler = new PresentationReconciler();
 				RuleBasedScanner scanner = new RuleBasedScanner();
@@ -650,16 +650,16 @@ public class UnifiedDiffCodeMiningProviderTest {
 	 */
 	private void answerPendingRequests() {
 		waitForPendingWork();
-		List<CompletableFuture<List<? extends ICodeMining>>> requests = new ArrayList<>(pendingRequests);
+		List<CompletableFuture<List<? extends ICodeMining>>> requests = new ArrayList<>(pendingRequests); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		pendingRequests.clear();
-		for (CompletableFuture<List<? extends ICodeMining>> request : requests) {
+		for (CompletableFuture<List<? extends ICodeMining>> request : requests) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			request.complete(List.of());
 		}
 		waitForPendingWork();
 	}
 
 	private List<ICodeMining> provide() throws Exception {
-		return new ArrayList<>(
+		return new ArrayList<>( //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				provider.provideCodeMinings(viewer, new NullProgressMonitor()).get(TIMEOUT_SECONDS, TimeUnit.SECONDS));
 	}
 
@@ -667,10 +667,10 @@ public class UnifiedDiffCodeMiningProviderTest {
 	 * One overlay mining per diff, showing that very diff, and one expander per
 	 * collapsed region, anchored to the first line after it.
 	 */
-	private void assertMinings(List<ICodeMining> minings, List<UnifiedDiff> diffs) {
-		List<UnifiedDiff> shown = new ArrayList<>();
-		List<Integer> expanders = new ArrayList<>();
-		for (ICodeMining mining : minings) {
+	private void assertMinings(List<ICodeMining> minings, List<UnifiedDiff> diffs) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<UnifiedDiff> shown = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<Integer> expanders = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
+		for (ICodeMining mining : minings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (mining instanceof UnifiedDiffLineHeaderCodeMining overlay) {
 				shown.add(overlay.getUnifiedDiff());
 			} else if (mining instanceof UnifiedDiffFooterCodeMining footer) {
@@ -678,7 +678,7 @@ public class UnifiedDiffCodeMiningProviderTest {
 			} else if (mining instanceof FoldedRegionCodeMining expander) {
 				expanders.add(Integer.valueOf(expander.getPosition().getOffset()));
 			} else {
-				fail("unexpected mining " + mining);
+				fail("unexpected mining " + mining); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		assertThat(shown).as("one overlay mining per shown diff").containsExactlyInAnyOrderElementsOf(diffs);
@@ -708,9 +708,9 @@ public class UnifiedDiffCodeMiningProviderTest {
 
 	/** Every unchanged-region fold of the viewer, collapsed or expanded. */
 	private List<FoldRegion> allRegions() {
-		List<FoldRegion> result = new ArrayList<>();
+		List<FoldRegion> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		ProjectionAnnotationModel projectionModel = viewer.getProjectionAnnotationModel();
-		for (Iterator<Annotation> it = projectionModel.getAnnotationIterator(); it.hasNext();) {
+		for (Iterator<Annotation> it = projectionModel.getAnnotationIterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Annotation annotation = it.next();
 			if (annotation instanceof ProjectionAnnotation fold) {
 				result.add(new FoldRegion(projectionModel.getPosition(annotation), fold.isCollapsed()));
@@ -720,11 +720,11 @@ public class UnifiedDiffCodeMiningProviderTest {
 	}
 
 	/** Waits until the framework attached exactly the minings of the diffs and regions. */
-	private void waitForAttachedMinings(List<UnifiedDiff> diffs, int regions) {
+	private void waitForAttachedMinings(List<UnifiedDiff> diffs, int regions) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		waitUntil(() -> {
-			List<UnifiedDiff> shown = new ArrayList<>();
+			List<UnifiedDiff> shown = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			int expanders = 0;
-			for (ICodeMining mining : attachedMinings()) {
+			for (ICodeMining mining : attachedMinings()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (mining instanceof UnifiedDiffLineHeaderCodeMining overlay) {
 					shown.add(overlay.getUnifiedDiff());
 				} else if (mining instanceof UnifiedDiffFooterCodeMining footer) {
@@ -735,13 +735,13 @@ public class UnifiedDiffCodeMiningProviderTest {
 			}
 			return shown.size() == diffs.size() && shown.containsAll(diffs) && diffs.containsAll(shown)
 					&& expanders == regions;
-		}, () -> "the minings of " + diffs.size() + " diffs and " + regions
+		}, () -> "the minings of " + diffs.size() + " diffs and " + regions //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ " regions are attached, but the model holds " + attachedMinings());
 	}
 
 	private List<ICodeMining> attachedMinings() {
-		List<ICodeMining> result = new ArrayList<>();
-		for (Iterator<Annotation> it = model.getAnnotationIterator(); it.hasNext();) {
+		List<ICodeMining> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Iterator<Annotation> it = model.getAnnotationIterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (it.next() instanceof AbstractInlinedAnnotation inlined) {
 				result.addAll(inlined.getMinings());
 			}
@@ -750,23 +750,23 @@ public class UnifiedDiffCodeMiningProviderTest {
 	}
 
 	private Annotation attachedMiningAnnotationOf(UnifiedDiff diff) {
-		for (Iterator<Annotation> it = model.getAnnotationIterator(); it.hasNext();) {
+		for (Iterator<Annotation> it = model.getAnnotationIterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Annotation annotation = it.next();
 			if (annotation instanceof AbstractInlinedAnnotation inlined) {
-				for (ICodeMining mining : inlined.getMinings()) {
+				for (ICodeMining mining : inlined.getMinings()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (mining instanceof UnifiedDiffLineHeaderCodeMining overlay && overlay.getUnifiedDiff() == diff) {
 						return annotation;
 					}
 				}
 			}
 		}
-		return fail("no mining is attached for the diff on line " + diff.leftStart);
+		return fail("no mining is attached for the diff on line " + diff.leftStart); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private List<Position> collapsedRegions() {
-		List<Position> result = new ArrayList<>();
+		List<Position> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		ProjectionAnnotationModel projectionModel = viewer.getProjectionAnnotationModel();
-		for (Iterator<Annotation> it = projectionModel.getAnnotationIterator(); it.hasNext();) {
+		for (Iterator<Annotation> it = projectionModel.getAnnotationIterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Annotation annotation = it.next();
 			if (annotation instanceof ProjectionAnnotation fold && fold.isCollapsed()) {
 				result.add(projectionModel.getPosition(annotation));
@@ -777,9 +777,9 @@ public class UnifiedDiffCodeMiningProviderTest {
 
 	private void waitUntil(BooleanSupplier condition, Supplier<String> what) {
 		long deadline = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(TIMEOUT_SECONDS);
-		while (!condition.getAsBoolean()) {
+		while (!condition.getAsBoolean()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (System.currentTimeMillis() > deadline) {
-				fail("timed out waiting until " + what.get());
+				fail("timed out waiting until " + what.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			if (!display.readAndDispatch()) {
 				try {
@@ -793,7 +793,7 @@ public class UnifiedDiffCodeMiningProviderTest {
 	}
 
 	private void waitForPendingWork() {
-		while (display.readAndDispatch()) {
+		while (display.readAndDispatch()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// keep going until the queue is empty
 		}
 	}
@@ -801,28 +801,28 @@ public class UnifiedDiffCodeMiningProviderTest {
 	/** The document with the given lines changed, as the other side of the diff. */
 	private String withChangedLines(int... lines) {
 		String content = document.get();
-		for (int line : lines) {
-			content = content.replace("line " + line + "\n", "line " + line + " changed\n");
+		for (int line : lines) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			content = content.replace("line " + line + "\n", "line " + line + " changed\n"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return content;
 	}
 
 	/** The diffs the manager would record for the given changed lines. */
 	private List<UnifiedDiff> diffsOnLines(int... lines) throws BadLocationException {
-		List<UnifiedDiff> diffs = new ArrayList<>();
-		for (int line : lines) {
+		List<UnifiedDiff> diffs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (int line : lines) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int offset = document.getLineOffset(line);
 			int length = document.getLineLength(line);
 			diffs.add(new UnifiedDiff(document, offset, offset + length, document.get(offset, length), document,
-					offset, offset + length + 8, "line " + line + " changed\n", diffs, MODE));
+					offset, offset + length + 8, "line " + line + " changed\n", diffs, MODE)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return diffs;
 	}
 
 	private static IDocument numberedLines(int count) {
-		StringBuilder content = new StringBuilder();
-		for (int i = 0; i < count; i++) {
-			content.append("line ").append(i).append('\n');
+		StringBuilder content = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			content.append("line ").append(i).append('\n'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return new Document(content.toString());
 	}

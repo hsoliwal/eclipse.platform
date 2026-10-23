@@ -68,7 +68,7 @@ public class ConfigurationWizardElement extends WorkbenchAdapter implements IAda
 	 * @return the wizard instance of type {@link IConfigurationWizard}
 	 * @throws CoreException if an error occurs creating the extension
 	 */
-	public IWizard createExecutableExtension(IProject[] projects) throws CoreException {
+	public IWizard createExecutableExtension(IProject[] projects) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IWorkbench workbench = PlatformUI.getWorkbench();
 		IConfigurationWizard wizard = (IConfigurationWizard)createExecutableExtension();
 		IConfigurationWizardExtension extension = Adapters.adapt(wizard, IConfigurationWizardExtension.class);

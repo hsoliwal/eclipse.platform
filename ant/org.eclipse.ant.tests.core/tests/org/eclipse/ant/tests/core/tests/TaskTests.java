@@ -88,14 +88,14 @@ public class TaskTests extends AbstractAntTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAddTaskFromFolder() throws CoreException {
 		try {
 			AntCorePreferences prefs = AntCorePlugin.getPlugin().getPreferences();
 			Task newTask = new Task();
 			String path = getProject().getFolder(ProjectHelper.LIB_FOLDER).getFile("taskFolder").getLocation().toFile() //$NON-NLS-1$
 					.getAbsolutePath();
-			IAntClasspathEntry entry = new AntClasspathEntry(path + File.separatorChar);
+			IAntClasspathEntry entry = new AntClasspathEntry(path + File.separatorChar); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			IAntClasspathEntry entries[] = prefs.getAdditionalClasspathEntries();
 			IAntClasspathEntry newEntries[] = new IAntClasspathEntry[entries.length + 1];
 			System.arraycopy(entries, 0, newEntries, 0, entries.length);

@@ -38,8 +38,8 @@ public class PDARegisterData {
 		fName = regSt.nextToken();
 		fWritable = Boolean.getBoolean(regSt.nextToken());
 
-		List<PDABitFieldData> bitFieldsList = new ArrayList<>();
-		while (st.hasMoreTokens()) {
+		List<PDABitFieldData> bitFieldsList = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		while (st.hasMoreTokens()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			bitFieldsList.add(new PDABitFieldData(st.nextToken()));
 		}
 		fBitFields = bitFieldsList.toArray(new PDABitFieldData[bitFieldsList.size()]);

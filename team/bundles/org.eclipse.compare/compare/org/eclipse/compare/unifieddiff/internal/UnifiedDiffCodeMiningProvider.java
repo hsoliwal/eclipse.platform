@@ -93,7 +93,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 	private Color foldButtonColor;
 	private boolean lastIsOverlay;
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void dispose() {
 		try {
 			if (deletionBackgroundColor != null && !deletionBackgroundColor.isDisposed()) {
@@ -121,12 +121,12 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public CompletableFuture<List<? extends ICodeMining>> provideCodeMinings(ITextViewer viewer,
 			IProgressMonitor monitor) {
 		List<UnifiedDiff> diffs = UnifiedDiffManager.get(viewer);
 		if (diffs == null || diffs.size() == 0) {
-			return CompletableFuture.completedFuture(new ArrayList<>());
+			return CompletableFuture.completedFuture(new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 		boolean isOverlay = isOverlay(diffs);
 		if (Display.getCurrent() != null && (this.deletionBackgroundColor == null || isOverlay != lastIsOverlay)) {
@@ -179,10 +179,10 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		// concurrent modifications when accept/hide actions mutate the live list
 		List<UnifiedDiff> diffsSnapshot = List.copyOf(diffs);
 		// created on the calling thread because it reads the projection annotation model
-		List<ICodeMining> foldMinings = new ArrayList<>();
+		List<ICodeMining> foldMinings = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		createFoldRegionCodeMinings(viewer, foldMinings);
 		return CompletableFuture.supplyAsync(() -> {
-			List<ICodeMining> minings = new ArrayList<>();
+			List<ICodeMining> minings = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			createLineHeaderCodeMinings(diffsSnapshot, minings, viewer, tabWidth);
 			minings.addAll(foldMinings);
 			return minings;
@@ -240,15 +240,15 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 	 * diffs that are no longer shown are left out, so what an earlier request
 	 * attached never decides what is shown.
 	 */
-	private static List<ICodeMining> attachedMiningsOf(ISourceViewer sv, List<UnifiedDiff> diffs) {
+	private static List<ICodeMining> attachedMiningsOf(ISourceViewer sv, List<UnifiedDiff> diffs) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IAnnotationModel model = sv.getAnnotationModel();
 		IDocument doc = sv.getDocument();
 		if (model == null || doc == null) {
 			return null;
 		}
-		Map<UnifiedDiff, ICodeMining> attached = new IdentityHashMap<>();
+		Map<UnifiedDiff, ICodeMining> attached = new IdentityHashMap<>(); //FLLDCIM: MARK — M06 M3_IDENTITY_WEAK_LANES NEW
 		Iterator<Annotation> it = model.getAnnotationIterator();
-		while (it.hasNext()) {
+		while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Annotation next = it.next();
 			UnifiedDiff diff;
 			ICodeMining mining;
@@ -282,8 +282,8 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 				return null;
 			}
 		}
-		List<ICodeMining> minings = new ArrayList<>();
-		for (UnifiedDiff diff : diffs) {
+		List<ICodeMining> minings = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (UnifiedDiff diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!needsCodeMining(diff)) {
 				continue;
 			}
@@ -296,13 +296,13 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		return minings;
 	}
 
-	private void createLineHeaderCodeMinings(List<UnifiedDiff> diffs, List<ICodeMining> minings, ITextViewer tv,
+	private void createLineHeaderCodeMinings(List<UnifiedDiff> diffs, List<ICodeMining> minings, ITextViewer tv, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			int tabWidth) {
 		if (diffs == null) {
 			return;
 		}
 		IDocument doc = tv.getDocument();
-		for (UnifiedDiff diff : diffs) {
+		for (UnifiedDiff diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!needsCodeMining(diff)) {
 				continue;
 			}
@@ -345,13 +345,13 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 	 * Creates one clickable mining per unchanged-region fold, which shows the
 	 * region while it is collapsed and hides it again while it is expanded.
 	 */
-	private void createFoldRegionCodeMinings(ITextViewer viewer, List<ICodeMining> minings) {
+	private void createFoldRegionCodeMinings(ITextViewer viewer, List<ICodeMining> minings) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IDocument doc = viewer.getDocument();
 		if (doc == null) {
 			return;
 		}
 		Map<Annotation, Position> folds = UnifiedDiffManager.getFoldRegions(viewer);
-		for (Map.Entry<Annotation, Position> fold : folds.entrySet()) {
+		for (Map.Entry<Annotation, Position> fold : folds.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Position position = fold.getValue();
 			boolean collapsed = fold.getKey() instanceof ProjectionAnnotation p && p.isCollapsed();
 			try {
@@ -454,7 +454,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 			return this.bandLabel;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public Point draw(GC gc, StyledText textWidget, Color color, int x, int y) {
 			if (this.separatorColor == null || this.separatorColor.isDisposed() || this.buttonColor == null
 					|| this.buttonColor.isDisposed()) {
@@ -533,7 +533,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 			this.mining = mining;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void accept(MouseEvent t) {
 			if (mining == null || viewer == null || mining.getLastRectangle() == null) {
 				return;
@@ -565,7 +565,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		private final ITextViewer viewer;
 		private UnifiedDiff diff;
 		private List<StyleRange> styleRanges;
-		private final HashMap<Font, Map<Integer, Font>> styledFonts = new HashMap<>();
+		private final HashMap<Font, Map<Integer, Font>> styledFonts = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		private Rectangle lastRectangle;
 		private Font cachedFont;
 
@@ -627,7 +627,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		}
 
 		private void clearStyledFonts() {
-			styledFonts.forEach((unused, map) -> map.forEach((unused2, f) -> f.dispose()));
+			styledFonts.forEach((unused, map) -> map.forEach((unused2, f) -> f.dispose())); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES PARAMETER
 			styledFonts.clear();
 		}
 
@@ -638,7 +638,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 			return styleRanges;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public Point draw(GC gc, StyledText textWidget, Color color, int x, int y) {
 			gc.setBackground(this.deletionBackgroundColor);
 			Color c = textWidget.getForeground();
@@ -684,7 +684,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		 * changes. {@link #drawStyleRanges} draws its text transparently and so cannot
 		 * paint a range background itself.
 		 */
-		private void fillDetailedDiffBackgrounds(GC gc, StyledText textWidget, String label, List<StyleRange> ranges,
+		private void fillDetailedDiffBackgrounds(GC gc, StyledText textWidget, String label, List<StyleRange> ranges, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 				int x, int y) {
 			List<StyleRange> backgrounds = createDetailedDiffBackgroundRanges(diff, tabWidth, detailedDiffColor);
 			if (backgrounds.isEmpty()) {
@@ -693,11 +693,11 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 			int lineHeight = textWidget.getLineHeight();
 			int lineSpacing = textWidget.getLineSpacing();
 			gc.setBackground(this.detailedDiffColor);
-			for (StyleRange bg : backgrounds) {
+			for (StyleRange bg : backgrounds) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int pos = bg.start;
 				int end = bg.start + bg.length;
 				// a detailed diff may span lines; fill each line segment on its own line
-				while (pos < end) {
+				while (pos < end) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					int lineStart = label.lastIndexOf('\n', pos - 1) + 1;
 					int lineEnd = label.indexOf('\n', pos);
 					int segmentEnd = lineEnd == -1 ? end : Math.min(end, lineEnd);
@@ -720,7 +720,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		 * the highlight left of the changed word whenever bold or italic text precedes
 		 * it on the same line.
 		 */
-		private int styledWidth(GC gc, String label, List<StyleRange> ranges, int from, int to) {
+		private int styledWidth(GC gc, String label, List<StyleRange> ranges, int from, int to) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			if (to <= from) {
 				return 0;
 			}
@@ -728,7 +728,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 			int width = 0;
 			try {
 				int cursor = from;
-				for (StyleRange range : ranges) {
+				for (StyleRange range : ranges) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					int rangeEnd = range.start + range.length;
 					if (rangeEnd <= cursor || range.start >= to) {
 						continue;
@@ -765,12 +765,12 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		}
 	}
 
-	public static List<StyleRange> createDetailedDiffBackgroundRanges(UnifiedDiff diff, int tabWidth, Color detailedDiffColor) {
-		List<StyleRange> ranges = new ArrayList<>();
+	public static List<StyleRange> createDetailedDiffBackgroundRanges(UnifiedDiff diff, int tabWidth, Color detailedDiffColor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<StyleRange> ranges = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		String diffStr = diff.mode.equals(UnifiedDiffMode.REPLACE_MODE) ? diff.leftStr : diff.rightStr;
 		String trimmedDiffStr = removeTrailingNewLines(diffStr);
 		int labelLength = replaceTabWithSpaces(trimmedDiffStr, tabWidth).stripTrailing().length();
-		for (var detailedDiff : diff.detailedDiffs) {
+		for (var detailedDiff : diff.detailedDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int detailedDiffStart;
 			int detailedDiffLength;
 			String detailedDiffStr;
@@ -814,14 +814,14 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 	 * for each drawn segment and may be {@code null}; the header mining uses it to
 	 * populate its foreground cache so subsequent repaints skip this path.
 	 */
-	static void drawStyleRanges(GC gc, StyledText textWidget, List<StyleRange> ranges, String label,
+	static void drawStyleRanges(GC gc, StyledText textWidget, List<StyleRange> ranges, String label, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			HashMap<Font, Map<Integer, Font>> styledFonts, int x, int y,
 			Consumer<ForegroundInfo> onForeground) {
 		Font font = gc.getFont();
 		int textWidgetLineHeight = textWidget.getLineHeight();
 		int cx = x;
 		int cy = y;
-		for (StyleRange range : ranges) {
+		for (StyleRange range : ranges) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String sub = label.substring(range.start, range.start + range.length);
 			if (sub.trim().length() > 0) {
 				if (range.background != null) {
@@ -835,9 +835,9 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 				if (rangeWithFont.font != null) {
 					gc.setFont(rangeWithFont.font);
 				}
-				String[] lines = sub.split("\n"); //$NON-NLS-1$
+				String[] lines = sub.split("\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 				if (lines.length > 1) {
-					for (int i = 0; i < lines.length; i++) {
+					for (int i = 0; i < lines.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						String line = lines[i].replace("\r", ""); //$NON-NLS-1$ //$NON-NLS-2$
 						gc.drawString(line, cx, cy, true);
 						if (onForeground != null) {
@@ -875,7 +875,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 			} else {
 				int lfCount = 0;
 				if (sub.contains("\n")) { //$NON-NLS-1$
-					lfCount = sub.split("\n", -1).length - 1; //$NON-NLS-1$
+					lfCount = sub.split("\n", -1).length - 1; //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 					sub = sub.substring(sub.lastIndexOf("\n") + 1); //$NON-NLS-1$
 				}
 				Point p = gc.stringExtent(sub);
@@ -889,8 +889,8 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		gc.setFont(font);
 	}
 
-	private static List<StyleRange> computeStyleRanges(ITextViewer v, int offset, String source) {
-		List<StyleRange> result = new ArrayList<>();
+	private static List<StyleRange> computeStyleRanges(ITextViewer v, int offset, String source) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<StyleRange> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (!(v instanceof SourceViewer sv)) {
 			return result;
 		}
@@ -900,11 +900,11 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		}
 		try {
 			String prefix = originalDocument.get(0, offset /* diff.leftStart */);
-			IDocument document = new Document(prefix + source);
+			IDocument document = new Document(prefix + source); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			IRegion damage = new Region(prefix.length(), source.length());
 			result = sv.computeStyleRanges(document, damage);
 			int startOffset = prefix.length();
-			for (StyleRange next : result) {
+			for (StyleRange next : result) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (next.start < startOffset) {
 					throw new IllegalStateException(
 							"Invalid presentation with style range starting before source offset"); //$NON-NLS-1$
@@ -933,7 +933,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		private List<ForegroundInfo> foregrounds;
 		private List<StyleRange> styleRanges;
 		private Font cachedFont;
-		private final HashMap<Font, Map<Integer /* style */, Font>> styledFonts = new HashMap<>();
+		private final HashMap<Font, Map<Integer /* style */, Font>> styledFonts = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 		public UnifiedDiffLineHeaderCodeMining(Position position, ICodeMiningProvider provider, UnifiedDiff diff,
 				int tabWidth, Color deletionBackgroundColor, Color detailedDiffColor, Color borderColor,
@@ -961,14 +961,14 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		private record DetailedDiffRange(String diffStr, int start, int length, int fromLine, int toLine) {
 		}
 
-		private static List<DetailedDiffRange> computeDetailedDiffRanges(UnifiedDiff diff) {
+		private static List<DetailedDiffRange> computeDetailedDiffRanges(UnifiedDiff diff) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			boolean useRight = diff.mode.equals(UnifiedDiffMode.OVERLAY_MODE)
 					|| diff.mode.equals(UnifiedDiffMode.OVERLAY_READ_ONLY_MODE)
 					|| diff.mode.equals(UnifiedDiffMode.REVERT_MODE);
 			String fullDiffStr = useRight ? diff.rightStr : diff.leftStr;
 			String diffStr = removeTrailingNewLines(fullDiffStr);
-			List<DetailedDiffRange> result = new ArrayList<>();
-			for (var detailedDiff : diff.detailedDiffs) {
+			List<DetailedDiffRange> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (var detailedDiff : diff.detailedDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String detailedDiffStr = useRight ? detailedDiff.rightStr : detailedDiff.leftStr;
 				int detailedDiffStart = useRight ? detailedDiff.rightStart : detailedDiff.leftStart;
 				int detailedDiffLength = useRight ? detailedDiff.rightLength : detailedDiff.leftLength;
@@ -1046,7 +1046,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		}
 
 		private void clearStyledFonts() {
-			styledFonts.forEach((unused, styledFonts1) -> {
+			styledFonts.forEach((unused, styledFonts1) -> { //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES PARAMETER
 				styledFonts1.forEach((unused3, styledFont) -> {
 					styledFont.dispose();
 				});
@@ -1055,7 +1055,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 			styledFonts.clear();
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public Point draw(GC gc, StyledText textWidget, Color color, int x, int y) {
 			gc.setBackground(this.deletionBackgroundColor);
 			Color c = textWidget.getForeground();
@@ -1076,7 +1076,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 
 				// backgrounds
 				gc.setBackground(this.detailedDiffColor);
-				for (var b : backgrounds) {
+				for (var b : backgrounds) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					int rectY = y + b.y;
 					if (rectY < 0) {
 						continue;
@@ -1084,7 +1084,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 					gc.fillRectangle(x + b.x, rectY, b.width, b.height);
 				}
 				// foregrounds
-				for (var f : foregrounds) {
+				for (var f : foregrounds) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (y + f.y() < 0) {
 						continue;
 					}
@@ -1122,10 +1122,10 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 
 			// draw darker background for detailed diff
 			gc.setBackground(this.detailedDiffColor);
-			backgrounds = new ArrayList<>();
+			backgrounds = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			String[] diffLines = null;
 			Document diffStrDoc = null;
-			for (var range : this.detailedDiffRanges) {
+			for (var range : this.detailedDiffRanges) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String diffStr = range.diffStr();
 				int detailedDiffStart = range.start();
 				int detailedDiffLength = range.length();
@@ -1152,7 +1152,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 					} else {
 						// mark first line until end
 						if (diffLines == null) {
-							diffLines = diffStr.split("\n"); //$NON-NLS-1$
+							diffLines = diffStr.split("\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 							diffStrDoc = new Document(diffStr);
 						}
 						String firstLine = diffLines[fromLine - 1];
@@ -1189,7 +1189,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 							}
 						}
 						// all the lines between first and last line
-						for (int middleLine = fromLine + 1; middleLine < toLine; middleLine++) {
+						for (int middleLine = fromLine + 1; middleLine < toLine; middleLine++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							starty = getYForLine(middleLine - 1, y, gc, textWidget);
 							try {
 								int currentLineEndOffset = diffStrDoc.getLineOffset(middleLine - 1)
@@ -1240,7 +1240,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 				drawBandBorder(gc, this.borderColor, y, textWidget.getBounds().width, result.y);
 				return result;
 			}
-			foregrounds = new ArrayList<>();
+			foregrounds = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			gc.setFont(cachedFont);
 			drawStyleRanges(gc, textWidget, ranges, label, styledFonts, x, y, foregrounds::add);
 			drawBandBorder(gc, this.borderColor, y, textWidget.getBounds().width, lastRectangle.height);
@@ -1267,7 +1267,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 			}
 		}
 
-		public Point getPositionForOffset(StyledText tw, GC gc, int offset, String str, List<StyleRange> ranges,
+		public Point getPositionForOffset(StyledText tw, GC gc, int offset, String str, List<StyleRange> ranges, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 				RangeInfo rangeInfo) {
 			String sub = str.substring(0, offset);
 			Point result = null;
@@ -1279,7 +1279,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 					i = rangeInfo.rangeIndex + 1;
 					result = rangeInfo.position;
 				}
-				for (; i < ranges.size(); i++) {
+				for (; i < ranges.size(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					var range = ranges.get(i);
 					if (range.start <= offset) {
 						boolean rangeEndBeforeOffset = true;
@@ -1290,7 +1290,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 						}
 						sub = str.substring(range.start, rangeEnd);
 						if (offset == rangeEnd && offset == str.length()) {
-							while (sub.endsWith("\n")) { //$NON-NLS-1$
+							while (sub.endsWith("\n")) { //$NON-NLS-1$ //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 								sub = sub.substring(0, sub.length() - 1);
 							}
 						}
@@ -1349,7 +1349,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 			return UnifiedDiffCodeMiningProvider.transformFontStyleToFont(styledFonts, baseFont, styleRange);
 		}
 
-		private int getOffsetAtLine(String str, int off) {
+		private int getOffsetAtLine(String str, int off) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			Document doc;
 			if (off == str.length()) {
 				doc = new Document(str);
@@ -1380,15 +1380,15 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		}
 	}
 
-	static void openOverlay(StyledText overlay, ITextViewer viewer) {
-		overlay.addFocusListener(new FocusAdapter() {
+	static void openOverlay(StyledText overlay, ITextViewer viewer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		overlay.addFocusListener(new FocusAdapter() { //FLLDCIM: MARK — T15 FOCUS CALL
 			@Override
 			public void focusLost(FocusEvent e) {
 				overlay.dispose();
 				setTextEditorActionsActivated(viewer, true);
 			}
 		});
-		overlay.addKeyListener(new KeyAdapter() {
+		overlay.addKeyListener(new KeyAdapter() { //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.keyCode == SWT.ESC) {
@@ -1401,7 +1401,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		setTextEditorActionsActivated(viewer, false);
 	}
 
-	static void setTextEditorActionsActivated(ITextViewer viewer, boolean state) {
+	static void setTextEditorActionsActivated(ITextViewer viewer, boolean state) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IEditorPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
 		if (part instanceof MultiPageEditorPart multiPageEditorPart) {
 			Object page = multiPageEditorPart.getSelectedPage();
@@ -1435,10 +1435,10 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		// already set
 		if (styleRange.font == null && styleRange.fontStyle > 0) {
 			StyleRange newRange = (StyleRange) styleRange.clone();
-			newRange.font = styledFonts.computeIfAbsent(baseFont, unused -> new HashMap<>())
+			newRange.font = styledFonts.computeIfAbsent(baseFont, unused -> new HashMap<>()) //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 					.computeIfAbsent(Integer.valueOf(styleRange.fontStyle), unused -> {
 						FontData[] fontDatas = baseFont.getFontData();
-						for (FontData fontData : fontDatas) {
+						for (FontData fontData : fontDatas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							fontData.setStyle(styleRange.fontStyle);
 						}
 						return new Font(baseFont.getDevice(), fontDatas);

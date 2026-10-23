@@ -107,7 +107,7 @@ public class ProjectSnapshotTest {
 	 * with snapshot. All resources must be marked as "exists" in the
 	 * resource tree, although there is no resource actually on disk.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLoadNoRefresh() throws Throwable {
 		final IProject project = projects[0];
 		// add files and folders to project
@@ -141,7 +141,7 @@ public class ProjectSnapshotTest {
 	 * with snapshot and perform a refresh. Resource delta must be created,
 	 * and none of the snapshot resources is found any more.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLoadWithRefresh() throws Throwable {
 		final IProject project = projects[0];
 		// add files and folders to project
@@ -194,7 +194,7 @@ public class ProjectSnapshotTest {
 	 * project name. All resources must be marked as "exists" in the
 	 * resource tree for the new, renamed project.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLoadWithRename() throws Throwable {
 		IProject project = projects[0];
 		// add files and folders to project
@@ -231,7 +231,7 @@ public class ProjectSnapshotTest {
 	 * All resources must be marked as "exists" in the resource tree
 	 * for the new, renamed project, even though they are not actually present.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLoadWithRename2() throws Throwable {
 		IProject project = projects[0];
 		// add files and folders to project
@@ -308,7 +308,7 @@ public class ProjectSnapshotTest {
 	 * All resources must be marked as "exists" in the resource tree for
 	 * the new, renamed project.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAutoLoadWithRename() throws Throwable {
 		// create project p0 outside the workspace
 		IFileStore tempStore = fileStoreExtension.getTempStore();
@@ -340,7 +340,7 @@ public class ProjectSnapshotTest {
 			description = getWorkspace().loadProjectDescription(is);
 		}
 		description.setLocationURI(newProjectStore.toURI());
-		project = getWorkspace().getRoot().getProject(description.getName() + "-mybranch");
+		project = getWorkspace().getRoot().getProject(description.getName() + "-mybranch"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		project.create(description, null);
 		project.open(IResource.NONE, null);
 
@@ -355,7 +355,7 @@ public class ProjectSnapshotTest {
 		assertTrue(subfile.exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testResetAutoLoadSnapshot() throws Throwable {
 		IProject project = projects[0];
 		URI tempURI = fileStoreExtension.getTempStore().toURI();

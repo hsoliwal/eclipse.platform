@@ -41,7 +41,7 @@ public class UserStringMappings {
 
 	private final String fKey;
 
-	private Map<String, Integer> fMap;
+	private Map<String, Integer> fMap; //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	public UserStringMappings(String key) {
 		fKey = key;
@@ -55,11 +55,11 @@ public class UserStringMappings {
 		return fMap;
 	}
 
-	public void addStringMappings(String[] names, int[] types) {
+	public void addStringMappings(String[] names, int[] types) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isTrue(names.length == types.length);
-		final Map<String, Integer> map = referenceMap();
+		final Map<String, Integer> map = referenceMap(); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 
-		for (int i = 0; i < names.length; i++) {
+		for (int i = 0; i < names.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int type = types[i];
 			switch (type) {
 			case Team.BINARY:
@@ -92,15 +92,15 @@ public class UserStringMappings {
 		return type != null ? type.intValue() : Team.UNKNOWN;
 	}
 
-	public void save() {
+	public void save() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Now set into preferences
-		final StringBuilder buffer = new StringBuilder();
-		for (String filename : fMap.keySet()) {
-			buffer.append(filename);
-			buffer.append(PREF_TEAM_SEPARATOR);
+		final StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (String filename : fMap.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			buffer.append(filename); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append(PREF_TEAM_SEPARATOR); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			final Integer type = fMap.get(filename);
-			buffer.append(type);
-			buffer.append(PREF_TEAM_SEPARATOR);
+			buffer.append(type); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append(PREF_TEAM_SEPARATOR); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		try {
 			IEclipsePreferences node = InstanceScope.INSTANCE.getNode(TeamPlugin.ID);
@@ -112,14 +112,14 @@ public class UserStringMappings {
 	}
 
 	protected Map<String, Integer> loadMappingsFromPreferences() {
-		final Map<String, Integer> result = new HashMap<>();
+		final Map<String, Integer> result = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 
 		if (!nodeAccessibleAndExists(fKey)) {
 			return result;
 		}
 		final StringTokenizer tok = new StringTokenizer(mappings(), PREF_TEAM_SEPARATOR);
 		try {
-			while (tok.hasMoreElements()) {
+			while (tok.hasMoreElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				final String name = tok.nextToken();
 				final String mode = tok.nextToken();
 				result.put(name, Integer.valueOf(mode));

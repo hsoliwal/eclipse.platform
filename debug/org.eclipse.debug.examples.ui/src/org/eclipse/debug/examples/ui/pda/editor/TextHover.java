@@ -33,7 +33,7 @@ import org.eclipse.jface.text.ITextViewer;
  */
 public class TextHover implements ITextHover {
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {
 		String varName = null;
 		try {
@@ -68,10 +68,10 @@ public class TextHover implements ITextHover {
 		if (frame != null) {
 			try {
 				IVariable[] variables = frame.getVariables();
-				for (int i = 0; i < variables.length; i++) {
+				for (int i = 0; i < variables.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IVariable variable = variables[i];
 					if (variable.getName().equals(varName)) {
-						return varName + " = " + variable.getValue().getValueString(); //$NON-NLS-1$
+						return varName + " = " + variable.getValue().getValueString(); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 				}
 			} catch (DebugException e) {

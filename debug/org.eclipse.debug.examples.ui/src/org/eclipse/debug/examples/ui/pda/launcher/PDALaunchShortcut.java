@@ -35,7 +35,7 @@ import org.eclipse.ui.IEditorPart;
  */
 public class PDALaunchShortcut implements ILaunchShortcut {
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void launch(ISelection selection, String mode) {
 		// must be a structured selection with one file selected
 		IFile file = (IFile) ((IStructuredSelection)selection).getFirstElement();
@@ -46,7 +46,7 @@ public class PDALaunchShortcut implements ILaunchShortcut {
 		ILaunchConfigurationType type = launchManager.getLaunchConfigurationType(DebugCorePlugin.ID_PDA_LAUNCH_CONFIGURATION_TYPE);
 		try {
 			ILaunchConfiguration[] configurations = launchManager.getLaunchConfigurations(type);
-			for (int i = 0; i < configurations.length; i++) {
+			for (int i = 0; i < configurations.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ILaunchConfiguration configuration = configurations[i];
 				String attribute = configuration.getAttribute(DebugCorePlugin.ATTR_PDA_PROGRAM, (String)null);
 				if (path.equals(attribute)) {

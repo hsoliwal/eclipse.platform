@@ -88,8 +88,8 @@ public abstract class TestBuilder extends IncrementalProjectBuilder {
 	/**
 	 * These are static because we want one event set for all builder instances.
 	 */
-	private static final ArrayList<String> expectedEvents = new ArrayList<>();
-	private static final ArrayList<String> actualEvents = new ArrayList<>();
+	private static final ArrayList<String> expectedEvents = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private static final ArrayList<String> actualEvents = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	/**
 	 * Logs the given plug-in lifecycle event for this builder's plugin.
@@ -114,7 +114,7 @@ public abstract class TestBuilder extends IncrementalProjectBuilder {
 	 */
 	@Override
 	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
-		arguments = args == null ? new HashMap<>(1) : args;
+		arguments = args == null ? new HashMap<>(1) : args; //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		logPluginLifecycleEvent(getBuildId());
 		if (ruleCallBack == null) {
 			return new IProject[0];

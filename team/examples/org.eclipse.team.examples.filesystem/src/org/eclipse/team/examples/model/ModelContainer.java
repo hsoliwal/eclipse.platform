@@ -36,8 +36,8 @@ public abstract class ModelContainer extends ModelResource {
 	@Override
 	public ModelObject[] getChildren() throws CoreException {
 		IResource[] members = getContainer().members();
-		List<ModelObject> result = new ArrayList<>();
-		for (IResource resource : members) {
+		List<ModelObject> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IResource resource : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource instanceof IFolder) {
 				result.add(new ModelFolder((IFolder) resource));
 			} else if (ModelObjectDefinitionFile.isModFile(resource)) {

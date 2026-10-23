@@ -57,19 +57,19 @@ public class AcceptAllRunnable implements Runnable {
 		return CompareUIPlugin.getImageDescriptor("elcl16/undo.svg"); //$NON-NLS-1$
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run() {
 		StyledText tw = tv.getTextWidget();
 		List<UnifiedDiff> diffs1 = get(tv);
 		if (diffs1 == null) {
 			return;
 		}
-		List<Position> positions = new ArrayList<>();
-		List<String> replaceStrings = new ArrayList<>();
-		for (UnifiedDiff diff : diffs1) {
+		List<Position> positions = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<String> replaceStrings = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (UnifiedDiff diff : diffs1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			List<Annotation> annos = getAllAnnotationsForUnifiedDiff(model, diff);
 			int unifiedDiffAdditionCount = 0;
-			for (var lanno : annos) {
+			for (var lanno : annos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (lanno instanceof UnifiedDiffAnnotation) {
 					unifiedDiffAdditionCount++;
 					if (unifiedDiffAdditionCount > 1) {
@@ -93,7 +93,7 @@ public class AcceptAllRunnable implements Runnable {
 		// we have to insert with delay because otherwise the line header code minings
 		// cannot be deleted
 		runAfterRepaintFinished(tw, () -> {
-			for (int i = positions.size() - 1; i >= 0; i--) {
+			for (int i = positions.size() - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Position pos = positions.get(i);
 				String replaceStr = replaceStrings.get(i);
 				try {

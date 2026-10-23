@@ -58,24 +58,24 @@ public class TestBug323833 {
 	@ExecuteInHost
 	public static void restoreFileWriabilityForCleanup() throws CoreException, IOException {
 		Path workspaceDirectory = sessionWorkspace.getWorkspaceDirectory();
-		for (int i = 1; i <= 2; i++) {
-			workspaceDirectory.resolve(READONLY_FILE_NAME + i).toFile().setWritable(true, false);
+		for (int i = 1; i <= 2; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			workspaceDirectory.resolve(READONLY_FILE_NAME + i).toFile().setWritable(true, false); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
 	@Test
 	@Order(1)
 	void test1_smallFile() throws Exception {
-		test1(10, READONLY_FILE_NAME + 1);
+		test1(10, READONLY_FILE_NAME + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Test
 	@Order(2)
 	void test1_largeFile() throws Exception {
-		test1(LocalFile.LARGE_FILE_SIZE_THRESHOLD + 10, READONLY_FILE_NAME + 2);
+		test1(LocalFile.LARGE_FILE_SIZE_THRESHOLD + 10, READONLY_FILE_NAME + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	private void test1(int fileSize, String filename) throws Exception {
+	private void test1(int fileSize, String filename) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!OS.isMac()) {
 			return;
 		}

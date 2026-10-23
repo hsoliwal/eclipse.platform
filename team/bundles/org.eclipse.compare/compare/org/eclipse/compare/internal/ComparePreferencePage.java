@@ -93,45 +93,45 @@ public class ComparePreferencePage extends PreferencePage implements IWorkbenchP
 
 			String preview= Utilities.getString(key);
 			String separator = System.lineSeparator();
-			StringBuilder buffer= new StringBuilder();
-			for (int i= 0; i < preview.length(); i++) {
+			StringBuilder buffer= new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+			for (int i= 0; i < preview.length(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				char c= preview.charAt(i);
 				if (c == '\n') {
-					buffer.append(separator);
+					buffer.append(separator); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				} else {
-					buffer.append(c);
+					buffer.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			}
 			return buffer.toString();
 		}
 	}
 
-	private static final String PREFIX= CompareUIPlugin.PLUGIN_ID + "."; //$NON-NLS-1$
-	public static final String OPEN_STRUCTURE_COMPARE= PREFIX + "OpenStructureCompare"; //$NON-NLS-1$
-	public static final String USE_OUTLINE_VIEW= PREFIX + "UseOutlineView"; //$NON-NLS-1$
-	public static final String SYNCHRONIZE_SCROLLING= PREFIX + "SynchronizeScrolling"; //$NON-NLS-1$
-	public static final String SHOW_PSEUDO_CONFLICTS= PREFIX + "ShowPseudoConflicts"; //$NON-NLS-1$
-	public static final String INITIALLY_SHOW_ANCESTOR_PANE= PREFIX + "InitiallyShowAncestorPane"; //$NON-NLS-1$
-	public static final String PREF_SAVE_ALL_EDITORS= PREFIX + "SaveAllEditors"; //$NON-NLS-1$
-	public static final String IGNORE_WHITESPACE= PREFIX + "IgnoreWhitespace"; //$NON-NLS-1$
+	private static final String PREFIX= CompareUIPlugin.PLUGIN_ID + "."; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String OPEN_STRUCTURE_COMPARE= PREFIX + "OpenStructureCompare"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String USE_OUTLINE_VIEW= PREFIX + "UseOutlineView"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String SYNCHRONIZE_SCROLLING= PREFIX + "SynchronizeScrolling"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String SHOW_PSEUDO_CONFLICTS= PREFIX + "ShowPseudoConflicts"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String INITIALLY_SHOW_ANCESTOR_PANE= PREFIX + "InitiallyShowAncestorPane"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String PREF_SAVE_ALL_EDITORS= PREFIX + "SaveAllEditors"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String IGNORE_WHITESPACE= PREFIX + "IgnoreWhitespace"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	//public static final String USE_SPLINES= PREFIX + "UseSplines"; //$NON-NLS-1$
-	public static final String USE_SINGLE_LINE= PREFIX + "UseSingleLine"; //$NON-NLS-1$
-	public static final String HIGHLIGHT_TOKEN_CHANGES= PREFIX + "HighlightTokenChanges"; //$NON-NLS-1$
+	public static final String USE_SINGLE_LINE= PREFIX + "UseSingleLine"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String HIGHLIGHT_TOKEN_CHANGES= PREFIX + "HighlightTokenChanges"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	//public static final String USE_RESOLVE_UI= PREFIX + "UseResolveUI"; //$NON-NLS-1$
-	public static final String CAPPING_DISABLED= PREFIX + "CappingDisable"; //$NON-NLS-1$
-	public static final String PATH_FILTER= PREFIX + "PathFilter"; //$NON-NLS-1$
-	public static final String ADDED_LINES_REGEX= PREFIX + "AddedLinesRegex"; //$NON-NLS-1$
-	public static final String REMOVED_LINES_REGEX= PREFIX + "RemovedLinesRegex"; //$NON-NLS-1$
-	public static final String SWAPPED = PREFIX + "Swapped"; //$NON-NLS-1$
-	public static final String UNIFIED_DIFF = PREFIX + "UnifiedDiff"; //$NON-NLS-1$
-	public static final String UNIFIED_DIFF_FOLD_UNCHANGED = PREFIX + "UnifiedDiffFoldUnchanged"; //$NON-NLS-1$
+	public static final String CAPPING_DISABLED= PREFIX + "CappingDisable"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String PATH_FILTER= PREFIX + "PathFilter"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String ADDED_LINES_REGEX= PREFIX + "AddedLinesRegex"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String REMOVED_LINES_REGEX= PREFIX + "RemovedLinesRegex"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String SWAPPED = PREFIX + "Swapped"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String UNIFIED_DIFF = PREFIX + "UnifiedDiff"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String UNIFIED_DIFF_FOLD_UNCHANGED = PREFIX + "UnifiedDiffFoldUnchanged"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 
 	private IPropertyChangeListener fPreferenceChangeListener;
-	private final List<CompareConfiguration> fCompareConfigurations = new ArrayList<>();
+	private final List<CompareConfiguration> fCompareConfigurations = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private OverlayPreferenceStore fOverlayStore;
-	private final Map<Button, String> fCheckBoxes = new HashMap<>();
+	private final Map<Button, String> fCheckBoxes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	private Text fFilters;
 	private Text addedLinesRegex;
 	private Text removedLinesRegex;
@@ -160,12 +160,12 @@ public class ComparePreferencePage extends PreferencePage implements IWorkbenchP
 		new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN, UNIFIED_DIFF),
 		new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN, UNIFIED_DIFF_FOLD_UNCHANGED),
 	};
-	private final List<FieldEditor> editors = new ArrayList<>();
+	private final List<FieldEditor> editors = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private CTabItem fTextCompareTab;
 	private Button fDisableCappingCheckBox;
 
 
-	public static void initDefaults(IPreferenceStore store) {
+	public static void initDefaults(IPreferenceStore store) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		store.setDefault(OPEN_STRUCTURE_COMPARE, true);
 		store.setDefault(USE_OUTLINE_VIEW, true);
 		store.setDefault(SYNCHRONIZE_SCROLLING, true);
@@ -191,11 +191,11 @@ public class ComparePreferencePage extends PreferencePage implements IWorkbenchP
 		setPreferenceStore(CompareUIPlugin.getDefault().getPreferenceStore());
 
 		fOverlayStore= new OverlayPreferenceStore(getPreferenceStore(), fKeys);
-		fPreferenceChangeListener= event -> {
+		fPreferenceChangeListener= event -> { //FLLDCIM: MARK — T06  LAMBDA
 			String key= event.getProperty();
 			if (key.equals(INITIALLY_SHOW_ANCESTOR_PANE)) {
 				boolean b= fOverlayStore.getBoolean(INITIALLY_SHOW_ANCESTOR_PANE);
-				for (CompareConfiguration compareConfiguration : fCompareConfigurations) {
+				for (CompareConfiguration compareConfiguration : fCompareConfigurations) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					compareConfiguration.setProperty(INITIALLY_SHOW_ANCESTOR_PANE, Boolean.valueOf(b));
 				}
 			}
@@ -256,7 +256,7 @@ public class ComparePreferencePage extends PreferencePage implements IWorkbenchP
 		store.setValue(PREF_SAVE_ALL_EDITORS, value);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createContents(Composite parent) {
 		if (PlatformUI.isWorkbenchRunning()) {
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, ICompareContextIds.COMPARE_PREFERENCE_PAGE);
@@ -284,7 +284,7 @@ public class ComparePreferencePage extends PreferencePage implements IWorkbenchP
 		return folder;
 	}
 
-	private Control createGeneralPage(Composite parent) {
+	private Control createGeneralPage(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Composite composite= new Composite(parent, SWT.NULL);
 		GridLayout layout= new GridLayout();
 		layout.numColumns= 1;
@@ -349,8 +349,8 @@ public class ComparePreferencePage extends PreferencePage implements IWorkbenchP
 		fFilters= new Text(c3, SWT.BORDER);
 		fFilters.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		fFilters.setText(fOverlayStore.getString(PATH_FILTER));
-		fFilters.addModifyListener(
-			unused -> {
+		fFilters.addModifyListener( //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
+			unused -> { //FLLDCIM: MARK — T02  LAMBDA
 				String filters= fFilters.getText();
 				String message= CompareResourceFilter.validateResourceFilters(filters);
 				setValid(message == null);
@@ -363,7 +363,7 @@ public class ComparePreferencePage extends PreferencePage implements IWorkbenchP
 		return composite;
 	}
 
-	private Control createTextComparePage(Composite parent) {
+	private Control createTextComparePage(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		Composite composite= new Composite(parent, SWT.NULL);
 		GridLayout layout= new GridLayout();
@@ -435,7 +435,7 @@ public class ComparePreferencePage extends PreferencePage implements IWorkbenchP
 		return composite;
 	}
 
-	private Control create3WayPreviewer(Composite parent) {
+	private Control create3WayPreviewer(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		CompareConfiguration compareConfiguration = new CompareConfiguration(fOverlayStore);
 		compareConfiguration.setProperty(ICompareUIConstants.PROP_ANCESTOR_VISIBLE, Boolean.TRUE);
 		compareConfiguration.setAncestorLabel(Utilities.getString("ComparePreferencePage.ancestor.label")); //$NON-NLS-1$
@@ -457,7 +457,7 @@ public class ComparePreferencePage extends PreferencePage implements IWorkbenchP
 		);
 
 		Control c = previewViewer.getControl();
-		c.addDisposeListener(unused -> {
+		c.addDisposeListener(unused -> { //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 			if (compareConfiguration != null) {
 				compareConfiguration.dispose();
 			}
@@ -467,7 +467,7 @@ public class ComparePreferencePage extends PreferencePage implements IWorkbenchP
 		return  c;
 	}
 
-	private Control create2WayPreviewer(Composite parent) {
+	private Control create2WayPreviewer(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		CompareConfiguration compareConfiguration = new CompareConfiguration(fOverlayStore);
 		compareConfiguration.setLeftLabel(Utilities.getString("ComparePreferencePage.workingCopy.label")); //$NON-NLS-1$
 		compareConfiguration.setRightLabel(Utilities.getString("ComparePreferencePage.baseline.label")); //$NON-NLS-1$
@@ -481,7 +481,7 @@ public class ComparePreferencePage extends PreferencePage implements IWorkbenchP
 		));
 
 		Control c = previewViewer.getControl();
-		c.addDisposeListener(unused -> {
+		c.addDisposeListener(unused -> { //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 			if (compareConfiguration != null) {
 				compareConfiguration.dispose();
 			}
@@ -491,9 +491,9 @@ public class ComparePreferencePage extends PreferencePage implements IWorkbenchP
 		return c;
 	}
 
-	private void initializeFields() {
+	private void initializeFields() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
-		for (Button b : fCheckBoxes.keySet()) {
+		for (Button b : fCheckBoxes.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String key= fCheckBoxes.get(b);
 			b.setSelection(fOverlayStore.getBoolean(key));
 		}
@@ -513,7 +513,7 @@ public class ComparePreferencePage extends PreferencePage implements IWorkbenchP
 
 	// overlay stuff
 
-	private Button addCheckBox(Composite parent, String labelKey, String key, int indentation) {
+	private Button addCheckBox(Composite parent, String labelKey, String key, int indentation) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		String label= Utilities.getString(labelKey);
 
@@ -533,7 +533,7 @@ public class ComparePreferencePage extends PreferencePage implements IWorkbenchP
 				}
 			};
 		}
-		checkBox.addSelectionListener(fCheckBoxListener);
+		checkBox.addSelectionListener(fCheckBoxListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 
 		fCheckBoxes.put(checkBox, key);
 

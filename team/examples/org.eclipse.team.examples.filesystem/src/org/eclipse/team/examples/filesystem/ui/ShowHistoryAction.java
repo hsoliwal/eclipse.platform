@@ -37,11 +37,11 @@ public class ShowHistoryAction extends ActionDelegate implements IObjectActionDe
 	public void run(IAction action) {
 		final Shell shell = Display.getDefault().getActiveShell();
 		try {
-			new ProgressMonitorDialog(shell).run(true, true, unused -> {
+			new ProgressMonitorDialog(shell).run(true, true, unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				final IResource resource = (IResource) fSelection.getFirstElement();
 				Runnable r = () -> TeamUI.showHistoryFor(TeamUIPlugin.getActivePage(), resource, null);
 
-				FileSystemPlugin.getStandardDisplay().asyncExec(r);
+				FileSystemPlugin.getStandardDisplay().asyncExec(r); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			});
 		} catch (InvocationTargetException exception) {
 			// ignore

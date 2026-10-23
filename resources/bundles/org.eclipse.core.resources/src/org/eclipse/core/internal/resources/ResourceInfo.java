@@ -416,7 +416,7 @@ public class ResourceInfo implements IElementTreeData, ICoreConstants, IStringPo
 	 * Sets the identified session property to the given value.  If
 	 * the value is null, the property is removed.
 	 */
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings({"unchecked"}) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public synchronized void setSessionProperty(QualifiedName name, Object value) {
 		// thread safety: (Concurrency001)
 		if (value == null) {
@@ -451,7 +451,7 @@ public class ResourceInfo implements IElementTreeData, ICoreConstants, IStringPo
 		this.syncInfo = syncInfo;
 	}
 
-	public synchronized void setSyncInfo(QualifiedName id, byte[] value) {
+	public synchronized void setSyncInfo(QualifiedName id, byte[] value) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (value == null) {
 			//delete sync info
 			if (syncInfo == null) {
@@ -508,11 +508,11 @@ public class ResourceInfo implements IElementTreeData, ICoreConstants, IStringPo
 	}
 
 	/** for debugging only **/
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String toString() {
-		Map<String, Integer> flagsMap = new TreeMap<>();
+		Map<String, Integer> flagsMap = new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		Field[] fields = ICoreConstants.class.getFields();
-		for (Field field : fields) {
+		for (Field field : fields) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String name = field.getName();
 			if (name.startsWith("M_")) { //$NON-NLS-1$
 				try {
@@ -522,20 +522,20 @@ public class ResourceInfo implements IElementTreeData, ICoreConstants, IStringPo
 				}
 			}
 		}
-		StringBuilder sb = new StringBuilder(fileStoreRoot + " modStamp=" + modStamp); //$NON-NLS-1$
-		sb.append(", exists="); //$NON-NLS-1$
-		sb.append(flags != NULL_FLAG);
-		sb.append(", syncInfo="); //$NON-NLS-1$
-		sb.append(localInfo);
-		sb.append(", flags ["); //$NON-NLS-1$
-		for (Map.Entry<String, Integer> entry : flagsMap.entrySet()) {
+		StringBuilder sb = new StringBuilder(fileStoreRoot + " modStamp=" + modStamp); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		sb.append(", exists="); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(flags != NULL_FLAG); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(", syncInfo="); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(localInfo); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(", flags ["); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		for (Map.Entry<String, Integer> entry : flagsMap.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String flag = entry.getKey();
 			Integer val = entry.getValue();
 			if (isSet(flags, val)) {
-				sb.append(flag).append(',');
+				sb.append(flag).append(','); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
-		sb.append("]"); //$NON-NLS-1$
+		sb.append("]"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return sb.toString();
 	}
 }

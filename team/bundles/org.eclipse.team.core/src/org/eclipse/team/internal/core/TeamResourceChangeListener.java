@@ -37,14 +37,14 @@ import org.eclipse.team.core.RepositoryProviderType;
  * Change listener that detects and handles project moves and
  * meta-file creation.
  */
-public final class TeamResourceChangeListener implements IResourceChangeListener {
+public final class TeamResourceChangeListener implements IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 
 	private static final Map<String, IPath[]> metaFilePaths; // Map of String (repository id) -> IPath[]
 
 	static {
-		metaFilePaths = new HashMap<>();
+		metaFilePaths = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		String[] ids = RepositoryProvider.getAllProviderTypeIds();
-		for (String id : ids) {
+		for (String id : ids) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IPath[] paths = TeamPlugin.getMetaFilePaths(id);
 			if (paths != null) {
 				metaFilePaths.put(id, paths);
@@ -52,10 +52,10 @@ public final class TeamResourceChangeListener implements IResourceChangeListener
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void resourceChanged(IResourceChangeEvent event) {
 		IResourceDelta[] projectDeltas = event.getDelta().getAffectedChildren();
-		for (IResourceDelta delta : projectDeltas) {
+		for (IResourceDelta delta : projectDeltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = delta.getResource();
 			IProject project = resource.getProject();
 			if (!RepositoryProvider.isShared(project)) {
@@ -85,19 +85,19 @@ public final class TeamResourceChangeListener implements IResourceChangeListener
 		}
 	}
 
-	private void handleUnsharedProjectChanges(IProject project, IResourceDelta delta) {
+	private void handleUnsharedProjectChanges(IProject project, IResourceDelta delta) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String repositoryId = null;
-		Set<IContainer> metaFileContainers = new HashSet<>();
-		Set<String> badIds = new HashSet<>();
+		Set<IContainer> metaFileContainers = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		Set<String> badIds = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IFile[] files = getAddedFiles(delta);
-		for (IFile file : files) {
+		for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String typeId = getMetaFileType(file);
 			if (typeId != null) {
 				// The file path matches the path for the given type id
 				if (repositoryId == null) {
 					repositoryId = typeId;
 				} else if (!repositoryId.equals(typeId) && !badIds.contains(typeId)) {
-					TeamPlugin.log(IStatus.WARNING, "Meta files for two repository types (" + repositoryId + " and " + typeId + " was found in project " + project.getName() + ".", null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+					TeamPlugin.log(IStatus.WARNING, "Meta files for two repository types (" + repositoryId + " and " + typeId + " was found in project " + project.getName() + ".", null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					badIds.add(typeId);
 				}
 				if (typeId.equals(repositoryId)) {
@@ -112,18 +112,18 @@ public final class TeamResourceChangeListener implements IResourceChangeListener
 		}
 	}
 
-	private IContainer getContainer(String typeId, IFile file) {
+	private IContainer getContainer(String typeId, IFile file) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath[] paths = metaFilePaths.get(typeId);
 		IPath foundPath = null;
 		IPath projectRelativePath = file.getProjectRelativePath();
-		for (IPath path : paths) {
+		for (IPath path : paths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isSuffix(projectRelativePath, path)) {
 				foundPath = path;
 			}
 		}
 		IResource resource = file;
 		if (foundPath != null) {
-			for (int i = 0; i < foundPath.segmentCount(); i++) {
+			for (int i = 0; i < foundPath.segmentCount(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				resource = resource.getParent();
 			}
 		}
@@ -134,9 +134,9 @@ public final class TeamResourceChangeListener implements IResourceChangeListener
 	}
 
 	private String getMetaFileType(IFile file) {
-		for (String id : metaFilePaths.keySet()) {
+		for (String id : metaFilePaths.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IPath[] paths = metaFilePaths.get(id);
-			for (IPath path : paths) {
+			for (IPath path : paths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (isSuffix(file.getProjectRelativePath(), path)) {
 					return id;
 				}
@@ -149,7 +149,7 @@ public final class TeamResourceChangeListener implements IResourceChangeListener
 		if (path.segmentCount() < suffix.segmentCount()) {
 			return false;
 		}
-		for (int i = 0; i < suffix.segmentCount(); i++) {
+		for (int i = 0; i < suffix.segmentCount(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!suffix.segment(i).equals(path.segment(path.segmentCount() - suffix.segmentCount() + i))) {
 				return false;
 			}
@@ -158,9 +158,9 @@ public final class TeamResourceChangeListener implements IResourceChangeListener
 	}
 
 	private IFile[] getAddedFiles(IResourceDelta delta) {
-		final List<IFile> result = new ArrayList<>();
+		final List<IFile> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		try {
-			delta.accept(delta1 -> {
+			delta.accept(delta1 -> { //FLLDCIM: MARK — T07  LAMBDA
 				if ((delta1.getKind() & IResourceDelta.ADDED) != 0
 						&& delta1.getResource().getType() == IResource.FILE) {
 					result.add((IFile) delta1.getResource());

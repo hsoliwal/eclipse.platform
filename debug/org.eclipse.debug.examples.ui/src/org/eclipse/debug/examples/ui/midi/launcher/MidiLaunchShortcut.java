@@ -65,11 +65,11 @@ public class MidiLaunchShortcut implements ILaunchShortcut {
 	 * @param file file
 	 * @return associated launch configuration or <code>null</code>
 	 */
-	private ILaunchConfiguration getConfiguration(IFile file) {
-		List<ILaunchConfiguration> candiates = new ArrayList<>();
+	private ILaunchConfiguration getConfiguration(IFile file) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<ILaunchConfiguration> candiates = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		try {
 			ILaunchConfiguration[] configurations = getLaunchManager().getLaunchConfigurations(getLaunchType());
-			for (ILaunchConfiguration configuration : configurations) {
+			for (ILaunchConfiguration configuration : configurations) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource[] resources = configuration.getMappedResources();
 				if (resources != null && resources.length == 1 &&
 						resources[0].equals(file)) {
@@ -142,7 +142,7 @@ public class MidiLaunchShortcut implements ILaunchShortcut {
 		try {
 			ILaunchConfigurationWorkingCopy workingCopy = type.newInstance(null, getLaunchManager().
 					generateLaunchConfigurationName(
-"[" + file.getProject().getName() + "] " + file.getName())); //$NON-NLS-1$ //$NON-NLS-2$
+"[" + file.getProject().getName() + "] " + file.getName())); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			workingCopy.setAttribute(MidiLaunchDelegate.ATTR_MIDI_FILE, file.getFullPath().toString());
 			workingCopy.setMappedResources(new IResource[]{file});
 			return workingCopy.doSave();

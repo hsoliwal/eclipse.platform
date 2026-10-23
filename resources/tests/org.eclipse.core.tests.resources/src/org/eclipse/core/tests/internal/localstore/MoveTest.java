@@ -62,7 +62,7 @@ public class MoveTest {
 	/**
 	 * This test has Windows as the target OS. Drives C: and D: should be available.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveFileAcrossVolumes() throws CoreException {
 		assumeTrue(OS.isWindows(), "only relevant on Windows");
 
@@ -72,13 +72,13 @@ public class MoveTest {
 
 		// create common objects
 		String location = createUniqueString();
-		IProject source = getWorkspace().getRoot().getProject(location + "1");
-		IProject destination = getWorkspace().getRoot().getProject(location + "2");
+		IProject source = getWorkspace().getRoot().getProject(location + "1"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IProject destination = getWorkspace().getRoot().getProject(location + "2"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		source.create(createTestMonitor());
 		source.open(createTestMonitor());
 
 		IProjectDescription description = getWorkspace().newProjectDescription(destination.getName());
-		description.setLocation(IPath.fromOSString(devices[1] + location));
+		description.setLocation(IPath.fromOSString(devices[1] + location)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		destination.create(description, createTestMonitor());
 		destination.open(createTestMonitor());
 
@@ -89,9 +89,9 @@ public class MoveTest {
 		// add some properties to file (persistent and session)
 		QualifiedName[] propNames = new QualifiedName[NUMBER_OF_PROPERTIES];
 		String[] propValues = new String[NUMBER_OF_PROPERTIES];
-		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) {
-			propNames[j] = new QualifiedName("test", "prop" + j);
-			propValues[j] = "value" + j;
+		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			propNames[j] = new QualifiedName("test", "prop" + j); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			propValues[j] = "value" + j; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			file.setPersistentProperty(propNames[j], propValues[j]);
 			file.setSessionProperty(propNames[j], propValues[j]);
 		}
@@ -108,7 +108,7 @@ public class MoveTest {
 		assertExistsInFileSystem(newFile);
 
 		// assert properties still exist (server, local and session)
-		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) {
+		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String persistentValue = newFile.getPersistentProperty(propNames[j]);
 			Object sessionValue = newFile.getSessionProperty(propNames[j]);
 			assertEquals(persistentValue, propValues[j]);
@@ -119,7 +119,7 @@ public class MoveTest {
 	/**
 	 * Move one file from one project to another.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveFileBetweenProjects() throws Exception {
 		IProject sourceProject = getWorkspace().getRoot().getProject("Source");
 		createInWorkspace(sourceProject);
@@ -134,9 +134,9 @@ public class MoveTest {
 		// add some properties to file (persistent and session)
 		QualifiedName[] propNames = new QualifiedName[NUMBER_OF_PROPERTIES];
 		String[] propValues = new String[NUMBER_OF_PROPERTIES];
-		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) {
-			propNames[j] = new QualifiedName("test", "prop" + j);
-			propValues[j] = "value" + j;
+		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			propNames[j] = new QualifiedName("test", "prop" + j); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			propValues[j] = "value" + j; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			file.setPersistentProperty(propNames[j], propValues[j]);
 			file.setSessionProperty(propNames[j], propValues[j]);
 		}
@@ -155,7 +155,7 @@ public class MoveTest {
 		assertExistsInFileSystem(newFile);
 
 		// assert properties still exist (server, local and session)
-		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) {
+		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String persistentValue = newFile.getPersistentProperty(propNames[j]);
 			Object sessionValue = newFile.getSessionProperty(propNames[j]);
 			assertEquals(propValues[j], persistentValue, "persistent property value is not the same");
@@ -166,7 +166,7 @@ public class MoveTest {
 	/**
 	 * This test has Windows as the target OS. Drives C: and D: should be available.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveFolderAcrossVolumes() throws CoreException {
 		assumeTrue(OS.isWindows(), "only relevant on Windows");
 
@@ -176,13 +176,13 @@ public class MoveTest {
 
 		// create common objects
 		String location = createUniqueString();
-		IProject source = getWorkspace().getRoot().getProject(location + "1");
-		IProject destination = getWorkspace().getRoot().getProject(location + "2");
+		IProject source = getWorkspace().getRoot().getProject(location + "1"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IProject destination = getWorkspace().getRoot().getProject(location + "2"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		source.create(createTestMonitor());
 		source.open(createTestMonitor());
 
 		IProjectDescription description = getWorkspace().newProjectDescription(destination.getName());
-		description.setLocation(IPath.fromOSString(devices[1] + location));
+		description.setLocation(IPath.fromOSString(devices[1] + location)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		destination.create(description, createTestMonitor());
 		destination.open(createTestMonitor());
 
@@ -194,9 +194,9 @@ public class MoveTest {
 		// add some properties to file (persistent and session)
 		QualifiedName[] propNames = new QualifiedName[NUMBER_OF_PROPERTIES];
 		String[] propValues = new String[NUMBER_OF_PROPERTIES];
-		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) {
-			propNames[j] = new QualifiedName("test", "prop" + j);
-			propValues[j] = "value" + j;
+		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			propNames[j] = new QualifiedName("test", "prop" + j); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			propValues[j] = "value" + j; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			folder.setPersistentProperty(propNames[j], propValues[j]);
 			folder.setSessionProperty(propNames[j], propValues[j]);
 		}
@@ -213,7 +213,7 @@ public class MoveTest {
 		assertExistsInFileSystem(newFolder);
 
 		// assert properties still exist (server, local and session)
-		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) {
+		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String persistentValue = newFolder.getPersistentProperty(propNames[j]);
 			Object sessionValue = newFolder.getSessionProperty(propNames[j]);
 			assertEquals(persistentValue, propValues[j]);
@@ -224,7 +224,7 @@ public class MoveTest {
 	/**
 	 * Move one folder from one project to another.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveFolderBetweenProjects() throws Exception {
 		IProject sourceProject = getWorkspace().getRoot().getProject("Source");
 		createInWorkspace(sourceProject);
@@ -239,9 +239,9 @@ public class MoveTest {
 		// add some properties to folder (persistent and session)
 		QualifiedName[] propNames = new QualifiedName[NUMBER_OF_PROPERTIES];
 		String[] propValues = new String[NUMBER_OF_PROPERTIES];
-		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) {
-			propNames[j] = new QualifiedName("test", "prop" + j);
-			propValues[j] = "value" + j;
+		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			propNames[j] = new QualifiedName("test", "prop" + j); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			propValues[j] = "value" + j; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			folder.setPersistentProperty(propNames[j], propValues[j]);
 			folder.setSessionProperty(propNames[j], propValues[j]);
 		}
@@ -260,7 +260,7 @@ public class MoveTest {
 		assertExistsInFileSystem(newFolder);
 
 		// assert properties still exist (server, local and session)
-		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) {
+		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String persistentValue = newFolder.getPersistentProperty(propNames[j]);
 			Object sessionValue = newFolder.getSessionProperty(propNames[j]);
 			assertEquals(propValues[j], persistentValue, "persistent property value is not the same");
@@ -271,7 +271,7 @@ public class MoveTest {
 	/**
 	 * Move some hierarchy of folders and files.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveHierarchy() throws Exception {
 		IProject sourceProject = getWorkspace().getRoot().getProject("Source");
 		createInWorkspace(sourceProject);
@@ -293,12 +293,12 @@ public class MoveTest {
 		// add some properties to each resource (persistent and session)
 		String[] propNames = new String[NUMBER_OF_PROPERTIES];
 		String[] propValues = new String[NUMBER_OF_PROPERTIES];
-		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) {
-			propNames[j] = "prop" + j;
-			propValues[j] = "value" + j;
-			for (IResource resource : resources) {
-				QualifiedName propName = new QualifiedName("test", resource.getName() + propNames[j]);
-				String propValue = resource.getName() + propValues[j];
+		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			propNames[j] = "prop" + j; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			propValues[j] = "value" + j; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				QualifiedName propName = new QualifiedName("test", resource.getName() + propNames[j]); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				String propValue = resource.getName() + propValues[j]; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				resource.setPersistentProperty(propName, propValue);
 				resource.setSessionProperty(propName, propValue);
 			}
@@ -323,8 +323,8 @@ public class MoveTest {
 		assertExistsInFileSystem(newResources);
 
 		// assert properties still exist (server, local and session)
-		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) {
-			for (int i = 0; i < newResources.length; i++) {
+		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (int i = 0; i < newResources.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource destResource = newResources[i];
 				IResource sourceResource = resources[i];
 				/* The names of the properties will remain the same in both the source and
@@ -332,8 +332,8 @@ public class MoveTest {
 				 name or your qualified name will contain 'folder destination' instead of
 				 'folder source' and the property value will be null.
 				 */
-				QualifiedName propName = new QualifiedName("test", sourceResource.getName() + propNames[j]);
-				String propValue = sourceResource.getName() + propValues[j];
+				QualifiedName propName = new QualifiedName("test", sourceResource.getName() + propNames[j]); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				String propValue = sourceResource.getName() + propValues[j]; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				String persistentValue = destResource.getPersistentProperty(propName);
 				Object sessionValue = destResource.getSessionProperty(propName);
 				assertEquals(propValue, persistentValue, "persistent property value is not the same");
@@ -346,7 +346,7 @@ public class MoveTest {
 	 * Move some hierarchy of folders and files between projects. It also test moving a
 	 * hierarchy across volumes.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveHierarchyBetweenProjects() throws Exception {
 		IProject sourceProject = getWorkspace().getRoot().getProject("Source");
 		createInWorkspace(sourceProject);
@@ -368,12 +368,12 @@ public class MoveTest {
 		// add some properties to each resource
 		String[] propNames = new String[NUMBER_OF_PROPERTIES];
 		String[] propValues = new String[NUMBER_OF_PROPERTIES];
-		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) {
-			propNames[j] = "prop" + j;
-			propValues[j] = "value" + j;
-			for (IResource resource : resources) {
-				QualifiedName propName = new QualifiedName("test", resource.getName() + propNames[j]);
-				String propValue = resource.getName() + propValues[j];
+		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			propNames[j] = "prop" + j; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			propValues[j] = "value" + j; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				QualifiedName propName = new QualifiedName("test", resource.getName() + propNames[j]); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				String propValue = resource.getName() + propValues[j]; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				resource.setPersistentProperty(propName, propValue);
 				resource.setSessionProperty(propName, propValue);
 			}
@@ -396,8 +396,8 @@ public class MoveTest {
 		assertExistsInFileSystem(newResources);
 
 		// assert properties still exist (server, local and session)
-		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) {
-			for (int i = 0; i < newResources.length; i++) {
+		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (int i = 0; i < newResources.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource destResource = newResources[i];
 				IResource sourceResource = resources[i];
 				/* The names of the properties will remain the same in both the source and
@@ -405,8 +405,8 @@ public class MoveTest {
 				 name or your qualified name will contain 'destination' instead of
 				 'source' and the property value will be null.
 				 */
-				QualifiedName propName = new QualifiedName("test", sourceResource.getName() + propNames[j]);
-				String propValue = sourceResource.getName() + propValues[j];
+				QualifiedName propName = new QualifiedName("test", sourceResource.getName() + propNames[j]); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				String propValue = sourceResource.getName() + propValues[j]; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				String persistentValue = destResource.getPersistentProperty(propName);
 				Object sessionValue = destResource.getSessionProperty(propName);
 				assertEquals(propValue, persistentValue, "persistent property value is not the same");
@@ -415,7 +415,7 @@ public class MoveTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveResource() throws Exception {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -479,14 +479,14 @@ public class MoveTest {
 		IFile ghostFile = project.getFile("ghost");
 		final IFile hackFile = ghostFile;
 		final Workspace workspace = (Workspace) getWorkspace();
-		IWorkspaceRunnable operation = unused -> workspace.createResource(hackFile, false);
+		IWorkspaceRunnable operation = unused -> workspace.createResource(hackFile, false); //FLLDCIM: MARK — T09  LAMBDA
 		workspace.run(operation, null);
 		IFile fileDestination = project.getFile("destination");
 		assertThrows(CoreException.class, () -> ghostFile.move(fileDestination.getFullPath(), true, null));
 
 		/* move file over a phantom */
 		assertTrue(ghostFile.exists());
-		operation = unused -> ((Resource) hackFile).convertToPhantom();
+		operation = unused -> ((Resource) hackFile).convertToPhantom(); //FLLDCIM: MARK — T09  LAMBDA
 		workspace.run(operation, null);
 		assertFalse(ghostFile.exists());
 		ResourceInfo info = ((File) ghostFile).getResourceInfo(true, false);
@@ -501,7 +501,7 @@ public class MoveTest {
 	/**
 	 * A simple test that renames a file.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRenameFile() throws Exception {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -514,9 +514,9 @@ public class MoveTest {
 		// add some properties to file (persistent and session)
 		QualifiedName[] propNames = new QualifiedName[NUMBER_OF_PROPERTIES];
 		String[] propValues = new String[NUMBER_OF_PROPERTIES];
-		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) {
-			propNames[j] = new QualifiedName("test", "prop" + j);
-			propValues[j] = "value" + j;
+		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			propNames[j] = new QualifiedName("test", "prop" + j); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			propValues[j] = "value" + j; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			file.setPersistentProperty(propNames[j], propValues[j]);
 			file.setSessionProperty(propNames[j], propValues[j]);
 		}
@@ -536,7 +536,7 @@ public class MoveTest {
 		assertExistsInFileSystem(newFile);
 
 		// assert properties still exist (server, local and session)
-		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) {
+		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String persistentValue = newFile.getPersistentProperty(propNames[j]);
 			Object sessionValue = newFile.getSessionProperty(propNames[j]);
 			assertEquals(propValues[j], persistentValue, "persistent property value is not the same");
@@ -553,7 +553,7 @@ public class MoveTest {
 	 * - assert rename worked
 	 * - assert properties still exist
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRenameFolder() throws Exception {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -566,9 +566,9 @@ public class MoveTest {
 		// add some properties to folder (persistent and session)
 		QualifiedName[] propNames = new QualifiedName[NUMBER_OF_PROPERTIES];
 		String[] propValues = new String[NUMBER_OF_PROPERTIES];
-		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) {
-			propNames[j] = new QualifiedName("test", "prop" + j);
-			propValues[j] = "value" + j;
+		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			propNames[j] = new QualifiedName("test", "prop" + j); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			propValues[j] = "value" + j; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			folder.setPersistentProperty(propNames[j], propValues[j]);
 			folder.setSessionProperty(propNames[j], propValues[j]);
 		}
@@ -588,7 +588,7 @@ public class MoveTest {
 		assertExistsInFileSystem(newFolder);
 
 		// assert properties still exist (server, local and session)
-		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) {
+		for (int j = 0; j < NUMBER_OF_PROPERTIES; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String persistentValue = newFolder.getPersistentProperty(propNames[j]);
 			Object sessionValue = newFolder.getSessionProperty(propNames[j]);
 			assertEquals(propValues[j], persistentValue, "persistent property value is not the same");
@@ -604,26 +604,26 @@ public class MoveTest {
 	 *	- assert properties are correct
 	 *	- assert resources are correct
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRenameProjects() throws Exception {
 		IProject[] projects = new IProject[NUMBER_OF_PROPERTIES];
-		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) {
-			projects[i] = getWorkspace().getRoot().getProject("Project" + i);
+		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			projects[i] = getWorkspace().getRoot().getProject("Project" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			createInWorkspace(projects[i]);
 		}
 
 		// add some properties to projects (persistent and session)
 		QualifiedName[] propNames = new QualifiedName[NUMBER_OF_PROPERTIES];
 		String[] propValues = new String[NUMBER_OF_PROPERTIES];
-		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) {
-			propNames[i] = new QualifiedName("test", "prop" + i);
-			propValues[i] = "value" + i;
+		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			propNames[i] = new QualifiedName("test", "prop" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			propValues[i] = "value" + i; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			projects[i].setPersistentProperty(propNames[i], propValues[i]);
 			projects[i].setSessionProperty(propNames[i], propValues[i]);
 		}
 
 		// assert properties exist (persistent and session)
-		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) {
+		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String persistentValue = projects[i].getPersistentProperty(propNames[i]);
 			Object sessionValue = projects[i].getSessionProperty(propNames[i]);
 			assertEquals(propValues[i], persistentValue, "persistent property value is not the same");
@@ -632,19 +632,19 @@ public class MoveTest {
 
 		// move (rename) projects
 		String prefix = "Renamed_PrOjEcT";
-		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) {
-			String projectName = prefix + i;
+		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			String projectName = prefix + i; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			IPath destination = getWorkspace().getRoot().getProject(projectName).getFullPath();
 			projects[i].move(destination, true, null);
 		}
 
 		// get new projects instances
-		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) {
-			projects[i] = getWorkspace().getRoot().getProject(prefix + i);
+		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			projects[i] = getWorkspace().getRoot().getProject(prefix + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		// assert properties still exist (persistent and session)
-		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) {
+		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String persistentValue = projects[i].getPersistentProperty(propNames[i]);
 			Object sessionValue = projects[i].getSessionProperty(propNames[i]);
 			assertEquals(propValues[i], persistentValue, "persistent property value is not the same");

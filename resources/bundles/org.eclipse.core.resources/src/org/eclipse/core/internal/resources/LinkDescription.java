@@ -125,7 +125,7 @@ public class LinkDescription implements Comparable<LinkDescription> {
 		if (compare != 0) {
 			return compare;
 		}
-		for (int i = 0; i < count1; i++) {
+		for (int i = 0; i < count1; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			compare = path1.segment(i).compareTo(path2.segment(i));
 			if (compare != 0) {
 				return compare;

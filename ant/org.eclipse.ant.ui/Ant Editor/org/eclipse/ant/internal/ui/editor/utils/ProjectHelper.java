@@ -102,14 +102,14 @@ public class ProjectHelper extends ProjectHelper2 {
 		private UnknownElement task = null;
 		private Task currentTask = null;
 
-		private final Map<String, String> fNormalizedFileNames = new HashMap<>();
+		private final Map<String, String> fNormalizedFileNames = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 		@Override
 		public AntHandler onStartChild(String uri, String tag, String qname, Attributes attrs, AntXMLContext context) {
 			return ProjectHelper.elementHandler;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void onStartElement(String uri, String tag, String qname, Attributes attrs, AntXMLContext context) {
 			try {
 				RuntimeConfigurable wrapper = context.currentWrapper();
@@ -141,7 +141,7 @@ public class ProjectHelper extends ProjectHelper2 {
 			}
 		}
 
-		private void onStartElement0(String uri, String tag, String qname, Attributes attrs, AntXMLContext context) {
+		private void onStartElement0(String uri, String tag, String qname, Attributes attrs, AntXMLContext context) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 			RuntimeConfigurable parentWrapper = context.currentWrapper();
 			Object parent = null;
@@ -196,7 +196,7 @@ public class ProjectHelper extends ProjectHelper2 {
 
 			RuntimeConfigurable wrapper = new RuntimeConfigurable(task, task.getTaskName());
 
-			for (int i = 0; i < attrs.getLength(); i++) {
+			for (int i = 0; i < attrs.getLength(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String attrUri = attrs.getURI(i);
 				if (attrUri != null && attrUri.length() != 0 && !attrUri.equals(uri)) {
 					continue; // Ignore attributes from unknown uris
@@ -213,7 +213,7 @@ public class ProjectHelper extends ProjectHelper2 {
 						String prefix = value.substring(0, index);
 						String mappedUri = context.getPrefixMapping(prefix);
 						if (mappedUri == null) {
-							throw new BuildException("Unable to find XML NS prefix " + prefix); //$NON-NLS-1$
+							throw new BuildException("Unable to find XML NS prefix " + prefix); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						}
 						value = org.apache.tools.ant.ProjectHelper.genComponentName(mappedUri, value.substring(index + 1));
 					}
@@ -310,7 +310,7 @@ public class ProjectHelper extends ProjectHelper2 {
 	public static void storeParsedProjectName(String key, String projectName) {
 		// init if required
 		if (parsedProjectNames == null) {
-			parsedProjectNames = new HashMap<>();
+			parsedProjectNames = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 		parsedProjectNames.put(key, projectName);
 	}
@@ -348,7 +348,7 @@ public class ProjectHelper extends ProjectHelper2 {
 			}
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void onStartElement(String uri, String tag, String qname, Attributes attrs, AntXMLContext context) {
 			try {
 				super.onStartElement(uri, tag, qname, attrs, context);
@@ -602,7 +602,7 @@ public class ProjectHelper extends ProjectHelper2 {
 	 * @exception BuildException
 	 *                if the configuration is invalid or cannot be read
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void parse(Project project, Object source, ProjectHelper2.RootHandler handler) throws BuildException {
 		if (!(source instanceof String) && !(source instanceof File)) {
 			// this should only occur with a source URL and that should not be possible currently
@@ -667,7 +667,7 @@ public class ProjectHelper extends ProjectHelper2 {
 		if ((source instanceof File)) {
 			buildFile = (File) source;
 			buildFile = getFileUtils().normalize(buildFile.getAbsolutePath());
-			return new FileInputStream(buildFile);
+			return new FileInputStream(buildFile); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 		} else if (source instanceof String) {
 			IAntModel model = getAntModel();
 			String encoding = IAntCoreConstants.UTF_8;
@@ -694,7 +694,7 @@ public class ProjectHelper extends ProjectHelper2 {
 	 * We override this method from ProjectHelper2 as we do not want to execute the implicit target or any other target for that matter as it could
 	 * hang Eclipse. See https://bugs.eclipse.org/bugs/show_bug.cgi?id=50795 for more details.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void parse(Project project, Object source) throws BuildException {
 		AntXMLContext context = (AntXMLContext) project.getReference("ant.parsing.context"); //$NON-NLS-1$
 		if (context == null) {
@@ -718,7 +718,7 @@ public class ProjectHelper extends ProjectHelper2 {
 				newCurrent.setProject(project);
 				newCurrent.setName(IAntCoreConstants.EMPTY_STRING);
 				context.setCurrentTarget(newCurrent);
-				context.setCurrentTargets(new HashMap<>());
+				context.setCurrentTargets(new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 				context.setImplicitTarget(newCurrent);
 				parse(project, source, new RootHandler(context, mainHandler));
 			}
@@ -729,7 +729,7 @@ public class ProjectHelper extends ProjectHelper2 {
 			}
 		} else {
 			// top level file
-			context.setCurrentTargets(new HashMap<>());
+			context.setCurrentTargets(new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			parse(project, source, new RootHandler(context, mainHandler));
 		}
 	}

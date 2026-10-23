@@ -56,7 +56,7 @@ import org.eclipse.team.ui.synchronize.ISynchronizeModelElement;
  * All modifications to the synchronize model are performed in this
  * handler's thread.
  */
-public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implements IResourceChangeListener, ISyncInfoSetChangeListener {
+public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implements IResourceChangeListener, ISyncInfoSetChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 	private static final IWorkspaceRoot ROOT = ResourcesPlugin.getWorkspace().getRoot();
 
 	// Event that indicates that the markers for a set of elements has changed
@@ -67,7 +67,7 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 
 	private final AbstractSynchronizeModelProvider provider;
 
-	private final Set<ISynchronizeModelElement> pendingLabelUpdates = Collections.synchronizedSet(new HashSet<>());
+	private final Set<ISynchronizeModelElement> pendingLabelUpdates = Collections.synchronizedSet(new HashSet<>()); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	// Flag to indicate the need for an early dispath in order to show
 	// busy for elements involved in an operation
@@ -123,7 +123,7 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 		}
 	}
 
-	private final IPropertyChangeListener listener = event -> {
+	private final IPropertyChangeListener listener = event -> { //FLLDCIM: MARK — T06  LAMBDA
 		if (event.getProperty() == ISynchronizeModelElement.BUSY_PROPERTY) {
 			Object source = event.getSource();
 			if (source instanceof ISynchronizeModelElement) {
@@ -166,17 +166,17 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 		return provider.getViewer();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void resourceChanged(final IResourceChangeEvent event) {
 			String[] markerTypes = getMarkerTypes();
-			Set<IResource> handledResources = new HashSet<>();
-			Set<ISynchronizeModelElement> changes = new HashSet<>();
+			Set<IResource> handledResources = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+			Set<ISynchronizeModelElement> changes = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 			// Accumulate all distinct resources that have had problem marker
 			// changes
-			for (String markerType : markerTypes) {
+			for (String markerType : markerTypes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IMarkerDelta[] markerDeltas = event.findMarkerDeltas(markerType, true);
-				for (IMarkerDelta delta : markerDeltas) {
+				for (IMarkerDelta delta : markerDeltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IResource resource = delta.getResource();
 					if (!handledResources.contains(resource)) {
 						handledResources.add(resource);
@@ -201,7 +201,7 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 		queueEvent(new BusyStateChangeEvent(element, isBusy), false /* not on front of queue */);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void processEvent(Event event, IProgressMonitor monitor) throws CoreException {
 		switch (event.getType()) {
 		case BackgroundEventHandler.RUNNABLE_EVENT :
@@ -211,7 +211,7 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 			// Changes contains all elements that need their labels updated
 			long start = System.currentTimeMillis();
 			ISynchronizeModelElement[] elements = getChangedElements(event);
-			for (ISynchronizeModelElement element : elements) {
+			for (ISynchronizeModelElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				propagateProblemMarkers(element);
 				updateParentLabels(element);
 			}
@@ -219,7 +219,7 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 				long time = System.currentTimeMillis() - start;
 				DateFormat TIME_FORMAT = new SimpleDateFormat("m:ss.SSS"); //$NON-NLS-1$
 				String took = TIME_FORMAT.format(new Date(time));
-				System.out.println(took + " for " + elements.length + " files"); //$NON-NLS-1$//$NON-NLS-2$
+				System.out.println(took + " for " + elements.length + " files"); //$NON-NLS-1$//$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			break;
 		case BUSY_STATE_CHANGED:
@@ -295,7 +295,7 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 	 */
 	public void updateParentLabels(ISynchronizeModelElement element) {
 		queueForLabelUpdate(element);
-		while (element.getParent() != null) {
+		while (element.getParent() != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			element = (ISynchronizeModelElement)element.getParent();
 			queueForLabelUpdate(element);
 		}
@@ -335,7 +335,7 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 	// warning -> none
 	// warning -> error
 	// error -> warning
-	private boolean hadProblemProperty(ISynchronizeModelElement element, String property) {
+	private boolean hadProblemProperty(ISynchronizeModelElement element, String property) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean hadError = element.getProperty(ISynchronizeModelElement.PROPAGATED_ERROR_MARKER_PROPERTY);
 		boolean hadWarning = element.getProperty(ISynchronizeModelElement.PROPAGATED_WARNING_MARKER_PROPERTY);
 
@@ -414,10 +414,10 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 	 * @param provider the provider that added the element
 	 */
 	public void nodeAdded(ISynchronizeModelElement element, AbstractSynchronizeModelProvider provider) {
-		element.addPropertyChangeListener(listener);
+		element.addPropertyChangeListener(listener); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		this.provider.nodeAdded(element, provider);
 		if (Policy.DEBUG_SYNC_MODELS) {
-			System.out.println("Node added: " + getDebugDisplayLabel(element) + " -> " + getDebugDisplayLabel((ISynchronizeModelElement)element.getParent()) + " : " + getDebugDisplayLabel(provider)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			System.out.println("Node added: " + getDebugDisplayLabel(element) + " -> " + getDebugDisplayLabel((ISynchronizeModelElement)element.getParent()) + " : " + getDebugDisplayLabel(provider)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -434,7 +434,7 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 		element.removePropertyChangeListener(listener);
 		this.provider.nodeRemoved(element, provider);
 		if (Policy.DEBUG_SYNC_MODELS) {
-			System.out.println("Node removed: " + getDebugDisplayLabel(element) + " -> " + getDebugDisplayLabel((ISynchronizeModelElement)element.getParent()) + " : " + getDebugDisplayLabel(provider)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			System.out.println("Node removed: " + getDebugDisplayLabel(element) + " -> " + getDebugDisplayLabel((ISynchronizeModelElement)element.getParent()) + " : " + getDebugDisplayLabel(provider)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -448,7 +448,7 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 		node.removePropertyChangeListener(listener);
 		this.provider.modelObjectCleared(node);
 		if (Policy.DEBUG_SYNC_MODELS) {
-			System.out.println("Node cleared: " + getDebugDisplayLabel(node)); //$NON-NLS-1$
+			System.out.println("Node cleared: " + getDebugDisplayLabel(node)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -509,7 +509,7 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 		getProvider().getSyncInfoSet().connect(this, monitor);
 	}
 
-	public void runViewUpdate(final Runnable runnable, final boolean preserveExpansion) {
+	public void runViewUpdate(final Runnable runnable, final boolean preserveExpansion) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (Utils.canUpdateViewer(getViewer()) || isPerformingBackgroundUpdate()) {
 			internalRunViewUpdate(runnable, preserveExpansion);
 		} else {
@@ -521,7 +521,7 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 			}
 			final Control ctrl = getViewer().getControl();
 			if (ctrl != null && !ctrl.isDisposed()) {
-				ctrl.getDisplay().syncExec(() -> {
+				ctrl.getDisplay().syncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 					if (!ctrl.isDisposed()) {
 						BusyIndicator.showWhile(ctrl.getDisplay(), () -> internalRunViewUpdate(runnable, preserveExpansion));
 					}
@@ -541,7 +541,7 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 	/*
 	 * Method that can be called from the UI thread to update the view model.
 	 */
-	private void internalRunViewUpdate(final Runnable runnable, boolean preserveExpansion) {
+	private void internalRunViewUpdate(final Runnable runnable, boolean preserveExpansion) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		StructuredViewer viewer = getViewer();
 		IResource[] expanded = null;
 		IResource[] selected = null;
@@ -553,7 +553,7 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 					selected = provider.getSelectedResources();
 				}
 				if (viewer instanceof AbstractTreeViewer && additionsMap == null) {
-					additionsMap = new HashMap<>();
+					additionsMap = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 				}
 			}
 			runnable.run();
@@ -561,9 +561,9 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 			if (Utils.canUpdateViewer(viewer)) {
 				try {
 					if (additionsMap != null && !additionsMap.isEmpty() && Utils.canUpdateViewer(viewer)) {
-						for (ISynchronizeModelElement parent : additionsMap.keySet()) {
+						for (ISynchronizeModelElement parent : additionsMap.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							if (Policy.DEBUG_SYNC_MODELS) {
-								System.out.println("Adding child view items of " + parent.getName()); //$NON-NLS-1$
+								System.out.println("Adding child view items of " + parent.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							}
 							Set<ISynchronizeModelElement> toAdd = additionsMap.get(parent);
 							((AbstractTreeViewer)viewer).add(parent, toAdd.toArray(new Object[toAdd.size()]));
@@ -610,7 +610,7 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 	 * Wrap the runnable in an outer runnable that preserves expansion.
 	 */
 	private IWorkspaceRunnable getUIUpdateRunnable(final IWorkspaceRunnable runnable, final boolean preserveExpansion) {
-		return monitor -> {
+		return monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 			final CoreException[] exception = new CoreException[] { null };
 			runViewUpdate(() -> {
 				try {
@@ -629,8 +629,8 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 	 * Wrap the runnable in an outer runnable that preserves expansion if requested
 	 * and refreshes the view when the update is completed.
 	 */
-	private IWorkspaceRunnable getBackgroundUpdateRunnable(final IWorkspaceRunnable runnable, final boolean preserveExpansion) {
-		return new IWorkspaceRunnable() {
+	private IWorkspaceRunnable getBackgroundUpdateRunnable(final IWorkspaceRunnable runnable, final boolean preserveExpansion) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		return new IWorkspaceRunnable() { //FLLDCIM: MARK — T09  ANONYMOUS
 			IResource[] expanded;
 			IResource[] selected;
 			@Override
@@ -650,7 +650,7 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 			private void recordExpandedResources() {
 				final StructuredViewer viewer = getViewer();
 				if (viewer != null && !viewer.getControl().isDisposed() && viewer instanceof AbstractTreeViewer) {
-					viewer.getControl().getDisplay().syncExec(() -> {
+					viewer.getControl().getDisplay().syncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 						if (viewer != null && !viewer.getControl().isDisposed()) {
 							expanded = provider.getExpandedResources();
 							selected = provider.getSelectedResources();
@@ -661,7 +661,7 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 			private void updateView() {
 				// Refresh the view and then set the expansion
 				runViewUpdate(() -> {
-					provider.getViewer().refresh();
+					provider.getViewer().refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 					if (expanded != null) {
 						provider.expandResources(expanded);
 					}
@@ -695,21 +695,21 @@ public class SynchronizeModelUpdateHandler extends BackgroundEventHandler implem
 	 * @param parent the parent of the element which is already added to the viewer
 	 * @param element the element to be added to the viewer
 	 */
-	protected void doAdd(ISynchronizeModelElement parent, ISynchronizeModelElement element) {
+	protected void doAdd(ISynchronizeModelElement parent, ISynchronizeModelElement element) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (additionsMap == null) {
 			if (Policy.DEBUG_SYNC_MODELS) {
-				System.out.println("Added view item " + element.getName()); //$NON-NLS-1$
+				System.out.println("Added view item " + element.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			AbstractTreeViewer viewer = (AbstractTreeViewer)getViewer();
 			viewer.add(parent, element);
 		} else {
 			// Accumulate the additions
 			if (Policy.DEBUG_SYNC_MODELS) {
-				System.out.println("Queueing view item for addition " + element.getName()); //$NON-NLS-1$
+				System.out.println("Queueing view item for addition " + element.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			Set<ISynchronizeModelElement> toAdd = additionsMap.get(parent);
 			if (toAdd == null) {
-				toAdd = new HashSet<>();
+				toAdd = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 				additionsMap.put(parent, toAdd);
 			}
 			toAdd.add(element);

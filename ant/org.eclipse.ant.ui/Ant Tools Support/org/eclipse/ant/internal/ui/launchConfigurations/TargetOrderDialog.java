@@ -43,7 +43,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * Dialog to specify target execution order
  */
-public class TargetOrderDialog extends Dialog implements ISelectionChangedListener {
+public class TargetOrderDialog extends Dialog implements ISelectionChangedListener { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 	private Button fUp;
 	private Button fDown;
@@ -58,7 +58,7 @@ public class TargetOrderDialog extends Dialog implements ISelectionChangedListen
 		fTargets = targets;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createDialogArea(Composite parent) {
 		getShell().setText(AntLaunchConfigurationMessages.TargetOrderDialog_Order_Targets_1);
 
@@ -83,7 +83,7 @@ public class TargetOrderDialog extends Dialog implements ISelectionChangedListen
 	/**
 	 * Create button area &amp; buttons
 	 */
-	private void createButtons(Composite parent) {
+	private void createButtons(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Composite comp = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
 		layout.marginHeight = 0;
@@ -97,7 +97,7 @@ public class TargetOrderDialog extends Dialog implements ISelectionChangedListen
 		fUp.setFont(parent.getFont());
 		fUp.setText(AntLaunchConfigurationMessages.TargetOrderDialog__Up_3);
 		setButtonLayoutData(fUp);
-		fUp.addSelectionListener(new SelectionAdapter() {
+		fUp.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleUpPressed();
@@ -108,7 +108,7 @@ public class TargetOrderDialog extends Dialog implements ISelectionChangedListen
 		fDown.setFont(parent.getFont());
 		fDown.setText(AntLaunchConfigurationMessages.TargetOrderDialog__Down_4);
 		setButtonLayoutData(fDown);
-		fDown.addSelectionListener(new SelectionAdapter() {
+		fDown.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleDownPressed();
@@ -116,15 +116,15 @@ public class TargetOrderDialog extends Dialog implements ISelectionChangedListen
 		});
 	}
 
-	private void handleDownPressed() {
+	private void handleDownPressed() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		List<AntTargetNode> targets = getOrderedSelection();
 		if (targets.isEmpty()) {
 			return;
 		}
-		List<AntTargetNode> list = new ArrayList<>(Arrays.asList(fTargets));
+		List<AntTargetNode> list = new ArrayList<>(Arrays.asList(fTargets)); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		int bottom = list.size() - 1;
 		int index = 0;
-		for (int i = targets.size() - 1; i >= 0; i--) {
+		for (int i = targets.size() - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			AntTargetNode target = targets.get(i);
 			index = list.indexOf(target);
 			if (index < bottom) {
@@ -138,16 +138,16 @@ public class TargetOrderDialog extends Dialog implements ISelectionChangedListen
 		setEntries(list);
 	}
 
-	private void handleUpPressed() {
+	private void handleUpPressed() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		List<AntTargetNode> targets = getOrderedSelection();
 		if (targets.isEmpty()) {
 			return;
 		}
 		int top = 0;
 		int index = 0;
-		List<AntTargetNode> list = new ArrayList<>(Arrays.asList(fTargets));
+		List<AntTargetNode> list = new ArrayList<>(Arrays.asList(fTargets)); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Iterator<AntTargetNode> entries = targets.iterator();
-		while (entries.hasNext()) {
+		while (entries.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			AntTargetNode target = entries.next();
 			index = list.indexOf(target);
 			if (index > top) {
@@ -166,7 +166,7 @@ public class TargetOrderDialog extends Dialog implements ISelectionChangedListen
 	 */
 	private void setEntries(List<AntTargetNode> list) {
 		fTargets = list.toArray(new AntTargetNode[list.size()]);
-		fViewer.setInput(fTargets);
+		fViewer.setInput(fTargets); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		// update all selection listeners
 		fViewer.setSelection(fViewer.getSelection());
 	}
@@ -177,9 +177,9 @@ public class TargetOrderDialog extends Dialog implements ISelectionChangedListen
 	 * @return targets for an action
 	 */
 	private List<AntTargetNode> getOrderedSelection() {
-		List<AntTargetNode> targets = new ArrayList<>();
+		List<AntTargetNode> targets = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		List<?> selection = ((IStructuredSelection) fViewer.getSelection()).toList();
-		for (AntTargetNode target : fTargets) {
+		for (AntTargetNode target : fTargets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (selection.contains(target)) {
 				targets.add(target);
 			}
@@ -192,11 +192,11 @@ public class TargetOrderDialog extends Dialog implements ISelectionChangedListen
 	 */
 	private void createTargetList(Composite comp) {
 		fViewer = new TableViewer(comp, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER);
-		fViewer.setLabelProvider(new AntModelLabelProvider());
+		fViewer.setLabelProvider(new AntModelLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 
 		fViewer.setContentProvider(new AntModelContentProvider());
-		fViewer.setInput(fTargets);
-		fViewer.addSelectionChangedListener(this);
+		fViewer.setInput(fTargets); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
+		fViewer.addSelectionChangedListener(this); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 		Table table = fViewer.getTable();
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		gd.heightHint = 200;
@@ -227,7 +227,7 @@ public class TargetOrderDialog extends Dialog implements ISelectionChangedListen
 		int last = fTargets.length - 1;
 		boolean up = true && selections.length > 0;
 		boolean down = true && selections.length > 0;
-		for (int selection : selections) {
+		for (int selection : selections) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (selection == 0) {
 				up = false;
 			}

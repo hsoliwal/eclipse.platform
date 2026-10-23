@@ -118,7 +118,7 @@ public final class AntDebugTestUtil {
 			buildFileName += "SepVM"; //$NON-NLS-1$
 		}
 		ILaunchConfiguration config = getLaunchConfiguration(buildFileName);
-		assertNotNull(config, "Could not locate launch configuration for " + buildFileName); //$NON-NLS-1$
+		assertNotNull(config, "Could not locate launch configuration for " + buildFileName); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return launchToBreakpoint(config, register);
 	}
 
@@ -146,7 +146,7 @@ public final class AntDebugTestUtil {
 			buildFileName += "SepVM"; //$NON-NLS-1$
 		}
 		ILaunchConfiguration config = getLaunchConfiguration(buildFileName);
-		assertNotNull(config, "Could not locate launch configuration for " + buildFileName); //$NON-NLS-1$
+		assertNotNull(config, "Could not locate launch configuration for " + buildFileName); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return debugLaunchAndTerminate(config, DEFAULT_TIMEOUT);
 	}
 
@@ -184,7 +184,7 @@ public final class AntDebugTestUtil {
 	 */
 	public static AntThread launchToLineBreakpoint(String buildFileName, ILineBreakpoint bp) throws CoreException {
 		ILaunchConfiguration config = getLaunchConfiguration(buildFileName);
-		assertNotNull(config, "Could not locate launch configuration for " + buildFileName); //$NON-NLS-1$
+		assertNotNull(config, "Could not locate launch configuration for " + buildFileName); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return launchToLineBreakpoint(config, bp);
 	}
 
@@ -198,7 +198,7 @@ public final class AntDebugTestUtil {
 	 *            the breakpoint that should cause a suspend event
 	 * @return thread in which the first suspend event occurred
 	 */
-	public static AntThread launchToLineBreakpoint(ILaunchConfiguration config, ILineBreakpoint bp)
+	public static AntThread launchToLineBreakpoint(ILaunchConfiguration config, ILineBreakpoint bp) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws CoreException {
 		DebugEventWaiter waiter = new DebugElementKindEventDetailWaiter(DebugEvent.SUSPEND, AntThread.class, DebugEvent.BREAKPOINT);
 		waiter.setTimeout(DEFAULT_TIMEOUT);
@@ -259,7 +259,7 @@ public final class AntDebugTestUtil {
 	 *            thread to resume
 	 * @return thread in which the first suspend event occurs
 	 */
-	public static AntThread resumeToLineBreakpoint(AntThread resumeThread, ILineBreakpoint bp) throws CoreException {
+	public static AntThread resumeToLineBreakpoint(AntThread resumeThread, ILineBreakpoint bp) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		DebugEventWaiter waiter = new DebugElementKindEventDetailWaiter(DebugEvent.SUSPEND, AntThread.class, DebugEvent.BREAKPOINT);
 		waiter.setTimeout(DEFAULT_TIMEOUT);
 
@@ -343,11 +343,11 @@ public final class AntDebugTestUtil {
 	 *
 	 * NOTE: all breakpoints are removed, all threads are resumed, and then the target is terminated. This avoids defunct processes on linux.
 	 */
-	public static void terminateAndRemove(AntDebugTarget debugTarget) throws CoreException {
+	public static void terminateAndRemove(AntDebugTarget debugTarget) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (debugTarget != null && !(debugTarget.isTerminated() || debugTarget.isDisconnected())) {
 			DebugEventWaiter waiter = new DebugElementEventWaiter(DebugEvent.TERMINATE, debugTarget);
 			removeAllBreakpoints();
-			for (IThread thread : debugTarget.getThreads()) {
+			for (IThread thread : debugTarget.getThreads()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					if (thread.isSuspended()) {
 						thread.resume();

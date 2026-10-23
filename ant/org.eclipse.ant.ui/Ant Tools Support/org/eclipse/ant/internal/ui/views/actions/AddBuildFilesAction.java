@@ -44,7 +44,7 @@ public class AddBuildFilesAction extends Action {
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IAntUIHelpContextIds.ADD_BUILDFILE_ACTION);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run() {
 		String title = AntViewActionMessages.AddBuildFilesAction_2;
 		String message = AntViewActionMessages.AddBuildFilesAction_4;
@@ -59,16 +59,16 @@ public class AddBuildFilesAction extends Action {
 		}
 
 		try {
-			PlatformUI.getWorkbench().getProgressService().busyCursorWhile(monitor -> {
+			PlatformUI.getWorkbench().getProgressService().busyCursorWhile(monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 				monitor.beginTask(AntViewActionMessages.AddBuildFilesAction_3, result.length);
-				for (int i = 0; i < result.length && !monitor.isCanceled(); i++) {
+				for (int i = 0; i < result.length && !monitor.isCanceled(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Object file = result[i];
 					if (file instanceof IFile) {
 						String buildFileName = ((IFile) file).getFullPath().toString();
 						final AntProjectNode project = new AntProjectNodeProxy(buildFileName);
 						project.getName();
 						monitor.worked(1);
-						Display.getDefault().asyncExec(() -> view.addProject(project));
+						Display.getDefault().asyncExec(() -> view.addProject(project)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 					}
 				}
 			});
@@ -83,8 +83,8 @@ public class AddBuildFilesAction extends Action {
 
 	private List<IFile> getBuildFiles() {
 		AntProjectNode[] existingProjects = view.getProjects();
-		List<IFile> buildFiles = new ArrayList<>(existingProjects.length);
-		for (AntProjectNode existingProject : existingProjects) {
+		List<IFile> buildFiles = new ArrayList<>(existingProjects.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (AntProjectNode existingProject : existingProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			buildFiles.add(AntUtil.getFile(existingProject.getBuildFileName()));
 		}
 		return buildFiles;

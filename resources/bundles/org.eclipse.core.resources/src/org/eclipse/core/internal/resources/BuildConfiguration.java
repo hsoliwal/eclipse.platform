@@ -91,17 +91,17 @@ public class BuildConfiguration extends PlatformObject implements IBuildConfigur
 
 	@Override
 	public String toString() {
-		StringBuilder result = new StringBuilder();
+		StringBuilder result = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		if (project != null) {
-			result.append(project.getName());
+			result.append(project.getName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		} else {
-			result.append("?"); //$NON-NLS-1$
+			result.append("?"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		result.append(";"); //$NON-NLS-1$
+		result.append(";"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		if (name != null) {
-			result.append(" [").append(name).append(']'); //$NON-NLS-1$
+			result.append(" [").append(name).append(']'); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		} else {
-			result.append(" [active]"); //$NON-NLS-1$
+			result.append(" [active]"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return result.toString();
 	}

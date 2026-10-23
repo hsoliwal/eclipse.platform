@@ -25,7 +25,7 @@ import org.eclipse.compare.structuremergeviewer.IDiffContainer;
 import org.eclipse.compare.structuremergeviewer.IDiffElement;
 import org.eclipse.core.resources.IResource;
 
-public class PatchFileDiffNode extends PatchDiffNode implements IContentChangeListener {
+public class PatchFileDiffNode extends PatchDiffNode implements IContentChangeListener { //FLLDCIM: MARK — T37  IMPLEMENTS
 
 	private final FileDiffResult result;
 
@@ -42,7 +42,7 @@ public class PatchFileDiffNode extends PatchDiffNode implements IContentChangeLi
 		return kind | Differencer.RIGHT;
 	}
 
-	private static int convertFileDiffTypeToDifferencerType(int fileDiffKind) {
+	private static int convertFileDiffTypeToDifferencerType(int fileDiffKind) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int kind;
 		switch (fileDiffKind) {
 		case FilePatch2.ADDITION:

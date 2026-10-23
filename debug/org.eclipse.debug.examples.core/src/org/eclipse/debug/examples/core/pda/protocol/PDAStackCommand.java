@@ -33,7 +33,7 @@ package org.eclipse.debug.examples.core.pda.protocol;
 public class PDAStackCommand extends PDACommand {
 
 	public PDAStackCommand(int threadId) {
-		super("stack " + threadId); //$NON-NLS-1$
+		super("stack " + threadId); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 

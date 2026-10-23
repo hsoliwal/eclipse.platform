@@ -33,7 +33,7 @@ public class ConsoleLineTracker implements IConsoleLineTrackerExtension {
 
 	private static final Object LOCK = new Object();
 	private static IConsole console;
-	private static List<IRegion> lines = new ArrayList<>();
+	private static List<IRegion> lines = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	private static State state = State.UNINITIALIZED;
 
@@ -46,7 +46,7 @@ public class ConsoleLineTracker implements IConsoleLineTrackerExtension {
 	public void init(IConsole c) {
 		synchronized (LOCK) {
 			ConsoleLineTracker.console = c;
-			lines = new ArrayList<>();
+			lines = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			state = State.INITIALIZED;
 		}
 	}
@@ -74,8 +74,8 @@ public class ConsoleLineTracker implements IConsoleLineTrackerExtension {
 	}
 
 	public static List<String> getAllMessages() {
-		List<String> all = new ArrayList<>(lines.size());
-		for (IRegion lineRegion : lines) {
+		List<String> all = new ArrayList<>(lines.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IRegion lineRegion : lines) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				all.add(console.getDocument().get(lineRegion.getOffset(), lineRegion.getLength()));
 			}

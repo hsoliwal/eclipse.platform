@@ -50,7 +50,7 @@ import org.eclipse.core.runtime.IPath;
  * assert("2.0 "+verifier.getMessage(), verifier.isDeltaValid());
  * </code>
  */
-public class ResourceDeltaVerifier implements IResourceChangeListener {
+public class ResourceDeltaVerifier implements IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 	private class ExpectedChange {
 		IResource fResource;
 		IPath movedFromPath;
@@ -90,13 +90,13 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 
 		@Override
 		public String toString() {
-			StringBuilder buf = new StringBuilder("ExpectedChange(");
-			buf.append(fResource);
-			buf.append(", ");
-			buf.append(convertKind(fKind));
-			buf.append(", ");
-			buf.append(convertChangeFlags(fChangeFlags));
-			buf.append(")");
+			StringBuilder buf = new StringBuilder("ExpectedChange("); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+			buf.append(fResource); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(", "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(convertKind(fKind)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(", "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(convertChangeFlags(fChangeFlags)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(")"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			return buf.toString();
 		}
 
@@ -107,7 +107,7 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 	 */
 	private final Hashtable<IPath, ExpectedChange> fExpectedChanges = new Hashtable<>();
 	boolean fIsDeltaValid = true;
-	private final StringBuilder fMessage = new StringBuilder();
+	private final StringBuilder fMessage = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 	/**
 	 * The verifier can be in one of three states.  In the initial
 	 * state, the verifier is still receiving inputs via the
@@ -133,7 +133,7 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 	 * @see #addExpectedChange
 	 */
 	public void addExpectedChange(IResource[] resources, int status, int changeFlags) {
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			addExpectedChange(resource, null, status, changeFlags, null, null);
 		}
 	}
@@ -147,7 +147,7 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 			try {
 				IResource[] children = container.members(IContainer.INCLUDE_PHANTOMS
 						| IContainer.INCLUDE_TEAM_PRIVATE_MEMBERS | IContainer.INCLUDE_HIDDEN);
-				for (IResource element : children) {
+				for (IResource element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					addExpectedDeletion(element);
 				}
 			} catch (CoreException e) {
@@ -207,7 +207,7 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 	 * @param movedFromPath or null
 	 * @param movedToPath or null
 	 */
-	public void addExpectedChange(IResource resource, IResource topLevelParent, int status, int changeFlags, IPath movedFromPath, IPath movedToPath) {
+	public void addExpectedChange(IResource resource, IResource topLevelParent, int status, int changeFlags, IPath movedFromPath, IPath movedToPath) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		resetIfNecessary();
 
 		ExpectedChange expectedChange = new ExpectedChange(resource, status, changeFlags, movedFromPath, movedToPath);
@@ -216,7 +216,7 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 		// Add changes for all resources above this one and limited by the topLevelParent
 		IResource parentResource = resource.getParent();
 		IResource limit = (topLevelParent == null) ? null : topLevelParent.getParent();
-		while (parentResource != null && !parentResource.equals(limit)) {
+		while (parentResource != null && !parentResource.equals(limit)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			//change table is keyed by resource path
 			IPath key = parentResource.getFullPath();
 			if (fExpectedChanges.get(key) == null) {
@@ -227,7 +227,7 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 		}
 	}
 
-	private void checkChanges(IResourceDelta delta) {
+	private void checkChanges(IResourceDelta delta) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource resource = delta.getResource();
 		ExpectedChange expectedChange = fExpectedChanges.remove(resource.getFullPath());
 
@@ -249,7 +249,7 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 		}
 	}
 
-	private void checkChildren(IResourceDelta delta) {
+	private void checkChildren(IResourceDelta delta) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResourceDelta[] affectedChildren = delta.getAffectedChildren(IResourceDelta.ALL_WITH_PHANTOMS, IContainer.INCLUDE_TEAM_PRIVATE_MEMBERS | IContainer.INCLUDE_HIDDEN);
 		IResourceDelta[] addedChildren = delta.getAffectedChildren(IResourceDelta.ADDED, IContainer.INCLUDE_TEAM_PRIVATE_MEMBERS | IContainer.INCLUDE_HIDDEN);
 		IResourceDelta[] changedChildren = delta.getAffectedChildren(IResourceDelta.CHANGED, IContainer.INCLUDE_TEAM_PRIVATE_MEMBERS | IContainer.INCLUDE_HIDDEN);
@@ -257,7 +257,7 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 
 		Hashtable<IResource, IResourceDelta> h = new Hashtable<>(affectedChildren.length + 1);
 
-		for (IResourceDelta childDelta1 : addedChildren) {
+		for (IResourceDelta childDelta1 : addedChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource childResource = childDelta1.getResource();
 			IResourceDelta childDelta2 = h.get(childResource);
 			if (childDelta2 != null) {
@@ -270,7 +270,7 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 			}
 		}
 
-		for (IResourceDelta childDelta1 : changedChildren) {
+		for (IResourceDelta childDelta1 : changedChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource childResource = childDelta1.getResource();
 			IResourceDelta childDelta2 = h.get(childResource);
 			if (childDelta2 != null) {
@@ -283,7 +283,7 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 			}
 		}
 
-		for (IResourceDelta childDelta1 : removedChildren) {
+		for (IResourceDelta childDelta1 : removedChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource childResource = childDelta1.getResource();
 			IResourceDelta childDelta2 = h.get(childResource);
 			if (childDelta2 != null) {
@@ -296,7 +296,7 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 			}
 		}
 
-		for (IResourceDelta childDelta1 : affectedChildren) {
+		for (IResourceDelta childDelta1 : affectedChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource childResource = childDelta1.getResource();
 			IResourceDelta childDelta2 = h.remove(childResource);
 			if (childDelta2 == null) {
@@ -308,22 +308,22 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 			}
 		}
 
-		for (Map.Entry<IResource, IResourceDelta> entry : h.entrySet()) {
+		for (Map.Entry<IResource, IResourceDelta> entry : h.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource childResource = entry.getKey();
 			IResourceDelta childDelta = entry.getValue();
 			recordMissingChild(childResource.getFullPath(), childDelta.getKind(), true);
 		}
 
-		for (IResourceDelta element : affectedChildren) {
+		for (IResourceDelta element : affectedChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			internalVerifyDelta(element);
 		}
 
-		for (IResourceDelta childDelta : h.values()) {
+		for (IResourceDelta childDelta : h.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			internalVerifyDelta(childDelta);
 		}
 	}
 
-	private void checkPaths(IResourceDelta delta) {
+	private void checkPaths(IResourceDelta delta) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource resource = delta.getResource();
 
 		IPath expectedFullPath = resource.getFullPath();
@@ -361,60 +361,60 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 		}
 	}
 
-	String convertChangeFlags(int changeFlags) {
+	String convertChangeFlags(int changeFlags) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (changeFlags == 0) {
 			return "0";
 		}
-		StringBuilder buf = new StringBuilder();
+		StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 		if ((changeFlags & IResourceDelta.CONTENT) != 0) {
 			changeFlags ^= IResourceDelta.CONTENT;
-			buf.append("CONTENT | ");
+			buf.append("CONTENT | "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((changeFlags & IResourceDelta.MOVED_FROM) != 0) {
 			changeFlags ^= IResourceDelta.MOVED_FROM;
-			buf.append("MOVED_FROM | ");
+			buf.append("MOVED_FROM | "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((changeFlags & IResourceDelta.MOVED_TO) != 0) {
 			changeFlags ^= IResourceDelta.MOVED_TO;
-			buf.append("MOVED_TO | ");
+			buf.append("MOVED_TO | "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((changeFlags & IResourceDelta.OPEN) != 0) {
 			changeFlags ^= IResourceDelta.OPEN;
-			buf.append("OPEN | ");
+			buf.append("OPEN | "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((changeFlags & IResourceDelta.TYPE) != 0) {
 			changeFlags ^= IResourceDelta.TYPE;
-			buf.append("TYPE | ");
+			buf.append("TYPE | "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((changeFlags & IResourceDelta.MARKERS) != 0) {
 			changeFlags ^= IResourceDelta.MARKERS;
-			buf.append("MARKERS | ");
+			buf.append("MARKERS | "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((changeFlags & IResourceDelta.REPLACED) != 0) {
 			changeFlags ^= IResourceDelta.REPLACED;
-			buf.append("REPLACED | ");
+			buf.append("REPLACED | "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((changeFlags & IResourceDelta.ENCODING) != 0) {
 			changeFlags ^= IResourceDelta.ENCODING;
-			buf.append("ENCODING | ");
+			buf.append("ENCODING | "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((changeFlags & IResourceDelta.DERIVED_CHANGED) != 0) {
 			changeFlags ^= IResourceDelta.DERIVED_CHANGED;
-			buf.append("DERIVED_CHANGED | ");
+			buf.append("DERIVED_CHANGED | "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((changeFlags & IResourceDelta.DESCRIPTION) != 0) {
 			changeFlags ^= IResourceDelta.DESCRIPTION;
-			buf.append("DESCRIPTION | ");
+			buf.append("DESCRIPTION | "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((changeFlags & IResourceDelta.SYNC) != 0) {
 			changeFlags ^= IResourceDelta.SYNC;
-			buf.append("SYNC | ");
+			buf.append("SYNC | "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 
 		if (changeFlags != 0) {
-			buf.append(changeFlags);
-			buf.append(" | ");
+			buf.append(changeFlags); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(" | "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 
 		String result = buf.toString();
@@ -439,7 +439,7 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 			case IResourceDelta.REMOVED_PHANTOM :
 				return "REMOVED_PHANTOM";
 			default :
-				return "Unknown(" + kind + ")";
+				return "Unknown(" + kind + ")"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -448,12 +448,12 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 	 * are met after iterating over a resource delta.
 	 */
 	private void finishVerification() {
-		HashSet<IPath> resourcePaths = new HashSet<>(fExpectedChanges.keySet());
+		HashSet<IPath> resourcePaths = new HashSet<>(fExpectedChanges.keySet()); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
-		for (IPath resourcePath : resourcePaths) {
-			fMessage.append("Checking expectations for ");
-			fMessage.append(resourcePath);
-			fMessage.append("\n");
+		for (IPath resourcePath : resourcePaths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			fMessage.append("Checking expectations for "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			fMessage.append(resourcePath); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			fMessage.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 			ExpectedChange expectedChange = fExpectedChanges.remove(resourcePath);
 			if (expectedChange != null) {
@@ -501,15 +501,15 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 	 * Compares the given delta with the expected changes.  Recursively
 	 * compares child deltas.
 	 */
-	void internalVerifyDelta(IResourceDelta delta) {
+	void internalVerifyDelta(IResourceDelta delta) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			// FIXME: bogus
 			if (delta == null) {
 				return;
 			}
-			fMessage.append("Verifying delta for ");
-			fMessage.append(delta.getFullPath());
-			fMessage.append("\n");
+			fMessage.append("Verifying delta for "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			fMessage.append(delta.getFullPath()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			fMessage.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 			/* don't check changes for the workspace */
 			if (delta.getResource() != null) {
@@ -519,7 +519,7 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 			checkChildren(delta);
 		} catch (Exception e) {
 			e.printStackTrace();
-			fMessage.append("Exception during event notification:" + e.getMessage());
+			fMessage.append("Exception during event notification:" + e.getMessage()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			fIsDeltaValid = false;
 		}
 	}
@@ -548,7 +548,7 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 	 * intended use of the ResourceDeltaVerifier.  See the class comment
 	 * for instructions on using the verifier.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourceDeltaVerifier comparer = new ResourceDeltaVerifier();
 
 		int status = IResourceDelta.CHANGED;
@@ -571,9 +571,9 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 		IPath expectedProjectRelativePath = IPath.fromOSString("b/c");
 		IPath actualProjectRelativePath = IPath.fromOSString("b/d");
 
-		comparer.fMessage.append("Checking delta for ");
-		comparer.fMessage.append(path);
-		comparer.fMessage.append("\n");
+		comparer.fMessage.append("Checking delta for "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		comparer.fMessage.append(path); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		comparer.fMessage.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 		comparer.recordConflictingChange(expectedStatus, actualStatus, expectedChangeFlags, actualChangeFlags);
 		comparer.recordConflictingFullPaths(expectedFullPath, actualFullPath);
@@ -590,194 +590,194 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 		System.out.print(comparer.fMessage.toString());
 	}
 
-	private void recordConflictingChange(int expectedKind, int kind, int expectedChangeFlags, int changeFlags) {
+	private void recordConflictingChange(int expectedKind, int kind, int expectedChangeFlags, int changeFlags) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fIsDeltaValid = false;
 
-		fMessage.append("\tConflicting change\n");
+		fMessage.append("\tConflicting change\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 		if (expectedKind != kind) {
-			fMessage.append("\t\tExpected kind: <");
-			fMessage.append(convertKind(expectedKind));
-			fMessage.append("> actual kind: <");
-			fMessage.append(convertKind(kind));
-			fMessage.append(">\n");
+			fMessage.append("\t\tExpected kind: <"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			fMessage.append(convertKind(expectedKind)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			fMessage.append("> actual kind: <"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			fMessage.append(convertKind(kind)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			fMessage.append(">\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 
 		if (expectedChangeFlags != changeFlags) {
-			fMessage.append("\t\tExpected change flags: <");
-			fMessage.append(convertChangeFlags(expectedChangeFlags));
-			fMessage.append("> actual change flags: <");
-			fMessage.append(convertChangeFlags(changeFlags));
-			fMessage.append(">\n");
+			fMessage.append("\t\tExpected change flags: <"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			fMessage.append(convertChangeFlags(expectedChangeFlags)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			fMessage.append("> actual change flags: <"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			fMessage.append(convertChangeFlags(changeFlags)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			fMessage.append(">\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 	}
 
 	private void recordConflictingFullPaths(IPath expectedFullPath, IPath actualFullPath) {
 		fIsDeltaValid = false;
 
-		fMessage.append("\tConflicting full paths\n");
+		fMessage.append("\tConflicting full paths\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
-		fMessage.append("\t\tExpected full path: ");
-		fMessage.append(expectedFullPath);
-		fMessage.append("\n");
+		fMessage.append("\t\tExpected full path: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(expectedFullPath); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
-		fMessage.append("\t\tActual full path: ");
-		fMessage.append(actualFullPath);
-		fMessage.append("\n");
+		fMessage.append("\t\tActual full path: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(actualFullPath); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
 	private void recordConflictingMovedFromPaths(IPath expectedMovedFromPath, IPath actualMovedFromPath) {
 		fIsDeltaValid = false;
 
-		fMessage.append("\tConflicting moved from paths\n");
+		fMessage.append("\tConflicting moved from paths\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
-		fMessage.append("\t\tExpected moved from path: ");
-		fMessage.append(expectedMovedFromPath);
-		fMessage.append("\n");
+		fMessage.append("\t\tExpected moved from path: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(expectedMovedFromPath); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
-		fMessage.append("\t\tActual moved from path: ");
-		fMessage.append(actualMovedFromPath);
-		fMessage.append("\n");
+		fMessage.append("\t\tActual moved from path: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(actualMovedFromPath); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
 	private void recordConflictingMovedToPaths(IPath expectedMovedToPath, IPath actualMovedToPath) {
 		fIsDeltaValid = false;
 
-		fMessage.append("\tConflicting moved to paths\n");
+		fMessage.append("\tConflicting moved to paths\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
-		fMessage.append("\t\tExpected moved to path: ");
-		fMessage.append(expectedMovedToPath);
-		fMessage.append("\n");
+		fMessage.append("\t\tExpected moved to path: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(expectedMovedToPath); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
-		fMessage.append("\t\tActual moved to path: ");
-		fMessage.append(actualMovedToPath);
-		fMessage.append("\n");
+		fMessage.append("\t\tActual moved to path: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(actualMovedToPath); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
 	private void recordConflictingProjectRelativePaths(IPath expectedProjectRelativePath, IPath actualProjectRelativePath) {
 		fIsDeltaValid = false;
 
-		fMessage.append("\tConflicting project relative paths\n");
+		fMessage.append("\tConflicting project relative paths\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
-		fMessage.append("\t\tExpected project relative path: ");
-		fMessage.append(expectedProjectRelativePath);
-		fMessage.append("\n");
+		fMessage.append("\t\tExpected project relative path: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(expectedProjectRelativePath); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
-		fMessage.append("\t\tActual project relative path: ");
-		fMessage.append(actualProjectRelativePath);
-		fMessage.append("\n");
+		fMessage.append("\t\tActual project relative path: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(actualProjectRelativePath); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
-	private void recordDuplicateChild(IPath path, int formerChildKind, int latterChildKind, int expectedKind) {
+	private void recordDuplicateChild(IPath path, int formerChildKind, int latterChildKind, int expectedKind) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fIsDeltaValid = false;
 
-		fMessage.append("\tDuplicate child: ");
-		fMessage.append(path);
-		fMessage.append("\n");
+		fMessage.append("\tDuplicate child: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(path); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
-		fMessage.append("\t\tProduced by IResourceDelta.get");
+		fMessage.append("\t\tProduced by IResourceDelta.get"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 		switch (expectedKind) {
 			case IResourceDelta.ADDED :
-				fMessage.append("Added");
+				fMessage.append("Added"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case IResourceDelta.CHANGED :
-				fMessage.append("Changed");
+				fMessage.append("Changed"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case IResourceDelta.REMOVED :
-				fMessage.append("Removed");
+				fMessage.append("Removed"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 		}
 
-		fMessage.append("Children()\n");
+		fMessage.append("Children()\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
-		fMessage.append("\t\tFormer child's status: ");
-		fMessage.append(convertKind(formerChildKind));
-		fMessage.append("\n");
+		fMessage.append("\t\tFormer child's status: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(convertKind(formerChildKind)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
-		fMessage.append("\t\tLatter child's status: ");
-		fMessage.append(convertKind(latterChildKind));
-		fMessage.append("\n");
+		fMessage.append("\t\tLatter child's status: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(convertKind(latterChildKind)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
-	private void recordIllegalChild(IPath path, int expectedKind, int actualKind) {
+	private void recordIllegalChild(IPath path, int expectedKind, int actualKind) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fIsDeltaValid = false;
 
-		fMessage.append("\tIllegal child: ");
-		fMessage.append(path);
-		fMessage.append("\n");
+		fMessage.append("\tIllegal child: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(path); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
-		fMessage.append("\t\tProduced by IResourceDelta.get");
+		fMessage.append("\t\tProduced by IResourceDelta.get"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 		switch (expectedKind) {
 			case IResourceDelta.ADDED :
-				fMessage.append("Added");
+				fMessage.append("Added"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case IResourceDelta.CHANGED :
-				fMessage.append("Changed");
+				fMessage.append("Changed"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case IResourceDelta.REMOVED :
-				fMessage.append("Removed");
+				fMessage.append("Removed"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 		}
 
-		fMessage.append("Children()\n");
+		fMessage.append("Children()\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
-		fMessage.append("\t\tIlleagal child's status: ");
-		fMessage.append(convertKind(actualKind));
-		fMessage.append("\n");
+		fMessage.append("\t\tIlleagal child's status: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(convertKind(actualKind)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
 	private void recordMissingActualChange(int kind, int changeFlags) {
 		fIsDeltaValid = false;
 
-		fMessage.append("\tMissing actual change\n");
-		fMessage.append("\t\tExpected kind: <");
-		fMessage.append(convertKind(kind));
-		fMessage.append(">\n");
-		fMessage.append("\t\tExpected change flags: <");
-		fMessage.append(convertChangeFlags(changeFlags));
-		fMessage.append(">\n");
+		fMessage.append("\tMissing actual change\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\t\tExpected kind: <"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(convertKind(kind)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(">\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\t\tExpected change flags: <"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(convertChangeFlags(changeFlags)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(">\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
-	private void recordMissingChild(IPath path, int kind, boolean isMissingFromAffectedChildren) {
+	private void recordMissingChild(IPath path, int kind, boolean isMissingFromAffectedChildren) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fIsDeltaValid = false;
 
-		fMessage.append("\tMissing child: ");
-		fMessage.append(path);
-		fMessage.append("\n");
+		fMessage.append("\tMissing child: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(path); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
-		fMessage.append("\t\tfrom IResourceDelta.getAffectedChildren(");
+		fMessage.append("\t\tfrom IResourceDelta.getAffectedChildren("); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 		if (!isMissingFromAffectedChildren) {
 			switch (kind) {
 				case IResourceDelta.ADDED :
-					fMessage.append("ADDED");
+					fMessage.append("ADDED"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					break;
 				case IResourceDelta.CHANGED :
-					fMessage.append("CHANGED");
+					fMessage.append("CHANGED"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					break;
 				case IResourceDelta.REMOVED :
-					fMessage.append("REMOVED");
+					fMessage.append("REMOVED"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					break;
 				default :
-					fMessage.append(kind);
+					fMessage.append(kind); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 
-		fMessage.append(")\n");
+		fMessage.append(")\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
 	private void recordMissingExpectedChange(int kind, int changeFlags) {
 		fIsDeltaValid = false;
 
-		fMessage.append("\tMissing expected change\n");
-		fMessage.append("\t\tActual kind: <");
-		fMessage.append(convertKind(kind));
-		fMessage.append(">\n");
-		fMessage.append("\t\tActual change flags: <");
-		fMessage.append(convertChangeFlags(changeFlags));
-		fMessage.append(">\n");
+		fMessage.append("\tMissing expected change\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\t\tActual kind: <"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(convertKind(kind)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(">\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append("\t\tActual change flags: <"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(convertChangeFlags(changeFlags)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(">\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
 	/**
@@ -810,7 +810,7 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 	 */
 	public void verifyDelta(IResourceDelta delta) {
 		if (testThread != null && testThread != Thread.currentThread()) {
-			fMessage.append("\tReceived Delta from unexpected Thread " + Thread.currentThread().getName() + ":\n");
+			fMessage.append("\tReceived Delta from unexpected Thread " + Thread.currentThread().getName() + ":\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			// typically "Worker-x: Refreshing workspace" during junit test tearDown/cleanup
 		}
 		internalVerifyDelta(delta);
@@ -827,8 +827,8 @@ public class ResourceDeltaVerifier implements IResourceChangeListener {
 	 *            the additional information to append
 	 */
 	protected void appendToMessage(String message) {
-		fMessage.append(message);
-		fMessage.append(System.lineSeparator());
+		fMessage.append(message); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		fMessage.append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
 	public void shutDown() {

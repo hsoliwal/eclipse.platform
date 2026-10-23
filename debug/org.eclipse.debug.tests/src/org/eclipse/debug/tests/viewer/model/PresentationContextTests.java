@@ -35,7 +35,7 @@ public class PresentationContextTests {
 	/**
 	 * Tests saving and restoring presentation context properties.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSaveRestore () {
 		PresentationContext context = new PresentationContext("test"); //$NON-NLS-1$
 		context.setProperty("string", "string"); //$NON-NLS-1$ //$NON-NLS-2$

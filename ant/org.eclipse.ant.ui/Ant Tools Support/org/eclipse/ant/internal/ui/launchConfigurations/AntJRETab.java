@@ -83,7 +83,7 @@ public class AntJRETab extends JavaJRETab {
 		};
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@SuppressWarnings("deprecation")
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		boolean isDefaultJRE = fJREBlock.isDefaultJRE();
@@ -110,7 +110,7 @@ public class AntJRETab extends JavaJRETab {
 		setLaunchConfigurationWorkingCopy(configuration);
 	}
 
-	private void applySeparateVMAttributes(ILaunchConfigurationWorkingCopy configuration) {
+	private void applySeparateVMAttributes(ILaunchConfigurationWorkingCopy configuration) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, MAIN_TYPE_NAME);
 		// only set to use the remote ant process factory if the user
 		// has not set to use a logger...bug 84608
@@ -118,15 +118,15 @@ public class AntJRETab extends JavaJRETab {
 		try {
 			String args = configuration.getAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, (String) null);
 			if (args != null) {
-				Pattern pattern = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$
+				Pattern pattern = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 				IStringVariableManager manager = VariablesPlugin.getDefault().getStringVariableManager();
 				String[] arguments = ExternalToolsUtil.parseStringIntoList(args);
 				if (arguments != null) {
-					for (String arg : arguments) {
+					for (String arg : arguments) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (arg.equals("-logger")) { //$NON-NLS-1$
 							userLogger = true;
 							break;
-						} else if (!pattern.matcher(arg).find()) {
+						} else if (!pattern.matcher(arg).find()) { //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 							String resolved = manager.performStringSubstitution(arg, false);
 							if (resolved.equals("-logger")) { //$NON-NLS-1$
 								userLogger = true;
@@ -214,7 +214,7 @@ public class AntJRETab extends JavaJRETab {
 	 *
 	 * @return the default {@link IVMInstall} for the given {@link ILaunchConfiguration}
 	 */
-	private IVMInstall getDefaultVMInstall(ILaunchConfiguration config) {
+	private IVMInstall getDefaultVMInstall(ILaunchConfiguration config) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			IJavaProject project = JavaRuntime.getJavaProject(config);
 			if (project != null) {

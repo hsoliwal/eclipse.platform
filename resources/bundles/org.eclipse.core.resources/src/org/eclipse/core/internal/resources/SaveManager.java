@@ -118,7 +118,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 					//revert last put operation
 					super.put(key, prev);
 					//notify about the problem, do not throw exception but add the exception to know where it occurred
-					String message = "Cannot set lower sequence number for root (previous: " + prevSeqNum + ", new: " + currSeqNum + "). Ignoring the new value."; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					String message = "Cannot set lower sequence number for root (previous: " + prevSeqNum + ", new: " + currSeqNum + "). Ignoring the new value."; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					Policy.log(new Status(IStatus.ERROR, ResourcesPlugin.PI_RESOURCES, IResourceStatus.INTERNAL_ERROR, message, new IllegalArgumentException(message)));
 				}
 			}
@@ -126,7 +126,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		}
 	}
 
-	protected static final String ROOT_SEQUENCE_NUMBER_KEY = IPath.ROOT + LocalMetaArea.F_TREE;
+	protected static final String ROOT_SEQUENCE_NUMBER_KEY = IPath.ROOT + LocalMetaArea.F_TREE; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	protected static final String CLEAR_DELTA_PREFIX = "clearDelta_"; //$NON-NLS-1$
 	protected static final String DELTA_EXPIRATION_PREFIX = "deltaExpiration_"; //$NON-NLS-1$
 	protected static final int DONE_SAVING = 3;
@@ -205,10 +205,10 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		this.snapshotJob = new DelayedSnapshotJob(this, workspace);
 		snapshotRequested = false;
 		snapshotRequestor = null;
-		saveParticipants = Collections.synchronizedMap(new HashMap<>(10));
+		saveParticipants = Collections.synchronizedMap(new HashMap<>(10)); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	}
 
-	public ISavedState addParticipant(String pluginId, ISaveParticipant participant) throws CoreException {
+	public ISavedState addParticipant(String pluginId, ISaveParticipant participant) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// If the plugin was already registered as a save participant we return null
 		if (saveParticipants.put(pluginId, participant) != null) {
 			return null;
@@ -239,10 +239,10 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		return null;
 	}
 
-	protected void broadcastLifecycle(final int lifecycle, Map<String, SaveContext> contexts, final MultiStatus warnings, IProgressMonitor monitor) {
+	protected void broadcastLifecycle(final int lifecycle, Map<String, SaveContext> contexts, final MultiStatus warnings, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		SubMonitor subMonitor = SubMonitor.convert(monitor, contexts.size());
 		try {
-			for (final Iterator<Map.Entry<String, SaveContext>> it = contexts.entrySet().iterator(); it.hasNext();) {
+			for (final Iterator<Map.Entry<String, SaveContext>> it = contexts.entrySet().iterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Map.Entry<String, SaveContext> entry = it.next();
 				String pluginId = entry.getKey();
 				final ISaveParticipant participant = saveParticipants.get(pluginId);
@@ -284,12 +284,12 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * because the saved state has been processed, or the delta has expired.
 	 */
 	protected void clearDeltaExpiration(String pluginId) {
-		masterTable.remove(DELTA_EXPIRATION_PREFIX + pluginId);
+		masterTable.remove(DELTA_EXPIRATION_PREFIX + pluginId); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	protected void cleanMasterTable() {
+	protected void cleanMasterTable() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//remove tree file entries for everything except closed projects
-		for (Iterator<Object> it = masterTable.keySet().iterator(); it.hasNext();) {
+		for (Iterator<Object> it = masterTable.keySet().iterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String key = (String) it.next();
 			if (!key.endsWith(LocalMetaArea.F_TREE)) {
 				continue;
@@ -311,20 +311,20 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			saveMasterTable(ISaveContext.FULL_SAVE, backup);
 		} catch (CoreException e) {
 			Policy.log(e.getStatus());
-			backup.toFile().delete();
+			backup.toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return;
 		}
-		if (location.toFile().exists() && !location.toFile().delete()) {
+		if (location.toFile().exists() && !location.toFile().delete()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return;
 		}
 		try {
 			saveMasterTable(ISaveContext.FULL_SAVE, location);
 		} catch (CoreException e) {
 			Policy.log(e.getStatus());
-			location.toFile().delete();
+			location.toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return;
 		}
-		backup.toFile().delete();
+		backup.toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**
@@ -334,8 +334,8 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 */
 	protected void clearSavedDelta() {
 		synchronized (saveParticipants) {
-			for (String pluginId : saveParticipants.keySet()) {
-				masterTable.setProperty(CLEAR_DELTA_PREFIX + pluginId, "true"); //$NON-NLS-1$
+			for (String pluginId : saveParticipants.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				masterTable.setProperty(CLEAR_DELTA_PREFIX + pluginId, "true"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 	}
@@ -344,20 +344,20 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * Collects the set of ElementTrees we are still interested in,
 	 * and removes references to any other trees.
 	 */
-	protected void collapseTrees(Map<String, SaveContext> contexts) throws CoreException {
+	protected void collapseTrees(Map<String, SaveContext> contexts) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//collect trees we're interested in
 
 		//forget saved trees, if they are not used by registered participants
 		synchronized (savedStates) {
-			for (SaveContext context : contexts.values()) {
+			for (SaveContext context : contexts.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				forgetSavedTree(context.getPluginId());
 			}
 		}
 
 		//trees for plugin saved states
-		ArrayList<ElementTree> trees = new ArrayList<>();
+		ArrayList<ElementTree> trees = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		synchronized (savedStates) {
-			for (SavedState state : savedStates.values()) {
+			for (SavedState state : savedStates.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (state.oldTree != null) {
 					trees.add(state.oldTree);
 				}
@@ -366,11 +366,11 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 
 		//trees for builders
 		IProject[] projects = workspace.getRoot().getProjects(IContainer.INCLUDE_HIDDEN);
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (project.isOpen()) {
 				ArrayList<BuilderPersistentInfo> builderInfos = workspace.getBuildManager().createBuildersPersistentInfo(project);
 				if (builderInfos != null) {
-					for (BuilderPersistentInfo info : builderInfos) {
+					for (BuilderPersistentInfo info : builderInfos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						trees.add(info.getLastBuiltTree());
 					}
 				}
@@ -396,13 +396,13 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		if (sorted == null) {
 			return;
 		}
-		for (int i = 1; i < sorted.length; i++) {
+		for (int i = 1; i < sorted.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			sorted[i].collapseTo(sorted[i - 1]);
 		}
 	}
 
 	protected void commit(Map<String, SaveContext> contexts) throws CoreException {
-		for (SaveContext saveContext : contexts.values()) {
+		for (SaveContext saveContext : contexts.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			saveContext.commit();
 		}
 	}
@@ -413,8 +413,8 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * The keys are plugins and values are SaveContext objects.
 	 */
 	protected Map<String, SaveContext> computeSaveContexts(String[] pluginIds, int kind, IProject project) {
-		HashMap<String, SaveContext> result = new HashMap<>(pluginIds.length);
-		for (String pluginId : pluginIds) {
+		HashMap<String, SaveContext> result = new HashMap<>(pluginIds.length); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (String pluginId : pluginIds) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				SaveContext context = new SaveContext(pluginId, kind, project, workspace);
 				result.put(pluginId, context);
@@ -434,16 +434,16 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * any newly created saved states.  This method is used to compute the set of
 	 * saved states to be written out.
 	 */
-	protected Map<String, ElementTree> computeStatesToSave(Map<String, SaveContext> contexts, ElementTree current) {
-		HashMap<String, ElementTree> result = new HashMap<>(savedStates.size() * 2);
+	protected Map<String, ElementTree> computeStatesToSave(Map<String, SaveContext> contexts, ElementTree current) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		HashMap<String, ElementTree> result = new HashMap<>(savedStates.size() * 2); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		synchronized (savedStates) {
-			for (SavedState state : savedStates.values()) {
+			for (SavedState state : savedStates.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (state.oldTree != null) {
 					result.put(state.pluginId, state.oldTree);
 				}
 			}
 		}
-		for (SaveContext context : contexts.values()) {
+		for (SaveContext context : contexts.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!context.isDeltaNeeded()) {
 				continue;
 			}
@@ -453,7 +453,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		return result;
 	}
 
-	protected void executeLifecycle(int lifecycle, ISaveParticipant participant, SaveContext context) throws CoreException {
+	protected void executeLifecycle(int lifecycle, ISaveParticipant participant, SaveContext context) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		switch (lifecycle) {
 			case PREPARE_TO_SAVE :
 				participant.prepareToSave(context);
@@ -481,7 +481,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	public void forgetSavedTree(String pluginId) {
 		if (pluginId == null) {
 			synchronized (savedStates) {
-				for (SavedState state : savedStates.values()) {
+				for (SavedState state : savedStates.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					state.forgetTrees();
 				}
 			}
@@ -497,7 +497,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * Used in the policy for cleaning up tree's of plug-ins that are not often activated.
 	 */
 	protected long getDeltaExpiration(String pluginId) {
-		String result = masterTable.getProperty(DELTA_EXPIRATION_PREFIX + pluginId);
+		String result = masterTable.getProperty(DELTA_EXPIRATION_PREFIX + pluginId); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return (result == null) ? System.currentTimeMillis() : Long.parseLong(result);
 	}
 
@@ -506,7 +506,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	}
 
 	public int getSaveNumber(String pluginId) {
-		String value = masterTable.getProperty(SAVE_NUMBER_PREFIX + pluginId);
+		String value = masterTable.getProperty(SAVE_NUMBER_PREFIX + pluginId); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return (value == null) ? 0 : Integer.parseInt(value);
 	}
 
@@ -520,7 +520,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * Hooks the end of a save operation, for debugging and performance
 	 * monitoring purposes.
 	 */
-	private void hookEndSave(int kind, IProject project, long start, ResourceStats.Run run) {
+	private void hookEndSave(int kind, IProject project, long start, ResourceStats.Run run) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourceStats.end(run);
 		if (Policy.DEBUG_SAVE) {
 			String endMessage = null;
@@ -532,11 +532,11 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 					endMessage = DEBUG_SNAPSHOT;
 					break;
 				case ISaveContext.PROJECT_SAVE :
-					endMessage = DEBUG_PROJECT_SAVE + project.getFullPath() + ": "; //$NON-NLS-1$
+					endMessage = DEBUG_PROJECT_SAVE + project.getFullPath() + ": "; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					break;
 			}
 			if (endMessage != null) {
-				Policy.debug(endMessage + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$
+				Policy.debug(endMessage + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 	}
@@ -545,7 +545,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * Hooks the start of a save operation, for debugging and performance
 	 * monitoring purposes.
 	 */
-	private ResourceStats.Run hookStartSave(int kind, Project project) {
+	private ResourceStats.Run hookStartSave(int kind, Project project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourceStats.Run run = null;
 		if (ResourceStats.isTracingSnapshot() && kind == ISaveContext.SNAPSHOT) {
 			run = ResourceStats.startSnapshot();
@@ -553,13 +553,13 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		if (Policy.DEBUG_SAVE) {
 			switch (kind) {
 				case ISaveContext.FULL_SAVE :
-					Policy.debug(DEBUG_FULL_SAVE + DEBUG_START);
+					Policy.debug(DEBUG_FULL_SAVE + DEBUG_START); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					break;
 				case ISaveContext.SNAPSHOT :
-					Policy.debug(DEBUG_SNAPSHOT + DEBUG_START);
+					Policy.debug(DEBUG_SNAPSHOT + DEBUG_START); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					break;
 				case ISaveContext.PROJECT_SAVE :
-					Policy.debug(DEBUG_PROJECT_SAVE + project.getFullPath() + DEBUG_START);
+					Policy.debug(DEBUG_PROJECT_SAVE + project.getFullPath() + DEBUG_START); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					break;
 			}
 		}
@@ -569,7 +569,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	/**
 	 * Initializes the snapshot mechanism for this workspace.
 	 */
-	protected void initSnap(IProgressMonitor monitor) {
+	protected void initSnap(IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Discard any pending snapshot request.
 		snapshotJob.cancel();
 		// The "lastSnap" tree must be frozen as the exact tree obtained from startup,
@@ -585,7 +585,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			if (!name.endsWith(LocalMetaArea.F_SNAP)) {
 				return false;
 			}
-			for (int i = 0; i < name.length() - LocalMetaArea.F_SNAP.length(); i++) {
+			for (int i = 0; i < name.length() - LocalMetaArea.F_SNAP.length(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				char c = name.charAt(i);
 				if (c < '0' || c > '9') {
 					return false;
@@ -593,14 +593,14 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			}
 			return true;
 		};
-		String[] candidates = target.list(filter);
+		String[] candidates = target.list(filter); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		if (candidates != null) {
 			removeFiles(target, candidates, Collections.<String> emptyList());
 		}
 	}
 
 	protected boolean isDeltaCleared(String pluginId) {
-		String clearDelta = masterTable.getProperty(CLEAR_DELTA_PREFIX + pluginId);
+		String clearDelta = masterTable.getProperty(CLEAR_DELTA_PREFIX + pluginId); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return clearDelta != null && clearDelta.equals("true"); //$NON-NLS-1$
 	}
 
@@ -649,20 +649,20 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 */
 	protected void removeClearDeltaMarks() {
 		synchronized (saveParticipants) {
-			for (String pluginId : saveParticipants.keySet()) {
+			for (String pluginId : saveParticipants.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				removeClearDeltaMarks(pluginId);
 			}
 		}
 	}
 
 	protected void removeClearDeltaMarks(String pluginId) {
-		masterTable.setProperty(CLEAR_DELTA_PREFIX + pluginId, "false"); //$NON-NLS-1$
+		masterTable.setProperty(CLEAR_DELTA_PREFIX + pluginId, "false"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	protected void removeFiles(java.io.File root, String[] candidates, List<String> exclude) {
-		for (String candidate : candidates) {
+		for (String candidate : candidates) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			boolean delete = true;
-			for (ListIterator<String> it = exclude.listIterator(); it.hasNext();) {
+			for (ListIterator<String> it = exclude.listIterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String s = it.next();
 				if (s.equals(candidate)) {
 					it.remove();
@@ -671,7 +671,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 				}
 			}
 			if (delete) {
-				new java.io.File(root, candidate).delete();
+				new java.io.File(root, candidate).delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			}
 		}
 	}
@@ -679,8 +679,8 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	private void removeGarbage(DataOutputStream output, IPath location, IPath tempLocation) throws IOException {
 		if (output.size() == 0) {
 			output.close();
-			location.toFile().delete();
-			tempLocation.toFile().delete();
+			location.toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			tempLocation.toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 	}
 
@@ -688,11 +688,11 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		saveParticipants.remove(pluginId);
 	}
 
-	protected void removeUnusedSafeTables() {
-		List<String> valuables = new ArrayList<>(10);
+	protected void removeUnusedSafeTables() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<String> valuables = new ArrayList<>(10); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IPath location = workspace.getMetaArea().getSafeTableLocationFor(ResourcesPlugin.PI_RESOURCES);
 		valuables.add(location.lastSegment()); // add master table
-		for (Enumeration<Object> e = masterTable.keys(); e.hasMoreElements();) {
+		for (Enumeration<Object> e = masterTable.keys(); e.hasMoreElements();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String key = (String) e.nextElement();
 			if (key.startsWith(SAVE_NUMBER_PREFIX)) {
 				String pluginId = key.substring(SAVE_NUMBER_PREFIX.length());
@@ -700,32 +700,32 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			}
 		}
 		java.io.File target = location.toFile().getParentFile();
-		String[] candidates = target.list();
+		String[] candidates = target.list(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		if (candidates == null) {
 			return;
 		}
 		removeFiles(target, candidates, valuables);
 	}
 
-	protected void removeUnusedTreeFiles() {
+	protected void removeUnusedTreeFiles() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// root resource
-		List<String> valuables = new ArrayList<>(10);
+		List<String> valuables = new ArrayList<>(10); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IPath location = workspace.getMetaArea().getTreeLocationFor(workspace.getRoot(), false);
 		valuables.add(location.lastSegment());
 		java.io.File target = location.toFile().getParentFile();
 		FilenameFilter filter = (unused, name) -> name.endsWith(LocalMetaArea.F_TREE);
-		String[] candidates = target.list(filter);
+		String[] candidates = target.list(filter); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		if (candidates != null) {
 			removeFiles(target, candidates, valuables);
 		}
 
 		// projects
 		IProject[] projects = workspace.getRoot().getProjects(IContainer.INCLUDE_HIDDEN);
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			location = workspace.getMetaArea().getTreeLocationFor(project, false);
 			valuables.add(location.lastSegment());
 			target = location.toFile().getParentFile();
-			candidates = target.list(filter);
+			candidates = target.list(filter); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			if (candidates != null) {
 				removeFiles(target, candidates, valuables);
 			}
@@ -746,26 +746,26 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * Reset the snapshot mechanism for the non-workspace files. This
 	 * includes the markers and sync info.
 	 */
-	protected void resetSnapshots(IResource resource) throws CoreException {
+	protected void resetSnapshots(IResource resource) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isLegal(resource.getType() == IResource.ROOT || resource.getType() == IResource.PROJECT);
 		String message;
 
 		// delete the snapshot file, if any
 		java.io.File file = workspace.getMetaArea().getMarkersSnapshotLocationFor(resource).toFile();
-		if (file.exists()) {
-			file.delete();
+		if (file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			file.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
-		if (file.exists()) {
+		if (file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			message = Messages.resources_resetMarkers;
 			throw new ResourceException(IResourceStatus.FAILED_DELETE_METADATA, resource.getFullPath(), message, null);
 		}
 
 		// delete the snapshot file, if any
 		file = workspace.getMetaArea().getSyncInfoSnapshotLocationFor(resource).toFile();
-		if (file.exists()) {
-			file.delete();
+		if (file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			file.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
-		if (file.exists()) {
+		if (file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			message = Messages.resources_resetSync;
 			throw new ResourceException(IResourceStatus.FAILED_DELETE_METADATA, resource.getFullPath(), message, null);
 		}
@@ -776,7 +776,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			return;
 		}
 		IProject[] projects = ((IWorkspaceRoot) resource).getProjects(IContainer.INCLUDE_HIDDEN);
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			resetSnapshots(project);
 		}
 	}
@@ -785,7 +785,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * Restores the state of this workspace by opening the projects
 	 * which were open when it was last saved.
 	 */
-	protected void restore(IProgressMonitor monitor) throws CoreException {
+	protected void restore(IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (Policy.DEBUG_RESTORE) {
 			Policy.debug("Restore workspace: starting..."); //$NON-NLS-1$
 		}
@@ -820,7 +820,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 				// restore meta info last because it might close a project if its description is not readable
 				restoreMetaInfo(problems, Policy.subMonitorFor(monitor, 10));
 				IProject[] roots = workspace.getRoot().getProjects(IContainer.INCLUDE_HIDDEN);
-				for (IProject root : roots) {
+				for (IProject root : roots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					((Project) root).startup();
 				}
 				if (!problems.isOK()) {
@@ -833,7 +833,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			monitor.done();
 		}
 		if (Policy.DEBUG_RESTORE) {
-			Policy.debug("Restore workspace: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug("Restore workspace: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -844,10 +844,10 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * and <code>false</code> if non-critical problems occurred while restoring.
 	 * @exception CoreException if the project could not be restored.
 	 */
-	protected boolean restore(Project project, IProgressMonitor monitor) throws CoreException {
+	protected boolean restore(Project project, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean status = true;
 		if (Policy.DEBUG_RESTORE) {
-			Policy.debug("Restore project " + project.getFullPath() + ": starting..."); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug("Restore project " + project.getFullPath() + ": starting..."); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		long start = System.currentTimeMillis();
 		monitor = Policy.monitorFor(monitor);
@@ -866,7 +866,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			monitor.done();
 		}
 		if (Policy.DEBUG_RESTORE) {
-			Policy.debug("Restore project " + project.getFullPath() + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Policy.debug("Restore project " + project.getFullPath() + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return status;
 	}
@@ -879,15 +879,15 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * and <code>false</code> if the refresh snapshot was not found or could not be opened.
 	 * @exception CoreException if an error occurred reading the snapshot file.
 	 */
-	protected boolean restoreFromRefreshSnapshot(Project project, IProgressMonitor monitor) throws CoreException {
+	protected boolean restoreFromRefreshSnapshot(Project project, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean status = true;
 		IPath snapshotPath = workspace.getMetaArea().getRefreshLocationFor(project);
 		java.io.File snapshotFile = snapshotPath.toFile();
-		if (!snapshotFile.exists()) {
+		if (!snapshotFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return false;
 		}
 		if (Policy.DEBUG_RESTORE) {
-			Policy.debug("Restore project " + project.getFullPath() + ": starting..."); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug("Restore project " + project.getFullPath() + ": starting..."); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		long start = System.currentTimeMillis();
 		monitor = Policy.monitorFor(monitor);
@@ -904,7 +904,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			monitor.done();
 		}
 		if (Policy.DEBUG_RESTORE) {
-			Policy.debug("Restore project " + project.getFullPath() + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Policy.debug("Restore project " + project.getFullPath() + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return status;
 	}
@@ -913,7 +913,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * Reads the markers which were originally saved
 	 * for the tree rooted by the given resource.
 	 */
-	protected void restoreMarkers(IResource resource, boolean generateDeltas, IProgressMonitor monitor) throws CoreException {
+	protected void restoreMarkers(IResource resource, boolean generateDeltas, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isLegal(resource.getType() == IResource.ROOT || resource.getType() == IResource.PROJECT);
 		long start = System.currentTimeMillis();
 		MarkerManager markerManager = workspace.getMarkerManager();
@@ -925,30 +925,30 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		// if we have the workspace root then restore markers for its projects
 		if (resource.getType() == IResource.PROJECT) {
 			if (Policy.DEBUG_RESTORE_MARKERS) {
-				Policy.debug("Restore Markers for " + resource.getFullPath() + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				Policy.debug("Restore Markers for " + resource.getFullPath() + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			return;
 		}
 		IProject[] projects = ((IWorkspaceRoot) resource).getProjects(IContainer.INCLUDE_HIDDEN);
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (project.isAccessible()) {
 				markerManager.restore(project, generateDeltas, monitor);
 			}
 		}
 		if (Policy.DEBUG_RESTORE_MARKERS) {
-			Policy.debug("Restore Markers for workspace: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug("Restore Markers for workspace: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
-	protected void restoreMasterTable() throws CoreException {
+	protected void restoreMasterTable() throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		long start = System.currentTimeMillis();
 		masterTable.clear();
 		IPath location = workspace.getMetaArea().getSafeTableLocationFor(ResourcesPlugin.PI_RESOURCES);
 		java.io.File target = location.toFile();
-		if (!target.exists()) {
+		if (!target.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			location = workspace.getMetaArea().getBackupLocationFor(location);
 			target = location.toFile();
-			if (!target.exists()) {
+			if (!target.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				return;
 			}
 		}
@@ -959,7 +959,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			throw new ResourceException(IResourceStatus.INTERNAL_ERROR, null, message, e);
 		}
 		if (Policy.DEBUG_RESTORE_MASTERTABLE) {
-			Policy.debug("Restore master table for " + location + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Policy.debug("Restore master table for " + location + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -967,13 +967,13 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * Restores the state of this workspace by opening the projects
 	 * which were open when it was last saved.
 	 */
-	protected void restoreMetaInfo(MultiStatus problems, IProgressMonitor monitor) {
+	protected void restoreMetaInfo(MultiStatus problems, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (Policy.DEBUG_RESTORE_METAINFO) {
 			Policy.debug("Restore workspace metainfo: starting..."); //$NON-NLS-1$
 		}
 		long start = System.currentTimeMillis();
 		IProject[] roots = workspace.getRoot().getProjects(IContainer.INCLUDE_HIDDEN);
-		for (IProject root : roots) {
+		for (IProject root : roots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			//fatal to throw exceptions during startup
 			try {
 				restoreMetaInfo((Project) root, monitor);
@@ -983,7 +983,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			}
 		}
 		if (Policy.DEBUG_RESTORE_METAINFO) {
-			Policy.debug("Restore workspace metainfo: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug("Restore workspace metainfo: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -991,7 +991,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * Restores the contents of this project.  Throw an exception if the
 	 * project description could not be restored.
 	 */
-	protected void restoreMetaInfo(Project project, IProgressMonitor monitor) throws CoreException {
+	protected void restoreMetaInfo(Project project, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		long start = System.currentTimeMillis();
 		ProjectDescription description = null;
 		CoreException failure = null;
@@ -1027,7 +1027,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			throw failure;
 		}
 		if (Policy.DEBUG_RESTORE_METAINFO) {
-			Policy.debug("Restore metainfo for " + project.getFullPath() + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Policy.debug("Restore metainfo for " + project.getFullPath() + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -1038,7 +1038,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * event of a crash recovery, the snapshot file is not deleted until
 	 * the next successful save.
 	 */
-	protected void restoreSnapshots(IProgressMonitor monitor) {
+	protected void restoreSnapshots(IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		long start = System.currentTimeMillis();
 		monitor = Policy.monitorFor(monitor);
 		String message;
@@ -1047,13 +1047,13 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			IPath snapLocation = workspace.getMetaArea().getSnapshotLocationFor(workspace.getRoot());
 			java.io.File localFile = snapLocation.toFile();
 
-			if (!localFile.exists()) {
+			if (!localFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				// The snapshot corresponding to the current tree version doesn't exist.
 				// Try the legacy non-versioned snapshot, but ignore it if it is older than
 				// the tree.
 				snapLocation = workspace.getMetaArea().getLegacySnapshotLocationFor(workspace.getRoot());
 				localFile = snapLocation.toFile();
-				if (!localFile.exists() || isSnapshotOlderThanTree(localFile)) {
+				if (!localFile.exists() || isSnapshotOlderThanTree(localFile)) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					// If the snapshot file doesn't exist, there was no crash.
 					// Just initialize the snapshot file and return.
 					initSnap(Policy.subMonitorFor(monitor, Policy.totalWork / 2));
@@ -1087,7 +1087,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			monitor.done();
 		}
 		if (Policy.DEBUG_RESTORE_SNAPSHOTS) {
-			Policy.debug("Restore snapshots for workspace: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug("Restore snapshots for workspace: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -1101,21 +1101,21 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	private boolean isSnapshotOlderThanTree(File snapshot) {
 		IPath treeLocation = workspace.getMetaArea().getTreeLocationFor(workspace.getRoot(), false);
 		File tree = treeLocation.toFile();
-		if (!tree.exists()) {
+		if (!tree.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			treeLocation = workspace.getMetaArea().getBackupLocationFor(treeLocation);
 			tree = treeLocation.toFile();
-			if (!tree.exists()) {
+			if (!tree.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				return false;
 			}
 		}
-		return snapshot.lastModified() < tree.lastModified();
+		return snapshot.lastModified() < tree.lastModified(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**
 	 * Reads the sync info which was originally saved
 	 * for the tree rooted by the given resource.
 	 */
-	protected void restoreSyncInfo(IResource resource, IProgressMonitor monitor) throws CoreException {
+	protected void restoreSyncInfo(IResource resource, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isLegal(resource.getType() == IResource.ROOT || resource.getType() == IResource.PROJECT);
 		long start = System.currentTimeMillis();
 		Synchronizer synchronizer = (Synchronizer) workspace.getSynchronizer();
@@ -1127,18 +1127,18 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		// restore sync info for all projects if we were given the workspace root.
 		if (resource.getType() == IResource.PROJECT) {
 			if (Policy.DEBUG_RESTORE_SYNCINFO) {
-				Policy.debug("Restore SyncInfo for " + resource.getFullPath() + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				Policy.debug("Restore SyncInfo for " + resource.getFullPath() + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			return;
 		}
 		IProject[] projects = ((IWorkspaceRoot) resource).getProjects(IContainer.INCLUDE_HIDDEN);
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (project.isAccessible()) {
 				synchronizer.restore(project, monitor);
 			}
 		}
 		if (Policy.DEBUG_RESTORE_SYNCINFO) {
-			Policy.debug("Restore SyncInfo for workspace: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug("Restore SyncInfo for workspace: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -1148,12 +1148,12 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * after workspace save/shutdown.
 	 * @exception CoreException if the workspace could not be restored.
 	 */
-	protected void restoreTree(IProgressMonitor monitor) throws CoreException {
+	protected void restoreTree(IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		long start = System.currentTimeMillis();
 		IPath treeLocation = workspace.getMetaArea().getTreeLocationFor(workspace.getRoot(), false);
 		IPath tempLocation = workspace.getMetaArea().getBackupLocationFor(treeLocation);
-		if (!treeLocation.toFile().exists() && !tempLocation.toFile().exists()) {
-			savedStates = Collections.synchronizedMap(new HashMap<>(10));
+		if (!treeLocation.toFile().exists() && !tempLocation.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			savedStates = Collections.synchronizedMap(new HashMap<>(10)); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			return;
 		}
 		try (DataInputStream input = new DataInputStream(new SafeFileInputStream(treeLocation.toOSString(), tempLocation.toOSString(), TREE_BUFFER_SIZE))) {
@@ -1163,7 +1163,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			throw new ResourceException(IResourceStatus.FAILED_READ_METADATA, treeLocation, msg, e);
 		}
 		if (Policy.DEBUG_RESTORE_TREE) {
-			Policy.debug("Restore Tree for workspace: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug("Restore Tree for workspace: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -1176,7 +1176,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * @return <code>true</code> if the tree file exists, <code>false</code> otherwise.
 	 * @exception CoreException if the project could not be restored.
 	 */
-	protected boolean restoreTree(Project project, IProgressMonitor monitor) throws CoreException {
+	protected boolean restoreTree(Project project, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		long start = System.currentTimeMillis();
 		monitor = Policy.monitorFor(monitor);
 		String message;
@@ -1184,7 +1184,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			monitor.beginTask("", Policy.totalWork); //$NON-NLS-1$
 			IPath treeLocation = workspace.getMetaArea().getTreeLocationFor(project, false);
 			IPath tempLocation = workspace.getMetaArea().getBackupLocationFor(treeLocation);
-			if (!treeLocation.toFile().exists() && !tempLocation.toFile().exists()) {
+			if (!treeLocation.toFile().exists() && !tempLocation.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				return false;
 			}
 			try (
@@ -1200,7 +1200,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			monitor.done();
 		}
 		if (Policy.DEBUG_RESTORE_TREE) {
-			Policy.debug("Restore Tree for " + project.getFullPath() + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Policy.debug("Restore Tree for " + project.getFullPath() + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return true;
 	}
@@ -1210,14 +1210,14 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * @return <code>true</code> if the snapshot exists, <code>false</code> otherwise.
 	 * @exception CoreException if the project could not be restored.
 	 */
-	protected boolean restoreTreeFromRefreshSnapshot(Project project, java.io.File snapshotFile, IProgressMonitor monitor) throws CoreException {
+	protected boolean restoreTreeFromRefreshSnapshot(Project project, java.io.File snapshotFile, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		long start = System.currentTimeMillis();
 		monitor = Policy.monitorFor(monitor);
 		String message;
 		IPath snapshotPath = null;
 		monitor.beginTask("", Policy.totalWork); //$NON-NLS-1$
-		try (ZipInputStream zip = new ZipInputStream(new FileInputStream(snapshotFile))) {
-			ZipEntry treeEntry = zip.getNextEntry();
+		try (ZipInputStream zip = new ZipInputStream(new FileInputStream(snapshotFile))) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
+			ZipEntry treeEntry = zip.getNextEntry(); //FLLDCIM: MARK — M25 M3FILE_ARCHIVE_STREAM CALL
 			if (treeEntry == null || !treeEntry.getName().equals("resource-index.tree")) { //$NON-NLS-1$
 				return false;
 			}
@@ -1233,7 +1233,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			monitor.done();
 		}
 		if (Policy.DEBUG_RESTORE_TREE) {
-			Policy.debug("Restore Tree for " + project.getFullPath() + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Policy.debug("Restore Tree for " + project.getFullPath() + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return true;
 	}
@@ -1268,7 +1268,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * Saves under the given scheduling rule, which is {@code null} when the
 	 * caller is already inside an operation that covers the project.
 	 */
-	IStatus save(int kind, boolean keepConsistencyWhenCanceled, Project project, ISchedulingRule rule, IProgressMonitor parentMonitor) throws CoreException {
+	IStatus save(int kind, boolean keepConsistencyWhenCanceled, Project project, ISchedulingRule rule, IProgressMonitor parentMonitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		InternalMonitorWrapper monitor = new InternalMonitorWrapper(parentMonitor);
 		monitor.ignoreCancelState(keepConsistencyWhenCanceled);
 		try {
@@ -1301,8 +1301,8 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 							visitAndSave(workspace.getRoot());
 							monitor.worked(1);
 							if (Policy.DEBUG_SAVE) {
-								Policy.debug("Total Save Markers: " + persistMarkers + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
-								Policy.debug("Total Save Sync Info: " + persistSyncInfo + "ms"); //$NON-NLS-1$	 //$NON-NLS-2$
+								Policy.debug("Total Save Markers: " + persistMarkers + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+								Policy.debug("Total Save Sync Info: " + persistSyncInfo + "ms"); //$NON-NLS-1$	 //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							}
 							// reset the snap shot files
 							resetSnapshots(workspace.getRoot());
@@ -1327,8 +1327,8 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 							visitAndSnap(workspace.getRoot());
 							monitor.worked(1);
 							if (Policy.DEBUG_SAVE) {
-								Policy.debug("Total Snap Markers: " + persistMarkers + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
-								Policy.debug("Total Snap Sync Info: " + persistSyncInfo + "ms"); //$NON-NLS-1$	 //$NON-NLS-2$
+								Policy.debug("Total Snap Markers: " + persistMarkers + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+								Policy.debug("Total Snap Sync Info: " + persistSyncInfo + "ms"); //$NON-NLS-1$	 //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							}
 							collapseTrees(contexts);
 							clearSavedDelta();
@@ -1384,7 +1384,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		savedState = state;
 	}
 
-	protected void saveMasterTable(int kind, IPath location) throws CoreException {
+	protected void saveMasterTable(int kind, IPath location) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		long start = System.currentTimeMillis();
 		java.io.File target = location.toFile();
 		try {
@@ -1401,7 +1401,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			throw new ResourceException(IResourceStatus.INTERNAL_ERROR, null, NLS.bind(Messages.resources_exSaveMaster, location.toOSString()), e);
 		}
 		if (Policy.DEBUG_SAVE_MASTERTABLE) {
-			Policy.debug("Save master table for " + location + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Policy.debug("Save master table for " + location + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -1416,7 +1416,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		// save preferences (workspace description, path variables, etc)
 		ResourcesPlugin.getPlugin().savePluginPreferences();
 		if (Policy.DEBUG_SAVE_METAINFO) {
-			Policy.debug("Save workspace metainfo: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug("Save workspace metainfo: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -1427,7 +1427,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * @param monitor progress monitor
 	 * @exception CoreException if there is a problem writing the snapshot.
 	 */
-	public void saveRefreshSnapshot(Project project, URI snapshotLocation, IProgressMonitor monitor) throws CoreException {
+	public void saveRefreshSnapshot(Project project, URI snapshotLocation, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IFileStore store = EFS.getStore(snapshotLocation);
 		IPath snapshotPath = IPath.fromOSString(snapshotLocation.getPath());
 		try (ByteArrayOutputStream tmp = new ByteArrayOutputStream()) {
@@ -1452,7 +1452,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * is used to save the state of an individual project.
 	 * @exception CoreException if there is a problem writing the tree to disk.
 	 */
-	protected void saveTree(Map<String, SaveContext> contexts, IProgressMonitor monitor) throws CoreException {
+	protected void saveTree(Map<String, SaveContext> contexts, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		long start = System.currentTimeMillis();
 		IPath treeLocation = workspace.getMetaArea().getTreeLocationFor(workspace.getRoot(), true);
 		try {
@@ -1468,7 +1468,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			throw new ResourceException(IResourceStatus.FAILED_WRITE_METADATA, IPath.ROOT, msg, e);
 		}
 		if (Policy.DEBUG_SAVE_TREE) {
-			Policy.debug("Save Workspace Tree: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug("Save Workspace Tree: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -1480,7 +1480,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	}
 
 	protected void setSaveNumber(String pluginId, int number) {
-		masterTable.setProperty(SAVE_NUMBER_PREFIX + pluginId, Integer.toString(number));
+		masterTable.setProperty(SAVE_NUMBER_PREFIX + pluginId, Integer.toString(number)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override
@@ -1507,7 +1507,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * Encapsulates rules for determining when a snapshot is needed.
 	 * This should be called at the end of every top level operation.
 	 */
-	public void snapshotIfNeeded(boolean hasTreeChanges) {
+	public void snapshotIfNeeded(boolean hasTreeChanges) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// never schedule a snapshot while save is occurring.
 		if (isSaving) {
 			return;
@@ -1540,7 +1540,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	/**
 	 * Performs a snapshot of the workspace tree.
 	 */
-	protected void snapTree(ElementTree tree, IProgressMonitor monitor) throws CoreException {
+	protected void snapTree(ElementTree tree, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		long start = System.currentTimeMillis();
 		String message;
 		SubMonitor subMonitor = SubMonitor.convert(monitor, Policy.totalWork);
@@ -1571,7 +1571,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			}
 			lastSnap = tree;
 			if (Policy.DEBUG_SAVE_TREE) {
-				Policy.debug("Snapshot Workspace Tree: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+				Policy.debug("Snapshot Workspace Tree: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		} finally {
 			subMonitor.done();
@@ -1595,13 +1595,13 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 *         newest ElementTree (without ancestor within the trees) first. Returns
 	 *         null when the preconditions for sorting are not met.
 	 */
-	public static ElementTree[] sortTrees(ElementTree[] trees) {
+	public static ElementTree[] sortTrees(ElementTree[] trees) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int numTrees = trees.length;
 		ElementTree[] sorted = new ElementTree[numTrees];
 
 		/* first build a table of ElementTree -> Number of duplicates */
-		Map<ElementTree, Integer> duplicateCount = new LinkedHashMap<>(numTrees * 2 + 1);
-		for (ElementTree tree : trees) {
+		Map<ElementTree, Integer> duplicateCount = new LinkedHashMap<>(numTrees * 2 + 1); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
+		for (ElementTree tree : trees) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			duplicateCount.compute(tree, (unused, duplicates) -> (duplicates == null ? 0 : duplicates) + 1);
 		}
 
@@ -1613,16 +1613,16 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		 * adding them to the sorted list as we go.
 		 */
 		int i = numTrees - 1;
-		while (oldest != null) {
+		while (oldest != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			/* add "oldest" and its duplicates at the end of the sorted list: */
 			Integer duplicates = duplicateCount.remove(oldest);
-			for (int j = 0; j < duplicates; j++) {
+			for (int j = 0; j < duplicates; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				sorted[i] = oldest;
 				i--;
 			}
 			/* find the next tree in the list */
 			oldest = oldest.getParent();
-			while (oldest != null && duplicateCount.get(oldest) == null) {
+			while (oldest != null && duplicateCount.get(oldest) == null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				/* skip elements that are not elements of "trees" */
 				oldest = oldest.getParent();
 			}
@@ -1645,21 +1645,21 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	}
 
 	static String parentChain(ElementTree e) {
-		ArrayList<ElementTree> chain = new ArrayList<>();
+		ArrayList<ElementTree> chain = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		ElementTree el = e;
-		while (el != null) {
+		while (el != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			chain.add(el);
 			el = el.getParent();
 		}
-		return chain.stream().map(t -> "" + t.getTreeStamp()).collect(Collectors.joining("->")); //$NON-NLS-1$ //$NON-NLS-2$
+		return chain.stream().map(t -> "" + t.getTreeStamp()).collect(Collectors.joining("->")); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override
 	public void startup(IProgressMonitor monitor) throws CoreException {
 		restore(monitor);
 		java.io.File table = workspace.getMetaArea().getSafeTableLocationFor(ResourcesPlugin.PI_RESOURCES).toFile();
-		if (!table.exists()) {
-			table.getParentFile().mkdirs();
+		if (!table.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			table.getParentFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 	}
 
@@ -1672,14 +1672,14 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * not often activated.
 	 */
 	protected void updateDeltaExpiration(String pluginId) {
-		String key = DELTA_EXPIRATION_PREFIX + pluginId;
+		String key = DELTA_EXPIRATION_PREFIX + pluginId; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		if (!masterTable.containsKey(key)) {
 			masterTable.setProperty(key, Long.toString(System.currentTimeMillis()));
 		}
 	}
 
-	private void validateMasterTableBeforeSave(java.io.File target) throws IOException {
-		if (target.exists()) {
+	private void validateMasterTableBeforeSave(java.io.File target) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		if (target.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			MasterTable previousMasterTable = new MasterTable();
 			try (
 				SafeChunkyInputStream input = new SafeChunkyInputStream(target);
@@ -1701,25 +1701,25 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		}
 	}
 
-	private static String getBadSequenceNumberErrorMessage(java.io.File target, int valueInFile, int valueInMemory) {
-		StringBuilder messageBuffer = new StringBuilder();
-		messageBuffer.append("Cannot set lower sequence number for root (previous: "); //$NON-NLS-1$
-		messageBuffer.append(valueInFile);
-		messageBuffer.append(", new: "); //$NON-NLS-1$
-		messageBuffer.append(valueInMemory);
-		messageBuffer.append("). Location: "); //$NON-NLS-1$
-		messageBuffer.append(target.getAbsolutePath());
+	private static String getBadSequenceNumberErrorMessage(java.io.File target, int valueInFile, int valueInMemory) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		StringBuilder messageBuffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		messageBuffer.append("Cannot set lower sequence number for root (previous: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		messageBuffer.append(valueInFile); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		messageBuffer.append(", new: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		messageBuffer.append(valueInMemory); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		messageBuffer.append("). Location: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		messageBuffer.append(target.getAbsolutePath()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		try {
-			messageBuffer.append("Timestamps and tree sequence numbers from file:"); //$NON-NLS-1$
+			messageBuffer.append("Timestamps and tree sequence numbers from file:"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			java.nio.file.Path targetPath = Paths.get(target.getAbsolutePath());
-			List<String> masterTableFileContents = Files.readAllLines(targetPath, Charset.defaultCharset());
-			for (String line : masterTableFileContents) {
+			List<String> masterTableFileContents = Files.readAllLines(targetPath, Charset.defaultCharset()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			for (String line : masterTableFileContents) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (line != null) {
 					boolean isPropertiesTimestamp = line.startsWith("#"); //$NON-NLS-1$
 					boolean isTreeProperty = line.startsWith(ROOT_SEQUENCE_NUMBER_KEY);
 					if (isPropertiesTimestamp || isTreeProperty) {
-						messageBuffer.append(System.lineSeparator());
-						messageBuffer.append(line);
+						messageBuffer.append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+						messageBuffer.append(line); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
 				}
 			}
@@ -1745,7 +1745,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 *
 	 * FIXME: This method is ugly. Fix it up and look at merging with #visitAndSnap
 	 */
-	public void visitAndSave(final IResource root) throws CoreException {
+	public void visitAndSave(final IResource root) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Ensure we have either a project or the workspace root
 		Assert.isLegal(root.getType() == IResource.ROOT || root.getType() == IResource.PROJECT);
 		// only write out info for accessible resources
@@ -1760,8 +1760,8 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		IPath markersTempLocation = workspace.getMetaArea().getBackupLocationFor(markersLocation);
 		IPath syncInfoLocation = workspace.getMetaArea().getSyncInfoLocationFor(root);
 		IPath syncInfoTempLocation = workspace.getMetaArea().getBackupLocationFor(syncInfoLocation);
-		final List<String> writtenTypes = new ArrayList<>(5);
-		final List<QualifiedName> writtenPartners = new ArrayList<>(synchronizer.registry.size());
+		final List<String> writtenTypes = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		final List<QualifiedName> writtenPartners = new ArrayList<>(synchronizer.registry.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		String message;
 
 		// Create the output streams
@@ -1818,10 +1818,10 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 				throw (IOException) e.getTargetException();
 			}
 			if (Policy.DEBUG_SAVE_MARKERS) {
-				Policy.debug("Save Markers for " + root.getFullPath() + ": " + saveTimes[0] + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				Policy.debug("Save Markers for " + root.getFullPath() + ": " + saveTimes[0] + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			if (Policy.DEBUG_SAVE_SYNCINFO) {
-				Policy.debug("Save SyncInfo for " + root.getFullPath() + ": " + saveTimes[1] + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				Policy.debug("Save SyncInfo for " + root.getFullPath() + ": " + saveTimes[1] + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			removeGarbage(markersOutput, markersLocation, markersTempLocation);
 			// if we have the workspace root the output stream will be null and we
@@ -1853,7 +1853,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		void accept(T t) throws CoreException;
 	}
 
-	private void forEachProjectInParallel(IProgressMonitor m, CoreConsumer<IProject> consumer) throws CoreException {
+	private void forEachProjectInParallel(IProgressMonitor m, CoreConsumer<IProject> consumer) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IProject[] projects = workspace.getRoot().getProjects(IContainer.INCLUDE_HIDDEN);
 		if (projects.length == 0) {
 			return;
@@ -1874,13 +1874,13 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 				try {
 					consumer.accept(project);
 				} catch (CoreException e) {
-					return Status.error("Error with project " + project.getName(), e); //$NON-NLS-1$
+					return Status.error("Error with project " + project.getName(), e); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				return null;
 			}).filter(Objects::nonNull).toArray(IStatus[]::new)).get();
 		} catch (InterruptedException | ExecutionException e) {
 			List<Runnable> notExecuted = executor.shutdownNow();
-			throw new CoreException(Status.error("Error with " + notExecuted.size() + " projects left.", e)); //$NON-NLS-1$//$NON-NLS-2$
+			throw new CoreException(Status.error("Error with " + notExecuted.size() + " projects left.", e)); //$NON-NLS-1$//$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} finally {
 			executor.shutdown();
 		}
@@ -1889,7 +1889,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		}
 		if (stats.length > 0) {
 			throw new CoreException(new MultiStatus(ResourcesPlugin.PI_RESOURCES, IStatus.ERROR, stats,
-					"Error with " + stats.length + " projects.", null)); //$NON-NLS-1$ //$NON-NLS-2$
+					"Error with " + stats.length + " projects.", null)); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -1899,7 +1899,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 *
 	 * FIXME: This method is ugly. Fix it up and look at merging with #visitAndSnap
 	 */
-	public void visitAndSnap(final IResource root) throws CoreException {
+	public void visitAndSnap(final IResource root) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Ensure we have either a project or the workspace root
 		Assert.isLegal(root.getType() == IResource.ROOT || root.getType() == IResource.PROJECT);
 		// only write out info for accessible resources
@@ -1971,10 +1971,10 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 					throw (IOException) e.getTargetException();
 				}
 				if (Policy.DEBUG_SAVE_MARKERS) {
-					Policy.debug("Snap Markers for " + root.getFullPath() + ": " + snapTimes[0] + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					Policy.debug("Snap Markers for " + root.getFullPath() + ": " + snapTimes[0] + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				if (Policy.DEBUG_SAVE_SYNCINFO) {
-					Policy.debug("Snap SyncInfo for " + root.getFullPath() + ": " + snapTimes[1] + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					Policy.debug("Snap SyncInfo for " + root.getFullPath() + ": " + snapTimes[1] + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				if (markerFileSize != markersOutput.size()) {
 					safeMarkerStream.succeed();
@@ -1995,7 +1995,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			return;
 		}
 		IProject[] projects = ((IWorkspaceRoot) root).getProjects(IContainer.INCLUDE_HIDDEN);
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			visitAndSnap(project);
 		}
 	}
@@ -2015,14 +2015,14 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		// write the number of builders we are saving
 		int numBuilders = builders.size();
 		output.writeInt(numBuilders);
-		for (int i = 0; i < numBuilders; i++) {
+		for (int i = 0; i < numBuilders; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			BuilderPersistentInfo info = builders.get(i);
 			output.writeUTF(info.getProjectName());
 			output.writeUTF(info.getBuilderName());
 			// write interesting projects
 			IProject[] interestingProjects = info.getInterestingProjects();
 			output.writeInt(interestingProjects.length);
-			for (IProject interestingProject : interestingProjects) {
+			for (IProject interestingProject : interestingProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				output.writeUTF(interestingProject.getName());
 			}
 		}
@@ -2052,12 +2052,12 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * @param additionalBuilderInfos remaining builder infos for other configurations
 	 * @param additionalConfigNames configuration names of the remaining per-configuration trees
 	 */
-	private void getTreesToSave(IProject project, List<ElementTree> trees, List<BuilderPersistentInfo> builderInfos, List<String> configNames, List<ElementTree> additionalTrees, List<BuilderPersistentInfo> additionalBuilderInfos, List<String> additionalConfigNames) throws CoreException {
+	private void getTreesToSave(IProject project, List<ElementTree> trees, List<BuilderPersistentInfo> builderInfos, List<String> configNames, List<ElementTree> additionalTrees, List<BuilderPersistentInfo> additionalBuilderInfos, List<String> additionalConfigNames) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (project.isOpen()) {
 			String activeConfigName = project.getActiveBuildConfig().getName();
 			List<BuilderPersistentInfo> infos = workspace.getBuildManager().createBuildersPersistentInfo(project);
 			if (infos != null) {
-				for (BuilderPersistentInfo info : infos) {
+				for (BuilderPersistentInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					// Nothing to persist if there isn't a previous delta tree.
 					// There used to be code which serialized the current workspace tree
 					// but this will result in the next build of the builder getting an empty delta...
@@ -2101,7 +2101,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 *
 	 * @see WorkspaceTreeReader_2
 	 */
-	protected void writeTree(Map<String, ElementTree> statesToSave, DataOutputStream output, IProgressMonitor monitor)
+	protected void writeTree(Map<String, ElementTree> statesToSave, DataOutputStream output, IProgressMonitor monitor) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws IOException, CoreException {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 10);
 		boolean wasImmutable = false;
@@ -2110,7 +2110,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			ElementTree current = workspace.getElementTree();
 			wasImmutable = current.isImmutable();
 			current.immutable();
-			ArrayList<ElementTree> trees = new ArrayList<>(statesToSave.size() * 2); // pick a number
+			ArrayList<ElementTree> trees = new ArrayList<>(statesToSave.size() * 2); // pick a number //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			subMonitor.worked(1);
 
 			// write out the workspace fields
@@ -2118,7 +2118,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 
 			// save plugin info
 			output.writeInt(statesToSave.size()); // write the number of plugins we are saving
-			for (Map.Entry<String, ElementTree> entry : statesToSave.entrySet()) {
+			for (Map.Entry<String, ElementTree> entry : statesToSave.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String pluginId = entry.getKey();
 				output.writeUTF(pluginId);
 				trees.add(entry.getValue()); // tree
@@ -2129,12 +2129,12 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			// Get the the builder info and configuration names, and add all the associated
 			// workspace trees in the correct order
 			IProject[] projects = workspace.getRoot().getProjects(IContainer.INCLUDE_HIDDEN);
-			List<BuilderPersistentInfo> builderInfos = new ArrayList<>(projects.length * 2);
-			List<String> configNames = new ArrayList<>(projects.length);
-			List<ElementTree> additionalTrees = new ArrayList<>(projects.length * 2);
-			List<BuilderPersistentInfo> additionalBuilderInfos = new ArrayList<>(projects.length * 2);
-			List<String> additionalConfigNames = new ArrayList<>(projects.length);
-			for (IProject project : projects) {
+			List<BuilderPersistentInfo> builderInfos = new ArrayList<>(projects.length * 2); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			List<String> configNames = new ArrayList<>(projects.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			List<ElementTree> additionalTrees = new ArrayList<>(projects.length * 2); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			List<BuilderPersistentInfo> additionalBuilderInfos = new ArrayList<>(projects.length * 2); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			List<String> additionalConfigNames = new ArrayList<>(projects.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				getTreesToSave(project, trees, builderInfos, configNames, additionalTrees, additionalBuilderInfos,
 						additionalConfigNames);
 			}
@@ -2160,10 +2160,10 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			writeBuilderPersistentInfo(output, additionalBuilderInfos);
 
 			// Save the configuration names for the builders in the order they were saved
-			for (String string : configNames) {
+			for (String string : configNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				output.writeUTF(string);
 			}
-			for (String string : additionalConfigNames) {
+			for (String string : additionalConfigNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				output.writeUTF(string);
 			}
 		} finally {
@@ -2191,7 +2191,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	 * @throws IOException if anything went wrong during save.
 	 * @see WorkspaceTreeReader_2
 	 */
-	protected void writeTree(Project project, DataOutputStream output, IProgressMonitor monitor)
+	protected void writeTree(Project project, DataOutputStream output, IProgressMonitor monitor) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws IOException, CoreException {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 10);
 		boolean wasImmutable = false;
@@ -2201,16 +2201,16 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			ElementTree current = workspace.getElementTree();
 			wasImmutable = current.isImmutable();
 			current.immutable();
-			List<ElementTree> trees = new ArrayList<>(2);
+			List<ElementTree> trees = new ArrayList<>(2); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			subMonitor.worked(1);
 
 			// Get the the builder info and configuration names, and add all the associated
 			// workspace trees in the correct order
-			List<String> configNames = new ArrayList<>(5);
-			List<BuilderPersistentInfo> builderInfos = new ArrayList<>(5);
-			List<String> additionalConfigNames = new ArrayList<>(5);
-			List<BuilderPersistentInfo> additionalBuilderInfos = new ArrayList<>(5);
-			List<ElementTree> additionalTrees = new ArrayList<>(5);
+			List<String> configNames = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			List<BuilderPersistentInfo> builderInfos = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			List<String> additionalConfigNames = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			List<BuilderPersistentInfo> additionalBuilderInfos = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			List<ElementTree> additionalTrees = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			getTreesToSave(project, trees, builderInfos, configNames, additionalTrees, additionalBuilderInfos,
 					additionalConfigNames);
 
@@ -2236,10 +2236,10 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			writeBuilderPersistentInfo(output, additionalBuilderInfos);
 
 			// Save configuration names for the builders in the order they were saved
-			for (String string : configNames) {
+			for (String string : configNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				output.writeUTF(string);
 			}
-			for (String string : additionalConfigNames) {
+			for (String string : additionalConfigNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				output.writeUTF(string);
 			}
 		} finally {
@@ -2250,7 +2250,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		}
 	}
 
-	protected void writeTree(Project project, int depth) throws CoreException {
+	protected void writeTree(Project project, int depth) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		long start = System.currentTimeMillis();
 		IPath treeLocation = workspace.getMetaArea().getTreeLocationFor(project, true);
 		IPath tempLocation = workspace.getMetaArea().getBackupLocationFor(treeLocation);
@@ -2267,7 +2267,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			throw new ResourceException(IResourceStatus.FAILED_WRITE_METADATA, treeLocation, msg, e);
 		}
 		if (Policy.DEBUG_SAVE_TREE) {
-			Policy.debug("Save tree for " + project.getFullPath() + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Policy.debug("Save tree for " + project.getFullPath() + ": " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 

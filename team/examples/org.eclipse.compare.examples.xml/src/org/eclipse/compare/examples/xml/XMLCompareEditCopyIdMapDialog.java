@@ -63,7 +63,7 @@ public class XMLCompareEditCopyIdMapDialog extends StatusDialog {
 	 * @param ancestor the parent composite to contain the dialog area
 	 * @return the dialog area control
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createDialogArea(Composite ancestor) {
 		Composite composite= (Composite) super.createDialogArea(ancestor);
 
@@ -86,7 +86,7 @@ public class XMLCompareEditCopyIdMapDialog extends StatusDialog {
 
 		fIdMapText= new Text(inner, SWT.BORDER);
 		fIdMapText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		fIdMapText.addModifyListener(unused -> doValidation());
+		fIdMapText.addModifyListener(unused -> doValidation()); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 
 		fIdMapText.setFocus();
 

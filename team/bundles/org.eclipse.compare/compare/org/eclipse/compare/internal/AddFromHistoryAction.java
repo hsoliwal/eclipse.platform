@@ -44,7 +44,7 @@ public class AddFromHistoryAction extends BaseCompareAction {
 		return Utilities.getResources(selection).length == 1;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void run(ISelection selection) {
 
 		ResourceBundle bundle= ResourceBundle.getBundle(BUNDLE_NAME);
@@ -55,7 +55,7 @@ public class AddFromHistoryAction extends BaseCompareAction {
 
 		Object[] s= Utilities.getResources(selection);
 
-		for (Object o : s) {
+		for (Object o : s) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (o instanceof IContainer container) {
 				ProgressMonitorDialog pmdialog= new ProgressMonitorDialog(parentShell);
 				IProgressMonitor pm= pmdialog.getProgressMonitor();
@@ -114,18 +114,18 @@ public class AddFromHistoryAction extends BaseCompareAction {
 		}
 	}
 
-	private void updateWorkspace(final ResourceBundle bundle, Shell shell,
+	private void updateWorkspace(final ResourceBundle bundle, Shell shell, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 					final AddFromHistoryDialog.HistoryInput[] selected)
 									throws InvocationTargetException, InterruptedException {
 
-		WorkspaceModifyOperation operation= new WorkspaceModifyOperation() {
-			@Override
+		WorkspaceModifyOperation operation= new WorkspaceModifyOperation() { //FLLDCIM: MARK — T09  ANONYMOUS
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void execute(IProgressMonitor pm) throws InvocationTargetException {
 				try {
 					String taskName= Utilities.getString(bundle, "taskName"); //$NON-NLS-1$
 					pm.beginTask(taskName, selected.length);
 
-					for (AddFromHistoryDialog.HistoryInput s : selected) {
+					for (AddFromHistoryDialog.HistoryInput s : selected) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						IFile file = s.fFile;
 						IFileState fileState = s.fFileState;
 						createContainers(file);

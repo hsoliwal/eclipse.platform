@@ -1332,7 +1332,7 @@ public interface IFile extends IResource, IEncodedStorage, IAdaptable {
 		try (InputStream stream = getContents(true)) {
 			return stream.readAllBytes();
 		} catch (IOException e) {
-			throw new CoreException(Status.error("Error reading " + getFullPath(), e)); //$NON-NLS-1$
+			throw new CoreException(Status.error("Error reading " + getFullPath(), e)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -1353,7 +1353,7 @@ public interface IFile extends IResource, IEncodedStorage, IAdaptable {
 		try (InputStream stream = getContents(true)) {
 			return stream.readNBytes(maxBytes);
 		} catch (IOException e) {
-			throw new CoreException(Status.error("Error reading " + getFullPath(), e)); //$NON-NLS-1$
+			throw new CoreException(Status.error("Error reading " + getFullPath(), e)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 

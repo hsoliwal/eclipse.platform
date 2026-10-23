@@ -69,7 +69,7 @@ public class MetadataTreeView extends SpyView {
 		 *
 		 * @see org.eclipse.jface.action.IAction#run()
 		 */
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void run() {
 			IStructuredSelection sel = MetadataTreeView.this.viewer.getStructuredSelection();
 			if (sel == null || sel.isEmpty()) {
@@ -80,7 +80,7 @@ public class MetadataTreeView extends SpyView {
 
 			File file = (File) fileNode.getValue();
 			// we have no interest in directories
-			if (!file.isFile()) {
+			if (!file.isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				return;
 			}
 
@@ -138,7 +138,7 @@ public class MetadataTreeView extends SpyView {
 	 * @param parent the parent control
 	 * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createPartControl(Composite parent) {
 		viewer = new TreeViewer(parent);
 
@@ -165,7 +165,7 @@ public class MetadataTreeView extends SpyView {
 		viewer.getControl().setMenu(menu);
 
 		// associates double-click to dump file action
-		viewer.addDoubleClickListener(unused -> dumpFileAction.run());
+		viewer.addDoubleClickListener(unused -> dumpFileAction.run()); //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
 	}
 
 	/**
@@ -177,12 +177,12 @@ public class MetadataTreeView extends SpyView {
 		if (file == null) {
 			return;
 		}
-		if (!file.isDirectory()) {
+		if (!file.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			ErrorUtil.showErrorMessage("Selected item is not a directory", "Error selecting metadata location"); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}
 		metadataPath = file;
-		viewer.setInput(file);
+		viewer.setInput(file); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 	}
 
 }

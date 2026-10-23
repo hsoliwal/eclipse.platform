@@ -166,7 +166,7 @@ public abstract class AbstractDataTree {
 	 * an immutable state. Throws an unchecked exception.
 	 */
 	void handleImmutableTree() {
-		String message = NLS.bind(Messages.dtree_immutable, this + " #" + System.identityHashCode(this)); //$NON-NLS-1$
+		String message = NLS.bind(Messages.dtree_immutable, this + " #" + System.identityHashCode(this)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		RuntimeException exception = new RuntimeException(message);
 		if (Policy.DEBUG_TREE_IMMUTABLE) {
 			Policy.debug(exception);
@@ -194,12 +194,12 @@ public abstract class AbstractDataTree {
 	}
 
 	private void traceImmutable() {
-		String message = "immutable() called for " + this + " #" + System.identityHashCode(this); //$NON-NLS-1$ //$NON-NLS-2$
-		message += " (rule: " + Job.getJobManager().currentRule() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+		String message = "immutable() called for " + this + " #" + System.identityHashCode(this); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		message += " (rule: " + Job.getJobManager().currentRule() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		if (Policy.DEBUG_TREE_IMMUTABLE_STACK) {
 			Job currentJob = Job.getJobManager().currentJob();
 			if (currentJob == null) {
-				Policy.debug(new RuntimeException(message + " (not from a job)")); //$NON-NLS-1$
+				Policy.debug(new RuntimeException(message + " (not from a job)")); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			} else if (currentJob.getClass().getSimpleName().contains("AutoBuildJob")) { //$NON-NLS-1$
 				// don't need to pollute the log with autobuild stack
 				Policy.debug(message);

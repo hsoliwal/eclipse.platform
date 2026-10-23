@@ -47,19 +47,19 @@ public class WorkspaceTreeReader_1 extends WorkspaceTreeReader {
 		return ICoreConstants.WORKSPACE_TREE_VERSION_1;
 	}
 
-	protected void linkBuildersToTrees(List<BuilderPersistentInfo> buildersToBeLinked, ElementTree[] trees, int index, IProgressMonitor monitor) {
+	protected void linkBuildersToTrees(List<BuilderPersistentInfo> buildersToBeLinked, ElementTree[] trees, int index, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		monitor = Policy.monitorFor(monitor);
 		try {
 			ArrayList<BuilderPersistentInfo> infos = null;
 			String projectName = null;
-			for (BuilderPersistentInfo info : buildersToBeLinked) {
+			for (BuilderPersistentInfo info : buildersToBeLinked) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!info.getProjectName().equals(projectName)) {
 					if (infos != null) { // if it is not the first iteration
 						IProject project = workspace.getRoot().getProject(projectName);
 						workspace.getBuildManager().setBuildersPersistentInfo(project, infos);
 					}
 					projectName = info.getProjectName();
-					infos = new ArrayList<>(5);
+					infos = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				}
 				info.setLastBuildTree(trees[index++]);
 				infos.add(info);
@@ -73,10 +73,10 @@ public class WorkspaceTreeReader_1 extends WorkspaceTreeReader {
 		}
 	}
 
-	protected void linkPluginsSavedStateToTrees(List<SavedState> states, ElementTree[] trees, IProgressMonitor monitor) {
+	protected void linkPluginsSavedStateToTrees(List<SavedState> states, ElementTree[] trees, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		monitor = Policy.monitorFor(monitor);
 		try {
-			for (int i = 0; i < states.size(); i++) {
+			for (int i = 0; i < states.size(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				SavedState state = states.get(i);
 				// If the tree is too old (depends on the policy), the plug-in should not
 				// get it back as a delta. It is expensive to maintain this information too long.
@@ -108,7 +108,7 @@ public class WorkspaceTreeReader_1 extends WorkspaceTreeReader {
 		monitor = Policy.monitorFor(monitor);
 		try {
 			int builderCount = input.readInt();
-			for (int i = 0; i < builderCount; i++) {
+			for (int i = 0; i < builderCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				builders.add(readBuilderInfo(project, input, i));
 			}
 		} finally {
@@ -120,7 +120,7 @@ public class WorkspaceTreeReader_1 extends WorkspaceTreeReader {
 		monitor = Policy.monitorFor(monitor);
 		try {
 			int stateCount = input.readInt();
-			for (int i = 0; i < stateCount; i++) {
+			for (int i = 0; i < stateCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String pluginId = input.readUTF();
 				SavedState state = new SavedState(workspace, pluginId, null, null);
 				savedStates.put(pluginId, state);
@@ -131,7 +131,7 @@ public class WorkspaceTreeReader_1 extends WorkspaceTreeReader {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ElementTree readSnapshotTree(DataInputStream input, ElementTree complete, IProgressMonitor monitor) throws CoreException {
 		monitor = Policy.monitorFor(monitor);
 		String message;
@@ -139,7 +139,7 @@ public class WorkspaceTreeReader_1 extends WorkspaceTreeReader {
 			message = Messages.resources_readingSnap;
 			monitor.beginTask(message, Policy.totalWork);
 			ElementTreeReader reader = new ElementTreeReader(workspace.getSaveManager());
-			while (input.available() > 0) {
+			while (input.available() > 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				readWorkspaceFields(input, Policy.subMonitorFor(monitor, Policy.totalWork / 2));
 				complete = reader.readDelta(complete, input);
 				try {
@@ -161,7 +161,7 @@ public class WorkspaceTreeReader_1 extends WorkspaceTreeReader {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void readTree(DataInputStream input, IProgressMonitor monitor) throws CoreException {
 		monitor = Policy.monitorFor(monitor);
 		String message;
@@ -170,12 +170,12 @@ public class WorkspaceTreeReader_1 extends WorkspaceTreeReader {
 			monitor.beginTask(message, Policy.totalWork);
 			readWorkspaceFields(input, Policy.subMonitorFor(monitor, Policy.opWork * 20 / 100));
 
-			HashMap<String, SavedState> savedStates = new HashMap<>(20);
-			List<SavedState> pluginsToBeLinked = new ArrayList<>(20);
+			HashMap<String, SavedState> savedStates = new HashMap<>(20); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+			List<SavedState> pluginsToBeLinked = new ArrayList<>(20); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			readPluginsSavedStates(input, savedStates, pluginsToBeLinked, Policy.subMonitorFor(monitor, Policy.opWork * 10 / 100));
 			workspace.getSaveManager().setPluginsSavedState(savedStates);
 
-			List<BuilderPersistentInfo> buildersToBeLinked = new ArrayList<>(20);
+			List<BuilderPersistentInfo> buildersToBeLinked = new ArrayList<>(20); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			readBuildersPersistentInfo(null, input, buildersToBeLinked, Policy.subMonitorFor(monitor, Policy.opWork * 10 / 100));
 
 			ElementTree[] trees = readTrees(IPath.ROOT, input, Policy.subMonitorFor(monitor, Policy.opWork * 40 / 100));
@@ -190,7 +190,7 @@ public class WorkspaceTreeReader_1 extends WorkspaceTreeReader {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void readTree(IProject project, DataInputStream input, IProgressMonitor monitor) throws CoreException {
 		monitor = Policy.monitorFor(monitor);
 		String message;
@@ -202,7 +202,7 @@ public class WorkspaceTreeReader_1 extends WorkspaceTreeReader {
 
 			/* read in the list of builder names */
 			String[] builderNames = new String[numBuilders];
-			for (int i = 0; i < numBuilders; i++) {
+			for (int i = 0; i < numBuilders; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String builderName = input.readUTF();
 				builderNames[i] = builderName;
 			}
@@ -213,8 +213,8 @@ public class WorkspaceTreeReader_1 extends WorkspaceTreeReader {
 
 			/* map builder names to trees */
 			if (numBuilders > 0) {
-				ArrayList<BuilderPersistentInfo> infos = new ArrayList<>(trees.length * 2 + 1);
-				for (int i = 0; i < numBuilders; i++) {
+				ArrayList<BuilderPersistentInfo> infos = new ArrayList<>(trees.length * 2 + 1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+				for (int i = 0; i < numBuilders; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					BuilderPersistentInfo info = new BuilderPersistentInfo(project.getName(), builderNames[i], -1);
 					info.setLastBuildTree(trees[i]);
 					infos.add(info);
@@ -234,7 +234,7 @@ public class WorkspaceTreeReader_1 extends WorkspaceTreeReader {
 	/**
 	 * Read trees from disk and link them to the workspace tree.
 	 */
-	protected ElementTree[] readTrees(IPath root, DataInputStream input, IProgressMonitor monitor) throws IOException {
+	protected ElementTree[] readTrees(IPath root, DataInputStream input, IProgressMonitor monitor) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		monitor = Policy.monitorFor(monitor);
 		try {
 			String message = Messages.resources_reading;

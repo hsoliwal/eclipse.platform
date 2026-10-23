@@ -76,7 +76,7 @@ public class ScmUrlImportDescription {
 	 */
 	public synchronized void setProperty(String key, Object value) {
 		if (properties == null) {
-			properties = new HashMap<>();
+			properties = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 		if (value == null) {
 			properties.remove(key);

@@ -41,9 +41,9 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.SelectionListenerAction;
 
-public class PasteAction extends SelectionListenerAction {
+public class PasteAction extends SelectionListenerAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
-	private final static String ID = TeamUIPlugin.PLUGIN_ID
+	private final static String ID = TeamUIPlugin.PLUGIN_ID //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			+ ".synchronize.action.paste"; //$NON-NLS-1$
 	private final Shell fShell;
 	private final Clipboard fClipboard;
@@ -63,7 +63,7 @@ public class PasteAction extends SelectionListenerAction {
 		setId(ID);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run() {
 		IStorage patchStorage = getPatchStorage();
 		if (patchStorage != null) {
@@ -89,7 +89,7 @@ public class PasteAction extends SelectionListenerAction {
 		}
 	}
 
-	private IStorage getPatchStorage() {
+	private IStorage getPatchStorage() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final String text = getClipboardText();
 		if (text == null) {
 			return null;
@@ -152,7 +152,7 @@ public class PasteAction extends SelectionListenerAction {
 
 	private static boolean isAvailable(Transfer transfer,
 			TransferData[] availableDataTypes) {
-		for (TransferData availableDataType : availableDataTypes) {
+		for (TransferData availableDataType : availableDataTypes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (transfer.isSupportedType(availableDataType)) {
 				return true;
 			}
@@ -164,7 +164,7 @@ public class PasteAction extends SelectionListenerAction {
 			final Transfer transfer, Shell shell) {
 		// see bug 33028 for explanation why we need this
 		final Object[] result = new Object[1];
-		shell.getDisplay().syncExec(() -> result[0] = clipboard.getContents(transfer));
+		shell.getDisplay().syncExec(() -> result[0] = clipboard.getContents(transfer)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		return result[0];
 	}
 

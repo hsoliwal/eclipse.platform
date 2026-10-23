@@ -39,13 +39,13 @@ public class TestSessionTableContentProvider implements IStructuredContentProvid
 	@Override
 	public Object[] getElements(Object inputElement) {
 		ITestRunSession session = (ITestRunSession) inputElement;
-		List<ITestElement> all = new ArrayList<>();
+		List<ITestElement> all = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		addAll(all, session);
 		return all.toArray();
 	}
 
 	private void addAll(List<ITestElement> all, ITestSuiteElement suite) {
-		for (ITestElement element : suite.getChildren()) {
+		for (ITestElement element : suite.getChildren()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element instanceof TestSuiteElement) {
 				if (((TestSuiteElement) element).getSuiteStatus().isErrorOrFailure()) {
 					all.add(element); // add failed suite to flat list too

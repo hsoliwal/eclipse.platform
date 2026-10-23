@@ -36,7 +36,7 @@ public class PlatformURLResourceConnection extends PlatformURLConnection {
 
 	// resource/ protocol
 	public static final String RESOURCE = "resource"; //$NON-NLS-1$
-	public static final String RESOURCE_URL_STRING = PlatformURLHandler.PROTOCOL + PlatformURLHandler.PROTOCOL_SEPARATOR + '/' + RESOURCE + '/';
+	public static final String RESOURCE_URL_STRING = PlatformURLHandler.PROTOCOL + PlatformURLHandler.PROTOCOL_SEPARATOR + '/' + RESOURCE + '/'; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	private static URL rootURL;
 
 	public PlatformURLResourceConnection(URL url) {
@@ -48,7 +48,7 @@ public class PlatformURLResourceConnection extends PlatformURLConnection {
 		return false; // don't cache, workspace is local
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected URL resolve() throws IOException {
 		String filePath = url.getFile().trim();
 		filePath = URLDecoder.decode(filePath, StandardCharsets.UTF_8);

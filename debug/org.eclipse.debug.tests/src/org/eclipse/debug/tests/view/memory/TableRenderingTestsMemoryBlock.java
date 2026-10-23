@@ -128,7 +128,7 @@ public class TableRenderingTestsMemoryBlock implements IMemoryBlockExtension {
 	public MemoryByte[] getBytesFromOffset(BigInteger unitOffset, long addressableUnits) throws DebugException {
 		assert BigInteger.ZERO.equals(unitOffset);
 		final MemoryByte[] memoryBytes = new MemoryByte[(int) (addressableUnits * getAddressableSize())];
-		for (int n = 0; n < memoryBytes.length; n++) {
+		for (int n = 0; n < memoryBytes.length; n++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			memoryBytes[n] = new MemoryByte(fBytes[n]);
 		}
 		return memoryBytes;

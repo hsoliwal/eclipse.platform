@@ -82,7 +82,7 @@ public class AntImageDescriptor extends CompositeImageDescriptor {
 	/**
 	 * Add any overlays to the image as specified in the flags.
 	 */
-	protected void drawOverlays() {
+	protected void drawOverlays() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int flags = getFlags();
 		int y = 0;
 		CachedImageDataProvider provider;

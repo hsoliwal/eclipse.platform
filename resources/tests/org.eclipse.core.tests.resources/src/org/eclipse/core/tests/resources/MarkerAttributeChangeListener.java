@@ -29,9 +29,9 @@ import org.eclipse.core.runtime.CoreException;
  * then verifying that the marker deltas accurately reflect the old
  * marker state.
  */
-public class MarkerAttributeChangeListener implements IResourceChangeListener {
+public class MarkerAttributeChangeListener implements IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 	//Map of (Long(id) -> Map of (String(attribute key) -> Object(attribute value)))
-	private final Map<Long, Map<String, Object>> attributeMap = new HashMap<>();
+	private final Map<Long, Map<String, Object>> attributeMap = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	//cache the exception because it can't be thrown from a listener
 	private AssertionError error;
@@ -44,7 +44,7 @@ public class MarkerAttributeChangeListener implements IResourceChangeListener {
 		error = null;
 		attributeMap.clear();
 
-		for (IMarker marker : markers) {
+		for (IMarker marker : markers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			attributeMap.put(Long.valueOf(marker.getId()), marker.getAttributes());
 		}
 	}
@@ -65,7 +65,7 @@ public class MarkerAttributeChangeListener implements IResourceChangeListener {
 		int expectedCount = attributeMap.size();
 		int actualCount = deltas.length;
 		assertEquals(expectedCount, actualCount, "wrong number of changes");
-		for (IMarkerDelta delta : deltas) {
+		for (IMarkerDelta delta : deltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Map<String, Object> expected = attributeMap.get(Long.valueOf(delta.getId()));
 			Map<String, Object> actual = delta.getAttributes();
 			assertEquals(expected, actual, "Changes different from expecations");

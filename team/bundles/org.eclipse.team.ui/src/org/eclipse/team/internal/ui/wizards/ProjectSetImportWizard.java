@@ -43,7 +43,7 @@ public class ProjectSetImportWizard extends Wizard implements IImportWizard {
 		addPage(mainPage);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean performFinish() {
 		final boolean[] result = new boolean[] {false};
 		try {

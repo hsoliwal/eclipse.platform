@@ -37,7 +37,7 @@ public class PDAWatchCommand extends PDACommand {
 	public static final int NONE = 0;
 
 	public PDAWatchCommand(String function, String variable, int operation) {
-		super("watch " + function+ "::" + variable + " " + operation); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		super("watch " + function+ "::" + variable + " " + operation); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 

@@ -33,20 +33,20 @@ public class ChangeDescription {
 	public static final String MOVED = "Moved {0}";
 	public static final String REMOVED = "Removed {0}";
 
-	private final List<IResource> addedRoots = new ArrayList<>();
-	private final List<IResource> changedRoots = new ArrayList<>();
-	private final List<IResource> closedProjects = new ArrayList<>();
-	private final List<IResource> copiedRoots = new ArrayList<>();
-	private final List<Status> errors = new ArrayList<>();
-	private final List<IResource> movedRoots = new ArrayList<>();
-	private final List<IResource> removedRoots = new ArrayList<>();
+	private final List<IResource> addedRoots = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private final List<IResource> changedRoots = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private final List<IResource> closedProjects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private final List<IResource> copiedRoots = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private final List<Status> errors = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private final List<IResource> movedRoots = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private final List<IResource> removedRoots = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	public static String getMessageFor(String messageTemplate, IResource resource) {
 		return NLS.bind(messageTemplate, resource.getFullPath().toString());
 	}
 
 	private void accumulateStatus(IResource[] resources, List<ModelStatus> result, String message) {
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result.add(new ModelStatus(IStatus.WARNING, "org.eclipse.core.tests.resources", TestModelProvider.ID, getMessageFor(message, resource)));
 		}
 	}
@@ -55,9 +55,9 @@ public class ChangeDescription {
 		errors.add(new Status(IStatus.ERROR, "org.eclipse.core.tests.resources", 0, "An error occurred", e));
 	}
 
-	public IStatus asStatus() {
+	public IStatus asStatus() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (errors.isEmpty()) {
-			List<ModelStatus> result = new ArrayList<>();
+			List<ModelStatus> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			accumulateStatus(addedRoots.toArray(new IResource[addedRoots.size()]), result, ADDED);
 			accumulateStatus(removedRoots.toArray(new IResource[removedRoots.size()]), result, REMOVED);
 			accumulateStatus(movedRoots.toArray(new IResource[movedRoots.size()]), result, MOVED);
@@ -94,7 +94,7 @@ public class ChangeDescription {
 
 	private void ensureResourceCovered(IResource resource, List<IResource> list) {
 		IPath path = resource.getFullPath();
-		for (IResource root : list) {
+		for (IResource root : list) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (root.getFullPath().isPrefixOf(path)) {
 				return;
 			}

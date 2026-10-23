@@ -24,7 +24,7 @@ import java.util.EventListener;
  * @see Subscriber#addListener(ISubscriberChangeListener)
  * @since 3.0
  */
-public interface ISubscriberChangeListener extends EventListener{
+public interface ISubscriberChangeListener extends EventListener{ //FLLDCIM: MARK — T38  IMPLEMENTS
 
 	/**
 	 * Notifies this listener that some resources' subscriber properties have

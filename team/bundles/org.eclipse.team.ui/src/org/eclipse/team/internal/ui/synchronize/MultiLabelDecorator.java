@@ -30,7 +30,7 @@ class MultiLabelDecorator extends LabelProvider implements ILabelDecorator, IFon
 
 	@Override
 	public Image decorateImage(Image image, Object element) {
-		for (ILabelDecorator decorator : decorators) {
+		for (ILabelDecorator decorator : decorators) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Image newImage = decorator.decorateImage(image, element);
 			if (newImage != null) {
 				image = newImage;
@@ -41,7 +41,7 @@ class MultiLabelDecorator extends LabelProvider implements ILabelDecorator, IFon
 
 	@Override
 	public String decorateText(String text, Object element) {
-		for (ILabelDecorator decorator : decorators) {
+		for (ILabelDecorator decorator : decorators) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String newText = decorator.decorateText(text, element);
 			if (newText != null) {
 				text = newText;
@@ -52,14 +52,14 @@ class MultiLabelDecorator extends LabelProvider implements ILabelDecorator, IFon
 
 	@Override
 	public void dispose() {
-		for (ILabelDecorator d : decorators) {
+		for (ILabelDecorator d : decorators) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			d.dispose();
 		}
 	}
 
 	@Override
 	public Font decorateFont(Object element) {
-		for (ILabelDecorator decorator : decorators) {
+		for (ILabelDecorator decorator : decorators) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if(decorator instanceof IFontDecorator) {
 				return ((IFontDecorator)decorator).decorateFont(element);
 			}
@@ -69,7 +69,7 @@ class MultiLabelDecorator extends LabelProvider implements ILabelDecorator, IFon
 
 	@Override
 	public Color decorateForeground(Object element) {
-		for (ILabelDecorator decorator : decorators) {
+		for (ILabelDecorator decorator : decorators) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if(decorator instanceof IColorDecorator) {
 				return ((IColorDecorator)decorator).decorateForeground(element);
 			}
@@ -79,7 +79,7 @@ class MultiLabelDecorator extends LabelProvider implements ILabelDecorator, IFon
 
 	@Override
 	public Color decorateBackground(Object element) {
-		for (ILabelDecorator decorator : decorators) {
+		for (ILabelDecorator decorator : decorators) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if(decorator instanceof IColorDecorator) {
 				return ((IColorDecorator)decorator).decorateBackground(element);
 			}

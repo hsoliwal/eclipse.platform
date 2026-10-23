@@ -152,7 +152,7 @@ public class ApplyPatchOperation implements Runnable {
 	 * Open the Apply Patch wizard using the values associated with this operation.
 	 * This method must be called from the UI thread.
 	 */
-	public void openWizard() {
+	public void openWizard() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		saveAllEditors();
 
 		if (saveAllEditors) {
@@ -231,7 +231,7 @@ public class ApplyPatchOperation implements Runnable {
 		openWizard();
 	}
 
-	private static IFilePatch[] internalParsePatch(IStorage storage)
+	private static IFilePatch[] internalParsePatch(IStorage storage) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws CoreException {
 		try (BufferedReader reader = Utilities.createReader(storage)) {
 			PatchReader patchReader = new PatchReader() {
@@ -246,7 +246,7 @@ public class ApplyPatchOperation implements Runnable {
 			FilePatch2[] fileDiffs = patchReader.getAdjustedDiffs();
 
 			IFilePatch[] filePatch = new IFilePatch[fileDiffs.length];
-			for (int i = 0; i < fileDiffs.length; i++) {
+			for (int i = 0; i < fileDiffs.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				filePatch[i] = (FilePatch) fileDiffs[i];
 			}
 

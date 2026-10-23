@@ -56,7 +56,7 @@ public class DumpTool implements IApplication {
 	 * @param context Application Context
 	 * @see DumperFactory#getDumper(String)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Object start(IApplicationContext context) throws Exception {
 		String fileName = System.getProperty("dump.file"); //$NON-NLS-1$
 		if (fileName == null) {
@@ -65,8 +65,8 @@ public class DumpTool implements IApplication {
 		}
 
 		File toDump = new File(fileName);
-		if (!toDump.exists()) {
-			System.err.println("File \"" + toDump.getAbsolutePath() + "\" does not exist"); //$NON-NLS-1$ //$NON-NLS-2$
+		if (!toDump.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			System.err.println("File \"" + toDump.getAbsolutePath() + "\" does not exist"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			return Integer.valueOf(1);
 		}
 
@@ -76,15 +76,15 @@ public class DumpTool implements IApplication {
 		this.fileFilter = new MetadataFileFilter(registeredFileNames);
 		this.directoryFilter = File::isDirectory;
 		System.out.println("DumpTool started...");
-		System.out.println("Analyzing: "+fileName);
+		System.out.println("Analyzing: "+fileName); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-		if (toDump.isFile()) {
+		if (toDump.isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			files = new String[]{fileName};
 		} else {
 			files = extractFiles(fileName);
 		}
 
-		for (String file : files) {
+		for (String file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			dump(file);
 		}
 
@@ -92,12 +92,12 @@ public class DumpTool implements IApplication {
 		return Integer.valueOf(0);
 	}
 
-	private void dump(String fileName) {
+	private void dump(String fileName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IDumper dumper = null;
 		try {
 			dumper = DumperFactory.getInstance().getDumper(fileName);
 		} catch (DumpException de) {
-			System.err.println("Error: \n" + de); //$NON-NLS-1$
+			System.err.println("Error: \n" + de); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			return;
 		}
 		IDump dump = dumper.dump(new File(fileName));
@@ -116,11 +116,11 @@ public class DumpTool implements IApplication {
 		System.out.print(". Bytes read: "); //$NON-NLS-1$
 		System.out.print(dump.getOffset());
 		System.out.print(" / Total: "); //$NON-NLS-1$
-		System.out.println(dump.getFile().length());
+		System.out.println(dump.getFile().length()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	private String[] extractFiles(String directory) {
-		List<String> fileNames = new ArrayList<>();
+		List<String> fileNames = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		extractInfo(new File(directory), fileNames, new NullProgressMonitor());
 
 		String[] result = new String[fileNames.size()];
@@ -142,27 +142,27 @@ public class DumpTool implements IApplication {
 	 * @return true if the provided dir (or at least one of its sub dirs)
 	 * contains files with one of the registered types, false otherwise
 	 */
-	void extractInfo(File dir, List<String> fileList, IProgressMonitor monitor) {
+	void extractInfo(File dir, List<String> fileList, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (monitor.isCanceled()) {
 			return;
 		}
 
-		monitor.beginTask("Scanning dir " + dir, 100); //$NON-NLS-1$
+		monitor.beginTask("Scanning dir " + dir, 100); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		try {
 			// looks for files of registered types in this directory
-			File[] selectedFiles = dir.listFiles(fileFilter);
+			File[] selectedFiles = dir.listFiles(fileFilter); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			monitor.worked(1);
 			Arrays.sort(selectedFiles);
-			for (File selectedFile : selectedFiles) {
+			for (File selectedFile : selectedFiles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fileList.add(selectedFile.getAbsolutePath());
 			}
 			// looks for files of registered types in its subdirectories
-			File[] subDirs = dir.listFiles(directoryFilter);
+			File[] subDirs = dir.listFiles(directoryFilter); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			monitor.worked(1);
 			Arrays.sort(subDirs);
 
-			for (File subDir : subDirs) {
+			for (File subDir : subDirs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// Recursive call
 				extractInfo(subDir, fileList, Policy.subMonitorFor(monitor, (98 / subDirs.length)));
 			}

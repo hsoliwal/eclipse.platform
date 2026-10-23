@@ -27,7 +27,7 @@ package org.eclipse.debug.examples.core.pda.protocol;
 public class PDARegistersCommand extends PDACommand {
 
 	public PDARegistersCommand(String group) {
-		super("registers " + group); //$NON-NLS-1$
+		super("registers " + group); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 

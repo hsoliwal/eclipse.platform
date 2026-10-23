@@ -50,7 +50,7 @@ public class SortBuilder extends TestBuilder {
 	/**
 	 * All instances.
 	 */
-	protected static final ArrayList<SortBuilder> allInstances = new ArrayList<>();
+	protected static final ArrayList<SortBuilder> allInstances = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	/**
 	 * Build command parameters.
@@ -80,7 +80,7 @@ public class SortBuilder extends TestBuilder {
 	/**
 	 * List of the resources that were in the last delta, if any.
 	 */
-	protected final ArrayList<IResource> changedResources = new ArrayList<>();
+	protected final ArrayList<IResource> changedResources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private boolean requestForgetState = false;
 
 	/**
@@ -113,14 +113,14 @@ public class SortBuilder extends TestBuilder {
 	 * sorted file with the result.
 	 * @exception Exception if the build can't proceed
 	 */
-	private void build(IFile unsortedFile) throws CoreException {
+	private void build(IFile unsortedFile) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		InputStream is = unsortedFile.getContents();
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
 		try {
 			try {
 				int c;
-				while ((c = is.read()) != -1) {
+				while ((c = is.read()) != -1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					bos.write(c);
 				}
 			} finally {
@@ -140,7 +140,7 @@ public class SortBuilder extends TestBuilder {
 		sortedFile.setContents(bytes, true, false, null);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
 		arguments = args;
 		super.build(kind, args, monitor);
@@ -218,7 +218,7 @@ public class SortBuilder extends TestBuilder {
 	 * resource must not be a solution and its project must exist.
 	 * @exception CoreException if the resource is not a folder or a file
 	 */
-	private void deleteResource(IResource resource) throws CoreException {
+	private void deleteResource(IResource resource) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!resource.exists()) {
 			return;
 		}
@@ -228,7 +228,7 @@ public class SortBuilder extends TestBuilder {
 		if (type == IResource.FOLDER) {
 			IFolder folder = (IFolder) resource;
 			IResource[] members = folder.members();
-			for (IResource member : members) {
+			for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				deleteResource(member);
 			}
 			folder.delete(true, null);
@@ -244,7 +244,7 @@ public class SortBuilder extends TestBuilder {
 	 * build and sorting all files in the unsorted folder.
 	 * @exception CoreException if the build can't proceed
 	 */
-	private void fullBuild() throws CoreException {
+	private void fullBuild() throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			IFolder sortedFolder = getSortedFolder();
 			IFolder unsortedFolder = getUnsortedFolder();
@@ -252,7 +252,7 @@ public class SortBuilder extends TestBuilder {
 			if (sortedFolder.exists()) {
 				//delete all sorted files
 				IResource[] members = sortedFolder.members();
-				for (IResource member : members) {
+				for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					deleteResource(member);
 				}
 			}
@@ -275,7 +275,7 @@ public class SortBuilder extends TestBuilder {
 			build((IFile) unsortedResource);
 		} else {
 			IResource[] members = ((IFolder) unsortedResource).members();
-			for (IResource member : members) {
+			for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fullBuild(member);
 			}
 		}
@@ -320,7 +320,7 @@ public class SortBuilder extends TestBuilder {
 	 * the last build
 	 * @exception Exception if the build can't proceed
 	 */
-	private void incrementalBuild(IResourceDelta delta) throws CoreException {
+	private void incrementalBuild(IResourceDelta delta) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource unsortedResource = delta.getResource();
 		IPath unsortedFolderPath = getUnsortedFolder().getFullPath();
 		IPath deltaPath = delta.getResource().getFullPath();
@@ -350,7 +350,7 @@ public class SortBuilder extends TestBuilder {
 
 		if (isUnderUnsortedFolder || isOverUnsortedFolder) {
 			IResourceDelta[] affectedChildren = delta.getAffectedChildren();
-			for (IResourceDelta element : affectedChildren) {
+			for (IResourceDelta element : affectedChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				incrementalBuild(element);
 			}
 		}
@@ -374,7 +374,7 @@ public class SortBuilder extends TestBuilder {
 	 * ascending order, false if the bytes are to be sorted in
 	 * descending order
 	 */
-	private void quicksort(byte[] bytes, int start, int end, boolean ascendingOrder) {
+	private void quicksort(byte[] bytes, int start, int end, boolean ascendingOrder) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (start >= end || start < 0 || end >= bytes.length) {
 			return;
 		}
@@ -383,7 +383,7 @@ public class SortBuilder extends TestBuilder {
 		int mid = (start + end) / 2;
 		swap(bytes, start, mid);
 
-		for (int i = start + 1; i <= end; ++i) {
+		for (int i = start + 1; i <= end; ++i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (ascendingOrder && bytes[i] < bytes[start] || !ascendingOrder && bytes[i] > bytes[start]) {
 				++pos;
 				swap(bytes, pos, i);
@@ -403,7 +403,7 @@ public class SortBuilder extends TestBuilder {
 		if (delta == null) {
 			return;
 		}
-		delta.accept(delta1 -> {
+		delta.accept(delta1 -> { //FLLDCIM: MARK — T07  LAMBDA
 			changedResources.add(delta1.getResource());
 			return true;
 		});
@@ -430,7 +430,7 @@ public class SortBuilder extends TestBuilder {
 
 	@Override
 	public String toString() {
-		return "SortBuilder(" + getProject() + ')';
+		return "SortBuilder(" + getProject() + ')'; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	public boolean wasAutoBuild() {

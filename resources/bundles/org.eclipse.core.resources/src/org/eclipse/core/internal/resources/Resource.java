@@ -92,7 +92,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		accept(visitor, IResource.DEPTH_INFINITE, memberFlags);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void accept(final IResourceProxyVisitor visitor, final int depth, final int memberFlags) throws CoreException {
 		// It is invalid to call accept on a phantom when INCLUDE_PHANTOMS is not specified.
 		final boolean includePhantoms = (memberFlags & IContainer.INCLUDE_PHANTOMS) != 0;
@@ -149,11 +149,11 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		accept(visitor, depth, includePhantoms ? IContainer.INCLUDE_PHANTOMS : 0);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void accept(final IResourceVisitor visitor, int depth, int memberFlags) throws CoreException {
 		// Use the fast visitor if visiting to infinite depth.
 		if (depth == IResource.DEPTH_INFINITE) {
-			accept(proxy -> visitor.visit(proxy.requestResource()), memberFlags);
+			accept(proxy -> visitor.visit(proxy.requestResource()), memberFlags); //FLLDCIM: MARK — T07  LAMBDA
 			return;
 		}
 		// It is invalid to call accept on a phantom when INCLUDE_PHANTOMS is not specified.
@@ -182,7 +182,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		// If we had a gender change we need to fix up the resource before asking for its members.
 		IContainer resource = getType() != type ? (IContainer) workspace.newResource(getFullPath(), type) : (IContainer) this;
 		IResource[] members = resource.members(memberFlags);
-		for (IResource member : members) {
+		for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			member.accept(visitor, DEPTH_ZERO, memberFlags | IContainer.DO_NOT_CHECK_EXISTENCE);
 		}
 	}
@@ -200,7 +200,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 	 * Throws an exception if the link preconditions are not met.  Returns the file info
 	 * for the file being linked to, or <code>null</code> if not available.
 	 */
-	protected IFileInfo assertLinkRequirements(URI localLocation, int updateFlags) throws CoreException {
+	protected IFileInfo assertLinkRequirements(URI localLocation, int updateFlags) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean allowMissingLocal = (updateFlags & IResource.ALLOW_MISSING_LOCAL) != 0;
 		if ((updateFlags & IResource.REPLACE) == 0) {
 			checkDoesNotExist(getFlags(getResourceInfo(false, false)), true);
@@ -268,7 +268,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 	 *
 	 * @see IResource#copy(IPath, int, IProgressMonitor)
 	 */
-	public IStatus checkCopyRequirements(IPath destination, int destinationType, int updateFlags) throws CoreException {
+	public IStatus checkCopyRequirements(IPath destination, int destinationType, int updateFlags) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String message = Messages.resources_copyNotMet;
 		MultiStatus status = new MultiStatus(ResourcesPlugin.PI_RESOURCES, IResourceStatus.INVALID_VALUE, message, null);
 		if (destination == null) {
@@ -403,7 +403,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 	 *
 	 * @see IResource#move(IPath, int, IProgressMonitor)
 	 */
-	protected IStatus checkMoveRequirements(IPath destination, int destinationType, int updateFlags) throws CoreException {
+	protected IStatus checkMoveRequirements(IPath destination, int destinationType, int updateFlags) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String message = Messages.resources_moveNotMet;
 		MultiStatus status = new MultiStatus(ResourcesPlugin.PI_RESOURCES, IResourceStatus.INVALID_VALUE, message, null);
 		if (destination == null) {
@@ -526,7 +526,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		getLocalManager().getHistoryStore().remove(getFullPath(), monitor);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean contains(ISchedulingRule rule) {
 		// Must allow notifications to nest in all resource rules.
 		if ((this == rule) || rule.getClass().equals(WorkManager.NotifyRule.class)) {
@@ -534,7 +534,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		}
 		if (rule instanceof MultiRule multi) {
 			ISchedulingRule[] children = multi.getChildren();
-			for (ISchedulingRule c : children) {
+			for (ISchedulingRule c : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!contains(c)) {
 					return false;
 				}
@@ -573,7 +573,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		copy(destination, updateFlags, monitor);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void copy(IPath destination, int updateFlags, IProgressMonitor monitor) throws CoreException {
 		String message = NLS.bind(Messages.resources_copying, getFullPath());
 		SubMonitor progress = SubMonitor.convert(monitor, message, 100).checkCanceled();
@@ -608,7 +608,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 	 * Used when a folder is to be copied to a project.
 	 * @see IResource#copy(IProjectDescription, int, IProgressMonitor)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void copy(IProjectDescription destDesc, int updateFlags, IProgressMonitor monitor) throws CoreException {
 		Assert.isNotNull(destDesc);
 		String message = NLS.bind(Messages.resources_copying, getFullPath());
@@ -630,7 +630,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 			// Copy the children.
 			IResource[] children = ((IContainer) this).members(IContainer.INCLUDE_TEAM_PRIVATE_MEMBERS | IContainer.INCLUDE_HIDDEN);
 			SubMonitor loopProgress = SubMonitor.convert(progress.split(70), children.length);
-			for (IResource element : children) {
+			for (IResource element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Resource child = (Resource) element;
 				child.copy(destPath.append(child.getName()), updateFlags, loopProgress.split(1));
 			}
@@ -669,7 +669,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 	 * @see IFolder#createLink(URI, int, IProgressMonitor)
 	 * @see IFile#createLink(URI, int, IProgressMonitor)
 	 */
-	public void createLink(URI localLocation, int updateFlags, IProgressMonitor monitor) throws CoreException {
+	public void createLink(URI localLocation, int updateFlags, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isNotNull(localLocation);
 		IResource existing = null;
 		if ((updateFlags & REPLACE) != 0) {
@@ -745,7 +745,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		return createMarker(type, Collections.emptyMap());
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IMarker createMarker(String type, Map<String, ? extends Object> attributes) throws CoreException {
 		Assert.isNotNull(type);
 		final ISchedulingRule rule = workspace.getRuleFactory().markerRule(this);
@@ -793,7 +793,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		delete(force ? IResource.FORCE : IResource.NONE, monitor);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void delete(int updateFlags, IProgressMonitor monitor) throws CoreException {
 		String message = NLS.bind(Messages.resources_deleting, getFullPath());
 		SubMonitor progress = SubMonitor.convert(monitor, 100).checkCanceled();
@@ -909,7 +909,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 	 * delete its properties and markers.  If a status object is provided, minor exceptions are
 	 * added, otherwise they are thrown.  If major exceptions occur, they are always thrown.
 	 */
-	public void deleteResource(boolean convertToPhantom, MultiStatus status) throws CoreException {
+	public void deleteResource(boolean convertToPhantom, MultiStatus status) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Remove markers on this resource and its descendants.
 		if (exists()) {
 			getMarkerManager().removeMarkers(this, IResource.DEPTH_INFINITE);
@@ -919,7 +919,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		List<Resource> links = findLinks();
 		// Pre-delete notification to internal infrastructure
 		if (links != null) {
-			for (Resource resource : links) {
+			for (Resource resource : links) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				workspace.broadcastEvent(LifecycleEvent.newEvent(LifecycleEvent.PRE_LINK_DELETE, resource));
 			}
 		}
@@ -933,7 +933,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 			ProjectDescription description = project.internalGetDescription();
 			if (description != null) {
 				boolean wasChanged = false;
-				for (Resource resource : links) {
+				for (Resource resource : links) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					wasChanged |= description.setLinkLocation(resource.getProjectRelativePath(), null);
 				}
 				if (wasChanged) {
@@ -963,7 +963,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 			Project project = (Project) getProject();
 			ProjectDescription description = project.internalGetDescription();
 			if (description != null) {
-				for (Resource resource : filters) {
+				for (Resource resource : filters) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					description.setFilters(resource.getProjectRelativePath(), null);
 				}
 				project.internalSetDescription(description, true);
@@ -990,7 +990,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 	/**
 	 * Returns a list of all linked resources at or below this resource, or null if there are no links.
 	 */
-	private List<Resource> findLinks() {
+	private List<Resource> findLinks() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Project project = (Project) getProject();
 		ProjectDescription description = project.internalGetDescription();
 		HashMap<IPath, LinkDescription> linkMap = description.getLinks();
@@ -999,11 +999,11 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		}
 		List<Resource> links = null;
 		IPath myPath = getProjectRelativePath();
-		for (LinkDescription link : linkMap.values()) {
+		for (LinkDescription link : linkMap.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IPath linkPath = link.getProjectRelativePath();
 			if (myPath.isPrefixOf(linkPath)) {
 				if (links == null) {
-					links = new ArrayList<>();
+					links = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				}
 				links.add(workspace.newResource(project.getFullPath().append(linkPath), link.getType()));
 			}
@@ -1014,7 +1014,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 	/**
 	 * Returns a list of all filtered resources at or below this resource, or null if there are no links.
 	 */
-	private List<Resource> findFilters() {
+	private List<Resource> findFilters() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Project project = (Project) getProject();
 		ProjectDescription description = project.internalGetDescription();
 		List<Resource> filters = null;
@@ -1022,10 +1022,10 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 			HashMap<IPath, LinkedList<FilterDescription>> filterMap = description.getFilters();
 			if (filterMap != null) {
 				IPath myPath = getProjectRelativePath();
-				for (IPath filterPath : filterMap.keySet()) {
+				for (IPath filterPath : filterMap.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (myPath.isPrefixOf(filterPath)) {
 						if (filters == null) {
-							filters = new ArrayList<>();
+							filters = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 						}
 						filters.add(workspace.newResource(project.getFullPath().append(filterPath), IResource.FOLDER));
 					}
@@ -1061,7 +1061,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 	 * an existing resource whose path differs only in case from
 	 * the given path, or null if no such resource exists.
 	 */
-	public IResource findExistingResourceVariant(IPath target) {
+	public IResource findExistingResourceVariant(IPath target) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!workspace.tree.includesIgnoreCase(target)) {
 			return null;
 		}
@@ -1073,7 +1073,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		// Resort to slow lookup to find exact case variant.
 		IPath result = IPath.ROOT;
 		int segmentCount = target.segmentCount();
-		for (int i = 0; i < segmentCount; i++) {
+		for (int i = 0; i < segmentCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String[] childNames = workspace.tree.getNamesOfChildren(result);
 			String name = findVariant(target.segment(i), childNames);
 			if (name == null) {
@@ -1113,7 +1113,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 	 * the list if one is found, otherwise returns null.
 	 */
 	private String findVariant(String target, String[] list) {
-		for (String element : list) {
+		for (String element : list) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (target.equalsIgnoreCase(element)) {
 				return element;
 			}
@@ -1121,7 +1121,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		return null;
 	}
 
-	protected void fixupAfterMoveSource() throws CoreException {
+	protected void fixupAfterMoveSource() throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourceInfo info = getResourceInfo(true, true);
 		// If a linked resource is moved, we need to remove the location info from the ".project" file.
 		if (isLinked() || isVirtual()) {
@@ -1136,7 +1136,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 			// Delete resource filters.
 			Project project = (Project) getProject();
 			ProjectDescription description = project.internalGetDescription();
-			for (Resource resource : filters) {
+			for (Resource resource : filters) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				description.setFilters(resource.getProjectRelativePath(), null);
 			}
 			project.writeDescription(IResource.NONE);
@@ -1352,7 +1352,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 	 * Sets the M_LOCAL_EXISTS flag. Is internal so we don't have
 	 * to begin an operation.
 	 */
-	protected void internalSetLocal(boolean flag, int depth) throws CoreException {
+	protected void internalSetLocal(boolean flag, int depth) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourceInfo info = getResourceInfo(true, true);
 		// Only make the change if it's not already in desired state.
 		if (info.isSet(M_LOCAL_EXISTS) != flag) {
@@ -1371,7 +1371,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 			depth = IResource.DEPTH_ZERO;
 		}
 		IResource[] children = ((IContainer) this).members();
-		for (IResource element : children) {
+		for (IResource element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			((Resource) element).internalSetLocal(flag, depth);
 		}
 	}
@@ -1381,7 +1381,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		return exists();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean isConflicting(ISchedulingRule rule) {
 		// Must not schedule at same time as notification.
 		if ((this == rule) || rule.getClass().equals(WorkManager.NotifyRule.class)) {
@@ -1389,7 +1389,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		}
 		if (rule instanceof MultiRule multi) {
 			ISchedulingRule[] children = multi.getChildren();
-			for (ISchedulingRule element : children) {
+			for (ISchedulingRule element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (isConflicting(element)) {
 					return true;
 				}
@@ -1451,7 +1451,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		return isLinked(NONE);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean isLinked(int options) {
 		if ((options & CHECK_ANCESTORS) != 0) {
 			IProject project = getProject();
@@ -1467,7 +1467,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 				return false;
 			}
 			IPath myPath = getProjectRelativePath();
-			for (LinkDescription linkDescription : links.values()) {
+			for (LinkDescription linkDescription : links.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (linkDescription.getProjectRelativePath().isPrefixOf(myPath)) {
 					return true;
 				}
@@ -1490,7 +1490,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 	 */
 	public boolean isUnderVirtual() {
 		IContainer parent = getParent();
-		while (parent != null) {
+		while (parent != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (parent.isVirtual()) {
 				return true;
 			}
@@ -1624,7 +1624,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		move(destination, force ? IResource.FORCE : IResource.NONE, monitor);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void move(IPath destination, int updateFlags, IProgressMonitor monitor) throws CoreException {
 		String message = NLS.bind(Messages.resources_moving, getFullPath());
 		SubMonitor progress = SubMonitor.convert(monitor, message, 100).checkCanceled();
@@ -1693,7 +1693,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		((Project) this).move(description, updateFlags, monitor);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void refreshLocal(int depth, IProgressMonitor monitor) throws CoreException {
 		boolean isRoot = getType() == ROOT;
 		String message = isRoot ? Messages.resources_refreshingRoot : NLS.bind(Messages.resources_refreshing, getFullPath());
@@ -1734,7 +1734,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 	@Override
 	public void revertModificationStamp(long value) throws CoreException {
 		if (value < 0) {
-			throw new IllegalArgumentException("Illegal value: " + value); //$NON-NLS-1$
+			throw new IllegalArgumentException("Illegal value: " + value); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		// Fetch the info but don't bother making it mutable even though we are going to modify it.
 		// It really doesn't matter as the change we are making does not show up in deltas.
@@ -1761,7 +1761,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setDerived(boolean isDerived, IProgressMonitor monitor) throws CoreException {
 		String message = NLS.bind(Messages.resources_settingDerivedFlag, getFullPath());
 		SubMonitor progress = SubMonitor.convert(monitor, message, 100).checkCanceled();
@@ -1827,7 +1827,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 	@Override
 	public long setLocalTimeStamp(long value) throws CoreException {
 		if (value < 0) {
-			throw new IllegalArgumentException("Illegal value: " + value); //$NON-NLS-1$
+			throw new IllegalArgumentException("Illegal value: " + value); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		// Fetch the info but don't bother making it mutable even though we are going to modify it.
 		// It really doesn't matter as the change we are making does not show up in deltas.
@@ -1899,10 +1899,10 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 
 	@Override
 	public String toString() {
-		return getTypeString() + getFullPath().toString();
+		return getTypeString() + getFullPath().toString(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void touch(IProgressMonitor monitor) throws CoreException {
 		String message = NLS.bind(Messages.resources_touch, getFullPath());
 		SubMonitor progress = SubMonitor.convert(monitor, message, 100).checkCanceled();
@@ -1933,7 +1933,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 	 * Calls the move/delete hook to perform the deletion.  Since this method calls
 	 * client code, it is run "unprotected", so the workspace lock is not held.
 	 */
-	private void unprotectedDelete(ResourceTree tree, int updateFlags, IProgressMonitor monitor) {
+	private void unprotectedDelete(ResourceTree tree, int updateFlags, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IMoveDeleteHook hook = workspace.getMoveDeleteHook();
 		SubMonitor progress = SubMonitor.convert(monitor, 2).checkCanceled();
 		try {
@@ -1958,7 +1958,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 				// be deleted.
 				IProject[] projects = ((IWorkspaceRoot) this).getProjects(IContainer.INCLUDE_HIDDEN);
 				progress.setWorkRemaining(projects.length * 2);
-				for (IProject project : projects) {
+				for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (!hook.deleteProject(tree, project, updateFlags, progress.split(1))) {
 						tree.standardDeleteProject(project, updateFlags, progress.split(1));
 					}
@@ -1975,7 +1975,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 	 * client code, it is run "unprotected", so the workspace lock is not held.
 	 * Returns true if resources were actually moved, and false otherwise.
 	 */
-	private boolean unprotectedMove(ResourceTree tree, final IResource destination, int updateFlags, IProgressMonitor monitor) throws CoreException, ResourceException {
+	private boolean unprotectedMove(ResourceTree tree, final IResource destination, int updateFlags, IProgressMonitor monitor) throws CoreException, ResourceException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IMoveDeleteHook hook = workspace.getMoveDeleteHook();
 		SubMonitor progress = SubMonitor.convert(monitor, 2).checkCanceled();
 		try {
@@ -2020,14 +2020,14 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 			case IResource.ROOT :
 				// All root children including hidden projects will be deleted so notify.
 				IResource[] projects = ((Container) this).getChildren(IContainer.INCLUDE_HIDDEN);
-				for (IResource project2 : projects) {
+				for (IResource project2 : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					workspace.broadcastEvent(LifecycleEvent.newEvent(LifecycleEvent.PRE_PROJECT_DELETE, project2));
 				}
 				break;
 		}
 	}
 
-	private void broadcastPreMoveEvent(final IResource destination, int updateFlags) throws CoreException {
+	private void broadcastPreMoveEvent(final IResource destination, int updateFlags) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		switch (getType()) {
 			case IResource.FILE :
 				if (isLinked()) {
@@ -2078,7 +2078,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		return false;
 	}
 
-	public boolean isFilteredWithException(boolean throwExeception) throws CoreException {
+	public boolean isFilteredWithException(boolean throwExeception) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (isLinked() || isVirtual()) {
 			return false;
 		}
@@ -2093,7 +2093,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		}
 
 		Resource currentResource = this;
-		while (currentResource != null && currentResource.getParent() != null) {
+		while (currentResource != null && currentResource.getParent() != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Resource parent = (Resource) currentResource.getParent();
 			IFileStore store = currentResource.getStore();
 			if (store != null) {
@@ -2123,20 +2123,20 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 		return filterChildren(project, description, list, throwException);
 	}
 
-	private IFileInfo[] filterChildren(Project project, ProjectDescription description, IFileInfo[] list, boolean throwException) throws CoreException {
+	private IFileInfo[] filterChildren(Project project, ProjectDescription description, IFileInfo[] list, boolean throwException) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath relativePath = getProjectRelativePath();
 		LinkedList<Filter> currentIncludeFilters = new LinkedList<>();
 		LinkedList<Filter> currentExcludeFilters = new LinkedList<>();
 		LinkedList<FilterDescription> filters = null;
 
 		boolean firstSegment = true;
-		do {
+		do { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!firstSegment) {
 				relativePath = relativePath.removeLastSegments(1);
 			}
 			filters = description.getFilter(relativePath);
 			if (filters != null) {
-				for (FilterDescription desc : filters) {
+				for (FilterDescription desc : filters) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (firstSegment || desc.isInheritable()) {
 						Filter filter = new Filter(project, desc);
 						if (filter.isIncludeOnly()) {
@@ -2174,7 +2174,7 @@ public abstract class Resource extends PlatformObject implements IResource, ICor
 	 * @see IFolder#createLink(URI, int, IProgressMonitor)
 	 * @see IFile#createLink(URI, int, IProgressMonitor)
 	 */
-	public void setLinkLocation(URI location, int updateFlags, IProgressMonitor monitor) throws CoreException {
+	public void setLinkLocation(URI location, int updateFlags, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!isLinked()) {
 			String message = NLS.bind(Messages.links_resourceIsNotALink, getFullPath());
 			throw new ResourceException(IResourceStatus.INVALID_VALUE, getFullPath(), message, null);

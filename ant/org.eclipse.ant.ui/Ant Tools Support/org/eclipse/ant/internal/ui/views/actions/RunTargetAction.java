@@ -69,7 +69,7 @@ public class RunTargetAction extends Action implements IUpdate {
 	 *            The element to use as the context for launching
 	 */
 	public void run(final AntElementNode selectedElement) {
-		UIJob job = new UIJob(AntViewActionMessages.RunTargetAction_2) {
+		UIJob job = new UIJob(AntViewActionMessages.RunTargetAction_2) { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				launch(selectedElement);
@@ -95,7 +95,7 @@ public class RunTargetAction extends Action implements IUpdate {
 	/**
 	 * Updates the enablement of this action based on the user's selection
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void update() {
 		AntElementNode selection = getSelectedElement();
 		boolean enabled = false;

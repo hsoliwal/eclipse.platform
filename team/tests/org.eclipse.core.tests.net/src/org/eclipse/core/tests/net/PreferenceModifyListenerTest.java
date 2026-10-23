@@ -34,7 +34,7 @@ public class PreferenceModifyListenerTest  {
 	private static final String KEY = "someKey";
 	private static final String VALUE = "someValue";
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreApply() throws BackingStoreException, CoreException {
 		// create a dummy node and export it to a stream
 		IEclipsePreferences toExport = InstanceScope.INSTANCE.getNode(NODE_NAME);

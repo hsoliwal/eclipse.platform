@@ -41,7 +41,7 @@ public class StorageStreamMerger implements IStorageMerger {
 		this.merger = merger;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus merge(OutputStream output, String outputEncoding, IStorage ancestorStorage, IStorage targetStorage, IStorage otherStorage, IProgressMonitor monitor) throws CoreException {
 		IStatus status = null;
 		try (

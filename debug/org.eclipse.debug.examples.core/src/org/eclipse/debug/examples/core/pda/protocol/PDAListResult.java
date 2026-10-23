@@ -30,9 +30,9 @@ public class PDAListResult extends PDACommandResult {
 	PDAListResult(String response) {
 		super(response);
 		StringTokenizer st = new StringTokenizer(response, "|"); //$NON-NLS-1$
-		List<String> valuesList = new ArrayList<>();
+		List<String> valuesList = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-		while (st.hasMoreTokens()) {
+		while (st.hasMoreTokens()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String token = st.nextToken();
 			if (token.length() != 0) {
 				valuesList.add(token);
@@ -40,7 +40,7 @@ public class PDAListResult extends PDACommandResult {
 		}
 
 		fValues = new String[valuesList.size()];
-		for (int i = 0; i < valuesList.size(); i++) {
+		for (int i = 0; i < valuesList.size(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fValues[i] = valuesList.get(i);
 		}
 	}

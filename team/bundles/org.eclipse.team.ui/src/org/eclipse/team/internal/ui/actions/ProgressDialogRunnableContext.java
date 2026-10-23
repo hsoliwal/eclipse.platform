@@ -83,14 +83,14 @@ public class ProgressDialogRunnableContext implements ITeamRunnableContext {
 	 * Return an IRunnableWithProgress that sets the task name for the progress monitor
 	 * and runs in a workspace modify operation if requested.
 	 */
-	private IRunnableWithProgress wrapRunnable(final IRunnableWithProgress runnable) {
-		return monitor -> {
+	private IRunnableWithProgress wrapRunnable(final IRunnableWithProgress runnable) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		return monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 			try {
 				if (schedulingRule == null && !postponeBuild) {
 					runnable.run(monitor);
 				} else {
 					final Exception[] exception = new Exception[] { null };
-					ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) pm -> {
+					ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) pm -> { //FLLDCIM: MARK — T09  LAMBDA
 						try {
 							runnable.run(pm);
 						} catch (InvocationTargetException e1) {

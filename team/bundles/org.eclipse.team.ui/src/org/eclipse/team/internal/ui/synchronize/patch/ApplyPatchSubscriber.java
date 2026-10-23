@@ -48,7 +48,7 @@ public class ApplyPatchSubscriber extends Subscriber {
 			super(local, base, remote, comparator);
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		protected int calculateKind() throws TeamException {
 			// TODO: this works only for files, see bug 300214
 			if (!getPatcher().isEnabled(PatchModelProvider.getPatchObject(getLocal(), patcher))) {
@@ -59,7 +59,7 @@ public class ApplyPatchSubscriber extends Subscriber {
 			if (getRemote() != null) {
 				FilePatch2 filePatch2 = ((PatchedFileVariant)getRemote()).getDiff();
 				IHunk[] hunks = filePatch2.getHunks();
-				for (IHunk hunk : hunks) {
+				for (IHunk hunk : hunks) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (patcher.isManuallyMerged((Hunk) hunk)) {
 						return IN_SYNC;
 					}
@@ -69,7 +69,7 @@ public class ApplyPatchSubscriber extends Subscriber {
 				Object patchObject = PatchModelProvider.getPatchObject(getLocal(), patcher);
 				if (patchObject instanceof FilePatch2 filePatch2) {
 					IHunk[] hunks = filePatch2.getHunks();
-					for (IHunk hunk : hunks) {
+					for (IHunk hunk : hunks) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (patcher.isManuallyMerged((Hunk) hunk)) {
 							return IN_SYNC;
 						}
@@ -105,7 +105,7 @@ public class ApplyPatchSubscriber extends Subscriber {
 		return comparator;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public SyncInfo getSyncInfo(IResource resource) throws TeamException {
 		if (!isSupervised(resource)) {
 			return null;
@@ -137,7 +137,7 @@ public class ApplyPatchSubscriber extends Subscriber {
 				&& PatchModelProvider.getPatchObject(resource, getPatcher()) != null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IResource[] members(IResource resource) throws TeamException {
 		//XXX: what if there is an addition in the patch that needs to add 3 subfolders?
 		try {
@@ -148,7 +148,7 @@ public class ApplyPatchSubscriber extends Subscriber {
 			IContainer container = (IContainer) resource;
 
 			// workspace container members
-			List<IResource> existingChildren = new ArrayList<>();
+			List<IResource> existingChildren = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 			if (container.isAccessible()) {
 				existingChildren.addAll(Arrays.asList(container.members()));
@@ -156,7 +156,7 @@ public class ApplyPatchSubscriber extends Subscriber {
 
 			// patch members, subscriber location
 			FilePatch2[] diffs = getPatcher().getDiffs();
-			for (FilePatch2 diff : diffs) {
+			for (FilePatch2 diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource file = PatchModelProvider.getFile(diff, getPatcher());
 				if (container.getFullPath().isPrefixOf(file.getFullPath())) {
 					// XXX: check segments
@@ -174,8 +174,8 @@ public class ApplyPatchSubscriber extends Subscriber {
 	@Override
 	public void refresh(IResource[] resources, int depth,
 			IProgressMonitor monitor) throws TeamException {
-		Set<FilePatch2> diffs = new HashSet<>();
-		for (IResource resource : resources) {
+		Set<FilePatch2> diffs = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object object = PatchModelProvider.getPatchObject(resource, getPatcher());
 			if (object instanceof FilePatch2 filePatch) {
 				diffs.add(filePatch);
@@ -186,10 +186,10 @@ public class ApplyPatchSubscriber extends Subscriber {
 
 	@Override
 	public IResource[] roots() {
-		Set<IResource> roots = new HashSet<>();
+		Set<IResource> roots = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		if (getPatcher().isWorkspacePatch()) {
 			IDiffElement[] children = PatchModelProvider.getPatchWorkspace(this).getChildren();
-			for (IDiffElement child : children) {
+			for (IDiffElement child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// return array of projects from the patch
 				DiffProject diffProject = ((PatchProjectDiffNode) child).getDiffProject();
 				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(diffProject.getName());

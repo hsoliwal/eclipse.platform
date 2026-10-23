@@ -29,11 +29,11 @@ public class Policy {
 	public static boolean DEBUG_THREADING = false;
 
 	static final DebugOptionsListener DEBUG_OPTIONS_LISTENER = options -> {
-		DEBUG = options.getBooleanOption(TeamPlugin.ID + "/debug", false); //$NON-NLS-1$
-		DEBUG_STREAMS = DEBUG && options.getBooleanOption(TeamPlugin.ID + "/streams", false); //$NON-NLS-1$
-		DEBUG_REFRESH_JOB = DEBUG && options.getBooleanOption(TeamPlugin.ID + "/refreshjob", false); //$NON-NLS-1$
-		DEBUG_BACKGROUND_EVENTS = DEBUG && options.getBooleanOption(TeamPlugin.ID + "/backgroundevents", false); //$NON-NLS-1$
-		DEBUG_THREADING = DEBUG && options.getBooleanOption(TeamPlugin.ID + "/threading", false); //$NON-NLS-1$
+		DEBUG = options.getBooleanOption(TeamPlugin.ID + "/debug", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		DEBUG_STREAMS = DEBUG && options.getBooleanOption(TeamPlugin.ID + "/streams", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		DEBUG_REFRESH_JOB = DEBUG && options.getBooleanOption(TeamPlugin.ID + "/refreshjob", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		DEBUG_BACKGROUND_EVENTS = DEBUG && options.getBooleanOption(TeamPlugin.ID + "/backgroundevents", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		DEBUG_THREADING = DEBUG && options.getBooleanOption(TeamPlugin.ID + "/threading", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	};
 
 	/**

@@ -47,11 +47,11 @@ public class RuntimeProcessTests {
 	 * Test behavior of {@link RuntimeProcess} if the wrapped process
 	 * terminates.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProcessTerminated(TestInfo testInfo) throws Exception {
 		AtomicInteger processTerminateEvents = new AtomicInteger();
-		DebugPlugin.getDefault().addDebugEventListener(events -> {
-			for (DebugEvent event : events) {
+		DebugPlugin.getDefault().addDebugEventListener(events -> { //FLLDCIM: MARK — T27 DEBUG_EVENT_ADAPTER CALL
+			for (DebugEvent event : events) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (event.getKind() == DebugEvent.TERMINATE) {
 					processTerminateEvents.incrementAndGet();
 				}
@@ -74,11 +74,11 @@ public class RuntimeProcessTests {
 	}
 
 	/** Test {@link RuntimeProcess} terminating the wrapped process. */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTerminateProcess(TestInfo testInfo) throws Exception {
 		AtomicInteger processTerminateEvents = new AtomicInteger();
-		DebugPlugin.getDefault().addDebugEventListener(events -> {
-			for (DebugEvent event : events) {
+		DebugPlugin.getDefault().addDebugEventListener(events -> { //FLLDCIM: MARK — T27 DEBUG_EVENT_ADAPTER CALL
+			for (DebugEvent event : events) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (event.getKind() == DebugEvent.TERMINATE) {
 					processTerminateEvents.incrementAndGet();
 				}
@@ -105,7 +105,7 @@ public class RuntimeProcessTests {
 	 * Test {@link RuntimeProcess} terminating the wrapped process and its
 	 * descendants.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTerminateProcessWithSubProcesses() throws Exception {
 
 		MockProcess grandChildProcess = new MockProcess(MockProcess.RUN_FOREVER);
@@ -139,7 +139,7 @@ public class RuntimeProcessTests {
 	 * Test {@link RuntimeProcess} terminating the wrapped process while not
 	 * terminating its descendants.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTerminateProcessWithoutTerminatingDescendents() throws Exception {
 
 		MockProcess childProcess = new MockProcess(MockProcess.RUN_FOREVER);
@@ -218,7 +218,7 @@ public class RuntimeProcessTests {
 	 * See comment in MockProcess.MockProcess().new InputStream() {...}.read()
 	 * for why this test fails
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Disabled("See https://bugs.eclipse.org/bugs/show_bug.cgi?id=577189")
 	public void testOutputAfterDestroy(TestInfo testInfo) throws Exception {
 		MockProcess proc = new MockProcess();
@@ -228,7 +228,7 @@ public class RuntimeProcessTests {
 
 		String str = iProc.getStreamsProxy().getOutputStreamMonitor().getContents();
 		TestUtil.log(IStatus.INFO, testInfo.getDisplayName(), "Stream result: ");
-		for (int i = 0; i < str.length(); i += 100) {
+		for (int i = 0; i < str.length(); i += 100) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			TestUtil.log(IStatus.INFO, testInfo.getDisplayName(), str.substring(i, Math.min(i + 100, str.length())));
 		}
 		TestUtil.log(IStatus.INFO, testInfo.getDisplayName(), "Stream done.");

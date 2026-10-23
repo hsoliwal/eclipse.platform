@@ -74,7 +74,7 @@ public class ElementTreeIterator implements IPathRequestor {
 	 * Iterates through the given element tree and visit each element (node)
 	 * passing in the element's ID and element object.
 	 */
-	private void doIteration(DataTreeNode node, IElementContentVisitor visitor) {
+	private void doIteration(DataTreeNode node, IElementContentVisitor visitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//push the name of this node to the requestor stack
 		if (nextFreeSegment >= segments.length) {
 			grow();
@@ -86,7 +86,7 @@ public class ElementTreeIterator implements IPathRequestor {
 			//recurse
 			AbstractDataTreeNode[] children = node.getChildren();
 			int len = children.length;
-			for (int i = 0; i < len; i++) {
+			for (int i = 0; i < len; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				doIteration((DataTreeNode) children[i], visitor);
 			}
 		}
@@ -114,7 +114,7 @@ public class ElementTreeIterator implements IPathRequestor {
 	 * subtree rooted at the given path.  The visitor is passed each element's
 	 * data and a request callback for obtaining the path.
 	 */
-	public void iterate(IElementContentVisitor visitor) {
+	public void iterate(IElementContentVisitor visitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (path.isRoot()) {
 			//special visit for root element to use special treeData
 			if (visitor.visitElement(tree, this, tree.getTreeData())) {
@@ -123,7 +123,7 @@ public class ElementTreeIterator implements IPathRequestor {
 				}
 				AbstractDataTreeNode[] children = treeRoot.getChildren();
 				int len = children.length;
-				for (int i = 0; i < len; i++) {
+				for (int i = 0; i < len; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					AbstractDataTreeNode node = children[i];
 					if (node instanceof DataTreeNode) {
 						doIteration((DataTreeNode) node, visitor);
@@ -146,7 +146,7 @@ public class ElementTreeIterator implements IPathRequestor {
 		if (toPush <= 0) {
 			return;
 		}
-		for (int i = 0; i < toPush; i++) {
+		for (int i = 0; i < toPush; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (nextFreeSegment >= segments.length) {
 				grow();
 			}
@@ -168,13 +168,13 @@ public class ElementTreeIterator implements IPathRequestor {
 			return IPath.ROOT;
 		}
 		int length = nextFreeSegment;
-		for (int i = 0; i < nextFreeSegment; i++) {
+		for (int i = 0; i < nextFreeSegment; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			length += segments[i].length();
 		}
-		StringBuilder pathBuf = new StringBuilder(length);
-		for (int i = 0; i < nextFreeSegment; i++) {
-			pathBuf.append('/');
-			pathBuf.append(segments[i]);
+		StringBuilder pathBuf = new StringBuilder(length); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < nextFreeSegment; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			pathBuf.append('/'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			pathBuf.append(segments[i]); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return new Path(null, pathBuf.toString());
 	}

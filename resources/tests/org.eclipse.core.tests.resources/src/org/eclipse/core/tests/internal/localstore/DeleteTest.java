@@ -48,7 +48,7 @@ public class DeleteTest {
 		createInWorkspace(project);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteOpenProject() throws Exception {
 		IFolder folder = project.getFolder("folder");
 		IFile file = folder.getFile("file");
@@ -68,12 +68,12 @@ public class DeleteTest {
 
 		/* assert project does not exist anymore in the workspace*/
 		assertFalse(project.exists());
-		assertFalse(((Workspace) getWorkspace()).getMetaArea().locationFor(project).toFile().exists());
+		assertFalse(((Workspace) getWorkspace()).getMetaArea().locationFor(project).toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertNull(project.getLocation());
 
 		/* assert resources still exist */
-		assertTrue(folderPath.toFile().isDirectory());
-		assertTrue(filePath.toFile().isFile());
+		assertTrue(folderPath.toFile().isDirectory()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(filePath.toFile().isFile()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		/* remove trash */
 		Workspace.clear(projectLocation.toFile());
@@ -94,13 +94,13 @@ public class DeleteTest {
 
 		/* assert project does not exist anymore in the workspace */
 		assertFalse(project.exists());
-		assertFalse(((Workspace) getWorkspace()).getMetaArea().locationFor(project).toFile().exists());
+		assertFalse(((Workspace) getWorkspace()).getMetaArea().locationFor(project).toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertNull(project.getLocation());
 
 		/* assert resources do not exist anymore */
-		assertFalse(projectLocation.toFile().exists());
-		assertFalse(folderPath.toFile().exists());
-		assertFalse(filePath.toFile().exists());
+		assertFalse(projectLocation.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(folderPath.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(filePath.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		/* ===========================================================
 		 * project is OPEN, deleteContents=TRUE, force=TRUE
@@ -121,12 +121,12 @@ public class DeleteTest {
 
 		/* assert project does not exist anymore */
 		assertFalse(project.exists());
-		assertFalse(((Workspace) getWorkspace()).getMetaArea().locationFor(project).toFile().exists());
+		assertFalse(((Workspace) getWorkspace()).getMetaArea().locationFor(project).toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertNull(project.getLocation());
 
 		/* assert resources do not exist anymore */
-		assertFalse(folderPath.toFile().isDirectory());
-		assertFalse(filePath.toFile().isFile());
+		assertFalse(folderPath.toFile().isDirectory()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(filePath.toFile().isFile()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		/* ===========================================================
 		 * project is OPEN, deleteContents=TRUE, force=true
@@ -144,12 +144,12 @@ public class DeleteTest {
 
 		/* assert project does not exist anymore */
 		assertFalse(project.exists());
-		assertFalse(((Workspace) getWorkspace()).getMetaArea().locationFor(project).toFile().exists());
+		assertFalse(((Workspace) getWorkspace()).getMetaArea().locationFor(project).toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertNull(project.getLocation());
 
 		/* assert resources do not still exist at default default area */
-		assertFalse(folderPath.toFile().exists());
-		assertFalse(filePath.toFile().exists());
+		assertFalse(folderPath.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(filePath.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		/* remove trash */
 		Workspace.clear(folderPath.toFile());
@@ -173,15 +173,15 @@ public class DeleteTest {
 
 		/* assert project does not exist anymore */
 		assertFalse(project.exists());
-		assertFalse(((Workspace) getWorkspace()).getMetaArea().locationFor(project).toFile().exists());
+		assertFalse(((Workspace) getWorkspace()).getMetaArea().locationFor(project).toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertNull(project.getLocation());
 
 		/* assert resources do not exist anymore */
-		assertFalse(folderPath.toFile().isDirectory());
-		assertFalse(filePath.toFile().isFile());
+		assertFalse(folderPath.toFile().isDirectory()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(filePath.toFile().isFile()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteClosedProject() throws Throwable {
 		IFolder folder = project.getFolder("folder");
 		IFile file = folder.getFile("file");
@@ -193,7 +193,7 @@ public class DeleteTest {
 
 		/* initialize common objects */
 		createInWorkspace(new IResource[] {project, folder});
-		getWorkspace().run(monitor -> file.create(null, true, monitor), createTestMonitor());
+		getWorkspace().run(monitor -> file.create(null, true, monitor), createTestMonitor()); //FLLDCIM: MARK — T09  LAMBDA
 		createInWorkspace(file);
 		IPath folderPath = folder.getLocation();
 		IPath filePath = file.getLocation();
@@ -205,12 +205,12 @@ public class DeleteTest {
 
 		/* assert project does not exist anymore in the workspace */
 		assertFalse(project.exists());
-		assertFalse(((Workspace) getWorkspace()).getMetaArea().locationFor(project).toFile().exists());
+		assertFalse(((Workspace) getWorkspace()).getMetaArea().locationFor(project).toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertNull(project.getLocation());
 
 		/* assert resources still exist (if appropriate) */
-		assertTrue(folderPath.toFile().exists());
-		assertFalse(filePath.toFile().exists());
+		assertTrue(folderPath.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(filePath.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		/* remove trash */
 		Workspace.clear(projectLocation.toFile());
@@ -231,12 +231,12 @@ public class DeleteTest {
 
 		/* assert project does not exist anymore */
 		assertFalse(project.exists());
-		assertFalse(((Workspace) getWorkspace()).getMetaArea().locationFor(project).toFile().exists());
+		assertFalse(((Workspace) getWorkspace()).getMetaArea().locationFor(project).toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertNull(project.getLocation());
 
 		/* assert resources do not exist anymore */
-		assertFalse(folderPath.toFile().isDirectory());
-		assertFalse(filePath.toFile().isFile());
+		assertFalse(folderPath.toFile().isDirectory()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(filePath.toFile().isFile()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		/* ===========================================================
 		 * project is CLOSED, deleteContents=TRUE, force = FALSE
@@ -257,17 +257,17 @@ public class DeleteTest {
 		/* assert project was deleted */
 		assertFalse(project.exists());
 		IPath metaAreaLocation = ((Workspace) getWorkspace()).getMetaArea().locationFor(project);
-		assertFalse(metaAreaLocation.toFile().exists());
-		assertFalse(metaAreaLocation.append(".properties").toFile().exists());
-		assertFalse(projectLocation.append(IProjectDescription.DESCRIPTION_FILE_NAME).toFile().exists());
+		assertFalse(metaAreaLocation.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(metaAreaLocation.append(".properties").toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(projectLocation.append(IProjectDescription.DESCRIPTION_FILE_NAME).toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertNull(project.getLocation());
 
 		/* assert resources do not exist anymore */
-		assertFalse(folderPath.toFile().exists());
-		assertFalse(filePath.toFile().exists());
+		assertFalse(folderPath.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(filePath.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteResource() throws Throwable {
 		/* test's hierarchy
 
@@ -330,7 +330,7 @@ public class DeleteTest {
 		folder.delete(true, null);
 
 		/* assert resources do not exist anymore */
-		assertFalse(folder.getLocation().toFile().exists());
+		assertFalse(folder.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		/* =================== */
 		/* (2) force = FALSE   */
@@ -376,16 +376,16 @@ public class DeleteTest {
 		assertThrows(CoreException.class, () -> recreatedFolder.delete(false, null));
 
 		/* assert resources do not exist anymore in the file system */
-		assertTrue(recreatedFolder.getLocation().toFile().exists());
-		assertFalse(fileSync.getLocation().toFile().exists());
-		assertTrue(fileUnsync.getLocation().toFile().exists());
-		assertFalse(subfolderSync.getLocation().toFile().exists());
-		assertTrue(subfolderUnsync.getLocation().toFile().exists());
-		assertFalse(deletedfolderSync.getLocation().toFile().exists());
-		assertTrue(subsubfolderUnsync.getLocation().toFile().exists());
-		assertTrue(subsubfileUnsync.getLocation().toFile().exists());
-		assertFalse(subsubfileSync.getLocation().toFile().exists());
-		assertTrue(fileCreated.getLocation().toFile().exists());
+		assertTrue(recreatedFolder.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(fileSync.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(fileUnsync.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(subfolderSync.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(subfolderUnsync.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(deletedfolderSync.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(subsubfolderUnsync.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(subsubfileUnsync.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(subsubfileSync.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(fileCreated.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 }

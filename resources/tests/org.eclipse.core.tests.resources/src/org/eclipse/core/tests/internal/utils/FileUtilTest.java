@@ -34,7 +34,7 @@ public class FileUtilTest {
 	@BeforeEach
 	public void setUp() throws Exception {
 		baseTestDir = FileSystemHelper.getRandomLocation();
-		baseTestDir.toFile().mkdirs();
+		baseTestDir.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	@AfterEach
@@ -45,7 +45,7 @@ public class FileUtilTest {
 	@Test
 	public void testRealPath() throws Exception {
 		IPath realPath = baseTestDir.append("Test.TXT");
-		realPath.toFile().createNewFile();
+		realPath.toFile().createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		IPath testPath;
 		if (EFS.getLocalFileSystem().isCaseSensitive()) {
 			testPath = realPath;
@@ -58,7 +58,7 @@ public class FileUtilTest {
 	@Test
 	public void testRealPathOfNonexistingFile() throws Exception {
 		IPath realPath = baseTestDir.append("ExistingDir");
-		realPath.toFile().mkdirs();
+		realPath.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		IPath testPath;
 		if (EFS.getLocalFileSystem().isCaseSensitive()) {
 			testPath = realPath;
@@ -72,7 +72,7 @@ public class FileUtilTest {
 	@Test
 	public void testRealURI() throws Exception {
 		IPath realPath = baseTestDir.append("Test.TXT");
-		realPath.toFile().createNewFile();
+		realPath.toFile().createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		IPath testPath;
 		if (EFS.getLocalFileSystem().isCaseSensitive()) {
 			testPath = realPath;

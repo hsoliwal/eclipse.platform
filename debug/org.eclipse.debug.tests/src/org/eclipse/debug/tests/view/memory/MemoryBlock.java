@@ -47,7 +47,7 @@ public class MemoryBlock implements IMemoryBlock {
 	@Override
 	public byte[] getBytes() throws DebugException {
 		byte[] bytes = new byte[(int)getLength()];
-		for (int i = 0; i < bytes.length; i++) {
+		for (int i = 0; i < bytes.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			bytes[i] = (byte)i;
 		}
 		return bytes;

@@ -71,7 +71,7 @@ public class PatchTargetPage extends WizardPage {
 		return (IPath.fromOSString(textField.getText())).makeAbsolute();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createControl(Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.NULL);
@@ -91,7 +91,7 @@ public class PatchTargetPage extends WizardPage {
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, ICompareContextIds.PATCH_INPUT_WIZARD_PAGE);
 		}
 
-		useWorkspaceAsTarget.addListener(SWT.Selection, unused -> {
+		useWorkspaceAsTarget.addListener(SWT.Selection, unused -> { //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 			fShowError = true;
 			if (useWorkspaceAsTarget.getSelection()) {
 				fPatchTargets.getTree().setEnabled(false);
@@ -122,7 +122,7 @@ public class PatchTargetPage extends WizardPage {
 		return button;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IWizardPage getNextPage() {
 
 		// if selected target is file ensure that patch file
@@ -162,17 +162,17 @@ public class PatchTargetPage extends WizardPage {
 		return isPageComplete();
 	}
 
-	private void buildInputGroup(Composite parent) {
+	private void buildInputGroup(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Tree tree = new Tree(parent, SWT.BORDER);
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		gd.heightHint = 200;
 		tree.setLayoutData(gd);
 
 		fPatchTargets = new TreeViewer(tree);
-		fPatchTargets.setLabelProvider(new WorkbenchLabelProvider());
+		fPatchTargets.setLabelProvider(new WorkbenchLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 		fPatchTargets.setContentProvider(new WorkbenchContentProvider());
 		fPatchTargets.setComparator(new ResourceComparator(ResourceComparator.NAME));
-		fPatchTargets.setInput(ResourcesPlugin.getWorkspace().getRoot());
+		fPatchTargets.setInput(ResourcesPlugin.getWorkspace().getRoot()); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 
 		IResource target = fPatcher.getTarget();
 		if (target != null && !(target instanceof IWorkspaceRoot)) {
@@ -181,19 +181,19 @@ public class PatchTargetPage extends WizardPage {
 		}
 
 		// register listeners
-		fPatchTargets.addSelectionChangedListener(event -> {
+		fPatchTargets.addSelectionChangedListener(event -> { //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 			fShowError = true;
 			fPatcher.setTarget(Utilities.getFirstResource(event.getSelection()));
 			updateWidgetEnablements();
 		});
 
-		fPatchTargets.addDoubleClickListener(unused -> ((PatchWizard)getWizard()).showPage(getNextPage()));
+		fPatchTargets.addDoubleClickListener(unused -> ((PatchWizard)getWizard()).showPage(getNextPage())); //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
 	}
 
 	/**
 	 * Updates the enable state of this page's controls.
 	 */
-	private void updateWidgetEnablements() {
+	private void updateWidgetEnablements() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String error = null;
 
 		if (fPatcher.getTarget() == null) {

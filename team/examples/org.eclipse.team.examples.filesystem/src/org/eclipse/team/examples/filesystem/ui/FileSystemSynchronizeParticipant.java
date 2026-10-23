@@ -84,7 +84,7 @@ public class FileSystemSynchronizeParticipant extends ModelSynchronizeParticipan
 						SyncInfo info = FileSystemSubscriber.getInstance().getSyncInfo(resource);
 						IResourceVariant variant = info.getRemote();
 						if (variant != null) {
-							return text + " (" + variant.getContentIdentifier() + ")";
+							return text + " (" + variant.getContentIdentifier() + ")"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						}
 					}
 				}
@@ -122,7 +122,7 @@ public class FileSystemSynchronizeParticipant extends ModelSynchronizeParticipan
 			}
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		protected void addToContextMenu(String mergeActionId, Action action, IMenuManager manager) {
 			IContributionItem group = null;
 			if (mergeActionId == SynchronizationActionProvider.MERGE_ACTION_ID) {

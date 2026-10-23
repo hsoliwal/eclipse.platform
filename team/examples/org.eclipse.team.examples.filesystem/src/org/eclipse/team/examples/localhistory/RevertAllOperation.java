@@ -22,7 +22,7 @@ import org.eclipse.team.ui.synchronize.ISynchronizePageConfiguration;
 import org.eclipse.team.ui.synchronize.SynchronizeModelOperation;
 import org.eclipse.ui.actions.WorkspaceModifyOperation;
 
-public class RevertAllOperation extends SynchronizeModelOperation {
+public class RevertAllOperation extends SynchronizeModelOperation { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	protected RevertAllOperation(ISynchronizePageConfiguration configuration, IDiffElement[] elements) {
 		super(configuration, elements);
@@ -33,17 +33,17 @@ public class RevertAllOperation extends SynchronizeModelOperation {
 		return true;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 		final SyncInfo infos[] = getSyncInfoSet().getSyncInfos();
 		if(infos.length == 0) return;
 
-		WorkspaceModifyOperation operation= new WorkspaceModifyOperation() {
-			@Override
+		WorkspaceModifyOperation operation= new WorkspaceModifyOperation() { //FLLDCIM: MARK — T09  ANONYMOUS
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void execute(IProgressMonitor pm) throws InvocationTargetException {
 				try {
 					pm.beginTask("Reverting from local history", 100 * infos.length);	 //$NON-NLS-1$
-					for (SyncInfo info : infos) {
+					for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						LocalHistoryVariant state = (LocalHistoryVariant)info.getRemote();
 						IFile file = (IFile)info.getLocal();
 						if(file.exists()) {

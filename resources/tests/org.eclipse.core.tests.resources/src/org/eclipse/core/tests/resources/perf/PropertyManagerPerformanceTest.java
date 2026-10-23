@@ -48,9 +48,9 @@ public class PropertyManagerPerformanceTest {
 	}
 
 	public static String getPropertyValue(int size) {
-		StringBuilder value = new StringBuilder(size);
-		for (int i = 0; i < size; i++) {
-			value.append((char) (Math.random() * Character.MAX_VALUE));
+		StringBuilder value = new StringBuilder(size); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < size; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			value.append((char) (Math.random() * Character.MAX_VALUE)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return value.toString();
 	}
@@ -58,19 +58,19 @@ public class PropertyManagerPerformanceTest {
 	/**
 	 * Creates a tree of resources.
 	 */
-	private List<IResource> createTree(IFolder base, int filesPerFolder) throws CoreException {
+	private List<IResource> createTree(IFolder base, int filesPerFolder) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IFolder[] folders = new IFolder[5];
 		folders[0] = base.getFolder("folder1");
 		folders[1] = base.getFolder("folder2");
 		folders[2] = folders[0].getFolder("folder3");
 		folders[3] = folders[2].getFolder("folder4");
 		folders[4] = folders[3].getFolder("folder5");
-		List<IResource> resources = new ArrayList<>(filesPerFolder * folders.length);
+		List<IResource> resources = new ArrayList<>(filesPerFolder * folders.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		resources.addAll(Arrays.asList(folders));
 		createInWorkspace(folders);
-		for (IFolder folder : folders) {
-			for (int j = 0; j < filesPerFolder; j++) {
-				IFile file = folder.getFile("file" + j);
+		for (IFolder folder : folders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (int j = 0; j < filesPerFolder; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				IFile file = folder.getFile("file" + j); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				createInWorkspace(file, createRandomString());
 				resources.add(file);
 			}
@@ -78,14 +78,14 @@ public class PropertyManagerPerformanceTest {
 		return resources;
 	}
 
-	private void testGetProperty(int filesPerFolder, final int properties, int measurements, int repetitions)
+	private void testGetProperty(int filesPerFolder, final int properties, int measurements, int repetitions) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws Exception {
 		IProject proj1 = getWorkspace().getRoot().getProject("proj1");
 		final IFolder folder1 = proj1.getFolder("folder1");
 		final List<IResource> allResources = createTree(folder1, filesPerFolder);
-		for (IResource resource : allResources) {
-			for (int j = 0; j < properties; j++) {
-				resource.setPersistentProperty(new QualifiedName(PI_RESOURCES_TESTS, "prop" + j),
+		for (IResource resource : allResources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (int j = 0; j < properties; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				resource.setPersistentProperty(new QualifiedName(PI_RESOURCES_TESTS, "prop" + j), //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						getPropertyValue(200));
 			}
 		}
@@ -93,10 +93,10 @@ public class PropertyManagerPerformanceTest {
 		new PerformanceTestRunner() {
 			@Override
 			protected void test() throws CoreException {
-				for (int j = 0; j < properties; j++) {
-					for (IResource resource : allResources) {
+				for (int j = 0; j < properties; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					for (IResource resource : allResources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						assertNotNull(
-								resource.getPersistentProperty(new QualifiedName(PI_RESOURCES_TESTS, "prop" + j)));
+								resource.getPersistentProperty(new QualifiedName(PI_RESOURCES_TESTS, "prop" + j))); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 				}
 			}
@@ -120,7 +120,7 @@ public class PropertyManagerPerformanceTest {
 		testGetProperty(4, 100, 10, 1);
 	}
 
-	private void testSetProperty(int filesPerFolder, int properties, int measurements, int repetitions)
+	private void testSetProperty(int filesPerFolder, int properties, int measurements, int repetitions) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws Exception {
 		IProject proj1 = getWorkspace().getRoot().getProject("proj1");
 		final IFolder folder1 = proj1.getFolder("folder1");
@@ -134,9 +134,9 @@ public class PropertyManagerPerformanceTest {
 
 			@Override
 			protected void test() throws CoreException {
-				for (IResource resource : allResources) {
+				for (IResource resource : allResources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					resource.setPersistentProperty(
-							new QualifiedName(PI_RESOURCES_TESTS, "prop" + ((int) Math.random() * 50)),
+							new QualifiedName(PI_RESOURCES_TESTS, "prop" + ((int) Math.random() * 50)), //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							getPropertyValue(200));
 				}
 			}

@@ -23,13 +23,13 @@ import org.eclipse.jface.text.templates.TemplateContext;
 import org.eclipse.jface.text.templates.TemplateProposal;
 import org.eclipse.swt.graphics.Image;
 
-public class AntTemplateProposal extends TemplateProposal {
+public class AntTemplateProposal extends TemplateProposal { //FLLDCIM: MARK — T30  IMPLEMENTS
 
 	public AntTemplateProposal(Template template, TemplateContext context, IRegion region, Image image, int relevance) {
 		super(template, context, region, image, relevance);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean validate(IDocument document, int offset, DocumentEvent event) {
 		try {
 			int replaceOffset = getReplaceOffset();

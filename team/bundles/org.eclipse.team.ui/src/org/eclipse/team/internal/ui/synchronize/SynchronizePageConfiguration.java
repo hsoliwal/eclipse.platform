@@ -54,7 +54,7 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 	 * This property can be queried by clients but should not be
 	 * set.
 	 */
-	public static final String P_MODEL = TeamUIPlugin.ID  + ".P_MODEL"; //$NON-NLS-1$
+	public static final String P_MODEL = TeamUIPlugin.ID  + ".P_MODEL"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant for the page's viewer advisor which is
@@ -63,7 +63,7 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 	 * This property can be queried by clients but should not be
 	 * set.
 	 */
-	public static final String P_ADVISOR = TeamUIPlugin.ID  + ".P_ADVISOR"; //$NON-NLS-1$
+	public static final String P_ADVISOR = TeamUIPlugin.ID  + ".P_ADVISOR"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant for the page's navigator
@@ -71,14 +71,14 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 	 * This property can be queried by clients and can be set. By default
 	 * the advisors navigator will be used.
 	 */
-	public static final String P_NAVIGATOR = TeamUIPlugin.ID  + ".P_NAVIGATOR"; //$NON-NLS-1$
+	public static final String P_NAVIGATOR = TeamUIPlugin.ID  + ".P_NAVIGATOR"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant for the compare editor inputs navigator
 	 * an instance of <code>INavigable</code>.
 	 * This property can be queried by clients and can be set.
 	 */
-	public static final String P_INPUT_NAVIGATOR = TeamUIPlugin.ID  + ".P_INPUT_NAVIGATOR"; //$NON-NLS-1$
+	public static final String P_INPUT_NAVIGATOR = TeamUIPlugin.ID  + ".P_INPUT_NAVIGATOR"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant for the page's model  manager which is
@@ -86,33 +86,33 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 	 * This property can be queried by clients but should not be
 	 * set.
 	 */
-	public static final String P_MODEL_MANAGER = TeamUIPlugin.ID  + ".P_MODEL_MANAGER"; //$NON-NLS-1$
+	public static final String P_MODEL_MANAGER = TeamUIPlugin.ID  + ".P_MODEL_MANAGER"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property that gives access to a set the
 	 * contains all out-of-sync resources for the participant
 	 * in the selected working set.
 	 */
-	public static final String P_WORKING_SET_SYNC_INFO_SET = TeamUIPlugin.ID + ".P_WORKING_SET_SYNC_INFO_SET"; //$NON-NLS-1$
+	public static final String P_WORKING_SET_SYNC_INFO_SET = TeamUIPlugin.ID + ".P_WORKING_SET_SYNC_INFO_SET"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property that gives access to a set the
 	 * contains all out-of-sync resources for the participant
 	 * before any filtering (working set or modes) is applied.
 	 */
-	public static final String P_PARTICIPANT_SYNC_INFO_SET = TeamUIPlugin.ID + ".P_PARTICIPANT_SYNC_INFO_SET"; //$NON-NLS-1$
+	public static final String P_PARTICIPANT_SYNC_INFO_SET = TeamUIPlugin.ID + ".P_PARTICIPANT_SYNC_INFO_SET"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * The hidden configuration property that opens the current selection in the
 	 * page. The registered <code>IAction</code> is invoked on a single or
 	 * double click depending on the open strategy chosen by the user.
 	 */
-	public static final String P_OPEN_ACTION = TeamUIPlugin.ID + ".P_OPEN_ACTION"; //$NON-NLS-1$
+	public static final String P_OPEN_ACTION = TeamUIPlugin.ID + ".P_OPEN_ACTION"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant for the style of the view to be used by the page.
 	 */
-	public static final String P_VIEWER_STYLE = TeamUIPlugin.ID + ".P_VIEWER_STYLE"; //$NON-NLS-1$
+	public static final String P_VIEWER_STYLE = TeamUIPlugin.ID + ".P_VIEWER_STYLE"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	public static final int CHECKBOX = TreeViewerAdvisor.CHECKBOX;
 
@@ -125,7 +125,7 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 	private ISynchronizePageSite site;
 	private final ListenerList<IPropertyChangeListener> propertyChangeListeners = new ListenerList<>(ListenerList.IDENTITY);
 	private final ListenerList<SynchronizePageActionGroup> actionContributions = new ListenerList<>(ListenerList.IDENTITY);
-	private final Map<String, Object> properties = new HashMap<>();
+	private final Map<String, Object> properties = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	private int actionState = UNINITIALIZED;
 	private ISynchronizePage page;
 	private IRunnableContext context;
@@ -191,7 +191,7 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 		return properties.get(key);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void addActionContribution(SynchronizePageActionGroup contribution) {
 		int currentActionState;
 		synchronized(actionContributions) {
@@ -222,13 +222,13 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 		}
 	}
 
-	private void firePropertyChange(String key, Object oldValue, Object newValue) {
+	private void firePropertyChange(String key, Object oldValue, Object newValue) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Object[] listeners;
 		synchronized(propertyChangeListeners) {
 			listeners = propertyChangeListeners.getListeners();
 		}
 		final PropertyChangeEvent event = new PropertyChangeEvent(this, key, oldValue, newValue);
-		for (Object l : listeners) {
+		for (Object l : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final IPropertyChangeListener listener = (IPropertyChangeListener) l;
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
@@ -243,7 +243,7 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void initialize(final ISynchronizePageConfiguration configuration) {
 		super.initialize(configuration);
 		// need to synchronize here to ensure that actions that are added concurrently also get initialized
@@ -256,7 +256,7 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 			actionState = INITIALIZED;
 			listeners = actionContributions.getListeners();
 		}
-		for (Object listener : listeners) {
+		for (Object listener : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final SynchronizePageActionGroup contribution = (SynchronizePageActionGroup) listener;
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
@@ -271,14 +271,14 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setContext(final ActionContext context) {
 		super.setContext(context);
 		final Object[] listeners;
 		synchronized(actionContributions) {
 			listeners = actionContributions.getListeners();
 		}
-		for (Object listener : listeners) {
+		for (Object listener : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final SynchronizePageActionGroup contribution = (SynchronizePageActionGroup) listener;
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
@@ -298,13 +298,13 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 	 * about to be shown.
 	 * @param manager the context menu manager
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void fillContextMenu(final IMenuManager manager) {
 		final Object[] listeners;
 		synchronized(actionContributions) {
 			listeners = actionContributions.getListeners();
 		}
-		for (Object listener : listeners) {
+		for (Object listener : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final SynchronizePageActionGroup contribution = (SynchronizePageActionGroup) listener;
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
@@ -323,7 +323,7 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 	 * Callback invoked from the page to fill the action bars.
 	 * @param actionBars the action bars of the view
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void fillActionBars(final IActionBars actionBars) {
 		if (actionState == UNINITIALIZED) {
 			initialize(this);
@@ -332,7 +332,7 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 		synchronized(actionContributions) {
 			listeners = actionContributions.getListeners();
 		}
-		for (Object listener : listeners) {
+		for (Object listener : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final SynchronizePageActionGroup contribution = (SynchronizePageActionGroup) listener;
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
@@ -347,13 +347,13 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void updateActionBars() {
 		final Object[] listeners;
 		synchronized(actionContributions) {
 			listeners = actionContributions.getListeners();
 		}
-		for (Object listener : listeners) {
+		for (Object listener : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final SynchronizePageActionGroup contribution = (SynchronizePageActionGroup) listener;
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
@@ -368,13 +368,13 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void modelChanged(final ISynchronizeModelElement root) {
 		final Object[] listeners;
 		synchronized(actionContributions) {
 			listeners = actionContributions.getListeners();
 		}
-		for (Object listener : listeners) {
+		for (Object listener : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final SynchronizePageActionGroup contribution = (SynchronizePageActionGroup) listener;
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
@@ -389,7 +389,7 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void dispose() {
 		super.dispose();
 		final Object[] listeners;
@@ -397,7 +397,7 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 			listeners = actionContributions.getListeners();
 			actionState = DISPOSED;
 		}
-		for (Object listener : listeners) {
+		for (Object listener : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final SynchronizePageActionGroup contribution = (SynchronizePageActionGroup) listener;
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
@@ -435,7 +435,7 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 		if (groups == null) {
 			groups = getDefault(menuPropertyId);
 		}
-		for (String string : groups) {
+		for (String string : groups) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (string.equals(groupId)) {
 				return true;
 			}
@@ -463,7 +463,7 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 			decorators = new ILabelDecorator[0];
 		}
 		// Ensure we don't have it registered already
-		for (ILabelDecorator d : decorators) {
+		for (ILabelDecorator d : decorators) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (d == decorator) {
 				return;
 			}
@@ -483,7 +483,7 @@ public class SynchronizePageConfiguration extends SynchronizePageActionGroup imp
 			id += "."; //$NON-NLS-1$
 			id += getParticipant().getSecondaryId();
 		}
-		return id + "." + group; //$NON-NLS-1$
+		return id + "." + group; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override

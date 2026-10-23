@@ -87,36 +87,36 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 	}
 
 
-	public XMLComparePreferencePage() {
+	public XMLComparePreferencePage() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super();
 
-		fIdMaps = new HashMap<>();
+		fIdMaps = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		XMLPlugin plugin= XMLPlugin.getDefault();
 		HashMap<String, HashMap<String, String>> PluginIdMaps = plugin.getIdMaps();
 		Set<String> keySet = PluginIdMaps.keySet();
-		for (String key : keySet) {
-			fIdMaps.put(key, new HashMap<>(PluginIdMaps.get(key)));
+		for (String key : keySet) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			fIdMaps.put(key, new HashMap<>(PluginIdMaps.get(key))); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 		fIdMapsInternal = plugin.getIdMapsInternal();
 
-		fIdExtensionToName = new HashMap<>();
+		fIdExtensionToName = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		HashMap<String, String> PluginIdExtensionToName = plugin.getIdExtensionToName();
 		keySet= PluginIdExtensionToName.keySet();
-		for (String key : keySet) {
+		for (String key : keySet) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fIdExtensionToName.put(key, PluginIdExtensionToName.get(key));
 		}
 
-		fOrderedElements = new HashMap<>();
+		fOrderedElements = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		HashMap<String, ArrayList<String>> PluginOrderedElements = plugin.getOrderedElements();
 		keySet= PluginOrderedElements.keySet();
-		for (String key : keySet) {
-			fOrderedElements.put(key, new ArrayList<>(PluginOrderedElements.get(key)));
+		for (String key : keySet) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			fOrderedElements.put(key, new ArrayList<>(PluginOrderedElements.get(key))); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 
 		fOrderedElementsInternal= plugin.getOrderedElementsInternal();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createContents(Composite ancestor) {
 		Composite parent= new Composite(ancestor, SWT.NULL);
 		GridLayout layout= new GridLayout();
@@ -138,7 +138,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		data = new GridData(GridData.FILL_BOTH);
 		data.heightHint = fIdMapsTable.getItemHeight()*4;
 		fIdMapsTable.setLayoutData(data);
-		fIdMapsTable.addSelectionListener(new SelectionAdapter() {
+		fIdMapsTable.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				selectionChanged();
@@ -153,7 +153,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 			new ColumnPixelData(convertWidthInCharsToPixels(column3Text.length()+5), true)};
 		TableLayout tablelayout = new TableLayout();
 		fIdMapsTable.setLayout(tablelayout);
-		for (int i=0; i<3; i++)
+		for (int i=0; i<3; i++) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			tablelayout.addColumnData(columnLayouts[i]);
 		TableColumn column = new TableColumn(fIdMapsTable, SWT.NONE);
 		column.setText(XMLCompareMessages.XMLComparePreference_topTableColumn1);
@@ -173,7 +173,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 
 		fAddIdMapButton = new Button(buttons, SWT.PUSH);
 		fAddIdMapButton.setText(XMLCompareMessages.XMLComparePreference_topAdd);
-		fAddIdMapButton.addSelectionListener(new SelectionAdapter() {
+		fAddIdMapButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addIdMap(fAddIdMapButton.getShell());
@@ -188,7 +188,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 
 		fRenameIdMapButton = new Button(buttons, SWT.PUSH);
 		fRenameIdMapButton.setText(XMLCompareMessages.XMLComparePreference_topRename);
-		fRenameIdMapButton.addSelectionListener(new SelectionAdapter() {
+		fRenameIdMapButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				renameIdMap(fRenameIdMapButton.getShell());
@@ -203,7 +203,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 
 		fRemoveIdMapButton = new Button(buttons, SWT.PUSH);
 		fRemoveIdMapButton.setText(XMLCompareMessages.XMLComparePreference_topRemove);
-		fRemoveIdMapButton.addSelectionListener(new SelectionAdapter() {
+		fRemoveIdMapButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 		@Override
 		public void widgetSelected(SelectionEvent e) {
 				removeIdMap(fRemoveIdMapButton.getShell());
@@ -220,7 +220,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 
 		fEditIdMapButton = new Button(buttons, SWT.PUSH);
 		fEditIdMapButton.setText(XMLCompareMessages.XMLComparePreference_topEdit);
-		fEditIdMapButton.addSelectionListener(new SelectionAdapter() {
+		fEditIdMapButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				editIdMap(fEditIdMapButton.getShell());
@@ -264,7 +264,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 			new ColumnPixelData(convertWidthInCharsToPixels(column4Text.length()+3), true)};
 		tablelayout = new TableLayout();
 		fMappingsTable.setLayout(tablelayout);
-		for (int i=0; i<4; i++)
+		for (int i=0; i<4; i++) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			tablelayout.addColumnData(columnLayouts[i]);
 		column = new TableColumn(fMappingsTable, SWT.NONE);
 		column.setText(XMLCompareMessages.XMLComparePreference_middleTableColumn1);
@@ -285,7 +285,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		fNewMappingsButton= new Button(buttons, SWT.PUSH);
 		fNewMappingsButton.setLayoutData(getButtonGridData(fNewMappingsButton));
 		fNewMappingsButton.setText(XMLCompareMessages.XMLComparePreference_middleNew);
-		fNewMappingsButton.addSelectionListener(new SelectionAdapter() {
+		fNewMappingsButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addMapping(fAddIdMapButton.getShell());
@@ -295,7 +295,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		fEditMappingsButton= new Button(buttons, SWT.PUSH);
 		fEditMappingsButton.setLayoutData(getButtonGridData(fEditMappingsButton));
 		fEditMappingsButton.setText(XMLCompareMessages.XMLComparePreference_middleEdit);
-		fEditMappingsButton.addSelectionListener(new SelectionAdapter() {
+		fEditMappingsButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				editMapping(fEditMappingsButton.getShell());
@@ -305,7 +305,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		fRemoveMappingsButton= new Button(buttons, SWT.PUSH);
 		fRemoveMappingsButton.setLayoutData(getButtonGridData(fRemoveMappingsButton));
 		fRemoveMappingsButton.setText(XMLCompareMessages.XMLComparePreference_middleRemove);
-		fRemoveMappingsButton.addSelectionListener(new SelectionAdapter() {
+		fRemoveMappingsButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				removeMapping(fRemoveMappingsButton.getShell());
@@ -334,7 +334,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 			new ColumnWeightData(1)};
 		tablelayout = new TableLayout();
 		fOrderedTable.setLayout(tablelayout);
-		for (int i=0; i<2; i++)
+		for (int i=0; i<2; i++) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			tablelayout.addColumnData(columnLayouts[i]);
 		column = new TableColumn(fOrderedTable, SWT.NONE);
 		column.setText(XMLCompareMessages.XMLComparePreference_bottomTableColumn1);
@@ -351,7 +351,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		fNewOrderedButton= new Button(buttons, SWT.PUSH);
 		fNewOrderedButton.setLayoutData(getButtonGridData(fNewOrderedButton));
 		fNewOrderedButton.setText(XMLCompareMessages.XMLComparePreference_bottomNew);
-		fNewOrderedButton.addSelectionListener(new SelectionAdapter() {
+		fNewOrderedButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				addOrdered(fNewOrderedButton.getShell());
@@ -361,7 +361,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		fEditOrderedButton= new Button(buttons, SWT.PUSH);
 		fEditOrderedButton.setLayoutData(getButtonGridData(fEditOrderedButton));
 		fEditOrderedButton.setText(XMLCompareMessages.XMLComparePreference_bottomEdit);
-		fEditOrderedButton.addSelectionListener(new SelectionAdapter() {
+		fEditOrderedButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				editOrdered(fEditOrderedButton.getShell());
@@ -371,7 +371,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		fRemoveOrderedButton= new Button(buttons, SWT.PUSH);
 		fRemoveOrderedButton.setLayoutData(getButtonGridData(fRemoveOrderedButton));
 		fRemoveOrderedButton.setText(XMLCompareMessages.XMLComparePreference_bottomRemove);
-		fRemoveOrderedButton.addSelectionListener(new SelectionAdapter() {
+		fRemoveOrderedButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				removeOrdered(fRemoveOrderedButton.getShell());
@@ -420,7 +420,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		XMLCompareAddIdMapDialog dialog= new XMLCompareAddIdMapDialog(shell,idmap,fIdMaps,fIdMapsInternal,fIdExtensionToName,false);
 		if (dialog.open() == Window.OK) {
 			if (!fIdMaps.containsKey(idmap.getName())) {
-				fIdMaps.put(idmap.getName(), new HashMap<>());
+				fIdMaps.put(idmap.getName(), new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 				if (!idmap.getExtension().isEmpty())
 					fIdExtensionToName.put(idmap.getExtension(),idmap.getName());
 				newIdMapsTableItem(idmap,true);
@@ -428,7 +428,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		}
 	}
 
-	private void renameIdMap(Shell shell) {
+	private void renameIdMap(Shell shell) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TableItem[] itemsIdMaps = fIdMapsTable.getSelection();
 		if (itemsIdMaps.length > 0) {
 			IdMap idmap = (IdMap) itemsIdMaps[0].getData();
@@ -448,7 +448,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		}
 	}
 
-	private void removeIdMap(Shell shell) {
+	private void removeIdMap(Shell shell) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TableItem[] itemsIdMap = fIdMapsTable.getSelection();
 		if (itemsIdMap.length > 0) {
 //			fIdMaps.remove(itemsIdMap[0].getText());
@@ -457,12 +457,12 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 			fOrderedElements.remove( IdMapName );
 			//All the corresponding ID Mappings must be removed as well
 			TableItem[] itemsMappings = fMappingsTable.getItems();
-			for (TableItem itemsMapping : itemsMappings) {
+			for (TableItem itemsMapping : itemsMappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				itemsMapping.dispose();
 			}
 			//All the corresponding Ordered entries must be removed as well
 			TableItem[] itemsOrdered= fOrderedTable.getItems();
-			for (TableItem itemsOrd : itemsOrdered) {
+			for (TableItem itemsOrd : itemsOrdered) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				itemsOrd.dispose();
 			}
 			//Remove extension
@@ -473,7 +473,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		}
 	}
 
-	private void editIdMap(Shell shell) {
+	private void editIdMap(Shell shell) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TableItem[] items = fIdMapsTable.getSelection();
 		if (items.length > 0) {
 			IdMap idmap = (IdMap) items[0].getData();
@@ -484,10 +484,10 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 					//copy over id mappings
 					Vector<Mapping> newMappings = new Vector<>();
 					IdMap newIdMap = new IdMap(new_idmapName, false, newMappings);
-					HashMap<String, String> newIdmapHM = new HashMap<>();
+					HashMap<String, String> newIdmapHM = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 					fIdMaps.put(newIdMap.getName(),newIdmapHM);
 					Vector<Mapping> Mappings = idmap.getMappings();
-					for (Mapping mapping : Mappings) {
+					for (Mapping mapping : Mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						Mapping newMapping = new Mapping(mapping.getElement(), mapping.getSignature(), mapping.getIdAttribute());
 						newMappings.add(newMapping);
 						newIdmapHM.put(newMapping.getKey(), newMapping.getIdAttribute());
@@ -495,11 +495,11 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 					//copy over ordered entries
 					ArrayList<Mapping> orderedAL = idmap.getOrdered();
 					if (orderedAL != null && orderedAL.size() > 0) {
-						ArrayList<Mapping> newOrderedAL = new ArrayList<>();
+						ArrayList<Mapping> newOrderedAL = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 						newIdMap.setOrdered(newOrderedAL);
-						ArrayList<String> idmapOrdered = new ArrayList<>();
+						ArrayList<String> idmapOrdered = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 						fOrderedElements.put(newIdMap.getName(),idmapOrdered);
-						for (Mapping ordered : orderedAL) {
+						for (Mapping ordered : orderedAL) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							Mapping newOrdered= new Mapping(ordered.getElement(), ordered.getSignature());
 							newOrderedAL.add(newOrdered);
 							idmapOrdered.add(newOrdered.getKey());
@@ -513,7 +513,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		}
 	}
 
-	private void addMapping(Shell shell) {
+	private void addMapping(Shell shell) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TableItem[] items = fIdMapsTable.getSelection();
 		if (items.length > 0) {
 			IdMap idmap = (IdMap) items[0].getData();
@@ -523,7 +523,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 			if (dialog.open() == Window.OK) {
 				String idmapHMKey = mapping.getKey();
 				if (idmapHM == null)
-					idmapHM = new HashMap<>();
+					idmapHM = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 				if (!idmapHM.containsKey(idmapHMKey)) {
 					idmapHM.put(idmapHMKey, mapping.getIdAttribute());
 					newMappingsTableItem(mapping, true);
@@ -534,7 +534,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		}
 	}
 
-	private void editMapping(Shell shell) {
+	private void editMapping(Shell shell) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TableItem[] itemsIdMaps = fIdMapsTable.getSelection();
 		TableItem[] itemsMappings = fMappingsTable.getSelection();
 		if (itemsMappings.length > 0) {
@@ -568,7 +568,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		}
 	}
 
-	private void addOrdered(Shell shell) {
+	private void addOrdered(Shell shell) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TableItem[] items = fIdMapsTable.getSelection();
 		if (items.length > 0) {
 //			Set orderedSet= fOrderedElements.keySet();
@@ -583,7 +583,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 			Mapping mapping = new Mapping();
 			ArrayList<String> idmapAL = fOrderedElements.get(idmap.getName());
 			if (idmapAL == null)
-				idmapAL = new ArrayList<>();
+				idmapAL = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			XMLCompareEditOrderedDialog dialog= new XMLCompareEditOrderedDialog(shell,mapping,idmapAL,false);
 			if (dialog.open() == Window.OK) {
 				String idmapALKey = mapping.getKey();
@@ -592,7 +592,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 					newOrderedTableItem(mapping, true);
 					ArrayList<Mapping> ordered = idmap.getOrdered();
 					if (ordered == null) {
-						ordered = new ArrayList<>();
+						ordered = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 						ordered.add(mapping);
 						idmap.setOrdered(ordered);
 					} else {
@@ -605,7 +605,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		}
 	}
 
-	private void editOrdered(Shell shell) {
+	private void editOrdered(Shell shell) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TableItem[] itemsIdMaps = fIdMapsTable.getSelection();
 		TableItem[] itemsOrdered = fOrderedTable.getSelection();
 		if (itemsOrdered.length > 0) {
@@ -647,7 +647,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		//find index where to insert table entry
 		TableItem[] items = fIdMapsTable.getItems();
 		int i= 0;
-		while (i<items.length && idmap.getName().compareToIgnoreCase(items[i].getText(0)) > 0)
+		while (i<items.length && idmap.getName().compareToIgnoreCase(items[i].getText(0)) > 0) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			i++;
 		TableItem item = new TableItem(fIdMapsTable, SWT.NULL, i);
 		String[] values = new String[] {idmap.getName(), (idmap.isInternal())?XMLCompareMessages.XMLComparePreference_topTableColumn2internal:XMLCompareMessages.XMLComparePreference_topTableColumn2user,idmap.getExtension()};
@@ -661,10 +661,10 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		return item;
 	}
 
-	protected TableItem newMappingsTableItem(Mapping mapping, boolean selected) {
+	protected TableItem newMappingsTableItem(Mapping mapping, boolean selected) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TableItem[] items = fMappingsTable.getItems();
 		int i= 0;
-		while (i<items.length && mapping.getElement().compareToIgnoreCase(items[i].getText(0)) > 0)
+		while (i<items.length && mapping.getElement().compareToIgnoreCase(items[i].getText(0)) > 0) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			i++;
 		TableItem item = new TableItem(fMappingsTable, SWT.NULL, i);
 		String idtext = mapping.getIdAttribute();
@@ -687,7 +687,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 	protected TableItem newOrderedTableItem(Mapping mapping, boolean selected) {
 		TableItem[] items = fOrderedTable.getItems();
 		int i= 0;
-		while (i<items.length && mapping.getElement().compareToIgnoreCase(items[i].getText(0)) > 0)
+		while (i<items.length && mapping.getElement().compareToIgnoreCase(items[i].getText(0)) > 0) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			i++;
 
 		TableItem item = new TableItem(fOrderedTable, SWT.NULL, i);
@@ -702,7 +702,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 	}
 
 
-	protected void fillIdMapsTable() {
+	protected void fillIdMapsTable() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//fill user idmaps from plugin.xml
 		fillIdMaps(true);
 
@@ -713,7 +713,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		//they do not appear in the preference store with name IDMAP_PREFERENCE_NAME
 		Set<String> OrderedKeys = fOrderedElements.keySet();
 		Set<String> IdMapKeys = fIdMaps.keySet();
-		for (String IdMapName : OrderedKeys) {
+		for (String IdMapName : OrderedKeys) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!IdMapKeys.contains(IdMapName)) {
 				IdMap idmap= new IdMap(IdMapName, false);
 				ArrayList<?> idmapOrdered = fOrderedElements.get(IdMapName);
@@ -723,18 +723,18 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 		}
 	}
 
-	private void fillIdMaps(boolean internal) {
+	private void fillIdMaps(boolean internal) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		HashMap<?, ?> IdMaps = (internal) ? fIdMapsInternal : fIdMaps;
 		HashMap<?, ?> OrderedElements = (internal) ? fOrderedElementsInternal : fOrderedElements;
 		Set<?> IdMapKeys = IdMaps.keySet();
-		for (Iterator<?> iter_internal = IdMapKeys.iterator(); iter_internal.hasNext();) {
+		for (Iterator<?> iter_internal = IdMapKeys.iterator(); iter_internal.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String IdMapName = (String) iter_internal.next();
 			Vector<Mapping> Mappings = new Vector<>();
 			IdMap idmap = new IdMap(IdMapName, internal, Mappings);
 			//create mappings of internal idmaps
 			HashMap<?, ?> idmapHM = (HashMap<?, ?>) IdMaps.get(IdMapName);
 			Set<?> idmapKeys = idmapHM.keySet();
-			for (Iterator<?> iter_idmap = idmapKeys.iterator(); iter_idmap.hasNext();) {
+			for (Iterator<?> iter_idmap = idmapKeys.iterator(); iter_idmap.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Mapping mapping = new Mapping();
 				String signature = (String) iter_idmap.next();
 				int end_of_signature = signature.lastIndexOf(SIGN_SEPARATOR,signature.length()-2);
@@ -755,7 +755,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 			if (fIdExtensionToName.containsValue(IdMapName)) {
 				Set<String> keySet = fIdExtensionToName.keySet();
 				String extension= new String();
-				for (Iterator<String> iter = keySet.iterator(); iter.hasNext();) {
+				for (Iterator<String> iter = keySet.iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					extension= iter.next();
 					if ( fIdExtensionToName.get(extension).equals(IdMapName) )
 						break;
@@ -767,8 +767,8 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 	}
 
 	protected static void setOrdered(IdMap idmap, ArrayList<?> idmapOrdered) {
-		ArrayList<Mapping> Ordered = new ArrayList<>();
-		for (Iterator<?> iter_ordered = idmapOrdered.iterator(); iter_ordered.hasNext();) {
+		ArrayList<Mapping> Ordered = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Iterator<?> iter_ordered = idmapOrdered.iterator(); iter_ordered.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Mapping mapping= new Mapping();
 			String signature= (String) iter_ordered.next();
 			int end_of_signature = signature.lastIndexOf(SIGN_SEPARATOR,signature.length()-2);
@@ -795,24 +795,24 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 
 	@Override
 	public boolean performCancel() {
-		fIdMaps = new HashMap<>(XMLPlugin.getDefault().getIdMaps());
+		fIdMaps = new HashMap<>(XMLPlugin.getDefault().getIdMaps()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		return super.performCancel();
 	}
 
-	protected void selectionChanged() {
+	protected void selectionChanged() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TableItem[] items = fIdMapsTable.getSelection();
 		if (items.length > 0) {
 			//Refresh Mappings Table
 			fMappingsTable.removeAll();
 			Vector<?> Mappings = ((IdMap) items[0].getData()).getMappings();
-			for (Enumeration<?> enumeration = Mappings.elements(); enumeration.hasMoreElements();) {
+			for (Enumeration<?> enumeration = Mappings.elements(); enumeration.hasMoreElements();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				newMappingsTableItem((Mapping)enumeration.nextElement(), false);
 			}
 			//Refresh Ordered Table
 			fOrderedTable.removeAll();
 			ArrayList<?> Ordered = ((IdMap) items[0].getData()).getOrdered();
 			if (Ordered != null) {
-				for (Iterator<?> iter_ordered = Ordered.iterator(); iter_ordered.hasNext();) {
+				for (Iterator<?> iter_ordered = Ordered.iterator(); iter_ordered.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					newOrderedTableItem((Mapping)iter_ordered.next(), false);
 				}
 			}
@@ -823,7 +823,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 	/**
 	 * Updates the state (enabled, not enabled) of the buttons
 	 */
-	private void updateEnabledState() {
+	private void updateEnabledState() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TableItem[] itemsIdMaps = fIdMapsTable.getSelection();
 		if (itemsIdMaps.length > 0) {
 			IdMap idmap = (IdMap) itemsIdMaps[0].getData();
@@ -856,7 +856,7 @@ public class XMLComparePreferencePage extends PreferencePage implements IWorkben
 	}
 
 	static protected boolean containsInvalidCharacters(String text) {
-		for (char invalidCharacter : invalidCharacters) {
+		for (char invalidCharacter : invalidCharacters) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (text.indexOf(invalidCharacter) > -1)
 				return true;
 		}

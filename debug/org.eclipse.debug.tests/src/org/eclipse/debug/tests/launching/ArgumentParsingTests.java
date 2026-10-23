@@ -52,14 +52,14 @@ public class ArgumentParsingTests {
 	}
 
 	private void execute1Arg(String cmdLine, String argParsed, String rendered) throws Exception {
-		execute("a " + cmdLine + " b", new String[] { "a", argParsed, "b" }, "a " + rendered + " b"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		execute("a " + cmdLine + " b", new String[] { "a", argParsed, "b" }, "a " + rendered + " b"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private static void execute(String commandLine, String[] expectedArgs) throws Exception {
 		execute(commandLine, expectedArgs, commandLine);
 	}
 
-	private static void execute(String commandLine, String[] expectedArgs, String expectedRendered) throws Exception {
+	private static void execute(String commandLine, String[] expectedArgs, String expectedRendered) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String[] arguments = DebugPlugin.parseArguments(commandLine);
 		assertEquals(Arrays.asList(expectedArgs).toString(), Arrays.asList(arguments).toString(), "unexpected parseArguments result;");
 
@@ -79,7 +79,7 @@ public class ArgumentParsingTests {
 		assertEquals(commandLine, sb);
 	}
 
-	private static void runCommandLine(String commandLine, String[] arguments) throws IOException,
+	private static void runCommandLine(String commandLine, String[] arguments) throws IOException, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			URISyntaxException, CoreException {
 		URL classPathUrl = ArgumentsPrinter.class.getResource("/"); //$NON-NLS-1$
 		classPathUrl = FileLocator.toFileURL(classPathUrl);
@@ -97,7 +97,7 @@ public class ArgumentParsingTests {
 		assertEquals(Arrays.asList(arguments).toString(), resultArgs.toString(), "unexpected exec result;");
 
 		if (! Platform.getOS().equals(Constants.OS_WIN32)) {
-			execArgs = new String[] { "sh", "-c", execArgs[0] + " " + execArgs[1] + " " + execArgs[2] + " " + execArgs[3] + " " + commandLine }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+			execArgs = new String[] { "sh", "-c", execArgs[0] + " " + execArgs[1] + " " + execArgs[2] + " " + execArgs[3] + " " + commandLine }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			resultArgs = runCommandLine(execArgs);
 			assertEquals(Arrays.asList(arguments).toString(), resultArgs.toString(), "unexpected sh exec result;");
 		}
@@ -109,9 +109,9 @@ public class ArgumentParsingTests {
 		Process process = DebugPlugin.exec(systemDependentExecArgs, null);
 		BufferedReader procOut = new BufferedReader(new InputStreamReader(process.getInputStream()));
 
-		ArrayList<String> procArgs = new ArrayList<>();
+		ArrayList<String> procArgs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		String procArg;
-		while ((procArg = procOut.readLine()) != null) {
+		while ((procArg = procOut.readLine()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			procArgs.add(procArg);
 		}
 		return procArgs;
@@ -122,7 +122,7 @@ public class ArgumentParsingTests {
 		String[] systemDependentCmdLine = cmdLine;
 		if (Platform.getOS().equals(Constants.OS_WIN32)) {
 			String[] winCmdLine = new String[cmdLine.length];
-			for (int i = 0; i < cmdLine.length; i++) {
+			for (int i = 0; i < cmdLine.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				winCmdLine[i] = winQuote(cmdLine[i]);
 			}
 			systemDependentCmdLine = winCmdLine;
@@ -136,7 +136,7 @@ public class ArgumentParsingTests {
 		if (len == 0) {
 			return true;
 		}
-		for (int i = 0; i < len; i++) {
+		for (int i = 0; i < len; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			switch (s.charAt(i)) {
 				case ' ': case '\t': case '\\': case '"':
 					return true;
@@ -151,7 +151,7 @@ public class ArgumentParsingTests {
 		if (! needsQuoting(s)) {
 			return s;
 		}
-		return "\"" + s.replaceAll("([\\\\]*)\"", "$1$1\\\\\"").replaceAll("([\\\\]*)\\z", "$1$1") + "\"";
+		return "\"" + s.replaceAll("([\\\\]*)\"", "$1$1\\\\\"").replaceAll("([\\\\]*)\\z", "$1$1") + "\""; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 	}
 
 	// -- tests:
@@ -172,9 +172,9 @@ public class ArgumentParsingTests {
 
 	@Test
 	public void test100arg() throws Exception {
-		StringBuilder buf = new StringBuilder();
-		for (int i = 0; i < 100; i++) {
-			buf.append("a "); //$NON-NLS-1$
+		StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < 100; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			buf.append("a "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		buf.deleteCharAt(buf.length() - 1);
 		String[] args = new String[100];

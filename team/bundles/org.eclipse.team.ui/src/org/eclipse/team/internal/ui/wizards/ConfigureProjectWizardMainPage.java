@@ -113,7 +113,7 @@ public class ConfigureProjectWizardMainPage extends WizardPage {
 		return selectedWizard != null && selectedWizard.getPageCount() > 0;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createControl(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
 		composite.setLayout(new GridLayout());
@@ -136,8 +136,8 @@ public class ConfigureProjectWizardMainPage extends WizardPage {
 		table.setLayoutData(data);
 		viewer = new TableViewer(table);
 		viewer.setContentProvider(new WorkbenchContentProvider());
-		viewer.setLabelProvider(new WorkbenchLabelProvider());
-		viewer.addSelectionChangedListener(event -> {
+		viewer.setLabelProvider(new WorkbenchLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
+		viewer.addSelectionChangedListener(event -> { //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 			// Initialize the wizard so we can tell whether to enable the Next button
 			ISelection selection = event.getSelection();
 			if (selection == null || !(selection instanceof IStructuredSelection ss)) {
@@ -164,7 +164,7 @@ public class ConfigureProjectWizardMainPage extends WizardPage {
 			// Ask the container to update button enablement
 			setPageComplete(true);
 		});
-		viewer.addDoubleClickListener(unused -> getWizard().getContainer().showPage(getNextPage()));
+		viewer.addDoubleClickListener(unused -> getWizard().getContainer().showPage(getNextPage())); //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
 		viewer.setComparator(new ViewerComparator() {
 			@Override
 			public int compare(Viewer viewer, Object e1, Object e2) {
@@ -178,33 +178,33 @@ public class ConfigureProjectWizardMainPage extends WizardPage {
 		if(disabledWizards.size() > 0) {
 			showAllToggle = new Button(composite, SWT.CHECK);
 			showAllToggle.setText(TeamUIMessages.ConfigureProjectWizard_showAll);
-			showAllToggle.addSelectionListener(new SelectionAdapter() {
+			showAllToggle.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					ArrayList<Object> all = new ArrayList<>(Arrays.asList(wizards.getChildren()));
+					ArrayList<Object> all = new ArrayList<>(Arrays.asList(wizards.getChildren())); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 					if(showAllToggle.getSelection()) {
 						all.addAll(Arrays.asList(disabledWizards.getChildren()));
 					}
-					viewer.setInput(new AdaptableList(all));
+					viewer.setInput(new AdaptableList(all)); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 				}
 			});
 		}
 
 		if(wizards.size() == 0 && showAllToggle != null) {
 			showAllToggle.setSelection(true);
-			ArrayList<Object> all = new ArrayList<>(Arrays.asList(wizards.getChildren()));
+			ArrayList<Object> all = new ArrayList<>(Arrays.asList(wizards.getChildren())); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			all.addAll(Arrays.asList(disabledWizards.getChildren()));
-			viewer.setInput(new AdaptableList(all));
+			viewer.setInput(new AdaptableList(all)); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		} else {
-			viewer.setInput(wizards);
+			viewer.setInput(wizards); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		}
 		initializeWizardSelection();
 		Dialog.applyDialogFont(parent);
 	}
 
 	/* package */ IProject[] getUnsharedProjects() {
-		java.util.List<IProject> unshared = new ArrayList<>();
-		for (IProject project : projects) {
+		java.util.List<IProject> unshared = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!RepositoryProvider.isShared(project)) {
 				unshared.add(project);
 			}
@@ -248,7 +248,7 @@ public class ConfigureProjectWizardMainPage extends WizardPage {
 		}
 	}
 
-	private void initializeWizardSelection() {
+	private void initializeWizardSelection() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String selectedWizardId = null;
 
 		IDialogSettings dialogSettings = PlatformUI.getDialogSettingsProvider(FrameworkUtil.getBundle(ConfigureProjectWizardMainPage.class)).getDialogSettings();
@@ -267,7 +267,7 @@ public class ConfigureProjectWizardMainPage extends WizardPage {
 		// TODO: any checks here?
 		Object[] children = ((AdaptableList) viewer.getInput()).getChildren();
 
-		for (Object child : children) {
+		for (Object child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				ConfigurationWizardElement element = (ConfigurationWizardElement) child;
 				if (element.getID().equals(selectedWizardId)) {

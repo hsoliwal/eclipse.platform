@@ -138,7 +138,7 @@ public class CompareConfiguration {
 
 	private final IPreferenceStore fPreferenceStore;
 	private final ListenerList<IPropertyChangeListener> fListeners= new ListenerList<>();
-	private final HashMap<String, Object> fProperties= new HashMap<>();
+	private final HashMap<String, Object> fProperties= new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	private boolean fLeftEditable= true;
 	private boolean fRightEditable= true;
 	private String fAncestorLabel;
@@ -151,10 +151,10 @@ public class CompareConfiguration {
 	private final DefaultLabelProvider labelProvider = new DefaultLabelProvider();
 	private boolean fDisposed;
 	private LocalResourceManager fResourceManager;
-	private final Set<Integer> fIgnoredChanges = new HashSet<>(6);
+	private final Set<Integer> fIgnoredChanges = new HashSet<>(6); //FLLDCIM: MARK — M03 M3_SET_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
-	private class DefaultLabelProvider extends LabelProvider implements ICompareInputLabelProvider, ILabelProviderListener {
-		private final Map<ICompareInput, ICompareInputLabelProvider> labelProviders = new HashMap<>();
+	private class DefaultLabelProvider extends LabelProvider implements ICompareInputLabelProvider, ILabelProviderListener { //FLLDCIM: MARK — T24  IMPLEMENTS
+		private final Map<ICompareInput, ICompareInputLabelProvider> labelProviders = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		private ICompareInputLabelProvider defaultLabelProvider;
 
 		@Override
@@ -243,7 +243,7 @@ public class CompareConfiguration {
 				old.removeListener(this);
 			}
 			labelProviders.put(input, labelProvider);
-			labelProvider.addListener(this);
+			labelProvider.addListener(this); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 		}
 
 		@Override
@@ -284,7 +284,7 @@ public class CompareConfiguration {
 
 		@Override
 		public void dispose() {
-			for (ICompareInputLabelProvider lp : labelProviders.values()) {
+			for (ICompareInputLabelProvider lp : labelProviders.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				lp.removeListener(this);
 			}
 			if (defaultLabelProvider != null) {
@@ -305,7 +305,7 @@ public class CompareConfiguration {
 			}
 			defaultLabelProvider = labelProvider;
 			if (defaultLabelProvider != null) {
-				defaultLabelProvider.addListener(this);
+				defaultLabelProvider.addListener(this); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 			}
 		}
 	}
@@ -446,7 +446,7 @@ public class CompareConfiguration {
 		PropertyChangeEvent event= null;
 		Object[] listeners= fListeners.getListeners();
 		if (listeners != null) {
-			for (Object listener : listeners) {
+			for (Object listener : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IPropertyChangeListener l = (IPropertyChangeListener) listener;
 				if (event == null) {
 					event= new PropertyChangeEvent(this, propertyName, oldValue, newValue);

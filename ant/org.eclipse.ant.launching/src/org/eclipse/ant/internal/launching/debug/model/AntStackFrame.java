@@ -239,12 +239,12 @@ public class AntStackFrame extends AntDebugElement implements IStackFrame {
 	 *            the name of the variable to search for
 	 * @return a property, or <code>null</code> if none
 	 */
-	public AntProperty findProperty(String propertyName) {
+	public AntProperty findProperty(String propertyName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
-			for (IVariable group : getVariables()) {
+			for (IVariable group : getVariables()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				AntProperties propertiesGrouping = (AntProperties) group;
 				AntPropertiesValue value = (AntPropertiesValue) propertiesGrouping.getValue();
-				for (IVariable currproperty : value.getVariables()) {
+				for (IVariable currproperty : value.getVariables()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					AntProperty property = (AntProperty) currproperty;
 					if (property.getName().equals(propertyName)) {
 						return property;

@@ -34,7 +34,7 @@ public class PluginManifestChangeTracker extends ChangeTracker {
 	Set<IPath> manifestFilePaths;
 
 	public PluginManifestChangeTracker() {
-		manifestFilePaths = new HashSet<>();
+		manifestFilePaths = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		manifestFilePaths.add(new Path(null, "plugin.xml"));
 		manifestFilePaths.add(new Path(null, "plugin.properties"));
 		manifestFilePaths.add(new Path(null, "build.properties"));
@@ -63,8 +63,8 @@ public class PluginManifestChangeTracker extends ChangeTracker {
 
 	@Override
 	protected void handleProjectChange(IProject project) {
-		List<IFile> changes = new ArrayList<>();
-		for (IPath path : manifestFilePaths) {
+		List<IFile> changes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IPath path : manifestFilePaths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IFile file = project.getFile(path);
 			try {
 				if (isModified(file)) {
@@ -91,7 +91,7 @@ public class PluginManifestChangeTracker extends ChangeTracker {
 	}
 
 	private String getSetName(IProject project) {
-		return "Plugin manifest files for " + project.getName();
+		return "Plugin manifest files for " + project.getName(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override

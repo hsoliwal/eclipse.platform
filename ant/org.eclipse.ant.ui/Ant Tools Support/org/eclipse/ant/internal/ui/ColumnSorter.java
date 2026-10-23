@@ -39,11 +39,11 @@ public abstract class ColumnSorter extends ViewerComparator {
 	/**
 	 * Constructor
 	 */
-	public ColumnSorter(ColumnViewer cviewer, TableColumn column) {
+	public ColumnSorter(ColumnViewer cviewer, TableColumn column) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		this.cviewer = cviewer;
 		this.column = column;
 		this.columnidx = getColumnIndex();
-		this.column.addSelectionListener(new SelectionAdapter() {
+		this.column.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (ColumnSorter.this.cviewer.getComparator() != ColumnSorter.this) {
@@ -76,7 +76,7 @@ public abstract class ColumnSorter extends ViewerComparator {
 		this.direction = direction;
 		this.column.getParent().setSortDirection(this.direction);
 		if (this.cviewer.getComparator() == this) {
-			this.cviewer.refresh();
+			this.cviewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		} else {
 			this.cviewer.setComparator(this);
 		}

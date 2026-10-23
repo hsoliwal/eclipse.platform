@@ -21,7 +21,7 @@ public class JavacPatternMatcher extends AbstractJavacPatternMatcher {
 	/*
 	 * [javac] /Users/kevinbarnes/Eclipse/runtime-workspace/Foo/src/CarriageReturn.java:4: ';' expected
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void matchFound(PatternMatchEvent event) {
 		String matchedText = getMatchedText(event);
 		if (matchedText == null) {
@@ -29,7 +29,7 @@ public class JavacPatternMatcher extends AbstractJavacPatternMatcher {
 		}
 
 		int numEnd = matchedText.lastIndexOf(':');
-		while (numEnd > 1 && !Character.isDigit(matchedText.charAt(numEnd - 1))) {
+		while (numEnd > 1 && !Character.isDigit(matchedText.charAt(numEnd - 1))) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			numEnd = matchedText.lastIndexOf(':', numEnd - 1);
 		}
 		int numStart = matchedText.lastIndexOf(':', numEnd - 1);

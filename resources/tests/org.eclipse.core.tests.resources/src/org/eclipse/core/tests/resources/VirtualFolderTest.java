@@ -133,7 +133,7 @@ public class VirtualFolderTest {
 
 		assertTrue(linkedFolder.exists());
 		assertEquals(location, linkedFolder.getLocation());
-		assertFalse(location.toFile().exists());
+		assertFalse(location.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// getting children should succeed (and be empty)
 		assertThat(linkedFolder.members()).isEmpty();
@@ -155,13 +155,13 @@ public class VirtualFolderTest {
 
 		assertTrue(file.exists());
 		assertEquals(location, file.getLocation());
-		assertFalse(location.toFile().exists());
+		assertFalse(location.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// delete should succeed
 		file.delete(IResource.NONE, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyProjectWithVirtualFolder() throws Exception {
 		IPath fileLocation = getRandomLocation();
 		fileStoreExtension.deleteOnTearDown(fileLocation);
@@ -172,7 +172,7 @@ public class VirtualFolderTest {
 		IFolder linkedFolder = existingVirtualFolderInExistingProject.getFolder(createUniqueString());
 
 		createInFileSystem(fileLocation);
-		folderLocation.toFile().mkdir();
+		folderLocation.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		linkedFolder.createLink(folderLocation, IResource.NONE, createTestMonitor());
 		linkedFile.createLink(fileLocation, IResource.NONE, createTestMonitor());
@@ -205,7 +205,7 @@ public class VirtualFolderTest {
 		destinationProject.delete(IResource.NONE, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveProjectWithVirtualFolder() throws Exception {
 		IPath fileLocation = getRandomLocation();
 		fileStoreExtension.deleteOnTearDown(fileLocation);
@@ -220,7 +220,7 @@ public class VirtualFolderTest {
 		assertDoesNotExistInWorkspace(folder, file, childFile);
 
 		createInFileSystem(fileLocation);
-		folderLocation.toFile().mkdir();
+		folderLocation.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		folder.createLink(folderLocation, IResource.NONE, createTestMonitor());
 		file.createLink(fileLocation, IResource.NONE, createTestMonitor());
@@ -268,7 +268,7 @@ public class VirtualFolderTest {
 		assertTrue(virtualFolder.isVirtual());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteProjectWithVirtualFolderAndLink() throws CoreException {
 		IPath folderLocation = getRandomLocation();
 		fileStoreExtension.deleteOnTearDown(folderLocation);
@@ -276,7 +276,7 @@ public class VirtualFolderTest {
 		IFolder virtualFolder = existingProject.getFolder(createUniqueString());
 		IFolder linkedFolder = virtualFolder.getFolder("a_link");
 
-		folderLocation.toFile().mkdir();
+		folderLocation.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		virtualFolder.create(IResource.VIRTUAL, true, null);
 		linkedFolder.createLink(folderLocation, IResource.NONE, createTestMonitor());
 		existingProject.delete(IResource.NEVER_DELETE_PROJECT_CONTENT, createTestMonitor());
@@ -308,7 +308,7 @@ public class VirtualFolderTest {
 
 		assertTrue(folder.exists());
 		assertEquals(folderLocation, folder.getLocation());
-		assertFalse(folderLocation.toFile().exists());
+		assertFalse(folderLocation.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// Check file store URI for the linked resource
 		IFileStore fs = EFS.getStore(existingVirtualFolderInExistingProject.getLocationURI());
@@ -325,7 +325,7 @@ public class VirtualFolderTest {
 		assertTrue(virtualFolder.isVirtual());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testVirtualFolderInLinkedFolder() throws CoreException {
 		// setup handles
 		IFolder topFolder = existingProject.getFolder("topFolder");
@@ -339,8 +339,8 @@ public class VirtualFolderTest {
 		fileStoreExtension.deleteOnTearDown(subFolderLocation);
 
 		// create the structure on disk
-		linkedFolderLocation.toFile().mkdir();
-		subFolderLocation.toFile().mkdir();
+		linkedFolderLocation.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		subFolderLocation.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// create the structure in the workspace
 		createInWorkspace(topFolder);

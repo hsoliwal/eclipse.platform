@@ -85,7 +85,7 @@ import org.eclipse.ui.part.IPageSite;
 /**
  * Provides a Common Navigator based viewer for use by a {@link ModelSynchronizePage}.
  */
-public class CommonViewerAdvisor extends AbstractTreeViewerAdvisor implements INavigatorContentServiceListener, IEmptyTreeListener, IPropertyChangeListener {
+public class CommonViewerAdvisor extends AbstractTreeViewerAdvisor implements INavigatorContentServiceListener, IEmptyTreeListener, IPropertyChangeListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	public static final class NavigableCommonViewer extends CommonViewer implements ITreeViewerAccessor {
 		private final IEmptyTreeListener listener;
@@ -135,7 +135,7 @@ public class CommonViewerAdvisor extends AbstractTreeViewerAdvisor implements IN
 			super.inputChanged(input, oldInput);
 			checkForEmptyViewer();
 		}
-		private void checkForEmptyViewer() {
+		private void checkForEmptyViewer() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			Object input = getInput();
 			if (input != null) {
 				Widget w = findItem(input);
@@ -170,14 +170,14 @@ public class CommonViewerAdvisor extends AbstractTreeViewerAdvisor implements IN
 		 * @since 2.0
 		 */
 		public TreePath[] getVisibleExpandedPaths() {
-			ArrayList<TreePath> v = new ArrayList<>();
+			ArrayList<TreePath> v = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			internalCollectVisibleExpanded(v, getControl());
 			return v.toArray(new TreePath[v.size()]);
 		}
 
 		private void internalCollectVisibleExpanded(ArrayList<TreePath> result, Widget widget) {
 			Item[] items = getChildren(widget);
-			for (Item item : items) {
+			for (Item item : items) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (getExpanded(item)) {
 					TreePath path = getTreePathFromItem(item);
 					if (path != null) {
@@ -225,7 +225,7 @@ public class CommonViewerAdvisor extends AbstractTreeViewerAdvisor implements IN
 			if (handlers != null) {
 				Set keys = handlers.keySet();
 				Iterator iter = keys.iterator();
-				while (iter.hasNext()) {
+				while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String actionId = (String) iter.next();
 					getParent().setGlobalActionHandler(actionId,
 							null);
@@ -241,7 +241,7 @@ public class CommonViewerAdvisor extends AbstractTreeViewerAdvisor implements IN
 			if (newActionHandlers != null) {
 				Set keys = newActionHandlers.entrySet();
 				Iterator iter = keys.iterator();
-				while (iter.hasNext()) {
+				while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Map.Entry entry = (Map.Entry) iter.next();
 					getParent().setGlobalActionHandler((String) entry.getKey(),
 							(IAction) entry.getValue());
@@ -256,7 +256,7 @@ public class CommonViewerAdvisor extends AbstractTreeViewerAdvisor implements IN
 
 	private static final String PROP_ACTION_SERVICE_ACTION_BARS = "org.eclipse.team.ui.actionServiceActionBars"; //$NON-NLS-1$
 
-	private final Set<INavigatorContentExtension> extensions = new HashSet<>();
+	private final Set<INavigatorContentExtension> extensions = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	private NavigatorActionService actionService;
 
@@ -274,9 +274,9 @@ public class CommonViewerAdvisor extends AbstractTreeViewerAdvisor implements IN
 		v.setComparator(new TeamViewerComparator((CommonViewerComparator) v.getComparator()));
 		ISynchronizationScope scope = getScope(configuration);
 		bindTeamContentProviders(v);
-		scope.addScopeChangeListener((unused, unused2, unused3) -> {
+		scope.addScopeChangeListener((unused, unused2, unused3) -> { //FLLDCIM: MARK — T38 TEAM_SYNC_ADAPTER CALL
 			enableContentProviders(v, configuration);
-			Utils.asyncExec((Runnable) () -> v.refresh(), v);
+			Utils.asyncExec((Runnable) () -> v.refresh(), v); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		});
 		enableContentProviders(v, configuration);
 		configuration.getSite().setSelectionProvider(v);
@@ -287,7 +287,7 @@ public class CommonViewerAdvisor extends AbstractTreeViewerAdvisor implements IN
 		v.getNavigatorContentService().getActivationService().activateExtensions(getEnabledContentProviders(configuration), true);
 	}
 
-	private static String[] getEnabledContentProviders(ISynchronizePageConfiguration configuration) {
+	private static String[] getEnabledContentProviders(ISynchronizePageConfiguration configuration) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String visibleModel = (String)configuration.getProperty(ModelSynchronizeParticipant.P_VISIBLE_MODEL_PROVIDER);
 		if (visibleModel != null && !visibleModel.equals(ModelSynchronizeParticipant.ALL_MODEL_PROVIDERS_VISIBLE)) {
 			ITeamContentProviderDescriptor desc = TeamUI.getTeamContentProviderManager().getDescriptor(visibleModel);
@@ -298,10 +298,10 @@ public class CommonViewerAdvisor extends AbstractTreeViewerAdvisor implements IN
 		configuration.setProperty(ModelSynchronizeParticipant.P_VISIBLE_MODEL_PROVIDER, ModelSynchronizeParticipant.ALL_MODEL_PROVIDERS_VISIBLE);
 		ModelSynchronizeParticipant participant = (ModelSynchronizeParticipant)configuration.getParticipant();
 		ModelProvider[] providers = participant.getEnabledModelProviders();
-		Set<String> result = new HashSet<>();
+		Set<String> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		Object property = configuration.getProperty(ITeamContentProviderManager.PROP_PAGE_LAYOUT);
 		boolean isFlatLayout = property != null && property.equals(ITeamContentProviderManager.FLAT_LAYOUT);
-		for (ModelProvider provider : providers) {
+		for (ModelProvider provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ITeamContentProviderDescriptor desc = TeamUI.getTeamContentProviderManager().getDescriptor(provider.getId());
 			if (desc != null && desc.isEnabled() && (!isFlatLayout || desc.isFlatLayoutSupported())) {
 				result.add(desc.getContentExtensionId());
@@ -313,8 +313,8 @@ public class CommonViewerAdvisor extends AbstractTreeViewerAdvisor implements IN
 	private static void bindTeamContentProviders(CommonViewer v) {
 		ITeamContentProviderManager teamContentProviderManager = TeamUI.getTeamContentProviderManager();
 		ITeamContentProviderDescriptor[] descriptors = teamContentProviderManager.getDescriptors();
-		Set<String> toBind = new HashSet<>();
-		for (ITeamContentProviderDescriptor descriptor : descriptors) {
+		Set<String> toBind = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (ITeamContentProviderDescriptor descriptor : descriptors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			toBind.add(descriptor.getContentExtensionId());
 		}
 		v.getNavigatorContentService().bindExtensions(toBind.toArray(new String[toBind.size()]), true);
@@ -329,11 +329,11 @@ public class CommonViewerAdvisor extends AbstractTreeViewerAdvisor implements IN
 	 * @param parent the parent
 	 * @param configuration the configuration
 	 */
-	public CommonViewerAdvisor(Composite parent, ISynchronizePageConfiguration configuration) {
+	public CommonViewerAdvisor(Composite parent, ISynchronizePageConfiguration configuration) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super(configuration);
 		final CommonViewer viewer = CommonViewerAdvisor.createViewer(parent, configuration, this);
-		TeamUI.getTeamContentProviderManager().addPropertyChangeListener(this);
-		configuration.addPropertyChangeListener(this);
+		TeamUI.getTeamContentProviderManager().addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
+		configuration.addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		GridData data = new GridData(GridData.FILL_BOTH);
 		viewer.getControl().setLayoutData(data);
 		viewer.getNavigatorContentService().addListener(this);
@@ -346,7 +346,7 @@ public class CommonViewerAdvisor extends AbstractTreeViewerAdvisor implements IN
 				dlp = new DecoratingLabelProvider(
 						new DecoratingLabelProvider(lp, decorator),
 						PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator());
-				viewer.setLabelProvider(dlp);
+				viewer.setLabelProvider(dlp); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 			}
 			DecorationContext decorationContext = new DecorationContext();
 			decorationContext.putProperty(SynchronizationStateTester.PROP_TESTER, new SynchronizationStateTester() {
@@ -365,7 +365,7 @@ public class CommonViewerAdvisor extends AbstractTreeViewerAdvisor implements IN
 						new MyDecoratingStyledCellLabelProvider(slp, decorator),
 						PlatformUI.getWorkbench().getDecoratorManager()
 								.getLabelDecorator(), null);
-				viewer.setLabelProvider(dsclp);
+				viewer.setLabelProvider(dsclp); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 			}
 			DecorationContext decorationContext = new DecorationContext();
 			decorationContext.putProperty(SynchronizationStateTester.PROP_TESTER, new SynchronizationStateTester() {
@@ -406,7 +406,7 @@ public class CommonViewerAdvisor extends AbstractTreeViewerAdvisor implements IN
 	@Override
 	public void setInitialInput() {
 		CommonViewer viewer = (CommonViewer)getViewer();
-		viewer.setInput(getInitialInput());
+		viewer.setInput(getInitialInput()); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		viewer.expandToLevel(2);
 	}
 

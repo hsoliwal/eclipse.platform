@@ -62,7 +62,7 @@ public class LocalHistoryPerformanceTest {
 	/**
 	 * Creates a tree of resources containing history.
 	 */
-	void createTree(IFolder base, final int filesPerFolder, final int statesPerFile) throws CoreException {
+	void createTree(IFolder base, final int filesPerFolder, final int statesPerFile) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final IFolder[] folders = new IFolder[5];
 		folders[0] = base.getFolder("folder1");
 		folders[1] = base.getFolder("folder2");
@@ -70,13 +70,13 @@ public class LocalHistoryPerformanceTest {
 		folders[3] = folders[2].getFolder("folder4");
 		folders[4] = folders[3].getFolder("folder5");
 		final IWorkspace workspace = getWorkspace();
-		workspace.run((IWorkspaceRunnable) unused -> {
+		workspace.run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			createInWorkspace(folders);
-			for (IFolder folder : folders) {
-				for (int j = 0; j < filesPerFolder; j++) {
-					IFile file = folder.getFile("file" + j);
+			for (IFolder folder : folders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				for (int j = 0; j < filesPerFolder; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					IFile file = folder.getFile("file" + j); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					createInWorkspace(file, createRandomString());
-					for (int k = 0; k < statesPerFile; k++) {
+					for (int k = 0; k < statesPerFile; k++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						file.setContents(createRandomContentsStream(), IResource.KEEP_HISTORY, createTestMonitor());
 					}
 				}
@@ -97,7 +97,7 @@ public class LocalHistoryPerformanceTest {
 		HistoryStoreTest.wipeHistoryStore(createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAddState() throws Exception {
 		setMaxFileStates(100);
 		final IFile file = getWorkspace().getRoot().getProject("proj1").getFile("file.txt");
@@ -121,7 +121,7 @@ public class LocalHistoryPerformanceTest {
 		}.run(getClass(), testInfo.getDisplayName(), 10, 30);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug28603() throws Exception {
 		final IProject project = getWorkspace().getRoot().getProject("myproject");
 		final IFolder folder1 = project.getFolder("myfolder1");
@@ -162,7 +162,7 @@ public class LocalHistoryPerformanceTest {
 		}.run(getClass(), testInfo.getDisplayName(), 10, 5);
 	}
 
-	private void testClearHistory(final int filesPerFolder, final int statesPerFile) throws Exception {
+	private void testClearHistory(final int filesPerFolder, final int statesPerFile) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IProject project = getWorkspace().getRoot().getProject("proj1");
 		final IFolder base = project.getFolder("base");
 		removeFromWorkspace(base);
@@ -275,7 +275,7 @@ public class LocalHistoryPerformanceTest {
 		IProject project = getWorkspace().getRoot().getProject("proj1");
 		final IFile file = project.getFile("file.txt");
 		createInWorkspace(file, createRandomString());
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 100; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			file.setContents(createRandomContentsStream(), IResource.KEEP_HISTORY, createTestMonitor());
 		}
 		new PerformanceTestRunner() {
@@ -286,7 +286,7 @@ public class LocalHistoryPerformanceTest {
 		}.run(getClass(), testInfo.getDisplayName(), 1, 150);
 	}
 
-	private void testHistoryCleanUp(final int filesPerFolder, final int statesPerFile) throws Exception {
+	private void testHistoryCleanUp(final int filesPerFolder, final int statesPerFile) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IProject project = getWorkspace().getRoot().getProject("proj1");
 		final IFolder base = project.getFolder("base");
 		removeFromWorkspace(base);

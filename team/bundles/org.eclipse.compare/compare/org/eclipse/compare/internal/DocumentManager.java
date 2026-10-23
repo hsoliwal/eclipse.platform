@@ -24,12 +24,12 @@ public class DocumentManager {
 
 	private static final boolean DEBUG= false;
 
-	private static ArrayList<Object> fgKeys= new ArrayList<>();
-	private static ArrayList<IDocument> fgValues= new ArrayList<>();
+	private static ArrayList<Object> fgKeys= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private static ArrayList<IDocument> fgValues= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	public static IDocument get(Object o) {
 
-		for (int i= 0; i < fgKeys.size(); i++) {
+		for (int i= 0; i < fgKeys.size(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (fgKeys.get(i) == o) {
 				return fgValues.get(i);
 			}
@@ -39,9 +39,9 @@ public class DocumentManager {
 
 	public static void put(Object o, IDocument document) {
 		if (DEBUG) {
-			System.out.println("DocumentManager.put: " + document); //$NON-NLS-1$
+			System.out.println("DocumentManager.put: " + document); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
-		for (int i= 0; i < fgKeys.size(); i++) {
+		for (int i= 0; i < fgKeys.size(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (fgKeys.get(i) == o) {
 				fgValues.set(i, document);
 				return;
@@ -54,9 +54,9 @@ public class DocumentManager {
 	public static void remove(IDocument document) {
 		if (document != null) {
 			if (DEBUG) {
-				System.out.println("DocumentManager.remove: " + document); //$NON-NLS-1$
+				System.out.println("DocumentManager.remove: " + document); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
-			for (int i= 0; i < fgValues.size(); i++) {
+			for (int i= 0; i < fgValues.size(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (fgValues.get(i) == document) {
 					fgKeys.remove(i);
 					fgValues.remove(i);
@@ -71,7 +71,7 @@ public class DocumentManager {
 
 	public static void dump() {
 		if (DEBUG) {
-			System.out.println("DocumentManager: managed docs:" + fgValues.size()); //$NON-NLS-1$
+			System.out.println("DocumentManager: managed docs:" + fgValues.size()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 }

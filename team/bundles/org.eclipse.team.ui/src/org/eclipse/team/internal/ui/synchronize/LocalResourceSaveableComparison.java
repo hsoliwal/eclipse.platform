@@ -52,7 +52,7 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
  * @see LocalResourceTypedElement
  * @since 3.3
  */
-public abstract class LocalResourceSaveableComparison extends SaveableComparison implements IPropertyChangeListener, ISavingSaveable {
+public abstract class LocalResourceSaveableComparison extends SaveableComparison implements IPropertyChangeListener, ISavingSaveable { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	private final ICompareInput input;
 	private final CompareEditorInput editorInput;
@@ -90,13 +90,13 @@ public abstract class LocalResourceSaveableComparison extends SaveableComparison
 		}
 	}
 
-	private void initializeContentChangeListeners() {
+	private void initializeContentChangeListeners() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// We need to listen to saves to the input to catch the case
 		// where Save was picked from the context menu
 		ITypedElement te = getFileElement();
 		if (te instanceof IContentChangeNotifier) {
 			if (contentChangeListener == null) {
-				contentChangeListener = unused -> {
+				contentChangeListener = unused -> { //FLLDCIM: MARK — T37  LAMBDA
 					try {
 						if(! isSaving) {
 							performSave(new NullProgressMonitor());
@@ -132,7 +132,7 @@ public abstract class LocalResourceSaveableComparison extends SaveableComparison
 		return fileElement;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void performSave(IProgressMonitor monitor) throws CoreException {
 		if (checkForUpdateConflicts()) {
 			return;
@@ -180,7 +180,7 @@ public abstract class LocalResourceSaveableComparison extends SaveableComparison
 	 * Check whether there is a conflicting save on the file.
 	 * @return <code>true</code> if there was and the user chose to cancel the operation
 	 */
-	private boolean checkForUpdateConflicts() {
+	private boolean checkForUpdateConflicts() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if(hasSaveConflict()) {
 			if (Utils.RUNNING_TESTS) {
 				return !Utils.TESTING_FLUSH_ON_COMPARE_INPUT_CHANGE;
@@ -276,7 +276,7 @@ public abstract class LocalResourceSaveableComparison extends SaveableComparison
 		return TeamUIPlugin.getImageDescriptor(ITeamUIImages.IMG_SYNC_VIEW);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void propertyChange(PropertyChangeEvent e) {
 		String propertyName= e.getProperty();
 		if (CompareEditorInput.DIRTY_STATE.equals(propertyName)) {
@@ -318,7 +318,7 @@ public abstract class LocalResourceSaveableComparison extends SaveableComparison
 		return input.hashCode();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
@@ -344,7 +344,7 @@ public abstract class LocalResourceSaveableComparison extends SaveableComparison
 		return false;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter == IDocument.class) {
 			if (document != null) {

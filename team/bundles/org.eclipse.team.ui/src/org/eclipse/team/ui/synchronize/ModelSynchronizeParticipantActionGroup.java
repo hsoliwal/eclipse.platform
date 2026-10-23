@@ -84,7 +84,7 @@ public class ModelSynchronizeParticipantActionGroup extends SynchronizePageActio
 	private MergeAction overwrite;
 	private MergeAction markAsMerged;
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void initialize(ISynchronizePageConfiguration configuration) {
 		super.initialize(configuration);
 
@@ -126,7 +126,7 @@ public class ModelSynchronizeParticipantActionGroup extends SynchronizePageActio
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void fillContextMenu(IMenuManager menu) {
 		super.fillContextMenu(menu);
 		if (menu instanceof CommonMenuManager cmm) {
@@ -138,7 +138,7 @@ public class ModelSynchronizeParticipantActionGroup extends SynchronizePageActio
 			if (fileGroup != null) {
 				ModelSynchronizeParticipant msp = ((ModelSynchronizeParticipant)getConfiguration().getParticipant());
 				boolean allElementsHaveCompareInput = true;
-				for (Object element : elements) {
+				for (Object element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (!msp.hasCompareInputFor(element)) {
 						allElementsHaveCompareInput = false;
 						break;
@@ -160,7 +160,7 @@ public class ModelSynchronizeParticipantActionGroup extends SynchronizePageActio
 	 * overriding {@link #addToContextMenu(String, Action, IMenuManager)}.
 	 * @param cmm the menu manager
 	 */
-	private void addMergeActions(CommonMenuManager cmm) {
+	private void addMergeActions(CommonMenuManager cmm) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ModelSynchronizeParticipant participant = ((ModelSynchronizeParticipant)getConfiguration().getParticipant());
 		if (participant.isMergingEnabled()) {
 			if (!isTwoWayMerge()) {
@@ -220,7 +220,7 @@ public class ModelSynchronizeParticipantActionGroup extends SynchronizePageActio
 	 * {@link SynchronizationActionProvider#MARK_AS_MERGE_ACTION_ID})
 	 * @param action the action for the given id
 	 */
-	protected void configureMergeAction(String mergeActionId, Action action) {
+	protected void configureMergeAction(String mergeActionId, Action action) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (mergeActionId == null) {
 			return;
 		}
@@ -271,7 +271,7 @@ public class ModelSynchronizeParticipantActionGroup extends SynchronizePageActio
 	 * @param action the action for the given id
 	 * @param manager the context menu manager
 	 */
-	protected void addToContextMenu(String mergeActionId, Action action, IMenuManager manager) {
+	protected void addToContextMenu(String mergeActionId, Action action, IMenuManager manager) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IContributionItem group = null;
 		if (mergeActionId != null) {
 			switch (mergeActionId) {
@@ -295,7 +295,7 @@ public class ModelSynchronizeParticipantActionGroup extends SynchronizePageActio
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void dispose() {
 		if (modelPicker != null) {
 			modelPicker.dispose();

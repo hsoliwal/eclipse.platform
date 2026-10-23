@@ -38,7 +38,7 @@ package org.eclipse.debug.examples.core.pda.protocol;
 public class PDASetBreakpointCommand extends PDACommand {
 
 	public PDASetBreakpointCommand(int line, boolean stopVM) {
-		super("set " +  //$NON-NLS-1$
+		super("set " +  //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			  line + " " +  //$NON-NLS-1$
 			  (stopVM ? "1" : "0")); //$NON-NLS-1$ //$NON-NLS-2$
 	}

@@ -38,7 +38,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class Bug544975Test {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug544975ProjectOpenBackgroundRefresh() throws Exception {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IProject project = root.getProject("Bug544975");
@@ -56,10 +56,10 @@ public class Bug544975Test {
 			project.close(new NullProgressMonitor());
 
 			Path projectPath = Paths.get(project.getLocationURI());
-			assertTrue(Files.exists(projectPath), "Test project must exist on file system");
+			assertTrue(Files.exists(projectPath), "Test project must exist on file system"); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 			Path filePath = projectPath.resolve("someFile.txt");
-			Files.delete(filePath);
+			Files.delete(filePath); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			filePath = projectPath.resolve("someOtherFile.txt");
 			Files.createFile(filePath);
 
@@ -78,7 +78,7 @@ public class Bug544975Test {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug544975ProjectOpenWithoutBackgroundRefresh() throws Exception {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IProject project = root.getProject("Bug544975");
@@ -91,10 +91,10 @@ public class Bug544975Test {
 		project.close(new NullProgressMonitor());
 
 		Path projectPath = Paths.get(project.getLocationURI());
-		assertTrue(Files.exists(projectPath), "Test project must exist on file system");
+		assertTrue(Files.exists(projectPath), "Test project must exist on file system"); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		Path filePath = projectPath.resolve("someFile.txt");
-		Files.delete(filePath);
+		Files.delete(filePath); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		filePath = projectPath.resolve("someOtherFile.txt");
 		Files.createFile(filePath);
 

@@ -34,9 +34,9 @@ public class PDAStackCommandResult extends PDACommandResult {
 	PDAStackCommandResult(String response) {
 		super(response);
 		StringTokenizer st = new StringTokenizer(response, "#"); //$NON-NLS-1$
-		List<PDAFrameData> framesList = new ArrayList<>();
+		List<PDAFrameData> framesList = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-		while (st.hasMoreTokens()) {
+		while (st.hasMoreTokens()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			framesList.add(new PDAFrameData(st.nextToken()));
 		}
 		fFrames = framesList.toArray(new PDAFrameData[framesList.size()]);

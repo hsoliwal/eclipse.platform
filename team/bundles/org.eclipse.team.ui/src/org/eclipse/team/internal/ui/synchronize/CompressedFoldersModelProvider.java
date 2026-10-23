@@ -37,7 +37,7 @@ import org.eclipse.team.internal.ui.TeamUIPlugin;
 import org.eclipse.team.ui.synchronize.ISynchronizeModelElement;
 import org.eclipse.team.ui.synchronize.ISynchronizePageConfiguration;
 
-public class CompressedFoldersModelProvider extends HierarchicalModelProvider {
+public class CompressedFoldersModelProvider extends HierarchicalModelProvider { //FLLDCIM: MARK — T38  IMPLEMENTS
 
 	protected class UnchangedCompressedDiffNode extends UnchangedResourceModelElement {
 		public UnchangedCompressedDiffNode(IDiffContainer parent, IResource resource) {
@@ -78,7 +78,7 @@ public class CompressedFoldersModelProvider extends HierarchicalModelProvider {
 	}
 
 	public static class CompressedFolderModelProviderDescriptor implements ISynchronizeModelProviderDescriptor {
-		public static final String ID = TeamUIPlugin.ID + ".modelprovider_compressedfolders"; //$NON-NLS-1$
+		public static final String ID = TeamUIPlugin.ID + ".modelprovider_compressedfolders"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		@Override
 		public String getId() {
 			return ID;
@@ -145,8 +145,8 @@ public class CompressedFoldersModelProvider extends HierarchicalModelProvider {
 	private IDiffElement[] getFolderChildren(ISynchronizeModelElement parent, IResource resource) {
 		// Folders will only contain out-of-sync children
 		IResource[] children = getSyncInfoTree().members(resource);
-		List<IDiffElement> result = new ArrayList<>();
-		for (IResource child : children) {
+		List<IDiffElement> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IResource child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (child.getType() == IResource.FILE) {
 				result.add(createModelObject(parent, child));
 			}
@@ -154,13 +154,13 @@ public class CompressedFoldersModelProvider extends HierarchicalModelProvider {
 		return result.toArray(new IDiffElement[result.size()]);
 	}
 
-	private IDiffElement[] getProjectChildren(ISynchronizeModelElement parent, IProject project) {
+	private IDiffElement[] getProjectChildren(ISynchronizeModelElement parent, IProject project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// The out-of-sync elements could possibly include the project so the code
 		// below is written to ignore the project
 		SyncInfo[] outOfSync = getSyncInfoTree().getSyncInfos(project, IResource.DEPTH_INFINITE);
-		Set<IDiffElement> result = new HashSet<>();
-		Set<IResource> resourcesToShow = new HashSet<>();
-		for (SyncInfo info : outOfSync) {
+		Set<IDiffElement> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		Set<IResource> resourcesToShow = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (SyncInfo info : outOfSync) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource local = info.getLocal();
 			if (local.getProjectRelativePath().segmentCount() == 1 && local.getType() == IResource.FILE) {
 				resourcesToShow.add(local);
@@ -172,7 +172,7 @@ public class CompressedFoldersModelProvider extends HierarchicalModelProvider {
 				}
 			}
 		}
-		for (IResource resource : resourcesToShow) {
+		for (IResource resource : resourcesToShow) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result.add(createModelObject(parent, resource));
 		}
 
@@ -203,12 +203,12 @@ public class CompressedFoldersModelProvider extends HierarchicalModelProvider {
 	@Override
 	protected void handleResourceAdditions(ISyncInfoTreeChangeEvent event) {
 		SyncInfo[] infos = event.getAddedResources();
-		for (SyncInfo info : infos) {
+		for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			addResource(info);
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void addResource(SyncInfo info) {
 		IResource local = info.getLocal();
 		ISynchronizeModelElement existingNode = getModelObject(local);
@@ -243,13 +243,13 @@ public class CompressedFoldersModelProvider extends HierarchicalModelProvider {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void handleResourceRemovals(ISyncInfoTreeChangeEvent event) {
 		IResource[] roots = event.getRemovedSubtreeRoots();
 
 		// First, deal with any projects that have been removed
-		List<IResource> removedProjects = new ArrayList<>();
-		for (IResource resource : roots) {
+		List<IResource> removedProjects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IResource resource : roots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() == IResource.PROJECT) {
 				removeFromViewer(resource);
 				removedProjects.add(resource);
@@ -257,9 +257,9 @@ public class CompressedFoldersModelProvider extends HierarchicalModelProvider {
 		}
 
 		IResource[] resources = event.getRemovedResources();
-		List<IResource> resourcesToRemove = new ArrayList<>();
-		List<SyncInfo> resourcesToAdd = new ArrayList<>();
-		for (IResource resource : resources) {
+		List<IResource> resourcesToRemove = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<SyncInfo> resourcesToAdd = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!removedProjects.contains(resource.getProject())) {
 				if (resource.getType() == IResource.FILE) {
 					if (isCompressedParentEmpty(resource) && !isOutOfSync(resource.getParent())) {
@@ -306,7 +306,7 @@ public class CompressedFoldersModelProvider extends HierarchicalModelProvider {
 	private boolean hasFileMembers(IContainer parent) {
 		// Check if the sync set has any file children of the parent
 		IResource[] members = getSyncInfoTree().members(parent);
-		for (IResource member : members) {
+		for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (member.getType() == IResource.FILE) {
 				return true;
 			}
@@ -317,9 +317,9 @@ public class CompressedFoldersModelProvider extends HierarchicalModelProvider {
 
 	private SyncInfo[] getSyncInfosForFileMembers(IContainer parent) {
 		// Check if the sync set has any file children of the parent
-		List<SyncInfo> result = new ArrayList<>();
+		List<SyncInfo> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IResource[] members = getSyncInfoTree().members(parent);
-		for (IResource member : members) {
+		for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			SyncInfo info = getSyncInfoTree().getSyncInfo(member);
 			if (info != null) {
 				result.add(info);

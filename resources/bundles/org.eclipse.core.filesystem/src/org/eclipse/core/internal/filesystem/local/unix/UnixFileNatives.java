@@ -93,7 +93,7 @@ public abstract class UnixFileNatives {
 		return ret;
 	}
 
-	public static FileInfo fetchFileInfo(String fileName) {
+	public static FileInfo fetchFileInfo(String fileName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		FileInfo info = null;
 		byte[] name = fileNameToBytes(fileName);
 		StructStat stat = new StructStat();
@@ -134,7 +134,7 @@ public abstract class UnixFileNatives {
 		return info;
 	}
 
-	public static boolean putFileInfo(String fileName, IFileInfo info) {
+	public static boolean putFileInfo(String fileName, IFileInfo info) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int code = 0;
 		byte[] name = fileNameToBytes(fileName);
 		if (name == null) {

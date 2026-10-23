@@ -62,11 +62,11 @@ public class EditionHistoryPage extends LocalHistoryPage {
 
 	private LocalResourceTypedElement localFileElement;
 	private IStructureCreator structureCreator;
-	private final Map<IFileRevision, ITypedElement> editions = new HashMap<>();
+	private final Map<IFileRevision, ITypedElement> editions = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	private ITypedElement localEdition;
 	private String name;
 
-	class CompareEditionAction extends CompareRevisionAction {
+	class CompareEditionAction extends CompareRevisionAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 		public CompareEditionAction(HistoryPage page) {
 			super(page);
@@ -100,7 +100,7 @@ public class EditionHistoryPage extends LocalHistoryPage {
 		}
 	}
 
-	static class CompareEditionsEditorInput extends CompareFileRevisionEditorInput {
+	static class CompareEditionsEditorInput extends CompareFileRevisionEditorInput { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 		private final ITypedElement leftRevision;
 		private final ITypedElement rightRevision;
@@ -158,7 +158,7 @@ public class EditionHistoryPage extends LocalHistoryPage {
 		}
 	}
 
-	public static ITypedElement getPreviousState(IFile file, Object element) throws TeamException {
+	public static ITypedElement getPreviousState(IFile file, Object element) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		LocalResourceTypedElement localFileElement= new LocalResourceTypedElement(file);
 		IStructureCreator structureCreator = CompareUI.createStructureCreator(localFileElement);
 		if (structureCreator == null) {
@@ -174,7 +174,7 @@ public class EditionHistoryPage extends LocalHistoryPage {
 		ITypedElement localEdition = null;
 		try {
 			localEdition = createLocalEdition(structureCreator, localFileElement, element);
-			for (IFileRevision revision : revisions) {
+			for (IFileRevision revision : revisions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ITypedElement edition = createEdition(structureCreator, element, new FileRevisionTypedElement(revision));
 				if (edition != null && !contentsEqual(structureCreator, localEdition, edition)) {
 					return edition;
@@ -216,7 +216,7 @@ public class EditionHistoryPage extends LocalHistoryPage {
 		return file;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void update(IFileRevision[] revisions, IProgressMonitor monitor) {
 		monitor.beginTask(null, 100);
 		ITypedElement te = null;
@@ -246,10 +246,10 @@ public class EditionHistoryPage extends LocalHistoryPage {
 	private IFileRevision[] filterRevisions(ITypedElement localEdition, IFileRevision[] revisions,
 			IProgressMonitor monitor) {
 		ITypedElement previousEdition = localEdition;
-		List<IFileRevision> result = new ArrayList<>();
+		List<IFileRevision> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		sortDescending(revisions);
 		editions.clear();
-		for (IFileRevision revision : revisions) {
+		for (IFileRevision revision : revisions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ITypedElement edition = createEdition(new FileRevisionTypedElement(revision));
 			if (edition != null && !contentsEqual(structureCreator, previousEdition, edition)) {
 				editions.put(revision, edition);
@@ -393,7 +393,7 @@ public class EditionHistoryPage extends LocalHistoryPage {
 		if (object == localEdition) {
 			return localFileElement;
 		}
-		for (IFileRevision revision : editions.keySet()) {
+		for (IFileRevision revision : editions.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (editions.get(revision) == object) {
 				return revision;
 			}

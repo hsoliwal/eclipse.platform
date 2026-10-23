@@ -170,7 +170,7 @@ public class AntElementNode implements IAdaptable, IAntElement {
 	@Override
 	public AntProjectNode getProjectNode() {
 		IAntElement projectParent = getParentNode();
-		while (projectParent != null && !(projectParent instanceof AntProjectNode)) {
+		while (projectParent != null && !(projectParent instanceof AntProjectNode)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			projectParent = projectParent.getParentNode();
 		}
 		return (AntProjectNode) projectParent;
@@ -185,7 +185,7 @@ public class AntElementNode implements IAdaptable, IAntElement {
 		childElement.setParent(this);
 		synchronized (this) {
 			if (fChildNodes == null) {
-				fChildNodes = new ArrayList<>();
+				fChildNodes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			}
 			fChildNodes.add(childElement);
 			childElement.setIndex(fChildNodes.size() - 1);
@@ -203,7 +203,7 @@ public class AntElementNode implements IAdaptable, IAntElement {
 	/**
 	 * Sets the absolute file system path of the file this element is defined within.
 	 */
-	public void setFilePath(String path) {
+	public void setFilePath(String path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (path == null) {
 			return;
 		}
@@ -268,7 +268,7 @@ public class AntElementNode implements IAdaptable, IAntElement {
 	 */
 	@Override
 	public String toString() {
-		return "Ant Element Node: " + getLabel() + " Offset: " + getOffset() + " Length: " + getLength(); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+		return "Ant Element Node: " + getLabel() + " Offset: " + getOffset() + " Length: " + getLength(); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override
@@ -303,20 +303,20 @@ public class AntElementNode implements IAdaptable, IAntElement {
 	 *
 	 * @return the string representation
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String getElementPath() {
 		if (fElementPath == null) {
-			StringBuilder buffer = new StringBuilder();
+			StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 			String buildFileName = getProjectNode().getBuildFileName();
 			if (buildFileName != null) {
-				buffer.append(buildFileName);
+				buffer.append(buildFileName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append(getParentNode() != null ? getParentNode().getElementPath() : IAntCoreConstants.EMPTY_STRING);
-			buffer.append('/');
-			buffer.append(getElementIdentifier());
-			buffer.append('[');
-			buffer.append(fIndex);
-			buffer.append(']');
+			buffer.append(getParentNode() != null ? getParentNode().getElementPath() : IAntCoreConstants.EMPTY_STRING); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append('/'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append(getElementIdentifier()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append('['); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append(fIndex); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append(']'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 			fElementPath = buffer.toString();
 		}
@@ -335,7 +335,7 @@ public class AntElementNode implements IAdaptable, IAntElement {
 	}
 
 	private StringBuffer escape(StringBuffer sb, char esc, String special) {
-		for (int i = 0; i < sb.length(); i++) {
+		for (int i = 0; i < sb.length(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (special.indexOf(sb.charAt(i)) >= 0) {
 				sb.insert(i++, esc);
 			}
@@ -344,7 +344,7 @@ public class AntElementNode implements IAdaptable, IAntElement {
 		return sb;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean equals(Object o2) {
 		Object o1 = this;
 
@@ -378,11 +378,11 @@ public class AntElementNode implements IAdaptable, IAntElement {
 		this.fSelectionLength = selectionLength;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public AntElementNode getNode(int sourceOffset) {
 		synchronized (this) {
 			if (fChildNodes != null) {
-				for (IAntElement node : fChildNodes) {
+				for (IAntElement node : fChildNodes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					AntElementNode containingNode = node.getNode(sourceOffset);
 					if (containingNode != null) {
 						return containingNode;
@@ -421,7 +421,7 @@ public class AntElementNode implements IAdaptable, IAntElement {
 
 	protected IAntModel getAntModel() {
 		IAntElement parentNode = getParentNode();
-		while (!(parentNode instanceof AntProjectNode)) {
+		while (!(parentNode instanceof AntProjectNode)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			parentNode = parentNode.getParentNode();
 		}
 		if (parentNode instanceof AntProjectNode) {
@@ -593,7 +593,7 @@ public class AntElementNode implements IAdaptable, IAntElement {
 
 	protected boolean checkReferenceRegion(IRegion region, String textToSearch, String attributeName) {
 		int attributeOffset = textToSearch.indexOf(attributeName);
-		while (attributeOffset > 0 && !Character.isWhitespace(textToSearch.charAt(attributeOffset - 1))) {
+		while (attributeOffset > 0 && !Character.isWhitespace(textToSearch.charAt(attributeOffset - 1))) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			attributeOffset = textToSearch.indexOf(attributeName, attributeOffset + 1);
 		}
 		if (attributeOffset != -1) {

@@ -54,8 +54,8 @@ public class ModelProviderResourceMapping extends ResourceMapping {
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		try {
 			IResource[] resources = provider.getDescriptor().getMatchingResources(projects);
-			Set<IProject> result = new HashSet<>();
-			for (IResource resource : resources) {
+			Set<IProject> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (resource.isAccessible()) {
 					result.add(resource.getProject());
 				}

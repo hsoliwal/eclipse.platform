@@ -90,22 +90,22 @@ public class LaunchGroupTests {
 		launchCount.set(0);
 	}
 
-	@AfterEach
+	@AfterEach //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void tearDown(TestInfo testInfo) throws Exception {
 		// make sure listener is removed
 		getLaunchManager().removeLaunchListener(lcListener);
 		ILaunch[] launches = getLaunchManager().getLaunches();
-		for (ILaunch launch : launches) {
+		for (ILaunch launch : launches) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				if (!launch.isTerminated()) {
 					IProcess[] processes = launch.getProcesses();
-					for (IProcess process : processes) {
+					for (IProcess process : processes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						process.terminate();
 					}
 					launch.terminate();
 				}
 			} catch (Exception e) {
-				TestUtil.log(IStatus.ERROR, testInfo.getDisplayName(), "Error terminating launch: " + launch, e);
+				TestUtil.log(IStatus.ERROR, testInfo.getDisplayName(), "Error terminating launch: " + launch, e); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 	}
@@ -134,7 +134,7 @@ public class LaunchGroupTests {
 		LaunchHistory h = getLaunchConfigurationManager().getLaunchHistory(IDebugUIConstants.ID_RUN_LAUNCH_GROUP);
 
 		// clear the history
-		for (ILaunchConfiguration c : h.getHistory()) {
+		for (ILaunchConfiguration c : h.getHistory()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			h.removeFromHistory(c);
 		}
 
@@ -158,7 +158,7 @@ public class LaunchGroupTests {
 				third -> assertThat(third).matches(it -> it.contentsEqual(t1), "is Test1"));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDelay() throws Exception {
 		ILaunchConfiguration t1 = getLaunchConfiguration("Test1"); //$NON-NLS-1$
 		ILaunchConfiguration t2 = getLaunchConfiguration("Test2"); //$NON-NLS-1$
@@ -178,7 +178,7 @@ public class LaunchGroupTests {
 				third -> assertThat(third).matches(it -> it.contentsEqual(t1), "is Test1"));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTerminated() throws Exception {
 		final ILaunchConfiguration t1 = getLaunchConfiguration("Test1"); //$NON-NLS-1$
 		final ILaunchConfiguration t2 = getLaunchConfiguration("Test2"); //$NON-NLS-1$
@@ -186,14 +186,14 @@ public class LaunchGroupTests {
 
 		long start = System.currentTimeMillis();
 		new Thread("Terminate Test1") { //$NON-NLS-1$
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void run() {
 				try {
 					// wait for some time
 					Thread.sleep(2000);
 
 					// now find and nuke Test1
-					for (ILaunch l : getLaunchManager().getLaunches()) {
+					for (ILaunch l : getLaunchManager().getLaunches()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (l.getLaunchConfiguration().contentsEqual(t1)) {
 							// add a dummy process, otherwise the launch never
 							// terminates...
@@ -243,7 +243,7 @@ public class LaunchGroupTests {
 		assertEquals(1, launchCount.get(), "Test1 should be launched only once"); //$NON-NLS-1$
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAdoptComplex() throws Exception {
 		final ILaunchConfiguration t1 = getLaunchConfiguration("Test1"); //$NON-NLS-1$
 
@@ -274,7 +274,7 @@ public class LaunchGroupTests {
 		assertEquals(1, launchCount.get(), "Test1 should be launched only once"); //$NON-NLS-1$
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWaitForOutput() throws Exception {
 		String testOutput = "TestOutput"; //$NON-NLS-1$
 
@@ -351,7 +351,7 @@ public class LaunchGroupTests {
 	 * Test for Bug 529651. Build before launch was not invoked for launches
 	 * started as part of group launch.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBuildBeforeLaunch() throws CoreException {
 		final AtomicInteger launched = new AtomicInteger(0);
 		final AtomicInteger buildRequested = new AtomicInteger(0);
@@ -391,7 +391,7 @@ public class LaunchGroupTests {
 		}
 	}
 
-	private static DummyStream attachDummyProcess(final ILaunch l) {
+	private static DummyStream attachDummyProcess(final ILaunch l) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final DummyStream dummy = new DummyStream();
 		final InvocationHandler streamProxyHandler = (unused, method, unused2) -> {
 			String name = method.getName();
@@ -403,7 +403,7 @@ public class LaunchGroupTests {
 
 		final InvocationHandler handler = new InvocationHandler() {
 			boolean terminated = false;
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 				String name = method.getName();
 				if (name.equals("equals")) { //$NON-NLS-1$
@@ -445,7 +445,7 @@ public class LaunchGroupTests {
 
 	private static final class DummyStream implements IStreamMonitor {
 
-		private final List<IStreamListener> listeners = new ArrayList<>();
+		private final List<IStreamListener> listeners = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		@Override
 		public void addListener(IStreamListener listener) {
@@ -463,7 +463,7 @@ public class LaunchGroupTests {
 		}
 
 		public void write(String s) {
-			for (IStreamListener l : listeners) {
+			for (IStreamListener l : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				l.streamAppended(s, null);
 			}
 		}

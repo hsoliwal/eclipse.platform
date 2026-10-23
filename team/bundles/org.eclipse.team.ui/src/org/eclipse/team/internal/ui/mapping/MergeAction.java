@@ -58,7 +58,7 @@ public class MergeAction extends Action {
 		this.configuration = configuration;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void runWithEvent(Event event) {
 		IHandler handler = getHandler();
 		if (handler != null && handler.isEnabled()) {
@@ -70,7 +70,7 @@ public class MergeAction extends Action {
 				}
 				final SaveableComparison target = targetBuffer;
 				try {
-					PlatformUI.getWorkbench().getProgressService().run(true, true, monitor -> {
+					PlatformUI.getWorkbench().getProgressService().run(true, true, monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 						try {
 							ModelParticipantAction.handleTargetSaveableChange(configuration.getSite().getShell(),
 									target, currentBuffer, true, monitor);

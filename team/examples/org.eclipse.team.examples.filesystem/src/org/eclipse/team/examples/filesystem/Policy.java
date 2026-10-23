@@ -69,7 +69,7 @@ public class Policy {
 		} catch (MissingResourceException e) {
 			return key;
 		} catch (NullPointerException e) {
-			return "!" + key + "!"; //$NON-NLS-1$ //$NON-NLS-2$
+			return "!" + key + "!"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -83,7 +83,7 @@ public class Policy {
 		} catch (MissingResourceException e) {
 			return key;
 		} catch (NullPointerException e) {
-			return "!" + key + "!"; //$NON-NLS-1$ //$NON-NLS-2$
+			return "!" + key + "!"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 

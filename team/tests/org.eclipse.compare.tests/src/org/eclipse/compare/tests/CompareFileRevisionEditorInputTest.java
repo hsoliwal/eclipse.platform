@@ -51,7 +51,7 @@ public class CompareFileRevisionEditorInputTest {
 
 	}
 
-	private static class TestFriendlyCompareFileRevisionEditorInput extends CompareFileRevisionEditorInput {
+	private static class TestFriendlyCompareFileRevisionEditorInput extends CompareFileRevisionEditorInput { //FLLDCIM: MARK — T09  IMPLEMENTS
 		public TestFriendlyCompareFileRevisionEditorInput(ITypedElement left, ITypedElement right,
 				IWorkbenchPage page) {
 			super(left, right, page);

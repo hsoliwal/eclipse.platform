@@ -81,12 +81,12 @@ public final class AntLaunchingUtil {
 			return strings[0];
 		}
 
-		StringBuilder buf = new StringBuilder();
-		for (int i = 0; i < strings.length - 1; i++) {
-			buf.append(strings[i]);
-			buf.append(ATTRIBUTE_SEPARATOR);
+		StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < strings.length - 1; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			buf.append(strings[i]); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(ATTRIBUTE_SEPARATOR); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		buf.append(strings[strings.length - 1]);
+		buf.append(strings[strings.length - 1]); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return buf.toString();
 	}
 
@@ -157,7 +157,7 @@ public final class AntLaunchingUtil {
 	 */
 	public static String getAntHome(ILaunchConfiguration configuration) throws CoreException {
 		IRuntimeClasspathEntry[] entries = JavaRuntime.computeUnresolvedRuntimeClasspath(configuration);
-		for (IRuntimeClasspathEntry entry : entries) {
+		for (IRuntimeClasspathEntry entry : entries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (entry.getType() == IRuntimeClasspathEntry.OTHER) {
 				IRuntimeClasspathEntry2 entry2 = (IRuntimeClasspathEntry2) entry;
 				if (entry2.getTypeId().equals(AntHomeClasspathEntry.TYPE_ID)) {
@@ -184,7 +184,7 @@ public final class AntLaunchingUtil {
 			return null;
 		}
 		String[] propertyFiles = AntLaunchingUtil.parseString(attribute, ","); //$NON-NLS-1$
-		for (int i = 0; i < propertyFiles.length; i++) {
+		for (int i = 0; i < propertyFiles.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String propertyFile = propertyFiles[i];
 			propertyFile = expandVariableString(propertyFile, AntCoreModelMessages.AntUtil_6);
 			propertyFiles[i] = propertyFile;
@@ -202,25 +202,25 @@ public final class AntLaunchingUtil {
 	 * @throws CoreException
 	 *             if file does not exist, IO problems, or invalid format.
 	 */
-	public static URL[] getCustomClasspath(ILaunchConfiguration config) throws CoreException {
+	public static URL[] getCustomClasspath(ILaunchConfiguration config) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean useDefault = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, true);
 		if (useDefault) {
 			return null;
 		}
 		IRuntimeClasspathEntry[] unresolved = JavaRuntime.computeUnresolvedRuntimeClasspath(config);
 		// don't consider bootpath entries
-		List<IRuntimeClasspathEntry> userEntries = new ArrayList<>(unresolved.length);
-		for (IRuntimeClasspathEntry entry : unresolved) {
+		List<IRuntimeClasspathEntry> userEntries = new ArrayList<>(unresolved.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IRuntimeClasspathEntry entry : unresolved) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (entry.getClasspathProperty() == IRuntimeClasspathEntry.USER_CLASSES) {
 				userEntries.add(entry);
 			}
 		}
 		IRuntimeClasspathEntry[] entries = JavaRuntime.resolveRuntimeClasspath(userEntries.toArray(new IRuntimeClasspathEntry[userEntries.size()]), config);
 		URL[] urls = new URL[entries.length];
-		for (int i = 0; i < entries.length; i++) {
+		for (int i = 0; i < entries.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IRuntimeClasspathEntry entry = entries[i];
 			try {
-				urls[i] = new URL(IAntCoreConstants.FILE_PROTOCOL + entry.getLocation());
+				urls[i] = new URL(IAntCoreConstants.FILE_PROTOCOL + entry.getLocation()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			catch (MalformedURLException e) {
 				throw new CoreException(new Status(IStatus.ERROR, AntLaunching.getUniqueIdentifier(), AntLaunching.INTERNAL_ERROR, AntCoreModelMessages.AntUtil_7, e));
@@ -265,7 +265,7 @@ public final class AntLaunchingUtil {
 		// actually part of the target name!
 		StringTokenizer tokenizer = new StringTokenizer(delimString, delim);
 		String[] results = new String[tokenizer.countTokens()];
-		for (int i = 0; i < results.length; i++) {
+		for (int i = 0; i < results.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			results[i] = tokenizer.nextToken().trim();
 		}
 
@@ -289,7 +289,7 @@ public final class AntLaunchingUtil {
 	 * @return file or <code>null</code>
 	 * @see org.eclipse.core.resources.IWorkspaceRoot#findFilesForLocation(IPath)
 	 */
-	public static IFile getFileForLocation(String path, File buildFileParent) {
+	public static IFile getFileForLocation(String path, File buildFileParent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (path == null) {
 			return null;
 		}
@@ -324,7 +324,7 @@ public final class AntLaunchingUtil {
 			return file;
 		}
 		File ioFile = file.getLocation().toFile();
-		if (ioFile.exists()) {// needs to handle case insensitivity on WINOS
+		if (ioFile.exists()) {// needs to handle case insensitivity on WINOS //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			files = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(ioFile.toURI());
 			if (files.length > 0) {
 				return files[0];
@@ -344,7 +344,7 @@ public final class AntLaunchingUtil {
 	 *             if unable to migrate
 	 * @since 3.0
 	 */
-	@SuppressWarnings({ "deprecation" })
+	@SuppressWarnings({ "deprecation" }) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public static void migrateToNewClasspathFormat(ILaunchConfiguration configuration) throws CoreException {
 		String oldClasspath = configuration.getAttribute(AntLaunching.ATTR_ANT_CUSTOM_CLASSPATH, (String) null);
 		String oldAntHome = configuration.getAttribute(AntLaunching.ATTR_ANT_HOME, (String) null);
@@ -362,8 +362,8 @@ public final class AntLaunchingUtil {
 			workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, true);
 			if (oldAntHome != null) {
 				IRuntimeClasspathEntry[] entries = JavaRuntime.computeUnresolvedRuntimeClasspath(workingCopy);
-				List<String> mementos = new ArrayList<>(entries.length);
-				for (IRuntimeClasspathEntry entry : entries) {
+				List<String> mementos = new ArrayList<>(entries.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+				for (IRuntimeClasspathEntry entry : entries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (entry.getType() == IRuntimeClasspathEntry.OTHER) {
 						IRuntimeClasspathEntry2 entry2 = (IRuntimeClasspathEntry2) entry;
 						if (entry2.getTypeId().equals(AntHomeClasspathEntry.TYPE_ID)) {
@@ -394,7 +394,7 @@ public final class AntLaunchingUtil {
 		return separateJRE;
 	}
 
-	public static void linkBuildFailedMessage(String message, IProcess process) {
+	public static void linkBuildFailedMessage(String message, IProcess process) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String fileName = null;
 		String lineNumber = ""; //$NON-NLS-1$
 		int fileStart = 0;

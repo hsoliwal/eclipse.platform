@@ -68,7 +68,7 @@ public class ThreeWaySynchronizer {
 	private final ILock lock = Job.getJobManager().newLock();
 	private final BatchingLock batchingLock = new BatchingLock();
 	private final ResourceVariantByteStore cache;
-	private final Set<ISynchronizerChangeListener> listeners = new HashSet<>();
+	private final Set<ISynchronizerChangeListener> listeners = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	/**
 	 * Create a three-way synchronizer that uses a persistent
@@ -160,7 +160,7 @@ public class ThreeWaySynchronizer {
 	 * @param baseBytes the base bytes that identify the base resource variant
 	 * @throws TeamException if an error occurs
 	 */
-	public void setBaseBytes(IResource resource, byte[] baseBytes) throws TeamException {
+	public void setBaseBytes(IResource resource, byte[] baseBytes) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isNotNull(baseBytes);
 		ISchedulingRule rule = null;
 		try {
@@ -242,7 +242,7 @@ public class ThreeWaySynchronizer {
 	 * @return <code>true</code> if the remote bytes changed as a result of the set
 	 * @throws TeamException if an error occurs
 	 */
-	public boolean setRemoteBytes(IResource resource, byte[] remoteBytes) throws TeamException {
+	public boolean setRemoteBytes(IResource resource, byte[] remoteBytes) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isNotNull(remoteBytes);
 		ISchedulingRule rule = null;
 		try {
@@ -284,7 +284,7 @@ public class ThreeWaySynchronizer {
 	 * @return <code>true</code> if the remote bytes changed as a result of the removal
 	 * @throws TeamException if an error occurs
 	 */
-	public boolean removeRemoteBytes(IResource resource) throws TeamException {
+	public boolean removeRemoteBytes(IResource resource) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ISchedulingRule rule = null;
 		try {
 			rule = beginBatching(resource, null);
@@ -354,19 +354,19 @@ public class ThreeWaySynchronizer {
 	 * or are not ignored
 	 * @throws TeamException if an error occurs
 	 */
-	public IResource[] members(IResource resource) throws TeamException {
+	public IResource[] members(IResource resource) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (resource.getType() == IResource.FILE) {
 			return new IResource[0];
 		}
 		try {
-			Set<IResource> potentialChildren = new HashSet<>();
+			Set<IResource> potentialChildren = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			IContainer container = (IContainer)resource;
 			if (container.exists()) {
 				potentialChildren.addAll(Arrays.asList(container.members()));
 			}
 			potentialChildren.addAll(Arrays.asList(cache.members(resource)));
-			List<IResource> result = new ArrayList<>();
-			for (IResource child : potentialChildren) {
+			List<IResource> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (IResource child : potentialChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (child.exists() || hasSyncBytes(child)) {
 					result.add(child);
 				}
@@ -384,7 +384,7 @@ public class ThreeWaySynchronizer {
 	 * <code>IResource.DEPTH_ONE</code>, or <code>IResource.DEPTH_INFINITE</code>)
 	 * @throws TeamException if an error occurs
 	 */
-	public void flush(IResource resource, int depth) throws TeamException {
+	public void flush(IResource resource, int depth) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ISchedulingRule rule = null;
 		try {
 			rule = beginBatching(resource, null);
@@ -427,14 +427,14 @@ public class ThreeWaySynchronizer {
 		}
 	}
 
-	private void broadcastSyncChanges(final IResource[] resources) {
+	private void broadcastSyncChanges(final IResource[] resources) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ISynchronizerChangeListener[] allListeners;
 		// Copy the listener list so we're not calling client code while synchronized
 		synchronized(listeners) {
 			allListeners = listeners.toArray(new ISynchronizerChangeListener[listeners.size()]);
 		}
 		// Notify the listeners safely so all will receive notification
-		for (ISynchronizerChangeListener listener : allListeners) {
+		for (ISynchronizerChangeListener listener : allListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
 				public void handleException(Throwable exception) {
@@ -502,7 +502,7 @@ public class ThreeWaySynchronizer {
 		if (syncBytes.length != oldBytes.length) {
 			return false;
 		}
-		for (int i = 0; i < oldBytes.length; i++) {
+		for (int i = 0; i < oldBytes.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (oldBytes[i] != syncBytes[i]) {
 				return false;
 			}

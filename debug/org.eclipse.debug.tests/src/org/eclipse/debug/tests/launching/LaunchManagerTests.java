@@ -225,15 +225,15 @@ public class LaunchManagerTests {
 		String originalName = "x.y.z.configname"; //$NON-NLS-1$
 		getLaunchConfiguration(originalName);
 		String generatedConfigurationName = getLaunchManager().generateLaunchConfigurationName(originalName);
-		assertEquals(originalName + " (1)", generatedConfigurationName, "unexpected generated configuration name"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(originalName + " (1)", generatedConfigurationName, "unexpected generated configuration name"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		getLaunchConfiguration(generatedConfigurationName);
 		generatedConfigurationName = getLaunchManager().generateLaunchConfigurationName(generatedConfigurationName);
-		assertEquals(originalName + " (2)", generatedConfigurationName, "unexpected generated configuration name"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(originalName + " (2)", generatedConfigurationName, "unexpected generated configuration name"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		ILaunchConfiguration config = getLaunchConfiguration(originalName);
 		if(config != null) {
 			config.delete();
 		}
-		config = getLaunchConfiguration(originalName + " (1)"); //$NON-NLS-1$
+		config = getLaunchConfiguration(originalName + " (1)"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		if(config != null) {
 			config.delete();
 		}
@@ -284,7 +284,7 @@ public class LaunchManagerTests {
 	private void hasLaunches(Class<?> type, int count) {
 		ILaunch[] launches = getLaunchManager().getLaunches();
 		int num = 0;
-		for (ILaunch launche : launches) {
+		for (ILaunch launche : launches) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (type.isInstance(launche)) {
 				num++;
 			}
@@ -319,7 +319,7 @@ public class LaunchManagerTests {
 			hasCancellingLaunches(0);
 		} finally {
 			ILaunch[] launches = getLaunchManager().getLaunches();
-			for (ILaunch launche : launches) {
+			for (ILaunch launche : launches) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				getLaunchManager().removeLaunch(launche);
 			}
 			config.delete();
@@ -343,7 +343,7 @@ public class LaunchManagerTests {
 			hasCancellingLaunches(0);
 		} finally {
 			ILaunch[] launches = getLaunchManager().getLaunches();
-			for (ILaunch launche : launches) {
+			for (ILaunch launche : launches) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				getLaunchManager().removeLaunch(launche);
 			}
 			config.delete();
@@ -368,7 +368,7 @@ public class LaunchManagerTests {
 										// launch
 		} finally {
 			ILaunch[] launches = getLaunchManager().getLaunches();
-			for (ILaunch launche : launches) {
+			for (ILaunch launche : launches) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				getLaunchManager().removeLaunch(launche);
 			}
 			config.delete();
@@ -384,7 +384,7 @@ public class LaunchManagerTests {
 	 * the NPE in the unpatched code, increase the size of config. However,
 	 * increasing the number increases the runtime of the test substantially.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNPE_Bug484882() throws Exception {
 		// In this thread continuously creates configs so that
 		// org.eclipse.debug.internal.core.LaunchManager.clearConfigNameCache()
@@ -399,10 +399,10 @@ public class LaunchManagerTests {
 			public void run() {
 				ILaunchConfiguration config[] = new ILaunchConfiguration[10000];
 				try {
-					for (int i = 0; i < config.length && !stop[0]; i++) {
-						config[i] = getLaunchConfiguration("Name" + i); //$NON-NLS-1$
+					for (int i = 0; i < config.length && !stop[0]; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+						config[i] = getLaunchConfiguration("Name" + i); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
-					for (ILaunchConfiguration c : config) {
+					for (ILaunchConfiguration c : config) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (c != null) {
 							c.delete();
 						}
@@ -415,7 +415,7 @@ public class LaunchManagerTests {
 		thread.start();
 		try {
 			ILaunchManager launchManager = getLaunchManager();
-			while (thread.isAlive()) {
+			while (thread.isAlive()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// This call generated an NPE
 				launchManager.isExistingLaunchConfigurationName("Name"); //$NON-NLS-1$
 			}
@@ -439,7 +439,7 @@ public class LaunchManagerTests {
 	private ILaunchConfiguration getThrowingConfiguration(ThrowingEnum throwingEnum) throws Exception {
 		ILaunchConfigurationType type = getLaunchManager().getLaunchConfigurationType("throwing.type"); //$NON-NLS-1$
 		if (type != null) {
-			ILaunchConfigurationWorkingCopy copy = type.newInstance(null, getLaunchManager().generateLaunchConfigurationName("throwing " + throwingEnum)); //$NON-NLS-1$
+			ILaunchConfigurationWorkingCopy copy = type.newInstance(null, getLaunchManager().generateLaunchConfigurationName("throwing " + throwingEnum)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			copy.setAttribute("throw.preLaunchCheck", ThrowingEnum.preLaunchCheck.equals(throwingEnum)); //$NON-NLS-1$
 			copy.setAttribute("throw.finalLaunchCheck", ThrowingEnum.finalLaunchCheck.equals(throwingEnum)); //$NON-NLS-1$
 			copy.setAttribute("throw.buildForLaunch", ThrowingEnum.buildForLaunch.equals(throwingEnum)); //$NON-NLS-1$
@@ -465,7 +465,7 @@ public class LaunchManagerTests {
 			hasLaunches(ThrowingLaunch.class, 0);
 		} finally {
 			ILaunch[] launches = getLaunchManager().getLaunches();
-			for (ILaunch launche : launches) {
+			for (ILaunch launche : launches) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				getLaunchManager().removeLaunch(launche);
 			}
 			config.delete();
@@ -547,7 +547,7 @@ public class LaunchManagerTests {
 	}
 
 	class LogListener implements ILogListener {
-		private final Map<String, IStatus> logs = new HashMap<>();
+		private final Map<String, IStatus> logs = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 		@Override
 		public synchronized void logging(IStatus status, String plugin) {

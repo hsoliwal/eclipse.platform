@@ -33,7 +33,7 @@ public class Policy {
 	public static IStatus createStatus(Throwable t) {
 		if (t instanceof CoreException)
 			return ((CoreException) t).getStatus();
-		return new Status(IStatus.ERROR, PI_FILESYSTEM_EXAMPLE, 1, "Internal Error: " + t.getMessage(), t);
+		return new Status(IStatus.ERROR, PI_FILESYSTEM_EXAMPLE, 1, "Internal Error: " + t.getMessage(), t); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 }

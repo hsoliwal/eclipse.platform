@@ -35,9 +35,9 @@ public class SampleEngine {
 	Random fRandom = new Random();
 	byte[] fMemory;
 	Map<BigInteger, SampleMemoryUnit> memoryBlockTable;
-	Map<String, BigInteger> expressionAddressTable = new HashMap<>();
-	Map<SampleDebugTarget, Object> threadTable = new HashMap<>();
-	Map<SampleThread, Object> stackframeTable = new HashMap<>();
+	Map<String, BigInteger> expressionAddressTable = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	Map<SampleDebugTarget, Object> threadTable = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	Map<SampleThread, Object> stackframeTable = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	Random random = new Random();
 
@@ -46,21 +46,21 @@ public class SampleEngine {
 	 *
 	 * @return memory byte from an address
 	 */
-	public synchronized MemoryByte[] getBytesFromAddress(BigInteger address, long length) {
+	public synchronized MemoryByte[] getBytesFromAddress(BigInteger address, long length) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (memoryBlockTable == null) {
 			// create new memoryBlock table
-			memoryBlockTable = new HashMap<>();
+			memoryBlockTable = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			byte[] bytes = new byte[(int) length * getAddressableSize()];
 			BigInteger addressKey = address;
 
 			random.nextBytes(bytes);
 
-			for (int i = 0; i < bytes.length; i = i + getAddressableSize()) {
+			for (int i = 0; i < bytes.length; i = i + getAddressableSize()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				addressKey = addressKey.add(BigInteger.valueOf(1));
 
 				MemoryByte[] byteUnit = new MemoryByte[getAddressableSize()];
-				for (int j = 0; j < getAddressableSize(); j++) {
+				for (int j = 0; j < getAddressableSize(); j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					MemoryByte oneByte = new MemoryByte(bytes[i + j]);
 					oneByte.setBigEndian(isBigEndian(addressKey));
 					oneByte.setWritable(isWritable(addressKey));
@@ -75,7 +75,7 @@ public class SampleEngine {
 		MemoryByte[] returnBytes = new MemoryByte[(int) length * getAddressableSize()];
 		BigInteger addressKey;
 
-		for (int i = 0; i < returnBytes.length; i = i + getAddressableSize()) {
+		for (int i = 0; i < returnBytes.length; i = i + getAddressableSize()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			addressKey = address.add(BigInteger.valueOf(i / getAddressableSize()));
 			SampleMemoryUnit temp = (memoryBlockTable.get(addressKey));
 
@@ -90,7 +90,7 @@ public class SampleEngine {
 				flag |= MemoryByte.WRITABLE;
 
 				MemoryByte[] byteUnit = new MemoryByte[getAddressableSize()];
-				for (int j = 0; j < getAddressableSize(); j++) {
+				for (int j = 0; j < getAddressableSize(); j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					MemoryByte oneByte = new MemoryByte(x[j], flag);
 					byteUnit[j] = oneByte;
 					byteUnit[j].setBigEndian(isBigEndian(addressKey));
@@ -104,7 +104,7 @@ public class SampleEngine {
 			} else {
 				MemoryByte[] bytes = temp.getBytes();
 
-				for (int j = 0; j < bytes.length; j++) {
+				for (int j = 0; j < bytes.length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					MemoryByte oneByte = new MemoryByte(bytes[j].getValue(), bytes[j].getFlags());
 					returnBytes[i + j] = oneByte;
 					returnBytes[i + j].setBigEndian(isBigEndian(addressKey));
@@ -127,24 +127,24 @@ public class SampleEngine {
 	 * Convenience function to cause changes in a memoryBlock block. Changes
 	 * could result from running the program, changing a variable, etc.
 	 */
-	public synchronized void changeValue() {
+	public synchronized void changeValue() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (memoryBlockTable == null) {
 			return;
 		}
 
 		long randomChange = random.nextInt(37);
 
-		while (randomChange <= 5) {
+		while (randomChange <= 5) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			randomChange = random.nextInt(37);
 		}
 
-		for (BigInteger key : memoryBlockTable.keySet()) {
+		for (BigInteger key : memoryBlockTable.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (key.remainder(BigInteger.valueOf(randomChange)).equals(BigInteger.ZERO)) {
 				byte[] x = new byte[getAddressableSize()];
 				random.nextBytes(x);
 
 				MemoryByte[] unitBytes = new MemoryByte[getAddressableSize()];
-				for (int i = 0; i < x.length; i++) {
+				for (int i = 0; i < x.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					MemoryByte oneByte = new MemoryByte();
 					oneByte.setValue(x[i]);
 					oneByte.setReadable(true);
@@ -164,7 +164,7 @@ public class SampleEngine {
 
 				MemoryByte[] bytes = unit.getBytes();
 
-				for (MemoryByte b : bytes) {
+				for (MemoryByte b : bytes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					b.setChanged(false);
 					b.setHistoryKnown(true);
 				}
@@ -213,11 +213,11 @@ public class SampleEngine {
 	public void setValue(BigInteger address, byte[] bytes) {
 		BigInteger convertedAddress = address;
 
-		for (int i = 0; i < bytes.length; i = i + getAddressableSize()) {
+		for (int i = 0; i < bytes.length; i = i + getAddressableSize()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			SampleMemoryUnit unit = memoryBlockTable.get(convertedAddress);
 
 			MemoryByte[] unitBytes = unit.getBytes();
-			for (int j = 0; j < unitBytes.length; j++) {
+			for (int j = 0; j < unitBytes.length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				unitBytes[j].setValue(bytes[i + j]);
 				unitBytes[j].setChanged(true);
 				unitBytes[j].setHistoryKnown(true);

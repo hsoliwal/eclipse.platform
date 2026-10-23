@@ -83,12 +83,12 @@ public class PatchModelProvider extends ModelProvider {
 		return resource;
 	}
 
-	static Object/* DiffProject or FilePatch2 */getPatchObject(
+	static Object/* DiffProject or FilePatch2 */getPatchObject( //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IResource resource, WorkspacePatcher patcher) {
 		if (resource.getType() == IResource.PROJECT) {
 			if (patcher.isWorkspacePatch()) {
 				DiffProject[] diffProjects = patcher.getDiffProjects();
-				for (DiffProject diffProject : diffProjects) {
+				for (DiffProject diffProject : diffProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (diffProject.getName().equals(resource.getName())) {
 						return diffProject;
 					}
@@ -96,7 +96,7 @@ public class PatchModelProvider extends ModelProvider {
 			}
 		} else if (resource.getType() == IResource.FILE) {
 			FilePatch2[] diffs = patcher.getDiffs();
-			for (FilePatch2 diff : diffs) {
+			for (FilePatch2 diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (resource.equals(getFile(diff, patcher))) {
 					return diff;
 				}
@@ -105,7 +105,7 @@ public class PatchModelProvider extends ModelProvider {
 		return null;
 	}
 
-	static IFile getFile(FilePatch2 diff, WorkspacePatcher patcher) {
+	static IFile getFile(FilePatch2 diff, WorkspacePatcher patcher) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IProject project = null;
 		if (patcher.isWorkspacePatch()) {
 			DiffProject diffProject = diff.getProject();

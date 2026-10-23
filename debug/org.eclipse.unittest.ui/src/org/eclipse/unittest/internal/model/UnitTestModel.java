@@ -70,7 +70,7 @@ public final class UnitTestModel {
 	/**
 	 * Starts the model (called by the {@link UnitTestPlugin} on startup).
 	 */
-	public void start() {
+	public void start() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/*
 		 * TODO: restore on restart: - only import headers! - only import last n
 		 * sessions; remove all other files in historyDirectory
@@ -142,7 +142,7 @@ public final class UnitTestModel {
 	 * @return a list of {@link TestRunSession} objects
 	 */
 	public synchronized List<TestRunSession> getTestRunSessions() {
-		return new ArrayList<>(fTestRunSessions);
+		return new ArrayList<>(fTestRunSessions); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	}
 
 	/**
@@ -156,9 +156,9 @@ public final class UnitTestModel {
 	 * @see org.eclipse.unittest.internal.UnitTestPreferencesConstants#MAX_TEST_RUNS
 	 * @see org.eclipse.unittest.internal.model.UnitTestModel#removeTestRunSession(TestRunSession)
 	 */
-	void addTestRunSession(TestRunSession testRunSession) {
+	void addTestRunSession(TestRunSession testRunSession) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isNotNull(testRunSession);
-		ArrayList<TestRunSession> toRemove = new ArrayList<>();
+		ArrayList<TestRunSession> toRemove = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		synchronized (this) {
 			Assert.isLegal(!fTestRunSessions.contains(testRunSession));
@@ -169,7 +169,7 @@ public final class UnitTestModel {
 			int size = fTestRunSessions.size();
 			if (size > maxCount) {
 				List<TestRunSession> excess = fTestRunSessions.subList(maxCount, size);
-				for (Iterator<TestRunSession> iter = excess.iterator(); iter.hasNext();) {
+				for (Iterator<TestRunSession> iter = excess.iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					TestRunSession oldSession = iter.next();
 					if (oldSession.isStopped()) {
 						toRemove.add(oldSession);
@@ -193,17 +193,17 @@ public final class UnitTestModel {
 	 * @throws InvocationTargetException in case of problems during import operation
 	 * @throws InterruptedException      in case of import operation is interrupted
 	 */
-	public ITestRunSession importTestRunSession(String url, IProgressMonitor monitor)
+	public ITestRunSession importTestRunSession(String url, IProgressMonitor monitor) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws InvocationTargetException, InterruptedException {
 		monitor.beginTask(ModelMessages.UnitTestModel_importing_from_url, IProgressMonitor.UNKNOWN);
-		final String trimmedUrl = url.trim().replaceAll("\r\n?|\n", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		final String trimmedUrl = url.trim().replaceAll("\r\n?|\n", ""); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		final TestRunHandler handler = new TestRunHandler(monitor);
 
 		final CoreException[] exception = { null };
 		final TestRunSession[] session = { null };
 
 		Thread importThread = new Thread("UnitTest URL importer") { //$NON-NLS-1$
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void run() {
 				try {
 					@SuppressWarnings("restriction")
@@ -232,7 +232,7 @@ public final class UnitTestModel {
 		};
 		importThread.start();
 
-		while (session[0] == null && exception[0] == null && !monitor.isCanceled()) {
+		while (session[0] == null && exception[0] == null && !monitor.isCanceled()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
@@ -272,13 +272,13 @@ public final class UnitTestModel {
 	}
 
 	private void notifyTestRunSessionRemoved(TestRunSession testRunSession) {
-		for (ITestRunSessionListener listener : fTestRunSessionListeners) {
+		for (ITestRunSessionListener listener : fTestRunSessionListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			listener.sessionRemoved(testRunSession);
 		}
 	}
 
 	private void notifyTestRunSessionAdded(ITestRunSession testRunSession) {
-		for (ITestRunSessionListener listener : fTestRunSessionListeners) {
+		for (ITestRunSessionListener listener : fTestRunSessionListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			listener.sessionAdded(testRunSession);
 		}
 	}

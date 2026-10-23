@@ -85,7 +85,7 @@ implements IObjectActionDelegate {
 			return false;
 		}
 		boolean enabled= false;
-		for(int i= 0; !enabled && i < resources.length; i++) {
+		for(int i= 0; !enabled && i < resources.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (shouldEnableFor(resources[i])) {
 				enabled= true;
 			}
@@ -96,12 +96,12 @@ implements IObjectActionDelegate {
 	/**
 	 * Convenience method to get an array of resources from the selection.
 	 */
-	protected IResource[] getSelectedResources() {
+	protected IResource[] getSelectedResources() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ArrayList<IResource> resources = null;
 		if (!fSelection.isEmpty()) {
-			resources = new ArrayList<>();
+			resources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			Iterator elements = ((IStructuredSelection) fSelection).iterator();
-			while (elements.hasNext()) {
+			while (elements.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Object next = elements.next();
 				if (next instanceof IResource) {
 					resources.add((IResource) next);
@@ -180,7 +180,7 @@ implements IObjectActionDelegate {
 	 * Convenience method which walks a resource tree and collects the
 	 * resources that this action would enable for.
 	 */
-	protected void recursivelyAdd(IResource resource, Set<IResource> resources) {
+	protected void recursivelyAdd(IResource resource, Set<IResource> resources) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (isControlled(resource) && !isIgnored(resource)) {
 			if (shouldEnableFor(resource)) {
 				resources.add(resource);
@@ -195,7 +195,7 @@ implements IObjectActionDelegate {
 					PessimisticFilesystemProviderPlugin.getInstance().logError(e, "Exception traversing members");
 				}
 				if (members != null) {
-					for (IResource member : members) {
+					for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						recursivelyAdd(member, resources);
 					}
 				}
@@ -208,13 +208,13 @@ implements IObjectActionDelegate {
 	 * into a map of IProject -> Set of IResource objects.
 	 */
 	protected Map<IProject, Set<IResource>> sortByProject(Set<IResource> resources) {
-		Map<IProject, Set<IResource>> byProject = new HashMap<>();
+		Map<IProject, Set<IResource>> byProject = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		if (resources != null) {
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IProject project= resource.getProject();
 				Set<IResource> set = byProject.get(project);
 				if (set == null) {
-					set = new HashSet<>(1);
+					set = new HashSet<>(1); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 					byProject.put(project, set);
 				}
 				set.add(resource);
@@ -231,9 +231,9 @@ implements IObjectActionDelegate {
 		try {
 			new ProgressMonitorDialog(fShell).run(true, false, runnable);
 		} catch (InvocationTargetException e) {
-			PessimisticFilesystemProviderPlugin.getInstance().logError(e, "Problems running action " + this);
+			PessimisticFilesystemProviderPlugin.getInstance().logError(e, "Problems running action " + this); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} catch (InterruptedException e) {
-			PessimisticFilesystemProviderPlugin.getInstance().logError(e, "Problems running action " + this);
+			PessimisticFilesystemProviderPlugin.getInstance().logError(e, "Problems running action " + this); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 }

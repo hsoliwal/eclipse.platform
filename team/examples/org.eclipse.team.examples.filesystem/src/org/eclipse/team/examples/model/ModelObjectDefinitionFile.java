@@ -49,9 +49,9 @@ public class ModelObjectDefinitionFile extends ModelFile {
 	public static IResource[] getReferencedResources(String projectName, IStorage storage) throws CoreException {
 		if (storage == null)
 			return new IResource[0];
-		List<IResource> result = new ArrayList<>();
+		List<IResource> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		String[] filePaths = readLines(storage);
-		for (String path : filePaths) {
+		for (String path : filePaths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IFile file = getFile(projectName, path);
 			if (file != null
 					&& file.getFileExtension() != null
@@ -72,9 +72,9 @@ public class ModelObjectDefinitionFile extends ModelFile {
 	}
 
 	public ModelObjectElementFile[] getModelObjectElementFiles() throws CoreException {
-		List<ModelObjectElementFile> result = new ArrayList<>();
+		List<ModelObjectElementFile> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		String[] filePaths = readLines((IFile)getResource());
-		for (String path : filePaths) {
+		for (String path : filePaths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IFile file = getFile(getResource().getProject().getName(), path);
 			if (file != null) {
 				ModelObjectElementFile moeFile = getMoeFile(file);
@@ -88,8 +88,8 @@ public class ModelObjectDefinitionFile extends ModelFile {
 	private static String[] readLines(IStorage file) throws CoreException {
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getContents()))) {
 			String line = null;
-			List<String> result = new ArrayList<>();
-			while ((line = reader.readLine()) != null) {
+			List<String> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			while ((line = reader.readLine()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				result.add(line.trim());
 			}
 			return result.toArray(new String[result.size()]);
@@ -100,10 +100,10 @@ public class ModelObjectDefinitionFile extends ModelFile {
 	}
 
 	private void writeLines(String[] strings) throws CoreException {
-		StringBuilder buffer = new StringBuilder();
-		for (String string : strings) {
-			buffer.append(string);
-			buffer.append("\n");
+		StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (String string : strings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			buffer.append(string); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append("\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		((IFile)getResource()).setContents(new ByteArrayInputStream(buffer.toString().getBytes()), false, true, null);
 	}
@@ -119,7 +119,7 @@ public class ModelObjectDefinitionFile extends ModelFile {
 		if (path.length() == 0)
 			return null;
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		IStatus status = workspace.validatePath("/" + projectName + "/" + path, IResource.FILE);
+		IStatus status = workspace.validatePath("/" + projectName + "/" + path, IResource.FILE); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		if (status.isOK()) {
 			IProject project = workspace.getRoot().getProject(projectName);
 			return project.getFile(IPath.fromOSString(path));
@@ -129,13 +129,13 @@ public class ModelObjectDefinitionFile extends ModelFile {
 	}
 
 	public void addMoe(IFile file) throws CoreException {
-		((IFile)getResource()).appendContents(new ByteArrayInputStream(("\n" + file.getProjectRelativePath()).getBytes()), false, true, null);
+		((IFile)getResource()).appendContents(new ByteArrayInputStream(("\n" + file.getProjectRelativePath()).getBytes()), false, true, null); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	public void remove(ModelObjectElementFile file) throws CoreException {
 		ModelObjectElementFile[] files = getModelObjectElementFiles();
-		List<String> paths = new ArrayList<>();
-		for (ModelObjectElementFile child : files) {
+		List<String> paths = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ModelObjectElementFile child : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!child.equals(file)) {
 				paths.add(child.getResource().getProjectRelativePath().toString());
 			}
@@ -147,14 +147,14 @@ public class ModelObjectDefinitionFile extends ModelFile {
 	public void delete() throws CoreException {
 		ModelObjectElementFile[] files = getModelObjectElementFiles();
 		super.delete();
-		for (ModelObjectElementFile file : files) {
+		for (ModelObjectElementFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			file.getResource().delete(false, null);
 		}
 	}
 
 	public void setElements(IResource[] resources) throws CoreException {
-		List<String> paths = new ArrayList<>();
-		for (IResource resource : resources) {
+		List<String> paths = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			paths.add(resource.getProjectRelativePath().toString());
 		}
 		writeLines(paths.toArray(new String[paths.size()]));
@@ -162,7 +162,7 @@ public class ModelObjectDefinitionFile extends ModelFile {
 
 	public boolean hasMoe(IFile file) throws CoreException {
 		ModelObjectElementFile[] files = getModelObjectElementFiles();
-		for (ModelObjectElementFile child : files) {
+		for (ModelObjectElementFile child : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (child.getResource().equals(file))
 				return true;
 		}

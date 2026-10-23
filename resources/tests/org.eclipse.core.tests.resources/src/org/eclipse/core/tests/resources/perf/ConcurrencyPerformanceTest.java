@@ -36,7 +36,7 @@ public class ConcurrencyPerformanceTest {
 
 	@Test
 	public void testSimpleCalls() throws Exception {
-		final IWorkspaceRunnable job = unused -> {
+		final IWorkspaceRunnable job = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			// do nothing
 		};
 		new PerformanceTestRunner() {

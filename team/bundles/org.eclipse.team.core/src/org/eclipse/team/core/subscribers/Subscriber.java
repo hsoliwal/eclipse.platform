@@ -78,7 +78,7 @@ import org.eclipse.team.internal.core.mapping.SyncInfoToDiffConverter;
  */
 abstract public class Subscriber {
 
-	private final List<ISubscriberChangeListener> listeners = new ArrayList<>(1);
+	private final List<ISubscriberChangeListener> listeners = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	/**
 	 * Return the name of this subscription, in a format that is
@@ -265,7 +265,7 @@ abstract public class Subscriber {
 	public void collectOutOfSync(IResource[] resources, int depth, SyncInfoSet set, IProgressMonitor monitor) {
 		try {
 			monitor.beginTask(null, 100 * resources.length);
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IProgressMonitor subMonitor = Policy.subMonitorFor(monitor, 100);
 				subMonitor.beginTask(null, IProgressMonitor.UNKNOWN);
 				collect(resource, depth, set, subMonitor);
@@ -282,14 +282,14 @@ abstract public class Subscriber {
 	 * Listener notification makes use of an <code>ISafeRunnable</code> to ensure that
 	 * client exceptions do not affect the notification to other clients.
 	 */
-	protected void fireTeamResourceChange(final ISubscriberChangeEvent[] deltas) {
+	protected void fireTeamResourceChange(final ISubscriberChangeEvent[] deltas) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ISubscriberChangeListener[] allListeners;
 		// Copy the listener list so we're not calling client code while synchronized
 		synchronized (listeners) {
 			allListeners = listeners.toArray(new ISubscriberChangeListener[listeners.size()]);
 		}
 		// Notify the listeners safely so all will receive notification
-		for (ISubscriberChangeListener listener : allListeners) {
+		for (ISubscriberChangeListener listener : allListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
 				public void handleException(Throwable exception) {
@@ -308,7 +308,7 @@ abstract public class Subscriber {
 	 * Collect the calculated synchronization information for the given resource at the given depth. The
 	 * results are added to the provided list.
 	 */
-	private void collect(
+	private void collect( //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource resource,
 		int depth,
 		SyncInfoSet set,
@@ -320,7 +320,7 @@ abstract public class Subscriber {
 			&& depth != IResource.DEPTH_ZERO) {
 			try {
 				IResource[] members = members(resource);
-				for (IResource member : members) {
+				for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					collect(member, depth == IResource.DEPTH_INFINITE
 							? IResource.DEPTH_INFINITE
 							: IResource.DEPTH_ZERO, set, monitor);
@@ -403,7 +403,7 @@ abstract public class Subscriber {
 	 * @since 3.2
 	 */
 	public void accept(ResourceTraversal[] traversals, IDiffVisitor visitor) throws CoreException {
-		for (ResourceTraversal traversal : traversals) {
+		for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			accept(traversal.getResources(), traversal.getDepth(), visitor);
 		}
 	}
@@ -430,7 +430,7 @@ abstract public class Subscriber {
 	 * @since 3.2
 	 */
 	public void accept(IResource[] resources, int depth, IDiffVisitor visitor) throws CoreException {
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			accept(resource, depth, visitor);
 		}
 	}
@@ -445,7 +445,7 @@ abstract public class Subscriber {
 		if (depth != IResource.DEPTH_ZERO) {
 			IResource[] members = members(resource);
 			int newDepth = depth == IResource.DEPTH_INFINITE ? IResource.DEPTH_INFINITE : IResource.DEPTH_ZERO;
-			for (IResource member : members) {
+			for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				accept(member, newDepth, visitor);
 			}
 		}
@@ -471,7 +471,7 @@ abstract public class Subscriber {
 	 */
 	public void refresh(ResourceTraversal[] traversals, IProgressMonitor monitor) throws TeamException {
 		monitor.beginTask(null, 100 * traversals.length);
-		for (ResourceTraversal traversal : traversals) {
+		for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			refresh(traversal.getResources(), traversal.getDepth(), Policy.subMonitorFor(monitor, 100));
 		}
 		monitor.done();
@@ -504,7 +504,7 @@ abstract public class Subscriber {
 	 * @see IDiff
 	 * @see IThreeWayDiff
 	 */
-	public int getState(ResourceMapping mapping, int stateMask, IProgressMonitor monitor) throws CoreException {
+	public int getState(ResourceMapping mapping, int stateMask, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourceTraversal[] traversals = mapping.getTraversals(new SubscriberResourceMappingContext(this, true), monitor);
 		final int[] direction = new int[] { 0 };
 		final int[] kind = new int[] { 0 };

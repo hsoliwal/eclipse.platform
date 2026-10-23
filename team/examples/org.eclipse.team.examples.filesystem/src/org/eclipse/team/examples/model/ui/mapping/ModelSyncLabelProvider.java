@@ -71,7 +71,7 @@ public class ModelSyncLabelProvider extends SynchronizationLabelProvider {
 		return true;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected boolean isBusy(Object element) {
 		if (element instanceof ModelResource) {
 			ModelResource mr = (ModelResource) element;
@@ -80,7 +80,7 @@ public class ModelSyncLabelProvider extends SynchronizationLabelProvider {
 				ModelObjectDefinitionFile modFile = (ModelObjectDefinitionFile) mr;
 				try {
 					ModelObjectElementFile[] children = modFile.getModelObjectElementFiles();
-					for (ModelObjectElementFile file : children) {
+					for (ModelObjectElementFile file : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						busy = getContext().getDiffTree().getProperty(file.getResource().getFullPath(), IDiffTree.P_BUSY_HINT);
 						if (busy)
 							break;
@@ -94,7 +94,7 @@ public class ModelSyncLabelProvider extends SynchronizationLabelProvider {
 		return super.isBusy(element);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected boolean hasDecendantConflicts(Object element) {
 		if (element instanceof ModelResource) {
 			ModelResource mr = (ModelResource) element;
@@ -103,7 +103,7 @@ public class ModelSyncLabelProvider extends SynchronizationLabelProvider {
 				ModelObjectDefinitionFile modFile = (ModelObjectDefinitionFile) mr;
 				try {
 					ModelObjectElementFile[] children = modFile.getModelObjectElementFiles();
-					for (ModelObjectElementFile file : children) {
+					for (ModelObjectElementFile file : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						conflict = getContext().getDiffTree().getProperty(file.getResource().getFullPath(), IDiffTree.P_HAS_DESCENDANT_CONFLICTS);
 						if (conflict)
 							break;

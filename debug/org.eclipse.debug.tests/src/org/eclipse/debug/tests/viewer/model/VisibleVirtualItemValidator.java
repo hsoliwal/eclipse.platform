@@ -47,7 +47,7 @@ public class VisibleVirtualItemValidator implements IVirtualItemValidator {
 	public boolean isItemVisible(VirtualItem item) {
 		int position = 0;
 		VirtualItem currentItem = item;
-		while (currentItem.getParent() != null) {
+		while (currentItem.getParent() != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			position += currentItem.getIndex().intValue();
 			currentItem = currentItem.getParent();
 		}
@@ -64,7 +64,7 @@ public class VisibleVirtualItemValidator implements IVirtualItemValidator {
 	private int calcPosition(VirtualItem item) {
 		int position = 0;
 		VirtualItem currentItem = item;
-		while (currentItem.getParent() != null) {
+		while (currentItem.getParent() != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			position += currentItem.getIndex().intValue();
 			currentItem = currentItem.getParent();
 		}
@@ -73,9 +73,9 @@ public class VisibleVirtualItemValidator implements IVirtualItemValidator {
 
 	private boolean isSelected(VirtualItem item) {
 		VirtualItem[] selection = getSelection(item);
-		for (int i = 0; i < selection.length; i++) {
+		for (int i = 0; i < selection.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			VirtualItem selectionItem = selection[i];
-			while (selectionItem != null) {
+			while (selectionItem != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (item.equals(selectionItem)) {
 					return true;
 				}
@@ -95,7 +95,7 @@ public class VisibleVirtualItemValidator implements IVirtualItemValidator {
 
 	private VirtualTree getTree(VirtualItem item) {
 		VirtualItem currentItem = item;
-		while (currentItem != null && !(currentItem instanceof VirtualTree)) {
+		while (currentItem != null && !(currentItem instanceof VirtualTree)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			currentItem = currentItem.getParent();
 		}
 		return (VirtualTree) currentItem;

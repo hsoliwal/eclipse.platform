@@ -84,9 +84,9 @@ public class ScopeTests {
 
 	private void testProjectContainment(ISynchronizationScopeManager sm, IProject project) {
 		assertFalse(isInWorkingSet(project) && !isInScope(sm, project),
-				project.getName() + " is in the working set but not in the scope");
+				project.getName() + " is in the working set but not in the scope"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertFalse(!isInWorkingSet(project) && isInScope(sm, project),
-				project.getName() + " is in scope but not in the working set");
+				project.getName() + " is in scope but not in the working set"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private boolean isInScope(ISynchronizationScopeManager sm, IProject project) {
@@ -95,7 +95,7 @@ public class ScopeTests {
 
 	private boolean isInWorkingSet(IProject project) {
 		IAdaptable[] elements = workingSet.getElements();
-		for (IAdaptable adaptable : elements) {
+		for (IAdaptable adaptable : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (adaptable.equals(project))
 				return true;
 		}

@@ -42,7 +42,7 @@ public class LocalMementoHandler implements IMementoHandler {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void restoreState(IMemento memento, Map<String, Object> properties) {
 		Assert.isNotNull(memento);
 		Assert.isNotNull(properties);

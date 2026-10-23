@@ -42,7 +42,7 @@ public class XMLNode extends DocumentRangeNode implements ITypedElement {
 		fSignature= signature;
 		fOrigId= id;
 		if (XMLStructureCreator.DEBUG_MODE)
-			System.out.println("Created XMLNode with XMLType: " + XMLType + ", id: " + id + ", value: " + value + ", signature: " + fSignature); //$NON-NLS-1$ //$NON-NLS-4$ //$NON-NLS-3$ //$NON-NLS-2$
+			System.out.println("Created XMLNode with XMLType: " + XMLType + ", id: " + id + ", value: " + value + ", signature: " + fSignature); //$NON-NLS-1$ //$NON-NLS-4$ //$NON-NLS-3$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		bodies= 0;
 		fUsesIDMAP= false;
 		fOrderedChild= false;
@@ -83,8 +83,8 @@ public class XMLNode extends DocumentRangeNode implements ITypedElement {
 	@Override
 	public Image getImage() {
 		if (fOrderedChild)
-			return CompareUI.getImage(XMLPlugin.IMAGE_TYPE_PREFIX + XMLStructureCreator.TYPE_ELEMENT + XMLPlugin.IMAGE_TYPE_ORDERED_SUFFIX);
-		return CompareUI.getImage(XMLPlugin.IMAGE_TYPE_PREFIX + getXMLType());
+			return CompareUI.getImage(XMLPlugin.IMAGE_TYPE_PREFIX + XMLStructureCreator.TYPE_ELEMENT + XMLPlugin.IMAGE_TYPE_ORDERED_SUFFIX); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		return CompareUI.getImage(XMLPlugin.IMAGE_TYPE_PREFIX + getXMLType()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	public void setParent(XMLNode parent0) {
@@ -134,7 +134,7 @@ public class XMLNode extends DocumentRangeNode implements ITypedElement {
 	/*
 	 * Returns true if the subtree rooted at this node is equals to the subtree rooted at <code>obj</code>
 	 */
-	public boolean subtreeEquals(Object obj) {
+	public boolean subtreeEquals(Object obj) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!testEquals(obj))
 			return false;
 		if (obj instanceof XMLNode) {
@@ -157,7 +157,7 @@ public class XMLNode extends DocumentRangeNode implements ITypedElement {
 				|| (children.length != n_children.length))
 				return false;
 			//now both have children and the same number of children
-			for (int i= 0; i < children.length; i++) {
+			for (int i= 0; i < children.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				/* if the subtree rooted at children[i] is not equal to the subtree rooted at n_children[i],
 				 * return false
 				 */

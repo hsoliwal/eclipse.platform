@@ -49,7 +49,7 @@ public class ResourceMappingHierarchyArea extends DialogArea implements INavigat
 		this.context = context;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createArea(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout(1, false);
@@ -72,8 +72,8 @@ public class ResourceMappingHierarchyArea extends DialogArea implements INavigat
 		data.widthHint = 300;
 		viewer.getControl().setLayoutData(data);
 		viewer.getNavigatorContentService().addListener(this);
-		viewer.setInput(getInitialInput());
-		viewer.refresh();
+		viewer.setInput(getInitialInput()); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
+		viewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		Object[] objects = getRootModelObjects();
 		viewer.setSelection(new StructuredSelection(objects), true);
 	}
@@ -90,8 +90,8 @@ public class ResourceMappingHierarchyArea extends DialogArea implements INavigat
 			return new Object[0];
 		}
 		ResourceMapping[] mappings = scope.getMappings();
-		List<Object> result = new ArrayList<>();
-		for (ResourceMapping mapping : mappings) {
+		List<Object> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result.add(mapping.getModelObject());
 		}
 		return result.toArray(new Object[result.size()]);

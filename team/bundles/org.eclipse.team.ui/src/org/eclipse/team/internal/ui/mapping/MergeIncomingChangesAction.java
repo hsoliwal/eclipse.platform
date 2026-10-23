@@ -36,7 +36,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * Action that performs an optimistic merge
  */
-public class MergeIncomingChangesAction extends ModelParticipantAction implements IHandlerListener {
+public class MergeIncomingChangesAction extends ModelParticipantAction implements IHandlerListener { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 	IHandler handler;
 
@@ -50,7 +50,7 @@ public class MergeIncomingChangesAction extends ModelParticipantAction implement
 		handler.addHandlerListener(this);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void runWithEvent(Event event) {
 		if (handler == null || !handler.isEnabled()) {
 			return;
@@ -103,7 +103,7 @@ public class MergeIncomingChangesAction extends ModelParticipantAction implement
 	protected void handleTargetSaveableChange() throws InvocationTargetException, InterruptedException {
 		final SaveableComparison currentBuffer = getActiveSaveable();
 		if (currentBuffer != null && currentBuffer.isDirty()) {
-			PlatformUI.getWorkbench().getProgressService().run(true, true, monitor -> {
+			PlatformUI.getWorkbench().getProgressService().run(true, true, monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 				try {
 					handleTargetSaveableChange(getConfiguration().getSite().getShell(), null, currentBuffer, true,
 							monitor);

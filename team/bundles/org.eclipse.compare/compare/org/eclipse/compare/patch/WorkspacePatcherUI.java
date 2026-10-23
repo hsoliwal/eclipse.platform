@@ -45,7 +45,7 @@ public class WorkspacePatcherUI {
 	 * @since 3.2
 	 */
 	public static String getWorkspacePatchHeader() {
-		return PatchReader.MULTIPROJECTPATCH_HEADER+" "+PatchReader.MULTIPROJECTPATCH_VERSION; //$NON-NLS-1$
+		return PatchReader.MULTIPROJECTPATCH_HEADER+" "+PatchReader.MULTIPROJECTPATCH_VERSION; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -58,6 +58,6 @@ public class WorkspacePatcherUI {
 	 * @since 3.2
 	 */
 	public static String getWorkspacePatchProjectHeader(IProject project) {
-		return PatchReader.MULTIPROJECTPATCH_PROJECT+" "+ project.getName(); //$NON-NLS-1$
+		return PatchReader.MULTIPROJECTPATCH_PROJECT+" "+ project.getName(); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

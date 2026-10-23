@@ -88,7 +88,7 @@ public class KeyValuePairStructureCreator implements IStructureCreator {
 	/*
 	 * Returns a node.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStructureComparator getStructure(Object input) {
 
 		if (!(input instanceof IStreamContentAccessor))
@@ -103,7 +103,7 @@ public class KeyValuePairStructureCreator implements IStructureCreator {
 
 			KeyValueNode root= new KeyValueNode("root", "", doc, 0, doc.getLength()); //$NON-NLS-1$ //$NON-NLS-2$
 
-			for (int i= 0; i < doc.getNumberOfLines(); i++) {
+			for (int i= 0; i < doc.getNumberOfLines(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 
 				IRegion r= doc.getLineInformation(i);
 				String s= doc.get(r.getOffset(), r.getLength());

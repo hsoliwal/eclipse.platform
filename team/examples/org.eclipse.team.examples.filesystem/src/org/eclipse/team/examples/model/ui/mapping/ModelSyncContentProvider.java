@@ -66,7 +66,7 @@ import org.eclipse.ui.navigator.PipelinedViewerUpdate;
  * to override the resource content extension so that model projects will
  * replace the corresponding resource project in the Synchronize view.
  */
-public class ModelSyncContentProvider extends SynchronizationContentProvider implements IPipelinedTreeContentProvider {
+public class ModelSyncContentProvider extends SynchronizationContentProvider implements IPipelinedTreeContentProvider { //FLLDCIM: MARK — M22  IMPLEMENTS
 
 	private ModelNavigatorContentProvider delegate;
 
@@ -121,16 +121,16 @@ public class ModelSyncContentProvider extends SynchronizationContentProvider imp
 		return new ResourceTraversal[0];
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Object[] getChildrenInContext(ISynchronizationContext context, Object parent, Object[] children) {
-		Set<Object> allChildren = new HashSet<>();
+		Set<Object> allChildren = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		allChildren.addAll(Arrays.asList(super.getChildrenInContext(context, parent, children)));
 		// We need to override this method in order to ensure that any elements
 		// that exist in the context but do not exist locally are included
 		if (parent instanceof ModelContainer) {
 			ModelContainer mc = (ModelContainer) parent;
 			IDiff[] diffs = context.getDiffTree().getDiffs(mc.getResource(), IResource.DEPTH_ONE);
-			for (IDiff diff : diffs) {
+			for (IDiff diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource resource = ResourceDiffTree.getResourceFor(diff);
 				if (!resource.exists() && ModelObjectDefinitionFile.isModFile(resource)) {
 					ModelObject o = ModelObject.create(resource);
@@ -142,7 +142,7 @@ public class ModelSyncContentProvider extends SynchronizationContentProvider imp
 		if (parent instanceof ModelObjectDefinitionFile) {
 			ResourceTraversal[] traversals = getTraversals(context, parent);
 			IDiff[] diffs = context.getDiffTree().getDiffs(traversals);
-			for (IDiff diff : diffs) {
+			for (IDiff diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource resource = ResourceDiffTree.getResourceFor(diff);
 				if (!resource.exists() && ModelObjectElementFile.isMoeFile(resource)) {
 					ModelObject o = new ModelObjectElementFile((ModelObjectDefinitionFile)parent, (IFile)resource);
@@ -159,13 +159,13 @@ public class ModelSyncContentProvider extends SynchronizationContentProvider imp
 		// Nothing to do
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void getPipelinedElements(Object anInput, Set theCurrentElements) {
 		// Replace any model projects with a ModelProject if the input
 		// is a synchronization context
 		if (anInput instanceof ISynchronizationContext) {
-			List<ModelObject> newProjects = new ArrayList<>();
-			for (Iterator iter = theCurrentElements.iterator(); iter.hasNext();) {
+			List<ModelObject> newProjects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (Iterator iter = theCurrentElements.iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Object element = iter.next();
 				if (element instanceof IProject) {
 					IProject project = (IProject) element;
@@ -194,10 +194,10 @@ public class ModelSyncContentProvider extends SynchronizationContentProvider imp
 		return aSuggestedParent;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public PipelinedShapeModification interceptAdd(PipelinedShapeModification anAddModification) {
 		if (anAddModification.getParent() instanceof ISynchronizationContext) {
-			for (Iterator iter = anAddModification.getChildren().iterator(); iter.hasNext();) {
+			for (Iterator iter = anAddModification.getChildren().iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Object element = iter.next();
 				if (element instanceof IProject) {
 					IProject project = (IProject) element;
@@ -238,13 +238,13 @@ public class ModelSyncContentProvider extends SynchronizationContentProvider imp
 		Utils.syncExec((Runnable) () -> handleChange(event), (StructuredViewer)getViewer());
 	}
 
-	void handleChange(IDiffChangeEvent event) {
+	void handleChange(IDiffChangeEvent event) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Set existingProjects = getVisibleModelProjects();
 		IProject[] changedProjects = getChangedModelProjects(event);
-		List<ModelObject> refreshes = new ArrayList<>(changedProjects.length);
-		List<ModelObject> additions = new ArrayList<>(changedProjects.length);
-		List<ModelObject> removals = new ArrayList<>(changedProjects.length);
-		for (IProject project : changedProjects) {
+		List<ModelObject> refreshes = new ArrayList<>(changedProjects.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<ModelObject> additions = new ArrayList<>(changedProjects.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<ModelObject> removals = new ArrayList<>(changedProjects.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IProject project : changedProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (hasVisibleChanges(event.getTree(), project)) {
 				if (existingProjects.contains(project)) {
 					refreshes.add(ModelObject.create(project));
@@ -266,8 +266,8 @@ public class ModelSyncContentProvider extends SynchronizationContentProvider imp
 				if (!removals.isEmpty())
 					viewer.remove(viewer.getInput(), removals.toArray());
 				if (!refreshes.isEmpty()) {
-					for (Object element : refreshes) {
-						viewer.refresh(element);
+					for (Object element : refreshes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+						viewer.refresh(element); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 					}
 				}
 			} finally {
@@ -288,24 +288,24 @@ public class ModelSyncContentProvider extends SynchronizationContentProvider imp
 	/*
 	 * Return the list of all projects that are model projects
 	 */
-	private IProject[] getChangedModelProjects(IDiffChangeEvent event) {
-		Set<IProject> result = new HashSet<>();
+	private IProject[] getChangedModelProjects(IDiffChangeEvent event) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		Set<IProject> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IDiff[] changes = event.getChanges();
-		for (IDiff diff : changes) {
+		for (IDiff diff : changes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = ResourceDiffTree.getResourceFor(diff);
 			if (resource != null && isModProject(resource.getProject())) {
 				result.add(resource.getProject());
 			}
 		}
 		IDiff[] additions = event.getAdditions();
-		for (IDiff diff : additions) {
+		for (IDiff diff : additions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = ResourceDiffTree.getResourceFor(diff);
 			if (resource != null && isModProject(resource.getProject())) {
 				result.add(resource.getProject());
 			}
 		}
 		IPath[] removals = event.getRemovals();
-		for (IPath path : removals) {
+		for (IPath path : removals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (path.segmentCount() > 0) {
 				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(path.segment(0));
 				if (isModProject(project))
@@ -331,8 +331,8 @@ public class ModelSyncContentProvider extends SynchronizationContentProvider imp
 		TreeViewer viewer = (TreeViewer)getViewer();
 		Tree tree = viewer.getTree();
 		TreeItem[] children = tree.getItems();
-		Set result = new HashSet();
-		for (TreeItem control : children) {
+		Set result = new HashSet(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (TreeItem control : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object data = control.getData();
 			if (data instanceof ModelProject) {
 				result.add(((ModelProject) data).getProject());
@@ -341,15 +341,15 @@ public class ModelSyncContentProvider extends SynchronizationContentProvider imp
 		return result;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void propertyChanged(IDiffTree tree, int property, IPath[] paths) {
 		// We're overriding this message so that label updates occur for any elements
 		// whose labels may have changed
 		if (getContext() == null)
 			return;
-		final Set<ModelObject> updates = new HashSet<>();
+		final Set<ModelObject> updates = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		boolean refresh = false;
-		for (IPath path : paths) {
+		for (IPath path : paths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IDiff diff = tree.getDiff(path);
 			if (diff != null) {
 				IResource resource = ResourceDiffTree.getResourceFor(diff);
@@ -368,7 +368,7 @@ public class ModelSyncContentProvider extends SynchronizationContentProvider imp
 			final StructuredViewer viewer = (StructuredViewer)getViewer();
 			Utils.syncExec((Runnable) () -> {
 				if (refreshAll)
-					viewer.refresh(true);
+					viewer.refresh(true); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 				else
 					viewer.update(updates.toArray(new ModelObject[updates.size()]), null);
 			}, viewer);

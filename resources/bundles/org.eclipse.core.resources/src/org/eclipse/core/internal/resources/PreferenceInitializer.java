@@ -68,7 +68,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 		super();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void initializeDefaultPreferences() {
 		IEclipsePreferences node = DefaultScope.INSTANCE.getNode(ResourcesPlugin.PI_RESOURCES);
 		// auto-refresh default

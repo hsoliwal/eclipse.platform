@@ -31,7 +31,7 @@ public class AntProperties extends AntDebugElement implements IVariable {
 	@Override
 	public synchronized IValue getValue() throws DebugException {
 		int attempts = 0;
-		while (!fValid && !getDebugTarget().isTerminated()) {
+		while (!fValid && !getDebugTarget().isTerminated()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				wait(50);
 			}

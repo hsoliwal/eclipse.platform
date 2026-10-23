@@ -46,7 +46,7 @@ public class ResourceDiffCompareInput extends AbstractCompareInput implements IS
 	private IDiff node;
 	private final ISynchronizationContext context;
 
-	public static int getCompareKind(IDiff node) {
+	public static int getCompareKind(IDiff node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int compareKind = 0;
 		if (node != null) {
 			int kind = node.getKind();
@@ -87,7 +87,7 @@ public class ResourceDiffCompareInput extends AbstractCompareInput implements IS
 		return compareKind;
 	}
 
-	private static FileRevisionTypedElement getRightContributor(IDiff node) {
+	private static FileRevisionTypedElement getRightContributor(IDiff node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// For a resource diff, use the after state
 		if (node instanceof IResourceDiff rd) {
 			return asTypedElement(rd.getAfterState(), getLocalEncoding(node));
@@ -187,7 +187,7 @@ public class ResourceDiffCompareInput extends AbstractCompareInput implements IS
 
 	@Override
 	public void prepareInput(CompareConfiguration configuration, IProgressMonitor monitor) throws CoreException {
-		configuration.setLabelProvider(this, ((ResourceCompareInputChangeNotifier)getChangeNotifier()).getLabelProvider());
+		configuration.setLabelProvider(this, ((ResourceCompareInputChangeNotifier)getChangeNotifier()).getLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 		ensureContentsCached(getAncestor(), getRight(), monitor);
 	}
 
@@ -274,7 +274,7 @@ public class ResourceDiffCompareInput extends AbstractCompareInput implements IS
 	 * Re-obtain the diff for this compare input and update the kind and 3
 	 * contributor appropriately.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void update() {
 		IDiff newNode = context.getDiffTree().getDiff(getResource());
 		if (newNode == null) {
@@ -341,7 +341,7 @@ public class ResourceDiffCompareInput extends AbstractCompareInput implements IS
 		return Utils.getLocalContentId(node);
 	}
 
-	public boolean updateAuthorInfo(IProgressMonitor monitor) throws CoreException {
+	public boolean updateAuthorInfo(IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean fireEvent= false;
 		FileRevisionTypedElement ancestor= (FileRevisionTypedElement)getAncestor();
 		FileRevisionTypedElement right= (FileRevisionTypedElement)getRight();

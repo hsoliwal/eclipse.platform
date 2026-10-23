@@ -37,7 +37,7 @@ public class TokenComparator implements ITokenComparator {
 	 *
 	 * @param text the string that is split into token
 	 */
-	public TokenComparator(String text) {
+	public TokenComparator(String text) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		Assert.isNotNull(text);
 
@@ -49,7 +49,7 @@ public class TokenComparator implements ITokenComparator {
 		fCount= 0;
 
 		char lastCategory= 0;	// 0: no category
-		for (int i= 0; i < length; i++) {
+		for (int i= 0; i < length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c= fText.charAt(i);
 
 			char category= '?';	// unspecified category
@@ -106,7 +106,7 @@ public class TokenComparator implements ITokenComparator {
 		return false;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean skipRangeComparison(int length, int max, IRangeComparator other) {
 
 		if (getRangeCount() < 50 || other.getRangeCount() < 50) {

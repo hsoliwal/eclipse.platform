@@ -47,7 +47,7 @@ public class ContentTypePropertySource implements IPropertySource, IAdaptable {
 		return PROPERTY_DESCRIPTORS;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Object getPropertyValue(Object id) {
 		if (id.equals(UNIQUE_ID.getId())) {
 			return type.getId();
@@ -75,10 +75,10 @@ public class ContentTypePropertySource implements IPropertySource, IAdaptable {
 		if (fileNames.length == 0) {
 			return ""; //$NON-NLS-1$
 		}
-		StringBuilder result = new StringBuilder();
-		for (String fileName : fileNames) {
-			result.append(fileName);
-			result.append(',');
+		StringBuilder result = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (String fileName : fileNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			result.append(fileName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			result.append(','); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		result.deleteCharAt(result.length() - 1);
 		return result.toString();

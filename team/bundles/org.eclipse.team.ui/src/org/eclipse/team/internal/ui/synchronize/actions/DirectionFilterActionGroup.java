@@ -32,10 +32,10 @@ import org.eclipse.ui.actions.ActionGroup;
  * {@link ISynchronizePageConfiguration}.
  * @since 3.0
  */
-public class DirectionFilterActionGroup extends ActionGroup implements IPropertyChangeListener {
+public class DirectionFilterActionGroup extends ActionGroup implements IPropertyChangeListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	// The list of created actions
-	private final List<DirectionFilterAction> actions = new ArrayList<>(3);
+	private final List<DirectionFilterAction> actions = new ArrayList<>(3); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	// The modes
 	private DirectionFilterAction incomingMode;
@@ -77,14 +77,14 @@ public class DirectionFilterActionGroup extends ActionGroup implements IProperty
 	public DirectionFilterActionGroup(ISynchronizePageConfiguration configuration) {
 		this.configuration = configuration;
 		createActions();
-		configuration.addPropertyChangeListener(this);
+		configuration.addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		checkMode(configuration.getMode());
 	}
 
 	/**
 	 * Sets up the sync modes and the actions for switching between them.
 	 */
-	private void createActions() {
+	private void createActions() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Create the actions
 		int supportedModes = configuration.getSupportedModes();
 		if (supportedModes == 0) {
@@ -145,7 +145,7 @@ public class DirectionFilterActionGroup extends ActionGroup implements IProperty
 	public void fillActionBars(IActionBars actionBars, String group) {
 		super.fillActionBars(actionBars);
 		IToolBarManager toolBar = actionBars.getToolBarManager();
-		for (DirectionFilterAction action : actions) {
+		for (DirectionFilterAction action : actions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if(group != null) {
 				toolBar.appendToGroup(group, action);
 			} else {
@@ -155,19 +155,19 @@ public class DirectionFilterActionGroup extends ActionGroup implements IProperty
 	}
 
 	public void fillToolBar(String groupId, IToolBarManager toolBar) {
-		for (DirectionFilterAction action : actions) {
+		for (DirectionFilterAction action : actions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				toolBar.appendToGroup(groupId, action);
 		}
 	}
 
 	public void fillMenu(IContributionManager manager) {
-		for (DirectionFilterAction action : actions) {
+		for (DirectionFilterAction action : actions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				manager.add(action);
 		}
 	}
 
 	private void checkMode(int mode) {
-		for (DirectionFilterAction action : actions) {
+		for (DirectionFilterAction action : actions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if(action.getModeId() == mode) {
 				action.setChecked(true);
 			} else {

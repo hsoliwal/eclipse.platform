@@ -48,7 +48,7 @@ public class ApplyPatchSubscriberMergeContext extends SubscriberMergeContext {
 		markAsMerged(diff, true, monitor);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void markAsMerged(IDiff node, boolean inSyncHint,
 			IProgressMonitor monitor) throws CoreException {
 		IResource resource = getDiffTree().getResource(node);
@@ -56,7 +56,7 @@ public class ApplyPatchSubscriberMergeContext extends SubscriberMergeContext {
 		Object object = PatchModelProvider.getPatchObject(resource, patcher);
 		if (object instanceof FilePatch2) {
 			HunkResult[] hunkResults = patcher.getDiffResult((FilePatch2) object).getHunkResults();
-			for (HunkResult hunkResult : hunkResults) {
+			for (HunkResult hunkResult : hunkResults) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (inSyncHint) {
 					// clean Merge > disable hunks that have merged
 					if (hunkResult.isOK()) {
@@ -77,7 +77,7 @@ public class ApplyPatchSubscriberMergeContext extends SubscriberMergeContext {
 		// see ApplyPatchSubscriber.ApplyPatchSyncInfo.calculateKind()
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected IStatus performThreeWayMerge(IThreeWayDiff diff,
 			IProgressMonitor monitor) throws CoreException {
 		IStatus status = super.performThreeWayMerge(diff, monitor);
@@ -89,7 +89,7 @@ public class ApplyPatchSubscriberMergeContext extends SubscriberMergeContext {
 			Object object = PatchModelProvider.getPatchObject(resource, patcher);
 			if (object instanceof FilePatch2) {
 				HunkResult[] hunkResults = patcher.getDiffResult((FilePatch2) object).getHunkResults();
-				for (HunkResult hunkResult : hunkResults) {
+				for (HunkResult hunkResult : hunkResults) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					// ... unmark them and exclude those properly merged
 					if (patcher.isManuallyMerged(hunkResult.getHunk())) {
 						patcher.setManuallyMerged(hunkResult.getHunk(), false);

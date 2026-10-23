@@ -67,7 +67,7 @@ public class WorkspacePerformanceTest {
 	 * Creates a project and fills it with contents
 	 */
 	void createAndPopulateProject(final int totalResources) throws CoreException {
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			testProject.create(createTestMonitor());
 			testProject.open(createTestMonitor());
 			createFolder(testFolder, totalResources);
@@ -92,10 +92,10 @@ public class WorkspacePerformanceTest {
 	}
 
 	private String createString(int length) {
-		StringBuilder buf = new StringBuilder(length);
+		StringBuilder buf = new StringBuilder(length); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		//fill the string with random characters up to the desired length
-		for (int i = 0; i < length; i++) {
-			buf.append(chars.charAt(random.nextInt(chars.length())));
+		for (int i = 0; i < length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			buf.append(chars.charAt(random.nextInt(chars.length()))); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return buf.toString();
 	}
@@ -124,7 +124,7 @@ public class WorkspacePerformanceTest {
 	 */
 	private void recursiveCreateChildren(IFolder parentFolder, int depth) throws CoreException {
 		//create TREE_WIDTH files
-		for (int i = 0; i < TREE_WIDTH; i++) {
+		for (int i = 0; i < TREE_WIDTH; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IFile file = parentFolder.getFile(createString(10));
 			file.create(new ByteArrayInputStream(createBytes(5000)), IResource.NONE, createTestMonitor());
 		}
@@ -132,7 +132,7 @@ public class WorkspacePerformanceTest {
 			return;
 		}
 		//create TREE_WIDTH folders
-		for (int i = 0; i < TREE_WIDTH; i++) {
+		for (int i = 0; i < TREE_WIDTH; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IFolder folder = parentFolder.getFolder(createString(6));
 			folder.create(IResource.NONE, true, createTestMonitor());
 			recursiveCreateChildren(folder, depth - 1);
@@ -149,7 +149,7 @@ public class WorkspacePerformanceTest {
 	/**
 	 * Benchmark test of creating a project and populating it with folders and files.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateResources() throws SecurityException, Exception {
 		PerformanceTestRunner runner = new PerformanceTestRunner() {
 			@Override
@@ -188,7 +188,7 @@ public class WorkspacePerformanceTest {
 		runner.run(getClass(), testInfo.getDisplayName(), REPEATS, 1);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFolderCopy() throws SecurityException, Exception {
 		//create the project contents
 		new PerformanceTestRunner() {
@@ -210,7 +210,7 @@ public class WorkspacePerformanceTest {
 		}.run(getClass(), testInfo.getDisplayName(), REPEATS, 1);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFolderMove() throws SecurityException, Exception {
 		//create the project contents
 		new PerformanceTestRunner() {
@@ -232,7 +232,7 @@ public class WorkspacePerformanceTest {
 		}.run(getClass(), testInfo.getDisplayName(), REPEATS, 1);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshProject() throws SecurityException, Exception {
 		PerformanceTestRunner runner = new PerformanceTestRunner() {
 			@Override
@@ -256,7 +256,7 @@ public class WorkspacePerformanceTest {
 		runner.run(getClass(), testInfo.getDisplayName(), REPEATS, 1);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCloseOpenProject() throws SecurityException, Exception {
 		// 8 minutes total test time, 400 msec test execution time (*3 inner loops)
 		new PerformanceTestRunner() {
@@ -279,7 +279,7 @@ public class WorkspacePerformanceTest {
 		}.run(getClass(), testInfo.getDisplayName(), REPEATS, 3);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLoadSnapshot() throws SecurityException, Exception {
 		// 2 minutes total test time, 528 msec test execution time
 		IProject snapProject = getWorkspace().getRoot().getProject("SnapProject");

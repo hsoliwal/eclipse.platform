@@ -143,7 +143,7 @@ public class Bug_185247_recursiveLinks {
 	public void test4_linkParentDirectoryTwice(boolean useAdvancedLinkCheck) throws Exception {
 		CreateTestProjectStructure createSymlinks = directory -> {
 			String[] subdirectoryNames = { "subdirectory1", "subdirectory2" };
-			for (String subdirectoryName : subdirectoryNames) {
+			for (String subdirectoryName : subdirectoryNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				File subdirectory = new File(directory, subdirectoryName);
 				createDirectory(subdirectory);
 				createSymlink(subdirectory, "link_parent", "../../");
@@ -175,7 +175,7 @@ public class Bug_185247_recursiveLinks {
 	public void test5_linkParentDirectoyTwiceWithAbsolutePath(boolean useAdvancedLinkCheck) throws Exception {
 		CreateTestProjectStructure createSymlinks = directory -> {
 			String[] subdirectoryNames = { "subdirectory1", "subdirectory2" };
-			for (String subdirectoryName : subdirectoryNames) {
+			for (String subdirectoryName : subdirectoryNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				File subdirectory = new File(directory, subdirectoryName);
 				createDirectory(subdirectory);
 				createSymlink(subdirectory, "link_parent", directory.getAbsolutePath());
@@ -207,7 +207,7 @@ public class Bug_185247_recursiveLinks {
 	 *                   |- link_directory_1 -> ../../directory_1/
 	 * </pre>
 	 */
-	@ParameterizedTest
+	@ParameterizedTest //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@ValueSource(booleans = { false, true })
 	public void test6_linkGrandparentTwice(boolean useAdvancedLinkCheck) throws Exception {
 		CreateTestProjectStructure createSymlinks = directory -> {
@@ -243,8 +243,8 @@ public class Bug_185247_recursiveLinks {
 				@Override
 				public boolean visit(IResource resource) {
 					resourceCount++;
-					System.out.println(resourceCount + " visited: " + resource.getFullPath());
-					assertTrue(resourceCount <= 13, "Expected max 13 elements to visit, got: " + resourceCount);
+					System.out.println(resourceCount + " visited: " + resource.getFullPath()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+					assertTrue(resourceCount <= 13, "Expected max 13 elements to visit, got: " + resourceCount); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					return true;
 				}
 			});
@@ -254,7 +254,7 @@ public class Bug_185247_recursiveLinks {
 
 	}
 
-	private IProject runTest(CreateTestProjectStructure createSymlinks, boolean useAdvancedLinkCheck)
+	private IProject runTest(CreateTestProjectStructure createSymlinks, boolean useAdvancedLinkCheck) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws MalformedURLException, Exception {
 		final boolean originalValue = UnifiedTree.isAdvancedRecursiveLinkChecksEnabled();
 		try {
@@ -277,7 +277,7 @@ public class Bug_185247_recursiveLinks {
 	}
 
 	private static void createDirectory(File directory) {
-		assertTrue(directory.mkdirs(), "failed to create test directory: " + directory);
+		assertTrue(directory.mkdirs(), "failed to create test directory: " + directory); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	void createSymlink(File directory, String linkName, String linkTarget) throws IOException {
@@ -299,7 +299,7 @@ public class Bug_185247_recursiveLinks {
 		projectDescription.setLocationURI(projectRootLocation);
 		testProject.create(projectDescription, createTestMonitor());
 		testProject.open(createTestMonitor());
-		assertTrue(testProject.isAccessible(), "expected project to be open: " + projectName);
+		assertTrue(testProject.isAccessible(), "expected project to be open: " + projectName); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return testProject;
 	}
 

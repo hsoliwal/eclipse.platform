@@ -69,7 +69,7 @@ public class ContentDescriptionPerformanceTest {
 
 	/** Extra xml content types, so a look-up visits as many candidates as in a full IDE. */
 	private static final int EXTRA_CONTENT_TYPES = 300;
-	private static final String EXTRA_CONTENT_TYPE_ID = ContentDescriptionPerformanceTest.class.getName() + ".type";
+	private static final String EXTRA_CONTENT_TYPE_ID = ContentDescriptionPerformanceTest.class.getName() + ".type"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	private static final int WARMUP_ROUNDS = 2;
 	private static final int MIN_ROUNDS = 5;
@@ -95,21 +95,21 @@ public class ContentDescriptionPerformanceTest {
 
 	void assertHasExpectedDescription(String fileName, IContentDescription description) throws CoreException {
 		if (fileName.endsWith(DEFAULT_DESCRIPTION_FILE_NAME)) {
-			assertEquals(XML_CONTENT_TYPE, description.getContentType().getId(), "content type for " + fileName);
-			assertEquals("UTF-8", description.getCharset(), "charset for " + fileName);
+			assertEquals(XML_CONTENT_TYPE, description.getContentType().getId(), "content type for " + fileName); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertEquals("UTF-8", description.getCharset(), "charset for " + fileName); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} else if (fileName.endsWith(NON_DEFAULT_DESCRIPTION_FILE_NAME)) {
-			assertEquals(XML_CONTENT_TYPE, description.getContentType().getId(), "content type for " + fileName);
-			assertEquals("US-ASCII", description.getCharset(), "charset for " + fileName);
+			assertEquals(XML_CONTENT_TYPE, description.getContentType().getId(), "content type for " + fileName); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertEquals("US-ASCII", description.getCharset(), "charset for " + fileName); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} else {
-			assertNull(description, "description for " + fileName);
+			assertNull(description, "description for " + fileName); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
 	@BeforeAll
 	static void addContentTypes() throws CoreException {
 		IContentTypeManager manager = Platform.getContentTypeManager();
-		for (int i = 0; i < EXTRA_CONTENT_TYPES; i++) {
-			IContentType type = manager.addContentType(EXTRA_CONTENT_TYPE_ID + i, "perf type " + i, null);
+		for (int i = 0; i < EXTRA_CONTENT_TYPES; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			IContentType type = manager.addContentType(EXTRA_CONTENT_TYPE_ID + i, "perf type " + i, null); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			type.addFileSpec("xml", IContentType.FILE_EXTENSION_SPEC);
 		}
 	}
@@ -117,8 +117,8 @@ public class ContentDescriptionPerformanceTest {
 	@AfterAll
 	static void removeContentTypes() throws CoreException {
 		IContentTypeManager manager = Platform.getContentTypeManager();
-		for (int i = 0; i < EXTRA_CONTENT_TYPES; i++) {
-			manager.removeContentType(EXTRA_CONTENT_TYPE_ID + i);
+		for (int i = 0; i < EXTRA_CONTENT_TYPES; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			manager.removeContentType(EXTRA_CONTENT_TYPE_ID + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -128,11 +128,11 @@ public class ContentDescriptionPerformanceTest {
 		assertFalse(project.exists());
 		project.create(createTestMonitor());
 		project.open(createTestMonitor());
-		for (int i = 0; i < SUBDIRS; i++) {
-			IFolder folder = project.getFolder("folder_" + i);
+		for (int i = 0; i < SUBDIRS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			IFolder folder = project.getFolder("folder_" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			folder.create(false, true, createTestMonitor());
-			for (int j = 0; j < TOTAL_FILES / SUBDIRS; j++) {
-				IFile file = folder.getFile("file_" + j + getFileName(j));
+			for (int j = 0; j < TOTAL_FILES / SUBDIRS; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				IFile file = folder.getFile("file_" + j + getFileName(j)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				file.create(createInputStream(getContents(j)), false, createTestMonitor());
 			}
 		}
@@ -171,11 +171,11 @@ public class ContentDescriptionPerformanceTest {
 	}
 
 	private void measureCold(String label) throws Exception {
-		for (int i = 0; i < WARMUP_ROUNDS; i++) {
+		for (int i = 0; i < WARMUP_ROUNDS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			flushDescriptionCache();
 			describeAllFiles();
 		}
-		List<Long> times = new ArrayList<>();
+		List<Long> times = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		exercise(() -> {
 			flushDescriptionCache();
 			long before = System.nanoTime();
@@ -183,7 +183,7 @@ public class ContentDescriptionPerformanceTest {
 			times.add(System.nanoTime() - before);
 			assertEquals(TOTAL_FILES, described);
 		}, MIN_ROUNDS, MAX_ROUNDS, MAX_MEASURE_TIME_MS);
-		reportTimings(label + " [" + TOTAL_FILES + " files]", times);
+		reportTimings(label + " [" + TOTAL_FILES + " files]", times); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Test
@@ -193,35 +193,35 @@ public class ContentDescriptionPerformanceTest {
 
 	@Test
 	public void testWarmContentDescription() throws Exception {
-		for (int i = 0; i < WARMUP_ROUNDS; i++) {
+		for (int i = 0; i < WARMUP_ROUNDS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			describeAllFiles();
 		}
-		List<Long> times = new ArrayList<>();
+		List<Long> times = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		exercise(() -> {
 			long before = System.nanoTime();
 			int described = describeAllFiles();
 			times.add(System.nanoTime() - before);
 			assertEquals(TOTAL_FILES, described);
 		}, MIN_ROUNDS, MAX_ROUNDS, MAX_MEASURE_TIME_MS);
-		reportTimings("ContentDescription warm [" + TOTAL_FILES + " files]", times);
+		reportTimings("ContentDescription warm [" + TOTAL_FILES + " files]", times); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private void measureNameLookups(String label) throws Exception {
 		IContentTypeMatcher matcher = project.getContentTypeMatcher();
 		String[] names = { DEFAULT_DESCRIPTION_FILE_NAME, NO_DESCRIPTION_FILE_NAME, "foo.txt", "plugin.xml" };
-		for (int i = 0; i < WARMUP_ROUNDS; i++) {
+		for (int i = 0; i < WARMUP_ROUNDS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			runLookupBatch(matcher, names);
 		}
-		List<Long> times = new ArrayList<>();
+		List<Long> times = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		exercise(() -> times.add(runLookupBatch(matcher, names)), MIN_ROUNDS, LOOKUP_MAX_ROUNDS,
 				MAX_MEASURE_TIME_MS);
-		reportTimings(label + " [per " + LOOKUP_BATCH + " look-ups]", times);
+		reportTimings(label + " [per " + LOOKUP_BATCH + " look-ups]", times); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private static long runLookupBatch(IContentTypeMatcher matcher, String[] names) {
 		long before = System.nanoTime();
 		int found = 0;
-		for (int i = 0; i < LOOKUP_BATCH; i++) {
+		for (int i = 0; i < LOOKUP_BATCH; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			found += matcher.findContentTypesFor(names[i % names.length]).length;
 		}
 		long elapsed = System.nanoTime() - before;

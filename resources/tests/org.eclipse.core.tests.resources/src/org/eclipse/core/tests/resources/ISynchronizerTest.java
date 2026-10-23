@@ -87,9 +87,9 @@ public class ISynchronizerTest {
 
 		final ISynchronizer synchronizer = getWorkspace().getSynchronizer();
 		final QualifiedName[] partners = synchronizer.getPartners();
-		IWorkspaceRunnable body = unused -> {
+		IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			IResourceVisitor visitor = resource -> {
-				for (QualifiedName partner : partners) {
+				for (QualifiedName partner : partners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					synchronizer.setSyncInfo(partner, resource, null);
 				}
 				return true;
@@ -111,7 +111,7 @@ public class ISynchronizerTest {
 		// remove all registered sync partners so we don't create
 		// phantoms when we delete
 		QualifiedName[] names = getWorkspace().getSynchronizer().getPartners();
-		for (QualifiedName name : names) {
+		for (QualifiedName name : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			getWorkspace().getSynchronizer().remove(name);
 		}
 	}
@@ -125,7 +125,7 @@ public class ISynchronizerTest {
 				.isEqualTo(expectedSyncInfo);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteResources() throws CoreException {
 		final QualifiedName qname = new QualifiedName("org.eclipse.core.tests.resources", "myTarget");
 		final ISynchronizer synchronizer = ResourcesPlugin.getWorkspace().getSynchronizer();
@@ -157,10 +157,10 @@ public class ISynchronizerTest {
 
 		// delete all resources under the projects, deleting .project would close them
 		final IProject[] projects = getWorkspace().getRoot().getProjects();
-		IWorkspaceRunnable body = unused -> {
-			for (IProject project : projects) {
+		IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
+			for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource[] children = project.members();
-				for (IResource element : children) {
+				for (IResource element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (!IProjectDescription.DESCRIPTION_FILE_NAME.equals(element.getName())) {
 						element.delete(false, createTestMonitor());
 					}
@@ -179,7 +179,7 @@ public class ISynchronizerTest {
 		getWorkspace().getRoot().accept(visitor);
 
 		// delete the projects
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			project.delete(false, createTestMonitor());
 		}
 
@@ -191,7 +191,7 @@ public class ISynchronizerTest {
 		getWorkspace().getRoot().accept(visitor);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteResources2() throws CoreException {
 		final QualifiedName qname = new QualifiedName("org.eclipse.core.tests.resources", "myTarget");
 		final ISynchronizer synchronizer = ResourcesPlugin.getWorkspace().getSynchronizer();
@@ -223,9 +223,9 @@ public class ISynchronizerTest {
 
 		// delete all resources under the projects.
 		final IProject[] projects = getWorkspace().getRoot().getProjects();
-		IWorkspaceRunnable body = unused -> {
-			for (IProject project : projects) {
-				for (IResource element : project.members()) {
+		IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
+			for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				for (IResource element : project.members()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (!element.getName().equals(IProjectDescription.DESCRIPTION_FILE_NAME)) {
 						element.delete(false, createTestMonitor());
 					}
@@ -244,9 +244,9 @@ public class ISynchronizerTest {
 		getWorkspace().getRoot().accept(visitor);
 
 		// remove the sync info for the immediate children of the projects.
-		body = unused -> {
-			for (IProject project : projects) {
-				for (IResource element : project.members(true)) {
+		body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
+			for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				for (IResource element : project.members(true)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					synchronizer.setSyncInfo(qname, element, null);
 				}
 			}
@@ -269,7 +269,7 @@ public class ISynchronizerTest {
 		getWorkspace().getRoot().accept(visitor, IResource.DEPTH_INFINITE, true);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveResource() throws CoreException {
 		final QualifiedName qname = new QualifiedName("org.eclipse.core.tests.resources", "myTarget");
 		final ISynchronizer synchronizer = ResourcesPlugin.getWorkspace().getSynchronizer();
@@ -300,7 +300,7 @@ public class ISynchronizerTest {
 				.as("sync info at destination: %s", destination.getFullPath()).isNull();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveResource2() throws CoreException {
 		final QualifiedName qname = new QualifiedName("org.eclipse.core.tests.resources", "myTarget");
 		final ISynchronizer synchronizer = ResourcesPlugin.getWorkspace().getSynchronizer();
@@ -352,18 +352,18 @@ public class ISynchronizerTest {
 		assertThat(syncInfo).as("sync info for resource: %s", sourceFile.getFullPath()).isNotNull().isEqualTo(b);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRegistration() {
 		// setup
 		QualifiedName[] partners = new QualifiedName[NUMBER_OF_PARTNERS];
-		for (int i = 0; i < NUMBER_OF_PARTNERS; i++) {
-			QualifiedName name = new QualifiedName("org.eclipse.core.deployment", "myTarget" + i);
+		for (int i = 0; i < NUMBER_OF_PARTNERS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			QualifiedName name = new QualifiedName("org.eclipse.core.deployment", "myTarget" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			partners[i] = name;
 		}
 		ISynchronizer synchronizer = ResourcesPlugin.getWorkspace().getSynchronizer();
 
 		// register the targets...twice to ensure dups aren't registered
-		for (int i = 0; i < NUMBER_OF_PARTNERS; i++) {
+		for (int i = 0; i < NUMBER_OF_PARTNERS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			synchronizer.add(partners[i]);
 			synchronizer.add(partners[i]);
 		}
@@ -373,13 +373,13 @@ public class ISynchronizerTest {
 		assertThat(list).hasSize(NUMBER_OF_PARTNERS);
 
 		// unregister all targets
-		for (int i = 0; i < NUMBER_OF_PARTNERS; i++) {
+		for (int i = 0; i < NUMBER_OF_PARTNERS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			synchronizer.remove(partners[i]);
 		}
 		assertThat(synchronizer.getPartners()).isEmpty();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSave() throws Exception {
 		final Hashtable<IPath, byte[]> table = new Hashtable<>(10);
 		final QualifiedName qname = new QualifiedName("org.eclipse.core.tests.resources", "myTarget");
@@ -402,9 +402,9 @@ public class ISynchronizerTest {
 		IPath syncInfoPath = Platform.getLocation().append(".testsyncinfo");
 		File file = syncInfoPath.toFile();
 		fileStoreExtension.deleteOnTearDown(syncInfoPath);
-		try (OutputStream fileOutput = new FileOutputStream(file)) {
+		try (OutputStream fileOutput = new FileOutputStream(file)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			try (DataOutputStream output = new DataOutputStream(fileOutput)) {
-				final List<QualifiedName> list = new ArrayList<>(5);
+				final List<QualifiedName> list = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				visitor = resource -> {
 					ResourceInfo info = ((Resource) resource).getResourceInfo(false, false);
 					if (info == null) {
@@ -439,9 +439,9 @@ public class ISynchronizerTest {
 		flushAllSyncInfo(getWorkspace().getRoot());
 
 		// read in the data
-		try (InputStream fileInput = Files.newInputStream(file.toPath())) {
+		try (InputStream fileInput = Files.newInputStream(file.toPath())) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try (DataInputStream input = new DataInputStream(fileInput)) {
-				IWorkspaceRunnable body = unused -> {
+				IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 					SyncInfoReader reader = new SyncInfoReader((Workspace) getWorkspace(), synchronizer);
 					try {
 						reader.readSyncInfo(input);
@@ -466,7 +466,7 @@ public class ISynchronizerTest {
 		getWorkspace().getRoot().accept(visitor);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSyncInfo() throws CoreException {
 		final QualifiedName qname = new QualifiedName("org.eclipse.core.tests.resources", "myTarget");
 		final ISynchronizer synchronizer = ResourcesPlugin.getWorkspace().getSynchronizer();
@@ -563,7 +563,7 @@ public class ISynchronizerTest {
 	 * Removes resources, sets sync info to <code>null</code> and ensures the
 	 * phantoms do not exist any more (see bug 3024)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPhantomRemoval() throws CoreException {
 		final QualifiedName partner = new QualifiedName("org.eclipse.core.tests.resources", "myTarget");
 		final IWorkspace workspace = getWorkspace();

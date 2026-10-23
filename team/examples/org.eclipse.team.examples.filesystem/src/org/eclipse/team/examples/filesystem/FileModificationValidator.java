@@ -61,10 +61,10 @@ public final class FileModificationValidator extends org.eclipse.core.resources.
 	 */
 	@Override
 	public IStatus validateEdit(IFile[] files, FileModificationValidationContext context) {
-		Collection<IResource> toBeCheckedOut = new ArrayList<>();
+		Collection<IResource> toBeCheckedOut = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		//Make a list of all the files that need to be checked out:
-		for (IFile file : files) {
+		for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!operations.isCheckedOut(file)) {
 				toBeCheckedOut.add(file);
 			}

@@ -42,7 +42,7 @@ import org.eclipse.ui.part.Page;
  *
  * @since 3.3
  */
-public class HistoryPageCompareEditorInput extends PageCompareEditorInput {
+public class HistoryPageCompareEditorInput extends PageCompareEditorInput { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	private IHistoryPage historyPage;
 	private DialogHistoryPageSite site;
@@ -86,7 +86,7 @@ public class HistoryPageCompareEditorInput extends PageCompareEditorInput {
 	/**
 	 * @since 3.11
 	 */
-	protected final IPage createPage(CompareViewerPane parent, IToolBarManager toolBarManager,
+	protected final IPage createPage(CompareViewerPane parent, IToolBarManager toolBarManager, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			boolean allowMultiSelection) {
 		site = new DialogHistoryPageSite(parent.getShell());
 		historyPage = (IHistoryPage)pageSource.createPage(object);
@@ -106,7 +106,7 @@ public class HistoryPageCompareEditorInput extends PageCompareEditorInput {
 		if (getTitle() == null) {
 			setTitle(historyPage.getName());
 		}
-		historyPage.addPropertyChangeListener(changeListener);
+		historyPage.addPropertyChangeListener(changeListener); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		return (IPage)historyPage;
 	}
 
@@ -159,9 +159,9 @@ public class HistoryPageCompareEditorInput extends PageCompareEditorInput {
 	protected void handlePropertyChange(PropertyChangeEvent event) {
 		if (event.getSource() == historyPage) {
 			if (event.getProperty().equals(IHistoryPage.P_NAME)) {
-				Display.getDefault().asyncExec(() -> setTitle(historyPage.getName()));
+				Display.getDefault().asyncExec(() -> setTitle(historyPage.getName())); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			} else if (event.getProperty().equals(IHistoryPage.P_DESCRIPTION)) {
-				Display.getDefault().asyncExec(() -> setPageDescription(historyPage.getDescription()));
+				Display.getDefault().asyncExec(() -> setPageDescription(historyPage.getDescription())); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			}
 		}
 	}

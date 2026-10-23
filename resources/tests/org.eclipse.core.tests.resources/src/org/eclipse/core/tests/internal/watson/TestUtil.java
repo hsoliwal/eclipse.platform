@@ -63,7 +63,7 @@ class TestUtil implements IPathConstants {
 	 * @param actual the actual value of a tree
 	 * @param depth The depth to compare to.
 	 */
-	static protected void assertEqualTrees(String msg, ElementTree expected, ElementTree actual, IPath path, int depth) {
+	static protected void assertEqualTrees(String msg, ElementTree expected, ElementTree actual, IPath path, int depth) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/* check node at current path */
 		assertTrue(expected.includes(path), msg);
 		assertTrue(actual.includes(path), msg);
@@ -79,7 +79,7 @@ class TestUtil implements IPathConstants {
 			if (depth != ElementTreeWriter.D_INFINITE) {
 				--newDepth;
 			}
-			for (int i = 0; i < expectedChildren.length; i++) {
+			for (int i = 0; i < expectedChildren.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				assertEquals(expectedChildren[i], actualChildren[i], "children IDs");
 				assertEqualTrees("Recursive call", expected, actual, expectedChildren[i], newDepth);
 			}
@@ -90,8 +90,8 @@ class TestUtil implements IPathConstants {
 	 * Asserts that the given tree contains all of the given paths
 	 */
 	static protected void assertHasPaths(ElementTree tree, IPath[] paths) {
-		for (int i = 0; i < paths.length; i++) {
-			assertTrue(tree.includes(paths[i]), "assertHasPaths" + i);
+		for (int i = 0; i < paths.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			assertTrue(tree.includes(paths[i]), "assertHasPaths" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -99,15 +99,15 @@ class TestUtil implements IPathConstants {
 	 * Asserts that the given tree doesn not contain all of the given paths
 	 */
 	static protected void assertNoPaths(ElementTree tree, IPath[] paths) {
-		for (IPath path : paths) {
-			assertFalse(tree.includes(path), "assertNoPaths: " + path);
+		for (IPath path : paths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			assertFalse(tree.includes(path), "assertNoPaths: " + path); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
 	/**
 	 * Asserts that the Test ElementTree has its original structure
 	 */
-	static protected void assertTreeStructure(ElementTree tree) {
+	static protected void assertTreeStructure(ElementTree tree) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		assertHasPaths(tree, getTreePaths());
 
 		IPath[] children = tree.getChildren(IPath.ROOT);
@@ -136,7 +136,7 @@ class TestUtil implements IPathConstants {
 		assertThat(tree.getChildren(file3)).isEmpty();
 	}
 
-	static ElementTree createTestElementTree() {
+	static ElementTree createTestElementTree() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/**
 		 * This is a sample element tree on which tests are performed.
 		 * The Paths in this tree are found in IPathConstants.  The tree's
@@ -173,8 +173,8 @@ class TestUtil implements IPathConstants {
 	 * the given path.  Opens a new delta after every operation.
 	 * Returns an array of all the intermediary ElementTrees.
 	 */
-	static protected ElementTree[] doManyRoutineOperations(ElementTree tree, IPath path) {
-		ArrayList<ElementTree> trees = new ArrayList<>();
+	static protected ElementTree[] doManyRoutineOperations(ElementTree tree, IPath path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		ArrayList<ElementTree> trees = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		trees.add(tree);
 
 		int repeat = 1;
@@ -182,7 +182,7 @@ class TestUtil implements IPathConstants {
 		/* create file elements */
 		tree = tree.newEmptyDelta();
 		IPath[] files = getFilePaths(path);
-		for (IPath file : files) {
+		for (IPath file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object data = file.toString();
 			tree.createElement(file, data);
 
@@ -192,9 +192,9 @@ class TestUtil implements IPathConstants {
 		}
 
 		/* modify the data of all file elements a few times */
-		for (int i = 0; i < repeat; i++) {
-			Object data = "data" + i;
-			for (IPath file : files) {
+		for (int i = 0; i < repeat; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			Object data = "data" + i; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			for (IPath file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				tree.setElementData(file, data);
 				tree.immutable();
 				trees.add(tree);
@@ -203,7 +203,7 @@ class TestUtil implements IPathConstants {
 		}
 
 		/* delete all file elements */
-		for (IPath file : files) {
+		for (IPath file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			tree.deleteElement(file);
 			tree.immutable();
 			trees.add(tree);
@@ -219,8 +219,8 @@ class TestUtil implements IPathConstants {
 	 * Does several routine operations on the subtree rooted at
 	 * the given path.  Returns an array of all the intermediary elementtrees.
 	 */
-	static protected ElementTree[] doRoutineOperations(ElementTree tree, IPath path) {
-		ArrayList<org.eclipse.core.internal.watson.ElementTree> trees = new ArrayList<>();
+	static protected ElementTree[] doRoutineOperations(ElementTree tree, IPath path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		ArrayList<org.eclipse.core.internal.watson.ElementTree> trees = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		trees.add(tree);
 
 		int repeat = 1;
@@ -228,7 +228,7 @@ class TestUtil implements IPathConstants {
 		/* create file elements */
 		tree = tree.newEmptyDelta();
 		IPath[] files = getFilePaths(path);
-		for (IPath file : files) {
+		for (IPath file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object data = file.toString();
 
 			tree.createElement(file, data);
@@ -239,9 +239,9 @@ class TestUtil implements IPathConstants {
 		tree = tree.newEmptyDelta();
 
 		/* modify the data of all file elements a few times */
-		for (int i = 0; i < repeat; i++) {
-			Object data = "data" + i;
-			for (IPath file : files) {
+		for (int i = 0; i < repeat; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			Object data = "data" + i; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			for (IPath file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				tree.setElementData(file, data);
 			}
 		}
@@ -251,7 +251,7 @@ class TestUtil implements IPathConstants {
 		tree = tree.newEmptyDelta();
 
 		/* delete all file elements */
-		for (IPath file : files) {
+		for (IPath file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			tree.deleteElement(file);
 		}
 
@@ -269,7 +269,7 @@ class TestUtil implements IPathConstants {
 	static protected IPath[] getFilePaths(IPath project3) {
 		String[] names = getJavaLangUnits();
 		IPath[] paths = new IPath[names.length];
-		for (int i = 0; i < paths.length; i++) {
+		for (int i = 0; i < paths.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			paths[i] = project3.append(names[i]);
 		}
 		return paths;
@@ -292,11 +292,11 @@ class TestUtil implements IPathConstants {
 	/**
 	 * Randomly scrambles an array.
 	 */
-	static protected void scramble(Object[] first) {
+	static protected void scramble(Object[] first) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Random random = new Random(System.currentTimeMillis());
 
 		final int len = first.length;
-		for (int i = 0; i < len * 100; i++) {
+		for (int i = 0; i < len * 100; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			/* get any array offset */
 			int off1 = (int) (random.nextFloat() * len);
 			if (off1 == len) {
@@ -320,12 +320,12 @@ class TestUtil implements IPathConstants {
 	 * Randomly scrambles two arrays, ensuring that both
 	 * arrays undergo the same permutation.
 	 */
-	static protected void scramble(Object[] first, Object[] second) {
+	static protected void scramble(Object[] first, Object[] second) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		assertThat(first).hasSameSizeAs(second);
 		Random random = new Random(System.currentTimeMillis());
 
 		final int len = first.length;
-		for (int i = 0; i < len * 100; i++) {
+		for (int i = 0; i < len * 100; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			/* get any array offset */
 			int off1 = (int) (random.nextFloat() * len);
 			if (off1 == len) {

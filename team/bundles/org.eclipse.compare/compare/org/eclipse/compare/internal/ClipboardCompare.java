@@ -58,7 +58,7 @@ public class ClipboardCompare extends BaseCompareAction implements IObjectAction
 	protected void run(ISelection selection) {
 		IFile[] files = Utilities.getFiles(selection);
 		Shell parentShell = CompareUIPlugin.getShell();
-		for (IFile file : files) {
+		for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				processComparison(file, parentShell);
 			} catch (Exception e) {
@@ -79,7 +79,7 @@ public class ClipboardCompare extends BaseCompareAction implements IObjectAction
 	 * @param parentShell The shell containing this window's controls
 	 * @throws IOException, CoreException
 	 */
-	private void processComparison(IFile file, Shell parentShell) throws IOException, CoreException {
+	private void processComparison(IFile file, Shell parentShell) throws IOException, CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String cb = getClipboard().toString();
 		String fileName = file.getName();
 		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
@@ -125,7 +125,7 @@ public class ClipboardCompare extends BaseCompareAction implements IObjectAction
 	 * @param clipboardContents Contents in clipboard
 	 * @param parentShell       The shell containing this window's controls
 	 */
-	private void showComparison(String source, String fileName, String clipboardContents, Shell parentShell) {
+	private void showComparison(String source, String fileName, String clipboardContents, Shell parentShell) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		class ClipboardTypedElement implements ITypedElement, IEncodedStreamContentAccessor {
 			private final String name;
 			private final String content;
@@ -170,7 +170,7 @@ public class ClipboardCompare extends BaseCompareAction implements IObjectAction
 		config.setRightLabel(clipboard);
 		config.setLeftEditable(true);
 		config.setRightEditable(true);
-		CompareEditorInput compareInput = new CompareEditorInput(config) {
+		CompareEditorInput compareInput = new CompareEditorInput(config) { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			protected Object prepareInput(IProgressMonitor monitor)
 					throws InvocationTargetException, InterruptedException {

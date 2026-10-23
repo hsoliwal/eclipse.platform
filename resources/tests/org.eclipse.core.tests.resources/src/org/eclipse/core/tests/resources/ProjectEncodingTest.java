@@ -123,7 +123,7 @@ public class ProjectEncodingTest {
 		verifyNoMarkerIsAddedToProjectWithEncodingIfPreferenceIsSetTo(IMarker.SEVERITY_ERROR);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_ProjectWithoutEncoding_PreferenceChanges_MarkerIsReplacedAccordingly() throws Exception {
 		givenPreferenceIsSetTo(IMarker.SEVERITY_WARNING);
 		whenProjectIsCreated();
@@ -156,7 +156,7 @@ public class ProjectEncodingTest {
 		thenProjectHasNoEncodingMarker();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_TwoProjectsOpenedWithoutEncoding_ValidatedInOneJobRun_EachProjectHasMarker()
 			throws Exception {
 		givenPreferenceIsSetTo(IMarker.SEVERITY_WARNING);
@@ -178,7 +178,7 @@ public class ProjectEncodingTest {
 		Job.getJobManager().addJobChangeListener(validationRunCounter);
 		try {
 			// open both projects in one workspace operation, like a mass import does
-			workspace.run(monitor -> {
+			workspace.run(monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 				first.open(monitor);
 				second.open(monitor);
 			}, workspace.getRoot(), IWorkspace.AVOID_UPDATE, null);

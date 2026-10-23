@@ -88,7 +88,7 @@ public class IProjectTest  {
 		if (project == null) {
 			return;
 		}
-		IWorkspaceRunnable body = mon -> {
+		IWorkspaceRunnable body = mon -> { //FLLDCIM: MARK — T09  LAMBDA
 			project.create(description, mon);
 			project.open(mon);
 		};
@@ -138,7 +138,7 @@ public class IProjectTest  {
 	/**
 	 * Tests the API method IProject#getNature
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetNature() throws CoreException {
 		IWorkspace ws = ResourcesPlugin.getWorkspace();
 		IProject project = ws.getRoot().getProject("Project");
@@ -186,7 +186,7 @@ public class IProjectTest  {
 	/**
 	 * Tests the API method IProject#hasNature.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testHasNature() throws CoreException {
 		IWorkspace ws = ResourcesPlugin.getWorkspace();
 		IProject project = ws.getRoot().getProject("Project");
@@ -221,13 +221,13 @@ public class IProjectTest  {
 	/**
 	 * Tests creation and manipulation of projects names that are reserved on some platforms.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInvalidProjectNames() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 
 		//should not be able to create a project with invalid path on any platform
 		String[] names = new String[] {"", "/"};
-		for (String name : names) {
+		for (String name : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThrows(RuntimeException.class, () -> root.getProject(name));
 		}
 		//do some tests with invalid names
@@ -236,7 +236,7 @@ public class IProjectTest  {
 			//invalid windows names
 			names = new String[] {"foo:bar", "prn", "nul", "con", "aux", "clock$", "com1", "com2", "com3", "com4", "com5", "com6", "com7", "com8", "com9", "lpt1", "lpt2", "lpt3", "lpt4", "lpt5", "lpt6", "lpt7", "lpt8", "lpt9", "AUX", "con.foo", "LPT4.txt", "*", "?", "\"", "<", ">", "|", "::"};
 		}
-		for (String name : names) {
+		for (String name : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProject project = root.getProject(name);
 			assertFalse(project.exists(), name);
 			assertThrows(CoreException.class, () -> {
@@ -259,7 +259,7 @@ public class IProjectTest  {
 			//these names are valid on non-windows platforms
 			names = new String[] {"foo:bar", "prn", "nul", "con", "aux", "clock$", "com1", "com2", "com3", "com4", "com5", "com6", "com7", "com8", "com9", "lpt1", "lpt2", "lpt3", "lpt4", "lpt5", "lpt6", "lpt7", "lpt8", "lpt9", "con.foo", "LPT4.txt", "*", "?", "\"", "<", ">", "|", "hello.prn.txt", "null", "con3", "foo.aux", "lpt0", "com0", "com10", "lpt10", ",", "'", ";"};
 		}
-		for (String name : names) {
+		for (String name : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProject project = root.getProject(name);
 			assertFalse(project.exists(), name);
 			monitor.prepare();
@@ -276,7 +276,7 @@ public class IProjectTest  {
 	/**
 	 * Tests the API method IProject#isNatureEnabled.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIsNatureEnabled() throws CoreException {
 		IWorkspace ws = ResourcesPlugin.getWorkspace();
 		IProject project = ws.getRoot().getProject("Project");
@@ -312,7 +312,7 @@ public class IProjectTest  {
 	 * Tests creation of a project whose location is specified by
 	 * a path variable. See bug 56274.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPathVariableLocation() throws CoreException {
 		final String projectName = "Project";
 		final String varName = "ProjectLocatio";
@@ -338,7 +338,7 @@ public class IProjectTest  {
 		assertEquals(varValue.append(rawLocation.lastSegment()), project.getLocation());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectCloseOpen() throws CoreException {
 		IProject target = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(target);
@@ -358,7 +358,7 @@ public class IProjectTest  {
 		assertTrue(folder.exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectCopyVariations() throws CoreException {
 		IProject project, destProject;
 		IResource[] resources;
@@ -470,7 +470,7 @@ public class IProjectTest  {
 		monitor.assertUsedUp();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectCreateOpenCloseDelete() throws CoreException {
 		IProject target = getWorkspace().getRoot().getProject("Project");
 		target.create(monitor);
@@ -507,7 +507,7 @@ public class IProjectTest  {
 		assertTrue(target.isOpen());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectCreationLineSeparator() throws BackingStoreException, CoreException {
 		// make sure each line separator is different
 		String systemValue = System.lineSeparator();
@@ -609,7 +609,7 @@ public class IProjectTest  {
 	/**
 	 * Tests creating a project whose location is invalid
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectCreationInvalidLocation() {
 		IProject target = getWorkspace().getRoot().getProject("Project");
 		IProjectDescription description = getWorkspace().newProjectDescription(target.getName());
@@ -639,11 +639,11 @@ public class IProjectTest  {
 	/**
 	 * Tests creating a project whose location already exists with different case
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectCreationLocationExistsWithDifferentCase() throws CoreException {
 		assumeTrue(OS.isWindows(), "only relevant on Windows");
 
-		String projectName = createUniqueString() + "a";
+		String projectName = createUniqueString() + "a"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IProject project = getWorkspace().getRoot().getProject(projectName);
 
 		project.create(monitor);
@@ -675,7 +675,7 @@ public class IProjectTest  {
 	 * 	- content area is the DEFAULT
 	 * 	- resources are IN_SYNC with the file system
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDeletionClosedDefaultInSync() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IFile file = project.getFile("myfile.txt");
@@ -878,7 +878,7 @@ public class IProjectTest  {
 	 * 	- content area is the DEFAULT
 	 * 	- resources are OUT_OF_SYNC with the file system
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDeletionClosedDefaultOutOfSync() throws Exception {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IFile file = project.getFile("myfile.txt");
@@ -1088,7 +1088,7 @@ public class IProjectTest  {
 	 * 	- content area is USER-DEFINED
 	 * 	- resources are IN_SYNC with the file system
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDeletionClosedUserDefinedInSync() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IFile file = project.getFile("myfile.txt");
@@ -1248,7 +1248,7 @@ public class IProjectTest  {
 	 * 	- content area is USER-DEFINED
 	 * 	- resources are OUT_OF_SYNC with the file system
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDeletionClosedUserDefinedOutOfSync() throws Exception {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IFile file = project.getFile("myfile.txt");
@@ -1439,7 +1439,7 @@ public class IProjectTest  {
 	 * 	- content area is the DEFAULT
 	 * 	- resources are IN_SYNC with the file system
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDeletionOpenDefaultInSync() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IFile file = project.getFile("myfile.txt");
@@ -1555,7 +1555,7 @@ public class IProjectTest  {
 	 * 	- content area is the DEFAULT
 	 * 	- resources are OUT_OF_SYNC with the file system
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDeletionOpenDefaultOutOfSync() throws Exception {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IFile file = project.getFile("myfile.txt");
@@ -1685,7 +1685,7 @@ public class IProjectTest  {
 	 * 	- content area is USER-DEFINED
 	 * 	- resources are IN_SYNC with the file system
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDeletionOpenUserDefinedInSync() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IFile file = project.getFile("myfile.txt");
@@ -1820,7 +1820,7 @@ public class IProjectTest  {
 	 * 	- content area is USER-DEFINED
 	 * 	- resources are OUT_OF_SYNC with the file system
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDeletionOpenUserDefinedOutOfSync() throws Exception {
 		IProject project = getWorkspace().getRoot().getProject("testProjectDeletionOpenUserDefinedOutOfSync");
 		IFile file = project.getFile("myfile.txt");
@@ -1990,7 +1990,7 @@ public class IProjectTest  {
 	/**
 	 * Tests API on IProjectDescription
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Deprecated // Explicitly tests deprecated API
 	public void testProjectDescriptionDynamic() {
 		IProjectDescription desc = getWorkspace().newProjectDescription("foo");
@@ -2020,7 +2020,7 @@ public class IProjectTest  {
 	/**
 	 * Tests API on IProjectDescription
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDescriptionReferences() {
 		IProjectDescription desc = getWorkspace().newProjectDescription("foo");
 		IProject project1 = getWorkspace().getRoot().getProject("P1");
@@ -2049,7 +2049,7 @@ public class IProjectTest  {
 		assertThat(result).containsExactly(project1, project2);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectLocationValidation() throws CoreException {
 		// validation of the initial project should be ok
 		IProject project1 = getWorkspace().getRoot().getProject("Project1");
@@ -2112,7 +2112,7 @@ public class IProjectTest  {
 	/**
 	 * Tests creating a project at a location that contains URL escape sequences or spaces.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectLocationWithEscapes() throws CoreException {
 		IProject project1 = getWorkspace().getRoot().getProject("Project1");
 		IPath root = getWorkspace().getRoot().getLocation().removeLastSegments(1).append("temp");
@@ -2134,7 +2134,7 @@ public class IProjectTest  {
 		monitor.assertUsedUp();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectMoveContent() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("MyProject");
 		String[] children = new String[] {"/1/", "/1/2"};
@@ -2165,7 +2165,7 @@ public class IProjectTest  {
 		getWorkspace().getRoot().accept(visitor);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectMoveVariations() throws CoreException {
 		IProject project, destProject;
 		IResource[] resources;
@@ -2272,7 +2272,7 @@ public class IProjectTest  {
 		});
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectMoveVariations_bug307140() throws CoreException {
 		// Test moving project to its subfolder
 		IProject originalProject = getWorkspace().getRoot().getProject(createUniqueString());
@@ -2331,7 +2331,7 @@ public class IProjectTest  {
 	 * Tests renaming a project using the move(IProjectDescription) API
 	 * where the project contents are stored outside the workspace location.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRenameExternalProject() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("SourceProject");
 		String[] children = new String[] { "/1/", "/1/2" };
@@ -2384,7 +2384,7 @@ public class IProjectTest  {
 	 * Tests {@link IResource#move(IProjectDescription, int, IProgressMonitor)}
 	 * in conjunction with {@link IResource#REPLACE}.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testReplaceLocation() throws Exception {
 		IProject target = getWorkspace().getRoot().getProject("testReplaceLocation");
 		createInWorkspace(target);
@@ -2433,10 +2433,10 @@ public class IProjectTest  {
 		setGetPersistentProperty(target);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWorkspaceNotificationClose() throws CoreException {
 		final int[] count = new int[1];
-		IResourceChangeListener listener = event -> {
+		IResourceChangeListener listener = event -> { //FLLDCIM: MARK — T07  LAMBDA
 			assertEquals(IResourceChangeEvent.PRE_CLOSE, event.getType());
 			count[0]++;
 			assertEquals(IResource.PROJECT, event.getResource().getType());
@@ -2462,10 +2462,10 @@ public class IProjectTest  {
 		getWorkspace().removeResourceChangeListener(listener);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWorkspaceNotificationDelete() throws CoreException {
 		final int[] count = new int[1];
-		IResourceChangeListener listener = event -> {
+		IResourceChangeListener listener = event -> { //FLLDCIM: MARK — T07  LAMBDA
 			assertEquals(IResourceChangeEvent.PRE_DELETE, event.getType());
 			count[0]++;
 			assertEquals(IResource.PROJECT, event.getResource().getType());
@@ -2488,10 +2488,10 @@ public class IProjectTest  {
 		getWorkspace().removeResourceChangeListener(listener);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWorkspaceNotificationMove() throws CoreException {
 		final int[] count = new int[1];
-		IResourceChangeListener listener = event -> {
+		IResourceChangeListener listener = event -> { //FLLDCIM: MARK — T07  LAMBDA
 			assertEquals(IResourceChangeEvent.PRE_DELETE, event.getType());
 			count[0]++;
 			assertEquals(IResource.PROJECT, event.getResource().getType());
@@ -2514,7 +2514,7 @@ public class IProjectTest  {
 		getWorkspace().removeResourceChangeListener(listener);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateHiddenProject() throws CoreException {
 		IProject hiddenProject = getWorkspace().getRoot().getProject(createUniqueString());
 		removeFromWorkspace(hiddenProject);
@@ -2537,7 +2537,7 @@ public class IProjectTest  {
 		assertFalse(hiddenProject.isHidden());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDeletion_Bug347220() throws CoreException {
 		String projectName = createUniqueString();
 
@@ -2558,7 +2558,7 @@ public class IProjectTest  {
 		project.delete(true, monitor);
 		monitor.assertUsedUp();
 		IPath p = ((Workspace) getWorkspace()).getMetaArea().locationFor(project);
-		assertFalse(p.toFile().exists());
+		assertFalse(p.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		IProject otherProject = getWorkspace().getRoot().getProject(createUniqueString());
 		createInWorkspace(otherProject);

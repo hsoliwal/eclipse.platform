@@ -61,29 +61,29 @@ abstract public class FilterTests extends AbstractViewerModelTest implements ITe
 		return fViewer;
 	}
 
-	static class TestViewerFilter extends ViewerFilter {
+	static class TestViewerFilter extends ViewerFilter { //FLLDCIM: MARK — T23  IMPLEMENTS
 
 		Pattern fPattern;
 		TestViewerFilter(String pattern) {
-			fPattern = Pattern.compile(pattern);
+			fPattern = Pattern.compile(pattern); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		}
 
 
 		 @Override
 		public boolean select(Viewer viewer, Object parentElement, Object element) {
 			if (element instanceof TestElement te) {
-				return !fPattern.matcher(te.getLabel()).find();
+				return !fPattern.matcher(te.getLabel()).find(); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			}
 
 			return true;
 		}
 	}
 
-	static class TestTMVFilter extends TreeModelViewerFilter {
+	static class TestTMVFilter extends TreeModelViewerFilter { //FLLDCIM: MARK — T23  IMPLEMENTS
 		Pattern fPattern;
 		Object fParentElement;
 		TestTMVFilter(String pattern, Object parentElement) {
-			fPattern = Pattern.compile(pattern);
+			fPattern = Pattern.compile(pattern); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			fParentElement = parentElement;
 		}
 
@@ -99,7 +99,7 @@ abstract public class FilterTests extends AbstractViewerModelTest implements ITe
 		 @Override
 		public boolean select(Viewer viewer, Object parentElement, Object element) {
 			if (element instanceof TestElement te) {
-				return !fPattern.matcher(te.getLabel()).find();
+				return !fPattern.matcher(te.getLabel()).find(); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			}
 
 			return true;
@@ -142,7 +142,7 @@ abstract public class FilterTests extends AbstractViewerModelTest implements ITe
 		doTestSimpleLevel(model, new ViewerFilter[] { new TestViewerFilter(".1"), new TestTMVFilter(".2", null) }); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	private void doTestSimpleLevel(TestModel model, ViewerFilter[] filters) throws Exception {
+	private void doTestSimpleLevel(TestModel model, ViewerFilter[] filters) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// Make sure that all elements are expanded
 		fViewer.setAutoExpandLevel(-1);
@@ -209,7 +209,7 @@ abstract public class FilterTests extends AbstractViewerModelTest implements ITe
 		doTestReplacedUnrealizedFilteredElement(new ViewerFilter[] { new TestTMVFilter("2", null) }); //$NON-NLS-1$
 	}
 
-	private void doTestReplacedUnrealizedFilteredElement(ViewerFilter[] filters) throws Exception {
+	private void doTestReplacedUnrealizedFilteredElement(ViewerFilter[] filters) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// Populate a view with a large model (only first 100 elements will be visible in virtual viewer).
 		TestModel model = new TestModel();
@@ -259,7 +259,7 @@ abstract public class FilterTests extends AbstractViewerModelTest implements ITe
 	 * Replace an element that is not visible but filtered out.  With an element that is NOT filtered out.
 	 * Fire CONTENT delta on parent.
 	 */
-	private void doTestRefreshUnrealizedFilteredElement(ViewerFilter[] filters) throws Exception {
+	private void doTestRefreshUnrealizedFilteredElement(ViewerFilter[] filters) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Populate a view with a large model (only first 100 elements will be visible in virtual viewer).
 		TestModel model = new TestModel();
 		model.setRoot(new TestElement(model, "root", new TestElement[0])); //$NON-NLS-1$
@@ -313,7 +313,7 @@ abstract public class FilterTests extends AbstractViewerModelTest implements ITe
 	 * Replace an element that is not visible but filtered out.  With an element that is NOT filtered out.
 	 * Fire CONTENT delta on parent.
 	 */
-	private void doTestRefreshToUnfilterElements(ViewerFilter[] filters) throws Exception {
+	private void doTestRefreshToUnfilterElements(ViewerFilter[] filters) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ViewerFilter[] filters1 = filters;
 		// Populate a view with a large model (only first 100 elements will be visible in virtual viewer).
 		TestModel model = TestModel.simpleMultiLevel();
@@ -343,7 +343,7 @@ abstract public class FilterTests extends AbstractViewerModelTest implements ITe
 		model.validateData(fViewer, TreePath.EMPTY, false, filters1);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreserveExpandedOnMultLevelContent() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = StateTests.alternatingSubsreesModel(6);

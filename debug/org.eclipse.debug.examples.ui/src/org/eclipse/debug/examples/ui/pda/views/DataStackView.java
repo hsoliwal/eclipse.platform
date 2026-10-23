@@ -42,11 +42,11 @@ import org.eclipse.ui.progress.UIJob;
 /**
  * View of the PDA VM data stack
  */
-public class DataStackView extends AbstractDebugView implements IDebugContextListener {
+public class DataStackView extends AbstractDebugView implements IDebugContextListener { //FLLDCIM: MARK — T20  IMPLEMENTS
 
 	private PDAThread fThread;
 
-	class StackViewContentProvider implements ITreeContentProvider {
+	class StackViewContentProvider implements ITreeContentProvider { //FLLDCIM: MARK — M22  IMPLEMENTS
 
 		@Override
 		public Object[] getChildren(Object parentElement) {
@@ -91,7 +91,7 @@ public class DataStackView extends AbstractDebugView implements IDebugContextLis
 	@Override
 	protected Viewer createViewer(Composite parent) {
 		TreeViewer viewer = new TreeViewer(parent);
-		viewer.setLabelProvider(DebugUITools.newDebugModelPresentation());
+		viewer.setLabelProvider(DebugUITools.newDebugModelPresentation()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 		viewer.setContentProvider(new StackViewContentProvider());
 		DebugUITools.getDebugContextManager().getContextService(getSite().getWorkbenchWindow()).addDebugContextListener(this);
 		getSite().setSelectionProvider(viewer);
@@ -124,7 +124,7 @@ public class DataStackView extends AbstractDebugView implements IDebugContextLis
 
 	@Override
 	public void debugContextChanged(final DebugContextEvent event) {
-		new UIJob(getSite().getShell().getDisplay(), "DataStackView update") { //$NON-NLS-1$
+		new UIJob(getSite().getShell().getDisplay(), "DataStackView update") { //$NON-NLS-1$ //FLLDCIM: MARK — T09  ANONYMOUS
 			{
 				setSystem(true);
 			}
@@ -142,7 +142,7 @@ public class DataStackView extends AbstractDebugView implements IDebugContextLis
 	/**
 	 * Updates the view for the selected thread (if suspended)
 	 */
-	private void update(ISelection context) {
+	private void update(ISelection context) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fThread = null;
 
 		if (context instanceof IStructuredSelection) {

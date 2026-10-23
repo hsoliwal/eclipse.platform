@@ -47,7 +47,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class Bug_025457 {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFile() throws Exception {
 		assumeTrue(OS.isWindows(), "only relevant on Windows");
 
@@ -72,7 +72,7 @@ public class Bug_025457 {
 		assertThat(destFile).matches(not(IResource::exists), "not exists");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFolder() throws IOException, CoreException {
 		//native code must also be present so move can detect the case change
 		assumeTrue(OS.isWindows() && isReadOnlySupported(), "only relevant on Windows");
@@ -102,7 +102,7 @@ public class Bug_025457 {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProject() throws IOException, CoreException {
 		assumeTrue(OS.isWindows(), "only relevant on Windows");
 

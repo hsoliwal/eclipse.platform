@@ -35,13 +35,13 @@ public class SyncInfoSetChangeEvent implements ISyncInfoSetChangeEvent {
 
 	// List that accumulate changes
 	// SyncInfo
-	private final Map<IResource, SyncInfo> changedResources = new HashMap<>();
-	private final Set<IResource> removedResources = new HashSet<>();
-	private final Map<IResource, SyncInfo> addedResources = new HashMap<>();
+	private final Map<IResource, SyncInfo> changedResources = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	private final Set<IResource> removedResources = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Map<IResource, SyncInfo> addedResources = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	private boolean reset = false;
 
-	private final List<ITeamStatus> errors = new ArrayList<>();
+	private final List<ITeamStatus> errors = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	public SyncInfoSetChangeEvent(SyncInfoSet set) {
 		super();

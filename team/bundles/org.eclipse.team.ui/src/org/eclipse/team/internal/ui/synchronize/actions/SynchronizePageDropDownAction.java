@@ -43,7 +43,7 @@ public class SynchronizePageDropDownAction extends Action implements IMenuCreato
 	private final Action synchronizeAction;
 	private MenuManager menuManager;
 
-	public SynchronizePageDropDownAction(ISynchronizeView view) {
+	public SynchronizePageDropDownAction(ISynchronizeView view) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fView= view;
 		Utils.initAction(this, "action.refreshSubscriber."); //$NON-NLS-1$
 
@@ -100,7 +100,7 @@ public class SynchronizePageDropDownAction extends Action implements IMenuCreato
 
 	protected void addParticipantsToMenu(ISynchronizeParticipantReference[] refs) {
 		ISynchronizeParticipant current = fView.getParticipant();
-		for (ISynchronizeParticipantReference page : refs) {
+		for (ISynchronizeParticipantReference page : refs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Action action = new ShowSynchronizeParticipantAction(fView, page);
 			try {
 				boolean isCurrent = page.getParticipant().equals(current);
@@ -126,7 +126,7 @@ public class SynchronizePageDropDownAction extends Action implements IMenuCreato
 	@Override
 	public void participantsAdded(ISynchronizeParticipant[] consoles) {
 		Display display = TeamUIPlugin.getStandardDisplay();
-		display.asyncExec(() -> {
+		display.asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			if(menuManager != null) {
 				menuManager.dispose();
 				menuManager = null;
@@ -138,7 +138,7 @@ public class SynchronizePageDropDownAction extends Action implements IMenuCreato
 	@Override
 	public void participantsRemoved(ISynchronizeParticipant[] consoles) {
 		Display display = TeamUIPlugin.getStandardDisplay();
-		display.asyncExec(() -> {
+		display.asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			if(menuManager != null) {
 				menuManager.dispose();
 				menuManager = null;

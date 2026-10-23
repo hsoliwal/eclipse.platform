@@ -50,7 +50,7 @@ public class DebugCorePlugin extends Plugin {
 	 * program. The path is a string representing a full path
 	 * to a Perl program in the workspace.
 	 */
-	public static final String ATTR_PDA_PROGRAM = ID_PDA_DEBUG_MODEL + ".ATTR_PDA_PROGRAM"; //$NON-NLS-1$
+	public static final String ATTR_PDA_PROGRAM = ID_PDA_DEBUG_MODEL + ".ATTR_PDA_PROGRAM"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Identifier for the PDA launch configuration type

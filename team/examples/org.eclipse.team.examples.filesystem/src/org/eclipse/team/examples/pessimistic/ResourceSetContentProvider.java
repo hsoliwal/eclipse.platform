@@ -22,15 +22,15 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-public class ResourceSetContentProvider implements ITreeContentProvider {
+public class ResourceSetContentProvider implements ITreeContentProvider { //FLLDCIM: MARK — M22  IMPLEMENTS
 	private static final Object[] EMPTY_ARRAY= new Object[0];
 	private Map<IResource, Set<IResource>> fResourceTree;
 	private final IResource[] fRoots;
 
-	public ResourceSetContentProvider(Set<IResource> resources) {
-		fResourceTree = new HashMap<>(1);
-		Set<IResource> roots= new HashSet<>(resources);
-		for (IResource resource : resources) {
+	public ResourceSetContentProvider(Set<IResource> resources) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		fResourceTree = new HashMap<>(1); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		Set<IResource> roots= new HashSet<>(resources); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if(resource.getType() == IResource.ROOT) {
 				continue; // root cannot be displayed
 			}
@@ -39,7 +39,7 @@ public class ResourceSetContentProvider implements ITreeContentProvider {
 				roots.remove(resource);
 				Set<IResource> set= fResourceTree.get(parent);
 				if (set == null) {
-					set= new HashSet<>(1);
+					set= new HashSet<>(1); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 					fResourceTree.put(parent, set);
 				}
 				set.add(resource);

@@ -27,7 +27,7 @@ public class AdapterFactory implements IAdapterFactory {
 	private final IWorkbenchAdapter modelAdapter = new PatchWorkbenchAdapter();
 	private ISynchronizationCompareAdapter compareAdapter;
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 		if (adapterType == ResourceMapping.class) {
 			if (adaptableObject instanceof PatchProjectDiffNode) {

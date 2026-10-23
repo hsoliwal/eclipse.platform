@@ -117,7 +117,7 @@ public abstract class RepositoryProvider implements IProjectNature, IAdaptable {
 	 * </ul>
 	 * @see RepositoryProvider#unmap(IProject)
 	 */
-	public static void map(IProject project, String id) throws TeamException {
+	public static void map(IProject project, String id) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ISchedulingRule rule = ResourcesPlugin.getWorkspace().getRuleFactory().modifyRule(project);
 		try {
 			// Obtain a scheduling rule on the project before obtaining the
@@ -195,7 +195,7 @@ public abstract class RepositoryProvider implements IProjectNature, IAdaptable {
 	 * @throws TeamException we can't instantiate the provider, or if the set
 	 * session property fails from core
 	 */
-	private static RepositoryProvider mapNewProvider(final IProject project, final String id) throws TeamException {
+	private static RepositoryProvider mapNewProvider(final IProject project, final String id) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final RepositoryProvider provider = newProvider(id); 	// instantiate via extension point
 
 		if(provider == null) {
@@ -206,7 +206,7 @@ public abstract class RepositoryProvider implements IProjectNature, IAdaptable {
 		// validate that either the provider supports linked resources or the project has no linked resources
 		if (!provider.canHandleLinkedResourceURI()) {
 			try {
-				project.accept(proxy -> {
+				project.accept(proxy -> { //FLLDCIM: MARK — T07  LAMBDA
 					if (proxy.isLinked()) {
 						if (!provider.canHandleLinkedResources() ||
 								proxy.requestFullPath().segmentCount() > 2 ||
@@ -229,7 +229,7 @@ public abstract class RepositoryProvider implements IProjectNature, IAdaptable {
 		if (!provider.canHandleLinkedResources()) {
 			try {
 				IResource[] members = project.members();
-				for (IResource resource : members) {
+				for (IResource resource : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (resource.isLinked()) {
 						throw new TeamException(new Status(IStatus.ERROR, TeamPlugin.ID,
 								IResourceStatus.LINKING_NOT_ALLOWED,
@@ -252,7 +252,7 @@ public abstract class RepositoryProvider implements IProjectNature, IAdaptable {
 		return provider;
 	}
 
-	private static RepositoryProvider mapExistingProvider(IProject project, String id) throws TeamException {
+	private static RepositoryProvider mapExistingProvider(IProject project, String id) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			// Obtain the mapping lock before creating the instance so we can make sure
 			// that a disconnect is not happening at the same time
@@ -284,7 +284,7 @@ public abstract class RepositoryProvider implements IProjectNature, IAdaptable {
 	 * @param project project to unmap
 	 * @throws TeamException The project isn't associated with any repository provider.
 	 */
-	public static void unmap(IProject project) throws TeamException {
+	public static void unmap(IProject project) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ISchedulingRule rule = ResourcesPlugin.getWorkspace().getRuleFactory().modifyRule(project);
 		try{
 			// See the map(IProject, String) method for a description of lock ordering
@@ -386,7 +386,7 @@ public abstract class RepositoryProvider implements IProjectNature, IAdaptable {
 			try {
 				RepositoryProvider.unmap(getProject());
 			} catch(TeamException e2) {
-				throw new CoreException(new Status(IStatus.ERROR, TeamPlugin.ID, 0, Messages.RepositoryProvider_Error_removing_nature_from_project___1 + getID(), e2));
+				throw new CoreException(new Status(IStatus.ERROR, TeamPlugin.ID, 0, Messages.RepositoryProvider_Error_removing_nature_from_project___1 + getID(), e2)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			throw e;
 		}
@@ -445,7 +445,7 @@ public abstract class RepositoryProvider implements IProjectNature, IAdaptable {
 	 * @see IWorkspace#validateEdit(IFile[], Object)
 	 * @since 3.3
 	 */
-	public FileModificationValidator getFileModificationValidator2() {
+	public FileModificationValidator getFileModificationValidator2() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final IFileModificationValidator fileModificationValidator = getFileModificationValidator();
 		if (fileModificationValidator == null) {
 			return null;
@@ -517,13 +517,13 @@ public abstract class RepositoryProvider implements IProjectNature, IAdaptable {
 	 */
 	final public static String[] getAllProviderTypeIds() {
 		IProjectNatureDescriptor[] desc = ResourcesPlugin.getWorkspace().getNatureDescriptors();
-		Set<String> teamSet = new HashSet<>();
+		Set<String> teamSet = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 		teamSet.addAll(AllProviderTypeIds);	// add in all the ones we know via extension point
 		//fall back to old method of nature ID to find any for backwards compatibility
-		for (IProjectNatureDescriptor d : desc) {
+		for (IProjectNatureDescriptor d : desc) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String[] setIds = d.getNatureSetIds();
-			for (String setId : setIds) {
+			for (String setId : setIds) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (setId.equals(TEAM_SETID)) {
 					teamSet.add(d.getNatureId());
 				}
@@ -540,7 +540,7 @@ public abstract class RepositoryProvider implements IProjectNature, IAdaptable {
 	 * @param project the project to query for a provider
 	 * @return the repository provider associated with the project
 	 */
-	final public static RepositoryProvider getProvider(IProject project) {
+	final public static RepositoryProvider getProvider(IProject project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			if (project.isAccessible()) {
 
@@ -570,12 +570,12 @@ public abstract class RepositoryProvider implements IProjectNature, IAdaptable {
 				IWorkspace workspace = ResourcesPlugin.getWorkspace();
 				// for every nature id on this project, find it's natures sets and check if it is
 				// in the team set.
-				for (String natureId : natureIds) {
+				for (String natureId : natureIds) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IProjectNatureDescriptor desc = workspace.getNatureDescriptor(natureId);
 					// The descriptor can be null if the nature doesn't exist
 					if (desc != null) {
 						String[] setIds = desc.getNatureSetIds();
-						for (String setId : setIds) {
+						for (String setId : setIds) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							if (setId.equals(TEAM_SETID)) {
 								return getProvider(project, natureId);
 							}
@@ -611,7 +611,7 @@ public abstract class RepositoryProvider implements IProjectNature, IAdaptable {
 	 * @param id the repository provider id
 	 * @return the repository provider
 	 */
-	final public static RepositoryProvider getProvider(IProject project, String id) {
+	final public static RepositoryProvider getProvider(IProject project, String id) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			if (project.isAccessible()) {
 				// Look for an existing provider first to avoid accessing persistent properties
@@ -653,7 +653,7 @@ public abstract class RepositoryProvider implements IProjectNature, IAdaptable {
 				}
 
 				String[] setIds = desc.getNatureSetIds();
-				for (String setId : setIds) {
+				for (String setId : setIds) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (setId.equals(TEAM_SETID)) {
 						return (RepositoryProvider)project.getNature(id);
 					}
@@ -684,7 +684,7 @@ public abstract class RepositoryProvider implements IProjectNature, IAdaptable {
 	 *
 	 * @since 2.1
 	 */
-	public static boolean isShared(IProject project) {
+	public static boolean isShared(IProject project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!project.isAccessible()) {
 			return false;
 		}
@@ -734,17 +734,17 @@ public abstract class RepositoryProvider implements IProjectNature, IAdaptable {
 		this.project = project;
 	}
 
-	private static List<String> initializeAllProviderTypes() {
-		List<String> allIDs = new ArrayList<>();
+	private static List<String> initializeAllProviderTypes() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<String> allIDs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		TeamPlugin plugin = TeamPlugin.getPlugin();
 		if (plugin != null) {
 			IExtensionPoint extension = Platform.getExtensionRegistry().getExtensionPoint(TeamPlugin.ID, TeamPlugin.REPOSITORY_EXTENSION);
 			if (extension != null) {
 				IExtension[] extensions =  extension.getExtensions();
-				for (IExtension e : extensions) {
+				for (IExtension e : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IConfigurationElement[] configElements = e.getConfigurationElements();
-					for (IConfigurationElement configElement : configElements) {
+					for (IConfigurationElement configElement : configElements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						String extensionId = configElement.getAttribute("id"); //$NON-NLS-1$
 						allIDs.add(extensionId);
 					}
@@ -754,15 +754,15 @@ public abstract class RepositoryProvider implements IProjectNature, IAdaptable {
 		return allIDs;
 	}
 
-	private static RepositoryProvider newProvider(String id) {
+	private static RepositoryProvider newProvider(String id) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TeamPlugin plugin = TeamPlugin.getPlugin();
 		if (plugin != null) {
 			IExtensionPoint extension = Platform.getExtensionRegistry().getExtensionPoint(TeamPlugin.ID, TeamPlugin.REPOSITORY_EXTENSION);
 			if (extension != null) {
 				IExtension[] extensions =  extension.getExtensions();
-				for (IExtension ext : extensions) {
+				for (IExtension ext : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IConfigurationElement[] configElements = ext.getConfigurationElements();
-					for (IConfigurationElement configElement : configElements) {
+					for (IConfigurationElement configElement : configElements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						String extensionId = configElement.getAttribute("id"); //$NON-NLS-1$
 						if (extensionId != null && extensionId.equals(id)) {
 							try {

@@ -35,7 +35,7 @@ public class FailureTableDisplay implements ITraceDisplay {
 	 */
 	public FailureTableDisplay(Table table) {
 		fTable = table;
-		fTable.getParent().addDisposeListener(unused -> disposeIcons());
+		fTable.getParent().addDisposeListener(unused -> disposeIcons()); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 	}
 
 	@Override

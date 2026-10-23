@@ -81,13 +81,13 @@ public class TeamUIPlugin extends AbstractUIPlugin {
 
 	public static final String TRIGGER_POINT_ID = "org.eclipse.team.ui.activityTriggerPoint"; //$NON-NLS-1$
 
-	private static List<IPropertyChangeListener> propertyChangeListeners = new ArrayList<>(5);
+	private static List<IPropertyChangeListener> propertyChangeListeners = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	private final Hashtable<String, ImageDescriptor> imageDescriptors = new Hashtable<>(20);
 
 	private WorkspaceTeamStateProvider provider;
 
-	private final Map<String, TeamStateProvider> decoratedStateProviders = new HashMap<>();
+	private final Map<String, TeamStateProvider> decoratedStateProviders = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	// manages synchronize participants
 	private SynchronizeManager synchronizeManager;
@@ -118,7 +118,7 @@ public class TeamUIPlugin extends AbstractUIPlugin {
 	 * @param classAttribute the name of the attribute carrying the class
 	 * @return the extension object
 	 */
-	public static Object createExtension(final IConfigurationElement element, final String classAttribute) throws CoreException {
+	public static Object createExtension(final IConfigurationElement element, final String classAttribute) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// If plugin has been loaded create extension.
 		// Otherwise, show busy cursor then create extension.
 		Bundle bundle = Platform.getBundle(element.getNamespaceIdentifier());
@@ -169,7 +169,7 @@ public class TeamUIPlugin extends AbstractUIPlugin {
 	/**
 	 * Initializes the preferences for this plugin if necessary.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void initializeDefaultPluginPreferences() {
 		IPreferenceStore store = getPreferenceStore();
 		store.setDefault(IPreferenceIds.SYNCVIEW_VIEW_SYNCINFO_IN_LABEL, false);
@@ -243,7 +243,7 @@ public class TeamUIPlugin extends AbstractUIPlugin {
 		StreamMergerDelegate.start();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void stop(BundleContext context) throws Exception {
 		try {
 			// unregister debug options listener
@@ -259,7 +259,7 @@ public class TeamUIPlugin extends AbstractUIPlugin {
 		if (provider != null) {
 			provider.dispose();
 		}
-		for (TeamStateProvider teamStateProvider : decoratedStateProviders.values()) {
+		for (TeamStateProvider teamStateProvider : decoratedStateProviders.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			SubscriberTeamStateProvider sdsp = (SubscriberTeamStateProvider) teamStateProvider;
 			sdsp.dispose();
 		}
@@ -286,7 +286,7 @@ public class TeamUIPlugin extends AbstractUIPlugin {
 	 * @param event the property change event object
 	 */
 	public static void broadcastPropertyChange(PropertyChangeEvent event) {
-		for (IPropertyChangeListener listener : propertyChangeListeners) {
+		for (IPropertyChangeListener listener : propertyChangeListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			listener.propertyChange(event);
 		}
 	}
@@ -365,7 +365,7 @@ public class TeamUIPlugin extends AbstractUIPlugin {
 	 * variable has been set. See the comment on the getPlugin() method
 	 * for a description of why this is required.
 	 */
-	private void initializeImages(TeamUIPlugin plugin) {
+	private void initializeImages(TeamUIPlugin plugin) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Overlays
 
 		privateCreateImageDescriptor(ISharedImages.IMG_DIRTY_OVR, FILE_DIRTY_OVR);
@@ -414,7 +414,7 @@ public class TeamUIPlugin extends AbstractUIPlugin {
 	}
 
 	private URL getImageUrl(String relative) {
-		return FileLocator.find(Platform.getBundle(PLUGIN_ID), IPath.fromOSString(ICON_PATH + relative), null);
+		return FileLocator.find(Platform.getBundle(PLUGIN_ID), IPath.fromOSString(ICON_PATH + relative), null); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**

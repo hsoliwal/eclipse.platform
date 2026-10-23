@@ -48,7 +48,7 @@ public abstract class AbstractAntEditorPreferencePage extends PreferencePage imp
 	protected List<IStatus> fStatusList;
 	private boolean fInitialized = false;
 
-	private final Map<Button, String> fCheckBoxes = new HashMap<>();
+	private final Map<Button, String> fCheckBoxes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	private final SelectionListener fCheckBoxListener = new SelectionListener() {
 		@Override
 		public void widgetDefaultSelected(SelectionEvent e) {
@@ -62,16 +62,16 @@ public abstract class AbstractAntEditorPreferencePage extends PreferencePage imp
 		}
 	};
 
-	private final Map<Text, String> fTextFields = new HashMap<>();
-	private final ModifyListener fTextFieldListener = e -> {
+	private final Map<Text, String> fTextFields = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	private final ModifyListener fTextFieldListener = e -> { //FLLDCIM: MARK — T02  LAMBDA
 		if (fInitialized) {
 			Text text = (Text) e.widget;
 			fOverlayStore.setValue(fTextFields.get(text), text.getText());
 		}
 	};
 
-	private final Map<Text, String[]> fNumberFields = new HashMap<>();
-	private final ModifyListener fNumberFieldListener = e -> {
+	private final Map<Text, String[]> fNumberFields = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	private final ModifyListener fNumberFieldListener = e -> { //FLLDCIM: MARK — T02  LAMBDA
 		if (fInitialized) {
 			numberFieldChanged((Text) e.widget);
 		}
@@ -101,11 +101,11 @@ public abstract class AbstractAntEditorPreferencePage extends PreferencePage imp
 	protected void initializeFields() {
 		Map<Button, String> checkBoxes = getCheckBoxes();
 		Map<Text, String> textFields = getTextFields();
-		for (Button b : checkBoxes.keySet()) {
+		for (Button b : checkBoxes.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String key = checkBoxes.get(b);
 			b.setSelection(getOverlayStore().getBoolean(key));
 		}
-		for (Text t : textFields.keySet()) {
+		for (Text t : textFields.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String key = textFields.get(t);
 			t.setText(getOverlayStore().getString(key));
 		}
@@ -168,14 +168,14 @@ public abstract class AbstractAntEditorPreferencePage extends PreferencePage imp
 		gd.horizontalIndent = indentation;
 		gd.horizontalSpan = 2;
 		checkBox.setLayoutData(gd);
-		checkBox.addSelectionListener(fCheckBoxListener);
+		checkBox.addSelectionListener(fCheckBoxListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 
 		getCheckBoxes().put(checkBox, key);
 
 		return checkBox;
 	}
 
-	protected Text addTextField(Composite composite, String labelText, String key, int textLimit, int indentation, String[] errorMessages) {
+	protected Text addTextField(Composite composite, String labelText, String key, int textLimit, int indentation, String[] errorMessages) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Font font = composite.getFont();
 
 		Label label = new Label(composite, SWT.NONE);
@@ -194,9 +194,9 @@ public abstract class AbstractAntEditorPreferencePage extends PreferencePage imp
 		getTextFields().put(textControl, key);
 		if (errorMessages != null) {
 			getNumberFields().put(textControl, errorMessages);
-			textControl.addModifyListener(fNumberFieldListener);
+			textControl.addModifyListener(fNumberFieldListener); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 		} else {
-			textControl.addModifyListener(fTextFieldListener);
+			textControl.addModifyListener(fTextFieldListener); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 		}
 
 		return textControl;
@@ -229,9 +229,9 @@ public abstract class AbstractAntEditorPreferencePage extends PreferencePage imp
 		return status;
 	}
 
-	protected void updateStatus(IStatus status) {
+	protected void updateStatus(IStatus status) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!status.matches(IStatus.ERROR)) {
-			for (Text text : getNumberFields().keySet()) {
+			for (Text text : getNumberFields().keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IStatus s = validatePositiveNumber(text.getText(), getNumberFields().get(text));
 				status = s.getSeverity() > status.getSeverity() ? s : status;
 			}
@@ -239,7 +239,7 @@ public abstract class AbstractAntEditorPreferencePage extends PreferencePage imp
 
 		List<IStatus> statusList = getStatusList();
 		if (statusList != null) {
-			List<IStatus> temp = new ArrayList<>(statusList.size() + 1);
+			List<IStatus> temp = new ArrayList<>(statusList.size() + 1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			temp.add(status);
 			temp.addAll(statusList);
 			status = getMostSevere(temp);
@@ -257,7 +257,7 @@ public abstract class AbstractAntEditorPreferencePage extends PreferencePage imp
 	 */
 	private IStatus getMostSevere(List<IStatus> statusList) {
 		IStatus max = null;
-		for (IStatus curr : statusList) {
+		for (IStatus curr : statusList) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (curr.matches(IStatus.ERROR)) {
 				return curr;
 			}
@@ -271,7 +271,7 @@ public abstract class AbstractAntEditorPreferencePage extends PreferencePage imp
 	/*
 	 * Applies the status to the status line of a dialog page.
 	 */
-	private void applyToStatusLine(DialogPage page, IStatus status) {
+	private void applyToStatusLine(DialogPage page, IStatus status) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String message = status.getMessage();
 		switch (status.getSeverity()) {
 			case IStatus.OK:
@@ -300,7 +300,7 @@ public abstract class AbstractAntEditorPreferencePage extends PreferencePage imp
 	 * Returns an array of size 2: - first element is of type <code>Label</code> - second element is of type <code>Text</code> Use
 	 * <code>getLabelControl</code> and <code>getTextControl</code> to get the 2 controls.
 	 */
-	protected Control[] addLabelledTextField(Composite composite, String label, String key, int textLimit, int indentation, String[] errorMessages) {
+	protected Control[] addLabelledTextField(Composite composite, String label, String key, int textLimit, int indentation, String[] errorMessages) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Label labelControl = new Label(composite, SWT.NONE);
 		labelControl.setText(label);
 		labelControl.setFont(composite.getFont());
@@ -321,9 +321,9 @@ public abstract class AbstractAntEditorPreferencePage extends PreferencePage imp
 		fTextFields.put(textControl, key);
 		if (errorMessages != null) {
 			fNumberFields.put(textControl, errorMessages);
-			textControl.addModifyListener(fNumberFieldListener);
+			textControl.addModifyListener(fNumberFieldListener); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 		} else {
-			textControl.addModifyListener(fTextFieldListener);
+			textControl.addModifyListener(fTextFieldListener); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 		}
 
 		return new Control[] { labelControl, textControl };
@@ -332,11 +332,11 @@ public abstract class AbstractAntEditorPreferencePage extends PreferencePage imp
 	protected String loadPreviewContentFromFile(String filename) {
 		String line;
 		String separator = System.lineSeparator();
-		StringBuilder buffer = new StringBuilder(512);
+		StringBuilder buffer = new StringBuilder(512); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(getClass().getResourceAsStream(filename)))) {
-			while ((line = reader.readLine()) != null) {
-				buffer.append(line);
-				buffer.append(separator);
+			while ((line = reader.readLine()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				buffer.append(line); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				buffer.append(separator); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 		catch (IOException io) {

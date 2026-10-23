@@ -69,17 +69,17 @@ public class PR_1GEAB3C_Test {
 	 * Ensure that we get ADDED and OPEN in the delta when we create and open
 	 * a project in a workspace runnable.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_1GEAB3C() throws CoreException {
 		verifier.reset();
 		final IProject project = getWorkspace().getRoot().getProject("MyAddedAndOpenedProject");
 		IFile prefs = project.getFolder(EclipsePreferences.DEFAULT_PREFERENCES_DIRNAME)
-				.getFile(ResourcesPlugin.PI_RESOURCES + "." + EclipsePreferences.PREFS_FILE_EXTENSION);
+				.getFile(ResourcesPlugin.PI_RESOURCES + "." + EclipsePreferences.PREFS_FILE_EXTENSION); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		verifier.addExpectedChange(project, IResourceDelta.ADDED, IResourceDelta.OPEN);
 		verifier.addExpectedChange(project.getFile(IProjectDescription.DESCRIPTION_FILE_NAME), IResourceDelta.ADDED, 0);
 		verifier.addExpectedChange(new IResource[] { prefs.getParent() }, IResourceDelta.ADDED, 0);
 		verifier.addExpectedChange(new IResource[] { prefs }, IResourceDelta.ADDED, 0);
-		IWorkspaceRunnable body = monitor -> {
+		IWorkspaceRunnable body = monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 			monitor.beginTask("Creating and deleting", 100);
 			try {
 				project.create(SubMonitor.convert(monitor, 50));

@@ -97,7 +97,7 @@ public class ContentDescriptionManager implements IManager, IRegistryChangeListe
 			return FAMILY_DESCRIPTION_CACHE_FLUSH.equals(family);
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public IStatus runInWorkspace(final IProgressMonitor monitor) {
 			if (monitor.isCanceled()) {
 				return Status.CANCEL_STATUS;
@@ -147,7 +147,7 @@ public class ContentDescriptionManager implements IManager, IRegistryChangeListe
 		 */
 		void flush(IProject project) {
 			if (Policy.DEBUG_CONTENT_TYPE_CACHE) {
-				Policy.debug("Scheduling flushing of content type cache for " //$NON-NLS-1$
+				Policy.debug("Scheduling flushing of content type cache for " //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						+ (project == null ? IPath.ROOT : project.getFullPath()));
 			}
 			synchronized (toFlush) {
@@ -231,7 +231,7 @@ public class ContentDescriptionManager implements IManager, IRegistryChangeListe
 	private static final QualifiedName CACHE_STATE = new QualifiedName(ResourcesPlugin.PI_RESOURCES, "contentCacheState"); //$NON-NLS-1$
 	private static final QualifiedName CACHE_TIMESTAMP = new QualifiedName(ResourcesPlugin.PI_RESOURCES, "contentCacheTimestamp"); //$NON-NLS-1$\
 
-	public static final String FAMILY_DESCRIPTION_CACHE_FLUSH = ResourcesPlugin.PI_RESOURCES + ".contentDescriptionCacheFamily"; //$NON-NLS-1$
+	public static final String FAMILY_DESCRIPTION_CACHE_FLUSH = ResourcesPlugin.PI_RESOURCES + ".contentDescriptionCacheFamily"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	//possible values for the CACHE_STATE property
 	public static final byte EMPTY_CACHE = 1;
@@ -265,12 +265,12 @@ public class ContentDescriptionManager implements IManager, IRegistryChangeListe
 	@Override
 	public void contentTypeChanged(ContentTypeChangeEvent event) {
 		if (Policy.DEBUG_CONTENT_TYPE) {
-			Policy.debug("Content type settings changed for " + event.getContentType()); //$NON-NLS-1$
+			Policy.debug("Content type settings changed for " + event.getContentType()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		invalidateCache(true, null);
 	}
 
-	synchronized void doFlushCache(final IProgressMonitor monitor, Set<IPath> toClean) throws CoreException {
+	synchronized void doFlushCache(final IProgressMonitor monitor, Set<IPath> toClean) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// nothing to be done if no information cached
 		if (getCacheState() != INVALID_CACHE && getCacheState() != ABOUT_TO_FLUSH) {
 			if (Policy.DEBUG_CONTENT_TYPE_CACHE) {
@@ -289,8 +289,8 @@ public class ContentDescriptionManager implements IManager, IRegistryChangeListe
 			} else {
 				subMonitor.setWorkRemaining(toClean.size());
 				// flush a project at a time
-				for (IPath element : toClean) {
-					subMonitor.subTask("Clear content flags for project '" + element.lastSegment() + "'"); //$NON-NLS-1$ //$NON-NLS-2$
+				for (IPath element : toClean) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					subMonitor.subTask("Clear content flags for project '" + element.lastSegment() + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					clearContentFlags(element, subMonitor.split(1));
 				}
 			}
@@ -305,10 +305,10 @@ public class ContentDescriptionManager implements IManager, IRegistryChangeListe
 	/**
 	 * Clears the content related flags for every file under the given root.
 	 */
-	private void clearContentFlags(IPath root, final IProgressMonitor monitor) {
+	private void clearContentFlags(IPath root, final IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		long flushStart = System.currentTimeMillis();
 		if (Policy.DEBUG_CONTENT_TYPE_CACHE) {
-			Policy.debug("Flushing content type cache for " + root); //$NON-NLS-1$
+			Policy.debug("Flushing content type cache for " + root); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		// discard content type related flags for all files in the tree
 		IElementContentVisitor visitor = (unused, requestor, elementContents) -> {
@@ -331,12 +331,12 @@ public class ContentDescriptionManager implements IManager, IRegistryChangeListe
 		};
 		new ElementTreeIterator(workspace.getElementTree(), root).iterate(visitor);
 		if (Policy.DEBUG_CONTENT_TYPE_CACHE) {
-			Policy.debug("Content type cache for " + root + " flushed in " + (System.currentTimeMillis() - flushStart) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Policy.debug("Content type cache for " + root + " flushed in " + (System.currentTimeMillis() - flushStart) + " ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
 	/** Public so tests can examine it. */
-	public byte getCacheState() {
+	public byte getCacheState() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (cacheState != 0) {
 			// we have read/set it before, no need to read property
 			return cacheState;
@@ -371,7 +371,7 @@ public class ContentDescriptionManager implements IManager, IRegistryChangeListe
 	 * @param inSync boolean flag which indicates if cache can be trusted. If false false don't trust the cache
 	 * @return IContentDescription for the file
 	 */
-	public IContentDescription getDescriptionFor(File file, ResourceInfo info, boolean inSync) throws CoreException {
+	public IContentDescription getDescriptionFor(File file, ResourceInfo info, boolean inSync) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (ProjectContentTypes.usesContentTypePreferences(file.getFullPath().segment(0))) {
 			// caching for project containing project specific settings is not supported
 			return readDescription(file);
@@ -466,7 +466,7 @@ public class ContentDescriptionManager implements IManager, IRegistryChangeListe
 	 * @param flush whether the cached information should be flushed
 	 * @see #doFlushCache(IProgressMonitor, Set)
 	 */
-	public synchronized void invalidateCache(boolean flush, IProject project) {
+	public synchronized void invalidateCache(boolean flush, IProject project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (getCacheState() == EMPTY_CACHE) {
 			// cache has not been touched, nothing to do
 			return;
@@ -478,7 +478,7 @@ public class ContentDescriptionManager implements IManager, IRegistryChangeListe
 			Policy.log(e.getStatus());
 		}
 		if (Policy.DEBUG_CONTENT_TYPE_CACHE) {
-			Policy.debug("Invalidated cache for " + (project == null ? IPath.ROOT : project.getFullPath())); //$NON-NLS-1$
+			Policy.debug("Invalidated cache for " + (project == null ? IPath.ROOT : project.getFullPath())); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		if (flush) {
 			try {
@@ -493,7 +493,7 @@ public class ContentDescriptionManager implements IManager, IRegistryChangeListe
 		}
 	}
 
-	private static String getCurrentPlatformState() {
+	private static String getCurrentPlatformState() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourcesPlugin plugin = ResourcesPlugin.getPlugin();
 		if (plugin == null) {
 			return ""; //$NON-NLS-1$
@@ -503,7 +503,7 @@ public class ContentDescriptionManager implements IManager, IRegistryChangeListe
 			return ""; //$NON-NLS-1$
 		}
 		String ID = Arrays.stream(bundleContext.getBundles())
-				.map(bundle -> String.format("%d %s %s", bundle.getBundleId(), bundle.getSymbolicName(), //$NON-NLS-1$
+				.map(bundle -> String.format("%d %s %s", bundle.getBundleId(), bundle.getSymbolicName(), //$NON-NLS-1$ //FLLDCIM: MARK — M11 FORMAT_PRECOMPUTE CALL
 						bundle.getVersion()))
 				.sorted().collect(Collectors.joining(System.lineSeparator()));
 		try {
@@ -528,9 +528,9 @@ public class ContentDescriptionManager implements IManager, IRegistryChangeListe
 	/**
 	 * Tries to obtain a content description for the given file.
 	 */
-	private IContentDescription readDescription(File file) throws CoreException {
+	private IContentDescription readDescription(File file) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (Policy.DEBUG_CONTENT_TYPE) {
-			Policy.debug("reading contents of " + file); //$NON-NLS-1$
+			Policy.debug("reading contents of " + file); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		// tries to obtain a description for this file contents
 		try (
@@ -584,7 +584,7 @@ public class ContentDescriptionManager implements IManager, IRegistryChangeListe
 		cacheState = newCacheState;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void shutdown(IProgressMonitor monitor) throws CoreException {
 		if (getCacheState() != INVALID_CACHE) {
 			workspace.getRoot().setPersistentProperty(CACHE_TIMESTAMP, getCurrentPlatformState());
@@ -604,7 +604,7 @@ public class ContentDescriptionManager implements IManager, IRegistryChangeListe
 		projectContentTypes = null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void startup(IProgressMonitor monitor) throws CoreException {
 		projectContentTypes = new ProjectContentTypes(workspace);
 		getCacheState();
@@ -627,7 +627,7 @@ public class ContentDescriptionManager implements IManager, IRegistryChangeListe
 
 	public void projectPreferencesChanged(IProject project) {
 		if (Policy.DEBUG_CONTENT_TYPE) {
-			Policy.debug("Project preferences changed for " + project); //$NON-NLS-1$
+			Policy.debug("Project preferences changed for " + project); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		projectContentTypes.contentTypePreferencesChanged(project);
 	}

@@ -157,7 +157,7 @@ public class FileSystemMainPage extends WizardPage {
 	 * @return the history with the new entry appended
 	 */
 	protected String[] addToHistory(String[] history, String newEntry) {
-		ArrayList<String> l = new ArrayList<>(Arrays.asList(history));
+		ArrayList<String> l = new ArrayList<>(Arrays.asList(history)); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		addToHistory(l, newEntry);
 		String[] r = new String[l.size()];
 		l.toArray(r);
@@ -200,7 +200,7 @@ public class FileSystemMainPage extends WizardPage {
 	private static final String STORE_LOCATION =
 			"ExamplesFSWizardMainPage.STORE_LOCATION";//$NON-NLS-1$
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createControl(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -215,7 +215,7 @@ public class FileSystemMainPage extends WizardPage {
 
 		locationCombo = createEditableCombo(composite);
 		locationCombo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		locationCombo.addListener(SWT.Modify, e -> {
+		locationCombo.addListener(SWT.Modify, e -> { //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 			location = ((Combo)e.widget).getText();
 			FileSystemMainPage.this.validateFields();
 		});
@@ -226,7 +226,7 @@ public class FileSystemMainPage extends WizardPage {
 		Button browse = new Button(composite, SWT.NULL);
 		browse.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_END));
 		browse.setText(Policy.bind("FileSystemMainPage.browseDir")); //$NON-NLS-1$
-		browse.addListener(SWT.Selection, unused -> {
+		browse.addListener(SWT.Selection, unused -> { //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 			DirectoryDialog d = new DirectoryDialog(getShell());
 			String directory = d.open();
 			if(directory!=null) {
@@ -254,7 +254,7 @@ public class FileSystemMainPage extends WizardPage {
 		if (settings != null) {
 			String[] locations = settings.getArray(STORE_LOCATION);
 			if (locations != null) {
-				for (String location2 : locations) {
+				for (String location2 : locations) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					locationCombo.add(location2);
 				}
 				locationCombo.select(0);
@@ -287,7 +287,7 @@ public class FileSystemMainPage extends WizardPage {
 			return;
 		}
 		File file = new File(location);
-		if(!file.exists() || !file.isDirectory()) {
+		if(!file.exists() || !file.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			setErrorMessage(Policy.bind("FileSystemMainPage.notValidLocation")); //$NON-NLS-1$
 			setPageComplete(false);
 			return;

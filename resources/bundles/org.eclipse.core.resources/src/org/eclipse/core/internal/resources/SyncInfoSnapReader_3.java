@@ -30,7 +30,7 @@ public class SyncInfoSnapReader_3 extends SyncInfoSnapReader {
 	private ObjectMap<QualifiedName, Object> internalReadSyncInfo(DataInputStream input) throws IOException {
 		int size = input.readInt();
 		ObjectMap<QualifiedName, Object> map = new ObjectMap<>(size);
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// read the qualified name
 			String qualifier = input.readUTF();
 			String local = input.readUTF();

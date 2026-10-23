@@ -54,7 +54,7 @@ public class MarkerWriter {
 		Object[] result = new Object[2];
 		boolean[] isPersistent = new boolean[markers.length];
 		int count = 0;
-		for (int i = 0; i < markers.length; i++) {
+		for (int i = 0; i < markers.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			MarkerInfo info = (MarkerInfo) markers[i];
 			if (manager.isPersistent(info)) {
 				isPersistent[i] = true;
@@ -89,7 +89,7 @@ public class MarkerWriter {
 	 * CREATION_TIME -> long
 	 * }</pre>
 	 */
-	public void save(ResourceInfo info, IPathRequestor requestor, DataOutputStream output, List<String> writtenTypes) throws IOException {
+	public void save(ResourceInfo info, IPathRequestor requestor, DataOutputStream output, List<String> writtenTypes) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// phantom resources don't have markers
 		if (info.isSet(ICoreConstants.M_PHANTOM)) {
 			return;
@@ -113,7 +113,7 @@ public class MarkerWriter {
 		boolean[] isPersistent = (boolean[]) result[1];
 		output.writeUTF(requestor.requestPath().toString());
 		output.writeInt(count);
-		for (int i = 0; i < elements.length; i++) {
+		for (int i = 0; i < elements.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isPersistent[i]) {
 				write((MarkerInfo) elements[i], output, writtenTypes);
 			}
@@ -145,7 +145,7 @@ public class MarkerWriter {
 	 * CREATION_TIME -> long
 	 * }</pre>
 	 */
-	public void snap(ResourceInfo info, IPathRequestor requestor, DataOutputStream output) throws IOException {
+	public void snap(ResourceInfo info, IPathRequestor requestor, DataOutputStream output) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// phantom resources don't have markers
 		if (info.isSet(ICoreConstants.M_PHANTOM)) {
 			return;
@@ -168,8 +168,8 @@ public class MarkerWriter {
 		// always write out the count...even if its zero. this will help
 		// use pick up marker deletions from our snapshot.
 		output.writeInt(count);
-		List<String> writtenTypes = new ArrayList<>();
-		for (int i = 0; i < elements.length; i++) {
+		List<String> writtenTypes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (int i = 0; i < elements.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isPersistent[i]) {
 				write((MarkerInfo) elements[i], output, writtenTypes);
 			}
@@ -180,9 +180,9 @@ public class MarkerWriter {
 	/*
 	 * Write out the given marker attributes to the given output stream.
 	 */
-	private void write(MarkerAttributeMap markerAttributeMap, DataOutputStream output) throws IOException {
+	private void write(MarkerAttributeMap markerAttributeMap, DataOutputStream output) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		output.writeShort(markerAttributeMap.size());
-		for (Map.Entry<String, Object> e : markerAttributeMap.entrySet()) {
+		for (Map.Entry<String, Object> e : markerAttributeMap.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String key = e.getKey();
 			output.writeUTF(key);
 			Object value = e.getValue();
@@ -207,7 +207,7 @@ public class MarkerWriter {
 		}
 	}
 
-	private void write(MarkerInfo info, DataOutputStream output, List<String> writtenTypes) throws IOException {
+	private void write(MarkerInfo info, DataOutputStream output, List<String> writtenTypes) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		output.writeLong(info.getId());
 		// if we have already written the type once, then write an integer
 		// constant to represent it instead to remove duplication

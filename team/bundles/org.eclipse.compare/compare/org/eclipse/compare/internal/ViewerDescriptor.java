@@ -38,7 +38,7 @@ public class ViewerDescriptor implements IViewerDescriptor {
 		fConfiguration= config;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Viewer createViewer(Viewer currentViewer, Composite parent, CompareConfiguration mp) {
 		if (currentViewer != null && currentViewer.getClass() == fViewerClass) {
 			//System.out.println("reused viewer: " + currentViewer.getClass().getName());
@@ -59,7 +59,7 @@ public class ViewerDescriptor implements IViewerDescriptor {
 			if (currentViewer != null) {
 				CompareHandlerService[] compareHandlerService = Adapters.adapt(currentViewer, CompareHandlerService[].class);
 				if (compareHandlerService != null) {
-					for (CompareHandlerService s : compareHandlerService) {
+					for (CompareHandlerService s : compareHandlerService) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						s.dispose();
 					}
 				}
@@ -90,32 +90,32 @@ public class ViewerDescriptor implements IViewerDescriptor {
 		return fConfiguration.getAttribute(CLASS_ATTRIBUTE);
 	}
 
-	@SuppressWarnings("nls")
+	@SuppressWarnings("nls") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("ViewerDescriptor [");
+		StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		sb.append("ViewerDescriptor ["); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		if (fViewerClass != null) {
-			sb.append("viewerClass=");
-			sb.append(fViewerClass);
-			sb.append(", ");
+			sb.append("viewerClass="); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(fViewerClass); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(", "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if (fViewerCreator != null) {
-			sb.append("viewerCreator=");
-			sb.append(fViewerCreator);
-			sb.append(", ");
+			sb.append("viewerCreator="); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(fViewerCreator); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(", "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		String viewerClass = getViewerClass();
 		if (viewerClass != null) {
-			sb.append("viewerClass=");
-			sb.append(viewerClass);
-			sb.append(", ");
+			sb.append("viewerClass="); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(viewerClass); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(", "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if (fConfiguration != null) {
-			sb.append("configuration=");
-			sb.append(fConfiguration);
+			sb.append("configuration="); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(fConfiguration); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		sb.append("]");
+		sb.append("]"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return sb.toString();
 	}
 

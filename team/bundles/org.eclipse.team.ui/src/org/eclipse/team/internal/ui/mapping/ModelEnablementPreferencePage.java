@@ -51,7 +51,7 @@ import org.eclipse.ui.PlatformUI;
 
 public class ModelEnablementPreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
-	private Set<ITeamContentProviderDescriptor> previosulyEnabled = new HashSet<>();
+	private Set<ITeamContentProviderDescriptor> previosulyEnabled = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	public ModelEnablementPreferencePage() {
 		setTitle(TeamUIMessages.ModelEnablementPreferencePage_0);
@@ -60,7 +60,7 @@ public class ModelEnablementPreferencePage extends PreferencePage implements IWo
 
 	private CheckboxTableViewer tableViewer;
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createContents(Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.NONE);
@@ -89,8 +89,8 @@ public class ModelEnablementPreferencePage extends PreferencePage implements IWo
 				return new Object[0];
 			}
 		});
-		tableViewer.setLabelProvider(new LabelProvider() {
-			Map<ITeamContentProviderDescriptor, Image> images = new HashMap<>();
+		tableViewer.setLabelProvider(new LabelProvider() { //FLLDCIM: MARK — T24 LABEL_DELTA CALL
+			Map<ITeamContentProviderDescriptor, Image> images = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			@Override
 			public String getText(Object element) {
 				if (element instanceof ITeamContentProviderDescriptor desc) {
@@ -131,7 +131,7 @@ public class ModelEnablementPreferencePage extends PreferencePage implements IWo
 			}
 			@Override
 			public void dispose() {
-				for (Image image : images.values()) {
+				for (Image image : images.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					image.dispose();
 				}
 				super.dispose();
@@ -150,7 +150,7 @@ public class ModelEnablementPreferencePage extends PreferencePage implements IWo
 				return super.compare(viewer, e1, e2);
 			}
 		});
-		tableViewer.setInput(TeamUI.getTeamContentProviderManager());
+		tableViewer.setInput(TeamUI.getTeamContentProviderManager()); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		updateChecks();
 		applyDialogFont(composite);
 
@@ -162,7 +162,7 @@ public class ModelEnablementPreferencePage extends PreferencePage implements IWo
 
 	private void updateChecks() {
 		ITeamContentProviderDescriptor[] descriptors = TeamUI.getTeamContentProviderManager().getDescriptors();
-		for (ITeamContentProviderDescriptor descriptor : descriptors) {
+		for (ITeamContentProviderDescriptor descriptor : descriptors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (descriptor.isEnabled()) {
 				previosulyEnabled.add(descriptor);
 			}
@@ -173,7 +173,7 @@ public class ModelEnablementPreferencePage extends PreferencePage implements IWo
 	@Override
 	public boolean performOk() {
 		Object[] checked = tableViewer.getCheckedElements();
-		Set<ITeamContentProviderDescriptor> nowEnabled = new HashSet<>();
+		Set<ITeamContentProviderDescriptor> nowEnabled = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		nowEnabled.addAll((Collection<? extends ITeamContentProviderDescriptor>) Arrays.asList(checked));
 		if (hasDescriptorEnablementChanged(checked)) {
 			TeamUI.getTeamContentProviderManager().setEnabledDescriptors(
@@ -185,9 +185,9 @@ public class ModelEnablementPreferencePage extends PreferencePage implements IWo
 
 	private boolean hasDescriptorEnablementChanged(Object[] checked) {
 		ITeamContentProviderDescriptor[] descriptors = TeamUI.getTeamContentProviderManager().getDescriptors();
-		for (ITeamContentProviderDescriptor descriptor : descriptors) {
+		for (ITeamContentProviderDescriptor descriptor : descriptors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			boolean enable = false;
-			for (Object c : checked) {
+			for (Object c : checked) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ITeamContentProviderDescriptor checkedDesc = (ITeamContentProviderDescriptor) c;
 				if (checkedDesc.getModelProviderId().equals(descriptor.getModelProviderId())) {
 					enable = true;

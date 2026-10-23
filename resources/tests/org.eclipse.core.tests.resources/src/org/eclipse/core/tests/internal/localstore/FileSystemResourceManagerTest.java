@@ -73,13 +73,13 @@ public class FileSystemResourceManagerTest implements ICoreConstants {
 		createInWorkspace(project);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug440110() throws Exception {
 		String projectName = createUniqueString();
 		IWorkspace workspace = getWorkspace();
 		project = workspace.getRoot().getProject(projectName);
 		IProjectDescription projectDescription = workspace.newProjectDescription(projectName);
-		projectDescription.setLocationURI(new URI(Bug440110FileSystem.SCHEME + "://" + projectName));
+		projectDescription.setLocationURI(new URI(Bug440110FileSystem.SCHEME + "://" + projectName)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		project.create(projectDescription, null);
 		project.open(null);
 		assertEquals(Bug440110FileSystem.SCHEME, project.getLocationURI().getScheme());
@@ -101,7 +101,7 @@ public class FileSystemResourceManagerTest implements ICoreConstants {
 		assertTrue(Bug440110FileSystem.hasFetchedFileTree());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testContainerFor() {
 		/* test null parameter */
 		assertThrows(RuntimeException.class, () -> getLocalManager().containerForLocation(null));
@@ -153,7 +153,7 @@ public class FileSystemResourceManagerTest implements ICoreConstants {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileFor() {
 		/* test null parameter */
 		assertThrows(RuntimeException.class, () -> getLocalManager().fileForLocation(null));
@@ -186,14 +186,14 @@ public class FileSystemResourceManagerTest implements ICoreConstants {
 		assertNull(testFile);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Deprecated // Explicitly tests deprecated API
 	public void testIsLocal() throws CoreException {
 		// create resources
 		IResource[] resources = buildResources(project, "/Folder1/", "/Folder1/File1", "/Folder1/Folder2/",
 				"/Folder1/Folder2/File2", "/Folder1/Folder2/Folder3/");
 		createInWorkspace(resources);
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			removeFromFileSystem(resource);
 		}
 
@@ -202,9 +202,9 @@ public class FileSystemResourceManagerTest implements ICoreConstants {
 
 		// test the depth parameter
 		final IFolder folder = project.getFolder("Folder1");
-		IWorkspaceRunnable operation = unused -> {
+		IWorkspaceRunnable operation = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			IResource[] members = folder.members();
-			for (IResource member : members) {
+			for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				((Resource) member).getResourceInfo(false, true).clear(M_LOCAL_EXISTS);
 			}
 		};
@@ -230,7 +230,7 @@ public class FileSystemResourceManagerTest implements ICoreConstants {
 		assertEquals(getWorkspace().getRoot().getLocation().append(project.getName()), location);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSynchronizeProject() throws Exception {
 		/* test DEPTH parameter */
 		/* DEPTH_ZERO */
@@ -270,7 +270,7 @@ public class FileSystemResourceManagerTest implements ICoreConstants {
 		getWorkspace().getRoot().getProject("inexistingProject").refreshLocal(IResource.DEPTH_INFINITE, null);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWriteFile() throws Exception {
 		IFile file = project.getFile("testWriteFile");
 		createInWorkspace(file);
@@ -356,7 +356,7 @@ public class FileSystemResourceManagerTest implements ICoreConstants {
 		removeFromWorkspace(project);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWriteFolder() throws Exception {
 		IFolder folder = project.getFolder("testWriteFolder");
 		createInWorkspace(folder);
@@ -375,7 +375,7 @@ public class FileSystemResourceManagerTest implements ICoreConstants {
 		createInFileSystem(folder);
 		/* force = true */
 		write(folder, true, null);
-		assertTrue(folder.getLocation().toFile().isDirectory());
+		assertTrue(folder.getLocation().toFile().isDirectory()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		/* force = false */
 		assertThrows(CoreException.class, () -> write(folder, false, null));
 		removeFromFileSystem(folder);
@@ -383,11 +383,11 @@ public class FileSystemResourceManagerTest implements ICoreConstants {
 		/* inexisting resource on destination */
 		/* force = true */
 		write(folder, true, null);
-		assertTrue(folder.getLocation().toFile().isDirectory());
+		assertTrue(folder.getLocation().toFile().isDirectory()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		removeFromFileSystem(folder);
 		/* force = false */
 		write(folder, false, null);
-		assertTrue(folder.getLocation().toFile().isDirectory());
+		assertTrue(folder.getLocation().toFile().isDirectory()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**
@@ -400,7 +400,7 @@ public class FileSystemResourceManagerTest implements ICoreConstants {
 		final IFileStore fileStore = ((Resource) project).getStore();
 		// create project and then delete from file system
 		// wrap in runnable to prevent snapshot from occurring in the middle.
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			removeFromFileSystem(project);
 			assertFalse(fileStore.isDirectory());
 			//write project in a runnable, otherwise tree will be locked
@@ -451,7 +451,7 @@ public class FileSystemResourceManagerTest implements ICoreConstants {
 		} catch (Throwable t) {
 			// Bug 541493: we see unlikely stack traces reported by JUnit here, log the
 			// exceptions in case JUnit filters stack frames
-			String errorMessage = "exception occurred during write of file: " + file;
+			String errorMessage = "exception occurred during write of file: " + file; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			IStatus errorStatus = new Status(IStatus.ERROR, ResourcesPlugin.PI_RESOURCES, errorMessage, t);
 			ResourcesPlugin.getPlugin().getLog().log(errorStatus);
 			throw t;
@@ -459,11 +459,11 @@ public class FileSystemResourceManagerTest implements ICoreConstants {
 	}
 
 	private void write(final IFolder folder, final boolean force, IProgressMonitor monitor) throws CoreException {
-		IWorkspaceRunnable operation = unused -> getLocalManager().write(folder, force, monitor);
+		IWorkspaceRunnable operation = unused -> getLocalManager().write(folder, force, monitor); //FLLDCIM: MARK — T09  LAMBDA
 		getWorkspace().run(operation, monitor);
 	}
 
-	static class WriteFileContents implements IWorkspaceRunnable {
+	static class WriteFileContents implements IWorkspaceRunnable { //FLLDCIM: MARK — T09  IMPLEMENTS
 		private final IFile file;
 		private final InputStream contents;
 		private final boolean force;
@@ -485,7 +485,7 @@ public class FileSystemResourceManagerTest implements ICoreConstants {
 			IFileStore store = ((Resource) file).getStore();
 			assertNotNull(store, "file store cannot be null");
 			IFileInfo info = store.fetchInfo();
-			assertNotNull(info, "file info cannot be null for file " + file);
+			assertNotNull(info, "file info cannot be null for file " + file); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			localManager.write(file, contents, info, flags, false, jobMonitor);
 		}
 	}

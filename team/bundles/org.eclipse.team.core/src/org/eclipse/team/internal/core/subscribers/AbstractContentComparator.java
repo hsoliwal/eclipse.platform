@@ -73,7 +73,7 @@ public abstract class AbstractContentComparator {
 	abstract protected boolean contentsEqual(IProgressMonitor monitor, InputStream is1, InputStream is2,
 			boolean ignoreWhitespace);
 
-	private InputStream getContents(Object resource, IProgressMonitor monitor)
+	private InputStream getContents(Object resource, IProgressMonitor monitor) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws TeamException {
 		try {
 			if (resource instanceof IFile) {

@@ -84,7 +84,7 @@ public class ObjectMap<K, V> implements Map<K, V>, IStringPoolParticipant {
 		if (elements == null || count == 0) {
 			return false;
 		}
-		for (int i = 0; i < elements.length; i = i + 2) {
+		for (int i = 0; i < elements.length; i = i + 2) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (elements[i] != null && elements[i].equals(key)) {
 				return true;
 			}
@@ -100,7 +100,7 @@ public class ObjectMap<K, V> implements Map<K, V>, IStringPoolParticipant {
 		if (elements == null || count == 0) {
 			return false;
 		}
-		for (int i = 1; i < elements.length; i = i + 2) {
+		for (int i = 1; i < elements.length; i = i + 2) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (elements[i] != null && elements[i].equals(value)) {
 				return true;
 			}
@@ -122,7 +122,7 @@ public class ObjectMap<K, V> implements Map<K, V>, IStringPoolParticipant {
 	/**
 	 * See Object#equals
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean equals(Object o) {
 		if (!(o instanceof Map)) {
 			return false;
@@ -139,7 +139,7 @@ public class ObjectMap<K, V> implements Map<K, V>, IStringPoolParticipant {
 		}
 
 		//values for each key must be equal
-		for (int i = 0; i < elements.length; i = i + 2) {
+		for (int i = 0; i < elements.length; i = i + 2) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (elements[i] != null && (!elements[i + 1].equals(other.get(elements[i])))) {
 				return false;
 			}
@@ -155,7 +155,7 @@ public class ObjectMap<K, V> implements Map<K, V>, IStringPoolParticipant {
 		if (elements == null || count == 0) {
 			return null;
 		}
-		for (int i = 0; i < elements.length; i = i + 2) {
+		for (int i = 0; i < elements.length; i = i + 2) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (elements[i] != null && elements[i].equals(key)) {
 				return (V) elements[i + 1];
 			}
@@ -179,7 +179,7 @@ public class ObjectMap<K, V> implements Map<K, V>, IStringPoolParticipant {
 	@Override
 	public int hashCode() {
 		int hash = 0;
-		for (int i = 0; i < elements.length; i = i + 2) {
+		for (int i = 0; i < elements.length; i = i + 2) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (elements[i] != null) {
 				hash += elements[i].hashCode();
 			}
@@ -203,8 +203,8 @@ public class ObjectMap<K, V> implements Map<K, V>, IStringPoolParticipant {
 	 */
 	@Override
 	public Set<K> keySet() {
-		Set<K> result = new HashSet<>(size());
-		for (int i = 0; i < elements.length; i = i + 2) {
+		Set<K> result = new HashSet<>(size()); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (int i = 0; i < elements.length; i = i + 2) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (elements[i] != null) {
 				result.add((K) elements[i]);
 			}
@@ -215,7 +215,7 @@ public class ObjectMap<K, V> implements Map<K, V>, IStringPoolParticipant {
 	/**
 	 * @see Map#put(java.lang.Object, java.lang.Object)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public V put(K key, V value) {
 		if (key == null) {
 			throw new NullPointerException();
@@ -237,7 +237,7 @@ public class ObjectMap<K, V> implements Map<K, V>, IStringPoolParticipant {
 
 		int emptyIndex = -1;
 		// replace existing value if it exists
-		for (int i = 0; i < elements.length; i += 2) {
+		for (int i = 0; i < elements.length; i += 2) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (elements[i] != null) {
 				if (elements[i].equals(key)) {
 					Object oldValue = elements[i + 1];
@@ -271,7 +271,7 @@ public class ObjectMap<K, V> implements Map<K, V>, IStringPoolParticipant {
 	 */
 	@Override
 	public void putAll(Map<? extends K, ? extends V> map) {
-		for (Map.Entry<? extends K, ? extends V> e : map.entrySet()) {
+		for (Map.Entry<? extends K, ? extends V> e : map.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			put(e.getKey(), e.getValue());
 		}
 	}
@@ -284,7 +284,7 @@ public class ObjectMap<K, V> implements Map<K, V>, IStringPoolParticipant {
 		if (elements == null || count == 0) {
 			return null;
 		}
-		for (int i = 0; i < elements.length; i = i + 2) {
+		for (int i = 0; i < elements.length; i = i + 2) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (elements[i] != null && elements[i].equals(key)) {
 				elements[i] = null;
 				Object result = elements[i + 1];
@@ -314,7 +314,7 @@ public class ObjectMap<K, V> implements Map<K, V>, IStringPoolParticipant {
 		if (array == null) {
 			return;
 		}
-		for (int i = 0; i < array.length; i++) {
+		for (int i = 0; i < array.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object o = array[i];
 			if (o instanceof String) {
 				array[i] = set.add((String) o);
@@ -329,8 +329,8 @@ public class ObjectMap<K, V> implements Map<K, V>, IStringPoolParticipant {
 	 * Creates a new hash map with the same contents as this map.
 	 */
 	private HashMap<K, V> toHashMap() {
-		HashMap<K, V> result = new HashMap<>(size());
-		for (int i = 0; i < elements.length; i = i + 2) {
+		HashMap<K, V> result = new HashMap<>(size()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (int i = 0; i < elements.length; i = i + 2) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (elements[i] != null) {
 				result.put((K) elements[i], (V) elements[i + 1]);
 			}
@@ -346,8 +346,8 @@ public class ObjectMap<K, V> implements Map<K, V>, IStringPoolParticipant {
 	 */
 	@Override
 	public Collection<V> values() {
-		Set<V> result = new HashSet<>(size());
-		for (int i = 1; i < elements.length; i = i + 2) {
+		Set<V> result = new HashSet<>(size()); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (int i = 1; i < elements.length; i = i + 2) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (elements[i] != null) {
 				result.add((V) elements[i]);
 			}

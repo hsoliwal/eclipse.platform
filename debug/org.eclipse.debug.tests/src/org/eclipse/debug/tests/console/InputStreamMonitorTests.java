@@ -45,7 +45,7 @@ public class InputStreamMonitorTests {
 	 * Simple test for input stream monitor. Write some bytes before starting
 	 * the monitor, some after and check if they are correctly transfered.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInputStreamMonitor() throws Exception {
 		InputStreamMonitor monitor = null;
 		try(PipedInputStream sysin = new PipedInputStream();
@@ -53,7 +53,7 @@ public class InputStreamMonitorTests {
 		) {
 			monitor = new InputStreamMonitor(outputFromSysin);
 			byte[] originalContent = new byte[100];
-			for (int i = 0; i < originalContent.length; i++) {
+			for (int i = 0; i < originalContent.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				originalContent[i] = (byte) (i % 255);
 			}
 			int half = originalContent.length / 2;
@@ -90,7 +90,7 @@ public class InputStreamMonitorTests {
 	 * Data written before {@link InputStreamMonitor#closeInputStream()} must reach
 	 * the stream before it is closed.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@SuppressWarnings("resource")
 	public void testCloseInputStreamWritesPendingData() throws Exception {
 		ByteArrayOutputStream written = new ByteArrayOutputStream();
@@ -125,7 +125,7 @@ public class InputStreamMonitorTests {
 			monitor.startMonitoring();
 			byte[] chunk = new byte[] { 1, 2, 3, 4 };
 			int chunks = 20;
-			for (int i = 0; i < chunks; i++) {
+			for (int i = 0; i < chunks; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				monitor.write(chunk, 0, chunk.length);
 			}
 			monitor.closeInputStream();
@@ -143,7 +143,7 @@ public class InputStreamMonitorTests {
 	 * {@link InputStreamMonitor#closeInputStream()} must still reach the stream
 	 * before it is closed.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCloseInputStreamBeforeStartWritesPendingData() throws Exception {
 		AtomicInteger numClosed = new AtomicInteger();
 		AtomicInteger bytesWrittenAtClose = new AtomicInteger(-1);
@@ -172,7 +172,7 @@ public class InputStreamMonitorTests {
 	/**
 	 * Test that passing <code>null</code> as charset does not raise exceptions.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNullCharset() throws Exception {
 		InputStreamMonitor monitor = null;
 		try (PipedInputStream sysin = new PipedInputStream(); OutputStream outputFromSysin = new PipedOutputStream(sysin);) {
@@ -196,7 +196,7 @@ public class InputStreamMonitorTests {
 	/**
 	 * Test different combinations of stream closing.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@SuppressWarnings("resource")
 	public void testClose() throws Exception {
 		String threadName = "MAGICtestClose";
@@ -207,7 +207,7 @@ public class InputStreamMonitorTests {
 		};
 		long alreadyLeakedThreads = getInputStreamMonitorThreads.get();
 		if (alreadyLeakedThreads > 0) {
-			ILog.of(TestsPlugin.class).warn("Test started with " + alreadyLeakedThreads + " leaked monitor threads.");
+			ILog.of(TestsPlugin.class).warn("Test started with " + alreadyLeakedThreads + " leaked monitor threads."); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		{

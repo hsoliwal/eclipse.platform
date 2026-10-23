@@ -129,9 +129,9 @@ public class AntModel implements IAntModel {
 	 */
 	private Stack<AntElementNode> fStillOpenElements = new Stack<>();
 
-	private Map<Task, AntTaskNode> fTaskToNode = new HashMap<>();
+	private Map<Task, AntTaskNode> fTaskToNode = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
-	private List<AntTaskNode> fTaskNodes = new ArrayList<>();
+	private List<AntTaskNode> fTaskNodes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	private final Object fDirtyLock = new Object();
 	private boolean fIsDirty = true;
@@ -145,7 +145,7 @@ public class AntModel implements IAntModel {
 
 	private IDocumentListener fListener;
 	private AntEditorMarkerUpdater fMarkerUpdater = null;
-	private List<AntElementNode> fNonStructuralNodes = new ArrayList<>(1);
+	private List<AntElementNode> fNonStructuralNodes = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	private final IPreferenceChangeListener fCoreListener = event -> {
 		if (IAntCoreConstants.PREFERENCE_CLASSPATH_CHANGED.equals(event.getKey())) {
@@ -210,7 +210,7 @@ public class AntModel implements IAntModel {
 		fHasTaskInfo = resolveTaskInfo;
 	}
 
-	private void init(IDocument document, IProblemRequestor problemRequestor, LocationProvider locationProvider) {
+	private void init(IDocument document, IProblemRequestor problemRequestor, LocationProvider locationProvider) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fDocument = document;
 		fProblemRequestor = problemRequestor;
 		fLocationProvider = locationProvider;
@@ -238,7 +238,7 @@ public class AntModel implements IAntModel {
 	 */
 	ProjectHelper getProjectHelper() {
 		Iterator<org.apache.tools.ant.ProjectHelper> helpers = ProjectHelperRepository.getInstance().getHelpers();
-		while (helpers.hasNext()) {
+		while (helpers.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			org.apache.tools.ant.ProjectHelper helper = helpers.next();
 			if (helper instanceof ProjectHelper) {
 				return (ProjectHelper) helper;
@@ -247,7 +247,7 @@ public class AntModel implements IAntModel {
 		return null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void dispose() {
 		synchronized (getLockObject()) {
 			if (fDocument != null && fListener != null) {
@@ -296,7 +296,7 @@ public class AntModel implements IAntModel {
 		fEncoding = null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void reconcile() {
 		synchronized (fDirtyLock) {
 			if (!fShouldReconcile || !fIsDirty) {
@@ -325,22 +325,22 @@ public class AntModel implements IAntModel {
 	private void reset() {
 		fCurrentTargetNode = null;
 		fStillOpenElements = new Stack<>();
-		fTaskToNode = new HashMap<>();
-		fTaskNodes = new ArrayList<>();
+		fTaskToNode = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		fTaskNodes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		fNodeBeingResolved = null;
 		fNodeBeingResolvedIndex = -1;
 		fLastNode = null;
 		fCurrentNodeIdentifiers = null;
 		fNamespacePrefixMappings = null;
 
-		fNonStructuralNodes = new ArrayList<>(1);
+		fNonStructuralNodes = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (fDefinersToText != null) {
-			fPreviousDefinersToText = new HashMap<>(fDefinersToText);
+			fPreviousDefinersToText = new HashMap<>(fDefinersToText); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			fDefinersToText = null;
 		}
 	}
 
-	private void parseDocument(IDocument input) {
+	private void parseDocument(IDocument input) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean parsed = true;
 		if (input.getLength() == 0) {
 			fProjectNode = null;
@@ -406,7 +406,7 @@ public class AntModel implements IAntModel {
 		}
 	}
 
-	private ProjectHelper prepareForFullParse(Project project, ClassLoader parsingClassLoader) {
+	private ProjectHelper prepareForFullParse(Project project, ClassLoader parsingClassLoader) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		initializeProject(project, parsingClassLoader);
 		// Ant's parsing facilities always works on a file, therefore we need
 		// to determine the actual location of the file. Though the file
@@ -428,8 +428,8 @@ public class AntModel implements IAntModel {
 
 	private void prepareForFullIncremental() {
 		fProjectNode.reset();
-		fTaskToNode = new HashMap<>();
-		fTaskNodes = new ArrayList<>();
+		fTaskToNode = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		fTaskNodes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	}
 
 	private void initializeProject(Project project, ClassLoader loader) {
@@ -447,7 +447,7 @@ public class AntModel implements IAntModel {
 
 	private void setTasks(Project project, ClassLoader loader) {
 		List<org.eclipse.ant.core.Task> tasks = AntCorePlugin.getPlugin().getPreferences().getTasks();
-		for (org.eclipse.ant.core.Task task : tasks) {
+		for (org.eclipse.ant.core.Task task : tasks) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			AntTypeDefinition def = new AntTypeDefinition();
 			def.setName(task.getTaskName());
 			def.setClassName(task.getClassName());
@@ -460,7 +460,7 @@ public class AntModel implements IAntModel {
 
 	private void setTypes(Project project, ClassLoader loader) {
 		List<Type> types = AntCorePlugin.getPlugin().getPreferences().getTypes();
-		for (Type type : types) {
+		for (Type type : types) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			AntTypeDefinition def = new AntTypeDefinition();
 			def.setName(type.getTypeName());
 			def.setClassName(type.getClassName());
@@ -477,13 +477,13 @@ public class AntModel implements IAntModel {
 		loadPropertyFiles(project);
 	}
 
-	private void setExtraProperties(Project project) {
+	private void setExtraProperties(Project project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fProperties != null) {
-			Pattern pattern = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$
+			Pattern pattern = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			IStringVariableManager manager = VariablesPlugin.getDefault().getStringVariableManager();
-			for (String name : fProperties.keySet()) {
+			for (String name : fProperties.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String value = fProperties.get(name);
-				if (!pattern.matcher(value).find()) {
+				if (!pattern.matcher(value).find()) { //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 					try {
 						value = manager.performStringSubstitution(value);
 					}
@@ -525,9 +525,9 @@ public class AntModel implements IAntModel {
 	}
 
 	private void setPropertiesFromFiles(Project project, List<Properties> allProperties) {
-		for (Properties props : allProperties) {
+		for (Properties props : allProperties) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Enumeration<?> propertyNames = props.propertyNames();
-			while (propertyNames.hasMoreElements()) {
+			while (propertyNames.hasMoreElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String name = (String) propertyNames.nextElement();
 				// do not override extra local properties with the global settings
 				if (project.getUserProperty(name) == null) {
@@ -559,7 +559,7 @@ public class AntModel implements IAntModel {
 	private void setGlobalProperties(Project project) {
 		List<Property> properties = AntCorePlugin.getPlugin().getPreferences().getProperties();
 		if (properties != null) {
-			for (Property property : properties) {
+			for (Property property : properties) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String value = property.getValue(true);
 				if (value != null) {
 					project.setUserProperty(property.getName(), value);
@@ -569,8 +569,8 @@ public class AntModel implements IAntModel {
 	}
 
 	private void resolveBuildfile() {
-		Collection<AntTaskNode> nodeCopy = new ArrayList<>(fTaskNodes);
-		for (AntTaskNode node : nodeCopy) {
+		Collection<AntTaskNode> nodeCopy = new ArrayList<>(fTaskNodes); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (AntTaskNode node : nodeCopy) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fNodeBeingResolved = node;
 			fNodeBeingResolvedIndex = -1;
 			if (node.configure(false)) {
@@ -586,7 +586,7 @@ public class AntModel implements IAntModel {
 	/**
 	 * Check that if a default target is specified it exists and that the target dependencies exist.
 	 */
-	private void checkTargets() {
+	private void checkTargets() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fProjectNode == null || doNotReportProblems()) {
 			return;
 		}
@@ -603,7 +603,7 @@ public class AntModel implements IAntModel {
 		}
 		List<IAntElement> children = fProjectNode.getChildNodes();
 		boolean checkCircularDependencies = true;
-		for (IAntElement node : children) {
+		for (IAntElement node : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IAntElement originalNode = node;
 			if (node instanceof AntTargetNode) {
 				if (checkCircularDependencies) {
@@ -632,7 +632,7 @@ public class AntModel implements IAntModel {
 		}
 	}
 
-	private boolean doNotReportProblems() {
+	private boolean doNotReportProblems() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fReportingProblemsCurrent) {
 			return fDoNotReportProblems;
 		}
@@ -647,7 +647,7 @@ public class AntModel implements IAntModel {
 		String buildFileNames = AntUIPlugin.getDefault().getCombinedPreferenceStore().getString(AntEditorPreferenceConstants.BUILDFILE_NAMES_TO_IGNORE);
 		if (buildFileNames.length() > 0) {
 			String editedFileName = getEditedFile().getName();
-			for (String fileName : AntUtil.parseString(buildFileNames, ",")) { //$NON-NLS-1$
+			for (String fileName : AntUtil.parseString(buildFileNames, ",")) { //$NON-NLS-1$ //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (fileName.trim().equals(editedFileName)) {
 					fDoNotReportProblems = true;
 					return fDoNotReportProblems;
@@ -661,7 +661,7 @@ public class AntModel implements IAntModel {
 	/**
 	 * method assumes sendor has checked whether to report problems
 	 */
-	private void checkCircularDependencies(IAntElement node) {
+	private void checkCircularDependencies(IAntElement node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Target target = ((AntTargetNode) node).getTarget();
 		String name = target.getName();
 		if (name == null) {
@@ -681,7 +681,7 @@ public class AntModel implements IAntModel {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void handleBuildException(BuildException e, AntElementNode node, int severity) {
 		try {
 			if (node != null) {
@@ -755,7 +755,7 @@ public class AntModel implements IAntModel {
 		if (doNotReportProblems()) {
 			return;
 		}
-		while (openElement != null) {
+		while (openElement != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			openElement.setProblemSeverity(severity);
 			openElement.setProblemMessage(message);
 			openElement = openElement.getParentNode();
@@ -767,7 +767,7 @@ public class AntModel implements IAntModel {
 		return fLocationProvider;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void addTarget(Target newTarget, int line, int column) {
 		AntTargetNode targetNode = AntTargetNode.newAntTargetNode(newTarget);
 		fProjectNode.addChildNode(targetNode);
@@ -795,7 +795,7 @@ public class AntModel implements IAntModel {
 		computeOffset(fProjectNode, line, column);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void addDTD(String name, int line, int column) {
 		AntDTDNode node = new AntDTDNode(name);
 		fStillOpenElements.push(node);
@@ -816,7 +816,7 @@ public class AntModel implements IAntModel {
 		fNonStructuralNodes.add(node);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void addTask(Task newTask, Task parentTask, Attributes attributes, int line, int column) {
 		if (!canGetTaskInfo()) {
 			// need to add top level tasks so imports are executed even when
@@ -861,12 +861,12 @@ public class AntModel implements IAntModel {
 	@Override
 	public void addEntity(String entityName, String entityPath) {
 		if (fEntityNameToPath == null) {
-			fEntityNameToPath = new HashMap<>();
+			fEntityNameToPath = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 		fEntityNameToPath.put(entityName, entityPath);
 	}
 
-	private AntTaskNode newTaskNode(Task newTask, Attributes attributes) {
+	private AntTaskNode newTaskNode(Task newTask, Attributes attributes) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		AntTaskNode newNode = null;
 		String taskName = newTask.getTaskName();
 		if (newTask instanceof UnknownElement) {
@@ -991,16 +991,16 @@ public class AntModel implements IAntModel {
 	}
 
 	private String generateLabel(String taskName, Attributes attributes, String attributeName) {
-		StringBuilder label = new StringBuilder(taskName);
+		StringBuilder label = new StringBuilder(taskName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		String srcFile = attributes.getValue(attributeName);
 		if (srcFile != null) {
-			label.append(' ');
-			label.append(srcFile);
+			label.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			label.append(srcFile); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return label.toString();
 	}
 
-	private void computeLength(AntElementNode element, int line, int column) {
+	private void computeLength(AntElementNode element, int line, int column) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (element.isExternal()) {
 			element.setExternalInfo(line, column);
 			return;
@@ -1011,9 +1011,9 @@ public class AntModel implements IAntModel {
 			if (column <= 0) {
 				column = getLastCharColumn(line);
 				String lineText = fDocument.get(fDocument.getLineOffset(line - 1), column);
-				StringBuilder searchString = new StringBuilder("</"); //$NON-NLS-1$
-				searchString.append(element.getName());
-				searchString.append('>');
+				StringBuilder searchString = new StringBuilder("</"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+				searchString.append(element.getName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				searchString.append('>'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				int index = lineText.indexOf(searchString.toString());
 				if (index == -1) {
 					index = lineText.indexOf("/>"); //$NON-NLS-1$
@@ -1038,7 +1038,7 @@ public class AntModel implements IAntModel {
 		}
 	}
 
-	private void computeOffset(AntElementNode element, int line, int column) {
+	private void computeOffset(AntElementNode element, int line, int column) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!canGetPositionInfo()) {
 			return;
 		}
@@ -1047,7 +1047,7 @@ public class AntModel implements IAntModel {
 			return;
 		}
 		try {
-			String prefix = "<" + element.getName(); //$NON-NLS-1$
+			String prefix = "<" + element.getName(); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			int offset = computeOffset(line, column, prefix);
 			element.setOffset(offset + 1);
 			element.setSelectionLength(element.getName().length());
@@ -1089,7 +1089,7 @@ public class AntModel implements IAntModel {
 
 	private int getNonWhitespaceOffset(int line, int column) throws BadLocationException {
 		int offset = fDocument.getLineOffset(line - 1) + column - 1;
-		while (Character.isWhitespace(fDocument.getChar(offset))) {
+		while (Character.isWhitespace(fDocument.getChar(offset))) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			offset++;
 		}
 		return offset;
@@ -1231,9 +1231,9 @@ public class AntModel implements IAntModel {
 
 	private AntElementNode createProblemElement(SAXParseException exception) {
 		int lineNumber = exception.getLineNumber();
-		StringBuilder message = new StringBuilder(exception.getMessage());
+		StringBuilder message = new StringBuilder(exception.getMessage()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		if (lineNumber != -1) {
-			message.append(AntModelMessages.AntModel_1 + lineNumber);
+			message.append(AntModelMessages.AntModel_1 + lineNumber); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 
 		AntElementNode errorNode = new AntElementNode(message.toString());
@@ -1254,7 +1254,7 @@ public class AntModel implements IAntModel {
 		computeEndLocationForErrorNode(element, line, startColumn);
 	}
 
-	private void computeEndLocationForErrorNode(IAntElement element, int line, int startColumn) {
+	private void computeEndLocationForErrorNode(IAntElement element, int line, int startColumn) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			if (line <= 0) {
 				line = 1;
@@ -1303,7 +1303,7 @@ public class AntModel implements IAntModel {
 		}
 	}
 
-	private void handleError(Exception exception, int severity) {
+	private void handleError(Exception exception, int severity) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IAntElement node = null;
 		if (fStillOpenElements.isEmpty()) {
 			if (exception instanceof SAXParseException) {
@@ -1345,7 +1345,7 @@ public class AntModel implements IAntModel {
 		notifyProblemRequestor(exception, node, severity);
 
 		if (node != null) {
-			while (node.getParentNode() != null) {
+			while (node.getParentNode() != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IAntElement parentNode = node.getParentNode();
 				if (parentNode.getLength() == -1) {
 					parentNode.setLength(node.getOffset() - parentNode.getOffset() + node.getLength());
@@ -1373,7 +1373,7 @@ public class AntModel implements IAntModel {
 			Iterator<String> itr = fEntityNameToPath.keySet().iterator();
 			String entityPath;
 			String name;
-			while (itr.hasNext()) {
+			while (itr.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				name = itr.next();
 				entityPath = fEntityNameToPath.get(name);
 				if (entityPath.equals(path)) {
@@ -1415,7 +1415,7 @@ public class AntModel implements IAntModel {
 		}
 		if (projectNode.hasChildren()) {
 			List<IAntElement> possibleTargets = projectNode.getChildNodes();
-			for (IAntElement node : possibleTargets) {
+			for (IAntElement node : possibleTargets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (node instanceof AntTargetNode targetNode) {
 					if (targetName.equalsIgnoreCase(targetNode.getTarget().getName())) {
 						return targetNode;
@@ -1456,7 +1456,7 @@ public class AntModel implements IAntModel {
 			return;
 		}
 		ComponentHelper helper = ComponentHelper.getComponentHelper(fProjectNode.getProject());
-		for (String key : fDefinerNodeIdentifierToDefinedTasks.keySet()) {
+		for (String key : fDefinerNodeIdentifierToDefinedTasks.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (fCurrentNodeIdentifiers.get(key) == null) {
 				removeDefinerTasks(key, helper.getAntTypeTable());
 			}
@@ -1472,7 +1472,7 @@ public class AntModel implements IAntModel {
 			return;
 		}
 		Iterator<String> iterator = tasks.iterator();
-		while (iterator.hasNext()) {
+		while (iterator.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			typeTable.remove(iterator.next());
 		}
 	}
@@ -1541,7 +1541,7 @@ public class AntModel implements IAntModel {
 	}
 
 	private IAntElement findPropertyNode(String text, List<IAntElement> children) {
-		for (IAntElement element : children) {
+		for (IAntElement element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element instanceof AntPropertyNode) {
 				if (((AntPropertyNode) element).getProperty(text) != null) {
 					return element;
@@ -1586,14 +1586,14 @@ public class AntModel implements IAntModel {
 		}
 	}
 
-	public AntElementNode getReferenceNode(String text) {
+	public AntElementNode getReferenceNode(String text) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Object reference = getReferenceObject(text);
 		if (reference == null) {
 			return null;
 		}
 
 		Set<Task> nodes = fTaskToNode.keySet();
-		for (Task task : nodes) {
+		for (Task task : nodes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Task tmptask = task;
 			if (tmptask instanceof UnknownElement element) {
 				RuntimeConfigurable wrapper = element.getWrapper();
@@ -1636,7 +1636,7 @@ public class AntModel implements IAntModel {
 	 * Only called if the AntModel is associated with an AntEditor
 	 */
 	public void install() {
-		fListener = new IDocumentListener() {
+		fListener = new IDocumentListener() { //FLLDCIM: MARK — T28  ANONYMOUS
 			@Override
 			public void documentAboutToBeChanged(DocumentEvent event) {
 				synchronized (fDirtyLock) {
@@ -1677,11 +1677,11 @@ public class AntModel implements IAntModel {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setDefiningTaskNodeText(AntDefiningTaskNode node) {
 		if (fDefinersToText == null) {
-			fDefinersToText = new HashMap<>();
-			fCurrentNodeIdentifiers = new HashMap<>();
+			fDefinersToText = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+			fCurrentNodeIdentifiers = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 
 		String nodeIdentifier = node.getIdentifier();
@@ -1696,7 +1696,7 @@ public class AntModel implements IAntModel {
 				// update the data structures for the new node as the offset may have changed.
 				List<String> tasks = fDefinerNodeIdentifierToDefinedTasks.get(nodeIdentifier);
 				if (tasks != null) {
-					for (String taskName : tasks) {
+					for (String taskName : tasks) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						fTaskNameToDefiningNode.put(taskName, node);
 					}
 				}
@@ -1717,10 +1717,10 @@ public class AntModel implements IAntModel {
 		}
 	}
 
-	protected void addDefinedTasks(List<String> newTasks, AntDefiningTaskNode node) {
+	protected void addDefinedTasks(List<String> newTasks, AntDefiningTaskNode node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fTaskNameToDefiningNode == null) {
-			fTaskNameToDefiningNode = new HashMap<>();
-			fDefinerNodeIdentifierToDefinedTasks = new HashMap<>();
+			fTaskNameToDefiningNode = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+			fDefinerNodeIdentifierToDefinedTasks = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 
 		String identifier = node.getIdentifier();
@@ -1731,7 +1731,7 @@ public class AntModel implements IAntModel {
 			fCurrentNodeIdentifiers.remove(identifier);
 		}
 		fDefinerNodeIdentifierToDefinedTasks.put(identifier, newTasks);
-		for (String name : newTasks) {
+		for (String name : newTasks) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fTaskNameToDefiningNode.put(name, node);
 		}
 	}
@@ -1768,10 +1768,10 @@ public class AntModel implements IAntModel {
 		if (fTaskNameToDefiningNode == null) {
 			return null;
 		}
-		for (AntDefiningTaskNode definingNode : fTaskNameToDefiningNode.values()) {
+		for (AntDefiningTaskNode definingNode : fTaskNameToDefiningNode.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			List<IAntElement> attributes = definingNode.getChildNodes();
 			if (attributes != null) {
-				for (IAntElement element : attributes) {
+				for (IAntElement element : attributes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (macroDefAttributeName.equals(element.getLabel())) {
 						return (AntTaskNode) element;
 					}
@@ -1794,7 +1794,7 @@ public class AntModel implements IAntModel {
 	@Override
 	public void addPrefixMapping(String prefix, String uri) {
 		if (fNamespacePrefixMappings == null) {
-			fNamespacePrefixMappings = new HashMap<>();
+			fNamespacePrefixMappings = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 		fNamespacePrefixMappings.put(prefix, uri);
 	}
@@ -1809,7 +1809,7 @@ public class AntModel implements IAntModel {
 	private String getUserPrefixMapping(String prefix) {
 		if (fNamespacePrefixMappings != null) {
 			Set<Entry<String, String>> entrySet = fNamespacePrefixMappings.entrySet();
-			for (Entry<String, String> entry : entrySet) {
+			for (Entry<String, String> entry : entrySet) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (entry.getValue().equals(prefix)) {
 					return entry.getKey();
 				}
@@ -1823,7 +1823,7 @@ public class AntModel implements IAntModel {
 	 *
 	 * @since 3.7
 	 */
-	void computeEncoding() {
+	void computeEncoding() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			IFile file = getFile();
 			if (file != null) {
@@ -1838,7 +1838,7 @@ public class AntModel implements IAntModel {
 		IPath path = getLocationProvider().getLocation();
 		if (path != null) {
 			File buildfile = path.toFile();
-			try (FileReader reader = new FileReader(buildfile)) {
+			try (FileReader reader = new FileReader(buildfile)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 				QualifiedName[] options = new QualifiedName[] { IContentDescription.CHARSET };
 				IContentDescription desc = Platform.getContentTypeManager().getDescriptionFor(reader, buildfile.getName(), options);
 				if (desc != null) {

@@ -72,7 +72,7 @@ public class FileUtil {
 		}
 		try {
 			final String pathString = path.toOSString();
-			final String canonicalPath = new java.io.File(pathString).getCanonicalPath();
+			final String canonicalPath = new java.io.File(pathString).getCanonicalPath(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			//only create a new path if necessary
 			if (canonicalPath.equals(pathString)) {
 				return path;
@@ -93,7 +93,7 @@ public class FileUtil {
 	 * This method is similar to java.nio.file.Path.toRealPath(LinkOption.NOFOLLOW_LINKS)
 	 * in Java 1.7.
 	 */
-	public static IPath realPath(IPath path) {
+	public static IPath realPath(IPath path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (path == null) {
 			return null;
 		}
@@ -107,7 +107,7 @@ public class FileUtil {
 			realPath = realPath.setDevice(device.toUpperCase());
 		}
 		IFileStore fileStore = null;
-		for (int i = 0; i < path.segmentCount(); i++) {
+		for (int i = 0; i < path.segmentCount(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final String segment = path.segment(i);
 			if (i == 0 && path.isUNC()) {
 				realPath = realPath.append(segment.toUpperCase());
@@ -116,7 +116,7 @@ public class FileUtil {
 				if (MACOSX) {
 					// IFileInfo.getName() may not return the real name of the file on Mac OS X.
 					// Obtain the real name of the file from a listing of its parent directory.
-					String[] names = realPath.toFile().list((unused, n) -> n.equalsIgnoreCase(segment));
+					String[] names = realPath.toFile().list((unused, n) -> n.equalsIgnoreCase(segment)); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					String realName;
 					if (names == null || names.length == 0) {
 						// The remainder of the path doesn't exist on the file system - copy from
@@ -219,7 +219,7 @@ public class FileUtil {
 	 * is false, this method only returns true if the locations are the same, or the first location
 	 * is a prefix of the second.  Returns false if the locations do not overlap
 	 */
-	private static boolean computeOverlap(URI location1, URI location2, boolean bothDirections) {
+	private static boolean computeOverlap(URI location1, URI location2, boolean bothDirections) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (location1.equals(location2)) {
 			return true;
 		}

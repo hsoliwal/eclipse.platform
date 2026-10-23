@@ -44,15 +44,15 @@ public class ImportProjectSetAction extends ActionDelegate implements IObjectAct
 
 	private IStructuredSelection fSelection;
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run(IAction action) {
 		final Shell shell= Display.getDefault().getActiveShell();
 		try {
-			new ProgressMonitorDialog(shell).run(true, true, new WorkspaceModifyOperation(null) {
+			new ProgressMonitorDialog(shell).run(true, true, new WorkspaceModifyOperation(null) { //FLLDCIM: MARK — T09  ANONYMOUS
 				@Override
 				protected void execute(IProgressMonitor monitor) throws CoreException, InvocationTargetException, InterruptedException {
 					Iterator iterator= fSelection.iterator();
-					while (iterator.hasNext()) {
+					while (iterator.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						IFile file = (IFile) iterator.next();
 						if (isRunInBackgroundPreferenceOn()) {
 							ImportProjectSetOperation op = new ImportProjectSetOperation(null, file.getLocation().toString(), new IWorkingSet[0]);

@@ -36,7 +36,7 @@ public class DisconnectAction extends PessimisticProviderAction {
 	 *
 	 * @see IActionDelegate#run(IAction)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run(IAction action) {
 		if (PessimisticFilesystemProviderPlugin.getInstance().isDebugging())
 			System.out.println("Disconnect");
@@ -44,22 +44,22 @@ public class DisconnectAction extends PessimisticProviderAction {
 		IResource[] resources= getSelectedResources();
 		if (resources == null || resources.length == 0)
 			return;
-		final Set<IProject> projects = new HashSet<>(resources.length);
-		for (IResource resource : resources) {
+		final Set<IProject> projects = new HashSet<>(resources.length); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() == IResource.PROJECT) {
 				projects.add(resource.getProject());
 			}
 		}
 		if (!projects.isEmpty()) {
-			IRunnableWithProgress runnable= monitor -> {
-				IWorkspaceRunnable runnable1= unused -> {
-					for (IProject project : projects) {
+			IRunnableWithProgress runnable= monitor -> { //FLLDCIM: MARK — T09  LAMBDA
+				IWorkspaceRunnable runnable1= unused -> { //FLLDCIM: MARK — T09  LAMBDA
+					for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						PessimisticFilesystemProvider provider= getProvider(project);
 						if (provider != null) {
 							try {
 								RepositoryProvider.unmap(project);
 							} catch (TeamException e1) {
-								PessimisticFilesystemProviderPlugin.getInstance().logError(e1, "Could not unmap " + project);
+								PessimisticFilesystemProviderPlugin.getInstance().logError(e1, "Could not unmap " + project); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							}
 						}
 					}

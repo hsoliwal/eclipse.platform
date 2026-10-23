@@ -59,7 +59,7 @@ public class DeleteVisitor implements IUnifiedTreeVisitor, ICoreConstants {
 	/**
 	 * Deletes a file from both the workspace resource tree and the file system.
 	 */
-	protected void delete(UnifiedTreeNode node, boolean shouldKeepHistory) {
+	protected void delete(UnifiedTreeNode node, boolean shouldKeepHistory) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Resource target = (Resource) node.getResource();
 		try {
 			final boolean deleteLocalFile = !target.isLinked() && node.existsInFileSystem();
@@ -110,7 +110,7 @@ public class DeleteVisitor implements IUnifiedTreeVisitor, ICoreConstants {
 		if (skipList == null) {
 			return false;
 		}
-		for (IResource target : skipList) {
+		for (IResource target : skipList) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isAncestor(resource, target)) {
 				return true;
 			}
@@ -118,7 +118,7 @@ public class DeleteVisitor implements IUnifiedTreeVisitor, ICoreConstants {
 		return false;
 	}
 
-	private void recursiveKeepHistory(IHistoryStore store, UnifiedTreeNode node) {
+	private void recursiveKeepHistory(IHistoryStore store, UnifiedTreeNode node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final IResource target = node.getResource();
 		//we don't delete linked content, so no need to keep history
 		if (target.isLinked() || target.isVirtual() || node.isSymbolicLink()) {
@@ -126,7 +126,7 @@ public class DeleteVisitor implements IUnifiedTreeVisitor, ICoreConstants {
 		}
 		if (node.isFolder()) {
 			monitor.subTask(NLS.bind(Messages.localstore_deleting, target.getFullPath()));
-			for (Iterator<UnifiedTreeNode> children = node.getChildren(); children.hasNext();) {
+			for (Iterator<UnifiedTreeNode> children = node.getChildren(); children.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				recursiveKeepHistory(store, children.next());
 			}
 		} else {
@@ -152,7 +152,7 @@ public class DeleteVisitor implements IUnifiedTreeVisitor, ICoreConstants {
 		if (skipList == null) {
 			return false;
 		}
-		for (Resource element : skipList) {
+		for (Resource element : skipList) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (equals(resource, element)) {
 				return true;
 			}

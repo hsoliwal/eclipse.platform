@@ -234,7 +234,7 @@ public class RefreshJobTest {
 	 * RefreshJob should use right rule to refresh resources, so it should wait with
 	 * refresh if
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectRule(TestInfo testInfo) throws Exception {
 		TestRefreshJob refreshJob = createAndReplaceDefaultJob();
 		IProject project = createProject(testInfo.getDisplayName());
@@ -273,7 +273,7 @@ public class RefreshJobTest {
 	}
 
 	// Disabled for now, is unstable
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Disabled("disabled for now, is unstable")
 	public void testUnrelatedRule(TestInfo testInfo) throws Exception {
 		TestRefreshJob refreshJob = createAndReplaceDefaultJob();
@@ -307,7 +307,7 @@ public class RefreshJobTest {
 		}
 	}
 
-	private void runtest(String name, int minDepth, int maxDepth, int directoriesCount, int filesCount,
+	private void runtest(String name, int minDepth, int maxDepth, int directoriesCount, int filesCount, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			int createDepth) throws Exception, CoreException {
 		try {
 			IProject project = createProject(name);
@@ -318,7 +318,7 @@ public class RefreshJobTest {
 			createDirectoriesViaFileIo(projectRoot.toFile().toPath(), directoriesCount, filesCount, createDepth,
 					result);
 			assertTrue(result.get() > 0, "Expect to generate some files");
-			System.out.println("\nTest " + name + " generated " + result + " files");
+			System.out.println("\nTest " + name + " generated " + result + " files"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 			project.open(null);
 			TestRefreshJob refreshJob = createAndReplaceDefaultJob();
@@ -336,7 +336,7 @@ public class RefreshJobTest {
 		assertEquals(maxDepth, refreshJob.maxDepth, "Unexpected max depth");
 	}
 
-	private void assertAllResourcesRefreshed(IProject project, TestRefreshJob refreshJob) throws Exception {
+	private void assertAllResourcesRefreshed(IProject project, TestRefreshJob refreshJob) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Set<IResource> resources = refreshJob.visitedResources;
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
 		Set<IResource> missing = new LinkedHashSet<>();
@@ -375,7 +375,7 @@ public class RefreshJobTest {
 		field.set(refreshManager, originalJob);
 	}
 
-	private void createDirectoriesViaFileIo(Path root, int directoriesCount, int filesCount, int createDepth,
+	private void createDirectoriesViaFileIo(Path root, int directoriesCount, int filesCount, int createDepth, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			AtomicInteger result)
 			throws Exception {
 		if (createDepth <= 0) {
@@ -384,20 +384,20 @@ public class RefreshJobTest {
 		if (directoriesCount <= 0) {
 			directoriesCount = 1;
 		}
-		List<Path> dirs = new ArrayList<>();
-		for (int i = 0; i < directoriesCount; i++) {
-			Path dir = Files.createDirectory(root.resolve("dir_" + i));
+		List<Path> dirs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (int i = 0; i < directoriesCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			Path dir = Files.createDirectory(root.resolve("dir_" + i)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			result.incrementAndGet();
 			dirs.add(dir);
-			for (int j = 0; j < filesCount; j++) {
-				Files.createFile(dir.resolve("file_" + j));
+			for (int j = 0; j < filesCount; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				Files.createFile(dir.resolve("file_" + j)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				result.incrementAndGet();
 			}
 		}
 		createDepth--;
 		directoriesCount--;
 		filesCount--;
-		for (Path dir : dirs) {
+		for (Path dir : dirs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			createDirectoriesViaFileIo(dir, directoriesCount, filesCount, createDepth, result);
 		}
 	}

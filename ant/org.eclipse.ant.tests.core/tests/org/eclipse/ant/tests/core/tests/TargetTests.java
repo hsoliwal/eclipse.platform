@@ -111,7 +111,7 @@ public class TargetTests extends AbstractAntTest {
 		run("TestForEcho.xml"); //$NON-NLS-1$
 		String message = AntTestChecker.getDefault().getMessages().get(0);
 		assertThat(message).as("Build file location should be logged as the first message").isNotNull() //$NON-NLS-1$
-				.endsWith("AntTests" + File.separator + "buildfiles" + File.separator + "TestForEcho.xml"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				.endsWith("AntTests" + File.separator + "buildfiles" + File.separator + "TestForEcho.xml"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertSuccessful();
 	}
 }

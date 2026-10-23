@@ -46,7 +46,7 @@ public class SaveContext implements ISaveContext {
 			getWorkspace().getSaveManager().setSaveNumber(pluginId, getSaveNumber());
 			fileTable.setLocation(getWorkspace().getMetaArea().getSafeTableLocationFor(pluginId));
 			fileTable.save();
-			oldLocation.toFile().delete();
+			oldLocation.toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 	}
 

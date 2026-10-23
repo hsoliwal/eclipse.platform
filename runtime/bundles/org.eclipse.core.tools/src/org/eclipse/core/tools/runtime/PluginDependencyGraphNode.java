@@ -30,8 +30,8 @@ import org.osgi.framework.Bundle;
 public class PluginDependencyGraphNode {
 
 	private Bundle descriptor = null;
-	private final Set<PluginDependencyGraphNode> children = new HashSet<>();
-	private final Set<PluginDependencyGraphNode> ancestors = new HashSet<>();
+	private final Set<PluginDependencyGraphNode> children = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<PluginDependencyGraphNode> ancestors = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	/**
 	 * Constructor for this class. Each node is associated with a plug-in so
@@ -69,8 +69,8 @@ public class PluginDependencyGraphNode {
 	 * Return a string representation of this object. It should be nicely formated
 	 * and include the list of children and ancestor nodes.
 	 */
-	public String toDeepString() {
-		StringBuilder buffer = new StringBuilder();
+	public String toDeepString() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 		// write ID
 		writeln(buffer, 0, NLS.bind(Messages.stats_pluginid, descriptor.getSymbolicName()));
@@ -80,7 +80,7 @@ public class PluginDependencyGraphNode {
 			writeln(buffer, 1, Messages.depend_noParentPlugins);
 		} else {
 			writeln(buffer, 1, Messages.depend_requiredBy);
-			for (PluginDependencyGraphNode ancestor : ancestors) {
+			for (PluginDependencyGraphNode ancestor : ancestors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				writeln(buffer, 2, ancestor.getId());
 			}
 		}
@@ -90,7 +90,7 @@ public class PluginDependencyGraphNode {
 			writeln(buffer, 1, Messages.depend_noChildrenPlugins);
 		} else {
 			writeln(buffer, 1, Messages.depend_requires);
-			for (PluginDependencyGraphNode child : children) {
+			for (PluginDependencyGraphNode child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				writeln(buffer, 2, child.getId());
 			}
 		}
@@ -102,11 +102,11 @@ public class PluginDependencyGraphNode {
 	 * text the given number of tabs.
 	 */
 	private void writeln(StringBuilder buffer, int indent, String text) {
-		for (int i = 0; i < indent; i++) {
-			buffer.append('\t');
+		for (int i = 0; i < indent; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			buffer.append('\t'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		buffer.append(text);
-		buffer.append('\n');
+		buffer.append(text); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append('\n'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
 	@Override
@@ -124,6 +124,6 @@ public class PluginDependencyGraphNode {
 
 	@Override
 	public String toString() {
-		return "PluginDependencyGraphNode(" + descriptor.getSymbolicName() + ')';
+		return "PluginDependencyGraphNode(" + descriptor.getSymbolicName() + ')'; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

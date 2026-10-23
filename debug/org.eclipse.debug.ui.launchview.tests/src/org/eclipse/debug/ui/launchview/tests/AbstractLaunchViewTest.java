@@ -48,7 +48,7 @@ public class AbstractLaunchViewTest {
 	 * Ensure the welcome screen is closed because in 4.x the debug perspective
 	 * opens a giant fast-view causing issues
 	 */
-	protected final void assertWelcomeScreenClosed() throws Exception {
+	protected final void assertWelcomeScreenClosed() throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!welcomeClosed && PlatformUI.isWorkbenchRunning()) {
 			final IWorkbench wb = PlatformUI.getWorkbench();
 			if (wb == null) {
@@ -60,7 +60,7 @@ public class AbstractLaunchViewTest {
 				return;
 			}
 
-			UIJob job = new UIJob("close welcome screen for debug test suite") {
+			UIJob job = new UIJob("close welcome screen for debug test suite") { //FLLDCIM: MARK — T09  ANONYMOUS
 				@Override
 				public IStatus runInUIThread(IProgressMonitor monitor) {
 					closeIntro(wb);

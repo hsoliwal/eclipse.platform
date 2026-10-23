@@ -54,7 +54,7 @@ public class SubscriberChangeSetManager extends ActiveChangeSetManager {
 	 */
 	private class EventHandler extends BackgroundEventHandler {
 
-		private final List<Event> dispatchEvents = new ArrayList<>();
+		private final List<Event> dispatchEvents = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		protected EventHandler(String jobName, String errorTitle) {
 			super(jobName, errorTitle);
@@ -69,7 +69,7 @@ public class SubscriberChangeSetManager extends ActiveChangeSetManager {
 			dispatchEvents.add(event);
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		protected boolean doDispatchEvents(IProgressMonitor monitor) throws TeamException {
 			if (dispatchEvents.isEmpty()) {
 				return false;
@@ -80,7 +80,7 @@ public class SubscriberChangeSetManager extends ActiveChangeSetManager {
 			ResourceDiffTree[] locked = null;
 			try {
 				locked = beginDispath();
-				for (Event event : dispatchEvents) {
+				for (Event event : dispatchEvents) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					switch (event.getType()) {
 					case RESOURCE_REMOVAL:
 						handleRemove(event.getResource());
@@ -112,11 +112,11 @@ public class SubscriberChangeSetManager extends ActiveChangeSetManager {
 		 * locked. If this method throws an exception then the client
 		 * can assume that no sets were locked
 		 */
-		private ResourceDiffTree[] beginDispath() {
+		private ResourceDiffTree[] beginDispath() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			ChangeSet[] sets = getSets();
-			List<ResourceDiffTree> lockedSets = new ArrayList<>();
+			List<ResourceDiffTree> lockedSets = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			try {
-				for (ChangeSet s : sets) {
+				for (ChangeSet s : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					ActiveChangeSet set = (ActiveChangeSet) s;
 					ResourceDiffTree tree = set.internalGetDiffTree();
 					lockedSets.add(tree);
@@ -125,7 +125,7 @@ public class SubscriberChangeSetManager extends ActiveChangeSetManager {
 				return lockedSets.toArray(new ResourceDiffTree[lockedSets.size()]);
 			} catch (RuntimeException e) {
 				try {
-					for (ResourceDiffTree tree : lockedSets) {
+					for (ResourceDiffTree tree : lockedSets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						try {
 							tree.endInput(null);
 						} catch (Throwable e1) {
@@ -139,13 +139,13 @@ public class SubscriberChangeSetManager extends ActiveChangeSetManager {
 			}
 		}
 
-		private void endDispatch(ResourceDiffTree[] locked, IProgressMonitor monitor) {
+		private void endDispatch(ResourceDiffTree[] locked, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			if (locked == null) {
 				// The begin failed so there's nothing to unlock
 				return;
 			}
 			monitor.beginTask(null, 100 * locked.length);
-			for (ResourceDiffTree tree : locked) {
+			for (ResourceDiffTree tree : locked) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					tree.endInput(Policy.subMonitorFor(monitor, 100));
 				} catch (RuntimeException e) {
@@ -169,7 +169,7 @@ public class SubscriberChangeSetManager extends ActiveChangeSetManager {
 		 */
 		private void handleRemove(IResource resource) {
 			ChangeSet[] sets = getSets();
-			for (ChangeSet set : sets) {
+			for (ChangeSet set : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// This will remove any descendants from the set and callback to
 				// resourcesChanged which will batch changes
 				if (!set.isEmpty()) {
@@ -184,7 +184,7 @@ public class SubscriberChangeSetManager extends ActiveChangeSetManager {
 		/*
 		 * Handle the change
 		 */
-		private void handleChange(IResource resource, int depth) throws CoreException {
+		private void handleChange(IResource resource, int depth) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IDiff diff = getDiff(resource);
 			if (isModified(diff)) {
 				ActiveChangeSet[] containingSets = getContainingSets(resource);
@@ -195,7 +195,7 @@ public class SubscriberChangeSetManager extends ActiveChangeSetManager {
 						getDefaultSet().add(diff);
 					}
 				} else {
-					for (ActiveChangeSet set : containingSets) {
+					for (ActiveChangeSet set : containingSets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						// Update the sync info in the set
 						set.add(diff);
 					}
@@ -205,16 +205,16 @@ public class SubscriberChangeSetManager extends ActiveChangeSetManager {
 			}
 			if (depth != IResource.DEPTH_ZERO) {
 				IResource[] members = getSubscriber().members(resource);
-				for (IResource member : members) {
+				for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					handleChange(member, depth == IResource.DEPTH_ONE ? IResource.DEPTH_ZERO : IResource.DEPTH_INFINITE);
 				}
 			}
 		}
 
 		private void removeFromAllSets(IResource resource) {
-			List<ChangeSet> toRemove = new ArrayList<>();
+			List<ChangeSet> toRemove = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			ChangeSet[] sets = getSets();
-			for (ChangeSet set : sets) {
+			for (ChangeSet set : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (set.contains(resource)) {
 					set.remove(resource);
 					if (set.isEmpty()) {
@@ -222,15 +222,15 @@ public class SubscriberChangeSetManager extends ActiveChangeSetManager {
 					}
 				}
 			}
-			for (ChangeSet set : toRemove) {
+			for (ChangeSet set : toRemove) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				remove(set);
 			}
 		}
 
 		private ActiveChangeSet[] getContainingSets(IResource resource) {
-			Set<ActiveChangeSet> result = new HashSet<>();
+			Set<ActiveChangeSet> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			ChangeSet[] sets = getSets();
-			for (ChangeSet set : sets) {
+			for (ChangeSet set : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (set.contains(resource)) {
 					result.add((ActiveChangeSet) set);
 				}
@@ -239,7 +239,7 @@ public class SubscriberChangeSetManager extends ActiveChangeSetManager {
 		}
 	}
 
-	private class ResourceCollector extends SubscriberResourceCollector {
+	private class ResourceCollector extends SubscriberResourceCollector { //FLLDCIM: MARK — T07  IMPLEMENTS
 
 		public ResourceCollector(Subscriber subscriber) {
 			super(subscriber);
@@ -278,7 +278,7 @@ public class SubscriberChangeSetManager extends ActiveChangeSetManager {
 
 	public boolean hasMembers(IResource resource) {
 		ChangeSet[] sets = getSets();
-		for (ChangeSet s : sets) {
+		for (ChangeSet s : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ActiveChangeSet set = (ActiveChangeSet) s;
 			if (set.getDiffTree().getChildren(resource.getFullPath()).length > 0) {
 				return true;
@@ -346,7 +346,7 @@ public class SubscriberChangeSetManager extends ActiveChangeSetManager {
 	public void waitUntilDone(IProgressMonitor monitor) {
 		monitor.worked(1);
 		// wait for the event handler to process changes.
-		while(handler.getEventHandlerJob().getState() != Job.NONE) {
+		while(handler.getEventHandlerJob().getState() != Job.NONE) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			monitor.worked(1);
 			try {
 				Thread.sleep(10);

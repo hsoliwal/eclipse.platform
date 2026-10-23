@@ -29,7 +29,7 @@ import org.eclipse.core.resources.IProject;
 public class ProjectSetSerializationContext {
 
 	private final String filename;
-	private final Map<String, Object> properties = new HashMap<>();
+	private final Map<String, Object> properties = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/**
 	 * Create a serialization context with no filename

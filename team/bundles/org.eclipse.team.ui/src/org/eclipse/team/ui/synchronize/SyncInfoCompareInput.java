@@ -59,7 +59,7 @@ import org.eclipse.ui.progress.UIJob;
  * @see SyncInfo
  * @since 3.0
  */
-public final class SyncInfoCompareInput extends SaveableCompareEditorInput implements IResourceChangeListener {
+public final class SyncInfoCompareInput extends SaveableCompareEditorInput implements IResourceChangeListener { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	private final MyDiffNode node;
 	private final String description;
@@ -155,13 +155,13 @@ public final class SyncInfoCompareInput extends SaveableCompareEditorInput imple
 	 * Note that until the compare editor inputs can be part of the compare editors lifecycle we
 	 * can't register as a listener because there is no dispose() method to remove the listener.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void resourceChanged(IResourceChangeEvent event) {
 		IResourceDelta delta = event.getDelta();
 		if (delta != null) {
 			IResourceDelta resourceDelta = delta.findMember(resource.getFullPath());
 			if (resourceDelta != null) {
-				UIJob job = new UIJob("") { //$NON-NLS-1$
+				UIJob job = new UIJob("") { //$NON-NLS-1$ //FLLDCIM: MARK — T09  ANONYMOUS
 					@Override
 					public IStatus runInUIThread(IProgressMonitor monitor) {
 						if (!isSaveNeeded()) {
@@ -176,7 +176,7 @@ public final class SyncInfoCompareInput extends SaveableCompareEditorInput imple
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected ICompareInput prepareCompareInput(IProgressMonitor monitor)
 			throws InvocationTargetException, InterruptedException {
 		// update the title now that the remote revision number as been fetched

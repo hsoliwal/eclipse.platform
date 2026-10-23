@@ -67,7 +67,7 @@ import org.eclipse.ui.views.contentoutline.ContentOutlinePage;
 /**
  * Content outline page for the Ant Editor.
  */
-public class AntEditorContentOutlinePage extends ContentOutlinePage implements IShowInSource, IAdaptable {
+public class AntEditorContentOutlinePage extends ContentOutlinePage implements IShowInSource, IAdaptable { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 	private static final int EXPAND_TO_LEVEL = 2;
 
@@ -94,9 +94,9 @@ public class AntEditorContentOutlinePage extends ContentOutlinePage implements I
 	/**
 	 * A viewer filter for the Ant Content Outline
 	 */
-	private class AntOutlineFilter extends ViewerFilter {
+	private class AntOutlineFilter extends ViewerFilter { //FLLDCIM: MARK — T23  IMPLEMENTS
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public boolean select(Viewer viewer, Object parentElement, Object element) {
 			if (element instanceof AntElementNode node) {
 				if (fFilterTopLevel && (node instanceof AntTaskNode && parentElement instanceof AntProjectNode)) {
@@ -161,7 +161,7 @@ public class AntEditorContentOutlinePage extends ContentOutlinePage implements I
 			AntUIPlugin.getDefault().getPreferenceStore().setValue(name, filter);
 		}
 		// filter has been changed
-		getTreeViewer().refresh();
+		getTreeViewer().refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 	}
 
 	/**
@@ -287,7 +287,7 @@ public class AntEditorContentOutlinePage extends ContentOutlinePage implements I
 	/**
 	 * Creates the control (outline view) for this page
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createControl(Composite parent) {
 		super.createControl(parent);
 
@@ -296,20 +296,20 @@ public class AntEditorContentOutlinePage extends ContentOutlinePage implements I
 		viewer.setContentProvider(new AntModelContentProvider());
 		setSort(fSort);
 
-		viewer.setLabelProvider(new AntModelLabelProvider());
-		viewer.addFilter(new AntOutlineFilter());
+		viewer.setLabelProvider(new AntModelLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
+		viewer.addFilter(new AntOutlineFilter()); //FLLDCIM: MARK — T23 FILTER_LANE CALL
 		if (fModel != null) {
 			setViewerInput(fModel);
 		}
 
 		MenuManager manager = new MenuManager("#PopUp"); //$NON-NLS-1$
 		manager.setRemoveAllWhenShown(true);
-		manager.addMenuListener(this::contextMenuAboutToShow);
+		manager.addMenuListener(this::contextMenuAboutToShow); //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 		fMenu = manager.createContextMenu(viewer.getTree());
 		viewer.getTree().setMenu(fMenu);
 
 		IPageSite site = getSite();
-		site.registerContextMenu(IAntUIConstants.PLUGIN_ID + ".antEditorOutline", manager, viewer); //$NON-NLS-1$
+		site.registerContextMenu(IAntUIConstants.PLUGIN_ID + ".antEditorOutline", manager, viewer); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		IToolBarManager tbm = site.getActionBars().getToolBarManager();
 		tbm.add(new ToggleSortAntOutlineAction(this));
@@ -323,12 +323,12 @@ public class AntEditorContentOutlinePage extends ContentOutlinePage implements I
 
 		fOpenWithMenu = new AntOpenWithMenu(this.getSite().getPage());
 
-		viewer.addPostSelectionChangedListener(event -> firePostSelectionChanged(event.getSelection()));
+		viewer.addPostSelectionChangedListener(event -> firePostSelectionChanged(event.getSelection())); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 
 		site.getActionBars().setGlobalActionHandler(ITextEditorActionDefinitionIds.TOGGLE_SHOW_SELECTED_ELEMENT_ONLY, fTogglePresentation);
 	}
 
-	private void setViewerInput(Object newInput) {
+	private void setViewerInput(Object newInput) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TreeViewer tree = getTreeViewer();
 		Object oldInput = tree.getInput();
 
@@ -345,7 +345,7 @@ public class AntEditorContentOutlinePage extends ContentOutlinePage implements I
 			fListener = null;
 		}
 
-		tree.setInput(newInput);
+		tree.setInput(newInput); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 
 		if (isAntModel) {
 			updateTreeExpansion();
@@ -362,10 +362,10 @@ public class AntEditorContentOutlinePage extends ContentOutlinePage implements I
 	private IAntModelListener createAntModelChangeListener() {
 		return event -> {
 			if (event.getModel() == fModel && !getControl().isDisposed()) {
-				getControl().getDisplay().asyncExec(() -> {
+				getControl().getDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 					Control ctrl = getControl();
 					if (ctrl != null && !ctrl.isDisposed()) {
-						getTreeViewer().refresh();
+						getTreeViewer().refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 						updateTreeExpansion();
 					}
 				});
@@ -394,7 +394,7 @@ public class AntEditorContentOutlinePage extends ContentOutlinePage implements I
 		SelectionChangedEvent event = new SelectionChangedEvent(this, selection);
 
 		// fire the event
-		for (ISelectionChangedListener iSelectionChangedListener : fPostSelectionChangedListeners) {
+		for (ISelectionChangedListener iSelectionChangedListener : fPostSelectionChangedListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			iSelectionChangedListener.selectionChanged(event);
 		}
 	}

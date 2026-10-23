@@ -39,7 +39,7 @@ public class AntProcess extends PlatformObject implements IProcess, IProgressMon
 		fLabel = label;
 		fLaunch = launch;
 		if (attributes == null) {
-			fAttributes = new HashMap<>();
+			fAttributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		} else {
 			fAttributes = attributes;
 		}

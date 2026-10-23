@@ -55,7 +55,7 @@ public class FileSystemHistory extends FileHistory {
 		return null;
 	}
 
-	public void refresh(IProgressMonitor monitor) {
+	public void refresh(IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			RepositoryProvider provider = RepositoryProvider.getProvider(file.getProject());
 			if (provider != null && provider instanceof FileSystemProvider) {
@@ -68,7 +68,7 @@ public class FileSystemHistory extends FileHistory {
 					IFileState[] states = file.getHistory(monitor);
 					revisions = new IFileRevision[states.length + 1];
 					int i = 0;
-					for (; i < states.length; i++) {
+					for (; i < states.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						revisions[i] = new LocalFileRevision(states[i]);
 					}
 					revisions[i] = new FileSystemFileRevision(javaFile);

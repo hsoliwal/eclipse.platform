@@ -67,9 +67,9 @@ public class XMLStructureCreator implements IStructureCreator {
 	public static final String ROOT_ID= "root"; //$NON-NLS-1$
 	public static final char SIGN_SEPARATOR= '>';//'.'
 	public static final char SIGN_ENCLOSING= '$';
-	public static final String SIGN_ELEMENT= SIGN_ENCLOSING + TYPE_ELEMENT + SIGN_ENCLOSING;
-	public static final String SIGN_TEXT= SIGN_ENCLOSING + TYPE_TEXT + SIGN_ENCLOSING;
-	public static final String SIGN_ATTRIBUTE= SIGN_ENCLOSING + TYPE_ATTRIBUTE + SIGN_ENCLOSING;
+	public static final String SIGN_ELEMENT= SIGN_ENCLOSING + TYPE_ELEMENT + SIGN_ENCLOSING; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String SIGN_TEXT= SIGN_ENCLOSING + TYPE_TEXT + SIGN_ENCLOSING; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String SIGN_ATTRIBUTE= SIGN_ENCLOSING + TYPE_ATTRIBUTE + SIGN_ENCLOSING; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	public static final String IDMAP_UNORDERED= XMLCompareMessages.XMLStructureCreator_idmap_unordered;
 	public static final char ID_SEPARATOR= '<';
@@ -128,7 +128,7 @@ public class XMLStructureCreator implements IStructureCreator {
 		}
 
 		/* Start element. */
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void startElement(String uri, String local, String raw, Attributes attrs) {
 			XMLNode currentElement;
 
@@ -136,14 +136,14 @@ public class XMLStructureCreator implements IStructureCreator {
 
 			if (XMLStructureCreator.DEBUG_MODE) {
 				if (locator != null && prevlocator != null) {
-					System.out.println("prevlocator: line " + prevlocator.getLineNumber() + "  column " + prevlocator.getColumnNumber() + "  id " + prevlocator.getPublicId()); //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$
-					System.out.println("locator: line " + locator.getLineNumber() + "  column " + locator.getColumnNumber() + "  id " + locator.getPublicId()); //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$
+					System.out.println("prevlocator: line " + prevlocator.getLineNumber() + "  column " + prevlocator.getColumnNumber() + "  id " + prevlocator.getPublicId()); //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+					System.out.println("locator: line " + locator.getLineNumber() + "  column " + locator.getColumnNumber() + "  id " + locator.getPublicId()); //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
 
 			try {
 				if (XMLStructureCreator.DEBUG_MODE)
-					System.out.println("Node where children field accessed: " + fcurrentParent.getId()); //$NON-NLS-1$
+					System.out.println("Node where children field accessed: " + fcurrentParent.getId()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				XMLChildren currentParent= (XMLChildren) fcurrentParent;
 				currentParent.children++;
 				String elementId;
@@ -151,25 +151,25 @@ public class XMLStructureCreator implements IStructureCreator {
 				IRegion r= fdoc.getLineInformation(prevlocator.getLineNumber() - 1);
 
 				String parentSig= fsignature;
-				fsignature= fsignature + raw + SIGN_SEPARATOR;
+				fsignature= fsignature + raw + SIGN_SEPARATOR; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 				if (isUseIdMap() && idMap.containsKey(fsignature)) {
 					String attrName= idMap.get(fsignature);
-					elementId= raw + Character.valueOf(ID_SEPARATOR) + attrs.getValue(attrName);
-					elementName= raw + " [" + attrName + "=" + attrs.getValue(attrName) + "]"; //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$
+					elementId= raw + Character.valueOf(ID_SEPARATOR) + attrs.getValue(attrName); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+					elementName= raw + " [" + attrName + "=" + attrs.getValue(attrName) + "]"; //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				} else {
 					if (!currentParent.childElements.containsKey(raw)) {
 						currentParent.childElements.put(raw, Integer.valueOf(1));
 					} else {
 						currentParent.childElements.put(raw, Integer.valueOf(currentParent.childElements.get(raw).intValue() + 1));
 					}
-					elementId= raw + Character.valueOf(ID_SEPARATOR) + "[" + currentParent.childElements.get(raw) + "]"; //$NON-NLS-2$ //$NON-NLS-1$
+					elementId= raw + Character.valueOf(ID_SEPARATOR) + "[" + currentParent.childElements.get(raw) + "]"; //$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					elementName= MessageFormat.format("{0} [{1}]", raw, currentParent.childElements.get(raw).toString()); //$NON-NLS-1$
 				}
 				int start= r.getOffset() + prevlocator.getColumnNumber() - 1;
 				if (start < 0)
 					start= 0;
-				currentElement= new XMLChildren(TYPE_ELEMENT, elementId, elementId, (fsignature + SIGN_ELEMENT), fdoc, start, 0);
+				currentElement= new XMLChildren(TYPE_ELEMENT, elementId, elementId, (fsignature + SIGN_ELEMENT), fdoc, start, 0); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				currentElement.setName(elementName);
 				if (isUseIdMap() && idMap.containsKey(fsignature))
 					currentElement.setUsesIDMAP(true);
@@ -180,13 +180,13 @@ public class XMLStructureCreator implements IStructureCreator {
 				currentElement.setParent(fcurrentParent);
 				fcurrentParent= currentElement;
 				if (XMLStructureCreator.DEBUG_MODE)
-					System.out.println("\nAdded Element " + raw + "  with offset " + r.getOffset()); //$NON-NLS-2$ //$NON-NLS-1$
+					System.out.println("\nAdded Element " + raw + "  with offset " + r.getOffset()); //$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				if (XMLStructureCreator.DEBUG_MODE)
-					System.out.println("fcurrentParent1: " + fcurrentParent.getId()); //$NON-NLS-1$
+					System.out.println("fcurrentParent1: " + fcurrentParent.getId()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 				if (attrs != null) {
 					if (XMLStructureCreator.DEBUG_MODE)
-						System.out.println("attrs != null, fcurrentParent is " + fcurrentParent.getId()); //$NON-NLS-1$
+						System.out.println("attrs != null, fcurrentParent is " + fcurrentParent.getId()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					//attrs = sortAttributes(attrs);
 					int len= attrs.getLength();
 					int element_lines_length_size;
@@ -198,10 +198,10 @@ public class XMLStructureCreator implements IStructureCreator {
 						element_lines_length= new int[element_lines_length_size];
 						column_offset= 0;
 						element_string= ""; //$NON-NLS-1$
-						for (int i_ell= 0; i_ell < element_lines_length.length; i_ell++) {
+						for (int i_ell= 0; i_ell < element_lines_length.length; i_ell++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							IRegion attr_r= fdoc.getLineInformation(i_ell + prevlocator.getLineNumber());
 							element_lines_length[i_ell]= fdoc.get(attr_r.getOffset(), attr_r.getLength()).length() + 1;
-							element_string= element_string + fdoc.get(attr_r.getOffset(), attr_r.getLength()) + " "; //$NON-NLS-1$
+							element_string= element_string + fdoc.get(attr_r.getOffset(), attr_r.getLength()) + " "; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						}
 					} else {
 						element_lines_length_size= locator.getLineNumber() - prevlocator.getLineNumber() + 1;
@@ -212,16 +212,16 @@ public class XMLStructureCreator implements IStructureCreator {
 						column_offset= prevlocator.getColumnNumber() - 1;
 						int first_line_relevant_offset= first_line.getOffset() + column_offset;
 						int first_line_relevant_length= first_line.getLength() - column_offset;
-						element_string= fdoc.get(first_line_relevant_offset, first_line_relevant_length) + " "; //$NON-NLS-1$
+						element_string= fdoc.get(first_line_relevant_offset, first_line_relevant_length) + " "; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						element_lines_length[0]= element_string.length();
-						for (int i_ell= 1; i_ell < element_lines_length.length; i_ell++) {
+						for (int i_ell= 1; i_ell < element_lines_length.length; i_ell++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							IRegion attr_r= fdoc.getLineInformation(i_ell + prevlocator.getLineNumber() - 1);
 							element_lines_length[i_ell]= fdoc.get(attr_r.getOffset(), attr_r.getLength()).length() + 1;
-							element_string= element_string + fdoc.get(attr_r.getOffset(), attr_r.getLength()) + " "; //$NON-NLS-1$
+							element_string= element_string + fdoc.get(attr_r.getOffset(), attr_r.getLength()) + " "; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						}
 					}
 
-					for (int i_attr= 0; i_attr < len; i_attr++) {
+					for (int i_attr= 0; i_attr < len; i_attr++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						String attr_name= attrs.getQName(i_attr);
 						String attr_value= attrs.getValue(i_attr);
 
@@ -233,7 +233,7 @@ public class XMLStructureCreator implements IStructureCreator {
 						int first_quotes= -1;
 						int second_quotes= -1;
 						int id_index= -1;
-						while (!found) {
+						while (!found) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							first_quotes= element_string.indexOf("\"", second_quotes + 1); //$NON-NLS-1$
 							second_quotes= element_string.indexOf("\"", first_quotes + 1); //$NON-NLS-1$
 							String value;
@@ -248,7 +248,7 @@ public class XMLStructureCreator implements IStructureCreator {
 								id_index= element_string.lastIndexOf(attr_name, first_quotes - 1);
 								boolean wrong= false;
 								boolean found_equal= false;
-								for (int i_char= id_index + attr_name.length(); i_char < first_quotes && !wrong; i_char++) {
+								for (int i_char= id_index + attr_name.length(); i_char < first_quotes && !wrong; i_char++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 									if (element_string.charAt(i_char) == '=')
 										if (!found_equal)
 											found_equal= true;
@@ -264,7 +264,7 @@ public class XMLStructureCreator implements IStructureCreator {
 						//id_index has one char missing for every line (the
 						// final cr)
 						int line_of_index= 0;
-						for (line_of_index= 0; id_index > element_lines_length[line_of_index] - 1; line_of_index++)
+						for (line_of_index= 0; id_index > element_lines_length[line_of_index] - 1; line_of_index++) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							id_index-= (element_lines_length[line_of_index]);
 						if (line_of_index == 0)
 							id_index+= column_offset;
@@ -275,7 +275,7 @@ public class XMLStructureCreator implements IStructureCreator {
 						//index at line line_of_index, line offset id_index
 						int line_of_end_of_value= 0;
 						int end_of_value_index= second_quotes;
-						for (line_of_end_of_value= 0; end_of_value_index > element_lines_length[line_of_end_of_value] - 1; line_of_end_of_value++)
+						for (line_of_end_of_value= 0; end_of_value_index > element_lines_length[line_of_end_of_value] - 1; line_of_end_of_value++) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							end_of_value_index-= (element_lines_length[line_of_end_of_value]);
 						if (line_of_end_of_value == 0)
 							end_of_value_index+= column_offset;
@@ -291,34 +291,34 @@ public class XMLStructureCreator implements IStructureCreator {
 						// fdoc.getLineInformation(line_of_value).getOffset()+value_index+attr_value.length()+1+(line_of_end_of_value-line_of_index)
 						// - attr_start_doc_offset;
 						int attr_length_doc_offset= fdoc.getLineInformation(line_of_end_of_value).getOffset() + end_of_value_index + 1 - attr_start_doc_offset;
-						currentElement= new XMLNode(TYPE_ATTRIBUTE, attr_name, attr_value, (fsignature + attr_name + SIGN_SEPARATOR + SIGN_ATTRIBUTE), fdoc, attr_start_doc_offset, attr_length_doc_offset);
+						currentElement= new XMLNode(TYPE_ATTRIBUTE, attr_name, attr_value, (fsignature + attr_name + SIGN_SEPARATOR + SIGN_ATTRIBUTE), fdoc, attr_start_doc_offset, attr_length_doc_offset); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						currentElement.setName(attr_name);
 						fcurrentParent.addChild(currentElement);
 						currentElement.setParent(fcurrentParent);
 						if (XMLStructureCreator.DEBUG_MODE)
-							System.out.println("added attribute " + currentElement.getId() + " with value >" + currentElement.getValue() + "<" + " to element " + fcurrentParent.getId() + " which has parent " + fcurrentParent.getParent().getId()); //$NON-NLS-5$ //$NON-NLS-4$ //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$
+							System.out.println("added attribute " + currentElement.getId() + " with value >" + currentElement.getValue() + "<" + " to element " + fcurrentParent.getId() + " which has parent " + fcurrentParent.getParent().getId()); //$NON-NLS-5$ //$NON-NLS-4$ //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 				}
 			} catch (BadLocationException ex) {
 				if (XMLStructureCreator.DEBUG_MODE)
-					System.out.println("BadLocationException in startElement(...) " + ex); //$NON-NLS-1$
-				currentElement= new XMLChildren(TYPE_ELEMENT, raw + "_(" + ((XMLChildren) fcurrentParent).children + ")", raw + "_(" + ((XMLChildren) fcurrentParent).children + ")", (fsignature + SIGN_ELEMENT), fdoc, 0, 0); //$NON-NLS-4$ //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$
+					System.out.println("BadLocationException in startElement(...) " + ex); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				currentElement= new XMLChildren(TYPE_ELEMENT, raw + "_(" + ((XMLChildren) fcurrentParent).children + ")", raw + "_(" + ((XMLChildren) fcurrentParent).children + ")", (fsignature + SIGN_ELEMENT), fdoc, 0, 0); //$NON-NLS-4$ //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			if (XMLStructureCreator.DEBUG_MODE)
-				System.out.println("At the end of startElement(...), fcurrentParent is " + fcurrentParent.getId()); //$NON-NLS-1$
+				System.out.println("At the end of startElement(...), fcurrentParent is " + fcurrentParent.getId()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			prevlocator= new LocatorImpl(locator);
 		}
 
 		/* Characters. */
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void characters(char ch[], int start, int length) {
 			if (!ignoreBodies) {
 				//			String chars = (new String(ch, start, length)).trim();
 				String chars= new String(ch, start, length);
 				if (XMLStructureCreator.DEBUG_MODE)
-					System.out.println("characters: >" + chars + "<"); //$NON-NLS-2$ //$NON-NLS-1$
+					System.out.println("characters: >" + chars + "<"); //$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				if (XMLStructureCreator.DEBUG_MODE)
-					System.out.println("Body Location: line " + locator.getLineNumber() + "  column " + locator.getColumnNumber()); //$NON-NLS-2$ //$NON-NLS-1$
+					System.out.println("Body Location: line " + locator.getLineNumber() + "  column " + locator.getColumnNumber()); //$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 				//if text contains only white space, it will be ignored.
 				if (!trimWhiteSpace(chars).isEmpty()) {
@@ -334,12 +334,12 @@ public class XMLStructureCreator implements IStructureCreator {
 						if (fRemoveWhiteSpace) {
 							body_value= removeWhiteSpace(body_value);
 						}
-						XMLNode bodynode= new XMLNode(TYPE_TEXT, "body_(" + fcurrentParent.bodies + ")", body_value, (fsignature + SIGN_TEXT), fdoc, offset, length); //$NON-NLS-2$ //$NON-NLS-1$
+						XMLNode bodynode= new XMLNode(TYPE_TEXT, "body_(" + fcurrentParent.bodies + ")", body_value, (fsignature + SIGN_TEXT), fdoc, offset, length); //$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						bodynode.setName(MessageFormat.format("{0} ({1})", XMLCompareMessages.XMLStructureCreator_body, Integer.toString(fcurrentParent.bodies)));  //$NON-NLS-1$
 						fcurrentParent.addChild(bodynode);
 						bodynode.setParent(fcurrentParent);
 						if (XMLStructureCreator.DEBUG_MODE)
-							System.out.println("Created body " + fcurrentParent.bodies //$NON-NLS-1$
+							System.out.println("Created body " + fcurrentParent.bodies //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 									+ " with offset " + offset + " and length " + length //$NON-NLS-2$ //$NON-NLS-1$
 									+ " with parent " + bodynode.getParent().getId()); //$NON-NLS-1$
 						//bodies as id attributes
@@ -349,20 +349,20 @@ public class XMLStructureCreator implements IStructureCreator {
 						if (isUseIdMap() && fcurrentParent.bodies == 1 && idMap.containsKey(popsig)) {
 							String pid= fcurrentParent.getId();//id of parent
 							String pelementname= pid.substring(0, pid.indexOf("<")); //name of parent element //$NON-NLS-1$
-							if (idMap.get(popsig).equals(ID_TYPE_BODY + pelementname)) {
+							if (idMap.get(popsig).equals(ID_TYPE_BODY + pelementname)) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 								XMLNode pop= fcurrentParent.getParent();
 								String popid= pop.getId();
 								String popelementname= popid.substring(0, popid.indexOf("<")); //$NON-NLS-1$
-								pop.setId(popelementname + "<" + body_value); //$NON-NLS-1$
-								pop.setOrigId(popelementname + "<" + body_value); //$NON-NLS-1$
+								pop.setId(popelementname + "<" + body_value); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+								pop.setOrigId(popelementname + "<" + body_value); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 								pop.setName(MessageFormat.format("{0} [{1}={2}]", popelementname, pelementname, body_value)); //$NON-NLS-1$
 								pop.setUsesIDMAP(true);
 							}
 						}
 					} catch (BadLocationException ex) {
 						if (XMLStructureCreator.DEBUG_MODE)
-							System.out.println("BadLocationException in characters(...) " + ex); //$NON-NLS-1$
-						fcurrentParent.addChild(new XMLNode(TYPE_TEXT, "body_(" + fcurrentParent.bodies + ")", new String(ch, start, length), (fsignature + SIGN_TEXT), fdoc, 0, 0)); //$NON-NLS-2$ //$NON-NLS-1$
+							System.out.println("BadLocationException in characters(...) " + ex); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+						fcurrentParent.addChild(new XMLNode(TYPE_TEXT, "body_(" + fcurrentParent.bodies + ")", new String(ch, start, length), (fsignature + SIGN_TEXT), fdoc, 0, 0)); //$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 				}
 			}
@@ -380,15 +380,15 @@ public class XMLStructureCreator implements IStructureCreator {
 		}
 
 		/* End element. */
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void endElement(String uri, String local, String raw) {
 			if (XMLStructureCreator.DEBUG_MODE)
-				System.out.println("\nExiting element " + fcurrentParent.getId()); //$NON-NLS-1$
+				System.out.println("\nExiting element " + fcurrentParent.getId()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 			if (XMLStructureCreator.DEBUG_MODE)
-				System.out.println("prevlocator: line " + prevlocator.getLineNumber() + "  column " + prevlocator.getColumnNumber() + "  id " + prevlocator.getPublicId()); //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$
+				System.out.println("prevlocator: line " + prevlocator.getLineNumber() + "  column " + prevlocator.getColumnNumber() + "  id " + prevlocator.getPublicId()); //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			if (XMLStructureCreator.DEBUG_MODE)
-				System.out.println("locator: line " + locator.getLineNumber() + "  column " + locator.getColumnNumber() + "  id " + locator.getPublicId()); //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$
+				System.out.println("locator: line " + locator.getLineNumber() + "  column " + locator.getColumnNumber() + "  id " + locator.getPublicId()); //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 			if (fcurrentParent.getParent() != null) {
 				try {
@@ -399,9 +399,9 @@ public class XMLStructureCreator implements IStructureCreator {
 					// start tag to end tag
 					fcurrentParent.setLength(elem_length);
 					if (XMLStructureCreator.DEBUG_MODE)
-						System.out.println("pos.getOffset: " + pos.getOffset() + "  elem_length: " + elem_length); //$NON-NLS-2$ //$NON-NLS-1$
+						System.out.println("pos.getOffset: " + pos.getOffset() + "  elem_length: " + elem_length); //$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					if (XMLStructureCreator.DEBUG_MODE)
-						System.out.println("fdoc.get(pos.getOffset()+elem_length-5,4): >" + fdoc.get(pos.getOffset() + elem_length - 5, 4) + "<"); //$NON-NLS-2$ //$NON-NLS-1$
+						System.out.println("fdoc.get(pos.getOffset()+elem_length-5,4): >" + fdoc.get(pos.getOffset() + elem_length - 5, 4) + "<"); //$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					//if (fdoc.get(pos.getOffset()+elem_length-2,1) != ">")
 					// elem_length-=1;
 					try {
@@ -411,13 +411,13 @@ public class XMLStructureCreator implements IStructureCreator {
 							fcurrentParent.setValue(fdoc.get(pos.getOffset(), elem_length - 1));
 						} catch (BadLocationException ex2) {
 							if (XMLStructureCreator.DEBUG_MODE) {
-								System.out.println("BadLocationException in endElement(...) while attempting fcurrentParent.setValue(...): " + ex); //$NON-NLS-1$
-								System.out.println("Attempt to correct BadLocationException failed: " + ex2); //$NON-NLS-1$
+								System.out.println("BadLocationException in endElement(...) while attempting fcurrentParent.setValue(...): " + ex); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+								System.out.println("Attempt to correct BadLocationException failed: " + ex2); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							}
 						}
 					}
 					if (XMLStructureCreator.DEBUG_MODE)
-						System.out.println("Value of " + fcurrentParent.getId() + "  is >" + fcurrentParent.getValue() + "<"); //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$
+						System.out.println("Value of " + fcurrentParent.getId() + "  is >" + fcurrentParent.getValue() + "<"); //$NON-NLS-3$ //$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 					//going from ending element to parent element
 					fcurrentParent= fcurrentParent.getParent();
@@ -425,8 +425,8 @@ public class XMLStructureCreator implements IStructureCreator {
 						System.out.println("fcurrentParent = fcurrentParent.getParent();"); //$NON-NLS-1$
 				} catch (BadLocationException ex) {
 					if (XMLStructureCreator.DEBUG_MODE) {
-						System.out.println("BadLocationException in endElement(...): " + ex); //$NON-NLS-1$
-						System.out.println("fcurrentParent.getId(): " + fcurrentParent.getId()); //$NON-NLS-1$
+						System.out.println("BadLocationException in endElement(...): " + ex); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+						System.out.println("fcurrentParent.getId(): " + fcurrentParent.getId()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 				}
 			} else {
@@ -434,11 +434,11 @@ public class XMLStructureCreator implements IStructureCreator {
 					System.out.println("Error: Cannot reach Parent of Parent"); //$NON-NLS-1$
 			}
 			if (XMLStructureCreator.DEBUG_MODE)
-				System.out.println("fcurrentParent is now " + fcurrentParent.getId()); //$NON-NLS-1$
+				System.out.println("fcurrentParent is now " + fcurrentParent.getId()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 			prevlocator= new LocatorImpl(locator);
 			if (XMLStructureCreator.DEBUG_MODE)
-				System.out.println("Signature before cutting: " + fsignature); //$NON-NLS-1$
+				System.out.println("Signature before cutting: " + fsignature); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			int ssi= fsignature.lastIndexOf(SIGN_SEPARATOR);//fsignature
 			// separator index
 			ssi= fsignature.lastIndexOf(SIGN_SEPARATOR, ssi - 1);//second-last
@@ -448,7 +448,7 @@ public class XMLStructureCreator implements IStructureCreator {
 			// root.a.
 			fsignature= fsignature.substring(0, ssi + 1);
 			if (XMLStructureCreator.DEBUG_MODE)
-				System.out.println("Signature after cutting: " + fsignature); //$NON-NLS-1$
+				System.out.println("Signature after cutting: " + fsignature); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		//
@@ -458,7 +458,7 @@ public class XMLStructureCreator implements IStructureCreator {
 		/* Warning. */
 		@Override
 		public void warning(SAXParseException ex) {
-			System.err.println("[Warning] " + //$NON-NLS-1$
+			System.err.println("[Warning] " + //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					getLocationString(ex) + ": " + //$NON-NLS-1$
 					ex.getMessage());
 		}
@@ -466,7 +466,7 @@ public class XMLStructureCreator implements IStructureCreator {
 		/* Error. */
 		@Override
 		public void error(SAXParseException ex) {
-			System.err.println("[Error] " + //$NON-NLS-1$
+			System.err.println("[Error] " + //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					getLocationString(ex) + ": " + //$NON-NLS-1$
 					ex.getMessage());
 		}
@@ -474,7 +474,7 @@ public class XMLStructureCreator implements IStructureCreator {
 		/* Fatal error. */
 		@Override
 		public void fatalError(SAXParseException ex) throws SAXException {
-			System.err.println("[Fatal Error] " + //$NON-NLS-1$
+			System.err.println("[Fatal Error] " + //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					getLocationString(ex) + ": " + //$NON-NLS-1$
 					ex.getMessage());
 			//System.out.println(ex);
@@ -482,20 +482,20 @@ public class XMLStructureCreator implements IStructureCreator {
 		}
 
 		/* Returns a string of the location. */
-		private String getLocationString(SAXParseException ex) {
-			StringBuilder str= new StringBuilder();
+		private String getLocationString(SAXParseException ex) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+			StringBuilder str= new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 			String systemId= ex.getSystemId();
 			if (systemId != null) {
 				int index= systemId.lastIndexOf('/');
 				if (index != -1)
 					systemId= systemId.substring(index + 1);
-				str.append(systemId);
+				str.append(systemId); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			str.append(':');
-			str.append(ex.getLineNumber());
-			str.append(':');
-			str.append(ex.getColumnNumber());
+			str.append(':'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			str.append(ex.getLineNumber()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			str.append(':'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			str.append(ex.getColumnNumber()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 			return str.toString();
 
@@ -537,7 +537,7 @@ public class XMLStructureCreator implements IStructureCreator {
 	 * Initialize the Id Mappings for the Id Mapping Scheme and the Ordered Elements
 	 * This method must be called before getStructure(Object) is called on the two/three inputs of the compare
 	 */
-	public void initIdMaps() {
+	public void initIdMaps() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fFirstCall && fFileExt != null) {
 			fFirstCall= false;
 			String fileExtLower= fFileExt.toLowerCase();
@@ -564,7 +564,7 @@ public class XMLStructureCreator implements IStructureCreator {
 	/*
 	 * Returns the XML parse tree of the input.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStructureComparator getStructure(Object input) {
 		if (XMLStructureCreator.DEBUG_MODE)
 			System.out.println("Starting parse"); //$NON-NLS-1$
@@ -582,8 +582,8 @@ public class XMLStructureCreator implements IStructureCreator {
 				contents= ""; //$NON-NLS-1$
 			fdoc= new Document(contents);
 
-			fsignature= ROOT_ID + SIGN_SEPARATOR;
-			XMLChildren root= new XMLChildren(TYPE_ELEMENT, ROOT_ID, "", (fsignature + SIGN_ELEMENT), fdoc, 0, fdoc.getLength()); //$NON-NLS-1$
+			fsignature= ROOT_ID + SIGN_SEPARATOR; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			XMLChildren root= new XMLChildren(TYPE_ELEMENT, ROOT_ID, "", (fsignature + SIGN_ELEMENT), fdoc, 0, fdoc.getLength()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			fcurrentParent= root;
 
 			XMLHandler handler= new XMLHandler();
@@ -621,7 +621,7 @@ public class XMLStructureCreator implements IStructureCreator {
 			// nothing to do
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void save(IStructureComparator structure, Object input) {
 		if (input instanceof IEditableContent && structure instanceof XMLNode) {
 			IDocument document= ((XMLNode) structure).getDocument();
@@ -680,15 +680,15 @@ public class XMLStructureCreator implements IStructureCreator {
 
 	/* Returns a sorted list of attributes.
 	 */
-	protected Attributes sortAttributes(Attributes attrs) {
+	protected Attributes sortAttributes(Attributes attrs) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		AttributesImpl attributes= new AttributesImpl();
 		int len= (attrs != null) ? attrs.getLength() : 0;
-		for (int i= 0; i < len; i++) {
+		for (int i= 0; i < len; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String name= attrs.getQName(i);
 			int count= attributes.getLength();
 			int j= 0;
-			while (j < count) {
+			while (j < count) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (name.compareTo(attributes.getQName(j)) < 0)
 					break;
 				j++;
@@ -729,21 +729,21 @@ public class XMLStructureCreator implements IStructureCreator {
 		return c == '\t' || c == '\n' || c == '\r' || c == ' ';
 	}
 
-	protected String removeWhiteSpace(String str) {
+	protected String removeWhiteSpace(String str) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		str= trimWhiteSpace(str);
-		StringBuilder retStr= new StringBuilder();
+		StringBuilder retStr= new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		int start= 0, end= 0;
-		outer_while: while (true) {
-			while (end < str.length() && !isWhiteSpace(str.charAt(end))) {
+		outer_while: while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			while (end < str.length() && !isWhiteSpace(str.charAt(end))) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				end++;
 			}
 			if (end > str.length())
 				break outer_while;
 			if (start != 0)
-				retStr.append(' ');
-			retStr.append(str.substring(start, end));
+				retStr.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			retStr.append(str.substring(start, end)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			end++;
-			while (end < str.length() && isWhiteSpace(str.charAt(end))) {
+			while (end < str.length() && isWhiteSpace(str.charAt(end))) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				end++;
 			}
 			start= end;
@@ -753,12 +753,12 @@ public class XMLStructureCreator implements IStructureCreator {
 
 	protected String trimWhiteSpace(String str) {
 		int start= 0, end= str.length() - 1;
-		while (start < str.length() && isWhiteSpace(str.charAt(start))) {
+		while (start < str.length() && isWhiteSpace(str.charAt(start))) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			start++;
 		}
 		if (start == str.length())
 			return ""; //$NON-NLS-1$
-		while (end >= 0 && isWhiteSpace(str.charAt(end))) {
+		while (end >= 0 && isWhiteSpace(str.charAt(end))) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			end--;
 		}
 		return str.substring(start, end + 1);

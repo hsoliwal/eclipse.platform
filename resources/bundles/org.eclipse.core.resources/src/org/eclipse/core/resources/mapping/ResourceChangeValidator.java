@@ -72,8 +72,8 @@ public final class ResourceChangeValidator {
 	}
 
 	private IStatus combineResults(IStatus[] result) {
-		List<IStatus> notOK = new ArrayList<>();
-		for (IStatus status : result) {
+		List<IStatus> notOK = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IStatus status : result) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!status.isOK()) {
 				notOK.add(status);
 			}
@@ -99,8 +99,8 @@ public final class ResourceChangeValidator {
 
 	private ModelProvider[] getProviders(IResource[] resources) {
 		IModelProviderDescriptor[] descriptors = ModelProvider.getModelProviderDescriptors();
-		List<ModelProvider> result = new ArrayList<>();
-		for (IModelProviderDescriptor descriptor : descriptors) {
+		List<ModelProvider> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IModelProviderDescriptor descriptor : descriptors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				IResource[] matchingResources = descriptor.getMatchingResources(resources);
 				if (matchingResources.length > 0) {
@@ -119,7 +119,7 @@ public final class ResourceChangeValidator {
 	private IResource[] getRootResources(IResourceDelta root) {
 		final ChangeDescription changeDescription = new ChangeDescription();
 		try {
-			root.accept(delta -> changeDescription.recordChange(delta));
+			root.accept(delta -> changeDescription.recordChange(delta)); //FLLDCIM: MARK — T07  LAMBDA
 		} catch (CoreException e) {
 			// Shouldn't happen since the ProposedResourceDelta accept doesn't throw an
 			// exception and our visitor doesn't either
@@ -147,7 +147,7 @@ public final class ResourceChangeValidator {
 	 * @return a status indicating any potential side effects
 	 * on models stored in the affected resources.
 	 */
-	public IStatus validateChange(IResourceDelta delta, IProgressMonitor monitor) {
+	public IStatus validateChange(IResourceDelta delta, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		monitor = Policy.monitorFor(monitor);
 		try {
 			IResource[] resources = getRootResources(delta);
@@ -157,7 +157,7 @@ public final class ResourceChangeValidator {
 			}
 			monitor.beginTask(Messages.mapping_validate, providers.length);
 			IStatus[] result = new IStatus[providers.length];
-			for (int i = 0; i < providers.length; i++) {
+			for (int i = 0; i < providers.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				result[i] = providers[i].validateChange(delta, Policy.subMonitorFor(monitor, 1));
 			}
 			return combineResults(result);

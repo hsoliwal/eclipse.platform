@@ -137,7 +137,7 @@ public class PersistantResourceVariantByteStore extends ResourceVariantByteStore
 		return setBytes(resource, NO_REMOTE);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IResource[] members(IResource resource) throws TeamException {
 		if(resource.getType() == IResource.FILE) {
 			return new IResource[0];
@@ -145,8 +145,8 @@ public class PersistantResourceVariantByteStore extends ResourceVariantByteStore
 		try {
 			// Filter and return only resources that have sync bytes in the cache.
 			IResource[] members = ((IContainer)resource).members(true /* include phantoms */);
-			List<IResource> filteredMembers = new ArrayList<>(members.length);
-			for (IResource member : members) {
+			List<IResource> filteredMembers = new ArrayList<>(members.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if(getBytes(member) != null) {
 					filteredMembers.add(member);
 				}

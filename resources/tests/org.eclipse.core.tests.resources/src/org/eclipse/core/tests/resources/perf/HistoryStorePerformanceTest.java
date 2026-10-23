@@ -48,7 +48,7 @@ public class HistoryStorePerformanceTest {
 		project.clearHistory(createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPerformance() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IFile file = project.getFile("file.txt");
@@ -57,20 +57,20 @@ public class HistoryStorePerformanceTest {
 
 		int nTimes = 1000;
 		long startTime = System.currentTimeMillis();
-		for (int i = 0; i < nTimes; i++) {
+		for (int i = 0; i < nTimes; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			file.setContents(createInputStream(contents), true, true, null);
 		}
 		long endTime = System.currentTimeMillis();
-		System.out.println("Adding " + nTimes + " states: " + (endTime - startTime) + " milliseconds.");
+		System.out.println("Adding " + nTimes + " states: " + (endTime - startTime) + " milliseconds."); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		startTime = System.currentTimeMillis();
 		file.getHistory(null);
 		endTime = System.currentTimeMillis();
-		System.out.println("Retrieving " + nTimes + " states: " + (endTime - startTime) + " milliseconds.");
+		System.out.println("Retrieving " + nTimes + " states: " + (endTime - startTime) + " milliseconds."); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		startTime = System.currentTimeMillis();
 		file.clearHistory(null);
 		endTime = System.currentTimeMillis();
-		System.out.println("Removing " + nTimes + " states: " + (endTime - startTime) + " milliseconds.");
+		System.out.println("Removing " + nTimes + " states: " + (endTime - startTime) + " milliseconds."); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

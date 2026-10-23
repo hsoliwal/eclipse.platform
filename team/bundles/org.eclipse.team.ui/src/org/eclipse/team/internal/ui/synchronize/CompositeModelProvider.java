@@ -33,11 +33,11 @@ import org.eclipse.team.ui.synchronize.ISynchronizePageConfiguration;
  * {@link SyncInfoSet} into subsets that may be displayed using one
  * or more synchronize model providers.
  */
-public abstract class CompositeModelProvider extends AbstractSynchronizeModelProvider {
+public abstract class CompositeModelProvider extends AbstractSynchronizeModelProvider { //FLLDCIM: MARK — T38  IMPLEMENTS
 
-	private final List<ISynchronizeModelProvider> providers = new ArrayList<>();
-	private final Map<IResource, List <ISynchronizeModelElement>> resourceToElements = new HashMap<>();
-	private final Map<ISynchronizeModelElement, AbstractSynchronizeModelProvider> elementToProvider = new HashMap<>();
+	private final List<ISynchronizeModelProvider> providers = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private final Map<IResource, List <ISynchronizeModelElement>> resourceToElements = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	private final Map<ISynchronizeModelElement, AbstractSynchronizeModelProvider> elementToProvider = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	protected CompositeModelProvider(ISynchronizePageConfiguration configuration, SyncInfoSet set) {
 		super(configuration, set);
@@ -74,8 +74,8 @@ public abstract class CompositeModelProvider extends AbstractSynchronizeModelPro
 		if (providers.length == 1 && providers[0] instanceof AbstractSynchronizeModelProvider) {
 			return ((AbstractSynchronizeModelProvider)providers[0]).getClosestExistingParents(resource);
 		}
-		List<ISynchronizeModelElement> result = new ArrayList<>();
-		for (ISynchronizeModelProvider provider : providers) {
+		List<ISynchronizeModelElement> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ISynchronizeModelProvider provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (provider instanceof AbstractSynchronizeModelProvider) {
 				ISynchronizeModelElement[] elements = ((AbstractSynchronizeModelProvider)provider).getClosestExistingParents(resource);
 				Collections.addAll(result, elements);
@@ -102,8 +102,8 @@ public abstract class CompositeModelProvider extends AbstractSynchronizeModelPro
 		if (elements == null || elements.isEmpty()) {
 			return new ISynchronizeModelProvider[0];
 		}
-		List<ISynchronizeModelProvider> result = new ArrayList<>();
-		for (ISynchronizeModelElement element : elements) {
+		List<ISynchronizeModelProvider> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ISynchronizeModelElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result.add(getProvider(element));
 		}
 		return result.toArray(new ISynchronizeModelProvider[result.size()]);
@@ -119,7 +119,7 @@ public abstract class CompositeModelProvider extends AbstractSynchronizeModelPro
 	 * sub-providers or by creating addition sub-providers as needed.
 	 */
 	protected void handleAdditions(SyncInfo[] resources) {
-		for (SyncInfo info : resources) {
+		for (SyncInfo info : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			handleAddition(info);
 		}
 	}
@@ -133,7 +133,7 @@ public abstract class CompositeModelProvider extends AbstractSynchronizeModelPro
 	@Override
 	protected final void handleResourceChanges(ISyncInfoTreeChangeEvent event) {
 		SyncInfo[] infos = event.getChangedResources();
-		for (SyncInfo info : infos) {
+		for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			handleChange(info);
 		}
 	}
@@ -151,7 +151,7 @@ public abstract class CompositeModelProvider extends AbstractSynchronizeModelPro
 	@Override
 	protected final void handleResourceRemovals(ISyncInfoTreeChangeEvent event) {
 		IResource[] resources = event.getRemovedResources();
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			handleRemoval(resource);
 		}
 	}
@@ -162,7 +162,7 @@ public abstract class CompositeModelProvider extends AbstractSynchronizeModelPro
 	 */
 	protected void handleRemoval(IResource resource) {
 		ISynchronizeModelProvider[] providers = getProvidersContaining(resource);
-		for (ISynchronizeModelProvider provider : providers) {
+		for (ISynchronizeModelProvider provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			removeFromProvider(resource, provider);
 		}
 	}
@@ -187,7 +187,7 @@ public abstract class CompositeModelProvider extends AbstractSynchronizeModelPro
 		if(r != null) {
 			List<ISynchronizeModelElement> elements = resourceToElements.get(r);
 			if(elements == null) {
-				elements = new ArrayList<>(2);
+				elements = new ArrayList<>(2); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				resourceToElements.put(r, elements);
 			}
 			elements.add(node);
@@ -221,7 +221,7 @@ public abstract class CompositeModelProvider extends AbstractSynchronizeModelPro
 	}
 
 	private void clearProviders() {
-		for (ISynchronizeModelProvider provider : providers) {
+		for (ISynchronizeModelProvider provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			provider.dispose();
 		}
 		providers.clear();

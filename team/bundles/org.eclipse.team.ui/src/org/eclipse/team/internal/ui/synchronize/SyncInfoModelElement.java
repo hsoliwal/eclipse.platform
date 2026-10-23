@@ -72,7 +72,7 @@ public class SyncInfoModelElement extends SynchronizeModelElement {
 	 *
 	 * @param info the new sync info
 	 */
-	public void update(SyncInfo info) {
+	public void update(SyncInfo info) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		this.info = info;
 		// update state
 		setKind(info.getKind());
@@ -167,7 +167,7 @@ public class SyncInfoModelElement extends SynchronizeModelElement {
 	/**
 	 * Cache the contents for the base and remote.
 	 */
-	public void cacheContents(IProgressMonitor monitor) throws TeamException {
+	public void cacheContents(IProgressMonitor monitor) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ITypedElement base = getAncestor();
 		ITypedElement remote = getRight();
 		int work = Math.min((remote== null ? 0 : 50) + (base == null ? 0 : 50), 10);

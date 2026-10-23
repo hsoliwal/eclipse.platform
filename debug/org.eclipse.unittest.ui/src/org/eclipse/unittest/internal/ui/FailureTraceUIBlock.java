@@ -69,7 +69,7 @@ public class FailureTraceUIBlock implements IMenuListener {
 	 * @param testRunner a Test Runner view part
 	 * @param toolBar    a {@link ToolBar} instance
 	 */
-	public FailureTraceUIBlock(Composite parent, Clipboard clipboard, TestRunnerViewPart testRunner, ToolBar toolBar) {
+	public FailureTraceUIBlock(Composite parent, Clipboard clipboard, TestRunnerViewPart testRunner, ToolBar toolBar) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isNotNull(clipboard);
 
 		// fill the failure trace viewer toolbar
@@ -88,7 +88,7 @@ public class FailureTraceUIBlock implements IMenuListener {
 		fClipboard = clipboard;
 
 		OpenStrategy handler = new OpenStrategy(fTable);
-		handler.addOpenListener(unused -> {
+		handler.addOpenListener(unused -> { //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
 			if (fTable.getSelectionIndex() == 0 && fFailure.getFailureTrace() != null
 					&& fFailure.getFailureTrace().isComparisonFailure()) {
 				fCompareAction.run();
@@ -109,7 +109,7 @@ public class FailureTraceUIBlock implements IMenuListener {
 	private void initMenu() {
 		MenuManager menuMgr = new MenuManager();
 		menuMgr.setRemoveAllWhenShown(true);
-		menuMgr.addMenuListener(this);
+		menuMgr.addMenuListener(this); //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 		Menu menu = menuMgr.createContextMenu(fTable);
 		fTable.setMenu(menu);
 	}

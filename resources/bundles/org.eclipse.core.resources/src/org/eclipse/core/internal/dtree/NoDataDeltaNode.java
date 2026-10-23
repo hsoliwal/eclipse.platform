@@ -60,7 +60,7 @@ public class NoDataDeltaNode extends AbstractDataTreeNode {
 			return new NoDataDeltaNode(name, NO_CHILDREN);
 		}
 		AbstractDataTreeNode[] newChildren = new AbstractDataTreeNode[numChildren];
-		for (int i = numChildren; --i >= 0;) {
+		for (int i = numChildren; --i >= 0;) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			newChildren[i] = children[i].asBackwardDelta(myTree, parentTree, key.append(children[i].getName()));
 		}
 		return new NoDataDeltaNode(name, newChildren);

@@ -64,7 +64,7 @@ public class ProcessConsoleManagerTests {
 	 * {@link LaunchManager} because the ProcessConsoleManager primary works
 	 * through an {@link ILaunchListener} which is honored by this test.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProcessConsoleLifecycle(TestInfo testInfo) throws Exception {
 		// ensure debug UI plugin is started before adding first launch
 		DebugUIPlugin.getDefault();
@@ -95,10 +95,10 @@ public class ProcessConsoleManagerTests {
 	 * Test problematic scenario where launch is already removed before console
 	 * is created. see https://bugs.eclipse.org/bugs/show_bug.cgi?id=546710#c13
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug546710_ConsoleCreationRaceCondition(TestInfo testInfo) throws Exception {
 		final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-		for (ILaunch existingLaunch : launchManager.getLaunches()) {
+		for (ILaunch existingLaunch : launchManager.getLaunches()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertTrue(existingLaunch.isTerminated(), "Found existing not terminated launch. This should not happen and can interfere this test. Check for leakages in previous run tests.");
 			launchManager.removeLaunch(existingLaunch);
 		}
@@ -122,7 +122,7 @@ public class ProcessConsoleManagerTests {
 		TestUtil.waitForJobs(testInfo.getDisplayName(), ProcessConsoleManager.class, 0, 10000);
 		ProcessConsoleManager processConsoleManager = DebugUIPlugin.getDefault().getProcessConsoleManager();
 		ILaunch[] launches = launchManager.getLaunches();
-		Set<IConsole> openConsoles = new HashSet<>();
+		Set<IConsole> openConsoles = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		if (processConsoleManager.getConsole(process1) != null) {
 			openConsoles.add(processConsoleManager.getConsole(process1));
 		}
@@ -132,7 +132,7 @@ public class ProcessConsoleManagerTests {
 
 		String launchesString = Stream.of(launches).map(launch -> Stream.of(launch.getProcesses()).map(IProcess::getLabel).collect(joining(",", "[", "]"))).collect(joining());
 		String consolesString = openConsoles.stream().map(IConsole::getName).collect(joining());
-		String failureMessage = String.format("ProcessConsoleManager and LaunchManager got out of sync.\nLaunches: %s\nConsoles: %s", launchesString, consolesString);
+		String failureMessage = String.format("ProcessConsoleManager and LaunchManager got out of sync.\nLaunches: %s\nConsoles: %s", launchesString, consolesString); //FLLDCIM: MARK — M11 FORMAT_PRECOMPUTE CALL
 		assertThat(openConsoles).as(failureMessage).hasSameSizeAs(launches);
 
 		final ConsoleRemoveAllTerminatedAction removeAction = new ConsoleRemoveAllTerminatedAction();

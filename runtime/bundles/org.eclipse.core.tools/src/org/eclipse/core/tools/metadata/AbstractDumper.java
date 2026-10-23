@@ -44,12 +44,12 @@ public abstract class AbstractDumper implements IDumper {
 	 * @see IStringDumpingStrategy#dumpStringContents(DataInputStream)
 	 * @see #openInputStream(File)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IDump dump(File file) {
 		MeteredInputStream meteredInput = null;
 		Dump dump = new Dump();
 		dump.setFile(file);
-		StringBuilder contents = new StringBuilder(40);
+		StringBuilder contents = new StringBuilder(40); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		try {
 			//uses a metered input stream in order to count the number of bytes read
 			meteredInput = new MeteredInputStream(openInputStream(file));
@@ -57,7 +57,7 @@ public abstract class AbstractDumper implements IDumper {
 		} catch (PartialDumpException pde) {
 			// ensure we remember any partial contents
 			if (pde.getPartialContents() != null) {
-				contents.append(pde.getPartialContents());
+				contents.append(pde.getPartialContents()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 			dump.setFailureReason(pde);
 		} catch (Exception e) {
@@ -89,7 +89,7 @@ public abstract class AbstractDumper implements IDumper {
 	 * @throws IOException if an exception happens while opening the inpuut stream
 	 */
 	protected InputStream openInputStream(File file) throws IOException {
-		return new FileInputStream(file);
+		return new FileInputStream(file); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 	}
 
 }

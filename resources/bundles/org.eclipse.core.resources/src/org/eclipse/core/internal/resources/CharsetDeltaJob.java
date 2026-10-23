@@ -46,7 +46,7 @@ import org.osgi.framework.Bundle;
 public class CharsetDeltaJob extends Job implements IContentTypeManager.IContentTypeChangeListener {
 
 	// this is copied in the runtime tests - if changed here, has to be changed there too
-	public final static String FAMILY_CHARSET_DELTA = ResourcesPlugin.PI_RESOURCES + "charsetJobFamily"; //$NON-NLS-1$
+	public final static String FAMILY_CHARSET_DELTA = ResourcesPlugin.PI_RESOURCES + "charsetJobFamily"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	interface ICharsetListenerFilter {
 
@@ -91,7 +91,7 @@ public class CharsetDeltaJob extends Job implements IContentTypeManager.IContent
 		return FAMILY_CHARSET_DELTA.equals(family);
 	}
 
-	public void charsetPreferencesChanged(final IProject project) {
+	public void charsetPreferencesChanged(final IProject project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// avoid reacting to changes made by ourselves
 		if (isDisabled()) {
 			return;
@@ -135,7 +135,7 @@ public class CharsetDeltaJob extends Job implements IContentTypeManager.IContent
 		addToQueue(filter);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void contentTypeChanged(final ContentTypeChangeEvent event) {
 		// check all files that may be affected by this change (taking
 		// only the current content type state into account
@@ -168,7 +168,7 @@ public class CharsetDeltaJob extends Job implements IContentTypeManager.IContent
 		return disabled.get() != null;
 	}
 
-	private void processNextEvent(final ICharsetListenerFilter filter, IProgressMonitor monitor) throws CoreException {
+	private void processNextEvent(final ICharsetListenerFilter filter, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IElementContentVisitor visitor = (unused, requestor, elementContents) -> {
 			ResourceInfo info = (ResourceInfo) elementContents;
 			if (!filter.isAffected(info, requestor)) {
@@ -204,7 +204,7 @@ public class CharsetDeltaJob extends Job implements IContentTypeManager.IContent
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus run(IProgressMonitor monitor) {
 		monitor = Policy.monitorFor(monitor);
 		try {
@@ -215,7 +215,7 @@ public class CharsetDeltaJob extends Job implements IContentTypeManager.IContent
 				workspace.beginOperation(true);
 				ICharsetListenerFilter next;
 				//if the system is shutting down, don't broadcast
-				while (systemBundle.getState() != Bundle.STOPPING && (next = removeFromQueue()) != null) {
+				while (systemBundle.getState() != Bundle.STOPPING && (next = removeFromQueue()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					processNextEvent(next, monitor);
 				}
 			} catch (OperationCanceledException e) {

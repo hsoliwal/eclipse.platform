@@ -56,14 +56,14 @@ public class Bug_027271 {
 		Preferences preferences = ResourcesPlugin.getPlugin().getPluginPreferences();
 		// ensure we have no preferences related to path variables
 		String[] propertyNames = preferences.propertyNames();
-		for (String propertyName : propertyNames) {
+		for (String propertyName : propertyNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (propertyName.startsWith(VARIABLE_PREFIX)) {
 				preferences.setToDefault(propertyName);
 			}
 		}
 	}
 
-	@Deprecated
+	@Deprecated //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Test
 	public void testBug() {
 		assumeTrue(OS.isWindows(), "only relevant on Windows");
@@ -72,17 +72,17 @@ public class Bug_027271 {
 		Preferences prefs = ResourcesPlugin.getPlugin().getPluginPreferences();
 
 		assertThat(pvm.getPathVariableNames()).isEmpty();
-		prefs.setValue(VARIABLE_PREFIX + "VALID_VAR", IPath.fromOSString("c:/temp").toPortableString());
+		prefs.setValue(VARIABLE_PREFIX + "VALID_VAR", IPath.fromOSString("c:/temp").toPortableString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertThat(pvm.getPathVariableNames()).containsExactly("VALID_VAR");
 
 		//sets invalid value (relative path)
 		IPath relativePath = IPath.fromOSString("temp");
-		prefs.setValue(VARIABLE_PREFIX + "INVALID_VAR", relativePath.toPortableString());
+		prefs.setValue(VARIABLE_PREFIX + "INVALID_VAR", relativePath.toPortableString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertThat(pvm.getPathVariableNames()).containsExactly("VALID_VAR");
 
 		//sets invalid value (invalid path)
 		IPath invalidPath = IPath.fromOSString("c:\\a\\:\\b");
-		prefs.setValue(VARIABLE_PREFIX + "ANOTHER_INVALID_VAR", invalidPath.toPortableString());
+		prefs.setValue(VARIABLE_PREFIX + "ANOTHER_INVALID_VAR", invalidPath.toPortableString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertFalse(IPath.EMPTY.isValidPath(invalidPath.toPortableString()));
 		assertThat(pvm.getPathVariableNames()).containsExactly("VALID_VAR");
 	}

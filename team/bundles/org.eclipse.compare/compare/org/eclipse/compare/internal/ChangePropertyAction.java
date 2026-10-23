@@ -26,7 +26,7 @@ import org.eclipse.swt.events.DisposeListener;
 /**
  * Toggles a boolean property of an <code>CompareConfiguration</code>.
  */
-public class ChangePropertyAction extends Action implements IPropertyChangeListener, DisposeListener {
+public class ChangePropertyAction extends Action implements IPropertyChangeListener, DisposeListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	private CompareConfiguration fCompareConfiguration;
 	private final String fPropertyKey;
@@ -69,7 +69,7 @@ public class ChangePropertyAction extends Action implements IPropertyChangeListe
 		}
 		fCompareConfiguration= cc;
 		if (fCompareConfiguration != null) {
-			fCompareConfiguration.addPropertyChangeListener(this);
+			fCompareConfiguration.addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		}
 		setChecked(Utilities.getBoolean(fCompareConfiguration, fPropertyKey, false));
 	}

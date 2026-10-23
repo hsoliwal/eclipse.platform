@@ -26,7 +26,7 @@ public class ConsoleExtension implements BeforeEachCallback, AfterEachCallback {
 	@Override
 	public void beforeEach(ExtensionContext context) throws Exception {
 		IConsole[] consoles = getConsoleManager().getConsoles();
-		assertEquals(0, consoles.length, "Should have no consoles before test, but found: " + Arrays.toString(consoles));
+		assertEquals(0, consoles.length, "Should have no consoles before test, but found: " + Arrays.toString(consoles)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class ConsoleExtension implements BeforeEachCallback, AfterEachCallback {
 		IConsoleManager consoleManager = getConsoleManager();
 		consoleManager.removeConsoles(consoleManager.getConsoles());
 		IConsole[] consoles = consoleManager.getConsoles();
-		assertEquals(0, consoles.length, "Should have no consoles after test, but found: " + Arrays.toString(consoles));
+		assertEquals(0, consoles.length, "Should have no consoles after test, but found: " + Arrays.toString(consoles)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private static IConsoleManager getConsoleManager() {

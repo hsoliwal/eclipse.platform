@@ -32,7 +32,7 @@ import org.eclipse.team.ui.synchronize.ISynchronizeParticipantReference;
 import org.eclipse.team.ui.synchronize.ISynchronizeView;
 import org.eclipse.team.ui.synchronize.SubscriberParticipant;
 
-@SuppressWarnings("deprecation")
+@SuppressWarnings("deprecation") //FLLDCIM: MARK — T06  IMPLEMENTS
 public class ShowSynchronizeParticipantAction extends Action implements IPropertyChangeListener {
 
 	private final ISynchronizeParticipantReference fPage;
@@ -64,7 +64,7 @@ public class ShowSynchronizeParticipantAction extends Action implements IPropert
 		setImageDescriptor( new ParticipantOverlay( ref));
 
 		try {
-			fPage.getParticipant().addPropertyChangeListener( this);
+			fPage.getParticipant().addPropertyChangeListener( this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		} catch( TeamException e) {
 			Utils.handle(e);
 		}

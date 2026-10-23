@@ -52,7 +52,7 @@ public class LineReaderTest  {
 	private String convertLineDelimiters(Object object) {
 		String line = (String)object;
 		if (line.endsWith("\r\n"))
-			return line.substring(0, line.length() - 2) + "\n";
+			return line.substring(0, line.length() - 2) + "\n"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return line;
 	}
 
@@ -69,8 +69,8 @@ public class LineReaderTest  {
 	}
 
 	private BufferedReader getReader(String name) throws IOException {
-		IPath path = IPath.fromOSString("linereaderdata/" + name);
-		URL url = CompareTestPlugin.getDefault().getBundle().getEntry("/" + path.toString());
+		IPath path = IPath.fromOSString("linereaderdata/" + name); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		URL url = CompareTestPlugin.getDefault().getBundle().getEntry("/" + path.toString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		InputStream resourceAsStream = url.openStream();
 		InputStreamReader reader2 = new InputStreamReader(resourceAsStream);
 		return new BufferedReader(reader2);

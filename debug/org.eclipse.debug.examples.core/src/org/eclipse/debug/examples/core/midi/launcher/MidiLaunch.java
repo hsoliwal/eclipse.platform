@@ -28,7 +28,7 @@ import org.eclipse.debug.core.model.ISuspendResume;
  *
  * @since 1.0
  */
-public class MidiLaunch extends Launch implements ISuspendResume {
+public class MidiLaunch extends Launch implements ISuspendResume { //FLLDCIM: MARK — T27  IMPLEMENTS
 
 	/**
 	 * MIDI Sequencer

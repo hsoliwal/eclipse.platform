@@ -43,7 +43,7 @@ public class FileSystemPlugin extends AbstractUIPlugin {
 	/**
 	 * This is the provider ID of the plugin as defined in the plugin.xml
 	 */
-	public static final String PROVIDER_ID = ID + ".FileSystemProvider"; //$NON-NLS-1$
+	public static final String PROVIDER_ID = ID + ".FileSystemProvider"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	// This static field will hold the singleton instance of the plugin class
 	private static FileSystemPlugin plugin;

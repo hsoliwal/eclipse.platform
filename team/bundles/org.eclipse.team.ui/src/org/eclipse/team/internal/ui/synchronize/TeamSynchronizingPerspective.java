@@ -33,7 +33,7 @@ public class TeamSynchronizingPerspective implements IPerspectiveFactory {
 	 * Defines the initial actions for a page.
 	 * @param layout the page layout
 	 */
-	public void defineActions(IPageLayout layout) {
+	public void defineActions(IPageLayout layout) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// Add "new wizards".
 		layout.addNewWizardShortcut("org.eclipse.ui.wizards.new.project"); //$NON-NLS-1$

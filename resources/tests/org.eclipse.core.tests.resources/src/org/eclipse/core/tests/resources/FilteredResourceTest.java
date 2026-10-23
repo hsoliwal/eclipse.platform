@@ -93,7 +93,7 @@ public class FilteredResourceTest {
 		createInWorkspace(new IResource[] {existingProject, otherExistingProject, closedProject, existingFolderInExistingProject, existingFolderInExistingFolder, existingFileInExistingProject});
 		closedProject.close(createTestMonitor());
 		removeFromWorkspace(new IResource[] {nonExistingFolderInExistingProject, nonExistingFolderInExistingFolder, nonExistingFolderInOtherExistingProject, nonExistingFolder2InOtherExistingProject, nonExistingFileInExistingProject, nonExistingFileInOtherExistingProject, nonExistingFileInExistingFolder});
-		resolve(localFolder).toFile().mkdirs();
+		resolve(localFolder).toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		createInFileSystem(resolve(localFile));
 	}
 
@@ -111,7 +111,7 @@ public class FilteredResourceTest {
 		return uri;
 	}
 
-	@BeforeEach
+	@BeforeEach //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setUp() throws Exception {
 		existingProject = getWorkspace().getRoot().getProject("ExistingProject");
 		otherExistingProject = getWorkspace().getRoot().getProject("OtherExistingProject");
@@ -135,7 +135,7 @@ public class FilteredResourceTest {
 	/**
 	 * Tests the creation of a simple filter on a folder.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateFilterOnFolder() throws CoreException {
 		FileInfoMatcherDescription matcherDescription = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, "foo");
 		existingFolderInExistingProject.createFilter(IResourceFilterDescription.INCLUDE_ONLY
@@ -176,7 +176,7 @@ public class FilteredResourceTest {
 	/**
 	 * Tests the creation of a simple filter on a project.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateFilterOnProject() throws CoreException {
 		FileInfoMatcherDescription matcherDescription = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, "foo");
 		existingProject.createFilter(IResourceFilterDescription.INCLUDE_ONLY | IResourceFilterDescription.FOLDERS,
@@ -216,7 +216,7 @@ public class FilteredResourceTest {
 	/**
 	 * Tests the creation of a simple filter on a linked folder.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateFilterOnLinkedFolder() throws CoreException {
 		IPath location = getRandomLocation();
 		IFolder folder = nonExistingFolderInExistingProject;
@@ -264,7 +264,7 @@ public class FilteredResourceTest {
 	 * Tests the creation of two different filters on a linked folder and the original.
 	 * Regression for bug 267201
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateFilterOnLinkedFolderAndTarget() throws Exception {
 		IPath location = existingFolderInExistingFolder.getLocation();
 		IFolder folder = nonExistingFolderInExistingProject;
@@ -287,7 +287,7 @@ public class FilteredResourceTest {
 		assertThat(members).isEmpty();
 
 		IFile newFile = existingFolderInExistingFolder.getFile("foo.cpp");
-		assertThat(newFile.getLocation().toFile().createNewFile())
+		assertThat(newFile.getLocation().toFile().createNewFile()) //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				.withFailMessage("file creation not successful: %s", newFile).isTrue();
 
 		existingFolderInExistingFolder.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
@@ -301,7 +301,7 @@ public class FilteredResourceTest {
 		assertThat(members).isEmpty();
 
 		newFile = existingFolderInExistingFolder.getFile("foo.h");
-		assertThat(newFile.getLocation().toFile().createNewFile())
+		assertThat(newFile.getLocation().toFile().createNewFile()) //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				.withFailMessage("file creation not successful: %s", newFile).isTrue();
 
 		existingFolderInExistingFolder.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
@@ -329,7 +329,7 @@ public class FilteredResourceTest {
 
 		// create a file that shows under both
 		newFile = existingFolderInExistingFolder.getFile("foo.text");
-		assertThat(newFile.getLocation().toFile().createNewFile())
+		assertThat(newFile.getLocation().toFile().createNewFile()) //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				.withFailMessage("file creation not successful: %s", newFile).isTrue();
 
 		existingFolderInExistingFolder.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
@@ -422,7 +422,7 @@ public class FilteredResourceTest {
 	 * excluded locations.
 	 * Regression for bug 267201
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateFilterOnLinkedFolderAndTarget2() throws Exception {
 		final IPath location = existingFolderInExistingFolder.getLocation();
 		final IFolder folder = nonExistingFolderInExistingProject;
@@ -491,7 +491,7 @@ public class FilteredResourceTest {
 			ByteArrayOutputStream originalContentStream = new ByteArrayOutputStream();
 			fileInputStream.transferTo(originalContentStream);
 			String originalContent = new String(originalContentStream.toByteArray(), StandardCharsets.UTF_8);
-			String newContent = originalContent + "w";
+			String newContent = originalContent + "w"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			file.setContents(newContent.getBytes(StandardCharsets.UTF_8), false, false, null);
 		}
 	}
@@ -507,7 +507,7 @@ public class FilteredResourceTest {
 	 * otherExistingProject/nonExistingFolder2InOtherExistingProject =&gt; existingProject/existingFolderInExsitingProject/existingFolderInExistingFolder
 	 * This is a regression test for Bug 268518.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateFilterOnLinkedFolderWithAlias() throws Exception {
 		final IProject project = otherExistingProject;
 		final IPath parentLoc = existingFolderInExistingProject.getLocation();
@@ -610,7 +610,7 @@ public class FilteredResourceTest {
 	 * otherExistingProject/nonExistingFolder2InOtherExistingProject =&gt; existingProject/existingFolderInExsitingProject/existingFolderInExistingFolder
 	 * This is a regression test for Bug 268518.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateFilterOnLinkedFolderWithAlias2() throws CoreException {
 		final IProject project = otherExistingProject;
 		final IPath parentLoc = existingFolderInExistingProject.getLocation();
@@ -685,7 +685,7 @@ public class FilteredResourceTest {
 	/**
 	 * Tests the creation of a simple filter on a linked folder before the resource creation.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateFilterOnLinkedFolderBeforeCreation() throws CoreException {
 		IPath location = existingFolderInExistingFolder.getLocation();
 		IFolder folder = nonExistingFolderInExistingProject;
@@ -729,7 +729,7 @@ public class FilteredResourceTest {
 	/**
 	 * Tests the creation and removal of a simple filter on a folder.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateAndRemoveFilterOnFolder() throws CoreException {
 		FileInfoMatcherDescription matcherDescription1 = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, "foo");
 		IResourceFilterDescription filterDescription = existingFolderInExistingFolder
@@ -770,7 +770,7 @@ public class FilteredResourceTest {
 	/**
 	 * Tests the creation and removal of a simple filter on a folder.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateAndRemoveFilterOnFolderWithoutClosingProject() throws CoreException {
 		FileInfoMatcherDescription matcherDescription1 = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, "foo");
 		IResourceFilterDescription filterDescription = existingFolderInExistingFolder
@@ -801,7 +801,7 @@ public class FilteredResourceTest {
 	/**
 	 * Tests the creation of the include-only filter.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIncludeOnlyFilter() throws CoreException {
 		FileInfoMatcherDescription matcherDescription1 = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, ".*\\.c");
 
@@ -844,7 +844,7 @@ public class FilteredResourceTest {
 	/**
 	 * Tests the creation of the exclude-all filter.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testExcludeAllFilter() throws CoreException {
 		FileInfoMatcherDescription matcherDescription1 = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, ".*\\.c");
 
@@ -885,7 +885,7 @@ public class FilteredResourceTest {
 	/**
 	 * Tests the creation of the mixed include-only exclude-all filter.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMixedFilter() throws CoreException {
 		FileInfoMatcherDescription matcherDescription1 = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, ".*\\.c");
 		FileInfoMatcherDescription matcherDescription2 = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, "foo.*");
@@ -915,7 +915,7 @@ public class FilteredResourceTest {
 	/**
 	 * Tests the creation of inheritable filter.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInheritedFilter() throws CoreException {
 		FileInfoMatcherDescription matcherDescription1 = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, ".*\\.c");
 		FileInfoMatcherDescription matcherDescription2 = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, "foo.*");
@@ -944,7 +944,7 @@ public class FilteredResourceTest {
 	/**
 	 * Tests the creation of FOLDER filter.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFolderOnlyFilters() throws CoreException {
 		FileInfoMatcherDescription matcherDescription1 = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, "foo.*");
 		existingFolderInExistingFolder.createFilter(
@@ -967,7 +967,7 @@ public class FilteredResourceTest {
 	/**
 	 * Tests the creation of FILE filter.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileOnlyFilters() throws CoreException {
 		FileInfoMatcherDescription matcherDescription1 = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, "foo.*");
 		existingFolderInExistingFolder.createFilter(
@@ -990,7 +990,7 @@ public class FilteredResourceTest {
 	/**
 	 * Tests moving a folder with filters.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveFolderWithFilterToAnotherProject() throws CoreException {
 		FileInfoMatcherDescription matcherDescription1 = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, "foo.*");
 		existingFolderInExistingProject.createFilter(
@@ -1022,7 +1022,7 @@ public class FilteredResourceTest {
 	/**
 	 * Tests copying a folder with filters.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyFolderWithFilterToAnotherProject() throws CoreException {
 		FileInfoMatcherDescription matcherDescription1 = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, "foo.*");
 		existingFolderInExistingProject.createFilter(
@@ -1060,7 +1060,7 @@ public class FilteredResourceTest {
 	/**
 	 * Tests copying a folder with filters to another folder.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyFolderWithFilterToAnotherFolder() throws CoreException {
 		FileInfoMatcherDescription matcherDescription1 = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, "foo.*");
 		existingFolderInExistingProject.createFilter(
@@ -1099,7 +1099,7 @@ public class FilteredResourceTest {
 	/**
 	 * Tests moving a folder with filters to another folder.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveFolderWithFilterToAnotherFolder() throws CoreException {
 		FileInfoMatcherDescription matcherDescription1 = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, "foo.*");
 		existingFolderInExistingProject.createFilter(
@@ -1132,7 +1132,7 @@ public class FilteredResourceTest {
 	/**
 	 * Tests deleting a folder with filters.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteFolderWithFilterToAnotherFolder() throws CoreException {
 		FileInfoMatcherDescription matcherDescription1 = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, "foo.*");
 		FileInfoMatcherDescription matcherDescription2 = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, ".*\\.c");
@@ -1170,7 +1170,7 @@ public class FilteredResourceTest {
 	/**
 	 * Regression test for Bug 302146
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug302146() throws Exception {
 		FileInfoMatcherDescription matcherDescription = new FileInfoMatcherDescription(REGEX_FILTER_PROVIDER, "foo");
 		existingFolderInExistingProject.createFilter(IResourceFilterDescription.INCLUDE_ONLY
@@ -1202,7 +1202,7 @@ public class FilteredResourceTest {
 	 * appear in the workspace, along with all its children, in spite of active resource filters to the
 	 * contrary.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test317783() throws CoreException {
 		IFolder folder = existingProject.getFolder("foo");
 		createInWorkspace(folder);
@@ -1233,7 +1233,7 @@ public class FilteredResourceTest {
 	 * Regression for  Bug 317824 -  Renaming a project that contains resource filters fails,
 	 * and copying a project that contains resource filters removes the resource filters.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test317824() throws CoreException {
 		IFolder folder = existingProject.getFolder("foo");
 		createInWorkspace(folder);
@@ -1249,17 +1249,17 @@ public class FilteredResourceTest {
 
 		existingProject.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
 
-		IPath newPath = existingProject.getFullPath().removeLastSegments(1).append(existingProject.getName() + "_moved");
+		IPath newPath = existingProject.getFullPath().removeLastSegments(1).append(existingProject.getName() + "_moved"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		existingProject.move(newPath, true, createTestMonitor());
 
-		IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(existingProject.getName() + "_moved");
+		IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(existingProject.getName() + "_moved"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertThat(newProject).matches(IProject::exists, "exists");
 		assertThat(newProject.getFilters()).hasSize(1);
 
-		newPath = newProject.getFullPath().removeLastSegments(1).append(newProject.getName() + "_copy");
+		newPath = newProject.getFullPath().removeLastSegments(1).append(newProject.getName() + "_copy"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		newProject.copy(newPath, true, createTestMonitor());
 
-		newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(newProject.getName() + "_copy");
+		newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(newProject.getName() + "_copy"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertThat(newProject).matches(IProject::exists, "exists");
 		assertThat(newProject.getFilters()).hasSize(1);
 	}
@@ -1267,7 +1267,7 @@ public class FilteredResourceTest {
 	/**
 	 * Regression test for bug 328464
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test328464() throws CoreException {
 		IFolder folder = existingProject.getFolder(createUniqueString());
 		createInWorkspace(folder);
@@ -1286,7 +1286,7 @@ public class FilteredResourceTest {
 		// rename a.txt to A.txt in the file system
 		File ioFile = file_a_txt.getLocation().toFile();
 		assertThat(ioFile).exists();
-		ioFile.renameTo(new File(file_a_txt.getLocation().removeLastSegments(1).append("A.txt").toString()));
+		ioFile.renameTo(new File(file_a_txt.getLocation().removeLastSegments(1).append("A.txt").toString())); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		assertThat(file_a_txt).matches(it -> !workspace.validateFiltered(it).isOK(), "is filtered");
 
@@ -1303,7 +1303,7 @@ public class FilteredResourceTest {
 	/**
 	 * Regression test for bug 343914
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Deprecated // Explicitly tests deprecated API
 	public void test343914() throws CoreException {
 		String subProjectName = "subProject";

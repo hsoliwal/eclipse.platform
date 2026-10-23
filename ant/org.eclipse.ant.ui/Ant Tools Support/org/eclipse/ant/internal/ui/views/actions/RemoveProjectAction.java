@@ -46,8 +46,8 @@ public class RemoveProjectAction extends Action implements IUpdate {
 		IStructuredSelection selection = (IStructuredSelection) view.getViewer().getSelection();
 		Iterator<?> iter = selection.iterator();
 		Object element;
-		List<AntProjectNode> projectNodes = new ArrayList<>();
-		while (iter.hasNext()) {
+		List<AntProjectNode> projectNodes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			element = iter.next();
 			if (element instanceof AntProjectNode) {
 				projectNodes.add((AntProjectNode) element);
@@ -65,7 +65,7 @@ public class RemoveProjectAction extends Action implements IUpdate {
 		}
 		Object element;
 		Iterator<?> iter = selection.iterator();
-		while (iter.hasNext()) {
+		while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			element = iter.next();
 			if (!(element instanceof AntProjectNode)) {
 				setEnabled(false);

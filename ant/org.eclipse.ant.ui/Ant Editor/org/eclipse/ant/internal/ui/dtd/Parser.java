@@ -65,7 +65,7 @@ public class Parser {
 	 * @throws ParseError
 	 *             for NOT_SUPPORTED or PARSE_ERROR.
 	 */
-	public ISchema parse(InputSource inputSource, EntityResolver entityResolver) throws ParseError, IOException {
+	public ISchema parse(InputSource inputSource, EntityResolver entityResolver) throws ParseError, IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		XMLReader parser = null;
 		SchemaFactory factory = new SchemaFactory();
 		try {
@@ -175,7 +175,7 @@ public class Parser {
 		private final Reader fDelegate;
 
 		public DTDReader(String pub, String sys, String root) {
-			String document = "<!DOCTYPE " + root + " PUBLIC '" + pub + "' '" + sys + "'><" + root + "/>"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+			String document = "<!DOCTYPE " + root + " PUBLIC '" + pub + "' '" + sys + "'><" + root + "/>"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			fDelegate = new StringReader(document);
 		}
 

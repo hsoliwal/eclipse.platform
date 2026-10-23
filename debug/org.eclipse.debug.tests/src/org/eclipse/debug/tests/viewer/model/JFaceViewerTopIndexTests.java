@@ -61,14 +61,14 @@ public class JFaceViewerTopIndexTests extends AbstractViewerModelTest implements
 	/**
 	 * Restore REVEAL on simple model with elements without children.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRestoreTopIndex() throws Exception {
 		TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(getCTargetViewer());
 
 		TestModel model = new TestModel();
 
 		TestElement[] elements = new TestElement[8];
-		for (int i = 0; i < elements.length; i++) {
+		for (int i = 0; i < elements.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String text = Integer.toString(i + 1);
 			// elements don't have children
 			elements[i] =
@@ -127,21 +127,21 @@ public class JFaceViewerTopIndexTests extends AbstractViewerModelTest implements
 	 *
 	 * See bug 324100
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRestoreTopAndExpand() throws Exception {
 		TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(getCTargetViewer());
 
 		TestModel model = new TestModel();
 
 		TestElement[] elements = new TestElement[10];
-		for (int i = 0; i < elements.length; i++) {
+		for (int i = 0; i < elements.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String text = Integer.toString(i + 1);
 			// first element has 2 children
 			if (i == 0) {
 				elements[i] =
 					new TestElement(model, text, new TestElement[] {
- new TestElement(model, text + ".1", new TestElement[0]), //$NON-NLS-1$
-				new TestElement(model, text + ".2", new TestElement[0]) //$NON-NLS-1$
+ new TestElement(model, text + ".1", new TestElement[0]), //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				new TestElement(model, text + ".2", new TestElement[0]) //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					});
 			} else {
 				// rest of elements don't have children
@@ -220,21 +220,21 @@ public class JFaceViewerTopIndexTests extends AbstractViewerModelTest implements
 	 *
 	 * See bug 324100
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRestoreTopTriggersExpand() throws Exception {
 		TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(getCTargetViewer());
 
 		TestModel model = new TestModel();
 
 		TestElement[] elements = new TestElement[10];
-		for (int i = 0; i < elements.length; i++) {
+		for (int i = 0; i < elements.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String text = Integer.toString(i + 1);
 			// last element has 2 children
 			if (i == elements.length - 1) {
 				elements[i] =
 					new TestElement(model, text, new TestElement[] {
- new TestElement(model, text + ".1", new TestElement[0]), //$NON-NLS-1$
-				new TestElement(model, text + ".2", new TestElement[0]) //$NON-NLS-1$
+ new TestElement(model, text + ".1", new TestElement[0]), //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				new TestElement(model, text + ".2", new TestElement[0]) //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					});
 			} else {
 				// rest of elements don't have children
@@ -301,7 +301,7 @@ public class JFaceViewerTopIndexTests extends AbstractViewerModelTest implements
 	 * This test verifies that canceling a reveal pending state delta is
 	 * properly handled when a new reveal delta is received from the model.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRestoreRevealAfterRevealCancel() throws Exception {
 		TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(getCTargetViewer());
 		TestModel model = TestModel.simpleMultiLevel();
@@ -327,7 +327,7 @@ public class JFaceViewerTopIndexTests extends AbstractViewerModelTest implements
 		// Trigger save of state.
 		fListener.reset();
 		fViewer.setInput(null);
-		while (!fListener.isFinished(STATE_SAVE_COMPLETE)) {
+		while (!fListener.isFinished(STATE_SAVE_COMPLETE)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Thread.sleep(0);
 		}
 
@@ -350,7 +350,7 @@ public class JFaceViewerTopIndexTests extends AbstractViewerModelTest implements
 		// Clear view then reset it again.
 		fListener.reset();
 		fViewer.setInput(null);
-		while (!fListener.isFinished(STATE_SAVE_COMPLETE)) {
+		while (!fListener.isFinished(STATE_SAVE_COMPLETE)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Thread.sleep(0);
 		}
 
@@ -365,7 +365,7 @@ public class JFaceViewerTopIndexTests extends AbstractViewerModelTest implements
 	 * This test verifies that canceling a reveal pending state delta is
 	 * properly handled when a new reveal delta is received from the model.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRestoreRevealAfterRevealCancel2() throws Exception {
 		if (Platform.getOS().equals(Platform.OS_MACOSX)) {
 			// skip this test on Mac - see bug 327557
@@ -396,7 +396,7 @@ public class JFaceViewerTopIndexTests extends AbstractViewerModelTest implements
 		// Trigger save of state.
 		fListener.reset();
 		fViewer.setInput(null);
-		while (!fListener.isFinished(STATE_SAVE_COMPLETE)) {
+		while (!fListener.isFinished(STATE_SAVE_COMPLETE)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Thread.sleep(0);
 		}
 
@@ -437,7 +437,7 @@ public class JFaceViewerTopIndexTests extends AbstractViewerModelTest implements
 	 *
 	 * See bug 324100
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRestoreDeepTreeAndReveal() throws Exception {
 		TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(getCTargetViewer());
 
@@ -491,7 +491,7 @@ public class JFaceViewerTopIndexTests extends AbstractViewerModelTest implements
 	 * This test verifies that a revealed node does not get scrolled away due to
 	 * structural updates.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRevealWithContentChanges() throws Exception {
 		@SuppressWarnings("unused")
 		TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(getCTargetViewer());

@@ -100,9 +100,9 @@ public class XmlDocumentFormatterTest {
 		// file content read via the helper method as it unifies the line separator to
 		// the system one
 		String result = xmlFormatter.format(
-				getReaderContentAsString(Files.newBufferedReader(getBuildFile(sourceFileName).toPath())), prefs);
+				getReaderContentAsString(Files.newBufferedReader(getBuildFile(sourceFileName).toPath())), prefs); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		String expectedResult = getReaderContentAsString(
-				Files.newBufferedReader((getBuildFile(targetFileName).toPath())));
+				Files.newBufferedReader((getBuildFile(targetFileName).toPath()))); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		assertEquals(expectedResult, result);
 	}

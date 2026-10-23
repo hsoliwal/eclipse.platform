@@ -64,7 +64,7 @@ public class ElementTreeWriter {
 	 * Constructs a new element tree writer that works for
 	 * the given element info flattener.
 	 */
-	public ElementTreeWriter(final IElementInfoFlattener flattener) {
+	public ElementTreeWriter(final IElementInfoFlattener flattener) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		/* wrap the IElementInfoFlattener in an IDataFlattener */
 		IDataFlattener f = new IDataFlattener() {
@@ -92,7 +92,7 @@ public class ElementTreeWriter {
 	 * @throws IOException if sorting can not be done.
 	 * @see SaveManager#sortTrees
 	 */
-	protected ElementTree[] writeSortedTrees(ElementTree[] trees, DataOutput output) throws IOException {
+	protected ElementTree[] writeSortedTrees(ElementTree[] trees, DataOutput output) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ElementTree[] sorted = SaveManager.sortTrees(trees);
 		if (sorted == null) {
 			throw new IOException("Unable to save workspace - Trees in ambiguous order (Bug 352867)"); //$NON-NLS-1$
@@ -100,13 +100,13 @@ public class ElementTreeWriter {
 
 		// compute indexes from sorted elements:
 		int numTrees = trees.length;
-		Map<ElementTree, Deque<Integer>> indicesByTree = new HashMap<>();
-		for (int i = 0; i < numTrees; i++) {
-			indicesByTree.computeIfAbsent(trees[i], unused -> new ArrayDeque<>()).push(i);
+		Map<ElementTree, Deque<Integer>> indicesByTree = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (int i = 0; i < numTrees; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			indicesByTree.computeIfAbsent(trees[i], unused -> new ArrayDeque<>()).push(i); //FLLDCIM: MARK — M08 M3_DEQUE_LANES NEW
 		}
 
 		/* write the order array */
-		for (int i = 0; i < numTrees; i++) {
+		for (int i = 0; i < numTrees; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Integer order = indicesByTree.get(sorted[i]).pop();
 			writeNumber(order, output);
 		}
@@ -152,7 +152,7 @@ public class ElementTreeWriter {
 	 * @param output The stream to write the subtree to.
 
 	 */
-	public void writeDeltaChain(ElementTree[] trees, IPath path, int depth, DataOutput output, IElementComparator comparator) throws IOException {
+	public void writeDeltaChain(ElementTree[] trees, IPath path, int depth, DataOutput output, IElementComparator comparator) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/* Write the format version number */
 		writeNumber(CURRENT_FORMAT, output);
 
@@ -174,7 +174,7 @@ public class ElementTreeWriter {
 		writeTree(sortedTrees[0], path, depth, output);
 
 		/* Write the deltas for each of the remaining trees */
-		for (int i = 1; i < treeCount; i++) {
+		for (int i = 1; i < treeCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			writeDelta(sortedTrees[i], sortedTrees[i - 1], path, depth, output, comparator);
 		}
 	}

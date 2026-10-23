@@ -75,7 +75,7 @@ public class PatchUITest {
 		testProject.delete(true, null);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testApplyClipboardPatch() throws Exception {
 		// Clipboard support on Mac OS is not reliable when tests are run
 		// through an SSH session, see bug 272870 for details
@@ -104,7 +104,7 @@ public class PatchUITest {
 		compareStreams(expected, actual);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testApplyWorkspacePatch() throws Exception {
 		copyIntoWorkspace("patch_addition.txt");
 
@@ -118,7 +118,7 @@ public class PatchUITest {
 		getButton(patchWizardPage, "fUseWorkspaceButton").setSelection(true);
 
 		TreeViewer tree = getTreeViewer(patchWizardPage, "fTreeViewer");
-		treeSelect(tree, TEST_PROJECT + "/patch_addition.txt");
+		treeSelect(tree, TEST_PROJECT + "/patch_addition.txt"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		processQueuedEvents();
 		assertTrue(patchWizardPage.canFlipToNextPage());
@@ -133,7 +133,7 @@ public class PatchUITest {
 				.getContents();
 		compareStreams(expected, actual);
 	}
-@Test
+@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testApplyClipboardPatch_AdditionWithWindowsLD() throws Exception {
 		// Clipboard support on Mac OS is not reliable when tests are run
 		// through an SSH session, see bug 272870 for details
@@ -164,7 +164,7 @@ public class PatchUITest {
 		InputStream expectedIS = PatchUtils.asInputStream("exp_addition.txt");
 		InputStream actualIS = testProject.getFile("exp_addition.txt").getContents();
 
-		String expected = PatchUtils.asString(expectedIS).replaceAll("\r?\n", "\r\n");
+		String expected = PatchUtils.asString(expectedIS).replaceAll("\r?\n", "\r\n"); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		String actual = PatchUtils.asString(actualIS);
 		assertThat(actual).isEqualTo(expected);
 
@@ -200,7 +200,7 @@ public class PatchUITest {
 		node.flush();
 	}
 
-	private void openPatchWizard() {
+	private void openPatchWizard() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ImageDescriptor patchWizardImage = CompareUIPlugin.getImageDescriptor("wizban/applypatch_wizban.svg");
 		String patchWizardTitle = PatchMessages.PatchWizard_title;
 
@@ -268,7 +268,7 @@ public class PatchUITest {
 	}
 
 	private void processQueuedEvents() {
-		while (Display.getCurrent().readAndDispatch()) {
+		while (Display.getCurrent().readAndDispatch()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// Process all the events in the queue
 		}
 	}

@@ -42,7 +42,7 @@ import org.eclipse.ui.ide.IDE;
  * @see SynchronizeModelOperation
  * @since 3.0
  */
-public abstract class SynchronizeModelAction extends BaseSelectionListenerAction {
+public abstract class SynchronizeModelAction extends BaseSelectionListenerAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 	private final ISynchronizePageConfiguration configuration;
 
@@ -81,8 +81,8 @@ public abstract class SynchronizeModelAction extends BaseSelectionListenerAction
 	 * @param selectionProvider a selection provider
 	 */
 	protected void initialize(final ISynchronizePageConfiguration configuration, final ISelectionProvider selectionProvider) {
-		selectionProvider.addSelectionChangedListener(this);
-		configuration.getPage().getViewer().getControl().addDisposeListener(unused -> selectionProvider.removeSelectionChangedListener(SynchronizeModelAction.this));
+		selectionProvider.addSelectionChangedListener(this); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
+		configuration.getPage().getViewer().getControl().addDisposeListener(unused -> selectionProvider.removeSelectionChangedListener(SynchronizeModelAction.this)); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 	}
 
 	@Override
@@ -197,8 +197,8 @@ public abstract class SynchronizeModelAction extends BaseSelectionListenerAction
 	 */
 	protected final IDiffElement[] getFilteredDiffElements() {
 		IDiffElement[] elements = getSelectedDiffElements();
-		List<IDiffElement> filtered = new ArrayList<>();
-		for (IDiffElement e : elements) {
+		List<IDiffElement> filtered = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IDiffElement e : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (e instanceof SyncInfoModelElement) {
 				SyncInfo info = ((SyncInfoModelElement) e).getSyncInfo();
 				if (info != null && getSyncInfoFilter().select(info)) {

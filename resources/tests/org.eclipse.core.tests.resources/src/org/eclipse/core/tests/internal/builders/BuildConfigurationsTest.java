@@ -131,7 +131,7 @@ public class BuildConfigurationsTest {
 	/**
 	 * Tests that deltas are restored in the correct order per variant when a project is closed then opened.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCloseAndOpenProject_Bug361675() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject tempProject = root.getProject("BuildVariantTest_pTemp");
@@ -196,7 +196,7 @@ public class BuildConfigurationsTest {
 	 * Build order should be:
 	 *     p0,v1  p1,v0  p1,v2  p0,v0
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBuildReferences() throws CoreException {
 		ConfigurationBuilder.clearStats();
 		ConfigurationBuilder.clearBuildOrder();
@@ -247,7 +247,7 @@ public class BuildConfigurationsTest {
 	 * p1 is closed.
 	 * p0v0 should still be built.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBuildReferencesOfClosedProject() throws CoreException {
 		ConfigurationBuilder.clearStats();
 		ConfigurationBuilder.clearBuildOrder();
@@ -319,7 +319,7 @@ public class BuildConfigurationsTest {
 	private void clean(int testId, IProject project, String variant, int expectedCount) throws CoreException {
 		project.build(project.getBuildConfig(variant), IncrementalProjectBuilder.CLEAN_BUILD, createTestMonitor());
 		ConfigurationBuilder builder = ConfigurationBuilder.getBuilder(project.getBuildConfig(variant));
-		assertNotNull(builder, testId + "");
+		assertNotNull(builder, testId + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertEquals(expectedCount, builder.buildCount, testId);
 		assertEquals(IncrementalProjectBuilder.CLEAN_BUILD, builder.triggerForLastBuild, testId);
 	}
@@ -331,7 +331,7 @@ public class BuildConfigurationsTest {
 		project.getBuildConfig(variant);
 		ConfigurationBuilder builder = ConfigurationBuilder.getBuilder(project.getBuildConfig(variant));
 		if (builder == null) {
-			assertFalse(shouldBuild, testId + "");
+			assertFalse(shouldBuild, testId + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			assertEquals(0, expectedCount, testId);
 		} else {
 			assertEquals(expectedCount, builder.buildCount, testId);
@@ -351,7 +351,7 @@ public class BuildConfigurationsTest {
 	 * another (not yet imported) project. Xtext builder reports it is interested in
 	 * the project that isn't there (but is referenced in the .project file).
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBuildProjectWithNotExistingReference() throws Exception {
 		// need a build to create builder
 		IBuildConfiguration buildConfig = project0.getBuildConfig(variant0);

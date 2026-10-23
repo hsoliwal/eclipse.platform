@@ -48,12 +48,12 @@ public class ZipFileStore extends FileStore {
 		this.path = path.makeRelative();
 	}
 
-	private ZipEntry[] childEntries(IProgressMonitor monitor) throws CoreException {
-		HashMap<String, ZipEntry> entries = new HashMap<>();
+	private ZipEntry[] childEntries(IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		HashMap<String, ZipEntry> entries = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		String myName = path.toString();
 		try (ZipInputStream in = new ZipInputStream(rootStore.openInputStream(EFS.NONE, monitor))) {
 			ZipEntry current;
-			while ((current = in.getNextEntry()) != null) {
+			while ((current = in.getNextEntry()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP //FLLDCIM: MARK — M25 M3FILE_ARCHIVE_STREAM CALL
 				final String currentPath = current.getName();
 				if (isParent(myName, currentPath)) {
 					entries.put(currentPath, current);
@@ -66,7 +66,7 @@ public class ZipFileStore extends FileStore {
 				}
 			}
 		} catch (IOException e) {
-			throw new CoreException(Status.error("Could not read file: " + rootStore.toString(), e));
+			throw new CoreException(Status.error("Could not read file: " + rootStore.toString(), e)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return entries.values().toArray(new ZipEntry[entries.size()]);
 	}
@@ -76,7 +76,7 @@ public class ZipFileStore extends FileStore {
 		ZipEntry[] entries = childEntries(monitor);
 		int entryCount = entries.length;
 		IFileInfo[] infos = new IFileInfo[entryCount];
-		for (int i = 0; i < entryCount; i++) {
+		for (int i = 0; i < entryCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			infos[i] = convertZipEntryToFileInfo(entries[i]);
 		}
 		return infos;
@@ -87,7 +87,7 @@ public class ZipFileStore extends FileStore {
 		ZipEntry[] entries = childEntries(monitor);
 		int entryCount = entries.length;
 		String[] names = new String[entryCount];
-		for (int i = 0; i < entryCount; i++) {
+		for (int i = 0; i < entryCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			names[i] = computeName(entries[i]);
 		}
 		return names;
@@ -123,12 +123,12 @@ public class ZipFileStore extends FileStore {
 		return info;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IFileInfo fetchInfo(int options, IProgressMonitor monitor) throws CoreException {
 		try (ZipInputStream in = new ZipInputStream(rootStore.openInputStream(EFS.NONE, monitor))) {
 			String myPath = path.toString();
 			ZipEntry current;
-			while ((current = in.getNextEntry()) != null) {
+			while ((current = in.getNextEntry()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP //FLLDCIM: MARK — M25 M3FILE_ARCHIVE_STREAM CALL
 				String currentPath = current.getName();
 				if (myPath.equals(currentPath)) {
 					return convertZipEntryToFileInfo(current);
@@ -139,7 +139,7 @@ public class ZipFileStore extends FileStore {
 				}
 			}
 		} catch (IOException e) {
-			throw new CoreException(Status.error("Could not read file: " + rootStore.toString(), e));
+			throw new CoreException(Status.error("Could not read file: " + rootStore.toString(), e)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		//does not exist
 		return new FileInfo(getName());
@@ -162,7 +162,7 @@ public class ZipFileStore extends FileStore {
 	 */
 	private ZipEntry findEntry(String name, ZipInputStream in) throws IOException {
 		ZipEntry current;
-		while ((current = in.getNextEntry()) != null) {
+		while ((current = in.getNextEntry()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP //FLLDCIM: MARK — M25 M3FILE_ARCHIVE_STREAM CALL
 			if (current.getName().equals(name)) {
 				return current;
 			}
@@ -222,14 +222,14 @@ public class ZipFileStore extends FileStore {
 		try (ZipInputStream in = new ZipInputStream(rootStore.openInputStream(EFS.NONE, monitor))) {
 			ZipEntry entry = findEntry(path.toString(), in);
 			if (entry == null) {
-				throw new CoreException(Status.error("File not found: " + rootStore.toString()));
+				throw new CoreException(Status.error("File not found: " + rootStore.toString())); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			if (entry.isDirectory()) {
-				throw new CoreException(Status.error("Resource is not a file: " + rootStore.toString()));
+				throw new CoreException(Status.error("Resource is not a file: " + rootStore.toString())); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			return in;
 		} catch (IOException e) {
-			throw new CoreException(Status.error("Could not read file: " + rootStore.toString(), e));
+			throw new CoreException(Status.error("Could not read file: " + rootStore.toString(), e)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 

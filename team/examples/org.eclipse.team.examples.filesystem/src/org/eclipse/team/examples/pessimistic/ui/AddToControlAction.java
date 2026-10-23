@@ -36,23 +36,23 @@ public class AddToControlAction extends PessimisticProviderAction {
 	 *
 	 * @see IActionDelegate#run(IAction)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run(IAction action) {
 		IResource[] resources= getSelectedResources();
 		if (resources == null || resources.length == 0)
 			return;
-		Set<IResource> resourceSet = new HashSet<>(resources.length);
-		for (IResource resource2 : resources) {
+		Set<IResource> resourceSet = new HashSet<>(resources.length); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IResource resource2 : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource= resource2;
-			while (resource.getType() != IResource.PROJECT && !isControlled(resource)) {
+			while (resource.getType() != IResource.PROJECT && !isControlled(resource)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				resourceSet.add(resource);
 				resource= resource.getParent();
 			}
 		}
 		if (!resourceSet.isEmpty()) {
 			final Map<IProject, Set<IResource>> byProject = sortByProject(resourceSet);
-			IRunnableWithProgress runnable= monitor -> {
-				for (IProject project : byProject.keySet()) {
+			IRunnableWithProgress runnable= monitor -> { //FLLDCIM: MARK — T09  LAMBDA
+				for (IProject project : byProject.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					PessimisticFilesystemProvider provider= getProvider(project);
 					if (provider != null) {
 						Set<IResource> set = byProject.get(project);

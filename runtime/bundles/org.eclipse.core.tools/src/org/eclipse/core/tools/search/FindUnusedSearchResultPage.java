@@ -78,7 +78,7 @@ public class FindUnusedSearchResultPage extends AbstractTextSearchViewPage imple
 		private TableViewer fTableViewer;
 
 		public void clear() {
-			fTableViewer.refresh();
+			fTableViewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		}
 
 		@Override
@@ -87,10 +87,10 @@ public class FindUnusedSearchResultPage extends AbstractTextSearchViewPage imple
 		}
 
 		public void elementsChanged(Object[] updatedElements) {
-			for (Object updatedElement : updatedElements) {
+			for (Object updatedElement : updatedElements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (fSearchResult.getMatchCount(updatedElement) > 0) {
 					if (fTableViewer.testFindItem(updatedElement) != null) {
-						fTableViewer.refresh(updatedElement);
+						fTableViewer.refresh(updatedElement); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 					} else {
 						fTableViewer.add(updatedElement);
 					}
@@ -194,7 +194,7 @@ public class FindUnusedSearchResultPage extends AbstractTextSearchViewPage imple
 		}
 		flags |= JavaElementLabelProvider.SHOW_PARAMETERS;
 		labelProvider = new JavaElementLabelProvider(flags);
-		viewer.setLabelProvider(labelProvider);
+		viewer.setLabelProvider(labelProvider); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 	}
 
 	@Override

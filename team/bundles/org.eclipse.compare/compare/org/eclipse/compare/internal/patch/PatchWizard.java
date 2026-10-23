@@ -55,7 +55,7 @@ public class PatchWizard extends Wizard {
 
 	private boolean patchReadIn = false;
 
-	public PatchWizard(IStorage patch, IResource target, CompareConfiguration configuration) {
+	public PatchWizard(IStorage patch, IResource target, CompareConfiguration configuration) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isNotNull(configuration);
 		this.fConfiguration = configuration;
 		setDefaultPageImageDescriptor(CompareUIPlugin.getImageDescriptor("wizban/applypatch_wizban.svg")); //$NON-NLS-1$
@@ -118,7 +118,7 @@ public class PatchWizard extends Wizard {
 		addPage(fPreviewPage2);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean performFinish() {
 
 		IWizardPage currentPage = getContainer().getCurrentPage();
@@ -169,7 +169,7 @@ public class PatchWizard extends Wizard {
 				scheduleRule = ResourcesPlugin.getWorkspace().getRuleFactory().modifyRule(resource);
 			}
 
-			WorkspaceModifyOperation op = new WorkspaceModifyOperation(scheduleRule) {
+			WorkspaceModifyOperation op = new WorkspaceModifyOperation(scheduleRule) { //FLLDCIM: MARK — T09  ANONYMOUS
 				@Override
 				protected void execute(IProgressMonitor monitor) throws InvocationTargetException {
 					try {

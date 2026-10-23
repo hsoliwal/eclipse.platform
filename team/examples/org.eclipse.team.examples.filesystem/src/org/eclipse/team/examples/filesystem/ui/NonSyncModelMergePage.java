@@ -68,7 +68,7 @@ public class NonSyncModelMergePage extends Page {
 	/*
 	 * Content provider that returns the list of conflicting mappings
 	 */
-	class PageContentProvider implements ITreeContentProvider {
+	class PageContentProvider implements ITreeContentProvider { //FLLDCIM: MARK — M22  IMPLEMENTS
 		@Override
 		public Object[] getChildren(Object parentElement) {
 			if (parentElement instanceof IMergeContext) {
@@ -117,7 +117,7 @@ public class NonSyncModelMergePage extends Page {
 				ResourceMapping mapping = (ResourceMapping) element;
 				ISynchronizationCompareAdapter adapter = NonSyncMergePart.getCompareAdapter(mapping);
 				if (adapter != null)
-					return adapter.getPathString(mapping) + "(" + mapping.getModelProvider().getDescriptor().getLabel() + ")";
+					return adapter.getPathString(mapping) + "(" + mapping.getModelProvider().getDescriptor().getLabel() + ")"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			if (element instanceof ICompareInput) {
 				ICompareInput ci = (ICompareInput) element;
@@ -178,10 +178,10 @@ public class NonSyncModelMergePage extends Page {
 	/**
 	 * Create the list of all mappings that overlap with the out-of-sync files.
 	 */
-	public void computeMappings(IProgressMonitor monitor) {
+	public void computeMappings(IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IModelProviderDescriptor[] descriptors = ModelProvider.getModelProviderDescriptors();
-		mappings = new ArrayList();
-		for (IModelProviderDescriptor descriptor : descriptors) {
+		mappings = new ArrayList(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IModelProviderDescriptor descriptor : descriptors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// Get the subset of files that this model provider cares about
 			try {
 				IResource[] resources = descriptor.getMatchingResources(getOutOfSyncFiles());
@@ -199,8 +199,8 @@ public class NonSyncModelMergePage extends Page {
 
 	private IResource[] getOutOfSyncFiles() {
 		IDiff[] diffs = getContext().getDiffTree().getDiffs(ResourcesPlugin.getWorkspace().getRoot(), IResource.DEPTH_INFINITE);
-		List<IResource> result = new ArrayList<>();
-		for (IDiff diff : diffs) {
+		List<IResource> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IDiff diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = ResourceDiffTree.getResourceFor(diff);
 			if (resource.getType() == IResource.FILE)
 				result.add(resource);
@@ -220,10 +220,10 @@ public class NonSyncModelMergePage extends Page {
 	public void createControl(Composite parent) {
 		viewer = new TreeViewer(parent);
 		viewer.setContentProvider(new PageContentProvider());
-		viewer.setLabelProvider(new PageLabelProvider());
+		viewer.setLabelProvider(new PageLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 		viewer.setComparator(new PageSorter());
 		hookContextMenu(viewer);
-		viewer.setInput(context);
+		viewer.setInput(context); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 	}
 
 	/*
@@ -232,7 +232,7 @@ public class NonSyncModelMergePage extends Page {
 	private void hookContextMenu(final TreeViewer viewer) {
 		final MenuManager menuMgr = new MenuManager();
 		menuMgr.setRemoveAllWhenShown(true);
-		menuMgr.addMenuListener(this::fillContextMenu);
+		menuMgr.addMenuListener(this::fillContextMenu); //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 		Menu menu = menuMgr.createContextMenu(viewer.getControl());
 		viewer.getControl().setMenu(menu);
 	}
@@ -241,7 +241,7 @@ public class NonSyncModelMergePage extends Page {
 	 * Fill the context menu.
 	 * @param manager the context menu manager
 	 */
-	protected void fillContextMenu(IMenuManager manager) {
+	protected void fillContextMenu(IMenuManager manager) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/*
 		 * Add a mark as merged action. Because we are not using the
 		 * Synchronization framework and, more specifically, the
@@ -252,11 +252,11 @@ public class NonSyncModelMergePage extends Page {
 		 * unselected model elements.
 		 */
 		Action markAsMerged = new Action("Mark as Merged") {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void run() {
 				try {
 					final IStructuredSelection selection = viewer.getStructuredSelection();
-					PlatformUI.getWorkbench().getProgressService().busyCursorWhile(monitor -> {
+					PlatformUI.getWorkbench().getProgressService().busyCursorWhile(monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 						IDiff[] diffs = getSelectedDiffs(selection, monitor);
 						if (!checkForModelOverlap(diffs, monitor)) {
 							return;
@@ -283,8 +283,8 @@ public class NonSyncModelMergePage extends Page {
 	}
 
 	private IDiff[] getDiffs(Object[] elements, IProgressMonitor monitor) {
-		Set<IDiff> result = new HashSet<>();
-		for (Object element : elements) {
+		Set<IDiff> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (Object element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				if (element instanceof ResourceMapping) {
 					ResourceMapping mapping = (ResourceMapping) element;

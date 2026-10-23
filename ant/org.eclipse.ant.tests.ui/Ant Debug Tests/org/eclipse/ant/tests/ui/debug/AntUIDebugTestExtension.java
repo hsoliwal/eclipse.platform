@@ -49,7 +49,7 @@ class AntUIDebugTestExtension implements BeforeAllCallback, AfterAllCallback, Be
 	@Override
 	public void beforeEach(ExtensionContext context) throws Exception {
 		setPreferences();
-		DebugUIPlugin.getStandardDisplay().syncExec(() -> {
+		DebugUIPlugin.getStandardDisplay().syncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			IWorkbench workbench = PlatformUI.getWorkbench();
 			IPerspectiveDescriptor descriptor = workbench.getPerspectiveRegistry()
 					.findPerspectiveWithId(IDebugUIConstants.ID_DEBUG_PERSPECTIVE);

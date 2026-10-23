@@ -106,7 +106,7 @@ public class IOConsoleTests {
 
 	protected TestInfo testInfo;
 
-	@BeforeEach
+	@BeforeEach //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setUp(TestInfo testInfo) throws Exception {
 		this.testInfo = testInfo;
 		// create or activate console view
@@ -135,7 +135,7 @@ public class IOConsoleTests {
 
 	private void assertNoError() {
 		String allErrors = loggedErrors.stream().map(IStatus::toString).collect(Collectors.joining(", "));
-		AssertionError assertionError = new AssertionError("Test triggered errors in IOConsole: " + allErrors);
+		AssertionError assertionError = new AssertionError("Test triggered errors in IOConsole: " + allErrors); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		loggedErrors.forEach(status -> {
 			if (status.getException() instanceof Throwable e) {
 				assertionError.addSuppressed(e);
@@ -144,7 +144,7 @@ public class IOConsoleTests {
 		if (assertionError.getSuppressed().length > 0) {
 			throw assertionError;
 		}
-		assertTrue(loggedErrors.isEmpty(), "Test triggered errors in IOConsole: " + allErrors);
+		assertTrue(loggedErrors.isEmpty(), "Test triggered errors in IOConsole: " + allErrors); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -156,7 +156,7 @@ public class IOConsoleTests {
 	protected IOConsoleTestUtil getTestUtil(String title) {
 		final IOConsole console = new IOConsole(title, "", null, StandardCharsets.UTF_8.name(), true);
 		consoleFinished.set(false);
-		console.addPropertyChangeListener((PropertyChangeEvent event) -> {
+		console.addPropertyChangeListener((PropertyChangeEvent event) -> { //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 			if (event.getSource() == console && IConsoleConstants.P_CONSOLE_OUTPUT_COMPLETE.equals(event.getProperty())) {
 				consoleFinished.set(true);
 			}
@@ -181,7 +181,7 @@ public class IOConsoleTests {
 	 * @param c the test util containing the console to close
 	 * @param expectedInputLines content this {@link IOConsole} input stream has received
 	 */
-	protected void closeConsole(IOConsoleTestUtil c, String... expectedInputLines) throws IOException {
+	protected void closeConsole(IOConsoleTestUtil c, String... expectedInputLines) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (consoleFinished.get()) {
 			// This should only happen if no output streams where used and the
 			// user input stream was explicit closed before
@@ -195,16 +195,16 @@ public class IOConsoleTests {
 				assertNotNull(consoleIn);
 				assertTrue(consoleIn.available() > 0, "InputStream is empty.");
 
-				final List<String> inputLines = new ArrayList<>();
+				final List<String> inputLines = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				try (BufferedReader reader = new BufferedReader(new InputStreamReader(consoleIn, c.getConsole().getCharset()))) {
 					String line;
-					while (reader.ready() && (line = reader.readLine()) != null) {
+					while (reader.ready() && (line = reader.readLine()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						inputLines.add(line);
 					}
 				}
 				assertEquals(expectedInputLines.length, inputLines.size(), "Input contains to many/few lines.");
-				for (int i = 0; i < expectedInputLines.length; i++) {
-					assertEquals(expectedInputLines[i], inputLines.get(i), "Content of input line " + i + " not as expected.");
+				for (int i = 0; i < expectedInputLines.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					assertEquals(expectedInputLines[i], inputLines.get(i), "Content of input line " + i + " not as expected."); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
 		}
@@ -218,7 +218,7 @@ public class IOConsoleTests {
 	/**
 	 * Test console clear.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testConsoleClear() throws Exception {
 		final IOConsoleTestUtil c = getTestUtil("Test clear");
 
@@ -268,7 +268,7 @@ public class IOConsoleTests {
 		final IOConsoleTestUtil c = getTestUtil("Test writes");
 		final String[] strings = new String[] {
 				"Hello ", "World", "foo-", "bar", "123 456" };
-		for (String s : strings) {
+		for (String s : strings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			c.writeAndVerify(s);
 		}
 		c.write("\n");
@@ -284,10 +284,10 @@ public class IOConsoleTests {
 	 * Test {@link IOConsole} input stream, i.e. simulate user typing or pasting
 	 * input in console.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testUserInput() throws Exception {
 		final IOConsoleTestUtil c = getTestUtil("Test input");
-		final List<String> expectedInput = new ArrayList<>();
+		final List<String> expectedInput = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		c.insertAndVerify("RR").backspace(3).verifyContent("").verifyPartitions();
 		c.insertAndVerify("remove").select(0, c.getContentLength()).verifyPartitions();
@@ -341,10 +341,10 @@ public class IOConsoleTests {
 	/**
 	 * Test mixes of outputs and user inputs in various variants.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMixedWriteAndInput() throws Exception {
 		final IOConsoleTestUtil c = getTestUtil("Test input output mix");
-		final List<String> expectedInput = new ArrayList<>();
+		final List<String> expectedInput = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		// user input mixed with outputs without caret movement
 		c.writeAndVerify("foo");
@@ -439,7 +439,7 @@ public class IOConsoleTests {
 	/**
 	 * Test enabling/disabling control character interpretation.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testControlCharacterSettings() throws Exception {
 		final IOConsoleTestUtil c = getTestUtil("Test options");
 
@@ -468,7 +468,7 @@ public class IOConsoleTests {
 	/**
 	 * Test handling of <code>\b</code>.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBackspaceControlCharacter() throws Exception {
 		final IOConsoleTestUtil c = getTestUtil("Test \\b");
 		c.getConsole().setCarriageReturnAsControlCharacter(false);
@@ -550,7 +550,7 @@ public class IOConsoleTests {
 	/**
 	 * Test handling of <code>\r</code>.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCarriageReturnControlCharacter() throws Exception {
 		final IOConsoleTestUtil c = getTestUtil("Test \\r");
 		c.getConsole().setCarriageReturnAsControlCharacter(true);
@@ -596,7 +596,7 @@ public class IOConsoleTests {
 	/**
 	 * Test handling of <code>\f</code>.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFormFeedControlCharacter() throws Exception {
 		final IOConsoleTestUtil c = getTestUtil("Test \\f");
 		c.getConsole().setHandleControlCharacters(true);
@@ -660,25 +660,25 @@ public class IOConsoleTests {
 	/**
 	 * Test larger number of partitions with pseudo random console content.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testManyPartitions() throws IOException {
 		final IOConsoleTestUtil c = getTestUtil("Test many partitions");
-		final List<String> expectedInput = new ArrayList<>();
-		final StringBuilder input = new StringBuilder();
+		final List<String> expectedInput = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		final StringBuilder input = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		try (IOConsoleOutputStream otherOut = c.getConsole().newOutputStream()) {
 			final Random rand = new Random(12);
-			final StringBuilder sb = new StringBuilder();
-			for (int i = 0; i < 20; i++) {
-				for (int j = 0; j < 80; j += sb.length()) {
+			final StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+			for (int i = 0; i < 20; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				for (int j = 0; j < 80; j += sb.length()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					sb.setLength(0);
-					for (int k = rand.nextInt(15) + 1; k > 0; k--) {
+					for (int k = rand.nextInt(15) + 1; k > 0; k--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						// add printable ASCII character
-						sb.append((char) (rand.nextInt(95) + 32));
+						sb.append((char) (rand.nextInt(95) + 32)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
 					switch (rand.nextInt(5)) {
 						case 0:
 							c.insert(sb.toString());
-							input.append(sb);
+							input.append(sb); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 							break;
 
 						case 1:
@@ -702,13 +702,13 @@ public class IOConsoleTests {
 	/**
 	 * Test console trimming.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTrim() throws Exception {
 		final IOConsoleTestUtil c = getTestUtil("Test trim");
 		try (IOConsoleOutputStream defaultOut = c.getDefaultOutputStream()) {
 			try (IOConsoleOutputStream otherOut = c.getConsole().newOutputStream()) {
 				c.writeFast("first\n");
-				for (int i = 0; i < 20; i++) {
+				for (int i = 0; i < 20; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					c.writeFast("0123456789\n", (i & 1) == 0 ? defaultOut : otherOut);
 				}
 				c.write("last\n");
@@ -836,7 +836,7 @@ public class IOConsoleTests {
 			c.verifyContentByLine("first", 0).verifyContentByLine("last", -2);
 			assertTrue(c.getDocument().getNumberOfLines() > 2, "Document not filled.");
 			c.waitForScheduledJobs();
-			c.verifyContent("first\n01234567" + nl + "89\nlast\n");
+			c.verifyContent("first\n01234567" + nl + "89\nlast\n"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			closeConsole(c);
 		}
 	}
@@ -876,7 +876,7 @@ public class IOConsoleTests {
 			c.verifyContentByLine("first", 0).verifyContentByLine("last", -2);
 			assertTrue(c.getDocument().getNumberOfLines() > 2, "Document not filled.");
 			c.waitForScheduledJobs();
-			c.verifyContent("first\n0123456" + nl + "\uD83D\uDE00\uD83D\uDE00\nlast\n");
+			c.verifyContent("first\n0123456" + nl + "\uD83D\uDE00\uD83D\uDE00\nlast\n"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			closeConsole(c);
 		}
 	}
@@ -884,7 +884,7 @@ public class IOConsoleTests {
 	/**
 	 * Some extra tests for IOConsolePartitioner.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIOPartitioner() throws Exception {
 		final IOConsoleTestUtil c = getTestUtil("Test partitioner");
 
@@ -911,7 +911,7 @@ public class IOConsoleTests {
 	/**
 	 * Tests for the {@link IConsoleDocumentPartitioner} interface.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIConsoleDocumentPartitioner() throws Exception {
 		final IOConsoleTestUtil c = getTestUtil("Test IConsoleDocumentPartitioner");
 		try (IOConsoleOutputStream otherOut = c.getConsole().newOutputStream()) {
@@ -965,7 +965,7 @@ public class IOConsoleTests {
 			assertTrue(c.getPartitioner().isReadOnly(0), "Offset should be read-only.");
 			assertTrue(c.getPartitioner().isReadOnly(1), "Offset should be read-only.");
 			assertFalse(c.getPartitioner().isReadOnly(2), "Offset should be writable.");
-			for (int i = 3; i < loremEnd; i++) {
+			for (int i = 3; i < loremEnd; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				assertTrue(c.getPartitioner().isReadOnly(i), "Offset should be read-only.");
 			}
 			assertFalse(c.getPartitioner().isReadOnly(loremEnd + 0), "Offset should be writable.");
@@ -1007,7 +1007,7 @@ public class IOConsoleTests {
 				assertEquals(2, extension.getNextOffsetByState(2, true), "Got wrong offset.");
 				assertEquals(1, extension.getPreviousOffsetByState(2, false), "Got wrong offset.");
 				assertEquals(2, extension.getPreviousOffsetByState(2, true), "Got wrong offset.");
-				for (int i = 3; i < loremEnd; i++) {
+				for (int i = 3; i < loremEnd; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					assertEquals(i, extension.getNextOffsetByState(i, false), "Got wrong offset.");
 					assertEquals(loremEnd, extension.getNextOffsetByState(i, true), "Got wrong offset.");
 					assertEquals(i, extension.getPreviousOffsetByState(i, false), "Got wrong offset.");
@@ -1022,7 +1022,7 @@ public class IOConsoleTests {
 				assertEquals(loremEnd - 1, extension.getPreviousOffsetByState(loremEnd + 2, false), "Got wrong offset.");
 				assertEquals(loremEnd + 2, extension.getPreviousOffsetByState(loremEnd + 2, true), "Got wrong offset.");
 			} else {
-				TestUtil.log(IStatus.INFO, TestsPlugin.PLUGIN_ID, "IOConsole partitioner does not implement " + IConsoleDocumentPartitionerExtension.class.getName() + ". Skip those tests.");
+				TestUtil.log(IStatus.INFO, TestsPlugin.PLUGIN_ID, "IOConsole partitioner does not implement " + IConsoleDocumentPartitionerExtension.class.getName() + ". Skip those tests."); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		c.verifyPartitions();
@@ -1033,7 +1033,7 @@ public class IOConsoleTests {
 	/**
 	 * Regression test for deadlock in stream processing.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug421303_StreamProcessingDeadlock() throws Exception {
 		// Test situation is that UI thread and another thread both write a
 		// large amount of output into same IOConsoleOutputStream at same time
@@ -1103,7 +1103,7 @@ public class IOConsoleTests {
 		}
 		Arrays.sort(styles, (a, b) -> Integer.compare(a.start, b.start));
 		int lastEnd = Integer.MIN_VALUE;
-		for (StyleRange s : styles) {
+		for (StyleRange s : styles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertTrue(lastEnd <= s.start, "Styles overlap.");
 			lastEnd = s.start + s.length;
 		}
@@ -1117,7 +1117,7 @@ public class IOConsoleTests {
 	 * @throws NotDefinedException
 	 * @throws ExecutionException
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIsAnsiEscapeEnabled() throws ExecutionException, NotDefinedException, NotEnabledException, NotHandledException {
 		final boolean initial = IOConsole.isAnsiConsoleEnabled();
 
@@ -1142,7 +1142,7 @@ public class IOConsoleTests {
 	}
 
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug2127_CaretRepositionedAfterOutput() throws Exception {
 		IOConsoleTestUtil c = getTestUtil("Test caret reposition after output");
 		try {

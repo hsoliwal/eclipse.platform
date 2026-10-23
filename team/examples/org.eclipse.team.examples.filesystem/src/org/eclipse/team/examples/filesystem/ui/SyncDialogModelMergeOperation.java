@@ -23,7 +23,7 @@ import org.eclipse.ui.IWorkbenchPart;
  * This merge operation will attempt a headless merge and then prompt
  * the user with a dialog if conflicts exist.
  */
-public class SyncDialogModelMergeOperation extends
+public class SyncDialogModelMergeOperation extends //FLLDCIM: MARK — T09  IMPLEMENTS
 		ModelParticipantMergeOperation {
 
 	public SyncDialogModelMergeOperation(IWorkbenchPart part, ISynchronizationScopeManager manager) {

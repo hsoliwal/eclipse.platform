@@ -67,7 +67,7 @@ public abstract class RevisionAnnotationController {
 
 	private ISelectionProvider fRulerSelectionProvider;
 	private ISelectionProvider fHistoryListSelectionProvider;
-	private ISelectionChangedListener rulerListener = event -> {
+	private ISelectionChangedListener rulerListener = event -> { //FLLDCIM: MARK — T04  LAMBDA
 		ISelection selection= event.getSelection();
 		Revision selected= null;
 		if (selection instanceof IStructuredSelection) {
@@ -80,7 +80,7 @@ public abstract class RevisionAnnotationController {
 
 		revisionSelected(selected);
 	};
-	private ISelectionChangedListener historyListListener = event -> {
+	private ISelectionChangedListener historyListListener = event -> { //FLLDCIM: MARK — T04  LAMBDA
 		ISelection selection= event.getSelection();
 		if (selection instanceof IStructuredSelection ss) {
 			if (ss.size() == 1) {
@@ -104,7 +104,7 @@ public abstract class RevisionAnnotationController {
 	 * @return the open editor on the file
 	 * @throws PartInitException swallowed
 	 */
-	public static AbstractDecoratedTextEditor openEditor(IWorkbenchPage page, IFile file) throws PartInitException {
+	public static AbstractDecoratedTextEditor openEditor(IWorkbenchPage page, IFile file) throws PartInitException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (file == null) {
 			return null;
 		}
@@ -171,7 +171,7 @@ public abstract class RevisionAnnotationController {
 	}
 
 
-	private static ITextEditor getEditor(String id, Object fileRevision, IStorage storage) throws PartInitException {
+	private static ITextEditor getEditor(String id, Object fileRevision, IStorage storage) throws PartInitException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final IWorkbench workbench= PlatformUI.getWorkbench();
 		final IWorkbenchWindow window= workbench.getActiveWorkbenchWindow();
 		IWorkbenchPage page= window.getActivePage();
@@ -192,7 +192,7 @@ public abstract class RevisionAnnotationController {
 		}
 	}
 
-	private static String getEditorId(IStorage storage) {
+	private static String getEditorId(IStorage storage) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String id;
 		IEditorRegistry registry = PlatformUI.getWorkbench().getEditorRegistry();
 		IEditorDescriptor descriptor = registry.getDefaultEditor(storage.getName());
@@ -224,7 +224,7 @@ public abstract class RevisionAnnotationController {
 	}
 
 	private static AbstractDecoratedTextEditor findTextEditor(IWorkbenchPage page, IEditorPart[] editors, IEditorInput input) {
-		for (IEditorPart editor : editors) {
+		for (IEditorPart editor : editors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			AbstractDecoratedTextEditor te = findTextEditorPart(page, editor, input);
 			if (te != null) {
 				return te;
@@ -239,7 +239,7 @@ public abstract class RevisionAnnotationController {
 		}
 		if (editor instanceof MultiPageEditorPart mpep) {
 			IEditorPart[] parts = mpep.findEditors(input);
-			for (IEditorPart editorPart : parts) {
+			for (IEditorPart editorPart : parts) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (editorPart instanceof AbstractDecoratedTextEditor) {
 					page.activate(mpep);
 					mpep.setActiveEditor(editorPart);
@@ -252,8 +252,8 @@ public abstract class RevisionAnnotationController {
 
 	private static IEditorPart[] findOpenEditorsForFile(IWorkbenchPage page, FileEditorInput input) {
 		final IEditorReference[] references= page.findEditors(input, null, IWorkbenchPage.MATCH_INPUT);
-		final List<IEditorPart> editors = new ArrayList<>();
-		for (IEditorReference reference : references) {
+		final List<IEditorPart> editors = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IEditorReference reference : references) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IEditorPart editor= reference.getEditor(false);
 			editors.add(editor);
 		}
@@ -261,7 +261,7 @@ public abstract class RevisionAnnotationController {
 		return editors.toArray(new IEditorPart[editors.size()]);
 	}
 
-	private static AbstractDecoratedTextEditor findOpenTextEditorFor(IWorkbenchPage page, Object object) {
+	private static AbstractDecoratedTextEditor findOpenTextEditorFor(IWorkbenchPage page, Object object) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (object == null) {
 			return null;
 		}
@@ -271,7 +271,7 @@ public abstract class RevisionAnnotationController {
 		final IWorkbench workbench= PlatformUI.getWorkbench();
 		final IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
 		IEditorReference[] references= window.getActivePage().getEditorReferences();
-		for (IEditorReference reference : references) {
+		for (IEditorReference reference : references) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				if (object.equals(reference.getEditorInput())) {
 					IEditorPart editor= reference.getEditor(false);
@@ -312,10 +312,10 @@ public abstract class RevisionAnnotationController {
 		}
 
 		fRulerSelectionProvider= revisionRuler.getRevisionSelectionProvider();
-		fRulerSelectionProvider.addSelectionChangedListener(rulerListener);
-		fHistoryListSelectionProvider.addSelectionChangedListener(historyListListener);
+		fRulerSelectionProvider.addSelectionChangedListener(rulerListener); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
+		fHistoryListSelectionProvider.addSelectionChangedListener(historyListListener); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 
-		((IRevisionRulerColumn)revisionRuler).getControl().addDisposeListener(unused -> dispose());
+		((IRevisionRulerColumn)revisionRuler).getControl().addDisposeListener(unused -> dispose()); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 	}
 
 	/**

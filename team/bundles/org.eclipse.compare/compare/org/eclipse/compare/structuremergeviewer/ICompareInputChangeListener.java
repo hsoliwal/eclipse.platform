@@ -29,7 +29,7 @@ package org.eclipse.compare.structuremergeviewer;
  * an {@link ICompareInput} as input.
  * </p>
  */
-public interface ICompareInputChangeListener {
+public interface ICompareInputChangeListener { //FLLDCIM: MARK — T37  IMPLEMENTS
 	/**
 	 * Called whenever the value (not the content) of one or more of the three sides
 	 * of a {@link ICompareInput} has changed.

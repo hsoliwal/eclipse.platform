@@ -39,13 +39,13 @@ public abstract class FileSystemAction extends TeamAction {
 	 * Split the resources into sets associated with their project/provider
 	 */
 	protected Map getRepositoryProviderMapping() {
-		HashMap<RepositoryProvider, List<IResource>> result = new HashMap<>();
+		HashMap<RepositoryProvider, List<IResource>> result = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		IResource[] resources = getSelectedResources();
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			RepositoryProvider provider = RepositoryProvider.getProvider(resource.getProject());
 			List<IResource> list = result.get(provider);
 			if (list == null) {
-				list = new ArrayList<>();
+				list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				result.put(provider, list);
 			}
 			list.add(resource);

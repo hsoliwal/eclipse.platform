@@ -138,7 +138,7 @@ public class DiffNode extends DiffContainer implements ICompareInput {
 	protected void fireChange() {
 		if (fListener != null) {
 			Object[] listeners= fListener.getListeners();
-			for (Object listener : listeners) {
+			for (Object listener : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				((ICompareInputChangeListener) listener).compareInputChanged(this);
 			}
 		}
@@ -190,7 +190,7 @@ public class DiffNode extends DiffContainer implements ICompareInput {
 	 *
 	 * @return the name of this node.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String getName() {
 		String right= null;
 		if (fRight != null) {
@@ -300,7 +300,7 @@ public class DiffNode extends DiffContainer implements ICompareInput {
 		return fRight;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void copy(boolean leftToRight) {
 		//System.out.println("DiffNode.copy: " + leftToRight);
 
@@ -329,7 +329,7 @@ public class DiffNode extends DiffContainer implements ICompareInput {
 	public int hashCode() {
 		String[] path= getPath(this, 0);
 		int hashCode= 1;
-		for (String s : path) {
+		for (String s : path) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			hashCode= (31 * hashCode) + (s != null ? s.hashCode() : 0);
 		}
 		return hashCode;
@@ -343,7 +343,7 @@ public class DiffNode extends DiffContainer implements ICompareInput {
 			if (path1.length != path2.length) {
 				return false;
 			}
-			for (int i= 0; i < path1.length; i++) {
+			for (int i= 0; i < path1.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (! path1[i].equals(path2[i])) {
 					return false;
 				}

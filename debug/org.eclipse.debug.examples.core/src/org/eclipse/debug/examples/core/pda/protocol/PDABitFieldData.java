@@ -37,8 +37,8 @@ public class PDABitFieldData {
 		fOffset = Integer.parseInt(st.nextToken());
 		fCount = Integer.parseInt(st.nextToken());
 
-		fMnemonics = new LinkedHashMap<>(0);
-		while (st.hasMoreTokens()) {
+		fMnemonics = new LinkedHashMap<>(0); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW
+		while (st.hasMoreTokens()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fMnemonics.put(st.nextToken(), st.nextToken());
 		}
 	}

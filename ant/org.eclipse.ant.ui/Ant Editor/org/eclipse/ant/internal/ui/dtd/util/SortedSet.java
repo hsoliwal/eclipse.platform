@@ -71,7 +71,7 @@ public class SortedSet {
 		return internalAdd(obj, false) >= 0;
 	}
 
-	protected int internalAdd(Object obj, boolean always) {
+	protected int internalAdd(Object obj, boolean always) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Object[] array = fKeyHolder.getKeys();
 		if (array == null) {
 			array = new Object[1];
@@ -82,7 +82,7 @@ public class SortedSet {
 		int i = 0;
 		int comp = -1;
 
-		for (; i < array.length; i++) {
+		for (; i < array.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if ((comp = fComp.compare(obj, array[i])) <= 0) {
 				break;
 			}
@@ -139,7 +139,7 @@ public class SortedSet {
 		if (array == null) {
 			return -1;
 		}
-		for (int i = 0; i < array.length; i++) {
+		for (int i = 0; i < array.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int comp = fComp.compare(obj, array[i]);
 			if (comp == 0) {
 				return i;
@@ -160,7 +160,7 @@ public class SortedSet {
 		if (array == null) {
 			return -1;
 		}
-		for (int i = 0; i < array.length; i++) {
+		for (int i = 0; i < array.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (obj == array[i]) {
 				return i;
 			}
@@ -168,7 +168,7 @@ public class SortedSet {
 		return -1;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean equals(Object o) {
 		if (this == o) {
 			return true;
@@ -187,7 +187,7 @@ public class SortedSet {
 		if (array.length != otherarray.length) {
 			return false;
 		}
-		for (int i = 0; i < array.length; i++) {
+		for (int i = 0; i < array.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (array[i] != otherarray[i]) {
 				return false;
 			}
@@ -195,7 +195,7 @@ public class SortedSet {
 		return true;
 	}
 
-	public void merge(SortedSet other) {
+	public void merge(SortedSet other) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Object[] array = fKeyHolder.getKeys();
 		Object[] otherarray = other.fKeyHolder.getKeys();
 		if (otherarray == null) {
@@ -208,7 +208,7 @@ public class SortedSet {
 		int ithis = 0, iother = 0, i = 0;
 		int mthis = array.length, mother = otherarray.length;
 		Object[] tmp = new Object[mthis + mother];
-		while (ithis < mthis && iother < mother) {
+		while (ithis < mthis && iother < mother) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int comp = fComp.compare(array[ithis], otherarray[iother]);
 			if (comp <= 0) {
 				tmp[i++] = array[ithis++];
@@ -216,10 +216,10 @@ public class SortedSet {
 				tmp[i++] = otherarray[iother++];
 			}
 		}
-		while (ithis < mthis) {
+		while (ithis < mthis) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			tmp[i++] = array[ithis++];
 		}
-		while (iother < mother) {
+		while (iother < mother) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			tmp[i++] = otherarray[iother++];
 		}
 	}

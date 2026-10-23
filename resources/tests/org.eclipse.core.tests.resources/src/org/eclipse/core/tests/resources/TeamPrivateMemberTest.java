@@ -43,7 +43,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class TeamPrivateMemberTest {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshLocal() throws Exception {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject project = root.getProject("MyProject");
@@ -69,7 +69,7 @@ public class TeamPrivateMemberTest {
 	/**
 	 * Resources which are marked as team private members should always be found.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFindMember() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject project = root.getProject("MyProject");
@@ -104,7 +104,7 @@ public class TeamPrivateMemberTest {
 	 * Resources which are marked as team private members are not included in #members
 	 * calls unless specifically included by calling #members(IContainer.INCLUDE_TEAM_PRIVATE_MEMBERS)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMembers() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("MyProject");
 		IFolder folder = project.getFolder("folder");
@@ -170,7 +170,7 @@ public class TeamPrivateMemberTest {
 	 * Resources which are marked as team private members should not be visited by
 	 * resource visitors.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAccept() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("MyProject");
 		IFolder folder = project.getFolder("folder");
@@ -263,7 +263,7 @@ public class TeamPrivateMemberTest {
 		assertTrue(visitor.isValid(), visitor.getMessage());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopy() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject project = root.getProject("MyProject");
@@ -317,7 +317,7 @@ public class TeamPrivateMemberTest {
 		assertExistsInWorkspace(destFolder, destSubFile);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMove() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject project = root.getProject("MyProject");
@@ -371,7 +371,7 @@ public class TeamPrivateMemberTest {
 		assertExistsInWorkspace(destFolder, destSubFile);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDelete() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject project = root.getProject("MyProject");
@@ -430,7 +430,7 @@ public class TeamPrivateMemberTest {
 		assertExistsInWorkspace(project, file);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeltas() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		final IProject project = root.getProject("MyProject");
@@ -445,7 +445,7 @@ public class TeamPrivateMemberTest {
 		final ResourceDeltaVerifier listener = new ResourceDeltaVerifier();
 		getWorkspace().addResourceChangeListener(listener);
 		try {
-			IWorkspaceRunnable body = unused -> createInWorkspace(resources);
+			IWorkspaceRunnable body = unused -> createInWorkspace(resources); //FLLDCIM: MARK — T09  LAMBDA
 			listener.addExpectedChange(resources, IResourceDelta.ADDED, IResource.NONE);
 			listener.addExpectedChange(project, IResourceDelta.ADDED, IResourceDelta.OPEN);
 			listener.addExpectedChange(description, IResourceDelta.ADDED, IResource.NONE);
@@ -460,7 +460,7 @@ public class TeamPrivateMemberTest {
 		// set the folder to be team private and do the same test
 		getWorkspace().addResourceChangeListener(listener);
 		try {
-			IWorkspaceRunnable body = unused -> {
+			IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				createInWorkspace(resources);
 				setTeamPrivateMember(folder, true, IResource.DEPTH_ZERO);
 			};
@@ -478,7 +478,7 @@ public class TeamPrivateMemberTest {
 		// set all resources to be team private and do the same test
 		getWorkspace().addResourceChangeListener(listener);
 		try {
-			IWorkspaceRunnable body = unused -> {
+			IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				createInWorkspace(resources);
 				setTeamPrivateMember(project, true, IResource.DEPTH_INFINITE);
 			};
@@ -498,7 +498,7 @@ public class TeamPrivateMemberTest {
 	 * Resources which are marked as team private members return TRUE
 	 * in all calls to #exists.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testExists() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("MyProject");
 		IFolder folder = project.getFolder("folder");
@@ -524,7 +524,7 @@ public class TeamPrivateMemberTest {
 	/**
 	 * Test the set and get methods for team private members.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetGet() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("MyProject");
 		IFolder folder = project.getFolder("folder");
@@ -533,7 +533,7 @@ public class TeamPrivateMemberTest {
 		IResource[] resources = { project, folder, file, subFile };
 
 		// Trying to set the value on non-existing resources will fail
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThrows(CoreException.class, () -> resource.setTeamPrivateMember(true));
 		}
 
@@ -541,17 +541,17 @@ public class TeamPrivateMemberTest {
 		createInWorkspace(resources);
 
 		// Initial values should be false.
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertTeamPrivateMember(resource, false);
 		}
 
 		// Now set the values.
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			resource.setTeamPrivateMember(true);
 		}
 
 		// The values should be true for files and folders, false otherwise.
-		for (IResource resource2 : resources) {
+		for (IResource resource2 : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = resource2;
 			switch (resource.getType()) {
 				case IResource.FILE :
@@ -566,12 +566,12 @@ public class TeamPrivateMemberTest {
 		}
 
 		// Clear the values.
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			resource.setTeamPrivateMember(false);
 		}
 
 		// Values should be false again.
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertTeamPrivateMember(resource, false);
 		}
 	}

@@ -81,7 +81,7 @@ public class NoChangesDialog extends DetailsDialog {
 	/*
 	 * Code copied from IconandMessageDialog
 	 */
-	private Control createMessageArea(Composite composite) {
+	private Control createMessageArea(Composite composite) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// create composite
 		// create image
 		Image image = getSWTImage(SWT.ICON_INFORMATION);
@@ -122,7 +122,7 @@ public class NoChangesDialog extends DetailsDialog {
 		}
 
 		final Image[] image = new Image[1];
-		display.syncExec(() -> image[0] = display.getSystemImage(imageID));
+		display.syncExec(() -> image[0] = display.getSystemImage(imageID)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 
 		return image[0];
 	}

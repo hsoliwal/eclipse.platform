@@ -44,7 +44,7 @@ import org.eclipse.ant.internal.ui.dtd.util.SortedMapFactory;
  */
 public class NfmParser {
 
-	public Dfm parse(Nfm nfm) throws ParseError {
+	public Dfm parse(Nfm nfm) throws ParseError { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// Parse nfm into dfm
 
@@ -52,12 +52,12 @@ public class NfmParser {
 
 		// Make list of dfms in graph
 
-		ArrayList<Dfm> dfms = new ArrayList<>();
+		ArrayList<Dfm> dfms = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		collect(dfm, dfms);
 
 		// Detect accept conflicts
 
-		HashMap<Dfm, Dfm> duplicates = new HashMap<>();
+		HashMap<Dfm, Dfm> duplicates = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		detect(dfms, duplicates);
 
 		// Replace duplicate dfms in graph
@@ -84,7 +84,7 @@ public class NfmParser {
 	private static void collect1(Dfm dfm, List<Dfm> dfms) {
 		Object[] follows = dfm.getValues();
 		if (follows != null) {
-			for (Object follow2 : follows) {
+			for (Object follow2 : follows) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Dfm follow = (Dfm) follow2;
 				if (!dfms.contains(follow)) {
 					dfms.add(follow);
@@ -97,13 +97,13 @@ public class NfmParser {
 	/**
 	 * Replace duplicate dfms found during conflict resolution.
 	 */
-	private void replace(ArrayList<Dfm> dfms, HashMap<Dfm, Dfm> removed) {
-		for (Dfm dfm : dfms) {
+	private void replace(ArrayList<Dfm> dfms, HashMap<Dfm, Dfm> removed) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		for (Dfm dfm : dfms) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object[] follows = dfm.getValues();
 			if (follows != null) {
-				for (int j = 0; j < follows.length; j++) {
+				for (int j = 0; j < follows.length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Dfm replacement, follow = (Dfm) follows[j];
-					while ((replacement = removed.get(follow)) != null) {
+					while ((replacement = removed.get(follow)) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						follow = replacement;
 					}
 					follows[j] = follow;
@@ -111,7 +111,7 @@ public class NfmParser {
 			}
 		}
 		// release dfms so can be re-used
-		for (Dfm dfm : removed.keySet()) {
+		for (Dfm dfm : removed.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Dfm.free(dfm);
 		}
 	}
@@ -125,13 +125,13 @@ public class NfmParser {
 	 * responsibility ends. Note that no transitions can be removed until all have been checked; this might disguise the ambiguity in, e.g.,
 	 * ((a|a),b,(a|a))*.
 	 */
-	private void detect(ArrayList<Dfm> dfms, HashMap<Dfm, Dfm> duplicates) throws ParseError {
-		for (Dfm dfm : dfms) {
+	private void detect(ArrayList<Dfm> dfms, HashMap<Dfm, Dfm> duplicates) throws ParseError { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		for (Dfm dfm : dfms) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object[] accepts = dfm.getKeys();
 			Object[] follows = dfm.getValues();
 			if (accepts != null) {
 				String last = null;
-				for (int i = 0, lasti = -1; i < accepts.length; i++) {
+				for (int i = 0, lasti = -1; i < accepts.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String accept = accepts[i].toString();
 					// accepts strings are interned allowing identity comparison
 
@@ -149,7 +149,7 @@ public class NfmParser {
 
 		// once more for removal
 
-		for (Dfm dfm : dfms) {
+		for (Dfm dfm : dfms) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// record conflicts
 			Object[] accepts = dfm.getKeys();
 			Object[] follows = dfm.getValues();
@@ -157,7 +157,7 @@ public class NfmParser {
 			if (accepts != null) {
 				boolean[] removes = new boolean[accepts.length];
 				String last = null;
-				for (int i = 0, lasti = -1; i < accepts.length; i++) {
+				for (int i = 0, lasti = -1; i < accepts.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String accept = accepts[i].toString();
 
 					if (last != null && last == accept) {
@@ -187,7 +187,7 @@ public class NfmParser {
 				if (remove) {
 					SortedMap map = dfm.getMap();
 					int i = 0;
-					for (Iterator<?> iterator = map.keyIterator(); iterator.hasNext(); i++) {
+					for (Iterator<?> iterator = map.keyIterator(); iterator.hasNext(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						iterator.next();
 						if (removes[i]) {
 							iterator.remove();
@@ -205,7 +205,7 @@ public class NfmParser {
 	 * @param conflict
 	 *            Potential ambiguity
 	 */
-	private void checkConflict(Conflict conflict) throws ParseError {
+	private void checkConflict(Conflict conflict) throws ParseError { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (conflict.dfm1.accepting != conflict.dfm2.accepting) {
 			reportError(conflict.name);
 		}
@@ -218,7 +218,7 @@ public class NfmParser {
 			if (accept1.length != accept2.length) {
 				reportError(conflict.name);
 			}
-			for (int j = 0; j < accept2.length; j++) {
+			for (int j = 0; j < accept2.length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (accept1[j] != accept2[j]) {
 					reportError(conflict.name);
 				}
@@ -229,13 +229,13 @@ public class NfmParser {
 	/**
 	 * Recursive parse that visits every node reachable from the start symbol.
 	 */
-	private Dfm parseStart(NfmNode start, NfmNode accept) {
+	private Dfm parseStart(NfmNode start, NfmNode accept) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// mark the start node
 		Dfm result = Dfm.dfm(false);
 		start.dfm = result;
 
 		// we can minimize alias dfms by marking all starting transfer links
-		while (start.next1 != null && start.next2 == null && start.symbol == null) {
+		while (start.next1 != null && start.next2 == null && start.symbol == null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			start = start.next1;
 			start.dfm = result;
 		}
@@ -258,10 +258,10 @@ public class NfmParser {
 	/**
 	 * Recursive parse that visits every node reachable from the start symbol.
 	 */
-	private Dfm parse(int mark, NfmNode start, NfmNode accept) {
+	private Dfm parse(int mark, NfmNode start, NfmNode accept) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// eliminate useless recursion (note that accept node has no branches)
-		while (start.next1 != null && start.next2 == null && start.symbol == null) {
+		while (start.next1 != null && start.next2 == null && start.symbol == null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			start = start.next1;
 		}
 
@@ -274,18 +274,18 @@ public class NfmParser {
 		if (start.symbol != null) {
 			Dfm nextdfm = null;
 			NfmNode next = start.next1, snext = next;
-			while (snext.dfm == null && snext.next1 != null && snext.next2 == null && snext.symbol == null) {
+			while (snext.dfm == null && snext.next1 != null && snext.next2 == null && snext.symbol == null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				snext = snext.next1;
 			}
 			if (snext.dfm != null) {
-				for (NfmNode n = next; n != snext; n = n.next1) {
+				for (NfmNode n = next; n != snext; n = n.next1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					n.dfm = snext.dfm;
 				}
 				nextdfm = snext.dfm;
 			} else {
 				nextdfm = Dfm.dfm(false);
 				snext.dfm = nextdfm;
-				for (NfmNode n = next; n != snext; n = n.next1) {
+				for (NfmNode n = next; n != snext; n = n.next1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					n.dfm = nextdfm;
 				}
 				parseNext(mark, nextdfm, snext, accept);

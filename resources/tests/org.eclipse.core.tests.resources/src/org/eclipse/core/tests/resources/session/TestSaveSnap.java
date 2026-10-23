@@ -47,7 +47,7 @@ public class TestSaveSnap {
 	static SessionTestExtension sessionTestExtension = SessionTestExtension.forPlugin(PI_RESOURCES_TESTS)
 			.withCustomization(SessionTestExtension.createCustomWorkspace()).create();
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(1)
 	public void test1() throws Exception {
 		/* create some resource handles */

@@ -50,7 +50,7 @@ public class CompareEditorContributor extends EditorActionBarContributor {
 	private final NavigationAction fToolbarNext;
 	private final NavigationAction fToolbarPrevious;
 
-	public CompareEditorContributor() {
+	public CompareEditorContributor() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourceBundle bundle= CompareUI.getResourceBundle();
 
 		fIgnoreWhitespace= ChangePropertyAction.createIgnoreWhiteSpaceAction(bundle, null);
@@ -83,7 +83,7 @@ public class CompareEditorContributor extends EditorActionBarContributor {
 		// empty implementation
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setActiveEditor(IEditorPart targetEditor) {
 
 		if (fActiveEditorPart == targetEditor) {
@@ -121,7 +121,7 @@ public class CompareEditorContributor extends EditorActionBarContributor {
 			IContributionItem[] items = actionBars.getToolBarManager()
 					.getItems();
 			boolean inFilters = false;
-			for (IContributionItem item : items) {
+			for (IContributionItem item : items) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (item.getId().equals(FILTER_SEPARATOR)) {
 					inFilters = true;
 				} else if (item.getId().equals(BUILTIN_SEPARATOR)) {
@@ -148,7 +148,7 @@ public class CompareEditorContributor extends EditorActionBarContributor {
 				if (filterActions instanceof List
 						&& !((List<?>) filterActions).isEmpty()) {
 					Iterator<?> i = ((List<?>) filterActions).iterator();
-					while (i.hasNext()) {
+					while (i.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						Object next = i.next();
 						if (next instanceof ChangeCompareFilterPropertyAction) {
 							actionBars.getToolBarManager().appendToGroup(

@@ -52,13 +52,13 @@ public class ConsoleShowHideTests {
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		assertNotNull(Display.getCurrent(), "Must run in UI thread, but was in: " + Thread.currentThread().getName());
+		assertNotNull(Display.getCurrent(), "Must run in UI thread, but was in: " + Thread.currentThread().getName()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		count = 3;
 		manager = ConsolePlugin.getDefault().getConsoleManager();
 		activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		TestUtil.processUIEvents(100);
 		consoles = new ConsoleMock[count];
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			consoles[i] = new ConsoleMock(i + 1);
 		}
 		consoleView = (ConsoleView) activePage.showView("org.eclipse.ui.console.ConsoleView");
@@ -82,24 +82,24 @@ public class ConsoleShowHideTests {
 	 * {@link IConsole#pageShown()} and {@link IConsole#pageHidden()} were
 	 * properly called for each console.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testShowHideConsoles(TestInfo testInfo) throws Exception {
 		// First time adding & showing consoles should trigger pageShown for
 		// each console
-		for (ConsoleMock console : consoles) {
+		for (ConsoleMock console : consoles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			addConsole(console, testInfo.getDisplayName());
-			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get());
+			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		// Page hidden should be called for all but the last console
-		for (int i = 0; i < consoles.length; i++) {
+		for (int i = 0; i < consoles.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ConsoleMock console = consoles[i];
-			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get());
+			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			if (i == consoles.length - 1) {
 				// last console should not be hidden
-				assertEquals(0, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get());
+				assertEquals(0, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			} else {
-				assertEquals(1, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get());
+				assertEquals(1, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 
@@ -107,35 +107,35 @@ public class ConsoleShowHideTests {
 
 		// Second time showing consoles should trigger pageShown for each
 		// console
-		for (ConsoleMock console : consoles) {
+		for (ConsoleMock console : consoles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			showConsole(console, testInfo.getDisplayName());
 			assertEquals(1, console.showCalled.get());
-			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get());
+			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		// Page hidden should be called for all consoles
-		for (ConsoleMock console : consoles) {
+		for (ConsoleMock console : consoles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertEquals(1, console.showCalled.get());
-			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get());
-			assertEquals(1, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get());
+			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertEquals(1, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		clearConsoleCounts();
 
 		// Last console should be shown now.
 		// Close consoles one by one in reverse order.
-		for (int i = consoles.length - 1; i >= 0; i--) {
+		for (int i = consoles.length - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ConsoleMock console = consoles[i];
 			removeConsole(console, testInfo.getDisplayName());
 			if (i == consoles.length - 1) {
 				// last console should not be shown again
-				assertEquals(0, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get());
+				assertEquals(0, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			} else {
 				// Other consoles should be shown again when the previous one is
 				// closed
-				assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get());
+				assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
-			assertEquals(1, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get());
+			assertEquals(1, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -146,7 +146,7 @@ public class ConsoleShowHideTests {
 	 * properly called for each console, if there are two console views showing
 	 * the same consoles.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testShowHideConsolesWithTwoViews(TestInfo testInfo) throws Exception {
 		assertSame(consoleView, activePage.getActivePart());
 
@@ -161,20 +161,20 @@ public class ConsoleShowHideTests {
 
 		// First time adding & showing consoles should trigger pageShown for
 		// each console (on creation)
-		for (ConsoleMock console : consoles) {
+		for (ConsoleMock console : consoles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			addConsole(console, testInfo.getDisplayName());
-			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get());
+			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		// Page hidden should be called for all but the last console
-		for (int i = 0; i < consoles.length; i++) {
+		for (int i = 0; i < consoles.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ConsoleMock console = consoles[i];
-			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get());
+			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			if (i == consoles.length - 1) {
 				// last console should not be hidden
-				assertEquals(0, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get());
+				assertEquals(0, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			} else {
-				assertEquals(1, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get());
+				assertEquals(1, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 
@@ -187,18 +187,18 @@ public class ConsoleShowHideTests {
 
 		// Second time showing consoles should trigger pageShown for each
 		// console
-		for (ConsoleMock console : consoles) {
+		for (ConsoleMock console : consoles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			showConsole(console, testInfo.getDisplayName());
 			assertEquals(1, console.showCalled.get());
-			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get());
+			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		// Page hidden should be called for all consoles (last one should be
 		// hidden now, as it was shown on top)
-		for (ConsoleMock console : consoles) {
+		for (ConsoleMock console : consoles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertEquals(1, console.showCalled.get());
-			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get());
-			assertEquals(1, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get());
+			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertEquals(1, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		// Activate second console view again
@@ -210,41 +210,41 @@ public class ConsoleShowHideTests {
 
 		// Second time showing consoles should trigger pageShown for each
 		// console (last one should be shown on top again)
-		for (ConsoleMock console : consoles) {
+		for (ConsoleMock console : consoles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			showConsole(console, testInfo.getDisplayName());
 			assertEquals(1, console.showCalled.get());
-			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get());
+			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		// Page hidden should be called for all consoles (last one should be
 		// hidden now, as it was shown on top)
-		for (ConsoleMock console : consoles) {
+		for (ConsoleMock console : consoles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertEquals(1, console.showCalled.get());
-			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get());
-			assertEquals(1, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get());
+			assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertEquals(1, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		clearConsoleCounts();
 
 		// Last console should be shown now.
 		// Close consoles one by one in reverse order.
-		for (int i = consoles.length - 1; i >= 0; i--) {
+		for (int i = consoles.length - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ConsoleMock console = consoles[i];
 			removeConsole(console, testInfo.getDisplayName());
 			if (i == consoles.length - 1) {
 				// last console should not be shown again
-				assertEquals(0, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get());
+				assertEquals(0, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			} else {
 				// Other consoles should be shown again when the previous one is
 				// closed
-				assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get());
+				assertEquals(1, console.pageShownCalled.get(), console + " was shown unexpected number of times: " + console.pageShownCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
-			assertEquals(1, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get());
+			assertEquals(1, console.pageHiddenCalled.get(), console + " was hidden unexpected number of times: " + console.pageHiddenCalled.get()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
 	private void clearConsoleCounts() {
-		for (ConsoleMock console : consoles) {
+		for (ConsoleMock console : consoles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			console.showCalled.set(0);
 			console.pageShownCalled.set(0);
 			console.pageHiddenCalled.set(0);
@@ -252,19 +252,19 @@ public class ConsoleShowHideTests {
 	}
 
 	private void addConsole(final ConsoleMock console, String testName) {
-		System.out.println("Requesting to add: " + console); //$NON-NLS-1$
+		System.out.println("Requesting to add: " + console); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		manager.addConsoles(new IConsole[] { console });
 		TestUtil.waitForJobs(testName, ConsoleManager.CONSOLE_JOB_FAMILY, 200, 5000);
 	}
 
 	private void removeConsole(final ConsoleMock console, String testName) {
-		System.out.println("Requesting to remove: " + console); //$NON-NLS-1$
+		System.out.println("Requesting to remove: " + console); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		manager.removeConsoles(new IConsole[] { console });
 		TestUtil.waitForJobs(testName, ConsoleManager.CONSOLE_JOB_FAMILY, 200, 5000);
 	}
 
 	private void showConsole(final ConsoleMock console, String testName) {
-		System.out.println("Requesting to show: " + console); //$NON-NLS-1$
+		System.out.println("Requesting to show: " + console); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		manager.showConsoleView(console);
 		TestUtil.waitForJobs(testName, ConsoleManager.CONSOLE_JOB_FAMILY, 200, 5000);
 	}

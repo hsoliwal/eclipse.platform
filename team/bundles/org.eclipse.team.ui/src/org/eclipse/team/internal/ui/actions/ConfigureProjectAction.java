@@ -32,7 +32,7 @@ public class ConfigureProjectAction extends TeamAction {
 	@Override
 	protected void execute(IAction action) throws InvocationTargetException,
 			InterruptedException {
-		run(unused -> {
+		run(unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			try {
 				if (!isEnabled()) {
 					return;
@@ -51,7 +51,7 @@ public class ConfigureProjectAction extends TeamAction {
 	@Override
 	public boolean isEnabled() {
 		IProject[] selectedProjects = getSelectedProjects();
-		for (IProject project : selectedProjects) {
+		for (IProject project : selectedProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!project.isAccessible()) {
 				return false;
 			}

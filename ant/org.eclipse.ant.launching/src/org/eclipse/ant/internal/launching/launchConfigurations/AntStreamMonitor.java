@@ -48,7 +48,7 @@ public class AntStreamMonitor implements IFlushableStreamMonitor {
 		if (isBuffered()) {
 			fContents.append(message);
 		}
-		for (IStreamListener iStreamListener : fListeners) {
+		for (IStreamListener iStreamListener : fListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			iStreamListener.streamAppended(message, this);
 		}
 	}

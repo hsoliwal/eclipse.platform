@@ -68,7 +68,7 @@ public class Utilities {
 		};
 	}
 
-	public static BufferedReader createReader(IStorage storage)
+	public static BufferedReader createReader(IStorage storage) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws CoreException {
 		if (storage == null
 				|| (storage instanceof IFile && !((IFile) storage).isAccessible())) {

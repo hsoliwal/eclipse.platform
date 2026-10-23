@@ -104,7 +104,7 @@ public abstract class CheckedInChangeSet extends ChangeSet {
 	public void add(SyncInfo[] infos) {
 		try {
 			set.beginInput();
-			for (SyncInfo info : infos) {
+			for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				add(info);
 			}
 		} finally {
@@ -129,7 +129,7 @@ public abstract class CheckedInChangeSet extends ChangeSet {
 	 */
 	@Override
 	public void remove(IResource[] resources) {
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			remove(resource);
 		}
 	}
@@ -145,7 +145,7 @@ public abstract class CheckedInChangeSet extends ChangeSet {
 		SyncInfo[] infos = set.getSyncInfos(resource, depth);
 		if (infos.length > 0) {
 			IResource[] resources = new IResource[infos.length];
-			for (int i = 0; i < resources.length; i++) {
+			for (int i = 0; i < resources.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				resources[i] = infos[i].getLocal();
 			}
 			set.removeAll(resources);

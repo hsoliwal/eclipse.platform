@@ -96,14 +96,14 @@ public class FileState extends PlatformObject implements IFileState {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder s = new StringBuilder();
-		s.append("FileState(uuid: "); //$NON-NLS-1$
-		s.append(uuid.toString());
-		s.append(", lastModified: "); //$NON-NLS-1$
-		s.append(lastModified);
-		s.append(", path: "); //$NON-NLS-1$
-		s.append(fullPath);
-		s.append(')');
+		StringBuilder s = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		s.append("FileState(uuid: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append(uuid.toString()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append(", lastModified: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append(lastModified); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append(", path: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append(fullPath); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append(')'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return s.toString();
 	}
 }

@@ -62,7 +62,7 @@ public class AntEditorActionContributor extends TextEditorActionContributor {
 
 	}
 
-	private void doSetActiveEditor(IEditorPart part) {
+	private void doSetActiveEditor(IEditorPart part) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super.setActiveEditor(part);
 
 		ITextEditor editor = null;

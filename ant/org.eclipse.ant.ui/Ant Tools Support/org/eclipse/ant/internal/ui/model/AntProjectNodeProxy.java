@@ -47,7 +47,7 @@ public class AntProjectNodeProxy extends AntProjectNode {
 		this(null, buildFileName);
 	}
 
-	public void parseBuildFile(boolean force) {
+	public void parseBuildFile(boolean force) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fParsed && !force) {
 			return;
 		}
@@ -71,7 +71,7 @@ public class AntProjectNodeProxy extends AntProjectNode {
 		AntProjectNode projectNode = nodes[0].getProjectNode();
 		if (nodes[0].getTargetName().length() != 0) {
 			// not just the implicit target
-			for (AntTargetNode node : nodes) {
+			for (AntTargetNode node : nodes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				addChildNode(node);
 			}
 		}

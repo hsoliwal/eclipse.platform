@@ -38,7 +38,7 @@ public class ModResourceMapping extends ModelResourceMapping {
 		super(file);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ResourceTraversal[] getTraversals(ResourceMappingContext context,
 			IProgressMonitor monitor) throws CoreException {
 		Set<IResource> resources = getLocalResources();
@@ -74,10 +74,10 @@ public class ModResourceMapping extends ModelResourceMapping {
 
 	private Set<IResource> getLocalResources() throws CoreException {
 		ModelObjectDefinitionFile mdf = (ModelObjectDefinitionFile)getModelObject();
-		Set<IResource> resources = new HashSet<>();
+		Set<IResource> resources = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		resources.add(mdf.getResource());
 		ModelObjectElementFile[] files = mdf.getModelObjectElementFiles();
-		for (ModelObjectElementFile file : files) {
+		for (ModelObjectElementFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			resources.add(file.getResource());
 		}
 		return resources;

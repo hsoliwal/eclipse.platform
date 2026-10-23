@@ -30,7 +30,7 @@ public class UnitTestUIPreferencesConstants {
 	 * Boolean preference controlling whether newly launched Unit tests should be
 	 * shown in all Unit Test views (in all windows).
 	 */
-	public static final String SHOW_IN_ALL_VIEWS = UnitTestPlugin.PLUGIN_ID + ".show_in_all_views"; //$NON-NLS-1$
+	public static final String SHOW_IN_ALL_VIEWS = UnitTestPlugin.PLUGIN_ID + ".show_in_all_views"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * A default value for SHOW_IN_ALL_VIEWS preference

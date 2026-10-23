@@ -28,10 +28,10 @@ import org.eclipse.ui.actions.ActionGroup;
 
 public abstract class StatusLineContributionGroup extends ActionGroup {
 
-	private static final String INCOMING_ID = TeamUIPlugin.ID + "org.eclipse.team.iu.statusline.incoming"; //$NON-NLS-1$
-	private static final String OUTGOING_ID = TeamUIPlugin.ID + "org.eclipse.team.iu.statusline.outgoing"; //$NON-NLS-1$
-	private static final String CONFLICTING_ID = TeamUIPlugin.ID + "org.eclipse.team.iu.statusline.conflicting"; //$NON-NLS-1$
-	private static final String TOTALS_ID = TeamUIPlugin.ID + "org.eclipse.team.iu.statusline.totals"; //$NON-NLS-1$
+	private static final String INCOMING_ID = TeamUIPlugin.ID + "org.eclipse.team.iu.statusline.incoming"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	private static final String OUTGOING_ID = TeamUIPlugin.ID + "org.eclipse.team.iu.statusline.outgoing"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	private static final String CONFLICTING_ID = TeamUIPlugin.ID + "org.eclipse.team.iu.statusline.conflicting"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	private static final String TOTALS_ID = TeamUIPlugin.ID + "org.eclipse.team.iu.statusline.totals"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	private final static int TEXT_FIELD_MAX_SIZE = 25;
 
 	private StatusLineCLabelContribution incoming;
@@ -78,7 +78,7 @@ public abstract class StatusLineContributionGroup extends ActionGroup {
 		}
 	}
 
-	protected void updateCounts() {
+	protected void updateCounts() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final int total = getChangeCount();
 		int supportedModes = configuration.getSupportedModes();
 		// count changes only if the given mode is supported
@@ -86,7 +86,7 @@ public abstract class StatusLineContributionGroup extends ActionGroup {
 		final int workspaceOutgoing = ((supportedModes & ISynchronizePageConfiguration.OUTGOING_MODE) != 0) ? countFor(SyncInfo.OUTGOING) : 0;
 		final int workspaceIncoming = ((supportedModes & ISynchronizePageConfiguration.INCOMING_MODE) != 0) ? countFor(SyncInfo.INCOMING) : 0;
 
-		TeamUIPlugin.getStandardDisplay().asyncExec(() -> {
+		TeamUIPlugin.getStandardDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			if (isThreeWay()) {
 				conflicting.setText(Integer.toString(workspaceConflicting));
 				incoming.setText(Integer.toString(workspaceIncoming));

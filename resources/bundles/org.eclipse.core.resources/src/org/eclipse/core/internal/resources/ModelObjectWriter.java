@@ -45,18 +45,18 @@ public class ModelObjectWriter implements IModelObjectConstants {
 	 * the given command
 	 */
 	static String triggerString(BuildCommand command) {
-		StringBuilder buf = new StringBuilder();
+		StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		if (command.isBuilding(IncrementalProjectBuilder.AUTO_BUILD)) {
-			buf.append(TRIGGER_AUTO).append(',');
+			buf.append(TRIGGER_AUTO).append(','); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if (command.isBuilding(IncrementalProjectBuilder.CLEAN_BUILD)) {
-			buf.append(TRIGGER_CLEAN).append(',');
+			buf.append(TRIGGER_CLEAN).append(','); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if (command.isBuilding(IncrementalProjectBuilder.FULL_BUILD)) {
-			buf.append(TRIGGER_FULL).append(',');
+			buf.append(TRIGGER_FULL).append(','); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if (command.isBuilding(IncrementalProjectBuilder.INCREMENTAL_BUILD)) {
-			buf.append(TRIGGER_INCREMENTAL).append(',');
+			buf.append(TRIGGER_INCREMENTAL).append(','); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return buf.toString();
 	}
@@ -68,7 +68,7 @@ public class ModelObjectWriter implements IModelObjectConstants {
 	protected String[] getReferencedProjects(ProjectDescription description) {
 		IProject[] projects = description.getReferencedProjects();
 		String[] result = new String[projects.length];
-		for (int i = 0; i < projects.length; i++) {
+		for (int i = 0; i < projects.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result[i] = projects[i].getName();
 		}
 		return result;
@@ -123,7 +123,7 @@ public class ModelObjectWriter implements IModelObjectConstants {
 		writer.endTag(FILTER);
 	}
 
-	protected void write(FileInfoMatcherDescription description, XMLWriter writer) {
+	protected void write(FileInfoMatcherDescription description, XMLWriter writer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		writer.startTag(MATCHER, null);
 		writer.printSimpleTag(ID, description.getId());
 		if (description.getArguments() != null) {
@@ -132,7 +132,7 @@ public class ModelObjectWriter implements IModelObjectConstants {
 			} else if (description.getArguments() instanceof FileInfoMatcherDescription[]) {
 				writer.startTag(ARGUMENTS, null);
 				FileInfoMatcherDescription[] array = (FileInfoMatcherDescription[]) description.getArguments();
-				for (FileInfoMatcherDescription element : array) {
+				for (FileInfoMatcherDescription element : array) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					write(element, writer);
 				}
 				writer.endTag(ARGUMENTS);
@@ -180,7 +180,7 @@ public class ModelObjectWriter implements IModelObjectConstants {
 		}
 	}
 
-	protected void write(Object obj, XMLWriter writer) throws IOException {
+	protected void write(Object obj, XMLWriter writer) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (obj instanceof BuildCommand) {
 			write((BuildCommand) obj, writer);
 			return;
@@ -208,7 +208,7 @@ public class ModelObjectWriter implements IModelObjectConstants {
 		writer.println(obj.toString());
 	}
 
-	protected void write(ProjectDescription description, XMLWriter writer) throws IOException {
+	protected void write(ProjectDescription description, XMLWriter writer) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		writer.startTag(PROJECT_DESCRIPTION, null);
 		if (description != null) {
 			writer.printSimpleTag(NAME, description.getName());
@@ -224,14 +224,14 @@ public class ModelObjectWriter implements IModelObjectConstants {
 			HashMap<IPath, LinkDescription> links = description.getLinks();
 			if (links != null) {
 				// ensure consistent order of map elements
-				List<LinkDescription> sorted = new ArrayList<>(links.values());
+				List<LinkDescription> sorted = new ArrayList<>(links.values()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				sorted.sort(null);
 				write(LINKED_RESOURCES, sorted, writer);
 			}
 			HashMap<IPath, LinkedList<FilterDescription>> filters = description.getFilters();
 			if (filters != null) {
-				List<FilterDescription> sorted = new ArrayList<>();
-				for (LinkedList<FilterDescription> linkedList : filters.values()) {
+				List<FilterDescription> sorted = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+				for (LinkedList<FilterDescription> linkedList : filters.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					List<FilterDescription> list = linkedList;
 					sorted.addAll(list);
 				}
@@ -240,7 +240,7 @@ public class ModelObjectWriter implements IModelObjectConstants {
 			}
 			HashMap<String, VariableDescription> variables = description.getVariables();
 			if (variables != null) {
-				List<VariableDescription> sorted = new ArrayList<>(variables.values());
+				List<VariableDescription> sorted = new ArrayList<>(variables.values()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				sorted.sort(null);
 				write(VARIABLE_LIST, sorted, writer);
 			}
@@ -250,7 +250,7 @@ public class ModelObjectWriter implements IModelObjectConstants {
 
 	protected void write(String name, Collection<?> collection, XMLWriter writer) throws IOException {
 		writer.startTag(name, null);
-		for (Object o : collection) {
+		for (Object o : collection) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			write(o, writer);
 		}
 		writer.endTag(name);
@@ -263,10 +263,10 @@ public class ModelObjectWriter implements IModelObjectConstants {
 		writer.startTag(name, null);
 		if (table != null) {
 			// ensure consistent order of map elements
-			List<String> sorted = new ArrayList<>(table.keySet());
+			List<String> sorted = new ArrayList<>(table.keySet()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			sorted.sort(null);
 
-			for (String key : sorted) {
+			for (String key : sorted) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Object value = table.get(key);
 				writer.startTag(DICTIONARY, null);
 				writer.printSimpleTag(KEY, key);
@@ -279,7 +279,7 @@ public class ModelObjectWriter implements IModelObjectConstants {
 
 	protected void write(String name, String elementTagName, String[] array, XMLWriter writer) {
 		writer.startTag(name, null);
-		for (String element : array) {
+		for (String element : array) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			writer.printSimpleTag(elementTagName, element);
 		}
 		writer.endTag(name);

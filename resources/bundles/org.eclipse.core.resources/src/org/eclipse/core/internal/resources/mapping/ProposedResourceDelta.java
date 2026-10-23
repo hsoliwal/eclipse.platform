@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.*;
 public final class ProposedResourceDelta extends PlatformObject implements IResourceDelta {
 	protected static int KIND_MASK = 0xFF;
 
-	private final HashMap<String, ProposedResourceDelta> children = new HashMap<>(8);
+	private final HashMap<String, ProposedResourceDelta> children = new HashMap<>(8); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	private IPath movedFromPath;
 	private IPath movedToPath;
 	private final IResource resource;
@@ -50,7 +50,7 @@ public final class ProposedResourceDelta extends PlatformObject implements IReso
 		if (!visitor.visit(this)) {
 			return;
 		}
-		for (ProposedResourceDelta childDelta : children.values()) {
+		for (ProposedResourceDelta childDelta : children.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			childDelta.accept(visitor, memberFlags);
 		}
 	}
@@ -83,7 +83,7 @@ public final class ProposedResourceDelta extends PlatformObject implements IReso
 
 		//iterate over the path and find matching child delta
 		ProposedResourceDelta current = this;
-		for (int i = 0; i < segmentCount; i++) {
+		for (int i = 0; i < segmentCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			current = current.children.get(path.segment(i));
 			if (current == null) {
 				return null;
@@ -104,8 +104,8 @@ public final class ProposedResourceDelta extends PlatformObject implements IReso
 
 	@Override
 	public IResourceDelta[] getAffectedChildren(int kindMask, int memberFlags) {
-		List<ProposedResourceDelta> result = new ArrayList<>();
-		for (ProposedResourceDelta child : children.values()) {
+		List<ProposedResourceDelta> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ProposedResourceDelta child : children.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if ((child.getKind() & kindMask) != 0) {
 				result.add(child);
 			}
@@ -182,6 +182,6 @@ public final class ProposedResourceDelta extends PlatformObject implements IReso
 	 */
 	@Override
 	public String toString() {
-		return "ProposedDelta(" + resource + ')'; //$NON-NLS-1$
+		return "ProposedDelta(" + resource + ')'; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

@@ -71,7 +71,7 @@ public class HistoryBucket extends Bucket {
 			byte[] uuidBytes = uuid.toBytes();
 			byte[] state = new byte[DATA_LENGTH];
 			System.arraycopy(uuidBytes, 0, state, 0, uuidBytes.length);
-			for (int j = 0; j < LONG_LENGTH; j++) {
+			for (int j = 0; j < LONG_LENGTH; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				state[UUID_LENGTH + j] = (byte) (0xFF & timestamp);
 				timestamp >>>= 8;
 			}
@@ -80,7 +80,7 @@ public class HistoryBucket extends Bucket {
 
 		private static long getTimestamp(byte[] state) {
 			long timestamp = 0;
-			for (int j = 0; j < LONG_LENGTH; j++) {
+			for (int j = 0; j < LONG_LENGTH; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				timestamp += (state[UUID_LENGTH + j] & 0xFFL) << j * 8;
 			}
 			return timestamp;
@@ -90,7 +90,7 @@ public class HistoryBucket extends Bucket {
 		 * Inserts the given item into the given array at the right position.
 		 * Returns the resulting array. Returns null if the item already exists.
 		 */
-		static byte[][] insert(byte[][] existing, byte[] toAdd) {
+		static byte[][] insert(byte[][] existing, byte[] toAdd) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			// look for the right spot where to insert the new guy
 			int index = search(existing, toAdd);
 			if (index >= 0) {
@@ -113,12 +113,12 @@ public class HistoryBucket extends Bucket {
 		/**
 		 * Merges two entries (are always sorted). Duplicates are discarded.
 		 */
-		static byte[][] merge(byte[][] base, byte[][] additions) {
+		static byte[][] merge(byte[][] base, byte[][] additions) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			int additionPointer = 0;
 			int basePointer = 0;
 			int added = 0;
 			byte[][] result = new byte[base.length + additions.length][];
-			while (basePointer < base.length && additionPointer < additions.length) {
+			while (basePointer < base.length && additionPointer < additions.length) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int comparison = compareStates(base[basePointer], additions[additionPointer]);
 				if (comparison == 0) {
 					result[added++] = base[basePointer++];
@@ -165,12 +165,12 @@ public class HistoryBucket extends Bucket {
 		 * Compacts the data array removing any null slots. If non-null slots
 		 * are found, the entry is marked for removal.
 		 */
-		private void compact() {
+		private void compact() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			if (!isDirty()) {
 				return;
 			}
 			int occurrences = 0;
-			for (byte[] d : data) {
+			for (byte[] d : data) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (d != null) {
 					data[occurrences++] = d;
 				}
@@ -322,7 +322,7 @@ public class HistoryBucket extends Bucket {
 	protected Object readEntryValue(DataInputStream source) throws IOException {
 		int length = source.readUnsignedShort();
 		byte[][] uuids = new byte[length][HistoryEntry.DATA_LENGTH];
-		for (byte[] uuid : uuids) {
+		for (byte[] uuid : uuids) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			source.read(uuid);
 		}
 		return uuids;
@@ -332,7 +332,7 @@ public class HistoryBucket extends Bucket {
 	protected void writeEntryValue(DataOutputStream destination, Object entryValue) throws IOException {
 		byte[][] uuids = (byte[][]) entryValue;
 		destination.writeShort(uuids.length);
-		for (byte[] uuid : uuids) {
+		for (byte[] uuid : uuids) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			destination.write(uuid);
 		}
 	}

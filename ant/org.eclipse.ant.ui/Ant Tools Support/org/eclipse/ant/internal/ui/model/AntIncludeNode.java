@@ -39,7 +39,7 @@ public class AntIncludeNode extends AntImportNode {
 	/**
 	 * Execute the import. Returns <code>true</code> as the import adds to the Ant model
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean configure(boolean validateFully) {
 		if (fConfigured) {
 			return false;
@@ -80,17 +80,17 @@ public class AntIncludeNode extends AntImportNode {
 	 *
 	 * @return The complete include-prefix.
 	 */
-	private String getIncludePrefix(AntTaskNode startNode) {
+	private String getIncludePrefix(AntTaskNode startNode) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		AntTaskNode actualNode = startNode;
-		StringBuilder builder = new StringBuilder();
-		while (actualNode != null) {
+		StringBuilder builder = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		while (actualNode != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// Supposed to be non-null.
 			String actualPrefixSeparator = ProjectHelper.getCurrentPrefixSeparator();
 			String actualPrefix = this.getIncludePrefixSingleNode(actualNode);
 
 			if (actualPrefix != null) {
 				// Iteration happens in reverse order => prepend.
-				builder.insert(0, actualPrefix + actualPrefixSeparator);
+				builder.insert(0, actualPrefix + actualPrefixSeparator); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			actualNode = (AntTaskNode) actualNode.getImportNode();
 		}

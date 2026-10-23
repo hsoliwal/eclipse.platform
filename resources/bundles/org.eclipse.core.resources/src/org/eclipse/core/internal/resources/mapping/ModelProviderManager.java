@@ -58,14 +58,14 @@ public class ModelProviderManager {
 		return desc.getModelProvider();
 	}
 
-	protected void lazyInitialize() {
+	protected void lazyInitialize() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (descriptors != null) {
 			return;
 		}
 		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(ResourcesPlugin.PI_RESOURCES, ResourcesPlugin.PT_MODEL_PROVIDERS);
 		IExtension[] extensions = point.getExtensions();
-		descriptors = new HashMap<>(extensions.length * 2 + 1);
-		for (IExtension extension : extensions) {
+		descriptors = new HashMap<>(extensions.length * 2 + 1); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (IExtension extension : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IModelProviderDescriptor desc = null;
 			try {
 				desc = new ModelProviderDescriptor(extension);

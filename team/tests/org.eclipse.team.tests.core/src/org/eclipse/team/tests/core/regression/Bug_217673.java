@@ -33,7 +33,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class Bug_217673 {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		final IProject project = workspace.getRoot().getProject(
@@ -47,14 +47,14 @@ public class Bug_217673 {
 					PessimisticRepositoryProvider.NATURE_ID);
 			PessimisticRepositoryProvider.markWritableOnEdit = true;
 			setReadOnly(resource, true);
-			linkTarget.toFile().mkdir();
+			linkTarget.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			project.getFolder("test").createLink(linkTarget, IResource.NONE,
 					null);
 			assertFalse(isReadOnly(resource), ".project should no longer be read-only");
 		} finally {
 			PessimisticRepositoryProvider.markWritableOnEdit = false;
 			RepositoryProvider.unmap(project);
-			linkTarget.toFile().delete();
+			linkTarget.toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 	}
 

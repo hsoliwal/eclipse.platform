@@ -60,7 +60,7 @@ public class PrefixPool {
 	 */
 	public PrefixPool(int initialCapacity) {
 		if (initialCapacity <= 0) {
-			throw new IllegalArgumentException("Illegal Capacity: " + initialCapacity); //$NON-NLS-1$
+			throw new IllegalArgumentException("Illegal Capacity: " + initialCapacity); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		pool = new String[initialCapacity];
 		size = 0;
@@ -113,7 +113,7 @@ public class PrefixPool {
 	 */
 	public/*synchronized*/void insertLonger(String s) {
 		//check in reverse order since we expect some locality
-		for (int i = size - 1; i >= 0; i--) {
+		for (int i = size - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (pool[i].startsWith(s)) {
 				//prefix of an existing String --> no-op
 				return;
@@ -146,10 +146,10 @@ public class PrefixPool {
 	 * @return <code>true</code>if any longer elements have been
 	 *     removed.
 	 */
-	public/*synchronized*/boolean insertShorter(String s) {
+	public/*synchronized*/boolean insertShorter(String s) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean replaced = false;
 		//check in reverse order since we expect some locality
-		for (int i = size - 1; i >= 0; i--) {
+		for (int i = size - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (s.startsWith(pool[i])) {
 				//longer or equal to an existing prefix - nothing to do
 				return false;
@@ -185,7 +185,7 @@ public class PrefixPool {
 	 */
 	public/*synchronized*/boolean containsAsPrefix(String s) {
 		//check in reverse order since we expect some locality
-		for (int i = size - 1; i >= 0; i--) {
+		for (int i = size - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (pool[i].startsWith(s)) {
 				return true;
 			}
@@ -201,7 +201,7 @@ public class PrefixPool {
 	 *     prefix of the given String.
 	 */
 	public/*synchronized*/boolean hasPrefixOf(String s) {
-		for (int i = size - 1; i >= 0; i--) {
+		for (int i = size - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (s.startsWith(pool[i])) {
 				return true;
 			}

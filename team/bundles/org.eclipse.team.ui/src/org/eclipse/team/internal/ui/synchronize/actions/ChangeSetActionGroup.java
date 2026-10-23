@@ -72,12 +72,12 @@ public class ChangeSetActionGroup extends SynchronizePageActionGroup {
 	public final static String CHANGE_SET_GROUP = "change_set_group"; //$NON-NLS-1$
 
 	// Constants for persisting sorting options
-	private static final String P_LAST_COMMENTSORT = TeamUIPlugin.ID + ".P_LAST_COMMENT_SORT"; //$NON-NLS-1$
+	private static final String P_LAST_COMMENTSORT = TeamUIPlugin.ID + ".P_LAST_COMMENT_SORT"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	public static final FastSyncInfoFilter OUTGOING_RESOURCE_FILTER = new SyncInfoDirectionFilter(
 			new int[] { SyncInfo.OUTGOING, SyncInfo.CONFLICTING });
 
-	private class CreateChangeSetAction extends SynchronizeModelAction {
+	private class CreateChangeSetAction extends SynchronizeModelAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 		public CreateChangeSetAction(ISynchronizePageConfiguration configuration) {
 			super(TeamUIMessages.ChangeLogModelProvider_0, configuration);
@@ -95,7 +95,7 @@ public class ChangeSetActionGroup extends SynchronizePageActionGroup {
 
 		@Override
 		protected SynchronizeModelOperation getSubscriberOperation(ISynchronizePageConfiguration configuration, IDiffElement[] elements) {
-			return new SynchronizeModelOperation(configuration, elements) {
+			return new SynchronizeModelOperation(configuration, elements) { //FLLDCIM: MARK — T09  ANONYMOUS
 				@Override
 				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 					syncExec(() -> {
@@ -109,7 +109,7 @@ public class ChangeSetActionGroup extends SynchronizePageActionGroup {
 		}
 	}
 
-	private abstract class ChangeSetAction extends BaseSelectionListenerAction {
+	private abstract class ChangeSetAction extends BaseSelectionListenerAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 		public ChangeSetAction(String title, ISynchronizePageConfiguration configuration) {
 			super(title);
@@ -135,7 +135,7 @@ public class ChangeSetActionGroup extends SynchronizePageActionGroup {
 		}
 	}
 
-	private class EditChangeSetAction extends ChangeSetAction {
+	private class EditChangeSetAction extends ChangeSetAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 		public EditChangeSetAction(ISynchronizePageConfiguration configuration) {
 			super(TeamUIMessages.ChangeLogModelProvider_6, configuration);
@@ -151,7 +151,7 @@ public class ChangeSetActionGroup extends SynchronizePageActionGroup {
 		}
 	}
 
-	private class RemoveChangeSetAction extends ChangeSetAction {
+	private class RemoveChangeSetAction extends ChangeSetAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 		public RemoveChangeSetAction(ISynchronizePageConfiguration configuration) {
 			super(TeamUIMessages.ChangeLogModelProvider_7, configuration);
@@ -171,7 +171,7 @@ public class ChangeSetActionGroup extends SynchronizePageActionGroup {
 		}
 	}
 
-	private class MakeDefaultChangeSetAction extends ChangeSetAction {
+	private class MakeDefaultChangeSetAction extends ChangeSetAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 		public MakeDefaultChangeSetAction(
 				ISynchronizePageConfiguration configuration) {
@@ -202,7 +202,7 @@ public class ChangeSetActionGroup extends SynchronizePageActionGroup {
 
 	}
 
-	private class AddToChangeSetAction extends SynchronizeModelAction {
+	private class AddToChangeSetAction extends SynchronizeModelAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 		private final ActiveChangeSet set;
 
@@ -222,9 +222,9 @@ public class ChangeSetActionGroup extends SynchronizePageActionGroup {
 			return false;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		protected SynchronizeModelOperation getSubscriberOperation(ISynchronizePageConfiguration configuration, IDiffElement[] elements) {
-			return new SynchronizeModelOperation(configuration, elements) {
+			return new SynchronizeModelOperation(configuration, elements) { //FLLDCIM: MARK — T09  ANONYMOUS
 				@Override
 				public void run(IProgressMonitor monitor)
 						throws InvocationTargetException, InterruptedException {
@@ -234,7 +234,7 @@ public class ChangeSetActionGroup extends SynchronizePageActionGroup {
 						set.add(diffArray);
 					} else {
 						ChangeSet[] sets = getActiveChangeSetManager().getSets();
-						for (ChangeSet s : sets) {
+						for (ChangeSet s : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							ActiveChangeSet activeSet = (ActiveChangeSet) s;
 							activeSet.remove(resources);
 						}
@@ -300,7 +300,7 @@ public class ChangeSetActionGroup extends SynchronizePageActionGroup {
 	 */
 	private int sortCriteria = ChangeSetModelComparator.DATE;
 
-	public static int getSortCriteria(ISynchronizePageConfiguration configuration) {
+	public static int getSortCriteria(ISynchronizePageConfiguration configuration) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int sortCriteria = ChangeSetModelComparator.DATE;
 		try {
 			IDialogSettings pageSettings = configuration.getSite().getPageSettings();
@@ -326,7 +326,7 @@ public class ChangeSetActionGroup extends SynchronizePageActionGroup {
 		this.provider = provider;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void initialize(ISynchronizePageConfiguration configuration) {
 		super.initialize(configuration);
 
@@ -341,7 +341,7 @@ public class ChangeSetActionGroup extends SynchronizePageActionGroup {
 		if (getChangeSetCapability().supportsActiveChangeSets()) {
 			addToChangeSet = new MenuManager(TeamUIMessages.ChangeLogModelProvider_12);
 			addToChangeSet.setRemoveAllWhenShown(true);
-			addToChangeSet.addMenuListener(this::addChangeSets);
+			addToChangeSet.addMenuListener(this::addChangeSets); //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 			createChangeSet = new CreateChangeSetAction(configuration);
 			addToChangeSet.add(createChangeSet);
 			addToChangeSet.add(new Separator());
@@ -356,7 +356,7 @@ public class ChangeSetActionGroup extends SynchronizePageActionGroup {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void fillContextMenu(IMenuManager menu) {
 		if (getChangeSetCapability().enableCheckedInChangeSetsFor(getConfiguration())) {
 			appendToGroup(menu, ISynchronizePageConfiguration.SORT_GROUP, sortByComment);
@@ -384,7 +384,7 @@ public class ChangeSetActionGroup extends SynchronizePageActionGroup {
 		}
 	}
 
-	protected void addChangeSets(IMenuManager manager) {
+	protected void addChangeSets(IMenuManager manager) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ChangeSet[] sets = getActiveChangeSetManager().getSets();
 		Arrays.sort(sets, new Comparator<ChangeSet>() {
 			private final Collator collator = Collator.getInstance();
@@ -397,7 +397,7 @@ public class ChangeSetActionGroup extends SynchronizePageActionGroup {
 		createChangeSet.selectionChanged(selection);
 		addToChangeSet.add(createChangeSet);
 		addToChangeSet.add(new Separator());
-		for (ChangeSet s : sets) {
+		for (ChangeSet s : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ActiveChangeSet set = (ActiveChangeSet) s;
 			AddToChangeSetAction action = new AddToChangeSetAction(getConfiguration(), set, selection);
 			manager.add(action);
@@ -449,7 +449,7 @@ public class ChangeSetActionGroup extends SynchronizePageActionGroup {
 	private void syncExec(final Runnable runnable) {
 		final Control ctrl = getConfiguration().getPage().getViewer().getControl();
 		if (ctrl != null && !ctrl.isDisposed()) {
-			ctrl.getDisplay().syncExec(() -> {
+			ctrl.getDisplay().syncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				if (!ctrl.isDisposed()) {
 					runnable.run();
 				}
@@ -479,9 +479,9 @@ public class ChangeSetActionGroup extends SynchronizePageActionGroup {
 	}
 
 	private IDiff[] getDiffs(IResource[] resources) {
-		List<IDiff> diffs = new ArrayList<>();
+		List<IDiff> diffs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Subscriber s = ((SubscriberParticipant)getConfiguration().getParticipant()).getSubscriber();
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				IDiff diff = s.getDiff(resource);
 				if (diff != null) {

@@ -51,7 +51,7 @@ public abstract class TestPerformer {
 	public final void performTest(Object[][] inputs) throws Exception {
 		// call helper method
 		int permutations = 1;
-		for (Object[] input : inputs) {
+		for (Object[] input : inputs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			permutations = permutations * input.length;
 			if (input.length > 2) {
 				scramble(input);
@@ -65,8 +65,8 @@ public abstract class TestPerformer {
 	 * Then invoke method if nth==inputs.length-1, otherwise do recursive call
 	 * with incremented nth.
 	 */
-	private void performTestRecursiveLoop(Object[][] inputs, Object[] args, int nth) throws Exception {
-		for (Object input : inputs[nth]) {
+	private void performTestRecursiveLoop(Object[][] inputs, Object[] args, int nth) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		for (Object input : inputs[nth]) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			args[nth] = input;
 			if (nth == inputs.length - 1) {
 				// breakpoint goes here, may be conditional on name and count, e.g.:
@@ -75,9 +75,9 @@ public abstract class TestPerformer {
 				if (shouldFail(args, count)) {
 					try {
 						invokeMethod(args, count);
-						fail(getFailMessagePrefixForCurrentInvocation(args)
+						fail(getFailMessagePrefixForCurrentInvocation(args) //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 								+ "invocation did not fail although it should"
-								+ (reasonForExpectedFail != null ? ": " + reasonForExpectedFail : ""));
+								+ (reasonForExpectedFail != null ? ": " + reasonForExpectedFail : "")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					} catch (Exception ex) {
 					}
 				} else {
@@ -95,7 +95,7 @@ public abstract class TestPerformer {
 								+ "invocation should succeed but fuzzy progress assertion failed: " + fussyEx.getMessage(),
 								fussyEx);
 					} catch (Exception ex) {
-						throw new AssertionError(getFailMessagePrefixForCurrentInvocation(args)
+						throw new AssertionError(getFailMessagePrefixForCurrentInvocation(args) //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 								+ "invocation should succeed but unexpected exception occurred: " + ex, ex);
 					}
 					boolean success = false;
@@ -104,7 +104,7 @@ public abstract class TestPerformer {
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
-					assertTrue(success, getFailMessagePrefixForCurrentInvocation(args)
+					assertTrue(success, getFailMessagePrefixForCurrentInvocation(args) //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							+ "invocation should succeed but did not produce desired result");
 				}
 				cleanUp(args, count);
@@ -132,18 +132,18 @@ public abstract class TestPerformer {
 	}
 
 	private String getFailMessagePrefixForCurrentInvocation(Object[] currentArgs) {
-		return "failure in invocation " + count + " with inputs " + Arrays.toString(currentArgs)
+		return "failure in invocation " + count + " with inputs " + Arrays.toString(currentArgs) //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ System.lineSeparator();
 	}
 
 	/**
 	 * scrambles an array in a deterministic manner (note the constant seed...).
 	 */
-	protected static void scramble(Object[] first) {
+	protected static void scramble(Object[] first) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Random random = new Random(4711);
 
 		final int len = first.length;
-		for (int i = 0; i < len * 100; i++) {
+		for (int i = 0; i < len * 100; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			/* get any array offset */
 			int off1 = (int) (random.nextFloat() * len);
 			if (off1 == len) {

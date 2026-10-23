@@ -32,7 +32,7 @@ public class NavigateAction extends Action {
 	private final boolean next;
 	private final ISynchronizePageConfiguration configuration;
 
-	public NavigateAction(ISynchronizePageConfiguration configuration, boolean next) {
+	public NavigateAction(ISynchronizePageConfiguration configuration, boolean next) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		this.configuration = configuration;
 		this.next = next;
 		IActionBars bars = configuration.getSite().getActionBars();

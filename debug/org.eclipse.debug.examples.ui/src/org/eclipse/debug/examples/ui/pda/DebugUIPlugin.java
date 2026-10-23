@@ -44,9 +44,9 @@ public class DebugUIPlugin extends AbstractUIPlugin {
 	private ResourceBundle resourceBundle;
 
 	private final static String ICONS_PATH = "icons/full/";//$NON-NLS-1$
-	private final static String PATH_OBJECT = ICONS_PATH + "obj16/"; //Model object icons //$NON-NLS-1$
-	private final static String PATH_ELOCALTOOL = ICONS_PATH + "elcl16/"; //Enabled local toolbar icons //$NON-NLS-1$
-	private final static String PATH_DLOCALTOOL = ICONS_PATH + "dlcl16/"; //Disabled local toolbar icons //$NON-NLS-1$
+	private final static String PATH_OBJECT = ICONS_PATH + "obj16/"; //Model object icons //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	private final static String PATH_ELOCALTOOL = ICONS_PATH + "elcl16/"; //Enabled local toolbar icons //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	private final static String PATH_DLOCALTOOL = ICONS_PATH + "dlcl16/"; //Disabled local toolbar icons //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * The id of the plugin
@@ -85,7 +85,7 @@ public class DebugUIPlugin extends AbstractUIPlugin {
 	/**
 	 * Managed colors
 	 */
-	private final Map<RGB, Color> fColors = new HashMap<>();
+	private final Map<RGB, Color> fColors = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/**
 	 * The constructor.
@@ -154,12 +154,12 @@ public class DebugUIPlugin extends AbstractUIPlugin {
 
 	@Override
 	protected void initializeImageRegistry(ImageRegistry reg) {
-		declareImage(IMG_OBJ_PDA, PATH_OBJECT + "pda.gif"); //$NON-NLS-1$
-		declareImage(IMG_OBJ_MIDI, PATH_OBJECT + "note.gif"); //$NON-NLS-1$
-		declareImage(IMG_ELCL_POP, PATH_ELOCALTOOL + "pop.gif"); //$NON-NLS-1$
-		declareImage(IMG_DLCL_POP, PATH_DLOCALTOOL + "pop.gif"); //$NON-NLS-1$
-		declareImage(IMG_ELCL_PUSH, PATH_ELOCALTOOL + "push.gif"); //$NON-NLS-1$
-		declareImage(IMG_DLCL_PUSH, PATH_DLOCALTOOL + "push.gif"); //$NON-NLS-1$
+		declareImage(IMG_OBJ_PDA, PATH_OBJECT + "pda.gif"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareImage(IMG_OBJ_MIDI, PATH_OBJECT + "note.gif"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareImage(IMG_ELCL_POP, PATH_ELOCALTOOL + "pop.gif"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareImage(IMG_DLCL_POP, PATH_DLOCALTOOL + "pop.gif"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareImage(IMG_ELCL_PUSH, PATH_ELOCALTOOL + "push.gif"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareImage(IMG_DLCL_PUSH, PATH_DLOCALTOOL + "push.gif"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**

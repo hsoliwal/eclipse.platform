@@ -43,8 +43,8 @@ abstract public class SelectionTests extends AbstractViewerModelTest implements 
 		return new TestModelUpdatesListener(viewer, false, false);
 	}
 
-	private static class SelectionListener implements ISelectionChangedListener {
-		private final List<SelectionChangedEvent> fEvents = new ArrayList<>(1);
+	private static class SelectionListener implements ISelectionChangedListener { //FLLDCIM: MARK — T04  IMPLEMENTS
+		private final List<SelectionChangedEvent> fEvents = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		@Override
 		public void selectionChanged(SelectionChangedEvent event) {
@@ -74,7 +74,7 @@ abstract public class SelectionTests extends AbstractViewerModelTest implements 
 
 		// Create a selection object to the deepest part of the tree.
 		SelectionListener listener = new SelectionListener();
-		fViewer.addSelectionChangedListener(listener);
+		fViewer.addSelectionChangedListener(listener); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 
 		// Set the selection and verify that the listener is called.
 		TreeSelection selection = new TreeSelection(model.findElement("3.3.3")); //$NON-NLS-1$
@@ -90,7 +90,7 @@ abstract public class SelectionTests extends AbstractViewerModelTest implements 
 	 * In this test verify that selection policy can prevent selection from
 	 * being set and verify that a FORCE flag can override the selection policy.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSelectionPolicy() throws Exception {
 		// Create the model and populate the view.
 		final TestModel model = makeMultiLevelModel();
@@ -156,7 +156,7 @@ abstract public class SelectionTests extends AbstractViewerModelTest implements 
 	 * - update the view with remove delta -> The selection should be re-set to
 	 * empty.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSelectRemove() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 
@@ -178,7 +178,7 @@ abstract public class SelectionTests extends AbstractViewerModelTest implements 
 
 		// Configure a selection listener
 		SelectionListener listener = new SelectionListener();
-		fViewer.addSelectionChangedListener(listener);
+		fViewer.addSelectionChangedListener(listener); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 
 		// Reset the listener and update the viewer.  With a remove
 		// delta only wait for the delta to be processed.
@@ -199,7 +199,7 @@ abstract public class SelectionTests extends AbstractViewerModelTest implements 
 	 * In this test: - set a selection to an element - then remove that element
 	 * - then refresh the view. -> The selection should be re-set to empty.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSelectRemoveRefreshStruct() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 
@@ -221,7 +221,7 @@ abstract public class SelectionTests extends AbstractViewerModelTest implements 
 
 		// Configure a selection listener
 		SelectionListener listener = new SelectionListener();
-		fViewer.addSelectionChangedListener(listener);
+		fViewer.addSelectionChangedListener(listener); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 
 		// Reset the listener to ignore redundant updates.  When elements are removed
 		// the viewer may still request updates for those elements.

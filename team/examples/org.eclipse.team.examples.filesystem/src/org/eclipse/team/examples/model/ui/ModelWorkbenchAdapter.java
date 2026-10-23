@@ -49,7 +49,7 @@ public class ModelWorkbenchAdapter implements IWorkbenchAdapter {
 		return new Object[0];
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ImageDescriptor getImageDescriptor(Object object) {
 		if (object instanceof ModelProject) {
 			return createImageDescriptor("obj/prj_obj.gif");
@@ -91,7 +91,7 @@ public class ModelWorkbenchAdapter implements IWorkbenchAdapter {
 	 * Creates an image descriptor.
 	 */
 	public static ImageDescriptor createImageDescriptor(String id) {
-		URL url = FileLocator.find(FileSystemPlugin.getPlugin().getBundle(), IPath.fromOSString(ICON_PATH + id), null);
+		URL url = FileLocator.find(FileSystemPlugin.getPlugin().getBundle(), IPath.fromOSString(ICON_PATH + id), null); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return ImageDescriptor.createFromURL(url);
 	}
 

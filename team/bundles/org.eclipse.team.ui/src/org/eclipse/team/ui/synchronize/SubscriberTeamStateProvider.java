@@ -43,7 +43,7 @@ import org.eclipse.team.ui.mapping.ITeamStateProvider;
  *
  * @since 3.2
  */
-public class SubscriberTeamStateProvider extends TeamStateProvider implements ISubscriberChangeListener {
+public class SubscriberTeamStateProvider extends TeamStateProvider implements ISubscriberChangeListener { //FLLDCIM: MARK — T38  IMPLEMENTS
 
 	private final Subscriber subscriber;
 
@@ -55,7 +55,7 @@ public class SubscriberTeamStateProvider extends TeamStateProvider implements IS
 	 */
 	public SubscriberTeamStateProvider(Subscriber subscriber) {
 		this.subscriber = subscriber;
-		subscriber.addListener(this);
+		subscriber.addListener(this); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 	}
 
 	@Override
@@ -64,9 +64,9 @@ public class SubscriberTeamStateProvider extends TeamStateProvider implements IS
 		if (mapping != null) {
 			ResourceTraversal[] traversals = mapping.getTraversals(
 					ResourceMappingContext.LOCAL_CONTEXT, null);
-			for (ResourceTraversal traversal : traversals) {
+			for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource[] resources = traversal.getResources();
-				for (IResource resource : resources) {
+				for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (getSubscriber().isSupervised(resource)) {
 						return true;
 					}
@@ -98,7 +98,7 @@ public class SubscriberTeamStateProvider extends TeamStateProvider implements IS
 		return IDiff.NO_CHANGE;
 	}
 
-	private int getSynchronizationState(ResourceMapping mapping, int stateMask, IProgressMonitor monitor) throws CoreException {
+	private int getSynchronizationState(ResourceMapping mapping, int stateMask, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ISynchronizationCompareAdapter compareAdapter = Adapters.adapt(mapping.getModelProvider(), ISynchronizationCompareAdapter.class);
 		try {
 			if (compareAdapter != null) {
@@ -110,7 +110,7 @@ public class SubscriberTeamStateProvider extends TeamStateProvider implements IS
 			return getSubscriber().getState(mapping, stateMask, monitor);
 		} catch (CoreException e) {
 			IProject[] projects = mapping.getProjects();
-			for (IProject project : projects) {
+			for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// Only through the exception if the project for the mapping
 				// is accessible
 				if (project.isAccessible()) {

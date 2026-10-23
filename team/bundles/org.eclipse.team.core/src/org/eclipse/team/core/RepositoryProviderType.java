@@ -67,7 +67,7 @@ import org.eclipse.team.internal.core.TeamPlugin;
  */
 
 public abstract class RepositoryProviderType extends PlatformObject {
-	private static Map<String, RepositoryProviderType> allProviderTypes = new HashMap<>();
+	private static Map<String, RepositoryProviderType> allProviderTypes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	private String id;
 
@@ -107,7 +107,7 @@ public abstract class RepositoryProviderType extends PlatformObject {
 	 * @since 3.2
 	 */
 	public static RepositoryProviderType getTypeForScheme(String scheme) {
-		for (RepositoryProviderType type : allProviderTypes.values()) {
+		for (RepositoryProviderType type : allProviderTypes.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (type.getFileSystemScheme() != null && type.getFileSystemScheme().equals(scheme)) {
 				return type;
 			}
@@ -119,9 +119,9 @@ public abstract class RepositoryProviderType extends PlatformObject {
 		IExtensionPoint extension = Platform.getExtensionRegistry().getExtensionPoint(TeamPlugin.ID, TeamPlugin.REPOSITORY_EXTENSION);
 		if (extension != null) {
 			IExtension[] extensions =  extension.getExtensions();
-			for (IExtension ext : extensions) {
+			for (IExtension ext : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IConfigurationElement[] configElements = ext.getConfigurationElements();
-				for (IConfigurationElement configElement : configElements) {
+				for (IConfigurationElement configElement : configElements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String extensionId = configElement.getAttribute("id"); //$NON-NLS-1$
 					String typeScheme = configElement.getAttribute("fileSystemScheme"); //$NON-NLS-1$
 					if (typeScheme != null && typeScheme.equals(scheme) && extensionId != null) {
@@ -137,13 +137,13 @@ public abstract class RepositoryProviderType extends PlatformObject {
 		this.id = id;
 	}
 
-	private static RepositoryProviderType newProviderType(String id) {
+	private static RepositoryProviderType newProviderType(String id) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IExtensionPoint extension = Platform.getExtensionRegistry().getExtensionPoint(TeamPlugin.ID, TeamPlugin.REPOSITORY_EXTENSION);
 		if (extension != null) {
 			IExtension[] extensions =  extension.getExtensions();
-			for (IExtension ext : extensions) {
+			for (IExtension ext : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IConfigurationElement[] configElements = ext.getConfigurationElements();
-				for (IConfigurationElement configElement : configElements) {
+				for (IConfigurationElement configElement : configElements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String extensionId = configElement.getAttribute("id"); //$NON-NLS-1$
 					if (extensionId != null && extensionId.equals(id)) {
 						try {
@@ -163,7 +163,7 @@ public abstract class RepositoryProviderType extends PlatformObject {
 							TeamPlugin.log(e);
 						} catch (ClassCastException e) {
 							String className = configElement.getAttribute("typeClass"); //$NON-NLS-1$
-							TeamPlugin.log(IStatus.ERROR, "Class " + className + " registered for repository provider type id " + id + " is not a subclass of RepositoryProviderType", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							TeamPlugin.log(IStatus.ERROR, "Class " + className + " registered for repository provider type id " + id + " is not a subclass of RepositoryProviderType", e); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						}
 						return null;
 					}

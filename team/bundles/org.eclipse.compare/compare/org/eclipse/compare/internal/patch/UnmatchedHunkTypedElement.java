@@ -83,7 +83,7 @@ public class UnmatchedHunkTypedElement extends HunkTypedElement implements ICont
 		return Patcher.getPatcher(getConfiguration());
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public InputStream getContents() throws CoreException {
 		// If there are cached contents, use them
 		if (getPatcher().hasCachedContents(getDiff())) {

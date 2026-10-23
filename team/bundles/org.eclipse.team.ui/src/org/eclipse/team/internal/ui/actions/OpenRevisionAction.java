@@ -29,7 +29,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.BaseSelectionListenerAction;
 import org.eclipse.ui.progress.IProgressService;
 
-public class OpenRevisionAction extends BaseSelectionListenerAction {
+public class OpenRevisionAction extends BaseSelectionListenerAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 	private IStructuredSelection selection;
 	private final HistoryPage page;
@@ -39,7 +39,7 @@ public class OpenRevisionAction extends BaseSelectionListenerAction {
 		this.page = page;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run() {
 		IStructuredSelection structSel = selection;
 
@@ -49,7 +49,7 @@ public class OpenRevisionAction extends BaseSelectionListenerAction {
 
 		Object[] objArray = structSel.toArray();
 
-		for (Object tempRevision : objArray) {
+		for (Object tempRevision : objArray) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			//If not a revision, don't try opening
 			if (tempRevision instanceof AbstractHistoryCategory) {
 				continue;
@@ -59,7 +59,7 @@ public class OpenRevisionAction extends BaseSelectionListenerAction {
 			if (revision == null || !revision.exists()) {
 				MessageDialog.openError(page.getSite().getShell(), TeamUIMessages.OpenRevisionAction_DeletedRevTitle, TeamUIMessages.OpenRevisionAction_DeletedRevMessage);
 			} else {
-				IRunnableWithProgress runnable = monitor -> {
+				IRunnableWithProgress runnable = monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 					try {
 						Utils.openEditor(page.getSite().getPage(), revision, monitor);
 					} catch (CoreException e) {
@@ -85,7 +85,7 @@ public class OpenRevisionAction extends BaseSelectionListenerAction {
 		return shouldShow();
 	}
 
-	private boolean shouldShow() {
+	private boolean shouldShow() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IStructuredSelection structSel = selection;
 		Object[] objArray = structSel.toArray();
 
@@ -93,7 +93,7 @@ public class OpenRevisionAction extends BaseSelectionListenerAction {
 			return false;
 		}
 
-		for (Object obj : objArray) {
+		for (Object obj : objArray) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			//Don't bother showing if this a category
 			if (obj instanceof AbstractHistoryCategory) {
 				return false;

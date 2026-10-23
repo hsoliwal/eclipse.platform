@@ -75,8 +75,8 @@ public class MarkerSnapshotReader_2 extends MarkerSnapshotReader {
 		IPath path = IPath.fromOSString(input.readUTF());
 		int markersSize = input.readInt();
 		MarkerSet markers = new MarkerSet(markersSize);
-		ArrayList<String> readTypes = new ArrayList<>();
-		for (int i = 0; i < markersSize; i++) {
+		ArrayList<String> readTypes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (int i = 0; i < markersSize; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			markers.add(readMarkerInfo(input, readTypes));
 		}
 		// we've read all the markers from the file for this snap. if the resource
@@ -89,13 +89,13 @@ public class MarkerSnapshotReader_2 extends MarkerSnapshotReader {
 		info.clear(ICoreConstants.M_MARKERS_SNAP_DIRTY);
 	}
 
-	private Map<String, Object> readAttributes(DataInputStream input) throws IOException {
+	private Map<String, Object> readAttributes(DataInputStream input) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		short attributesSize = input.readShort();
 		if (attributesSize == 0) {
 			return null;
 		}
-		Map<String, Object> result = new HashMap<>(attributesSize);
-		for (int j = 0; j < attributesSize; j++) {
+		Map<String, Object> result = new HashMap<>(attributesSize); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (int j = 0; j < attributesSize; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String key = input.readUTF();
 			byte type = input.readByte();
 			Object value = null;
@@ -120,7 +120,7 @@ public class MarkerSnapshotReader_2 extends MarkerSnapshotReader {
 		return result.isEmpty() ? null : result;
 	}
 
-	private MarkerInfo readMarkerInfo(DataInputStream input, List<String> readTypes) throws IOException, CoreException {
+	private MarkerInfo readMarkerInfo(DataInputStream input, List<String> readTypes) throws IOException, CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		long id = input.readLong();
 		byte constant = input.readByte();
 		String type = null;

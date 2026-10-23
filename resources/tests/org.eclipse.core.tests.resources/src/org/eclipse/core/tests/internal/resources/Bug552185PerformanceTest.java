@@ -36,10 +36,10 @@ import org.junit.jupiter.api.Test;
  */
 public class Bug552185PerformanceTest {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug552185Performance() throws Exception {
 		// run inside a WorkspaceJob, in case there are listeners on workspace changes
-		WorkspaceJob testJob = new WorkspaceJob(Bug552185PerformanceTest.class.getName()) {
+		WorkspaceJob testJob = new WorkspaceJob(Bug552185PerformanceTest.class.getName()) { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 				if (monitor.isCanceled()) {
@@ -67,7 +67,7 @@ public class Bug552185PerformanceTest {
 		runBenchmark(100_000, 1, monitor); // 100k directories with 1 file each
 	}
 
-	static void runBenchmark(int directoriesCount, int fileCountPerDirectory, IProgressMonitor monitor)
+	static void runBenchmark(int directoriesCount, int fileCountPerDirectory, IProgressMonitor monitor) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws CoreException {
 		Workspace workspace = (Workspace) ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot root = workspace.getRoot();
@@ -79,19 +79,19 @@ public class Bug552185PerformanceTest {
 			project.create(monitor);
 			project.open(monitor);
 			System.out.println(
-					"Creating " + directoriesCount + " directories with " + fileCountPerDirectory + " files each");
+					"Creating " + directoriesCount + " directories with " + fileCountPerDirectory + " files each"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			long start = System.currentTimeMillis();
 
 			SubMonitor subMonitor = SubMonitor.convert(monitor, directoriesCount);
-			for (int i = 0; i < directoriesCount; ++i) {
-				IFolder folder = project.getFolder("folder" + i);
-				SubMonitor subMonitor2 = SubMonitor.convert(subMonitor, "Creating directory " + folder.getName(),
+			for (int i = 0; i < directoriesCount; ++i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				IFolder folder = project.getFolder("folder" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				SubMonitor subMonitor2 = SubMonitor.convert(subMonitor, "Creating directory " + folder.getName(), //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						fileCountPerDirectory);
 				folder.create(IResource.FORCE, local, subMonitor);
-				for (int j = 0; j < fileCountPerDirectory; ++j) {
+				for (int j = 0; j < fileCountPerDirectory; ++j) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					subMonitor2.checkCanceled();
-					IFile file = folder.getFile("file" + j);
-					String content = "file content " + j;
+					IFile file = folder.getFile("file" + j); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+					String content = "file content " + j; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					file.create(content.getBytes(), IResource.FORCE, subMonitor2);
 					subMonitor2.worked(1);
 				}
@@ -101,7 +101,7 @@ public class Bug552185PerformanceTest {
 
 			long end = System.currentTimeMillis();
 			long elapsed = end - start;
-			System.out.println("Elapsed: " + elapsed + " ms");
+			System.out.println("Elapsed: " + elapsed + " ms"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} finally {
 			if (project.exists()) {
 				project.delete(IResource.FORCE, monitor);

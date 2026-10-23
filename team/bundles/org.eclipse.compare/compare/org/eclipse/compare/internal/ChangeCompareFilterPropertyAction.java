@@ -28,7 +28,7 @@ import org.eclipse.swt.events.DisposeListener;
 /**
  * Toggles the activation of a compare filter
  */
-public class ChangeCompareFilterPropertyAction extends Action implements
+public class ChangeCompareFilterPropertyAction extends Action implements //FLLDCIM: MARK — T06  IMPLEMENTS
 		IPropertyChangeListener, DisposeListener {
 
 	public static final String COMPARE_FILTERS = "COMPARE_FILTERS"; //$NON-NLS-1$
@@ -64,7 +64,7 @@ public class ChangeCompareFilterPropertyAction extends Action implements
 	@SuppressWarnings("unchecked")
 	void setProperty(boolean state) {
 		if (fCompareConfiguration != null) {
-			Map<String, ICompareFilter> filters = new HashMap<>();
+			Map<String, ICompareFilter> filters = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			if (fCompareConfiguration.getProperty(COMPARE_FILTERS) != null) {
 				filters.putAll(
 						(Map<String, ICompareFilter>) fCompareConfiguration
@@ -85,7 +85,7 @@ public class ChangeCompareFilterPropertyAction extends Action implements
 		Map<String, ICompareFilter> filters = (Map<String, ICompareFilter>) fCompareConfiguration
 				.getProperty(COMPARE_FILTERS);
 		if (filters == null) {
-			filters = new HashMap<>();
+			filters = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 		return filters.containsKey(fCompareFilterDescriptor.getFilterId());
 	}
@@ -109,7 +109,7 @@ public class ChangeCompareFilterPropertyAction extends Action implements
 		}
 		fCompareConfiguration = cc;
 		if (fCompareConfiguration != null) {
-			fCompareConfiguration.addPropertyChangeListener(this);
+			fCompareConfiguration.addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		}
 		setChecked(getProperty());
 	}

@@ -23,7 +23,7 @@ public class TestSourceLocator implements ISourceLocator {
 
 	@Override
 	public Object getSourceElement(IStackFrame stackFrame) {
-		return stackFrame.getModelIdentifier() + System.currentTimeMillis();
+		return stackFrame.getModelIdentifier() + System.currentTimeMillis(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 }

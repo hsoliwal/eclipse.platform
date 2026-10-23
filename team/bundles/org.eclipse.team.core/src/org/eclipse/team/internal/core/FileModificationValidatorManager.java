@@ -36,19 +36,19 @@ public class FileModificationValidatorManager extends FileModificationValidator 
 	 * Ask each provider once for its files.
 	 * Collect the resulting status' and return a MultiStatus.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus validateEdit(IFile[] files, FileModificationValidationContext context) {
-		ArrayList<IStatus> returnStati = new ArrayList<>();
+		ArrayList<IStatus> returnStati = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		//map provider to the files under that provider's control
-		Map<RepositoryProvider, List<IFile>> providersToFiles = new HashMap<>(files.length);
+		Map<RepositoryProvider, List<IFile>> providersToFiles = new HashMap<>(files.length); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 		//for each file, determine which provider, map providers to files
-		for (IFile file : files) {
+		for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			RepositoryProvider provider = RepositoryProvider.getProvider(file.getProject());
 
 			if (!providersToFiles.containsKey(provider)) {
-				providersToFiles.put(provider, new ArrayList<>());
+				providersToFiles.put(provider, new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			}
 
 			providersToFiles.get(provider).add(file);
@@ -59,7 +59,7 @@ public class FileModificationValidatorManager extends FileModificationValidator 
 		boolean allOK = true;
 
 		//for each provider, validate its files
-		while(providersIterator.hasNext()) {
+		while(providersIterator.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			RepositoryProvider provider = providersIterator.next();
 			List<IFile> filesList = providersToFiles.get(provider);
 			IFile[] filesArray = filesList.toArray(new IFile[filesList.size()]);

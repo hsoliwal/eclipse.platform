@@ -45,35 +45,35 @@ public class RangeDifferencerTest {
 	private static final int WARMUP = 5;
 	private static final long SANITY_BOUND_MILLIS = 10_000;
 
-	private static final List<Long> durations = new ArrayList<>();
+	private static final List<Long> durations = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	/*
 	 * Creates a document with 5000 lines. Parameter code determines where
 	 * additional lines are added.
 	 */
-	private IDocument createDocument(int code) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < 5000; i++) {
-			sb.append("line "); //$NON-NLS-1$
-			sb.append(Integer.toString(i));
-			sb.append('\n');
+	private IDocument createDocument(int code) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < 5000; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			sb.append("line "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(Integer.toString(i)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append('\n'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 			int mod = i % 10;
 			switch (code) {
 			case 1:
 				if (mod == 1) {
-					sb.append("outgoing\n"); //$NON-NLS-1$
+					sb.append("outgoing\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 				if (mod == 4) {
-					sb.append("conflict1\n"); //$NON-NLS-1$
+					sb.append("conflict1\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 				break;
 			case 2:
 				if (mod == 7) {
-					sb.append("incoming\n"); //$NON-NLS-1$
+					sb.append("incoming\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 				if (mod == 4) {
-					sb.append("conflict2\n"); //$NON-NLS-1$
+					sb.append("conflict2\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 				break;
 			}
@@ -81,7 +81,7 @@ public class RangeDifferencerTest {
 		return new Document(sb.toString());
 	}
 
-	@RepeatedTest(REPETITIONS)
+	@RepeatedTest(REPETITIONS) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLargeDocument(RepetitionInfo info) {
 		ITokenComparator ancestor = new DocLineComparator(createDocument(0), null, false);
 		ITokenComparator left = new DocLineComparator(createDocument(1), null, false);
@@ -92,7 +92,7 @@ public class RangeDifferencerTest {
 		long durationMillis = (System.nanoTime() - start) / 1_000_000;
 
 		// Assert the result is correct on every repetition.
-		for (int i = 0; i < diffs.length - 6; i += 6) {
+		for (int i = 0; i < diffs.length - 6; i += 6) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertEquals(RangeDifference.NOCHANGE, diffs[i + 0].kind());
 			assertEquals(RangeDifference.LEFT, diffs[i + 1].kind());
 			assertEquals(RangeDifference.NOCHANGE, diffs[i + 2].kind());
@@ -105,7 +105,7 @@ public class RangeDifferencerTest {
 			durations.add(durationMillis);
 		}
 		assertTrue(durationMillis < SANITY_BOUND_MILLIS,
-				"findRanges exceeded the sanity bound: " + durationMillis + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+				"findRanges exceeded the sanity bound: " + durationMillis + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@AfterAll
@@ -113,11 +113,11 @@ public class RangeDifferencerTest {
 		if (durations.isEmpty()) {
 			return;
 		}
-		List<Long> sorted = new ArrayList<>(durations);
-		Collections.sort(sorted);
+		List<Long> sorted = new ArrayList<>(durations); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
+		Collections.sort(sorted); //FLLDCIM: MARK — M16 SORT_LANE CALL
 		int n = sorted.size();
 		long median = n % 2 == 1 ? sorted.get(n / 2) : (sorted.get(n / 2 - 1) + sorted.get(n / 2)) / 2;
-		System.out.println("PERF range-differencer lines=5000 threeWay findRanges=" + median //$NON-NLS-1$
+		System.out.println("PERF range-differencer lines=5000 threeWay findRanges=" + median //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ "ms (median, n=" + n + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

@@ -45,18 +45,18 @@ public class SyncAliasTest {
 	 * Tests synchronization in presence of nested projects.
 	 * See bug 244315 for details.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNestedProjects() throws CoreException {
 		final IWorkspaceRoot root = getWorkspace().getRoot();
 		File fsRoot = root.getLocation().toFile();
 		File fsParent = new File(fsRoot, "parent");
-		fsParent.mkdirs();
+		fsParent.mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		final File childProject = new File(fsParent, "nestedProject");
-		childProject.mkdirs();
+		childProject.mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		final IProject nestedProject = root.getProject("nestedProject");
 		final IFolder nestedTarget = nestedProject.getFolder("target");
 
-		getWorkspace().run((IWorkspaceRunnable) monitor -> {
+		getWorkspace().run((IWorkspaceRunnable) monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 			//create top level project
 			IProject parent = root.getProject("parent");
 			parent.create(monitor);
@@ -77,11 +77,11 @@ public class SyncAliasTest {
 		//IProject parent = root.getProject("parent");
 		//assertTrue(parent.getFolder("nestedProject/target").exists()); -> this will fail
 
-		getWorkspace().run((IWorkspaceRunnable) monitor -> {
+		getWorkspace().run((IWorkspaceRunnable) monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 			File file = new File(childProject, "target/classes/META-INF/ejb.xml");
-			file.getParentFile().mkdirs();
+			file.getParentFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try {
-				FileOutputStream fos = new FileOutputStream(file);
+				FileOutputStream fos = new FileOutputStream(file); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 				fos.close();
 			} catch (IOException e) {
 				throw new CoreException(new Status(IStatus.ERROR, "org.eclipse.core.tests.resources", "Test failed due to unexpected IOException"));

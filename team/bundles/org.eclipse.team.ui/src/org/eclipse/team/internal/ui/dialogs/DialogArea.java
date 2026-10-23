@@ -43,7 +43,7 @@ public abstract class DialogArea {
 	 * Create a dialog area
 	 */
 	protected DialogArea() {
-		this.listeners = new ArrayList<>();
+		this.listeners = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	}
 
 	/**
@@ -65,7 +65,7 @@ public abstract class DialogArea {
 
 	protected void firePropertyChangeChange(String property, Object oldValue, Object newValue) {
 		PropertyChangeEvent event = new PropertyChangeEvent(this, property, oldValue, newValue);
-		for (IPropertyChangeListener listener : listeners) {
+		for (IPropertyChangeListener listener : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			listener.propertyChange(event);
 		}
 	}
@@ -168,7 +168,7 @@ public abstract class DialogArea {
 	 * @param numColumns  the number of columns for the new composite
 	 * @return the newly-created coposite
 	 */
-	protected Composite createGrabbingComposite(Composite parent, int numColumns) {
+	protected Composite createGrabbingComposite(Composite parent, int numColumns) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Composite composite = new Composite(parent, SWT.NULL);
 		Font font = parent.getFont();
 		composite.setFont(font);

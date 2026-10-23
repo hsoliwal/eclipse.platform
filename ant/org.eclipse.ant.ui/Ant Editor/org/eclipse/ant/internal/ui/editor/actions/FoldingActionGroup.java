@@ -45,7 +45,7 @@ public class FoldingActionGroup extends ActionGroup {
 	 * @param viewer
 	 *            the viewer of the editor
 	 */
-	public FoldingActionGroup(ITextEditor editor, ITextViewer viewer) {
+	public FoldingActionGroup(ITextEditor editor, ITextViewer viewer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (viewer instanceof ProjectionViewer) {
 			fViewer = (ProjectionViewer) viewer;
 

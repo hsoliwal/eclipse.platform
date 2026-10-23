@@ -22,13 +22,13 @@ public class ProjectPreferenceModifyListener extends PreferenceModifyListener {
 	 * Return the segment from the given path or null.
 	 * "segment" parameter is 0-based.
 	 */
-	private static String getSegment(String path, int segment) {
+	private static String getSegment(String path, int segment) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int start = path.indexOf(IPath.SEPARATOR) == 0 ? 1 : 0;
 		int end = path.indexOf(IPath.SEPARATOR, start);
 		if (end == path.length() - 1) {
 			end = -1;
 		}
-		for (int i = 0; i < segment; i++) {
+		for (int i = 0; i < segment; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (end == -1) {
 				return null;
 			}

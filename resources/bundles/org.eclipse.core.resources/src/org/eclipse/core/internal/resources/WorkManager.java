@@ -105,7 +105,7 @@ public class WorkManager implements IManager {
 	 */
 	public int beginUnprotected() {
 		int depth = lock.getDepth();
-		for (int i = 0; i < depth; i++) {
+		for (int i = 0; i < depth; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			lock.release();
 		}
 		return depth;
@@ -115,7 +115,7 @@ public class WorkManager implements IManager {
 	 * An operation calls this method and it only returns when the operation is
 	 * free to run.
 	 */
-	void checkIn(ISchedulingRule rule, IProgressMonitor monitor) throws CoreException {
+	void checkIn(ISchedulingRule rule, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean success = false;
 		try {
 			if (workspace.isTreeLocked()) {
@@ -193,7 +193,7 @@ public class WorkManager implements IManager {
 	 * @see #beginUnprotected()
 	 */
 	public void endUnprotected(int depth) {
-		for (int i = 0; i < depth; i++) {
+		for (int i = 0; i < depth; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			lock.acquire();
 		}
 	}
@@ -294,7 +294,7 @@ public class WorkManager implements IManager {
 	 */
 	synchronized void setBuild(boolean hasChanges) {
 		if (hasChanges && Policy.DEBUG_BUILD_NEEDED) {
-			Policy.debug("Set build hasChanges: " + hasChanges + " hasBuildChanges: " + hasBuildChanges); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug("Set build hasChanges: " + hasChanges + " hasBuildChanges: " + hasBuildChanges); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			if (!hasBuildChanges && Policy.DEBUG_BUILD_NEEDED_STACK) {
 				Policy.debug(new RuntimeException("Set build hasChanges!")); //$NON-NLS-1$
 			}

@@ -68,18 +68,18 @@ public class ContentDescriptionManagerTest {
 	}
 
 	protected InputStream projectDescriptionWithNatures(String project, String[] natures) {
-		StringBuilder contents = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><projectDescription><name>" + project + "</name><natures>");
-		for (String nature : natures) {
-			contents.append("<nature>" + nature + "</nature>");
+		StringBuilder contents = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?><projectDescription><name>" + project + "</name><natures>"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (String nature : natures) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			contents.append("<nature>" + nature + "</nature>"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		contents.append("</natures></projectDescription>");
+		contents.append("</natures></projectDescription>"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return new ByteArrayInputStream(contents.toString().getBytes());
 	}
 
 	/**
 	 * Ensure we react to changes to the content type registry in an appropriated way.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug79151() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		IProject project = workspace.getRoot().getProject("MyProject");
@@ -87,7 +87,7 @@ public class ContentDescriptionManagerTest {
 		IContentType xml = contentTypeManager.getContentType("org.eclipse.core.runtime.xml");
 		String newExtension = "xml_bug_79151";
 		IFile file1 = project.getFile("file.xml");
-		IFile file2 = project.getFile("file." + newExtension);
+		IFile file2 = project.getFile("file." + newExtension); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		createInWorkspace(file1, CharsetTest.SAMPLE_XML_ISO_8859_1_ENCODING);
 		createInWorkspace(file2, CharsetTest.SAMPLE_XML_US_ASCII_ENCODING);
 		// ensure we start in a known state
@@ -134,7 +134,7 @@ public class ContentDescriptionManagerTest {
 		assertNull(description2);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug94516() throws Exception {
 		IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
 		IContentType text = contentTypeManager.getContentType("org.eclipse.core.runtime.text");
@@ -182,7 +182,7 @@ public class ContentDescriptionManagerTest {
 	/**
 	 * Ensures content type-nature associations work as expected.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNatureContentTypeAssociation() throws Exception {
 		IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
 		IContentType baseType = contentTypeManager.getContentType("org.eclipse.core.tests.resources.nature_associated_1");
@@ -248,7 +248,7 @@ public class ContentDescriptionManagerTest {
 				((ContentTypeHandler) description.getContentType()).getTarget());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectSpecificCharset() throws Exception {
 		IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
 		IContentType text = contentTypeManager.getContentType("org.eclipse.core.runtime.text");
@@ -286,7 +286,7 @@ public class ContentDescriptionManagerTest {
 		assertEquals("FOO", xmlFile.getCharset());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectSpecificFileAssociations() throws Exception {
 		IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
 		IContentType text = contentTypeManager.getContentType("org.eclipse.core.runtime.text");
@@ -298,7 +298,7 @@ public class ContentDescriptionManagerTest {
 
 		IFile txtFile = project.getFile("example.txt");
 		IFile xmlFile = project.getFile("example.xml");
-		IFile unrelatedFile = project.getFile("file." + unrelatedFileExtension);
+		IFile unrelatedFile = project.getFile("file." + unrelatedFileExtension); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		createInWorkspace(txtFile, "");
 		createInWorkspace(xmlFile, "");

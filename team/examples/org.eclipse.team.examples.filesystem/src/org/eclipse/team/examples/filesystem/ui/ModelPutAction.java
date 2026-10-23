@@ -32,7 +32,7 @@ import org.eclipse.team.ui.synchronize.ModelParticipantAction;
 /**
  * A put action for use in the file system synchronize participant.
  */
-public class ModelPutAction extends ModelParticipantAction {
+public class ModelPutAction extends ModelParticipantAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 	public ModelPutAction(String text, ISynchronizePageConfiguration configuration) {
 		super(text, configuration);
@@ -49,8 +49,8 @@ public class ModelPutAction extends ModelParticipantAction {
 	}
 
 	private ResourceMapping[] getResourceMappings(IStructuredSelection selection) {
-		List<ResourceMapping> mappings = new ArrayList<>();
-		for (Iterator iter = selection.iterator(); iter.hasNext();) {
+		List<ResourceMapping> mappings = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Iterator iter = selection.iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object element = iter.next();
 			ResourceMapping mapping = Utils.getResourceMapping(element);
 			if (mapping != null)

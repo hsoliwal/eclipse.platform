@@ -91,13 +91,13 @@ public class PDADebugTarget extends PDADebugElement implements IDebugTarget, IBr
 	private boolean fTerminated = false;
 
 	// threads
-	private final Map<Integer, PDAThread> fThreads = Collections.synchronizedMap(new LinkedHashMap<>());
+	private final Map<Integer, PDAThread> fThreads = Collections.synchronizedMap(new LinkedHashMap<>()); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	// event dispatch job
 	private final EventDispatchJob fEventDispatch;
 
 	// event listeners
-	private final List<IPDAEventListener> fEventListeners = Collections.synchronizedList(new ArrayList<>());
+	private final List<IPDAEventListener> fEventListeners = Collections.synchronizedList(new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	/**
 	 * Listens to events from the PDA VM and fires corresponding
@@ -110,10 +110,10 @@ public class PDADebugTarget extends PDADebugElement implements IDebugTarget, IBr
 			setSystem(true);
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		protected IStatus run(IProgressMonitor monitor) {
 			String message = ""; //$NON-NLS-1$
-			while (!isTerminated() && message != null) {
+			while (!isTerminated() && message != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					message = fEventReader.readLine();
 					if (message != null) {
@@ -125,7 +125,7 @@ public class PDADebugTarget extends PDADebugElement implements IDebugTarget, IBr
 							ILog.of(PDADebugTarget.class).error("Error parsing PDA event", e); //$NON-NLS-1$
 							continue;
 						}
-						for (Object listener : fEventListeners.toArray()) {
+						for (Object listener : fEventListeners.toArray()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							((IPDAEventListener)listener).handleEvent(event);
 						}
 					}
@@ -173,7 +173,7 @@ public class PDADebugTarget extends PDADebugElement implements IDebugTarget, IBr
 	 * @param eventPort port to read events from
 	 * @exception CoreException if unable to connect to host
 	 */
-	public PDADebugTarget(ILaunch launch, IProcess process, int requestPort, int eventPort) throws CoreException {
+	public PDADebugTarget(ILaunch launch, IProcess process, int requestPort, int eventPort) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super(null);
 		fLaunch = launch;
 		fProcess = process;
@@ -228,7 +228,7 @@ public class PDADebugTarget extends PDADebugElement implements IDebugTarget, IBr
 	public String getName() throws DebugException {
 		return "PDA"; //$NON-NLS-1$
 	}
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean supportsBreakpoint(IBreakpoint breakpoint) {
 		if (!isTerminated() && breakpoint.getModelIdentifier().equals(getModelIdentifier())) {
 			try {
@@ -384,7 +384,7 @@ public class PDADebugTarget extends PDADebugElement implements IDebugTarget, IBr
 	 * manager.
 	 */
 	private void installDeferredBreakpoints() {
-		for (IBreakpoint breakpoint : getBreakpointManager().getBreakpoints(getModelIdentifier())) {
+		for (IBreakpoint breakpoint : getBreakpointManager().getBreakpoints(getModelIdentifier())) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			breakpointAdded(breakpoint);
 		}
 	}
@@ -449,7 +449,7 @@ public class PDADebugTarget extends PDADebugElement implements IDebugTarget, IBr
 		fTerminated = terminated;
 	}
 
-	private String sendRequest(String request) throws DebugException {
+	private String sendRequest(String request) throws DebugException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		synchronized (fRequestSocket) {
 			fRequestWriter.println(request);
 			fRequestWriter.flush();
@@ -457,11 +457,11 @@ public class PDADebugTarget extends PDADebugElement implements IDebugTarget, IBr
 				// wait for reply
 				String retVal = fRequestReader.readLine();
 				if (retVal == null) {
-					requestFailed("Request failed: " + request + ".  Debugger connection closed.", null);				     //$NON-NLS-1$ //$NON-NLS-2$
+					requestFailed("Request failed: " + request + ".  Debugger connection closed.", null);				     //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				return retVal;
 			} catch (IOException e) {
-				requestFailed("Request failed: " + request, e); //$NON-NLS-1$
+				requestFailed("Request failed: " + request, e); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		// Should never reach this satement.
@@ -480,7 +480,7 @@ public class PDADebugTarget extends PDADebugElement implements IDebugTarget, IBr
 	 */
 	@Override
 	public void breakpointManagerEnablementChanged(boolean enabled) {
-		for (IBreakpoint breakpoint : getBreakpointManager().getBreakpoints(getModelIdentifier())) {
+		for (IBreakpoint breakpoint : getBreakpointManager().getBreakpoints(getModelIdentifier())) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (enabled) {
 				breakpointAdded(breakpoint);
 			} else {

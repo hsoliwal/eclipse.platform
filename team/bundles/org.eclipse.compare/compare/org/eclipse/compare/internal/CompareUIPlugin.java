@@ -145,11 +145,11 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		private HashMap<IContentType, List<T>> fContentTypeBindings; // multimap: maps content type bindings to list of data
 
 
-		void register(IConfigurationElement element, T data) {
+		void register(IConfigurationElement element, T data) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			String id= element.getAttribute(ID_ATTRIBUTE);
 			if (id != null) {
 				if (fIdMap == null) {
-					fIdMap= new HashMap<>();
+					fIdMap= new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 				}
 				fIdMap.put(id, data);
 			}
@@ -157,21 +157,21 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 			String types= element.getAttribute(EXTENSIONS_ATTRIBUTE);
 			if (types != null) {
 				if (fExtensionMap == null) {
-					fExtensionMap= new HashMap<>();
+					fExtensionMap= new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 				}
 				StringTokenizer tokenizer= new StringTokenizer(types, ","); //$NON-NLS-1$
-				while (tokenizer.hasMoreElements()) {
+				while (tokenizer.hasMoreElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String extension= tokenizer.nextToken().trim();
 					List<T> l = fExtensionMap.get(normalizeCase(extension));
 					if (l == null) {
-						fExtensionMap.put(normalizeCase(extension),	l = new ArrayList<>());
+						fExtensionMap.put(normalizeCase(extension),	l = new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 					}
 					l.add(data);
 				}
 			}
 		}
 
-		void createBinding(IConfigurationElement element, String idAttributeName) {
+		void createBinding(IConfigurationElement element, String idAttributeName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			String type= element.getAttribute(CONTENT_TYPE_ID_ATTRIBUTE);
 			String id= element.getAttribute(idAttributeName);
 			if (id == null) {
@@ -183,11 +183,11 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 					IContentType ct= fgContentTypeManager.getContentType(type);
 					if (ct != null) {
 						if (fContentTypeBindings == null) {
-							fContentTypeBindings= new HashMap<>();
+							fContentTypeBindings= new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 						}
 						List<T> l = fContentTypeBindings.get(ct);
 						if (l == null) {
-							fContentTypeBindings.put(ct, l = new ArrayList<>());
+							fContentTypeBindings.put(ct, l = new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 						}
 						l.add(o);
 					} else {
@@ -206,7 +206,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 
 		List<T> searchAll(IContentType type) {
 			if (fContentTypeBindings != null) {
-				for (; type != null; type= type.getBaseType()) {
+				for (; type != null; type= type.getBaseType()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					List<T> data= fContentTypeBindings.get(type);
 					if (data != null) {
 						return data;
@@ -263,7 +263,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	private static final String CONTENT_TYPE_BINDING= "contentTypeBinding"; //$NON-NLS-1$
 
 
-	private static final String COMPARE_EDITOR= PLUGIN_ID + ".CompareEditor"; //$NON-NLS-1$
+	private static final String COMPARE_EDITOR= PLUGIN_ID + ".CompareEditor"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	private static final String STRUCTUREVIEWER_ALIASES_PREFERENCE_NAME= "StructureViewerAliases";	//$NON-NLS-1$
 
@@ -275,7 +275,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	 * element. Used on the UI thread only; input and elements are held weakly.
 	 */
 	private static Reference<Object> fSniffInput= new WeakReference<>(null);
-	private static final List<SniffedElement> fSniffedElements= new ArrayList<>(3);
+	private static final List<SniffedElement> fSniffedElements= new ArrayList<>(3); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	private static final class SniffedElement {
 		final Reference<ITypedElement> element;
@@ -295,7 +295,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	 * became a document, and the element is held weakly so that entries nobody asked
 	 * for go away with the editor that prepared them.
 	 */
-	private static final List<PrefetchedElement> fPrefetchedContents= new ArrayList<>(3);
+	private static final List<PrefetchedElement> fPrefetchedContents= new ArrayList<>(3); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	/** Contents larger than this are read by whoever needs them instead. */
 	private static final int PREFETCH_LIMIT= 8 * 1024 * 1024;
@@ -331,7 +331,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	/** Maps ImageDescriptors to Images */
 	private static Map<ImageDescriptor, Image> fgImages2= new Hashtable<>(10);
 
-	private static List<Image> fgDisposeOnShutdownImages= new ArrayList<>();
+	private static List<Image> fgDisposeOnShutdownImages= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	private ResourceBundle fResourceBundle;
 
@@ -377,7 +377,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 						ComparePreferencePage.CAPPING_DISABLED));
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void stop(BundleContext context) throws Exception {
 		IPreferenceStore ps= getPreferenceStore();
 		rememberAliases(ps);
@@ -389,7 +389,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		super.stop(context);
 
 		if (fgDisposeOnShutdownImages != null) {
-			for (Image img : fgDisposeOnShutdownImages) {
+			for (Image img : fgDisposeOnShutdownImages) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!img.isDisposed()) {
 					img.dispose();
 				}
@@ -444,17 +444,17 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	 * Registers all stream mergers, structure creators, content merge viewers, and structure merge viewers
 	 * that are found in the XML plugin files.
 	 */
-	private void registerExtensions() {
+	private void registerExtensions() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IExtensionRegistry registry= Platform.getExtensionRegistry();
 
 		// collect all IStreamMergers
 		IConfigurationElement[] elements= registry.getConfigurationElementsFor(PLUGIN_ID, STREAM_MERGER_EXTENSION_POINT);
-		for (IConfigurationElement element : elements) {
+		for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (STREAM_MERGER.equals(element.getName())) {
 				fStreamMergers.register(element, new StreamMergerDescriptor(element));
 			}
 		}
-		for (IConfigurationElement element : elements) {
+		for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (CONTENT_TYPE_BINDING.equals(element.getName())) {
 				fStreamMergers.createBinding(element, STREAM_MERGER_ID_ATTRIBUTE);
 			}
@@ -462,7 +462,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 
 		// collect all IStructureCreators
 		elements= registry.getConfigurationElementsFor(PLUGIN_ID, STRUCTURE_CREATOR_EXTENSION_POINT);
-		for (IConfigurationElement element : elements) {
+		for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String name= element.getName();
 			if (!CONTENT_TYPE_BINDING.equals(name)) {
 				if (!STRUCTURE_CREATOR.equals(name)) {
@@ -471,7 +471,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 				fStructureCreators.register(element, new StructureCreatorDescriptor(element));
 			}
 		}
-		for (IConfigurationElement element : elements) {
+		for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (CONTENT_TYPE_BINDING.equals(element.getName())) {
 				fStructureCreators.createBinding(element, STRUCTURE_CREATOR_ID_ATTRIBUTE);
 			}
@@ -479,7 +479,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 
 		// collect all viewers which define the structure merge viewer extension point
 		elements= registry.getConfigurationElementsFor(PLUGIN_ID, STRUCTURE_MERGE_VIEWER_EXTENSION_POINT);
-		for (IConfigurationElement element : elements) {
+		for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String name= element.getName();
 			if (!CONTENT_TYPE_BINDING.equals(name)) {
 				if (!VIEWER_TAG.equals(name)) {
@@ -488,7 +488,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 				fStructureMergeViewers.register(element, new ViewerDescriptor(element));
 			}
 		}
-		for (IConfigurationElement element : elements) {
+		for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (CONTENT_TYPE_BINDING.equals(element.getName())) {
 				fStructureMergeViewers.createBinding(element, STRUCTURE_MERGE_VIEWER_ID_ATTRIBUTE);
 			}
@@ -496,7 +496,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 
 		// collect all viewers which define the content merge viewer extension point
 		elements= registry.getConfigurationElementsFor(PLUGIN_ID, CONTENT_MERGE_VIEWER_EXTENSION_POINT);
-		for (IConfigurationElement element : elements) {
+		for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String name= element.getName();
 			if (!CONTENT_TYPE_BINDING.equals(name)) {
 				if (!VIEWER_TAG.equals(name)) {
@@ -505,7 +505,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 				fContentMergeViewers.register(element, new ViewerDescriptor(element));
 			}
 		}
-		for (IConfigurationElement element : elements) {
+		for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (CONTENT_TYPE_BINDING.equals(element.getName())) {
 				fContentMergeViewers.createBinding(element, CONTENT_MERGE_VIEWER_ID_ATTRIBUTE);
 			}
@@ -514,7 +514,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		// collect all extensions that define the compare filter extension point
 		elements = registry.getConfigurationElementsFor(PLUGIN_ID,
 				COMPARE_FILTER_EXTENTION_POINT);
-		for (IConfigurationElement element : elements) {
+		for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String name = element.getName();
 			if (!CONTENT_TYPE_BINDING.equals(name)) {
 				if (!FILTER_TAG.equals(name)) {
@@ -524,7 +524,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 				fCompareFilters.register(element, new CompareFilterDescriptor(element));
 			}
 		}
-		for (IConfigurationElement element : elements) {
+		for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (CONTENT_TYPE_BINDING.equals(element.getName())) {
 				fCompareFilters.createBinding(element,
 						COMPARE_FILTER_ID_ATTRIBUTE);
@@ -533,7 +533,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 
 		// collect all viewers which define the content viewer extension point
 		elements= registry.getConfigurationElementsFor(PLUGIN_ID, CONTENT_VIEWER_EXTENSION_POINT);
-		for (IConfigurationElement element : elements) {
+		for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String name= element.getName();
 			if (!CONTENT_TYPE_BINDING.equals(name)) {
 				if (!VIEWER_TAG.equals(name)) {
@@ -542,7 +542,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 				fContentViewers.register(element, new ViewerDescriptor(element));
 			}
 		}
-		for (IConfigurationElement element : elements) {
+		for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (CONTENT_TYPE_BINDING.equals(element.getName())) {
 				fContentViewers.createBinding(element, CONTENT_VIEWER_ID_ATTRIBUTE);
 			}
@@ -646,7 +646,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	}
 
 	/** Opens the classic side by side compare editor on the given input. */
-	private void openClassicCompareEditor(final CompareEditorInput input, final IWorkbenchPage page,
+	private void openClassicCompareEditor(final CompareEditorInput input, final IWorkbenchPage page, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			final IReusableEditor editor, final boolean activate) {
 		CompareConfiguration configuration = input.getCompareConfiguration();
 		if (configuration != null) {
@@ -671,7 +671,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	 * result, falling back to the classic compare editor when the input does not
 	 * qualify or no text editor can be opened for it.
 	 */
-	private void openUnifiedDiffInEditor(final CompareEditorInput input, final IWorkbenchPage page,
+	private void openUnifiedDiffInEditor(final CompareEditorInput input, final IWorkbenchPage page, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			final IReusableEditor editor, final boolean activate) {
 		if (!input.canRunAsJob()) {
 			openUnifiedDiffOrFallback(prepareUnifiedDiff(input, new NullProgressMonitor()), input, page, editor,
@@ -690,7 +690,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 				if (monitor.isCanceled()) {
 					return Status.CANCEL_STATUS;
 				}
-				Display.getDefault().asyncExec(() -> openUnifiedDiffOrFallback(source, input, page, editor, activate));
+				Display.getDefault().asyncExec(() -> openUnifiedDiffOrFallback(source, input, page, editor, activate)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				return Status.OK_STATUS;
 			}
 
@@ -710,7 +710,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		}
 	}
 
-	private boolean openUnifiedDiff(UnifiedDiffSource source, CompareEditorInput input, IWorkbenchPage page,
+	private boolean openUnifiedDiff(UnifiedDiffSource source, CompareEditorInput input, IWorkbenchPage page, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IReusableEditor editor, boolean activate) {
 		IWorkbenchPage wpage = page != null ? page : getActivePage();
 		if (wpage == null) {
@@ -782,7 +782,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	 * applies. Only a custom viewer is instantiated, because the unified diff
 	 * already defaults to what the platform viewer would contribute.
 	 */
-	private IDocumentMergerInput findDocumentMergerInput(CompareEditorInput input, ICompareInput compareInput) {
+	private IDocumentMergerInput findDocumentMergerInput(CompareEditorInput input, ICompareInput compareInput) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ViewerDescriptor[] descriptors = findContentViewerDescriptor(null, compareInput,
 				input.getCompareConfiguration());
 		if (descriptors == null || descriptors.length == 0
@@ -802,7 +802,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		return null;
 	}
 
-	private Action createOpenTwoWayCompareAction(final CompareEditorInput input, final IWorkbenchPage page,
+	private Action createOpenTwoWayCompareAction(final CompareEditorInput input, final IWorkbenchPage page, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IReusableEditor editor, boolean activate, ITextEditor textEditor) {
 		ImageDescriptor image = CompareUIPlugin.getImageDescriptor(ICompareUIConstants.TWO_WAY_COMPARE);
 		Action openTwoWayCompare = new Action(null, image) {
@@ -928,7 +928,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	 * Picks the side the unified diff sits on, without reading any content.
 	 * Returns <code>null</code> if neither side qualifies.
 	 */
-	private static UnifiedDiffCandidate unifiedDiffCandidateOf(CompareEditorInput input) {
+	private static UnifiedDiffCandidate unifiedDiffCandidateOf(CompareEditorInput input) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (input == null || !(input.getCompareResult() instanceof ICompareInput compareInput)) {
 			return null;
 		}
@@ -972,20 +972,20 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	 * The compare editor is closed once the unified diff is up; when it cannot be
 	 * shown, the compare editor is left as it is.
 	 */
-	public void switchToUnifiedDiff(final CompareEditorInput input, final IWorkbenchPage page) {
+	public void switchToUnifiedDiff(final CompareEditorInput input, final IWorkbenchPage page) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final IWorkbenchPage wpage = page != null ? page : getActivePage();
 		if (wpage == null || !canShowAsUnifiedDiff(input)) {
 			return;
 		}
 		Job job = new Job(NLS.bind(CompareMessages.UnifiedDiff_preparing, input.getTitle())) {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			protected IStatus run(IProgressMonitor monitor) {
 				// The input already ran, so only the diff source has to be read here.
 				UnifiedDiffSource source = unifiedDiffSourceOf(input);
 				if (source == null || monitor.isCanceled()) {
 					return Status.CANCEL_STATUS;
 				}
-				Display.getDefault().asyncExec(() -> {
+				Display.getDefault().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 					IEditorPart compareEditor = wpage.findEditor(input);
 					if (compareEditor == null) {
 						// The comparison was closed while it was being prepared.
@@ -1041,7 +1041,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		internalOpenEditor(input, page, editor, activate);
 	}
 
-	private void internalOpenEditor(final CompareEditorInput input,
+	private void internalOpenEditor(final CompareEditorInput input, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			final IWorkbenchPage wp, final IReusableEditor editor,
 			final boolean activate) {
 		Runnable runnable = () -> {
@@ -1084,7 +1084,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		}
 	}
 
-	public IStatus prepareInput(CompareEditorInput input, IProgressMonitor monitor) {
+	public IStatus prepareInput(CompareEditorInput input, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			input.run(monitor);
 			String message= input.getMessage();
@@ -1108,7 +1108,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	/*
 	 * @return <code>true</code> if compare result is OK to show, <code>false</code> otherwise
 	 */
-	public boolean compareResultOK(CompareEditorInput input, IRunnableContext context) {
+	public boolean compareResultOK(CompareEditorInput input, IRunnableContext context) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final Shell shell= getShell();
 		try {
 			// run operation in context if possible
@@ -1182,7 +1182,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	 * @param type the type
 	 * @return the image
 	 */
-	public static Image getImage(String type) {
+	public static Image getImage(String type) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		type= normalizeCase(type);
 
@@ -1234,7 +1234,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	 * @param adaptable the adaptable for which to find an image
 	 * @return an image
 	 */
-	public static Image getImage(IAdaptable adaptable) {
+	public static Image getImage(IAdaptable adaptable) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (adaptable != null) {
 			IWorkbenchAdapter o= Adapters.adapt(adaptable, IWorkbenchAdapter.class);
 			if (o == null) {
@@ -1261,7 +1261,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 
 	private static Image createWorkbenchImage(String type) {
 		IEditorRegistry er= PlatformUI.getWorkbench().getEditorRegistry();
-		ImageDescriptor id= er.getImageDescriptor("foo." + type); //$NON-NLS-1$
+		ImageDescriptor id= er.getImageDescriptor("foo." + type); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return id.createImage();
 	}
 
@@ -1309,7 +1309,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		return null;
 	}
 
-	public ViewerDescriptor[] findStructureViewerDescriptor(Viewer oldViewer,
+	public ViewerDescriptor[] findStructureViewerDescriptor(Viewer oldViewer, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			ICompareInput input, CompareConfiguration configuration) {
 		beginContentTypeSniffing(input);
 		// we don't show the structure of additions or deletions
@@ -1364,7 +1364,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	 * @param configuration a configuration which is passed to a newly created viewer
 	 * @return the compare viewer which is suitable for the given input object or <code>null</code>
 	 */
-	public Viewer findStructureViewer(Viewer oldViewer, ICompareInput input, Composite parent,
+	public Viewer findStructureViewer(Viewer oldViewer, ICompareInput input, Composite parent, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 				CompareConfiguration configuration) {
 		ViewerDescriptor[] descriptors = findStructureViewerDescriptor(oldViewer, input, configuration);
 		if (descriptors == null || descriptors.length == 0) {
@@ -1396,13 +1396,13 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		return getViewer(descriptors[0], oldViewer, parent, configuration);
 	}
 
-	public CompareFilterDescriptor[] findCompareFilters(Object in) {
+	public CompareFilterDescriptor[] findCompareFilters(Object in) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Collection<Object> contentTypes = getContentTypes(in);
 		if (contentTypes == null) {
 			return new CompareFilterDescriptor[0];
 		}
 		Set<CompareFilterDescriptor> result = new LinkedHashSet<>();
-		for (Object ct : contentTypes) {
+		for (Object ct : contentTypes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (ct instanceof IContentType) {
 				List<CompareFilterDescriptor> list = fCompareFilters.searchAll((IContentType) ct);
 				if (list != null) {
@@ -1416,13 +1416,13 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 			}
 		}
 
-		ArrayList<CompareFilterDescriptor> list = new ArrayList<>(result);
-		Collections.sort(list, Comparator.comparing(CompareFilterDescriptor::getFilterId));
+		ArrayList<CompareFilterDescriptor> list = new ArrayList<>(result); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		Collections.sort(list, Comparator.comparing(CompareFilterDescriptor::getFilterId)); //FLLDCIM: MARK — M16 SORT_LANE CALL
 
 		return result.toArray(new CompareFilterDescriptor[result.size()]);
 	}
 
-	private Collection<Object> getContentTypes(Object in) {
+	private Collection<Object> getContentTypes(Object in) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Set<Object> result = new LinkedHashSet<>();
 		if (in instanceof IStreamContentAccessor) {
 			String type = ITypedElement.TEXT_TYPE;
@@ -1463,7 +1463,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 
 		if (type == null) {
 			int n = 0;
-			for (String t : types) {
+			for (String t : types) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!ITypedElement.UNKNOWN_TYPE.equals(t)) {
 					n++;
 					if (type == null) {
@@ -1496,7 +1496,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		return result;
 	}
 
-	public ViewerDescriptor[] findContentViewerDescriptor(Viewer oldViewer, Object in, CompareConfiguration cc) {
+	public ViewerDescriptor[] findContentViewerDescriptor(Viewer oldViewer, Object in, CompareConfiguration cc) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		beginContentTypeSniffing(in);
 		LinkedHashSet<ViewerDescriptor> result = new LinkedHashSet<>();
 		if (in instanceof IStreamContentAccessor) {
@@ -1557,7 +1557,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 
 		if (type == null) {
 			int n= 0;
-			for (String t : types) {
+			for (String t : types) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!ITypedElement.UNKNOWN_TYPE.equals(t)) {
 					n++;
 					if (type == null) {
@@ -1629,7 +1629,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	 * @return set of descriptors which could be found for given content type via
 	 *         "linked" editor
 	 */
-	Set<ViewerDescriptor> findEditorLinkedDescriptors(String fileName, IContentType contentType,
+	Set<ViewerDescriptor> findEditorLinkedDescriptors(String fileName, IContentType contentType, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			boolean firstIsEnough) {
 		if (fileName == null && contentType == null) {
 			return Collections.emptySet();
@@ -1647,7 +1647,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		IEditorRegistry editorReg = PlatformUI.getWorkbench().getEditorRegistry();
 		LinkedHashSet<ViewerDescriptor> result = new LinkedHashSet<>();
 		IEditorDescriptor[] editors = editorReg.getEditors(fileName, contentType);
-		for (IEditorDescriptor ed : editors) {
+		for (IEditorDescriptor ed : editors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			addLinkedEditorContentTypes(viewers, firstIsEnough, ed.getId(), result);
 			if (firstIsEnough && !result.isEmpty()) {
 				return result;
@@ -1695,12 +1695,12 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		return null;
 	}
 
-	private static String[] getTypes(ICompareInput input) {
+	private static String[] getTypes(ICompareInput input) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ITypedElement ancestor= input.getAncestor();
 		ITypedElement left= input.getLeft();
 		ITypedElement right= input.getRight();
 
-		ArrayList<String> tmp= new ArrayList<>();
+		ArrayList<String> tmp= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (ancestor != null) {
 			String type= ancestor.getType();
 			if (type != null) {
@@ -1737,7 +1737,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	}
 
 	private static SniffedElement sniffedElement(ITypedElement element) {
-		for (SniffedElement sniffed : fSniffedElements) {
+		for (SniffedElement sniffed : fSniffedElements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (sniffed.element.get() == element) {
 				return sniffed;
 			}
@@ -1777,7 +1777,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		prefetchContents(input.getRight(), monitor);
 	}
 
-	private static void prefetchContents(ITypedElement element, IProgressMonitor monitor) {
+	private static void prefetchContents(ITypedElement element, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!(element instanceof IStreamContentAccessor accessor) || hasSharedDocument(element)) {
 			return;
 		}
@@ -1808,7 +1808,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	private static byte[] read(InputStream stream, int limit, IProgressMonitor monitor) throws IOException {
 		ByteArrayOutputStream buffer= new ByteArrayOutputStream(Math.min(limit, 8192));
 		byte[] chunk= new byte[8192];
-		while (buffer.size() < limit) {
+		while (buffer.size() < limit) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (monitor != null && monitor.isCanceled()) {
 				return null;
 			}
@@ -1825,7 +1825,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	private static boolean looksLikeText(byte[] contents) {
 		int lineLength= 0;
 		int lines= 0;
-		for (int i= 0; i < contents.length && lines < 10; i++) {
+		for (int i= 0; i < contents.length && lines < 10; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			byte c= contents[i];
 			if (c == '\n' || c == '\r') {
 				lineLength= 0;
@@ -1858,7 +1858,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	 */
 	public static byte[] takePrefetchedContents(Object element) {
 		synchronized (fPrefetchedContents) {
-			for (Iterator<PrefetchedElement> it= fPrefetchedContents.iterator(); it.hasNext();) {
+			for (Iterator<PrefetchedElement> it= fPrefetchedContents.iterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				PrefetchedElement prefetched= it.next();
 				ITypedElement held= prefetched.element.get();
 				if (held == null) {
@@ -1874,7 +1874,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 
 	private static byte[] prefetchedContents(ITypedElement element) {
 		synchronized (fPrefetchedContents) {
-			for (PrefetchedElement prefetched : fPrefetchedContents) {
+			for (PrefetchedElement prefetched : fPrefetchedContents) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (prefetched.element.get() == element) {
 					return prefetched.contents;
 				}
@@ -1890,7 +1890,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		return prefetched != null ? new ByteArrayInputStream(prefetched) : accessor.getContents();
 	}
 
-	private static IContentType computeContentType(ITypedElement element) {
+	private static IContentType computeContentType(ITypedElement element) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String name= element.getName();
 		IContentType ct= null;
 		if (element instanceof IResourceProvider) {
@@ -1943,7 +1943,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	/*
 	 * Returns the most specific content type that is common to the given inputs or null.
 	 */
-	private static IContentType getCommonType(ICompareInput input) {
+	private static IContentType getCommonType(ICompareInput input) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ITypedElement ancestor= input.getAncestor();
 		ITypedElement left= input.getLeft();
 		ITypedElement right= input.getRight();
@@ -1980,7 +1980,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 			}
 			s0= toFullPath(types[0]);
 			s1= toFullPath(types[1]);
-			for (int i= 0; i < Math.min(s0.length, s1.length); i++) {
+			for (int i= 0; i < Math.min(s0.length, s1.length); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!s0[i].equals(s1[i])) {
 					break;
 				}
@@ -1994,7 +1994,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 			s0= toFullPath(types[0]);
 			s1= toFullPath(types[1]);
 			s2= toFullPath(types[2]);
-			for (int i= 0; i < Math.min(Math.min(s0.length, s1.length), s2.length); i++) {
+			for (int i= 0; i < Math.min(Math.min(s0.length, s1.length), s2.length); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!s0[i].equals(s1[i]) || !s1[i].equals(s2[i])) {
 					break;
 				}
@@ -2007,8 +2007,8 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	}
 
 	private static IContentType[] toFullPath(IContentType ct) {
-		List<IContentType> l= new ArrayList<>();
-		for (; ct != null; ct= ct.getBaseType()) {
+		List<IContentType> l= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (; ct != null; ct= ct.getBaseType()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			l.add(0, ct);
 		}
 		return l.toArray(new IContentType[l.size()]);
@@ -2035,7 +2035,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		return sniffed.guessedType;
 	}
 
-	private static String computeGuessType(ITypedElement input) {
+	private static String computeGuessType(ITypedElement input) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (input instanceof IStreamContentAccessor sca) {
 			InputStream is= null;
 			try {
@@ -2045,7 +2045,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 				}
 				int lineLength= 0;
 				int lines= 0;
-				while (lines < 10) {
+				while (lines < 10) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					int c= is.read();
 					if (c == -1) { // EOF
 						break;
@@ -2094,13 +2094,13 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		getStructureViewerAliases().put(normalizeCase(alias), normalizeCase(type));
 	}
 
-	private Map<String, String> getStructureViewerAliases() {
+	private Map<String, String> getStructureViewerAliases() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fStructureViewerAliases == null) {
 			fStructureViewerAliases= new Hashtable<>(10);
 			String aliases= getPreferenceStore().getString(STRUCTUREVIEWER_ALIASES_PREFERENCE_NAME);
 			if (aliases != null && aliases.length() > 0) {
 				StringTokenizer st= new StringTokenizer(aliases, " ");	//$NON-NLS-1$
-				while (st.hasMoreTokens()) {
+				while (st.hasMoreTokens()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String pair= st.nextToken();
 					int pos= pair.indexOf('.');
 					if (pos > 0) {
@@ -2120,7 +2120,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		}
 		String t= normalizeCase(type);
 		Set<Entry<String, String>> entrySet= fStructureViewerAliases.entrySet();
-		for (Iterator<Map.Entry<String, String>> iter= entrySet.iterator(); iter.hasNext(); ) {
+		for (Iterator<Map.Entry<String, String>> iter= entrySet.iterator(); iter.hasNext(); ) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Map.Entry<String, String> entry= iter.next();
 			if (entry.getValue().equals(t)) {
 				iter.remove();
@@ -2138,14 +2138,14 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		if (fStructureViewerAliases == null) {
 			return;
 		}
-		StringBuilder buffer= new StringBuilder();
-		for (Map.Entry<String, String> entry : fStructureViewerAliases.entrySet()) {
+		StringBuilder buffer= new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (Map.Entry<String, String> entry : fStructureViewerAliases.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String key= entry.getKey();
 			String alias= entry.getValue();
-			buffer.append(key);
-			buffer.append('.');
-			buffer.append(alias);
-			buffer.append(' ');
+			buffer.append(key); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append('.'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append(alias); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		ps.setValue(STRUCTUREVIEWER_ALIASES_PREFERENCE_NAME, buffer.toString());
 	}
@@ -2157,7 +2157,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 			fFilter= new CompareResourceFilter();
 			final IPreferenceStore ps= getPreferenceStore();
 			fFilter.setFilters(ps.getString(ComparePreferencePage.PATH_FILTER));
-			fPropertyChangeListener= event -> {
+			fPropertyChangeListener= event -> { //FLLDCIM: MARK — T06  LAMBDA
 				if (ComparePreferencePage.PATH_FILTER.equals(event.getProperty())) {
 					fFilter.setFilters(ps.getString(ComparePreferencePage.PATH_FILTER));
 				}
@@ -2182,7 +2182,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 
 	private void syncExec(Runnable runnable) {
 		if (Display.getCurrent() == null) {
-			Display.getDefault().syncExec(runnable);
+			Display.getDefault().syncExec(runnable); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		} else {
 			runnable.run();
 		}
@@ -2201,16 +2201,16 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 	 *
 	 * @return an array of all dirty editor parts.
 	 */
-	public static IEditorPart[] getDirtyEditors() {
-		Set<IEditorInput> inputs= new HashSet<>();
-		List<IEditorPart> result= new ArrayList<>(0);
+	public static IEditorPart[] getDirtyEditors() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		Set<IEditorInput> inputs= new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		List<IEditorPart> result= new ArrayList<>(0); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IWorkbench workbench = PlatformUI.getWorkbench();
 		IWorkbenchWindow[] windows= workbench.getWorkbenchWindows();
-		for (IWorkbenchWindow window : windows) {
+		for (IWorkbenchWindow window : windows) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IWorkbenchPage[] pages = window.getPages();
-			for (IWorkbenchPage page : pages) {
+			for (IWorkbenchPage page : pages) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IEditorPart[] editors = page.getDirtyEditors();
-				for (IEditorPart ep : editors) {
+				for (IEditorPart ep : editors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IEditorInput input= ep.getEditorInput();
 					if (!inputs.contains(input)) {
 						inputs.add(input);
@@ -2237,7 +2237,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		getDefault().getLog().log(status);
 	}
 
-	String findContentTypeNameOrType(ICompareInput input, ViewerDescriptor vd, CompareConfiguration cc) {
+	String findContentTypeNameOrType(ICompareInput input, ViewerDescriptor vd, CompareConfiguration cc) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IContentType ctype= getCommonType(input);
 		if (ctype != null) {
 			initializeRegistries();
@@ -2261,7 +2261,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 
 		if (type == null) {
 			int n= 0;
-			for (String t : types) {
+			for (String t : types) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!ITypedElement.UNKNOWN_TYPE.equals(t)) {
 					n++;
 					if (type == null) {
@@ -2316,7 +2316,7 @@ public final class CompareUIPlugin extends AbstractUIPlugin {
 		return null;
 	}
 
-	String findStructureTypeNameOrType(ICompareInput input, ViewerDescriptor vd, CompareConfiguration cc) {
+	String findStructureTypeNameOrType(ICompareInput input, ViewerDescriptor vd, CompareConfiguration cc) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// We don't show the structure of additions or deletions
 		if ((input == null) || input == null || input.getLeft() == null || input.getRight() == null) {
 			return null;

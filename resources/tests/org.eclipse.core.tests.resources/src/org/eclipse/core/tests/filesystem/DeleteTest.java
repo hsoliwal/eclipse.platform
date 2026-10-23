@@ -79,6 +79,6 @@ public class DeleteTest {
 		File localFile = store.toLocalFile(0, getMonitor());
 		boolean readOnly = localFile.setReadOnly();
 		assertTrue(readOnly);
-		assertFalse(localFile.canWrite());
+		assertFalse(localFile.canWrite()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 }

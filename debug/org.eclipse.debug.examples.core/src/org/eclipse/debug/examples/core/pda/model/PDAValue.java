@@ -62,7 +62,7 @@ public class PDAValue extends PDADebugElement implements IValue {
 			new PDAChildrenCommand(frame.getThreadIdentifier(), frame.getIdentifier(), fVariable.getName()) );
 
 		IVariable[] children = new IVariable[result.fValues.length];
-		for(int i = 0; i < result.fValues.length; i++) {
+		for(int i = 0; i < result.fValues.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			children[i] = new PDAVariable(frame, result.fValues[i]);
 		}
 		return children;
@@ -76,7 +76,7 @@ public class PDAValue extends PDADebugElement implements IValue {
 		// Value with multiple words can be show as an array using logical
 		// structures. If the value has multiple words, it needs to indicate
 		// that it has children even if logical structures are not turned on.
-		return fValue.split("\\W+").length > 1; //$NON-NLS-1$
+		return fValue.split("\\W+").length > 1; //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 	}
 
 	@Override

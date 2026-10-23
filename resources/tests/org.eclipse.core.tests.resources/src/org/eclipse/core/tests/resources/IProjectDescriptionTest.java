@@ -94,7 +94,7 @@ public class IProjectDescriptionTest {
 	 * A refresh that finds the description file deleted closes the project and
 	 * does not recreate the file. Restoring the file allows to reopen the project.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshWithDeletedDescriptionFileClosesProject() throws Exception {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IFile descriptionFile = project.getFile(IProjectDescription.DESCRIPTION_FILE_NAME);
@@ -102,7 +102,7 @@ public class IProjectDescriptionTest {
 		createInWorkspace(file);
 		IMarker marker = file.createMarker(IMarker.BOOKMARK);
 		Path backup = getTempDir().append("dotProjectBackup").toPath();
-		Files.copy(descriptionFile.getLocation().toPath(), backup);
+		Files.copy(descriptionFile.getLocation().toPath(), backup); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		try {
 			removeFromFileSystem(descriptionFile);
 
@@ -112,13 +112,13 @@ public class IProjectDescriptionTest {
 			getWorkspace().save(true, createTestMonitor());
 			assertDoesNotExistInFileSystem(descriptionFile);
 
-			Files.copy(backup, descriptionFile.getLocation().toPath());
+			Files.copy(backup, descriptionFile.getLocation().toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			project.open(createTestMonitor());
 			assertThat(project).matches(IProject::isOpen, "is open");
 			assertThat(file).matches(IResource::exists, "exists");
 			assertNotNull(file.findMarker(marker.getId()));
 		} finally {
-			Files.deleteIfExists(backup);
+			Files.deleteIfExists(backup); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 	}
 
@@ -126,7 +126,7 @@ public class IProjectDescriptionTest {
 	 * Members with links or filters deleted in the same refresh as the
 	 * description file do not write the description file back.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshWithDeletedDescriptionFileDoesNotRecreateItForLinksAndFilters() throws Exception {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IFile descriptionFile = project.getFile(IProjectDescription.DESCRIPTION_FILE_NAME);
@@ -134,7 +134,7 @@ public class IProjectDescriptionTest {
 		IFolder filtered = project.getFolder("filtered");
 		createInWorkspace(new IResource[] { linkParent, filtered });
 		IPath linkTarget = getRandomLocation();
-		Files.writeString(Files.createDirectories(linkTarget.toPath()).resolve("linked.txt"), "linked");
+		Files.writeString(Files.createDirectories(linkTarget.toPath()).resolve("linked.txt"), "linked"); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		try {
 			linkParent.getFile("linked.txt").createLink(linkTarget.append("linked.txt"), IResource.NONE, createTestMonitor());
 			filtered.createFilter(IResourceFilterDescription.EXCLUDE_ALL | IResourceFilterDescription.FILES,
@@ -157,7 +157,7 @@ public class IProjectDescriptionTest {
 	 * A refresh canceled while the description file is being found deleted still
 	 * closes the project instead of leaving it open without description.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCanceledRefreshWithDeletedDescriptionFileClosesProject() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IFile descriptionFile = project.getFile(IProjectDescription.DESCRIPTION_FILE_NAME);
@@ -242,7 +242,7 @@ public class IProjectDescriptionTest {
 	 * project closes the nested project also when the operation is canceled
 	 * after the file was deleted.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCanceledDeleteOfNestedDescriptionFileThroughParentClosesNestedProject() throws CoreException {
 		IProject parent = getWorkspace().getRoot().getProject("parent");
 		IProject child = getWorkspace().getRoot().getProject("child");
@@ -298,7 +298,7 @@ public class IProjectDescriptionTest {
 	 * nested project back when a member of the nested project with links is
 	 * deleted in the same refresh.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshParentWithDeletedNestedDescriptionFileDoesNotRecreateItForLinks() throws Exception {
 		IProject parent = getWorkspace().getRoot().getProject("parent");
 		IProject child = getWorkspace().getRoot().getProject("child");
@@ -311,7 +311,7 @@ public class IProjectDescriptionTest {
 		IFolder linkParent = child.getFolder("linkParent");
 		createInWorkspace(linkParent);
 		IPath linkTarget = getRandomLocation();
-		Files.writeString(Files.createDirectories(linkTarget.toPath()).resolve("linked.txt"), "linked");
+		Files.writeString(Files.createDirectories(linkTarget.toPath()).resolve("linked.txt"), "linked"); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		try {
 			linkParent.getFile("linked.txt").createLink(linkTarget.append("linked.txt"), IResource.NONE, createTestMonitor());
 
@@ -330,7 +330,7 @@ public class IProjectDescriptionTest {
 	 * Deleting the description file through the workspace closes the project also
 	 * when the operation is canceled after the file was deleted.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCanceledDeleteOfDescriptionFileClosesProject() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IFile descriptionFile = project.getFile(IProjectDescription.DESCRIPTION_FILE_NAME);
@@ -373,7 +373,7 @@ public class IProjectDescriptionTest {
 		@Override
 		public void delete(int options, IProgressMonitor monitor) throws CoreException {
 			CoreException failure = null;
-			for (IFileStore child : childStores(EFS.NONE, null)) {
+			for (IFileStore child : childStores(EFS.NONE, null)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					child.delete(options, monitor);
 				} catch (CoreException e) {
@@ -384,7 +384,7 @@ public class IProjectDescriptionTest {
 				throw failure;
 			}
 			if (UNDELETABLE_FILE.equals(getName())) {
-				throw new CoreException(Status.error("cannot delete " + this));
+				throw new CoreException(Status.error("cannot delete " + this)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			super.delete(options, monitor);
 		}
@@ -395,7 +395,7 @@ public class IProjectDescriptionTest {
 	 * the source, including its description file, still ends up at the
 	 * destination with its markers.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveWithUndeletableSourceContent() throws Exception {
 		IPath sourceLocation = getRandomLocation();
 		IProject source = getWorkspace().getRoot().getProject("Source");
@@ -414,7 +414,7 @@ public class IProjectDescriptionTest {
 			assertThrows(CoreException.class,
 					() -> source.move(destinationDescription, IResource.FORCE, createTestMonitor()));
 
-			assertFalse(sourceLocation.append(IProjectDescription.DESCRIPTION_FILE_NAME).toFile().exists());
+			assertFalse(sourceLocation.append(IProjectDescription.DESCRIPTION_FILE_NAME).toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			assertThat(source).matches(not(IProject::exists), "does not exist");
 			assertThat(destination).matches(IProject::isOpen, "is open");
 			IFile movedFile = destination.getFile(file.getProjectRelativePath());
@@ -431,7 +431,7 @@ public class IProjectDescriptionTest {
 	/**
 	 * Tests that setting the build spec preserves any instantiated builder.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBuildSpecBuilder() throws Exception {
 		Project project = (Project) getWorkspace().getRoot().getProject("ProjectTBSB");
 		createInWorkspace(project);
@@ -464,7 +464,7 @@ public class IProjectDescriptionTest {
 	 * Tests that the description file is not dirtied if the description has not actually
 	 * changed.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDirtyDescription() throws Exception {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IProject target1 = getWorkspace().getRoot().getProject("target1");
@@ -504,7 +504,7 @@ public class IProjectDescriptionTest {
 	 * Tests that the description file is dirtied if the description has actually
 	 * changed. This is a regression test for bug 64128.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDirtyBuildSpec() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IFile projectDescription = project.getFile(IProjectDescription.DESCRIPTION_FILE_NAME);
@@ -515,7 +515,7 @@ public class IProjectDescriptionTest {
 
 		IProjectDescription description = project.getDescription();
 		ICommand newCommand = description.newCommand();
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put(key, value1);
 		newCommand.setArguments(args);
 		description.setBuildSpec(new ICommand[] { newCommand });
@@ -534,7 +534,7 @@ public class IProjectDescriptionTest {
 		assertTrue(modificationStamp != projectDescription.getModificationStamp());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Deprecated // Explicitly tests deprecated API
 	public void testDynamicProjectReferences() throws CoreException {
 		IProject target1 = getWorkspace().getRoot().getProject("target1");
@@ -562,7 +562,7 @@ public class IProjectDescriptionTest {
 	/**
 	 * Tests IProjectDescription project references
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectReferences() throws CoreException {
 		IProject target = getWorkspace().getRoot().getProject("Project1");
 		createInWorkspace(target);

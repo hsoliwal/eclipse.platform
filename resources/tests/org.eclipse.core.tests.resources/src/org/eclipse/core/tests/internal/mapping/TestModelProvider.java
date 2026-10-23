@@ -43,17 +43,17 @@ public class TestModelProvider extends ModelProvider {
 		return new ResourceMapping[0];
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus validateChange(IResourceDelta rootDelta, IProgressMonitor monitor) {
 		if (!enabled) {
 			return new ModelStatus(IStatus.OK, ResourcesPlugin.PI_RESOURCES, ID, Status.OK_STATUS.getMessage());
 		}
 		final ChangeDescription description = new ChangeDescription();
 		try {
-			rootDelta.accept(delta -> description.recordChange(delta));
+			rootDelta.accept(delta -> description.recordChange(delta)); //FLLDCIM: MARK — T07  LAMBDA
 
 			if (checkContentsDeletion) {
-				IResourceDeltaVisitor visitor = delta -> {
+				IResourceDeltaVisitor visitor = delta -> { //FLLDCIM: MARK — T07  LAMBDA
 					if ((delta.getFlags() & IResourceDelta.DELETE_CONTENT_PROPOSED) != 0) {
 						// With error status we indicate contents deletion proposal in given delta.
 						description.addError(new CoreException(new Status(IStatus.ERROR, ResourcesPlugin.PI_RESOURCES,

@@ -37,7 +37,7 @@ public class DebugFileSystem extends FileSystem {
 	/**
 	 * Keys URIs to file stores for existing files
 	 */
-	private final Map<URI, byte[]> files = new HashMap<>();
+	private final Map<URI, byte[]> files = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/**
 	 * Constructs the singleton

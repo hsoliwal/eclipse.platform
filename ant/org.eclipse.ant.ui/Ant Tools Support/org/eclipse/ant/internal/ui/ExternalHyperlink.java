@@ -51,7 +51,7 @@ public class ExternalHyperlink implements IHyperlink {
 		// do nothing
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void linkActivated() {
 		IEditorInput input;
 		IFileStore fileStore;

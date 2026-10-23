@@ -142,7 +142,7 @@ public class SaveablePartDialog extends TrayDialog {
 		}
 	}
 
-	@Deprecated
+	@Deprecated //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Override
 	protected Point getInitialSize() {
 		Point initialSize = super.getInitialSize();

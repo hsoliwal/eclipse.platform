@@ -54,7 +54,7 @@ public class AntPropertiesTab extends AbstractLaunchConfigurationTab implements 
 	private final AntPropertiesBlock fAntPropertiesBlock = new AntPropertiesBlock(this);
 	private boolean fSeparateJRE = true;
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createControl(Composite parent) {
 		Composite top = new Composite(parent, SWT.NONE);
 		top.setFont(parent.getFont());
@@ -80,7 +80,7 @@ public class AntPropertiesTab extends AbstractLaunchConfigurationTab implements 
 
 	private void createChangeProperties(Composite top) {
 		fUseDefaultButton = createCheckButton(top, AntLaunchConfigurationMessages.AntPropertiesTab_6);
-		fUseDefaultButton.addSelectionListener(new SelectionAdapter() {
+		fUseDefaultButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				toggleUseDefaultProperties();
@@ -107,7 +107,7 @@ public class AntPropertiesTab extends AbstractLaunchConfigurationTab implements 
 		return AntLaunchConfigurationMessages.AntPropertiesTab_P_roperties_8;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		fSeparateJRE = AntUtil.isSeparateJREAntBuild(configuration);
 		setErrorMessage(null);
@@ -155,7 +155,7 @@ public class AntPropertiesTab extends AbstractLaunchConfigurationTab implements 
 		fUseDefaultButton.setSelection(true);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		if (fUseDefaultButton.getSelection()) {
 			configuration.setAttribute(IAntLaunchConstants.ATTR_ANT_PROPERTIES, (Map<String, String>) null);
@@ -166,8 +166,8 @@ public class AntPropertiesTab extends AbstractLaunchConfigurationTab implements 
 		Object[] items = fAntPropertiesBlock.getProperties();
 		Map<String, String> properties = null;
 		if (items.length > 0) {
-			properties = new HashMap<>(items.length);
-			for (Object item : items) {
+			properties = new HashMap<>(items.length); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+			for (Object item : items) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Property property = (Property) item;
 				properties.put(property.getName(), property.getValue(false));
 			}
@@ -178,11 +178,11 @@ public class AntPropertiesTab extends AbstractLaunchConfigurationTab implements 
 		items = fAntPropertiesBlock.getPropertyFiles();
 		String files = null;
 		if (items.length > 0) {
-			StringBuilder buff = new StringBuilder();
-			for (Object item : items) {
+			StringBuilder buff = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+			for (Object item : items) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String path = (String) item;
-				buff.append(path);
-				buff.append(',');
+				buff.append(path); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				buff.append(','); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 			files = buff.toString();
 		}
@@ -221,7 +221,7 @@ public class AntPropertiesTab extends AbstractLaunchConfigurationTab implements 
 	private void updateTargetsTab() {
 		// the properties have changed...set the targets tab to
 		// need to be recomputed
-		for (ILaunchConfigurationTab tab : getLaunchConfigurationDialog().getTabs()) {
+		for (ILaunchConfigurationTab tab : getLaunchConfigurationDialog().getTabs()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (tab instanceof AntTargetsTab) {
 				((AntTargetsTab) tab).setDirty(true);
 				break;

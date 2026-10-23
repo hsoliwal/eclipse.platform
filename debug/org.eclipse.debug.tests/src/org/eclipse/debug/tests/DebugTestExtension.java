@@ -44,11 +44,11 @@ public class DebugTestExtension implements BeforeEachCallback, AfterEachCallback
 	 * Ensure the welcome screen is closed because in 4.x the debug perspective
 	 * opens a giant fast-view causing issues
 	 */
-	public void assertWelcomeScreenClosed() throws Exception {
+	public void assertWelcomeScreenClosed() throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!welcomeClosed && PlatformUI.isWorkbenchRunning()) {
 			final IWorkbench wb = PlatformUI.getWorkbench();
 			if (wb != null) {
-				UIJob job = new UIJob("close welcome screen for Ant test suite") { //$NON-NLS-1$
+				UIJob job = new UIJob("close welcome screen for Ant test suite") { //$NON-NLS-1$ //FLLDCIM: MARK — T09  ANONYMOUS
 					@Override
 					public IStatus runInUIThread(IProgressMonitor monitor) {
 						IWorkbenchWindow window = wb.getActiveWorkbenchWindow();

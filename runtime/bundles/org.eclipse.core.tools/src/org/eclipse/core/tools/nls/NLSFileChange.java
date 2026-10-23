@@ -46,7 +46,7 @@ public class NLSFileChange extends TextFileChange {
 	@Override
 	protected void commit(IDocument document, IProgressMonitor monitor) throws CoreException {
 		if (contents == null) {
-			System.err.println("Cannot write null contents to file: " + file); //$NON-NLS-1$
+			System.err.println("Cannot write null contents to file: " + file); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			return;
 		}
 		byte[] bytes = null;

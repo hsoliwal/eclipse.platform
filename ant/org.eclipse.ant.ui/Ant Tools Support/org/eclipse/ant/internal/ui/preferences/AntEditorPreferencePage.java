@@ -71,7 +71,7 @@ public class AntEditorPreferencePage extends AbstractAntEditorPreferencePage {
 
 		public int getSelection(String value) {
 			if (value != null) {
-				for (int i = 0; i < fValues.length; i++) {
+				for (int i = 0; i < fValues.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (value.equals(fValues[i])) {
 						return i;
 					}
@@ -104,9 +104,9 @@ public class AntEditorPreferencePage extends AbstractAntEditorPreferencePage {
 		setDescription(AntPreferencesMessages.AntEditorPreferencePage_description);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected OverlayPreferenceStore createOverlayStore() {
-		ArrayList<OverlayPreferenceStore.OverlayKey> overlayKeys = new ArrayList<>();
+		ArrayList<OverlayPreferenceStore.OverlayKey> overlayKeys = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.BOOLEAN, AntEditorPreferenceConstants.CODEASSIST_AUTOACTIVATION));
 		overlayKeys.add(new OverlayPreferenceStore.OverlayKey(OverlayPreferenceStore.INT, AntEditorPreferenceConstants.CODEASSIST_AUTOACTIVATION_DELAY));
@@ -149,7 +149,7 @@ public class AntEditorPreferencePage extends AbstractAntEditorPreferencePage {
 		return appearanceComposite;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createContents(Composite parent) {
 		getOverlayStore().load();
 		getOverlayStore().start();
@@ -178,7 +178,7 @@ public class AntEditorPreferencePage extends AbstractAntEditorPreferencePage {
 		return folder;
 	}
 
-	private Control createFoldingTabContent(TabFolder folder) {
+	private Control createFoldingTabContent(TabFolder folder) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Composite composite = new Composite(folder, SWT.NULL);
 
 		GridLayout layout = new GridLayout();
@@ -203,9 +203,9 @@ public class AntEditorPreferencePage extends AbstractAntEditorPreferencePage {
 		updateControlsForProblemReporting(!AntUIPlugin.getDefault().getCombinedPreferenceStore().getBoolean(AntEditorPreferenceConstants.BUILDFILE_IGNORE_ALL));
 	}
 
-	private Composite createProblemsTabContent(TabFolder folder) {
-		fComboBoxes = new ArrayList<>();
-		fProblemLabels = new ArrayList<>();
+	private Composite createProblemsTabContent(TabFolder folder) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		fComboBoxes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		fProblemLabels = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		initializeWorkingValues();
 
 		String[] errorWarningIgnoreLabels = new String[] { AntPreferencesMessages.AntEditorPreferencePage_11,
@@ -224,7 +224,7 @@ public class AntEditorPreferencePage extends AbstractAntEditorPreferencePage {
 		String labelText = AntPreferencesMessages.AntEditorPreferencePage_28;
 		fIgnoreAllProblems = addCheckBox(othersComposite, labelText, AntEditorPreferenceConstants.BUILDFILE_IGNORE_ALL, 0);
 
-		fIgnoreAllProblems.addSelectionListener(getSelectionListener());
+		fIgnoreAllProblems.addSelectionListener(getSelectionListener()); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 
 		fBuildFilesToIgnoreProblemsDescription = new Label(othersComposite, SWT.WRAP);
 		fBuildFilesToIgnoreProblemsDescription.setText(AntPreferencesMessages.AntEditorPreferencePage_29);
@@ -262,21 +262,21 @@ public class AntEditorPreferencePage extends AbstractAntEditorPreferencePage {
 	}
 
 	private void initializeWorkingValues() {
-		fWorkingValues = new HashMap<>(fProblemPreferenceKeys.length);
-		for (String key : fProblemPreferenceKeys) {
+		fWorkingValues = new HashMap<>(fProblemPreferenceKeys.length); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (String key : fProblemPreferenceKeys) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fWorkingValues.put(key, getPreferenceStore().getString(key));
 		}
 	}
 
 	private void restoreWorkingValuesToDefaults() {
-		fWorkingValues = new HashMap<>(fProblemPreferenceKeys.length);
-		for (String key : fProblemPreferenceKeys) {
+		fWorkingValues = new HashMap<>(fProblemPreferenceKeys.length); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (String key : fProblemPreferenceKeys) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fWorkingValues.put(key, getPreferenceStore().getDefaultString(key));
 		}
 		updateControls();
 	}
 
-	protected Combo addComboBox(Composite parent, String label, String key, String[] values, String[] valueLabels, int indent) {
+	protected Combo addComboBox(Composite parent, String label, String key, String[] values, String[] valueLabels, int indent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ControlData data = new ControlData(key, values);
 
 		GridData gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
@@ -290,7 +290,7 @@ public class AntEditorPreferencePage extends AbstractAntEditorPreferencePage {
 		comboBox.setItems(valueLabels);
 		comboBox.setData(data);
 		comboBox.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
-		comboBox.addSelectionListener(getSelectionListener());
+		comboBox.addSelectionListener(getSelectionListener()); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 
 		Label placeHolder = new Label(parent, SWT.NONE);
 		placeHolder.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -333,7 +333,7 @@ public class AntEditorPreferencePage extends AbstractAntEditorPreferencePage {
 	}
 
 	private void updateControlsForProblemReporting(boolean reportProblems) {
-		for (int i = fComboBoxes.size() - 1; i >= 0; i--) {
+		for (int i = fComboBoxes.size() - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fComboBoxes.get(i).setEnabled(reportProblems);
 			fProblemLabels.get(i).setEnabled(reportProblems);
 		}
@@ -345,7 +345,7 @@ public class AntEditorPreferencePage extends AbstractAntEditorPreferencePage {
 
 	protected void updateControls() {
 		// update the UI
-		for (int i = fComboBoxes.size() - 1; i >= 0; i--) {
+		for (int i = fComboBoxes.size() - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Combo curr = fComboBoxes.get(i);
 			ControlData data = (ControlData) curr.getData();
 
@@ -357,7 +357,7 @@ public class AntEditorPreferencePage extends AbstractAntEditorPreferencePage {
 	@Override
 	public boolean performOk() {
 		IPreferenceStore store = getPreferenceStore();
-		for (String key : fWorkingValues.keySet()) {
+		for (String key : fWorkingValues.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			store.putValue(key, fWorkingValues.get(key));
 		}
 		if (store.needsSaving()) {
@@ -373,7 +373,7 @@ public class AntEditorPreferencePage extends AbstractAntEditorPreferencePage {
 	private void createHeader(Composite contents) {
 		final Link link = new Link(contents, SWT.NONE);
 		link.setText(AntPreferencesMessages.AntEditorPreferencePage_0);
-		link.addSelectionListener(new SelectionAdapter() {
+		link.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if ("org.eclipse.ui.preferencePages.GeneralTextEditor".equals(e.text)) { //$NON-NLS-1$

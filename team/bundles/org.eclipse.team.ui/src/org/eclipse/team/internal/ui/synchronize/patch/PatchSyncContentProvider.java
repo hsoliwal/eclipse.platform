@@ -34,7 +34,7 @@ import org.eclipse.team.ui.mapping.SynchronizationContentProvider;
 import org.eclipse.ui.model.BaseWorkbenchContentProvider;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 
-public class PatchSyncContentProvider extends SynchronizationContentProvider {
+public class PatchSyncContentProvider extends SynchronizationContentProvider { //FLLDCIM: MARK — M22  IMPLEMENTS
 
 	private BaseWorkbenchContentProvider delegate;
 
@@ -120,8 +120,8 @@ public class PatchSyncContentProvider extends SynchronizationContentProvider {
 	@Override
 	public Object[] getChildren(Object parent) {
 		Object[] children = super.getChildren(parent);
-		List result = new ArrayList();
-		for (Object c : children) {
+		List result = new ArrayList(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Object c : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (c instanceof PatchDiffNode node) {
 				if (node.isEnabled()) {
 					result.add(node); // hide disabled nodes

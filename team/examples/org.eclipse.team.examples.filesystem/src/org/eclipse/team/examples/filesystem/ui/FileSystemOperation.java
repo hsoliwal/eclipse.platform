@@ -33,7 +33,7 @@ import org.eclipse.team.examples.filesystem.subscriber.FileSystemSubscriber;
 import org.eclipse.team.ui.synchronize.ModelOperation;
 import org.eclipse.ui.IWorkbenchPart;
 
-public abstract class FileSystemOperation extends ModelOperation {
+public abstract class FileSystemOperation extends ModelOperation { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	/**
 	 * Create a scope manager for the file system example.
@@ -60,7 +60,7 @@ public abstract class FileSystemOperation extends ModelOperation {
 			Map<FileSystemProvider, CompoundResourceTraversal> providerToTraversals = getProviderToTraversalsMap();
 			monitor.beginTask(getTaskName(), providerToTraversals.size() * 100);
 			monitor.setTaskName(getTaskName());
-			for (FileSystemProvider provider : providerToTraversals.keySet()) {
+			for (FileSystemProvider provider : providerToTraversals.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ResourceTraversal[] traversals = getTraversals(providerToTraversals, provider);
 				execute(provider,
 						traversals,
@@ -78,14 +78,14 @@ public abstract class FileSystemOperation extends ModelOperation {
 	 * @return a map of FileSystemProvider to ResourceTraversals
 	 */
 	private Map<FileSystemProvider, CompoundResourceTraversal> getProviderToTraversalsMap() {
-		HashMap<FileSystemProvider, CompoundResourceTraversal> result = new HashMap<>();
+		HashMap<FileSystemProvider, CompoundResourceTraversal> result = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		ISynchronizationScope scope = getScope();
 		ResourceMapping[] mappings = scope.getMappings();
-		for (ResourceMapping mapping : mappings) {
+		for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceTraversal[] traversals = scope.getTraversals(mapping);
-			for (ResourceTraversal traversal : traversals) {
+			for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource[] resources = traversal.getResources();
-				for (IResource resource : resources) {
+				for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					recordResourceAndDepth(result, resource, traversal.getDepth());
 				}
 			}

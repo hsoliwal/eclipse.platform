@@ -47,7 +47,7 @@ public class DataDeltaNode extends DataTreeNode {
 			newChildren = NO_CHILDREN;
 		} else {
 			newChildren = new AbstractDataTreeNode[children.length];
-			for (int i = children.length; --i >= 0;) {
+			for (int i = children.length; --i >= 0;) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				newChildren[i] = children[i].asBackwardDelta(myTree, parentTree, key.append(children[i].getName()));
 			}
 		}

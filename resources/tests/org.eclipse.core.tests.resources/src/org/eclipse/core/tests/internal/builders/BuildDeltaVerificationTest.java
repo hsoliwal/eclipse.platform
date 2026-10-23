@@ -86,7 +86,7 @@ public class BuildDeltaVerificationTest {
 	 * Sets up the fixture, for example, open a network connection.
 	 * This method is called before a test is executed.
 	 */
-	@BeforeEach
+	@BeforeEach //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setUp() throws Exception {
 		// Turn auto-building off
 		IWorkspace workspace = getWorkspace();
@@ -339,7 +339,7 @@ public class BuildDeltaVerificationTest {
 		assertDelta();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testReuseCachedDelta() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("delta-cache");
 		createInWorkspace(project);
@@ -348,7 +348,7 @@ public class BuildDeltaVerificationTest {
 
 		project.build(IncrementalProjectBuilder.FULL_BUILD, createTestMonitor());
 
-		List<IResourceDelta> deltas = new ArrayList<>();
+		List<IResourceDelta> deltas = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		TestBuilder.BuilderRuleCallback captureDelta = new TestBuilder.BuilderRuleCallback() {
 			@Override

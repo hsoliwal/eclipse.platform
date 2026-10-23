@@ -63,7 +63,7 @@ public class DiffProjectResourceMapping extends ResourceMapping {
 		return getProjects()[0];
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean contains(ResourceMapping mapping) {
 		if (mapping instanceof DiffProjectResourceMapping) {
 			DiffProject diffProject = (DiffProject) mapping.getModelObject();
@@ -72,7 +72,7 @@ public class DiffProjectResourceMapping extends ResourceMapping {
 			FileDiffResult filePatch = (FileDiffResult) mapping
 					.getModelObject();
 			FilePatch2[] filePatches = object.getFileDiffs();
-			for (FilePatch2 filePatche : filePatches) {
+			for (FilePatch2 filePatche : filePatches) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (filePatche.getPath(false).equals(filePatch.getTargetPath())) {
 					return true;
 				}

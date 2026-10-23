@@ -79,7 +79,7 @@ public class PDAThread extends PDADebugElement implements IThread, IPDAEventList
 	/**
 	 * Table mapping stack frames to current variables
 	 */
-	private final Map<IStackFrame, IVariable[]> fVariables = Collections.synchronizedMap(new HashMap<IStackFrame, IVariable[]>());
+	private final Map<IStackFrame, IVariable[]> fVariables = Collections.synchronizedMap(new HashMap<IStackFrame, IVariable[]>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/**
 	 * Constructs a new thread for the given target
@@ -116,7 +116,7 @@ public class PDAThread extends PDADebugElement implements IThread, IPDAEventList
 		if (isSuspended()) {
 			PDAStackCommandResult result = (PDAStackCommandResult)sendCommand(new PDAStackCommand(fThreadId));
 			IStackFrame[] frames = new IStackFrame[result.fFrames.length];
-			for (int i = 0; i < result.fFrames.length; i++) {
+			for (int i = 0; i < result.fFrames.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				frames[frames.length - i - 1] = new PDAStackFrame(this, result.fFrames[i], i);
 			}
 			return frames;
@@ -286,7 +286,7 @@ public class PDAThread extends PDADebugElement implements IThread, IPDAEventList
 		return fErrorEvent;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void handleEvent(PDAEvent _event) {
 		if (_event instanceof PDARunControlEvent event && fThreadId == event.fThreadId) {
 			// clear previous state
@@ -420,7 +420,7 @@ public class PDAThread extends PDADebugElement implements IThread, IPDAEventList
 		PDAListResult result = (PDAListResult)sendCommand(new PDADataCommand(fThreadId));
 		if (result.fValues.length > 0) {
 			IValue[] values = new IValue[result.fValues.length];
-			for (int i = 0; i < result.fValues.length; i++) {
+			for (int i = 0; i < result.fValues.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				values[values.length - i - 1] = new PDAStackValue(this, result.fValues[i], i);
 			}
 			return values;

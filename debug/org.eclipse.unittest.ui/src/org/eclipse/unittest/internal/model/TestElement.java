@@ -191,7 +191,7 @@ public abstract class TestElement implements ITestElement {
 	public void setStatus(Status status, FailureTrace failureTrace) {
 		if (failureTrace != null && fTrace != null) {
 			// don't overwrite first trace if same test run logs multiple errors
-			fTrace = new FailureTrace(fTrace.getTrace() + failureTrace.getTrace(), fTrace.getExpected(),
+			fTrace = new FailureTrace(fTrace.getTrace() + failureTrace.getTrace(), fTrace.getExpected(), //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					fTrace.getActual());
 		} else {
 			fTrace = failureTrace;
@@ -249,7 +249,7 @@ public abstract class TestElement implements ITestElement {
 
 	@Override
 	public String toString() {
-		return getTestName() + '[' + getProgressState() + " - " + getTestResult(true) + ']'; //$NON-NLS-1$
+		return getTestName() + '[' + getProgressState() + " - " + getTestResult(true) + ']'; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override

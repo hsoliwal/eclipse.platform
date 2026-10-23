@@ -46,7 +46,7 @@ public class TestsPlugin {
 	public static File getFileInPlugin(String path) {
 		try {
 			Bundle bundle = FrameworkUtil.getBundle(TestsPlugin.class);
-			URL installURL = bundle.getEntry("/" + path); //$NON-NLS-1$
+			URL installURL = bundle.getEntry("/" + path); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			URL localURL = FileLocator.toFileURL(installURL);
 			return new File(localURL.getFile());
 		} catch (IOException e) {

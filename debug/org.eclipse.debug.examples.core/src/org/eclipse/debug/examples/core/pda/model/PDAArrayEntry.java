@@ -44,7 +44,7 @@ public class PDAArrayEntry extends PDADebugElement implements IVariable {
 
 	@Override
 	public String getName() throws DebugException {
-		return "[" + fIndex + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+		return "[" + fIndex + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override

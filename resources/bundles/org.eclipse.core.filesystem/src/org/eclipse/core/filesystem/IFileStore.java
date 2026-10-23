@@ -470,7 +470,7 @@ public interface IFileStore extends IAdaptable {
 		try (InputStream stream = openInputStream(options, monitor)) {
 			return stream.readAllBytes();
 		} catch (IOException e) {
-			throw new CoreException(Status.error("Error reading " + getName(), e)); //$NON-NLS-1$
+			throw new CoreException(Status.error("Error reading " + getName(), e)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 

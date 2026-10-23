@@ -37,7 +37,7 @@ public class XMLAnnotationHover implements IAnnotationHover {
 	/**
 	 * Returns the distance to the ruler line.
 	 */
-	private int compareRulerLine(Position position, IDocument document, int line) {
+	private int compareRulerLine(Position position, IDocument document, int line) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (position.getOffset() > -1 && position.getLength() > -1) {
 			try {
@@ -60,7 +60,7 @@ public class XMLAnnotationHover implements IAnnotationHover {
 	/**
 	 * Returns one marker which includes the ruler's line of activity.
 	 */
-	private List<Annotation> getXMLAnnotationsForLine(ISourceViewer viewer, int line) {
+	private List<Annotation> getXMLAnnotationsForLine(ISourceViewer viewer, int line) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		IDocument document = viewer.getDocument();
 		IAnnotationModel model = viewer.getAnnotationModel();
@@ -69,11 +69,11 @@ public class XMLAnnotationHover implements IAnnotationHover {
 			return null;
 		}
 
-		List<Annotation> exact = new ArrayList<>();
+		List<Annotation> exact = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		Iterator<Annotation> e = model.getAnnotationIterator();
-		Map<Position, Object> messagesAtPosition = new HashMap<>();
-		while (e.hasNext()) {
+		Map<Position, Object> messagesAtPosition = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		while (e.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object o = e.next();
 			if (o instanceof Annotation a) {
 				Position position = model.getPosition(a);
@@ -98,7 +98,7 @@ public class XMLAnnotationHover implements IAnnotationHover {
 		return exact;
 	}
 
-	private boolean isDuplicateXMLAnnotation(Map<Position, Object> messagesAtPosition, Position position, String message) {
+	private boolean isDuplicateXMLAnnotation(Map<Position, Object> messagesAtPosition, Position position, String message) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (messagesAtPosition.containsKey(position)) {
 			if (message.equals(messagesAtPosition.get(position))) {
 				return true;
@@ -112,7 +112,7 @@ public class XMLAnnotationHover implements IAnnotationHover {
 				}
 				messages.add(message);
 			} else {
-				ArrayList<Object> messages = new ArrayList<>();
+				ArrayList<Object> messages = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				messages.add(messagesAtPosition.get(position));
 				messages.add(message);
 				messagesAtPosition.put(position, messages);
@@ -123,7 +123,7 @@ public class XMLAnnotationHover implements IAnnotationHover {
 		return false;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String getHoverInfo(ISourceViewer sourceViewer, int lineNumber) {
 		List<Annotation> xmlAnnotations = getXMLAnnotationsForLine(sourceViewer, lineNumber);
 		if (xmlAnnotations != null) {
@@ -139,9 +139,9 @@ public class XMLAnnotationHover implements IAnnotationHover {
 
 			} else {
 
-				List<String> messages = new ArrayList<>(xmlAnnotations.size());
+				List<String> messages = new ArrayList<>(xmlAnnotations.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				Iterator<Annotation> e = xmlAnnotations.iterator();
-				while (e.hasNext()) {
+				while (e.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Annotation xmlAnnotation = e.next();
 					String message = xmlAnnotation.getText();
 					if (message != null && message.trim().length() > 0) {
@@ -166,7 +166,7 @@ public class XMLAnnotationHover implements IAnnotationHover {
 	 * Formats a message as HTML text.
 	 */
 	private String formatSingleMessage(String message) {
-		StringBuilder buffer = new StringBuilder();
+		StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		HTMLPrinter.addPageProlog(buffer);
 		HTMLPrinter.addParagraph(buffer, HTMLPrinter.convertToHTMLContent(message));
 		HTMLPrinter.addPageEpilog(buffer);
@@ -177,13 +177,13 @@ public class XMLAnnotationHover implements IAnnotationHover {
 	 * Formats several message as HTML text.
 	 */
 	private String formatMultipleMessages(List<String> messages) {
-		StringBuilder buffer = new StringBuilder();
+		StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		HTMLPrinter.addPageProlog(buffer);
 		HTMLPrinter.addParagraph(buffer, HTMLPrinter.convertToHTMLContent(AntEditorMessages.getString("AntAnnotationHover.multipleMarkersAtThisLine"))); //$NON-NLS-1$
 
 		HTMLPrinter.startBulletList(buffer);
 		Iterator<String> e = messages.iterator();
-		while (e.hasNext()) {
+		while (e.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			HTMLPrinter.addBullet(buffer, HTMLPrinter.convertToHTMLContent(e.next()));
 		}
 		HTMLPrinter.endBulletList(buffer);

@@ -36,7 +36,7 @@ public class AntObjectLabelProvider extends LabelProvider implements ITableLabel
 		// do nothing
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Image getColumnImage(Object element, int columnIndex) {
 		if (columnIndex != 0) {
 			return null;
@@ -58,7 +58,7 @@ public class AntObjectLabelProvider extends LabelProvider implements ITableLabel
 		return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJ_FILE);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String getColumnText(Object element, int columnIndex) {
 		if (element instanceof Property) {
 			return getPropertyText((Property) element, columnIndex);

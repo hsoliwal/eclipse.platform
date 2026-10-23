@@ -168,7 +168,7 @@ public class FileInfo implements IFileInfo {
 		attributes |= mask;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setAttribute(int attribute, boolean value) {
 		if (attribute == EFS.ATTRIBUTE_READ_ONLY && isAttributeSuported(EFS.ATTRIBUTE_OWNER_WRITE)) {
 			if (value) {
@@ -278,32 +278,32 @@ public class FileInfo implements IFileInfo {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("FileInfo ["); //$NON-NLS-1$
+		StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		sb.append("FileInfo ["); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		if (name != null) {
-			sb.append("name="); //$NON-NLS-1$
-			sb.append(name);
-			sb.append(", "); //$NON-NLS-1$
+			sb.append("name="); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(name); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(", "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		sb.append("length="); //$NON-NLS-1$
-		sb.append(length);
-		sb.append(", lastModified="); //$NON-NLS-1$
-		sb.append(lastModified);
-		sb.append(", exists="); //$NON-NLS-1$
-		sb.append(exists());
-		sb.append(", "); //$NON-NLS-1$
+		sb.append("length="); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(length); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(", lastModified="); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(lastModified); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(", exists="); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(exists()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(", "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		if (linkTarget != null) {
-			sb.append("linkTarget="); //$NON-NLS-1$
-			sb.append(linkTarget);
-			sb.append(", "); //$NON-NLS-1$
+			sb.append("linkTarget="); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(linkTarget); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(", "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		sb.append("attributes="); //$NON-NLS-1$
-		sb.append(attributes);
-		sb.append(", errorCode="); //$NON-NLS-1$
-		sb.append(errorCode);
-		sb.append("]"); //$NON-NLS-1$
+		sb.append("attributes="); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(attributes); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(", errorCode="); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(errorCode); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append("]"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return sb.toString();
 	}
 

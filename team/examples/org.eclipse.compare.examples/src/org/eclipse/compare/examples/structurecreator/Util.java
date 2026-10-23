@@ -32,7 +32,7 @@ public class Util {
 		try {
 			return fgResourceBundle.getString(key);
 		} catch (MissingResourceException e) {
-			return "!" + key + "!";	//$NON-NLS-2$ //$NON-NLS-1$
+			return "!" + key + "!";	//$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -42,17 +42,17 @@ public class Util {
 	 * (<code>ResourcesPlugin.getEncoding()</code>).
 	 * Returns null if an error occurred.
 	 */
-	private static String readString(InputStream is, String encoding) {
+	private static String readString(InputStream is, String encoding) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (is == null)
 			return null;
 		try (BufferedReader reader=new BufferedReader(new InputStreamReader(is, encoding)))
 		{
-			StringBuilder buffer= new StringBuilder();
+			StringBuilder buffer= new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 			char[] part= new char[2048];
 			int read= 0;
 
-			while ((read= reader.read(part)) != -1)
-				buffer.append(part, 0, read);
+			while ((read= reader.read(part)) != -1) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				buffer.append(part, 0, read); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 			return buffer.toString();
 

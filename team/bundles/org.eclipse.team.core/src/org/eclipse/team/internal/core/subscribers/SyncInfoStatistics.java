@@ -24,7 +24,7 @@ import org.eclipse.team.core.synchronize.SyncInfo;
  */
 public class SyncInfoStatistics {
 	//	{int sync kind -> int number of infos with that sync kind in this sync set}
-	protected Map<Integer, Long> stats = new HashMap<>();
+	protected Map<Integer, Long> stats = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	/**
 	 * Count this sync kind. Only the type of the sync info is stored.
@@ -77,7 +77,7 @@ public class SyncInfoStatistics {
 		} else {
 			Iterator it = stats.keySet().iterator();
 			long count = 0;
-			while (it.hasNext()) {
+			while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Integer key = (Integer) it.next();
 				if((key.intValue() & mask) == kind) {
 					count += stats.get(key).intValue();
@@ -100,9 +100,9 @@ public class SyncInfoStatistics {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder out = new StringBuilder();
-		for (Integer kind : stats.keySet()) {
-			out.append(SyncInfo.kindToString(kind.intValue()) + ": " + stats.get(kind) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		StringBuilder out = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (Integer kind : stats.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			out.append(SyncInfo.kindToString(kind.intValue()) + ": " + stats.get(kind) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return out.toString();
 	}

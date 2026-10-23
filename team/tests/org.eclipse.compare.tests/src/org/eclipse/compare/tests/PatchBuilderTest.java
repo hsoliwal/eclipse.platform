@@ -37,7 +37,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.junit.jupiter.api.Test;
 
 public class PatchBuilderTest {
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testModifyHunks() throws CoreException, IOException {
 		IStorage patchStorage = new StringStorage("patch_modifyHunks.txt");
 		IStorage contextStorage = new StringStorage("context.txt");
@@ -81,7 +81,7 @@ public class PatchBuilderTest {
 		assertThat(PatchUtils.asString(actual)).isEqualTo(expected);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAddHunks() throws CoreException, IOException {
 		IStorage patchStorage = new StringStorage("patch_addHunks.txt");
 		IStorage contextStorage = new StringStorage("context_full.txt");
@@ -130,7 +130,7 @@ public class PatchBuilderTest {
 		assertThat(PatchUtils.asString(actual)).isEqualTo(expected);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRemoveHunks() throws CoreException, IOException {
 		IStorage patchStorage = new StringStorage("patch_removeHunks.txt");
 		IStorage contextStorage = new StringStorage("context_full.txt");
@@ -166,7 +166,7 @@ public class PatchBuilderTest {
 		assertThat(PatchUtils.asString(actual)).isEqualTo(expected);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateFilePatch() throws CoreException, IOException {
 		IStorage contextStorage = new StringStorage("context.txt");
 
@@ -290,7 +290,7 @@ public class PatchBuilderTest {
 	private String getLineDelimiter(IStorage storage) throws CoreException, IOException {
 		try (InputStream in = storage.getContents()) {
 			int ch;
-			while ((ch = in.read()) != -1) {
+			while ((ch = in.read()) != -1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (ch == '\r') {
 					return "\r\n";
 				}
@@ -300,8 +300,8 @@ public class PatchBuilderTest {
 	}
 
 	private void addLineDelimiters(String[] lines, String lineDelimiter) {
-		for (int i = 0; i < lines.length; i++) {
-			lines[i] = lines[i] + lineDelimiter;
+		for (int i = 0; i < lines.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			lines[i] = lines[i] + lineDelimiter; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 

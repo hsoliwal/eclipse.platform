@@ -48,11 +48,11 @@ public class ChangeValidationTest {
 	private IResourceChangeDescriptionFactory factory;
 	private IProject project;
 
-	private void assertStatusEqual(IStatus status, String[] expectedMessages) {
-		List<String> actualMessages = new ArrayList<>();
+	private void assertStatusEqual(IStatus status, String[] expectedMessages) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<String> actualMessages = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (status.isMultiStatus()) {
 			IStatus[] children = status.getChildren();
-			for (IStatus element : children) {
+			for (IStatus element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String message = getModelMessage(element);
 				if (message != null) {
 					actualMessages.add(message);
@@ -65,22 +65,22 @@ public class ChangeValidationTest {
 			}
 		}
 		if (expectedMessages.length < actualMessages.size()) {
-			for (String actual : actualMessages) {
+			for (String actual : actualMessages) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				boolean found = false;
-				for (String expected : expectedMessages) {
+				for (String expected : expectedMessages) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (actual.equals(expected)) {
 						found = true;
 						break;
 					}
 				}
 				if (!found) {
-					fail("Unexpected message returned: " + actual);
+					fail("Unexpected message returned: " + actual); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
 		} else {
-			for (String expectedMessage : expectedMessages) {
+			for (String expectedMessage : expectedMessages) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!actualMessages.contains(expectedMessage)) {
-					fail("Expect message missing: " + expectedMessage);
+					fail("Expect message missing: " + expectedMessage); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
 		}

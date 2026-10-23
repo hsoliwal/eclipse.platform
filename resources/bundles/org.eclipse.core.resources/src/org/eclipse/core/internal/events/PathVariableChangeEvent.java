@@ -44,7 +44,7 @@ public class PathVariableChangeEvent extends EventObject implements IPathVariabl
 	public PathVariableChangeEvent(IPathVariableManager source, String variableName, IPath value, int type) {
 		super(source);
 		if (type < VARIABLE_CHANGED || type > VARIABLE_DELETED) {
-			throw new IllegalArgumentException("Invalid event type: " + type); //$NON-NLS-1$
+			throw new IllegalArgumentException("Invalid event type: " + type); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		this.variableName = variableName;
 		this.value = value;
@@ -81,16 +81,16 @@ public class PathVariableChangeEvent extends EventObject implements IPathVariabl
 	@Override
 	public String toString() {
 		String[] typeStrings = {"VARIABLE_CHANGED", "VARIABLE_CREATED", "VARIABLE_DELETED"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-		StringBuilder sb = new StringBuilder(getClass().getName());
-		sb.append("[variable = "); //$NON-NLS-1$
-		sb.append(variableName);
-		sb.append(", type = "); //$NON-NLS-1$
-		sb.append(typeStrings[type - 1]);
+		StringBuilder sb = new StringBuilder(getClass().getName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		sb.append("[variable = "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(variableName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(", type = "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(typeStrings[type - 1]); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		if (type != VARIABLE_DELETED) {
-			sb.append(", value = "); //$NON-NLS-1$
-			sb.append(value);
+			sb.append(", value = "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(value); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		sb.append("]"); //$NON-NLS-1$
+		sb.append("]"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return sb.toString();
 	}
 

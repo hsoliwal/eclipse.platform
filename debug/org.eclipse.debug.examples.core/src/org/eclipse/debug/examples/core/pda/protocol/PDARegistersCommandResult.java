@@ -33,9 +33,9 @@ public class PDARegistersCommandResult extends PDACommandResult {
 	PDARegistersCommandResult(String response) {
 		super(response);
 		StringTokenizer st = new StringTokenizer(response, "#"); //$NON-NLS-1$
-		List<PDARegisterData> regList = new ArrayList<>();
+		List<PDARegisterData> regList = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-		while (st.hasMoreTokens()) {
+		while (st.hasMoreTokens()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			regList.add(new PDARegisterData(st.nextToken()));
 		}
 		fRegisters = regList.toArray(new PDARegisterData[regList.size()]);

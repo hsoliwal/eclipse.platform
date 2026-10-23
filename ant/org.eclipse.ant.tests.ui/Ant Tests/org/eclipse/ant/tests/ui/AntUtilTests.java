@@ -51,7 +51,7 @@ public class AntUtilTests {
 	@Test
 	public void testGetTargetsLaunchConfiguration() throws CoreException {
 		String buildFileName = "echoing"; //$NON-NLS-1$
-		File buildFile = getBuildFile(buildFileName + ".xml"); //$NON-NLS-1$
+		File buildFile = getBuildFile(buildFileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		String arguments = null;
 		Map<String, String> properties = null;
 		String propertyFiles = null;
@@ -63,7 +63,7 @@ public class AntUtilTests {
 	@Test
 	public void testGetTargetsLaunchConfigurationMinusD() throws CoreException {
 		String buildFileName = "importRequiringUserProp"; //$NON-NLS-1$
-		File buildFile = getBuildFile(buildFileName + ".xml"); //$NON-NLS-1$
+		File buildFile = getBuildFile(buildFileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		String arguments = "-DimportFileName=toBeImported.xml"; //$NON-NLS-1$
 		Map<String, String> properties = null;
 		String propertyFiles = null;
@@ -75,10 +75,10 @@ public class AntUtilTests {
 	@Test
 	public void testGetTargetsLaunchConfigurationMinusDAndProperty() throws CoreException {
 		String buildFileName = "importRequiringUserProp"; //$NON-NLS-1$
-		File buildFile = getBuildFile(buildFileName + ".xml"); //$NON-NLS-1$
+		File buildFile = getBuildFile(buildFileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		String arguments = "-DimportFileName=toBeImported.xml"; //$NON-NLS-1$
 		// arguments should win
-		Map<String, String> properties = new HashMap<>();
+		Map<String, String> properties = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		properties.put("importFileName", "notToBeImported.xml"); //$NON-NLS-1$ //$NON-NLS-2$
 		String propertyFiles = null;
 		AntTargetNode[] targets = AntUtil.getTargets(buildFile.getAbsolutePath(), getLaunchConfiguration(buildFileName, arguments, properties, propertyFiles));
@@ -89,9 +89,9 @@ public class AntUtilTests {
 	@Test
 	public void testGetTargetsLaunchConfigurationProperty() throws CoreException {
 		String buildFileName = "importRequiringUserProp"; //$NON-NLS-1$
-		File buildFile = getBuildFile(buildFileName + ".xml"); //$NON-NLS-1$
+		File buildFile = getBuildFile(buildFileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		String arguments = null;
-		Map<String, String> properties = new HashMap<>();
+		Map<String, String> properties = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		properties.put("importFileName", "toBeImported.xml"); //$NON-NLS-1$ //$NON-NLS-2$
 		String propertyFiles = null;
 		AntTargetNode[] targets = AntUtil.getTargets(buildFile.getAbsolutePath(), getLaunchConfiguration(buildFileName, arguments, properties, propertyFiles));
@@ -102,7 +102,7 @@ public class AntUtilTests {
 	@Test
 	public void testGetTargetsLaunchConfigurationPropertyFile() throws CoreException {
 		String buildFileName = "importRequiringUserProp"; //$NON-NLS-1$
-		File buildFile = getBuildFile(buildFileName + ".xml"); //$NON-NLS-1$
+		File buildFile = getBuildFile(buildFileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		String arguments = null;
 		Map<String, String> properties = null;
 		String propertyFiles = "buildtest1.properties"; //$NON-NLS-1$
@@ -166,11 +166,11 @@ public class AntUtilTests {
 	}
 
 	// for bugfix of bug 412809: Assure explicitly that the provided patch works on external as well as non-external build-files
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetIncludeTargetsExternalFiles() {
 		// First assure that external and non-external files are included
 		String buildFileName = "bug412809/complex/misc/buildFileHierarchical"; //$NON-NLS-1$
-		File buildFile = getBuildFile(buildFileName + ".xml"); //$NON-NLS-1$
+		File buildFile = getBuildFile(buildFileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		// tasks and position info but no lexical info
 		IAntModel model = AntUtil.getAntModel(buildFile.getAbsolutePath(), false, true, true);
 		AntProjectNode project = model.getProjectNode();
@@ -184,9 +184,9 @@ public class AntUtilTests {
 
 		int actualSize = childNodes.size();
 		assertEquals(childNodesExpected, actualSize,
-				"Expecting " + childNodesExpected + " childnodes, but have: " + actualSize); //$NON-NLS-1$ //$NON-NLS-2$
+				"Expecting " + childNodesExpected + " childnodes, but have: " + actualSize); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-		for (IAntElement element : childNodes) {
+		for (IAntElement element : childNodes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// "External" seems to be true if the element was defined within an "importNode" => check the import nodes
 			IAntElement importNode = element.getImportNode();
 
@@ -207,7 +207,7 @@ public class AntUtilTests {
 	}
 
 	// for bugfix of bug 412809: Testing the performance by including the huge build file from "/testbuildfiles/performance/build.xml"
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetIncludeTargetsPerformance() {
 		/*
 		 * More or less the same files (noAlias-files because the parsing to search the project-name only occurs at includes where the alias-property
@@ -215,7 +215,7 @@ public class AntUtilTests {
 		 */
 		String buildFileName = "bug412809/performance/buildFileHierarchical"; //$NON-NLS-1$
 		long startTimeInNanoseconds = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
-		File buildFile = getBuildFile(buildFileName + ".xml"); //$NON-NLS-1$
+		File buildFile = getBuildFile(buildFileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IAntModel model = AntUtil.getAntModel(buildFile.getAbsolutePath(), false, true, true);
 		AntProjectNode project = model.getProjectNode();
 		long endTimeInNanoseconds = ManagementFactory.getThreadMXBean().getCurrentThreadCpuTime();
@@ -234,7 +234,7 @@ public class AntUtilTests {
 		long maxDuration = this.getExecutionTresholdIncludeTask();
 
 		assertTrue(durationInMilliseconds < maxDuration,
-				"Expecting a duration < " + maxDuration + ", but we have " + durationInMilliseconds + "ms");//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"Expecting a duration < " + maxDuration + ", but we have " + durationInMilliseconds + "ms");//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Test the rest
 		AntTargetNode[] targets = getAntTargetNodesOfBuildFile(buildFileName);
@@ -244,7 +244,7 @@ public class AntUtilTests {
 		// Expected targets
 		assertThat(targets).hasSize(3380);
 		// Just test if the mentioned targets are contained
-		for (String expectedTarget : expectedTargets) {
+		for (String expectedTarget : expectedTargets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertContains(expectedTarget, targets);
 		}
 	}
@@ -261,7 +261,7 @@ public class AntUtilTests {
 	}
 
 	private AntTargetNode[] getAntTargetNodesOfBuildFile(String buildFileName) {
-		File buildFile = getBuildFile(buildFileName + ".xml"); //$NON-NLS-1$
+		File buildFile = getBuildFile(buildFileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		AntTargetNode[] targets = AntUtil.getTargets(buildFile.getAbsolutePath());
 		assertTrue(targets != null);
 		return targets;
@@ -271,17 +271,17 @@ public class AntUtilTests {
 		// Before the bugfix, the dependend target (defined in the included file) was not found and the dependencies-check failed
 		int expectedSize = expectedTargetNames.length;
 		assertTrue(targets.length == expectedSize,
-				"Incorrect number of targets retrieved; should be " + expectedSize + " was: " //$NON-NLS-1$ //$NON-NLS-2$
+				"Incorrect number of targets retrieved; should be " + expectedSize + " was: " //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						+ targets.length);
 
-		for (String expectedTarget : expectedTargetNames) {
+		for (String expectedTarget : expectedTargetNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertContains(expectedTarget, targets);
 		}
 	}
 
 	protected ILaunchConfiguration getLaunchConfiguration(String buildFileName, String arguments, Map<String, String> properties, String propertyFiles) throws CoreException {
 		ILaunchConfiguration config = AntUITestUtil.getLaunchConfiguration(buildFileName);
-		assertNotNull(config, "Could not locate launch configuration for " + buildFileName); //$NON-NLS-1$
+		assertNotNull(config, "Could not locate launch configuration for " + buildFileName); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		ILaunchConfigurationWorkingCopy copy = config.getWorkingCopy();
 		if (arguments != null) {
 			copy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, arguments);
@@ -300,14 +300,14 @@ public class AntUtilTests {
 	 */
 	private void assertContains(String targetName, AntTargetNode[] targets) {
 		boolean found = false;
-		for (AntTargetNode target : targets) {
+		for (AntTargetNode target : targets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String foundName = target.getTargetName();
 			if (targetName.equals(foundName)) {
 				found = true;
 				break;
 			}
 		}
-		assertEquals(true, found, "Did not find target: " + targetName); //$NON-NLS-1$
+		assertEquals(true, found, "Did not find target: " + targetName); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Test

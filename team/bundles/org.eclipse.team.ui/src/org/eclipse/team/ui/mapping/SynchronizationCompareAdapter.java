@@ -68,7 +68,7 @@ public abstract class SynchronizationCompareAdapter implements ISynchronizationC
 		return asCompareInput(context, object) != null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String getName(ResourceMapping mapping) {
 		Object object = mapping.getModelObject();
 		IWorkbenchAdapter adapter = Adapters.adapt(object, IWorkbenchAdapter.class);
@@ -91,14 +91,14 @@ public abstract class SynchronizationCompareAdapter implements ISynchronizationC
 		return ""; //$NON-NLS-1$
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String getPathString(ResourceMapping mapping) {
 		Object object = mapping.getModelObject();
 		IWorkbenchAdapter adapter = Adapters.adapt(object, IWorkbenchAdapter.class);
 		if (adapter != null) {
-			List<String> segments = new ArrayList<>();
+			List<String> segments = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			Object parent = object;
-			do {
+			do { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String segment = adapter.getLabel(parent);
 				if (segment != null && segment.length() > 0) {
 					segments.add(0, segment);
@@ -107,7 +107,7 @@ public abstract class SynchronizationCompareAdapter implements ISynchronizationC
 			} while (parent != null);
 			if (!segments.isEmpty()) {
 				IPath path = IPath.EMPTY;
-				for (String segment : segments) {
+				for (String segment : segments) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					path = path.append(segment);
 				}
 				return path.toString();
@@ -116,7 +116,7 @@ public abstract class SynchronizationCompareAdapter implements ISynchronizationC
 		return getName(mapping);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ImageDescriptor getImageDescriptor(ResourceMapping mapping) {
 		Object object = mapping.getModelObject();
 		ImageDescriptor image = getImageDescriptorFromWorkbenchAdapter(object);

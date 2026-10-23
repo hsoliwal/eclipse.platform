@@ -40,8 +40,8 @@ public class JavacMarkerCreator {
 
 	private final TextConsole fConsole;
 	private IProcess fProcess;
-	private static List<IFile> fgFilesToBeCleaned = new ArrayList<>();
-	private final Map<IFile, List<MarkerInfo>> fFileToMarkerInfo = new HashMap<>();
+	private static List<IFile> fgFilesToBeCleaned = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private final Map<IFile, List<MarkerInfo>> fFileToMarkerInfo = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	private final boolean fUseCustomMessage;
 
 	private static class MarkerInfo {
@@ -101,19 +101,19 @@ public class JavacMarkerCreator {
 		info.setType(type);
 		List<MarkerInfo> infos = fFileToMarkerInfo.get(file);
 		if (infos == null) {
-			infos = new ArrayList<>();
+			infos = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			fFileToMarkerInfo.put(file, infos);
 		}
 		infos.add(info);
 	}
 
-	private void createMarkers(final IFile file, final List<MarkerInfo> infos) {
-		IWorkspaceRunnable wr = unused -> {
+	private void createMarkers(final IFile file, final List<MarkerInfo> infos) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		IWorkspaceRunnable wr = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 
 			try {
-				for (MarkerInfo info : infos) {
+				for (MarkerInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IMarker marker = file.createMarker(IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER);
-					Map<String, Object> attributes = new HashMap<>(3);
+					Map<String, Object> attributes = new HashMap<>(3); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 					attributes.put(IMarker.LINE_NUMBER, Integer.valueOf(info.fLineNumber));
 					String message = getMessage(info);
 					attributes.put(IMarker.MESSAGE, message);
@@ -128,7 +128,7 @@ public class JavacMarkerCreator {
 		run(getMarkerRule(file), wr);
 	}
 
-	protected String getMessage(MarkerInfo info) {
+	protected String getMessage(MarkerInfo info) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IDocument doc = fConsole.getDocument();
 		String message = ConsoleMessages.JavacMarkerCreator_0;
 		if (fUseCustomMessage) {
@@ -154,7 +154,7 @@ public class JavacMarkerCreator {
 
 	protected void finished(IProcess process) {
 		if (process.equals(fProcess)) {
-			for (IFile file : fgFilesToBeCleaned) {
+			for (IFile file : fgFilesToBeCleaned) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					file.deleteMarkers(IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER, true, IResource.DEPTH_INFINITE);
 				}
@@ -162,7 +162,7 @@ public class JavacMarkerCreator {
 					AntUIPlugin.log(e.getStatus());
 				}
 			}
-			for (IFile file : fFileToMarkerInfo.keySet()) {
+			for (IFile file : fFileToMarkerInfo.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				createMarkers(file, fFileToMarkerInfo.get(file));
 			}
 			fFileToMarkerInfo.clear();

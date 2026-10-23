@@ -86,9 +86,9 @@ public class ProjectPreferencesTest {
 	private static final String FILE_EXTENSION = "prefs";
 
 	static class Tracer implements IEclipsePreferences.IPreferenceChangeListener {
-		public StringBuilder log = new StringBuilder();
+		public StringBuilder log = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
-		private String typeCode(Object value) {
+		private String typeCode(Object value) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			if (value == null) {
 				return "";
 			}
@@ -116,36 +116,36 @@ public class ProjectPreferencesTest {
 
 		@Override
 		public void preferenceChange(PreferenceChangeEvent event) {
-			log.append("[");
-			log.append(event.getKey());
-			log.append(":");
-			log.append(typeCode(event.getOldValue()));
-			log.append(event.getOldValue() == null ? "null" : event.getOldValue());
-			log.append("->");
-			log.append(typeCode(event.getNewValue()));
-			log.append(event.getNewValue() == null ? "null" : event.getNewValue());
-			log.append("]");
+			log.append("["); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			log.append(event.getKey()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			log.append(":"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			log.append(typeCode(event.getOldValue())); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			log.append(event.getOldValue() == null ? "null" : event.getOldValue()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			log.append("->"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			log.append(typeCode(event.getNewValue())); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			log.append(event.getNewValue() == null ? "null" : event.getNewValue()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			log.append("]"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSimple() throws CoreException {
 		IProject project = getProject("foo");
 		String qualifier = "org.eclipse.core.tests.resources";
-		String key = "key" + createUniqueString();
-		String instanceValue = "instance" + createUniqueString();
-		String projectValue = "project" + createUniqueString();
+		String key = "key" + createUniqueString(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String instanceValue = "instance" + createUniqueString(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String projectValue = "project" + createUniqueString(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IScopeContext projectContext = new ProjectScope(project);
 		IScopeContext instanceContext = InstanceScope.INSTANCE;
 		createInWorkspace(project);
 
-		ArrayList<IScopeContext[]> list = new ArrayList<>();
+		ArrayList<IScopeContext[]> list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		list.add(null);
 		list.add(new IScopeContext[0]);
 		list.add(new IScopeContext[] {null});
 		IScopeContext[][] contextsWithoutScope = list.toArray(new IScopeContext[list.size()][]);
 
-		list = new ArrayList<>();
+		list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		list.add(new IScopeContext[] {projectContext});
 		list.add(new IScopeContext[] {null, projectContext});
 		IScopeContext[][] contextsWithScope = list.toArray(new IScopeContext[list.size()][]);
@@ -159,15 +159,15 @@ public class ProjectPreferencesTest {
 		assertEquals(instanceValue, actual);
 
 		// get the value through service searching
-		for (int i = 0; i < contextsWithoutScope.length; i++) {
+		for (int i = 0; i < contextsWithoutScope.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			actual = service.getString(qualifier, key, null, contextsWithoutScope[i]);
-			assertNotNull(actual, "Null Index:" + i);
-			assertEquals(instanceValue, actual, "Not Equal Index:" + i);
+			assertNotNull(actual, "Null Index:" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertEquals(instanceValue, actual, "Not Equal Index:" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
-		for (int i = 0; i < contextsWithScope.length; i++) {
+		for (int i = 0; i < contextsWithScope.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			actual = service.getString(qualifier, key, null, contextsWithScope[i]);
-			assertNotNull(actual, "Null Index:" + i);
-			assertEquals(instanceValue, actual, "Not Equal Index:" + i);
+			assertNotNull(actual, "Null Index:" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertEquals(instanceValue, actual, "Not Equal Index:" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		// set a preference value in the project scope
@@ -178,15 +178,15 @@ public class ProjectPreferencesTest {
 		assertEquals(projectValue, actual);
 
 		// get the value through service searching
-		for (int i = 0; i < contextsWithoutScope.length; i++) {
+		for (int i = 0; i < contextsWithoutScope.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			actual = service.getString(qualifier, key, null, contextsWithoutScope[i]);
-			assertNotNull(actual, "Null Index:" + i);
-			assertEquals(instanceValue, actual, "Not Equal Index:" + i);
+			assertNotNull(actual, "Null Index:" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertEquals(instanceValue, actual, "Not Equal Index:" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
-		for (int i = 0; i < contextsWithScope.length; i++) {
+		for (int i = 0; i < contextsWithScope.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			actual = service.getString(qualifier, key, null, contextsWithScope[i]);
-			assertNotNull(actual, "Null Index:" + i);
-			assertEquals(projectValue, actual, "Not Equal Index:" + i);
+			assertNotNull(actual, "Null Index:" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertEquals(projectValue, actual, "Not Equal Index:" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		// remove the project scope value
@@ -196,38 +196,38 @@ public class ProjectPreferencesTest {
 		assertNull(actual);
 
 		// get the value through service searching
-		for (int i = 0; i < contextsWithoutScope.length; i++) {
+		for (int i = 0; i < contextsWithoutScope.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			actual = service.getString(qualifier, key, null, contextsWithoutScope[i]);
-			assertNotNull(actual, "Null Index:" + i);
-			assertEquals(instanceValue, actual, "Not Equal Index:" + i);
+			assertNotNull(actual, "Null Index:" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertEquals(instanceValue, actual, "Not Equal Index:" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
-		for (int i = 0; i < contextsWithScope.length; i++) {
+		for (int i = 0; i < contextsWithScope.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			actual = service.getString(qualifier, key, null, contextsWithScope[i]);
-			assertNotNull(actual, "Null Index:" + i);
-			assertEquals(instanceValue, actual, "Not Equal Index:" + i);
+			assertNotNull(actual, "Null Index:" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertEquals(instanceValue, actual, "Not Equal Index:" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		// remove the instance value so there is nothing
 		node = instanceContext.getNode(qualifier);
 		node.remove(key);
 		actual = node.get(key, null);
-		for (int i = 0; i < contextsWithoutScope.length; i++) {
+		for (int i = 0; i < contextsWithoutScope.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			actual = service.getString(qualifier, key, null, contextsWithoutScope[i]);
-			assertNull(actual, "Not Null Index:" + i);
+			assertNull(actual, "Not Null Index:" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
-		for (int i = 0; i < contextsWithScope.length; i++) {
+		for (int i = 0; i < contextsWithScope.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			actual = service.getString(qualifier, key, null, contextsWithScope[i]);
-			assertNull(actual, "Not Null Index:" + i);
+			assertNull(actual, "Not Null Index:" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testListener() throws Exception {
 		// setup
 		IProject project = getProject(createUniqueString());
 		String qualifier = "org.eclipse.core.tests.resources";
-		String key = "key" + createUniqueString();
-		String value = "value" + createUniqueString();
+		String key = "key" + createUniqueString(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String value = "value" + createUniqueString(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IScopeContext projectContext = new ProjectScope(project);
 		// create project
 		createInWorkspace(project);
@@ -243,17 +243,17 @@ public class ProjectPreferencesTest {
 		// get settings filename
 		File file = getFileInFilesystem(project, qualifier);
 		Properties props = new Properties();
-		try (BufferedReader reader = Files.newBufferedReader(file.toPath())) {
+		try (BufferedReader reader = Files.newBufferedReader(file.toPath())) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			props.load(reader);
 		}
 
 		// change settings in the file
-		String newKey = "newKey" + createUniqueString();
-		String newValue = "newValue" + createUniqueString();
+		String newKey = "newKey" + createUniqueString(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String newValue = "newValue" + createUniqueString(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		props.put(newKey, newValue);
 
 		// save the file and ensure timestamp is different
-		try (FileOutputStream fileOutput = new FileOutputStream(file)) {
+		try (FileOutputStream fileOutput = new FileOutputStream(file)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			try (OutputStream output = new BufferedOutputStream(fileOutput)) {
 				props.store(output, null);
 			}
@@ -278,7 +278,7 @@ public class ProjectPreferencesTest {
 	/**
 	 * Regression test for bug 60896 - Project preferences remains when deleting/creating project
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDelete() throws Exception {
 		// create the project
 		IProject project = getProject(createUniqueString());
@@ -307,7 +307,7 @@ public class ProjectPreferencesTest {
 	}
 
 	/** See bug 91244, bug 93398 and bug 211006. */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectMove() throws Exception {
 		IProject project1 = getProject(createUniqueString());
 		IProject project2 = getProject(createUniqueString());
@@ -346,7 +346,7 @@ public class ProjectPreferencesTest {
 	 * directly to disk. We need to convert to use Resource APIs so changes
 	 * show up in the workspace immediately.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_60925() throws Exception {
 		// setup
 		IProject project = getProject(createUniqueString());
@@ -356,7 +356,7 @@ public class ProjectPreferencesTest {
 
 		// should be nothing in the file system
 		assertFalse(file.exists());
-		assertFalse(file.getLocation().toFile().exists());
+		assertFalse(file.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// store a preference key/value pair
 		IScopeContext context = new ProjectScope(project);
@@ -378,7 +378,7 @@ public class ProjectPreferencesTest {
 	 *
 	 * Problems with a dot "." as a key name
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_55410() throws Exception {
 		IProject project1 = getProject(createUniqueString());
 		createInWorkspace(project1);
@@ -399,8 +399,8 @@ public class ProjectPreferencesTest {
 		try (InputStream contents = prefsFile.getContents()) {
 			props.load(contents);
 		}
-		assertEquals(value2, props.getProperty("subnode/" + key2));
-		assertEquals(value1, props.getProperty("subnode/" + key1));
+		assertEquals(value2, props.getProperty("subnode/" + key2)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		assertEquals(value1, props.getProperty("subnode/" + key1)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -409,7 +409,7 @@ public class ProjectPreferencesTest {
 	 * Investigate what happens with project preferences when the
 	 * project is moved.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_61277a() throws Exception {
 		IProject project = getProject(createUniqueString());
 		IProject destProject = getProject(createUniqueString());
@@ -465,7 +465,7 @@ public class ProjectPreferencesTest {
 	 *
 	 * Problems with a key which is the empty string.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_61277c() throws Exception {
 		IProject project1 = getProject(createUniqueString());
 		createInWorkspace(project1);
@@ -496,7 +496,7 @@ public class ProjectPreferencesTest {
 	 * The project preferences are being accessing (for the first time) from
 	 * within a resource change listener reacting to a change in the workspace.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_61843() throws Exception {
 		// create the project and manually give it a settings file
 		final String qualifier = createUniqueString();
@@ -508,8 +508,8 @@ public class ProjectPreferencesTest {
 		Properties properties = new Properties();
 		properties.put("key", "value");
 		File file = settingsFile.getLocation().toFile();
-		file.getParentFile().mkdirs();
-		try (OutputStream fileOutput = new FileOutputStream(file)) {
+		file.getParentFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		try (OutputStream fileOutput = new FileOutputStream(file)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			try (OutputStream output = new BufferedOutputStream(fileOutput)) {
 				properties.store(output, null);
 			}
@@ -525,7 +525,7 @@ public class ProjectPreferencesTest {
 		};
 
 		// listener to react to changes in the workspace
-		IResourceChangeListener rclistener = unused -> new ProjectScope(project).getNode(qualifier);
+		IResourceChangeListener rclistener = unused -> new ProjectScope(project).getNode(qualifier); //FLLDCIM: MARK — T07  LAMBDA
 
 		// add the listeners
 		try {
@@ -562,7 +562,7 @@ public class ProjectPreferencesTest {
 	/*
 	 * Bug 95052 - external property removals are not detected.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_95052() throws Exception {
 		IProject project = getProject(createUniqueString());
 		createInWorkspace(project);
@@ -605,7 +605,7 @@ public class ProjectPreferencesTest {
 	/*
 	 * Bug 579372 - property removals are not detected.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_579372() throws Exception {
 		IProject project = getProject(createUniqueString());
 		createInWorkspace(project);
@@ -672,7 +672,7 @@ public class ProjectPreferencesTest {
 	 * Bug 256900 - When the preferences file is copied between projects, the corresponding preferences
 	 * should be updated.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_256900() throws Exception {
 		IProject project = getProject(createUniqueString());
 		createInWorkspace(project);
@@ -707,20 +707,20 @@ public class ProjectPreferencesTest {
 	 * Bug 325000 Project properties not sorted on IBM VMs
 	 * Creates property file with various characters on front and verifies that they are written in alphabetical order.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_325000() throws Exception {
 		IProject project1 = getProject(createUniqueString());
 		createInWorkspace(project1);
 		Preferences node = new ProjectScope(project1).getNode(ResourcesPlugin.PI_RESOURCES).node("subnode");
 
-		List<String> keys = new ArrayList<>();
-		keys.add("z" + createUniqueString());
-		keys.add("a" + createUniqueString());
-		keys.add("1" + createUniqueString());
-		keys.add("z" + createUniqueString());
-		keys.add("_" + createUniqueString());
+		List<String> keys = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		keys.add("z" + createUniqueString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		keys.add("a" + createUniqueString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		keys.add("1" + createUniqueString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		keys.add("z" + createUniqueString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		keys.add("_" + createUniqueString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		keys.add(createUniqueString());
-		for (String key : keys) {
+		for (String key : keys) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			node.put(key, createUniqueString());
 		}
 		node.flush();
@@ -731,9 +731,9 @@ public class ProjectPreferencesTest {
 				try (BufferedReader reader = new BufferedReader(streamReader)) {
 					String currentLine = null;
 					String prevLine = null;
-					while ((currentLine = reader.readLine()) != null) {
+					while ((currentLine = reader.readLine()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						boolean isUserProperty = false;
-						for (String key : keys) {
+						for (String key : keys) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							if (currentLine.contains(key)) {
 								isUserProperty = true;
 								break;
@@ -756,7 +756,7 @@ public class ProjectPreferencesTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_335591() throws Exception {
 		String projectName = createUniqueString();
 		String nodeName = "node";
@@ -766,9 +766,9 @@ public class ProjectPreferencesTest {
 		project.create(createTestMonitor());
 
 		//create file with preferences that will be discovered during refresh
-		File folder = new File(project.getLocation().toOSString() + "/.settings");
-		folder.mkdir();
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(folder.getPath() + "/" + nodeName + ".prefs"))) {
+		File folder = new File(project.getLocation().toOSString() + "/.settings"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		folder.mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(folder.getPath() + "/" + nodeName + ".prefs"))) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			bw.write("#Fri Jan 28 10:28:45 CET 2011\neclipse.preferences.version=1\nKEY=VALUE");
 		}
 
@@ -793,12 +793,12 @@ public class ProjectPreferencesTest {
 		node.flush();
 
 		//preferences were changed so the new file should contain two lines: 'KEY=VALUE' and 'NEW_KEY=NEW_VALUE'
-		folder = new File(project.getLocation().toOSString() + "/.settings");
+		folder = new File(project.getLocation().toOSString() + "/.settings"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		List<String> lines;
-		try (BufferedReader br = new BufferedReader(new FileReader(folder.getPath() + "/" + nodeName + ".prefs"))) {
-			lines = new ArrayList<>();
+		try (BufferedReader br = new BufferedReader(new FileReader(folder.getPath() + "/" + nodeName + ".prefs"))) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO NEW
+			lines = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			String line = br.readLine();
-			while (line != null) {
+			while (line != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if ((!line.startsWith("#")) && (!line.startsWith("eclipse.preferences.version"))) {
 					lines.add(line);
 				}
@@ -818,7 +818,7 @@ public class ProjectPreferencesTest {
 		assertEquals("NEW_VALUE", node.get("NEW_KEY", null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_384151() throws BackingStoreException, CoreException {
 		// make sure each line separator is different
 		String systemValue = System.lineSeparator();
@@ -848,7 +848,7 @@ public class ProjectPreferencesTest {
 		String oldProjectValue = projectNode.get(Platform.PREF_LINE_SEPARATOR, null);
 
 		String qualifier = "qualifier";
-		IFile file = project.getFile(IPath.fromOSString(".settings/" + qualifier + ".prefs"));
+		IFile file = project.getFile(IPath.fromOSString(".settings/" + qualifier + ".prefs")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		Preferences node = rootNode.node(ProjectScope.SCOPE).node(project.getName()).node(qualifier);
 		String key = "key";
 		try {
@@ -903,7 +903,7 @@ public class ProjectPreferencesTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_336211() throws BackingStoreException, CoreException, IOException {
 		String projectName = createUniqueString();
 		String nodeName = "node";
@@ -913,9 +913,9 @@ public class ProjectPreferencesTest {
 		project.create(createTestMonitor());
 
 		//create file with preferences that will be discovered during refresh
-		File folder = new File(project.getLocation().toOSString() + "/.settings");
-		folder.mkdir();
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(folder.getPath() + "/" + nodeName + ".prefs"))) {
+		File folder = new File(project.getLocation().toOSString() + "/.settings"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		folder.mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(folder.getPath() + "/" + nodeName + ".prefs"))) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			bw.write("#Fri Jan 28 10:28:45 CET 2011\neclipse.preferences.version=1\nKEY=VALUE");
 		}
 
@@ -954,19 +954,19 @@ public class ProjectPreferencesTest {
 
 	@Test
 	public void testContentType() {
-		IContentType prefsType = Platform.getContentTypeManager().getContentType(ResourcesPlugin.PI_RESOURCES + ".preferences");
+		IContentType prefsType = Platform.getContentTypeManager().getContentType(ResourcesPlugin.PI_RESOURCES + ".preferences"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(prefsType);
-		IContentType associatedType = Platform.getContentTypeManager().findContentTypeFor("some.qualifier." + EclipsePreferences.PREFS_FILE_EXTENSION);
+		IContentType associatedType = Platform.getContentTypeManager().findContentTypeFor("some.qualifier." + EclipsePreferences.PREFS_FILE_EXTENSION); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertEquals(prefsType, associatedType);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testListenerOnChangeFile() throws Exception {
 		// setup
 		IProject project = getProject(createUniqueString());
 		String qualifier = "org.eclipse.core.tests.resources";
-		String key = "key" + createUniqueString();
-		String value = "value" + createUniqueString();
+		String key = "key" + createUniqueString(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String value = "value" + createUniqueString(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IScopeContext projectContext = new ProjectScope(project);
 		// create project
 		createInWorkspace(project);
@@ -984,15 +984,15 @@ public class ProjectPreferencesTest {
 		// get settings filename
 		File file = getFileInFilesystem(project, qualifier);
 		Properties props = new Properties();
-		try (BufferedReader input = Files.newBufferedReader(file.toPath())) {
+		try (BufferedReader input = Files.newBufferedReader(file.toPath())) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			props.load(input);
 		}
 
 		// reset the listener
 		tracer.log.setLength(0);
 		// change settings in the file
-		String newKey = "newKey" + createUniqueString();
-		String newValue = "newValue" + createUniqueString();
+		String newKey = "newKey" + createUniqueString(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String newValue = "newValue" + createUniqueString(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		props.put(newKey, newValue);
 
 		// save the file via the IFile API
@@ -1010,7 +1010,7 @@ public class ProjectPreferencesTest {
 		assertEquals(newValue, actual);
 
 		// validate the change events
-		assertEquals("[" + newKey + ":null->S" + newValue + "]", tracer.log.toString());
+		assertEquals("[" + newKey + ":null->S" + newValue + "]", tracer.log.toString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private static IProject getProject(String name) {
@@ -1029,7 +1029,7 @@ public class ProjectPreferencesTest {
 	 * Test to ensure that discovering a new pref file (e.g. loading from a repo)
 	 * is the same as doing an import. (ensure the modify listeners are called)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLoadIsImport() throws Exception {
 		// setup
 		IProject project = getProject(createUniqueString());
@@ -1049,20 +1049,20 @@ public class ProjectPreferencesTest {
 
 		// copy the data into a buffer for later use
 		File fileInFS = getFileInFilesystem(project, qualifier);
-		byte[] buffer = Files.readAllBytes(fileInFS.toPath());
+		byte[] buffer = Files.readAllBytes(fileInFS.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// remove the file from the project
 		IFile fileInWS = getFileInWorkspace(project, qualifier);
 		fileInWS.delete(IResource.NONE, createTestMonitor());
 		assertFalse(fileInWS.exists());
-		assertFalse(fileInFS.exists());
+		assertFalse(fileInFS.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		IEclipsePreferences projectNode = (IEclipsePreferences) service.getRootNode().node(ProjectScope.SCOPE).node(project.getName());
 		// when the pref file is deleted, the node will be cleared, but not removed
 		assertTrue(isNodeCleared(projectNode, new String[] { qualifier }));
 		//		assertNull("3.3", projectNode.node(qualifier).get(oldKey, null));
 
 		// create the file in the project and discover it via a refresh local
-		try (OutputStream fileOutput = new FileOutputStream(fileInFS)) {
+		try (OutputStream fileOutput = new FileOutputStream(fileInFS)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			try (OutputStream output = new BufferedOutputStream(fileOutput)) {
 				try (InputStream input = new BufferedInputStream(new ByteArrayInputStream(buffer))) {
 					input.transferTo(output);
@@ -1092,7 +1092,7 @@ public class ProjectPreferencesTest {
 
 		// perform a subsequent check for the node children
 		Preferences childNode = null;
-		for (String childrenName : childrenNames) {
+		for (String childrenName : childrenNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			childNode = node.node(childrenName);
 			if (!isNodeCleared(childNode, childNode.childrenNames())) {
 				return false;
@@ -1101,7 +1101,7 @@ public class ProjectPreferencesTest {
 		return true;
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testChildrenNamesAgainstInitialize() throws BackingStoreException, CoreException {
 		String nodeA = "nodeA";
 		String nodeB = "nodeB";
@@ -1140,7 +1140,7 @@ public class ProjectPreferencesTest {
 		project2.delete(true, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testChildrenNamesAgainstLoad() throws BackingStoreException, CoreException {
 		String nodeA = "nodeA";
 		String nodeB = "nodeB";
@@ -1175,7 +1175,7 @@ public class ProjectPreferencesTest {
 		project2.delete(true, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testClear() throws BackingStoreException, CoreException {
 		String nodeA = "nodeA";
 		String nodeB = "nodeB";
@@ -1211,7 +1211,7 @@ public class ProjectPreferencesTest {
 		project2.delete(true, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGet() throws BackingStoreException, CoreException {
 		String nodeA = "nodeA";
 		String nodeB = "nodeB";
@@ -1245,7 +1245,7 @@ public class ProjectPreferencesTest {
 		project2.delete(true, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testKeys() throws BackingStoreException, CoreException {
 		String nodeA = "nodeA";
 		String nodeB = "nodeB";
@@ -1280,7 +1280,7 @@ public class ProjectPreferencesTest {
 		project2.delete(true, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNodeExistsAgainstInitialize() throws BackingStoreException, CoreException {
 		String nodeA = "nodeA";
 		String nodeB = "nodeB";
@@ -1316,7 +1316,7 @@ public class ProjectPreferencesTest {
 		project2.delete(true, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNodeExistsAgainstLoad() throws BackingStoreException, CoreException {
 		String nodeA = "nodeA";
 		String nodeB = "nodeB";
@@ -1350,7 +1350,7 @@ public class ProjectPreferencesTest {
 		project2.delete(true, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPut() throws BackingStoreException, CoreException {
 		String nodeA = "nodeA";
 		String nodeB = "nodeB";
@@ -1386,7 +1386,7 @@ public class ProjectPreferencesTest {
 		project2.delete(true, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRemove() throws BackingStoreException, CoreException {
 		String nodeA = "nodeA";
 		String nodeB = "nodeB";
@@ -1421,7 +1421,7 @@ public class ProjectPreferencesTest {
 		project2.delete(true, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteOnFilesystemAndLoad() throws CoreException, BackingStoreException {
 		String nodeA = "nodeA";
 		String key = "key";
@@ -1437,19 +1437,19 @@ public class ProjectPreferencesTest {
 
 		IFile prefsFile = project1.getFile(".settings/nodeA.prefs");
 		File settingsFile = new File(prefsFile.getLocationURI());
-		assertTrue(settingsFile.exists());
+		assertTrue(settingsFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		ProjectPreferences.updatePreferences(prefsFile);
 
-		settingsFile.delete(); // delete the preference file on file system
-		assertFalse(settingsFile.exists());
+		settingsFile.delete(); // delete the preference file on file system //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(settingsFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// will cause a FNFE in FileSystemResourceManager#read, see bug 521490
 		// but it should be handled silently
 		ProjectPreferences.updatePreferences(prefsFile);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSettingsFolderCreatedOutsideWorkspace() throws CoreException, BackingStoreException, IOException {
 		String nodeA = "nodeA";
 		String key = "key";
@@ -1463,12 +1463,12 @@ public class ProjectPreferencesTest {
 		// see bug#522214
 		File projectFolder = new File(project1.getLocationURI());
 		File settingsFolder = new File(projectFolder, ".settings");
-		assertTrue(projectFolder.exists());
-		assertTrue(settingsFolder.exists());
+		assertTrue(projectFolder.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(settingsFolder.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// create the preference file also out of synch with the workspace
 		File prefsFile = new File(settingsFolder, "nodeA.prefs");
-		prefsFile.createNewFile();
+		prefsFile.createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// now add some project preference and save them
 		Preferences prefs1 = new ProjectScope(project1).getNode(nodeA);

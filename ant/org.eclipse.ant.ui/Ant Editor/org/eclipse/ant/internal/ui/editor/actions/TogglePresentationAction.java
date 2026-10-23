@@ -29,7 +29,7 @@ import org.eclipse.ui.texteditor.TextEditorAction;
  * A tool bar action which toggles the presentation model of the connected text editor. The editor shows either the highlight range only or always the
  * whole document.
  */
-public class TogglePresentationAction extends TextEditorAction implements IPropertyChangeListener {
+public class TogglePresentationAction extends TextEditorAction implements IPropertyChangeListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	private IPreferenceStore fStore;
 
@@ -41,7 +41,7 @@ public class TogglePresentationAction extends TextEditorAction implements IPrope
 		setImageDescriptor(AntUIImages.getImageDescriptor(IAntUIConstants.IMG_SEGMENT_EDIT));
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run() {
 
 		ITextEditor editor = getTextEditor();
@@ -73,7 +73,7 @@ public class TogglePresentationAction extends TextEditorAction implements IPrope
 		setEnabled(editor != null);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setEditor(ITextEditor editor) {
 
 		super.setEditor(editor);
@@ -100,7 +100,7 @@ public class TogglePresentationAction extends TextEditorAction implements IPrope
 	 * @param editor
 	 *            the text editor
 	 */
-	private void synchronizeWithPreference(ITextEditor editor) {
+	private void synchronizeWithPreference(ITextEditor editor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (editor == null) {
 			return;

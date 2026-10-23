@@ -46,7 +46,7 @@ public class FileCacheTest {
 		MemoryTree.TREE.deleteAll();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCacheFile() throws Exception {
 		IFileStore store = new MemoryFileStore(IPath.fromOSString("testCacheFile"));
 		byte[] contents = "test".getBytes();
@@ -54,9 +54,9 @@ public class FileCacheTest {
 			out.write(contents);
 		}
 		File cachedFile = store.toLocalFile(EFS.CACHE, getMonitor());
-		assertTrue(cachedFile.exists());
-		assertFalse(cachedFile.isDirectory());
-		assertThat(Files.readAllBytes(cachedFile.toPath())).containsExactly(contents);
+		assertTrue(cachedFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(cachedFile.isDirectory()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertThat(Files.readAllBytes(cachedFile.toPath())).containsExactly(contents); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// write out new file contents
 		byte[] newContents = "newContents".getBytes();
@@ -65,13 +65,13 @@ public class FileCacheTest {
 		}
 
 		// old cache will be out of date
-		assertThat(newContents).isNotEqualTo(Files.readAllBytes(cachedFile.toPath()));
+		assertThat(newContents).isNotEqualTo(Files.readAllBytes(cachedFile.toPath())); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// fetching the cache again should return up to date file
 		cachedFile = store.toLocalFile(EFS.CACHE, getMonitor());
-		assertTrue(cachedFile.exists());
-		assertFalse(cachedFile.isDirectory());
-		assertThat(Files.readAllBytes(cachedFile.toPath())).containsExactly(newContents);
+		assertTrue(cachedFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(cachedFile.isDirectory()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertThat(Files.readAllBytes(cachedFile.toPath())).containsExactly(newContents); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	@Test
@@ -79,8 +79,8 @@ public class FileCacheTest {
 		IFileStore store = new MemoryFileStore(IPath.fromOSString("testCacheFolder"));
 		store.mkdir(EFS.NONE, getMonitor());
 		File cachedFile = store.toLocalFile(EFS.CACHE, getMonitor());
-		assertTrue(cachedFile.exists());
-		assertTrue(cachedFile.isDirectory());
+		assertTrue(cachedFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(cachedFile.isDirectory()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**
@@ -101,6 +101,6 @@ public class FileCacheTest {
 	public void testNonExisting() throws Exception {
 		IFileStore store = new MemoryFileStore(IPath.fromOSString("testNonExisting"));
 		File cachedFile = store.toLocalFile(EFS.CACHE, getMonitor());
-		assertFalse(cachedFile.exists());
+		assertFalse(cachedFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 }

@@ -98,10 +98,10 @@ public final class XMLPlugin extends AbstractUIPlugin {
 
 		CompareUI.removeAllStructureViewerAliases(DEFAULT_PREFIX);
 		initPrefStore();
-		CompareUI.registerImageDescriptor(IMAGE_TYPE_PREFIX + XMLStructureCreator.TYPE_ELEMENT, getImageDescriptor("obj16/element_obj.gif")); //$NON-NLS-1$
-		CompareUI.registerImageDescriptor(IMAGE_TYPE_PREFIX + XMLStructureCreator.TYPE_ATTRIBUTE, getImageDescriptor("obj16/attribute_obj.gif")); //$NON-NLS-1$
-		CompareUI.registerImageDescriptor(IMAGE_TYPE_PREFIX + XMLStructureCreator.TYPE_TEXT, getImageDescriptor("obj16/text_obj.gif")); //$NON-NLS-1$
-		CompareUI.registerImageDescriptor(IMAGE_TYPE_PREFIX + XMLStructureCreator.TYPE_ELEMENT + IMAGE_TYPE_ORDERED_SUFFIX, getImageDescriptor("obj16/element_ordered_obj.gif")); //$NON-NLS-1$
+		CompareUI.registerImageDescriptor(IMAGE_TYPE_PREFIX + XMLStructureCreator.TYPE_ELEMENT, getImageDescriptor("obj16/element_obj.gif")); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		CompareUI.registerImageDescriptor(IMAGE_TYPE_PREFIX + XMLStructureCreator.TYPE_ATTRIBUTE, getImageDescriptor("obj16/attribute_obj.gif")); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		CompareUI.registerImageDescriptor(IMAGE_TYPE_PREFIX + XMLStructureCreator.TYPE_TEXT, getImageDescriptor("obj16/text_obj.gif")); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		CompareUI.registerImageDescriptor(IMAGE_TYPE_PREFIX + XMLStructureCreator.TYPE_ELEMENT + IMAGE_TYPE_ORDERED_SUFFIX, getImageDescriptor("obj16/element_ordered_obj.gif")); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		registerExtensions();
 	}
 
@@ -111,7 +111,7 @@ public final class XMLPlugin extends AbstractUIPlugin {
 
 		URL installURL= fgXMLPlugin.getBundle().getEntry("/"); //$NON-NLS-1$
 		if (installURL != null) {
-			URL url = fgXMLPlugin.getBundle().getEntry("/icons/full/" + relativePath); //$NON-NLS-1$
+			URL url = fgXMLPlugin.getBundle().getEntry("/icons/full/" + relativePath); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			return ImageDescriptor.createFromURL(url);
 		}
 		return null;
@@ -129,14 +129,14 @@ public final class XMLPlugin extends AbstractUIPlugin {
 	/**
 	 * Reads the Preference Store associated with XMLPlugin and initializes ID Mappings.
 	 */
-	public void initPrefStore() {
-		fIdMaps = new HashMap<>();
-		fIdExtensionToName = new HashMap<>();
+	public void initPrefStore() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		fIdMaps = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		fIdExtensionToName = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		fPrefStore = getPreferenceStore();
 		String IdMapPrefValue = fPrefStore.getString(IDMAP_PREFERENCE_NAME);
 		int start = 0;
 		int end = IdMapPrefValue.indexOf(IDMAP_SEPARATOR);
-		while (end >= 0) {
+		while (end >= 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String CurrentIdMap = IdMapPrefValue.substring(start,end);
 			int end_of_IdMapName = CurrentIdMap.indexOf(IDMAP_FIELDS_SEPARATOR);
 			String IdMapName = CurrentIdMap.substring(0,end_of_IdMapName);
@@ -160,7 +160,7 @@ public final class XMLPlugin extends AbstractUIPlugin {
 				HashMap<String, String> Mappings = fIdMaps.get(IdMapName);
 				Mappings.put(IdMapSignature,IdMapAttribute);
 			} else {
-				HashMap<String, String> Mappings = new HashMap<>();
+				HashMap<String, String> Mappings = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 				Mappings.put(IdMapSignature,IdMapAttribute);
 				fIdMaps.put(IdMapName,Mappings);
 			}
@@ -168,17 +168,17 @@ public final class XMLPlugin extends AbstractUIPlugin {
 			end = IdMapPrefValue.indexOf(IDMAP_SEPARATOR,end+1);
 		}
 
-		fOrderedElements = new HashMap<>();
+		fOrderedElements = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		String OrderedPrefValue= fPrefStore.getString(ORDERED_PREFERENCE_NAME);
 		StringTokenizer orderedTokens= new StringTokenizer(OrderedPrefValue, (Character.valueOf(ORDERED_FIELDS_SEPARATOR)).toString());
-		while (orderedTokens.hasMoreTokens()) {
+		while (orderedTokens.hasMoreTokens()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String IdMapName= orderedTokens.nextToken();
 			String signature= orderedTokens.nextToken();
 			if (fOrderedElements.containsKey(IdMapName)) {
 				ArrayList<String> idmapAL = fOrderedElements.get(IdMapName);
 				idmapAL.add(signature);
 			} else {
-				ArrayList<String> idmapAL = new ArrayList<>();
+				ArrayList<String> idmapAL = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				idmapAL.add(signature);
 				fOrderedElements.put(IdMapName, idmapAL);
 			}
@@ -192,32 +192,32 @@ public final class XMLPlugin extends AbstractUIPlugin {
 	 * @param IdExtensionToName the new IdExtensionToName mappings
 	 * @param refresh whether all the open StructureViewers should be refreshed with the new IdMapping settings
 	 */
-	public void setIdMaps(HashMap<String, HashMap<String, String>> IdMap, HashMap<String, String> IdExtensionToName, HashMap<String, ArrayList<String>> OrderedElements, boolean refresh) {
+	public void setIdMaps(HashMap<String, HashMap<String, String>> IdMap, HashMap<String, String> IdExtensionToName, HashMap<String, ArrayList<String>> OrderedElements, boolean refresh) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fIdMaps = IdMap;
 		if (IdExtensionToName != null && !IdExtensionToName.equals(fIdExtensionToName)) {
 			CompareUI.removeAllStructureViewerAliases(DEFAULT_PREFIX);
 			fIdExtensionToName= IdExtensionToName;
 			Set<String> newkeySet= fIdExtensionToName.keySet();
-			for (String extension : newkeySet) {
+			for (String extension : newkeySet) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				CompareUI.addStructureViewerAlias(DEFAULT_PREFIX, extension);
 			}
 		}
-		StringBuilder IdMapPrefValue = new StringBuilder();
+		StringBuilder IdMapPrefValue = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		Set<String> idmapKeys = fIdMaps.keySet();
-		for (String IdMapName : idmapKeys) {
+		for (String IdMapName : idmapKeys) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			HashMap<String, String> idmapHM = fIdMaps.get(IdMapName);
 			Set<String> mappingKeys = idmapHM.keySet();
 			String extension= ""; //$NON-NLS-1$
 			if (fIdExtensionToName.containsValue(IdMapName)) {
 				Set<String> keySet= fIdExtensionToName.keySet();
-				for (Iterator<String> iter= keySet.iterator(); iter.hasNext(); ) {
+				for (Iterator<String> iter= keySet.iterator(); iter.hasNext(); ) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					extension= iter.next();
 					if ( fIdExtensionToName.get(extension).equals(IdMapName) )
 						break;
 				}
 			}
-			for (String signature : mappingKeys) {
-				IdMapPrefValue.append(IdMapName+IDMAP_FIELDS_SEPARATOR+signature+IDMAP_FIELDS_SEPARATOR+idmapHM.get(signature)+IDMAP_FIELDS_SEPARATOR+extension+IDMAP_SEPARATOR);
+			for (String signature : mappingKeys) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				IdMapPrefValue.append(IdMapName+IDMAP_FIELDS_SEPARATOR+signature+IDMAP_FIELDS_SEPARATOR+idmapHM.get(signature)+IDMAP_FIELDS_SEPARATOR+extension+IDMAP_SEPARATOR); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 		fPrefStore.setValue(IDMAP_PREFERENCE_NAME,IdMapPrefValue.toString());
@@ -226,12 +226,12 @@ public final class XMLPlugin extends AbstractUIPlugin {
 		//stores OrderedElements
 		if (OrderedElements != null) {
 			fOrderedElements= OrderedElements;
-			StringBuilder OrderedPrefValue= new StringBuilder();
+			StringBuilder OrderedPrefValue= new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 			Set<String> orderedKeys= fOrderedElements.keySet();
-			for (String IdMapName : orderedKeys) {
+			for (String IdMapName : orderedKeys) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ArrayList<String> idmapAL = fOrderedElements.get(IdMapName);
-				for (String signature : idmapAL) {
-					OrderedPrefValue.append(IdMapName+ORDERED_FIELDS_SEPARATOR+signature+ORDERED_FIELDS_SEPARATOR);
+				for (String signature : idmapAL) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					OrderedPrefValue.append(IdMapName+ORDERED_FIELDS_SEPARATOR+signature+ORDERED_FIELDS_SEPARATOR); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			}
 			fPrefStore.setValue(ORDERED_PREFERENCE_NAME,OrderedPrefValue.toString());
@@ -239,7 +239,7 @@ public final class XMLPlugin extends AbstractUIPlugin {
 		}
 
 		if (refresh) {
-			for (XMLStructureViewer viewer : fViewers) {
+			for (XMLStructureViewer viewer : fViewers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				viewer.updateIdMaps();
 				viewer.contentChanged();
 			}
@@ -270,23 +270,23 @@ public final class XMLPlugin extends AbstractUIPlugin {
 	 * Registers all internal Id Mapping schemes
 	 * that are found in plugin.xml files.
 	 */
-	private void registerExtensions() {
+	private void registerExtensions() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IExtensionRegistry registry= Platform.getExtensionRegistry();
 
 		// collect all Id Mappings
 		IConfigurationElement[] idmaps= registry.getConfigurationElementsFor(PLUGIN_ID, ID_MAPPING_EXTENSION_POINT);
-		fIdMapsInternal = new HashMap<>();
-		fOrderedElementsInternal= new HashMap<>();
-		for (IConfigurationElement idmap : idmaps) {
+		fIdMapsInternal = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		fOrderedElementsInternal= new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (IConfigurationElement idmap : idmaps) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			//handle IDMAP_NAME_ATTRIBUTE
 			String idmap_name= idmap.getAttribute(IDMAP_NAME_ATTRIBUTE);
 			//ignores idmap if its name equals the reserved name for unordered matching or the the name for ordered matching
 			if ( !idmap_name.equals(XMLStructureCreator.USE_UNORDERED) && !idmap_name.equals(XMLStructureCreator.USE_ORDERED) ) {
 				//handle mappings
-				HashMap<String, String> idmapHM = new HashMap<>();
+				HashMap<String, String> idmapHM = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 				fIdMapsInternal.put(idmap_name, idmapHM);
 				IConfigurationElement[] mappings = idmap.getChildren(MAPPING_ELEMENT_NAME);
-				for (IConfigurationElement mapping : mappings) {
+				for (IConfigurationElement mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					//add SIGN_SEPARATOR at the end because not contained in signatures of plugin.xml
 					//also add prefix at beginning
 					String signature= mapping.getAttribute(MAPPING_SIGNATURE_ATTRIBUTE);
@@ -297,20 +297,20 @@ public final class XMLPlugin extends AbstractUIPlugin {
 						&& attribute != null && !attribute.isEmpty()) {
 						if (idsource != null && idsource.equals(MAPPING_ID_SOURCE_BODY))
 							bodyid= (Character.valueOf(XMLStructureCreator.ID_TYPE_BODY)).toString();
-						idmapHM.put(XMLStructureCreator.ROOT_ID	+ XMLStructureCreator.SIGN_SEPARATOR
-								+ signature	+ XMLStructureCreator.SIGN_SEPARATOR, bodyid + attribute);
+						idmapHM.put(XMLStructureCreator.ROOT_ID	+ XMLStructureCreator.SIGN_SEPARATOR //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+								+ signature	+ XMLStructureCreator.SIGN_SEPARATOR, bodyid + attribute); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 				}
 				//handles ordered entries
 				IConfigurationElement[] orderedEntries= idmap.getChildren(ORDERED_ELEMENT_NAME);
 				if (orderedEntries.length > 0) {
-					ArrayList<String> orderedAL = new ArrayList<>();
-					for (IConfigurationElement ordered : orderedEntries) {
+					ArrayList<String> orderedAL = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+					for (IConfigurationElement ordered : orderedEntries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						//add SIGN_SEPARATOR at the end because not contained in signatures of plugin.xml
 						//also add prefix at beginning
 						String signature= ordered.getAttribute(ORDERED_SIGNATURE_ATTRIBUTE);
 						if (signature != null && !signature.isEmpty())
-							orderedAL.add(XMLStructureCreator.ROOT_ID + XMLStructureCreator.SIGN_SEPARATOR + signature + XMLStructureCreator.SIGN_SEPARATOR);
+							orderedAL.add(XMLStructureCreator.ROOT_ID + XMLStructureCreator.SIGN_SEPARATOR + signature + XMLStructureCreator.SIGN_SEPARATOR); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 					if (orderedAL.size() > 0)
 						fOrderedElementsInternal.put(idmap_name, orderedAL);
@@ -341,7 +341,7 @@ public final class XMLPlugin extends AbstractUIPlugin {
 		IWorkbenchWindow window= PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		if (window == null) {
 			final WindowRef windowRef= new WindowRef();
-			Display.getDefault().syncExec(() -> setActiveWorkbenchWindow(windowRef));
+			Display.getDefault().syncExec(() -> setActiveWorkbenchWindow(windowRef)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			return windowRef.window;
 		}
 		return window;
@@ -351,13 +351,13 @@ public final class XMLPlugin extends AbstractUIPlugin {
 		public IWorkbenchWindow window;
 	}
 
-	private static void setActiveWorkbenchWindow(WindowRef windowRef) {
+	private static void setActiveWorkbenchWindow(WindowRef windowRef) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		windowRef.window= null;
 		Display display= Display.getCurrent();
 		if (display == null)
 			return;
 		Control shell= display.getActiveShell();
-		while (shell != null) {
+		while (shell != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object data= shell.getData();
 			if (data instanceof IWorkbenchWindow wWindow) {
 				windowRef.window = wWindow;
@@ -366,7 +366,7 @@ public final class XMLPlugin extends AbstractUIPlugin {
 			shell= shell.getParent();
 		}
 		Shell shells[]= display.getShells();
-		for (Shell s : shells) {
+		for (Shell s : shells) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object data = s.getData();
 			if (data instanceof IWorkbenchWindow wWindow) {
 				windowRef.window = wWindow;

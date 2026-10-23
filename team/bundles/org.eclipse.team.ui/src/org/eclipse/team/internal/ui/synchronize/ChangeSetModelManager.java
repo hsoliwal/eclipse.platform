@@ -27,9 +27,9 @@ import org.eclipse.team.ui.synchronize.SynchronizePageActionGroup;
 /**
  * Manager for hierarchical models
  */
-public class ChangeSetModelManager extends HierarchicalModelManager implements IPropertyChangeListener {
+public class ChangeSetModelManager extends HierarchicalModelManager implements IPropertyChangeListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 
-	private static final String P_COMMIT_SET_ENABLED = TeamUIPlugin.ID + ".P_COMMIT_SET_ENABLED"; //$NON-NLS-1$
+	private static final String P_COMMIT_SET_ENABLED = TeamUIPlugin.ID + ".P_COMMIT_SET_ENABLED"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	public static final String CHANGE_SET_GROUP = "ChangeSet"; //$NON-NLS-1$
 
@@ -70,14 +70,14 @@ public class ChangeSetModelManager extends HierarchicalModelManager implements I
 
 	public ChangeSetModelManager(ISynchronizePageConfiguration configuration) {
 		super(configuration);
-		configuration.addPropertyChangeListener(this);
+		configuration.addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		configuration.addMenuGroup(ISynchronizePageConfiguration.P_TOOLBAR_MENU, CHANGE_SET_GROUP);
 		configuration.addActionContribution(new CommitSetActionContribution());
 		ChangeSetCapability changeSetCapability = getChangeSetCapability(configuration);
 		if (changeSetCapability != null && changeSetCapability.supportsActiveChangeSets()) {
 			configuration.addLabelDecorator(new ChangeSetLabelDecorator(configuration));
 		}
-		configuration.addPropertyChangeListener(event -> {
+		configuration.addPropertyChangeListener(event -> { //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 			if (event.getProperty().equals(ISynchronizePageConfiguration.P_MODE)) {
 				updateEnablement();
 			}

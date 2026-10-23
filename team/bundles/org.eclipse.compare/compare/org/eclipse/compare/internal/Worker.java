@@ -30,10 +30,10 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
  * running, the running task will be canceled and the task added
  * to the end of the work queue.
  */
-public class Worker implements IRunnableWithProgress {
+public class Worker implements IRunnableWithProgress { //FLLDCIM: MARK — T09  IMPLEMENTS
 	private final WorkQueue work = new WorkQueue();
 	private boolean isWorking;
-	private final List<Throwable> errors = new ArrayList<>();
+	private final List<Throwable> errors = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private WorkProgressMonitor currentMonitor;
 	private IRunnableWithProgress currentTask;
 	private final String taskName;
@@ -62,13 +62,13 @@ public class Worker implements IRunnableWithProgress {
 		this.taskName = taskName;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run(IProgressMonitor monitor) {
 		errors.clear();
 		SubMonitor progress = SubMonitor.convert(monitor, getTaskName(), 100);
 		try {
 			isWorking = true;
-			while (!work.isEmpty()) {
+			while (!work.isEmpty()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					performNextTask(progress);
 					progress.checkCanceled();

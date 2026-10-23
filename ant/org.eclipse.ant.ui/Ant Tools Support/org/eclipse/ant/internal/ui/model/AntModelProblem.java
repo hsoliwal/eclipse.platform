@@ -86,13 +86,13 @@ public class AntModelProblem extends Region implements IProblem {
 
 	private String getEscaped(String s) {
 		StringBuffer result = new StringBuffer(s.length() + 10);
-		for (int i = 0; i < s.length(); ++i) {
+		for (int i = 0; i < s.length(); ++i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			appendEscapedChar(result, s.charAt(i));
 		}
 		return result.toString();
 	}
 
-	private String getReplacement(char c) {
+	private String getReplacement(char c) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Encode special characters into the equivalent character references.
 		// Ensures that error messages that include special characters do not get
 		// incorrectly represented as HTML in the text hover (bug 56258)

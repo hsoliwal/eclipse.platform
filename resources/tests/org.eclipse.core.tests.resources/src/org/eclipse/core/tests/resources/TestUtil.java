@@ -42,7 +42,7 @@ public class TestUtil {
 		boolean timedOut = waitForJobs(owner, 5, 5000);
 		if (timedOut) {
 			// We don't expect any extra jobs run during the test: try to cancel them
-			log(IStatus.INFO, owner, "Trying to cancel running jobs: " + getRunningOrWaitingJobs(null));
+			log(IStatus.INFO, owner, "Trying to cancel running jobs: " + getRunningOrWaitingJobs(null)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			getRunningOrWaitingJobs(null).forEach(Job::cancel);
 			waitForJobs(owner, 5, 1000);
 		}
@@ -52,7 +52,7 @@ public class TestUtil {
 	}
 
 	public static void log(int severity, String owner, String message, Throwable... optionalError) {
-		message = "[" + owner + "] " + message;
+		message = "[" + owner + "] " + message; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		Throwable error = null;
 		if (optionalError != null && optionalError.length > 0) {
 			error = optionalError[0];
@@ -75,7 +75,7 @@ public class TestUtil {
 		long timeoutInNs = timeoutInMilliseconds * 1_000_000L;
 		long startTimeInNs = System.nanoTime();
 		long durationInNs = 0;
-		while (!condition.get() && durationInNs < timeoutInNs) {
+		while (!condition.get() && durationInNs < timeoutInNs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Thread.yield();
 			durationInNs = System.nanoTime() - startTimeInNs;
 		}
@@ -98,13 +98,13 @@ public class TestUtil {
 		return waitForJobs(owner, minTimeMs, maxTimeMs, null);
 	}
 
-	static boolean ignoreJob(Job job) {
+	static boolean ignoreJob(Job job) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (job instanceof StringPoolJob) {
 			// reschedules itself
 			return true;
 		}
 		Class<?> clazz = job.getClass();
-		while ((clazz = clazz.getSuperclass()) != null) {
+		while ((clazz = clazz.getSuperclass()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (clazz.getSimpleName().equals("UIJob")) {
 				// can not be run while waiting in UI thread
 				return true;
@@ -120,7 +120,7 @@ public class TestUtil {
 
 	private static void wakeUpSleepingJobs(Object family) {
 		List<Job> sleepingJobs = getSleepingJobs(family);
-		for (Job job : sleepingJobs) {
+		for (Job job : sleepingJobs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!ignoreJob(job)) {
 				// System.out.println("wakeup job " + asString(job));
 				job.wakeUp();
@@ -146,20 +146,20 @@ public class TestUtil {
 	 * @return true if the method timed out, false if all the jobs terminated before
 	 *         the timeout
 	 */
-	public static boolean waitForJobs(String owner, long minTimeMs, long maxTimeMs, Object family) {
+	public static boolean waitForJobs(String owner, long minTimeMs, long maxTimeMs, Object family) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (maxTimeMs < minTimeMs) {
 			throw new IllegalArgumentException("Max time is smaller as min time!");
 		}
 		wakeUpSleepingJobs(family);
 		final long start = System.currentTimeMillis();
-		while (System.currentTimeMillis() - start < minTimeMs) {
+		while (System.currentTimeMillis() - start < minTimeMs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				Thread.sleep(Math.min(10, minTimeMs));
 			} catch (InterruptedException e) {
 				// Uninterruptable
 			}
 		}
-		while (!Job.getJobManager().isIdle()) {
+		while (!Job.getJobManager().isIdle()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			List<Job> jobs = getRunningOrWaitingJobs(family);
 			if (jobs.isEmpty()) {
 				// only uninteresting jobs running
@@ -184,13 +184,13 @@ public class TestUtil {
 	public static void dumpRunnigOrWaitingJobs(String owner) {
 		List<Job> jobs = getRunningOrWaitingJobs(null);
 		if (!jobs.isEmpty()) {
-			String message = "Some job is still running or waiting to run: " + asString(jobs);
+			String message = "Some job is still running or waiting to run: " + asString(jobs); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			log(IStatus.INFO, owner, message, new RuntimeException(message));
 		}
 	}
 
 	private static void dumpRunningOrWaitingJobs(String owner, List<Job> jobs, long millisGone) {
-		String message = "Some job is still running or waiting to run after " + millisGone + "ms: "
+		String message = "Some job is still running or waiting to run after " + millisGone + "ms: " //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ dumpRunningOrWaitingJobs(jobs);
 		log(IStatus.ERROR, owner, message, new RuntimeException(message));
 	}
@@ -203,13 +203,13 @@ public class TestUtil {
 	}
 
 	private static String asString(Job job) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("'").append(job.getName()).append("'/");
-		sb.append(job.getClass().getName());
-		sb.append(" state=" + job.getState());
+		StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		sb.append("'").append(job.getName()).append("'/"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(job.getClass().getName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(" state=" + job.getState()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		Thread thread = job.getThread();
 		if (thread != null) {
-			sb.append(" thread=" + thread.getName());
+			sb.append(" thread=" + thread.getName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return sb.toString();
 	}
@@ -219,9 +219,9 @@ public class TestUtil {
 	}
 
 	private static List<Job> getRunningOrWaitingJobs(Object jobFamily) {
-		List<Job> running = new ArrayList<>();
+		List<Job> running = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Job[] jobs = Job.getJobManager().find(jobFamily);
-		for (Job job : jobs) {
+		for (Job job : jobs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isRunningOrWaitingJob(job) && !ignoreJob(job)) {
 				running.add(job);
 			}
@@ -230,9 +230,9 @@ public class TestUtil {
 	}
 
 	private static List<Job> getSleepingJobs(Object family) {
-		List<Job> running = new ArrayList<>();
+		List<Job> running = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Job[] jobs = Job.getJobManager().find(family);
-		for (Job job : jobs) {
+		for (Job job : jobs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (job.getState() == Job.SLEEPING) {
 				running.add(job);
 			}

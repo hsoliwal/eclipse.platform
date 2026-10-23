@@ -88,7 +88,7 @@ public class ControlDetailPaneFactory implements IDetailPaneFactory {
 
 	@Override
 	public Set<String> getDetailPaneTypes(IStructuredSelection selection) {
-		Set<String> set = new HashSet<>();
+		Set<String> set = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		if (selection.size() == 1) {
 			Object element = selection.getFirstElement();
 			if (element instanceof TempoControl) {

@@ -44,7 +44,7 @@ class OnCloseWritingFileStore extends FileStore {
 		return new ByteArrayOutputStream() {
 			@Override
 			public void close() throws IOException {
-				Files.write(filePath, this.toByteArray());
+				Files.write(filePath, this.toByteArray()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			}
 		};
 	}
@@ -56,7 +56,7 @@ class OnCloseWritingFileStore extends FileStore {
 			try {
 				Files.setLastModifiedTime(filePath, lastModified);
 			} catch (IOException e) {
-				if (!Files.exists(filePath, LinkOption.NOFOLLOW_LINKS)) {
+				if (!Files.exists(filePath, LinkOption.NOFOLLOW_LINKS)) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					throw new CoreException(new Status(IStatus.ERROR, "CopyBugFileStore", "File does not exist", e));
 				}
 				throw new CoreException(new Status(IStatus.ERROR, "CopyBugFileStore", "Failed to set attribute", e));
@@ -68,9 +68,9 @@ class OnCloseWritingFileStore extends FileStore {
 	public IFileInfo fetchInfo(int options, IProgressMonitor monitor) throws CoreException {
 		FileInfo info = new FileInfo();
 		try {
-			info.setLastModified(Files.getLastModifiedTime(filePath).toMillis());
-			info.setLength(Files.size(filePath));
-			info.setExists(Files.exists(filePath));
+			info.setLastModified(Files.getLastModifiedTime(filePath).toMillis()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			info.setLength(Files.size(filePath)); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			info.setExists(Files.exists(filePath)); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		} catch (IOException e) {
 			throw new CoreException(new Status(IStatus.ERROR, "TestFileStore", "Failed to fetch file info", e));
 		}

@@ -85,7 +85,7 @@ public class BuildContextTest {
 		IBuildConfiguration[] configs = project.getBuildConfigs();
 		IBuildConfiguration active = project.getActiveBuildConfig();
 		IProjectDescription desc = project.getDescription();
-		for (IBuildConfiguration config : configs) {
+		for (IBuildConfiguration config : configs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!config.equals(active)) {
 				desc.setActiveBuildConfig(config.getName());
 				project.setDescription(desc, createTestMonitor());
@@ -93,7 +93,7 @@ public class BuildContextTest {
 			}
 		}
 		throw new IllegalStateException(
-				"No build config other than the active one could be found for project: " + project);
+				"No build config other than the active one could be found for project: " + project); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class BuildContextTest {
 	 * Setup a reference graph, then test the build context for for each project involved
 	 * in the 'build'.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBuildContext() {
 		// Create reference graph
 		IBuildConfiguration p0v0 = getWorkspace().newBuildConfig(project0.getName(), variant0);
@@ -149,7 +149,7 @@ public class BuildContextTest {
 		assertThat(context.getAllReferencingBuildConfigs()).isEmpty();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSingleProjectBuild() throws CoreException {
 		setAutoBuilding(true);
 
@@ -175,7 +175,7 @@ public class BuildContextTest {
 	/**
 	 * Tests building a single project with and without references
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWorkspaceBuildProject() throws CoreException {
 		setupSimpleReferences();
 		ContextBuilder.clearStats();
@@ -211,7 +211,7 @@ public class BuildContextTest {
 	/**
 	 * Builds a couple configurations, including references
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWorkspaceBuildProjects() throws CoreException {
 		setupSimpleReferences();
 		ContextBuilder.clearStats();
@@ -235,7 +235,7 @@ public class BuildContextTest {
 	/**
 	 * Sets references to the 'active' project build configuration
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testReferenceActiveVariant() throws CoreException {
 		setReferences(project0.getActiveBuildConfig(), new IBuildConfiguration[] {getWorkspace().newBuildConfig(project1.getName(), null)});
 		setReferences(project1.getActiveBuildConfig(), new IBuildConfiguration[] {getWorkspace().newBuildConfig(project2.getName(), null)});
@@ -264,7 +264,7 @@ public class BuildContextTest {
 	 * Attempts to build a project that references the active variant of another project,
 	 * and the same variant directly. This should only result in one referenced variant being built.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testReferenceVariantTwice() throws CoreException {
 		IBuildConfiguration ref1 = new BuildConfiguration(project1, null);
 		IBuildConfiguration ref2 = new BuildConfiguration(project1, project1.getActiveBuildConfig().getName());

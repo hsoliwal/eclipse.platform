@@ -43,7 +43,7 @@ public class ScopeBuildingTests {
 	private static final RuntimeException PROMPT_EXCEPTION = new RuntimeException();
 	protected static final String TEST_MODEL_PROVIDER_ID = "id1";
 
-	private class TestResourceMappingOperation extends ModelOperation {
+	private class TestResourceMappingOperation extends ModelOperation { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 		protected TestResourceMappingOperation(ResourceMapping[] selectedMappings, final ResourceMapping[] additionalMappings) {
 			super(null, new SynchronizationScopeManager("", selectedMappings, ResourceMappingContext.LOCAL_CONTEXT, false) {
@@ -52,7 +52,7 @@ public class ScopeBuildingTests {
 						IProgressMonitor monitor) throws CoreException {
 					super.initialize(monitor);
 					// Add the additional test mappings to the scope
-					for (ResourceMapping mapping : additionalMappings) {
+					for (ResourceMapping mapping : additionalMappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						ResourceTraversal[] traversals = mapping.getTraversals(getContext(), monitor);
 						((ResourceMappingScope)getScope()).addMapping(mapping, traversals);
 						// TODO: The additional mappings and additional resources boolean will not be set
@@ -79,7 +79,7 @@ public class ScopeBuildingTests {
 		assertSame(PROMPT_EXCEPTION, exception, "expected prompt did not occur");
 	}
 
-	private ResourceMapping getMapping(final IProject project, final IResource[] resources, final int depth) {
+	private ResourceMapping getMapping(final IProject project, final IResource[] resources, final int depth) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		return new ResourceMapping() {
 
 			@Override

@@ -75,9 +75,9 @@ import org.xml.sax.SAXException;
  */
 public class BuildFileCreator {
 	protected static final String IMPORT_BUILDFILE_PROCESSING_TARGET = "eclipse.ant.import"; //$NON-NLS-1$
-	protected static final String WARNING = " WARNING: Eclipse auto-generated file." + ExportUtil.NEWLINE + //$NON-NLS-1$
+	protected static final String WARNING = " WARNING: Eclipse auto-generated file." + ExportUtil.NEWLINE + //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			"              Any modifications will be overwritten."; //$NON-NLS-1$
-	protected static final String NOTE = "              To include a user specific buildfile here, " + //$NON-NLS-1$
+	protected static final String NOTE = "              To include a user specific buildfile here, " + //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			"simply create one in the same" + ExportUtil.NEWLINE + //$NON-NLS-1$
 			"              directory with the processing instruction " + //$NON-NLS-1$
 			"<?" + IMPORT_BUILDFILE_PROCESSING_TARGET + "?>" + ExportUtil.NEWLINE + //$NON-NLS-1$ //$NON-NLS-2$
@@ -111,7 +111,7 @@ public class BuildFileCreator {
 		this.project = project;
 		this.projectName = project.getProject().getName();
 		this.projectRoot = ExportUtil.getProjectRoot(project);
-		this.variable2valueMap = new LinkedHashMap<>();
+		this.variable2valueMap = new LinkedHashMap<>(); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW
 		@SuppressWarnings("restriction")
 		DocumentBuilder db = org.eclipse.core.internal.runtime.XmlProcessorFactory.createDocumentBuilderWithErrorOnDOCTYPE();
 		this.doc = db.newDocument();
@@ -130,7 +130,7 @@ public class BuildFileCreator {
 	 *             thrown when user cancels task
 	 */
 	public static List<String> createBuildFiles(Set<IJavaProject> projects, Shell shell, IProgressMonitor pm) throws JavaModelException, ParserConfigurationException, TransformerConfigurationException, TransformerException, IOException, CoreException, InterruptedException {
-		List<String> res = new ArrayList<>();
+		List<String> res = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		try {
 			createBuildFilesLoop(projects, shell, pm, res);
 		}
@@ -142,11 +142,11 @@ public class BuildFileCreator {
 		return res;
 	}
 
-	private static void createBuildFilesLoop(Set<IJavaProject> projects, Shell shell, IProgressMonitor pm, List<String> res) throws CoreException, ParserConfigurationException, JavaModelException, TransformerConfigurationException, TransformerFactoryConfigurationError, TransformerException, UnsupportedEncodingException {
+	private static void createBuildFilesLoop(Set<IJavaProject> projects, Shell shell, IProgressMonitor pm, List<String> res) throws CoreException, ParserConfigurationException, JavaModelException, TransformerConfigurationException, TransformerFactoryConfigurationError, TransformerException, UnsupportedEncodingException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// determine files to create/change
-		List<IFile> files = new ArrayList<>();
-		for (IJavaProject currentProject : projects) {
+		List<IFile> files = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IJavaProject currentProject : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IFile file = currentProject.getProject().getFile(BuildFileCreator.BUILD_XML);
 			files.add(file);
 		}
@@ -155,7 +155,7 @@ public class BuildFileCreator {
 		Set<IFile> confirmedFiles = ExportUtil.validateEdit(shell, files);
 		SubMonitor localmonitor = SubMonitor.convert(pm, DataTransferMessages.AntBuildfileExportPage_0, confirmedFiles.size());
 		try {
-			for (IJavaProject currentProject : projects) {
+			for (IJavaProject currentProject : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IFile file = currentProject.getProject().getFile(BuildFileCreator.BUILD_XML);
 				if (!confirmedFiles.contains(file)) {
 					continue;
@@ -205,13 +205,13 @@ public class BuildFileCreator {
 	/**
 	 * Add property tag.
 	 */
-	public void createProperty() {
+	public void createProperty() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// read debug options from Eclipse settings
 		boolean source = JavaCore.GENERATE.equals(project.getOption(JavaCore.COMPILER_SOURCE_FILE_ATTR, true));
 		boolean lines = JavaCore.GENERATE.equals(project.getOption(JavaCore.COMPILER_LINE_NUMBER_ATTR, true));
 		boolean vars = JavaCore.GENERATE.equals(project.getOption(JavaCore.COMPILER_LOCAL_VARIABLE_ATTR, true));
 
-		List<String> debuglevel = new ArrayList<>();
+		List<String> debuglevel = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (source) {
 			debuglevel.add("source"); //$NON-NLS-1$
 		}
@@ -240,7 +240,7 @@ public class BuildFileCreator {
 		// <property name="x" value="y"/>
 		boolean first = true;
 		Node node = root.getFirstChild();
-		for (String key : variable2valueMap.keySet()) {
+		for (String key : variable2valueMap.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String value = variable2valueMap.get(key);
 			Element prop = doc.createElement("property"); //$NON-NLS-1$
 			prop.setAttribute(IAntCoreConstants.NAME, key);
@@ -271,23 +271,23 @@ public class BuildFileCreator {
 		doc.appendChild(root);
 
 		// <!-- warning -->
-		Comment comment = doc.createComment(WARNING + ExportUtil.NEWLINE + NOTE);
+		Comment comment = doc.createComment(WARNING + ExportUtil.NEWLINE + NOTE); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		doc.insertBefore(comment, root);
 	}
 
 	/**
 	 * Find buildfiles in projectroot directory and automatically import them.
 	 */
-	public void createImports() {
+	public void createImports() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// <import file="javadoc.xml"/>
 		File dir = new File(projectRoot);
 		FilenameFilter filter = (unused, name) -> name.endsWith(".xml"); //$NON-NLS-1$
 
-		File[] files = dir.listFiles(filter);
+		File[] files = dir.listFiles(filter); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		if (files == null) {
 			return;
 		}
-		for (File file : files) {
+		for (File file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// import file if it is an XML document with marker comment as first
 			// child
 			Document docCandidate;
@@ -296,7 +296,7 @@ public class BuildFileCreator {
 				Document doc1 = org.eclipse.core.internal.runtime.XmlProcessorFactory.parseWithErrorOnDOCTYPE(file);
 				docCandidate = doc1;
 				NodeList nodes = docCandidate.getChildNodes();
-				for (int j = 0; j < nodes.getLength(); j++) {
+				for (int j = 0; j < nodes.getLength(); j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Node node = nodes.item(j);
 					if (node instanceof ProcessingInstruction
 							&& IMPORT_BUILDFILE_PROCESSING_TARGET.equals(((ProcessingInstruction) node).getTarget().trim())) {
@@ -308,13 +308,13 @@ public class BuildFileCreator {
 				}
 			}
 			catch (ParserConfigurationException e) {
-				AntUIPlugin.log("invalid XML file not imported: " + file.getAbsolutePath(), e); //$NON-NLS-1$
+				AntUIPlugin.log("invalid XML file not imported: " + file.getAbsolutePath(), e); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			catch (SAXException e) {
-				AntUIPlugin.log("invalid XML file not imported: " + file.getAbsolutePath(), e); //$NON-NLS-1$
+				AntUIPlugin.log("invalid XML file not imported: " + file.getAbsolutePath(), e); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			catch (IOException e) {
-				AntUIPlugin.log("invalid XML file not imported: " + file.getAbsolutePath(), e); //$NON-NLS-1$
+				AntUIPlugin.log("invalid XML file not imported: " + file.getAbsolutePath(), e); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 	}
@@ -332,9 +332,9 @@ public class BuildFileCreator {
 	 * @param pathId
 	 *            specify id, if null project name is used
 	 */
-	public void createClasspaths(String pathId, IJavaProject currentProject, EclipseClasspath classpath) throws JavaModelException {
+	public void createClasspaths(String pathId, IJavaProject currentProject, EclipseClasspath classpath) throws JavaModelException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (currentProject == null) {
-			AntUIPlugin.log("project is not loaded in workspace: " + pathId, null); //$NON-NLS-1$
+			AntUIPlugin.log("project is not loaded in workspace: " + pathId, null); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			return;
 		}
 		// <path id="hello.classpath">
@@ -345,20 +345,20 @@ public class BuildFileCreator {
 		Element element = doc.createElement("path"); //$NON-NLS-1$
 		String pathid = pathId;
 		if (pathid == null) {
-			pathid = currentProject.getProject().getName() + ".classpath"; //$NON-NLS-1$
+			pathid = currentProject.getProject().getName() + ".classpath"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		element.setAttribute("id", pathid); //$NON-NLS-1$
 		visited.add(pathid);
 		variable2valueMap.putAll(classpath.variable2valueMap);
-		for (String entry : ExportUtil.removeDuplicates(classpath.rawClassPathEntries)) {
+		for (String entry : ExportUtil.removeDuplicates(classpath.rawClassPathEntries)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (EclipseClasspath.isProjectReference(entry)) {
 				Element pathElement = doc.createElement("path"); //$NON-NLS-1$
 				IJavaProject referencedProject = EclipseClasspath.resolveProjectReference(entry);
 				if (referencedProject == null) {
-					AntUIPlugin.log("project is not loaded in workspace: " + pathid, null); //$NON-NLS-1$
+					AntUIPlugin.log("project is not loaded in workspace: " + pathid, null); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					continue;
 				}
-				String refPathId = referencedProject.getProject().getName() + ".classpath"; //$NON-NLS-1$
+				String refPathId = referencedProject.getProject().getName() + ".classpath"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				pathElement.setAttribute("refid", refPathId); //$NON-NLS-1$
 				element.appendChild(pathElement);
 				if (visited.add(refPathId)) {
@@ -383,11 +383,11 @@ public class BuildFileCreator {
 					String currentProjectRoot = ExportUtil.getProjectRoot(currentProject);
 					entry = ExportUtil.getRelativePath(entry, currentProjectRoot);
 					if (!IPath.fromOSString(entry).isAbsolute()) {
-						prefix = "${" + currentProject.getProject().getName() + ".location}/"; //$NON-NLS-1$ //$NON-NLS-2$
+						prefix = "${" + currentProject.getProject().getName() + ".location}/"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 				}
 				Element pathElement = doc.createElement("pathelement"); //$NON-NLS-1$
-				String path = ExportUtil.getRelativePath(prefix + entry, projectRoot);
+				String path = ExportUtil.getRelativePath(prefix + entry, projectRoot); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				pathElement.setAttribute(IAntModelConstants.ATTR_LOCATION, path);
 				element.appendChild(pathElement);
 			}
@@ -395,7 +395,7 @@ public class BuildFileCreator {
 		addToClasspathBlock(element);
 	}
 
-	private void addUserLibrary(Element element, String entry) {
+	private void addUserLibrary(Element element, String entry) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// add classpath reference
 		Element pathElement = doc.createElement("path"); //$NON-NLS-1$
 		IClasspathContainer container = EclipseClasspath.resolveUserLibraryReference(entry);
@@ -407,21 +407,21 @@ public class BuildFileCreator {
 		if (visited.add(entry)) {
 			Element userElement = doc.createElement("path"); //$NON-NLS-1$
 			userElement.setAttribute("id", name); //$NON-NLS-1$
-			for (IClasspathEntry cpentry : container.getClasspathEntries()) {
+			for (IClasspathEntry cpentry : container.getClasspathEntries()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String jarFile = cpentry.getPath().toString();
 				// use ECLIPSE_HOME variable for library jars
 				if (EclipseClasspath.isLibraryReference(entry)) {
 					IPath home = JavaCore.getClasspathVariable("ECLIPSE_HOME"); //$NON-NLS-1$
 					if (home != null && home.isPrefixOf(cpentry.getPath())) {
 						variable2valueMap.put("ECLIPSE_HOME", home.toString()); //$NON-NLS-1$
-						jarFile = "${ECLIPSE_HOME}" + jarFile.substring(home.toString().length()); //$NON-NLS-1$
-					} else if (!new File(jarFile).exists() && jarFile.startsWith('/' + projectName)
-							&& new File(projectRoot, jarFile.substring(('/' + projectName).length())).exists()) {
+						jarFile = "${ECLIPSE_HOME}" + jarFile.substring(home.toString().length()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+					} else if (!new File(jarFile).exists() && jarFile.startsWith('/' + projectName) //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO CALL
+							&& new File(projectRoot, jarFile.substring(('/' + projectName).length())).exists()) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						// workaround that additional jars are stored with
 						// leading project root in container object, although
 						// they are relative and indeed correctly stored in
 						// build.properties (jars.extra.classpath)
-						jarFile = jarFile.substring(('/' + projectName).length() + 1);
+						jarFile = jarFile.substring(('/' + projectName).length() + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 				}
 				jarFile = ExportUtil.getRelativePath(jarFile, projectRoot);
@@ -466,8 +466,8 @@ public class BuildFileCreator {
 	 * Add properties of sub-projects to internal properties map.
 	 */
 	public void addSubProperties(IJavaProject subproject, EclipseClasspath classpath) throws JavaModelException {
-		for (IJavaProject subProject : ExportUtil.getClasspathProjectsRecursive(subproject)) {
-			String location = subProject.getProject().getName() + ".location"; //$NON-NLS-1$
+		for (IJavaProject subProject : ExportUtil.getClasspathProjectsRecursive(subproject)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			String location = subProject.getProject().getName() + ".location"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			// add subproject properties to variable2valueMap
 			String subProjectRoot = ExportUtil.getProjectRoot(subProject);
 			String relativePath = ExportUtil.getRelativePath(subProjectRoot, projectRoot);
@@ -490,7 +490,7 @@ public class BuildFileCreator {
 		// </target>
 		Element element = doc.createElement("target"); //$NON-NLS-1$
 		element.setAttribute(IAntCoreConstants.NAME, "init"); //$NON-NLS-1$
-		for (String classDir : ExportUtil.removeDuplicates(classDirs)) {
+		for (String classDir : ExportUtil.removeDuplicates(classDirs)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!classDir.equals(".") && !EclipseClasspath.isReference(classDir)) { //$NON-NLS-1$
 				Element pathElement = doc.createElement("mkdir"); //$NON-NLS-1$
 				pathElement.setAttribute(IAntCoreConstants.DIR, classDir);
@@ -501,31 +501,31 @@ public class BuildFileCreator {
 		createCopyResources(srcDirs, classDirs, element, inclusionLists, exclusionLists);
 	}
 
-	private void createCopyResources(List<String> srcDirs, List<String> classDirs, Element element, List<List<String>> inclusionLists, List<List<String>> exclusionLists) {
+	private void createCopyResources(List<String> srcDirs, List<String> classDirs, Element element, List<List<String>> inclusionLists, List<List<String>> exclusionLists) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Check filter for copying resources
 		String filter = project.getOption(JavaCore.CORE_JAVA_BUILD_RESOURCE_COPY_FILTER, true);
 		StringTokenizer tokenizer = new StringTokenizer(filter, ","); //$NON-NLS-1$
-		ArrayList<String> filters = new ArrayList<>();
-		while (tokenizer.hasMoreTokens()) {
+		ArrayList<String> filters = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		while (tokenizer.hasMoreTokens()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			filters.add(tokenizer.nextToken());
 		}
 		filters.add("*.java"); //$NON-NLS-1$
 
 		// prefix filters with wildcard
-		for (int i = 0; i < filters.size(); i++) {
+		for (int i = 0; i < filters.size(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String item = filters.get(i).trim();
 			if (item.equals("*")) //$NON-NLS-1$
 			{
 				// everything is excluded from copying
 				return;
 			}
-			filters.set(i, "**/" + item); //$NON-NLS-1$
+			filters.set(i, "**/" + item); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		// <copy todir="classes" includeemptydirs="false">
 		// <fileset dir="src" excludes="**/*.java"/>
 		// </copy>
-		for (int i = 0; i < srcDirs.size(); i++) {
+		for (int i = 0; i < srcDirs.size(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String srcDir = srcDirs.get(i);
 			String classDir = classDirs.get(i);
 			if (!EclipseClasspath.isReference(classDir)) {
@@ -538,18 +538,18 @@ public class BuildFileCreator {
 				List<String> inclusions = inclusionLists.get(i);
 				List<String> exclusions = exclusionLists.get(i);
 
-				for (String inclusion : inclusions) {
+				for (String inclusion : inclusions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Element includeElement = doc.createElement("include"); //$NON-NLS-1$
 					includeElement.setAttribute(IAntCoreConstants.NAME, inclusion);
 					filesetElement.appendChild(includeElement);
 				}
-				for (String exclusion : filters) {
+				for (String exclusion : filters) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Element excludeElement = doc.createElement("exclude"); //$NON-NLS-1$
 					excludeElement.setAttribute(IAntCoreConstants.NAME, exclusion);
 					filesetElement.appendChild(excludeElement);
 				}
 
-				for (String exclusion : exclusions) {
+				for (String exclusion : exclusions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Element excludeElement = doc.createElement("exclude"); //$NON-NLS-1$
 					excludeElement.setAttribute(IAntCoreConstants.NAME, exclusion);
 					filesetElement.appendChild(excludeElement);
@@ -567,13 +567,13 @@ public class BuildFileCreator {
 	 * @param classDirs
 	 *            classes directories to delete
 	 */
-	public void createClean(List<String> classDirs) {
+	public void createClean(List<String> classDirs) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// <target name="clean">
 		// <delete dir="classes"/>
 		// </target>
 		Element element = doc.createElement("target"); //$NON-NLS-1$
 		element.setAttribute(IAntCoreConstants.NAME, "clean"); //$NON-NLS-1$
-		for (String classDir : ExportUtil.removeDuplicates(classDirs)) {
+		for (String classDir : ExportUtil.removeDuplicates(classDirs)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!classDir.equals(".") && //$NON-NLS-1$
 					!EclipseClasspath.isReference(classDir)) {
 				Element deleteElement = doc.createElement("delete"); //$NON-NLS-1$
@@ -609,10 +609,10 @@ public class BuildFileCreator {
 		Element element = doc.createElement("target"); //$NON-NLS-1$
 		element.setAttribute(IAntCoreConstants.NAME, "cleanall"); //$NON-NLS-1$
 		element.setAttribute("depends", "clean"); //$NON-NLS-1$ //$NON-NLS-2$
-		for (IJavaProject subProject : ExportUtil.getClasspathProjectsRecursive(project)) {
+		for (IJavaProject subProject : ExportUtil.getClasspathProjectsRecursive(project)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Element antElement = doc.createElement("ant"); //$NON-NLS-1$
 			antElement.setAttribute("antfile", BUILD_XML); //$NON-NLS-1$
-			antElement.setAttribute(IAntCoreConstants.DIR, "${" + subProject.getProject().getName() + ".location}"); //$NON-NLS-1$ //$NON-NLS-2$
+			antElement.setAttribute(IAntCoreConstants.DIR, "${" + subProject.getProject().getName() + ".location}"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			antElement.setAttribute("target", "clean"); //$NON-NLS-1$ //$NON-NLS-2$
 			antElement.setAttribute("inheritAll", "false"); //$NON-NLS-1$ //$NON-NLS-2$
 			element.appendChild(antElement);
@@ -632,7 +632,7 @@ public class BuildFileCreator {
 	 * @param exclusionLists
 	 *            exclusion filters of mainproject
 	 */
-	public void createBuild(List<String> srcDirs, List<String> classDirs, List<List<String>> inclusionLists, List<List<String>> exclusionLists) throws JavaModelException {
+	public void createBuild(List<String> srcDirs, List<String> classDirs, List<List<String>> inclusionLists, List<List<String>> exclusionLists) throws JavaModelException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// <target name="build" depends="build-subprojects,build-project"/>
 		Element element = doc.createElement("target"); //$NON-NLS-1$
 		element.setAttribute(IAntCoreConstants.NAME, "build"); //$NON-NLS-1$
@@ -644,10 +644,10 @@ public class BuildFileCreator {
 		// </target>
 		element = doc.createElement("target"); //$NON-NLS-1$
 		element.setAttribute(IAntCoreConstants.NAME, "build-subprojects"); //$NON-NLS-1$
-		for (IJavaProject subProject : ExportUtil.getClasspathProjectsRecursive(project)) {
+		for (IJavaProject subProject : ExportUtil.getClasspathProjectsRecursive(project)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Element antElement = doc.createElement("ant"); //$NON-NLS-1$
 			antElement.setAttribute("antfile", BUILD_XML); //$NON-NLS-1$
-			antElement.setAttribute(IAntCoreConstants.DIR, "${" + subProject.getProject().getName() + ".location}"); //$NON-NLS-1$ //$NON-NLS-2$
+			antElement.setAttribute(IAntCoreConstants.DIR, "${" + subProject.getProject().getName() + ".location}"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			antElement.setAttribute("target", "build-project"); //$NON-NLS-1$ //$NON-NLS-2$
 			antElement.setAttribute("inheritAll", "false"); //$NON-NLS-1$ //$NON-NLS-2$
 			if (CREATE_ECLIPSE_COMPILE_TARGET) {
@@ -666,10 +666,10 @@ public class BuildFileCreator {
 		// Side effect: Eclipse inclusion and exclusion filters apply to the specified source directory.
 		// Ant inclusion and exclusion filters apply to all source directories.
 		// This may lead to unexpected behavior.
-		HashMap<String, List<String>> class2sources = new HashMap<>();
-		HashMap<String, List<String>> class2includes = new HashMap<>();
-		HashMap<String, List<String>> class2excludes = new HashMap<>();
-		for (int i = 0; i < srcDirs.size(); i++) {
+		HashMap<String, List<String>> class2sources = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		HashMap<String, List<String>> class2includes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		HashMap<String, List<String>> class2excludes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (int i = 0; i < srcDirs.size(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String srcDir = srcDirs.get(i);
 			if (!EclipseClasspath.isReference(srcDir)) {
 				String classDir = classDirs.get(i);
@@ -679,9 +679,9 @@ public class BuildFileCreator {
 				List<String> list2 = class2includes.get(classDir);
 				List<String> list3 = class2excludes.get(classDir);
 				if (list == null) {
-					list = new ArrayList<>();
-					list2 = new ArrayList<>();
-					list3 = new ArrayList<>();
+					list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+					list2 = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+					list3 = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 					class2sources.put(classDir, list);
 					class2includes.put(classDir, list2);
 					class2excludes.put(classDir, list3);
@@ -707,7 +707,7 @@ public class BuildFileCreator {
 		Element echoElement = doc.createElement("echo"); //$NON-NLS-1$
 		echoElement.setAttribute("message", "${ant.project.name}: ${ant.file}"); //$NON-NLS-1$ //$NON-NLS-2$
 		element.appendChild(echoElement);
-		for (int i = 0; i < srcDirs.size(); i++) {
+		for (int i = 0; i < srcDirs.size(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String srcDir = srcDirs.get(i);
 			if (!EclipseClasspath.isReference(srcDir)) {
 				String classDir = classDirs.get(i);
@@ -730,23 +730,23 @@ public class BuildFileCreator {
 				javacElement.setAttribute("target", "${target}"); //$NON-NLS-1$ //$NON-NLS-2$
 
 				// Bug 313386: <javac> tag with several source directories
-				for (String s : sources) {
+				for (String s : sources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Element srcElement = doc.createElement("src"); //$NON-NLS-1$
 					srcElement.setAttribute("path", s); //$NON-NLS-1$
 					javacElement.appendChild(srcElement);
 				}
-				for (String inclusion : inclusions) {
+				for (String inclusion : inclusions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Element includeElement = doc.createElement("include"); //$NON-NLS-1$
 					includeElement.setAttribute(IAntCoreConstants.NAME, inclusion);
 					javacElement.appendChild(includeElement);
 				}
-				for (String exclusion : exclusions) {
+				for (String exclusion : exclusions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Element excludeElement = doc.createElement("exclude"); //$NON-NLS-1$
 					excludeElement.setAttribute(IAntCoreConstants.NAME, exclusion);
 					javacElement.appendChild(excludeElement);
 				}
 				Element classpathRefElement = doc.createElement("classpath"); //$NON-NLS-1$
-				classpathRefElement.setAttribute("refid", projectName + ".classpath"); //$NON-NLS-1$ //$NON-NLS-2$
+				classpathRefElement.setAttribute("refid", projectName + ".classpath"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				javacElement.appendChild(classpathRefElement);
 				element.appendChild(javacElement);
 				if (!JavaRuntime.isModularProject(project)) {
@@ -760,10 +760,10 @@ public class BuildFileCreator {
 	/**
 	 * Create target build-refprojects which compiles projects which reference current project.
 	 */
-	private void createBuildRef() throws JavaModelException {
+	private void createBuildRef() throws JavaModelException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Set<IJavaProject> refProjects = new TreeSet<>(ExportUtil.getJavaProjectComparator());
-		for (IJavaProject javaProject : project.getJavaModel().getJavaProjects()) {
-			for (IJavaProject subProject : ExportUtil.getClasspathProjects(javaProject)) {
+		for (IJavaProject javaProject : project.getJavaModel().getJavaProjects()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (IJavaProject subProject : ExportUtil.getClasspathProjects(javaProject)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (projectName.equals(subProject.getProject().getName())) {
 					refProjects.add(javaProject);
 				}
@@ -778,22 +778,22 @@ public class BuildFileCreator {
 		element.setAttribute(IAntCoreConstants.NAME, "build-refprojects"); //$NON-NLS-1$
 		element.setAttribute(IAntCoreConstants.DESCRIPTION, "Build all projects which " + //$NON-NLS-1$
 				"reference this project. Useful to propagate changes."); //$NON-NLS-1$
-		for (IJavaProject p : refProjects) {
-			String location = p.getProject().getName() + ".location"; //$NON-NLS-1$
+		for (IJavaProject p : refProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			String location = p.getProject().getName() + ".location"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			String refProjectRoot = ExportUtil.getProjectRoot(p);
 			String relativePath = ExportUtil.getRelativePath(refProjectRoot, projectRoot);
 			variable2valueMap.put(location, relativePath);
 
 			Element antElement = doc.createElement("ant"); //$NON-NLS-1$
 			antElement.setAttribute("antfile", BUILD_XML); //$NON-NLS-1$
-			antElement.setAttribute(IAntCoreConstants.DIR, "${" + p.getProject().getName() + ".location}"); //$NON-NLS-1$ //$NON-NLS-2$
+			antElement.setAttribute(IAntCoreConstants.DIR, "${" + p.getProject().getName() + ".location}"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			antElement.setAttribute("target", "clean"); //$NON-NLS-1$ //$NON-NLS-2$
 			antElement.setAttribute("inheritAll", "false"); //$NON-NLS-1$ //$NON-NLS-2$
 			element.appendChild(antElement);
 
 			antElement = doc.createElement("ant"); //$NON-NLS-1$
 			antElement.setAttribute("antfile", BUILD_XML); //$NON-NLS-1$
-			antElement.setAttribute(IAntCoreConstants.DIR, "${" + p.getProject().getName() + ".location}"); //$NON-NLS-1$ //$NON-NLS-2$
+			antElement.setAttribute(IAntCoreConstants.DIR, "${" + p.getProject().getName() + ".location}"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			antElement.setAttribute("target", "build"); //$NON-NLS-1$ //$NON-NLS-2$
 			antElement.setAttribute("inheritAll", "false"); //$NON-NLS-1$ //$NON-NLS-2$
 			if (CREATE_ECLIPSE_COMPILE_TARGET) {
@@ -811,7 +811,7 @@ public class BuildFileCreator {
 	/**
 	 * Add target to initialize Eclipse compiler. It copies required jars to ant lib directory.
 	 */
-	public void addInitEclipseCompiler() {
+	public void addInitEclipseCompiler() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// use ECLIPSE_HOME classpath variable
 		IPath value = JavaCore.getClasspathVariable("ECLIPSE_HOME"); //$NON-NLS-1$
 		if (value != null) {
@@ -872,7 +872,7 @@ public class BuildFileCreator {
 	/**
 	 * Add all bootclasspaths in srcDirs to given javacElement.
 	 */
-	private void addCompilerBootClasspath(List<String> srcDirs, Element javacElement) {
+	private void addCompilerBootClasspath(List<String> srcDirs, Element javacElement) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// <bootclasspath>
 		// <path refid="mylib.bootclasspath"/>
 		// <fileset dir="${java.home}/lib" includes="*.jar"/>
@@ -880,7 +880,7 @@ public class BuildFileCreator {
 		// </bootclasspath>
 		Element bootclasspathElement = doc.createElement("bootclasspath"); //$NON-NLS-1$
 		boolean bootclasspathUsed = false;
-		for (String entry : srcDirs) {
+		for (String entry : srcDirs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (EclipseClasspath.isUserSystemLibraryReference(entry)) {
 				Element pathElement = doc.createElement("path"); //$NON-NLS-1$
 				pathElement.setAttribute("refid", ExportUtil.removePrefixAndSuffix(entry, "${", "}")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -905,7 +905,7 @@ public class BuildFileCreator {
 	 * @throws UnsupportedEncodingException
 	 *             thrown if applet file could not get created
 	 */
-	public void createRun() throws CoreException, TransformerFactoryConfigurationError, UnsupportedEncodingException {
+	public void createRun() throws CoreException, TransformerFactoryConfigurationError, UnsupportedEncodingException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// <target name="run">
 		// <java fork="yes" classname="class" failonerror="true" dir="." newenvironment="true">
 		// <env key="a" value="b"/>
@@ -915,7 +915,7 @@ public class BuildFileCreator {
 		// </java>
 		// </target>
 		boolean junitUsed = false;
-		for (ILaunchConfiguration conf : DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurations()) {
+		for (ILaunchConfiguration conf : DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurations()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!projectName.equals(conf.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, IAntCoreConstants.EMPTY_STRING))) {
 				continue;
 			}
@@ -944,7 +944,7 @@ public class BuildFileCreator {
 	 * @param conf
 	 *            Java application launch configuration
 	 */
-	public void addJavaApplication(Map<String, String> variable2value, ILaunchConfiguration conf) throws CoreException {
+	public void addJavaApplication(Map<String, String> variable2value, ILaunchConfiguration conf) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Element element = doc.createElement("target"); //$NON-NLS-1$
 		element.setAttribute(IAntCoreConstants.NAME, conf.getName());
 		Element javaElement = doc.createElement("java"); //$NON-NLS-1$
@@ -959,7 +959,7 @@ public class BuildFileCreator {
 		if (!conf.getAttribute(ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, true)) {
 			javaElement.setAttribute("newenvironment", "true"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
-		Map<String, String> props = conf.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, new TreeMap<>());
+		Map<String, String> props = conf.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, new TreeMap<>()); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW
 		addElements(props, doc, javaElement, "env", "key", IAntCoreConstants.VALUE); //$NON-NLS-1$ //$NON-NLS-2$
 		addElement(conf.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, IAntCoreConstants.EMPTY_STRING), doc, javaElement, "jvmarg", "line", variable2value, projectRoot); //$NON-NLS-1$ //$NON-NLS-2$
 		addElement(conf.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, IAntCoreConstants.EMPTY_STRING), doc, javaElement, "arg", "line", variable2value, projectRoot); //$NON-NLS-1$ //$NON-NLS-2$
@@ -984,7 +984,7 @@ public class BuildFileCreator {
 	 * @throws UnsupportedEncodingException
 	 *             thrown if applet file could not get created
 	 */
-	public void addApplet(Map<String, String> variable2value, ILaunchConfiguration conf) throws CoreException, TransformerFactoryConfigurationError, UnsupportedEncodingException {
+	public void addApplet(Map<String, String> variable2value, ILaunchConfiguration conf) throws CoreException, TransformerFactoryConfigurationError, UnsupportedEncodingException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String dir = conf.getAttribute(IJavaLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, IAntCoreConstants.EMPTY_STRING);
 		if (dir.equals(IAntCoreConstants.EMPTY_STRING)) {
 			dir = projectRoot;
@@ -999,16 +999,16 @@ public class BuildFileCreator {
 			value = null;
 		}
 
-		String htmlfile = ((value != null) ? value : dir) + '/' + conf.getName() + ".html"; //$NON-NLS-1$
+		String htmlfile = ((value != null) ? value : dir) + '/' + conf.getName() + ".html"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		// confirm overwrite
 		if (ExportUtil.existsUserFile(htmlfile)
-				&& !MessageDialog.openConfirm(shell, DataTransferMessages.AntBuildfileExportPage_4, DataTransferMessages.AntBuildfileExportPage_4
+				&& !MessageDialog.openConfirm(shell, DataTransferMessages.AntBuildfileExportPage_4, DataTransferMessages.AntBuildfileExportPage_4 //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						+ ": " + htmlfile)) //$NON-NLS-1$
 		{
 			return;
 		}
 		IJavaProject javaProject = ExportUtil.getJavaProjectByName(projectName);
-		IFile file = javaProject.getProject().getFile(conf.getName() + ".html"); //$NON-NLS-1$
+		IFile file = javaProject.getProject().getFile(conf.getName() + ".html"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		if (ExportUtil.validateEdit(shell, file)) // checkout file if required
 		{
 			// write build file
@@ -1028,7 +1028,7 @@ public class BuildFileCreator {
 		}
 		addElement(conf.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, IAntCoreConstants.EMPTY_STRING), doc, javaElement, "jvmarg", "line", variable2value, projectRoot); //$NON-NLS-1$//$NON-NLS-2$
 		addElement(conf.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, IAntCoreConstants.EMPTY_STRING), doc, javaElement, "arg", "line", variable2value, projectRoot); //$NON-NLS-1$//$NON-NLS-2$
-		addElement(conf.getName() + ".html", doc, javaElement, "arg", "line", variable2value, projectRoot); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		addElement(conf.getName() + ".html", doc, javaElement, "arg", "line", variable2value, projectRoot); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		element.appendChild(javaElement);
 		addRuntimeClasspath(conf, javaElement);
 		addRuntimeBootClasspath(conf, javaElement);
@@ -1043,7 +1043,7 @@ public class BuildFileCreator {
 	 * @param conf
 	 *            applet configuration
 	 */
-	public void addJUnit(Map<String, String> variable2value, ILaunchConfiguration conf) throws CoreException {
+	public void addJUnit(Map<String, String> variable2value, ILaunchConfiguration conf) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// <target name="runtest">
 		// <mkdir dir="junit"/>
 		// <junit fork="yes" printsummary="withOutAndErr">
@@ -1088,14 +1088,14 @@ public class BuildFileCreator {
 			IType[] types = ExportUtil.findTestsInContainer(container);
 			Set<IType> sortedTypes = new TreeSet<>(ExportUtil.getITypeComparator());
 			sortedTypes.addAll(Arrays.asList(types));
-			for (IType type : sortedTypes) {
+			for (IType type : sortedTypes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Element testElement = doc.createElement("test"); //$NON-NLS-1$
 				testElement.setAttribute(IAntCoreConstants.NAME, type.getFullyQualifiedName());
 				testElement.setAttribute("todir", "${junit.output.dir}"); //$NON-NLS-1$ //$NON-NLS-2$
 				junitElement.appendChild(testElement);
 			}
 		}
-		Map<String, String> props = conf.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, new TreeMap<>());
+		Map<String, String> props = conf.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, new TreeMap<>()); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW
 		addElements(props, doc, junitElement, "env", "key", IAntCoreConstants.VALUE); //$NON-NLS-1$ //$NON-NLS-2$
 		addElement(conf.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, IAntCoreConstants.EMPTY_STRING), doc, junitElement, "jvmarg", "line", variable2value, projectRoot); //$NON-NLS-1$ //$NON-NLS-2$
 		element.appendChild(junitElement);
@@ -1107,7 +1107,7 @@ public class BuildFileCreator {
 	/**
 	 * Add junitreport target.
 	 */
-	public void addJUnitReport() {
+	public void addJUnitReport() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		variable2valueMap.put("junit.output.dir", JUNIT_OUTPUT_DIR); //$NON-NLS-1$
 
 		// <target name="junitreport">
@@ -1144,9 +1144,9 @@ public class BuildFileCreator {
 		Element classpathRefElement = doc.createElement("classpath"); //$NON-NLS-1$
 		EclipseClasspath runtimeClasspath = new EclipseClasspath(project, conf, false);
 		if (ExportUtil.isDefaultClasspath(project, runtimeClasspath)) {
-			classpathRefElement.setAttribute("refid", projectName + ".classpath"); //$NON-NLS-1$ //$NON-NLS-2$
+			classpathRefElement.setAttribute("refid", projectName + ".classpath"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} else {
-			String pathId = "run." + conf.getName() + ".classpath"; //$NON-NLS-1$ //$NON-NLS-2$
+			String pathId = "run." + conf.getName() + ".classpath"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			classpathRefElement.setAttribute("refid", pathId); //$NON-NLS-1$
 			createClasspaths(pathId, project, runtimeClasspath);
 		}
@@ -1156,7 +1156,7 @@ public class BuildFileCreator {
 	/**
 	 * Add bootclasspath tag to given javaElement.
 	 */
-	private void addRuntimeBootClasspath(ILaunchConfiguration conf, Element javaElement) throws CoreException {
+	private void addRuntimeBootClasspath(ILaunchConfiguration conf, Element javaElement) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// <bootclasspath>
 		// <path refid="run.hello.bootclasspath"/>
 		// </bootclasspath>
@@ -1170,7 +1170,7 @@ public class BuildFileCreator {
 			return;
 		}
 
-		String pathId = "run." + conf.getName() + ".bootclasspath"; //$NON-NLS-1$ //$NON-NLS-2$
+		String pathId = "run." + conf.getName() + ".bootclasspath"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		createClasspaths(pathId, project, bootClasspath);
 		Element bootclasspath = doc.createElement("bootclasspath"); //$NON-NLS-1$
 		Element classpathRefElement = doc.createElement("path"); //$NON-NLS-1$
@@ -1223,7 +1223,7 @@ public class BuildFileCreator {
 	 *            name of value attribute
 	 */
 	private static void addElements(Map<String, String> map, Document doc, Element element, String elementName, String keyAttributeName, String valueAttributeName) {
-		for (String key : map.keySet()) {
+		for (String key : map.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String value = map.get(key);
 			Element itemElement = doc.createElement(elementName);
 			itemElement.setAttribute(keyAttributeName, key);

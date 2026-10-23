@@ -35,7 +35,7 @@ public class LineReader {
 	 * Reads the contents from the given file and returns them as a List of
 	 * lines.
 	 */
-	public static List<String> load(IStorage file, boolean create) {
+	public static List<String> load(IStorage file, boolean create) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		List <String> lines = null;
 		if (!create && file != null && exists(file)) {
 			// read current contents
@@ -61,7 +61,7 @@ public class LineReader {
 		}
 
 		if (lines == null) {
-			lines = new ArrayList<>();
+			lines = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 		return lines;
 	}
@@ -84,23 +84,23 @@ public class LineReader {
 	/*
 	 * Concatenates all strings found in the given List.
 	 */
-	public static String createString(boolean preserveLineDelimiters, List<String> lines) {
-		StringBuilder sb = new StringBuilder();
+	public static String createString(boolean preserveLineDelimiters, List<String> lines) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		Iterator<String> iter = lines.iterator();
 		if (preserveLineDelimiters) {
-			while (iter.hasNext()) {
-				sb.append(iter.next());
+			while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				sb.append(iter.next()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		} else {
 			String lineSeparator = System.lineSeparator();
-			while (iter.hasNext()) {
+			while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String line = iter.next();
 				int l = length(line);
 				if (l < line.length()) { // line has delimiter
-					sb.append(line.substring(0, l));
-					sb.append(lineSeparator);
+					sb.append(line.substring(0, l)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					sb.append(lineSeparator); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				} else {
-					sb.append(line);
+					sb.append(line); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			}
 		}
@@ -133,7 +133,7 @@ public class LineReader {
 	private boolean fSawEOF = false;
 	private final BufferedReader fReader;
 	private boolean fIgnoreSingleCR = false;
-	private final StringBuilder fBuffer = new StringBuilder();
+	private final StringBuilder fBuffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 	public LineReader(BufferedReader reader) {
 		fReader = reader;
@@ -155,15 +155,15 @@ public class LineReader {
 	 * @exception IOException
 	 *                If an I/O error occurs
 	 */
-	String readLine() throws IOException {
+	String readLine() throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
-			while (!fSawEOF) {
+			while (!fSawEOF) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int c = readChar();
 				if (c == -1) {
 					fSawEOF = true;
 					break;
 				}
-				fBuffer.append((char) c);
+				fBuffer.append((char) c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				if (c == '\n') {
 					break;
 				}
@@ -175,13 +175,13 @@ public class LineReader {
 					}
 					if (c != '\n') {
 						if (fIgnoreSingleCR) {
-							fBuffer.append((char) c);
+							fBuffer.append((char) c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 							continue;
 						}
 						fHaveChar = true;
 						fLastChar = c;
 					} else {
-						fBuffer.append((char) c);
+						fBuffer.append((char) c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
 					break;
 				}
@@ -206,9 +206,9 @@ public class LineReader {
 
 	public List<String> readLines() {
 		try {
-			List<String> lines = new ArrayList<>();
+			List<String> lines = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			String line;
-			while ((line = readLine()) != null) {
+			while ((line = readLine()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				lines.add(line);
 			}
 			return lines;
@@ -231,7 +231,7 @@ public class LineReader {
 			return 0;
 		}
 		int length = line.length();
-		for (int i = length - 1; i >= 0; i--) {
+		for (int i = length - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c = line.charAt(i);
 			if (c == '\n' || c == '\r') {
 				length--;

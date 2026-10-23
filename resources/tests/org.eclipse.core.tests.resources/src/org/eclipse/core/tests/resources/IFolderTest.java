@@ -49,7 +49,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class IFolderTest {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testChangeCase() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IFolder before = project.getFolder("folder");
@@ -158,7 +158,7 @@ public class IFolderTest {
 		assertFalse(teamPrivate.isDerived());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFolderCreation() throws Exception {
 		// basic folder creation
 		IProject project = getWorkspace().getRoot().getProject("Project");
@@ -228,7 +228,7 @@ public class IFolderTest {
 		assertDoesNotExistInWorkspace(before);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFolderMove() throws Throwable {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IResource[] before = buildResources(project, "b/", "b/b/", "b/x", "b/b/y", "b/b/z");
@@ -267,7 +267,7 @@ public class IFolderTest {
 	/**
 	 * Tests creation and manipulation of folder names that are reserved on some platforms.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInvalidFolderNames() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -282,7 +282,7 @@ public class IFolderTest {
 			names = new String[] {};
 		}
 
-		for (String name : names) {
+		for (String name : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IFolder folder = project.getFolder(name);
 			assertFalse(folder.exists(), name);
 			assertThrows(CoreException.class, () -> folder.create(true, true, createTestMonitor()));
@@ -297,7 +297,7 @@ public class IFolderTest {
 			//these names are valid on non-windows platforms
 			names = new String[] {"prn", "nul", "con", "aux", "clock$", "com1", "com2", "com3", "com4", "com5", "com6", "com7", "com8", "com9", "lpt1", "lpt2", "lpt3", "lpt4", "lpt5", "lpt6", "lpt7", "lpt8", "lpt9", "con.foo", "LPT4.txt", "*", "?", "\"", "<", ">", "|", "hello.prn.txt", "null", "con3", "foo.aux", "lpt0", "com0", "com10", "lpt10", ",", "'", ";"};
 		}
-		for (String name : names) {
+		for (String name : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IFolder folder = project.getFolder(name);
 			assertFalse(folder.exists(), name);
 			folder.create(true, true, createTestMonitor());
@@ -316,7 +316,7 @@ public class IFolderTest {
 		assertDoesNotExistInWorkspace(source);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testReadOnlyFolderCopy() throws Exception {
 		// We need to know whether or not we can unset the read-only flag
 		// in order to perform this test.

@@ -48,7 +48,7 @@ public abstract class ModelProvider extends PlatformObject {
 	 */
 	public static IModelProviderDescriptor getModelProviderDescriptor(String id) {
 		IModelProviderDescriptor[] descs = ModelProviderManager.getDefault().getDescriptors();
-		for (IModelProviderDescriptor descriptor : descs) {
+		for (IModelProviderDescriptor descriptor : descs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (descriptor.getId().equals(id)) {
 				return descriptor;
 			}
@@ -135,8 +135,8 @@ public abstract class ModelProvider extends PlatformObject {
 	 * @exception CoreException in case of error; depends on actual implementation
 	 */
 	public ResourceMapping[] getMappings(IResource[] resources, ResourceMappingContext context, IProgressMonitor monitor) throws CoreException {
-		Set<ResourceMapping> mappings = new HashSet<>();
-		for (IResource resource : resources) {
+		Set<ResourceMapping> mappings = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceMapping[] resourceMappings = getMappings(resource, context, monitor);
 			if (resourceMappings.length > 0) {
 				mappings.addAll(Arrays.asList(resourceMappings));
@@ -162,8 +162,8 @@ public abstract class ModelProvider extends PlatformObject {
 	 * @return the set of mappings that overlap with the given resource traversals
 	 */
 	public ResourceMapping[] getMappings(ResourceTraversal[] traversals, ResourceMappingContext context, IProgressMonitor monitor) throws CoreException {
-		Set<ResourceMapping> result = new HashSet<>();
-		for (ResourceTraversal traversal : traversals) {
+		Set<ResourceMapping> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceMapping[] mappings = getMappings(traversal.getResources(), context, monitor);
 			result.addAll(Arrays.asList(mappings));
 		}
@@ -190,8 +190,8 @@ public abstract class ModelProvider extends PlatformObject {
 	 */
 	public ResourceTraversal[] getTraversals(ResourceMapping[] mappings, ResourceMappingContext context, IProgressMonitor monitor) throws CoreException {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, mappings.length);
-		List<ResourceTraversal> traversals = new ArrayList<>();
-		for (ResourceMapping mapping : mappings) {
+		List<ResourceTraversal> traversals = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Collections.addAll(traversals, mapping.getTraversals(context, subMonitor.newChild(1)));
 		}
 		return traversals.toArray(new ResourceTraversal[traversals.size()]);

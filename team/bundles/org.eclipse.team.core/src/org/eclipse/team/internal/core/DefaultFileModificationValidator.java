@@ -67,7 +67,7 @@ public class DefaultFileModificationValidator extends FileModificationValidator 
 		return getStatus(files);
 	}
 
-	protected IStatus getStatus(IFile[] files) {
+	protected IStatus getStatus(IFile[] files) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (files.length == 1) {
 			return getDefaultStatus(files[0]);
 		}
@@ -75,7 +75,7 @@ public class DefaultFileModificationValidator extends FileModificationValidator 
 		IStatus[] stati = new Status[files.length];
 		boolean allOK = true;
 
-		for (int i = 0; i < files.length; i++) {
+		for (int i = 0; i < files.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			stati[i] = getDefaultStatus(files[i]);
 			if(! stati[i].isOK()) {
 				allOK = false;
@@ -91,8 +91,8 @@ public class DefaultFileModificationValidator extends FileModificationValidator 
 	}
 
 	private IFile[] getReadOnly(IFile[] files) {
-		List<IFile> result = new ArrayList<>(files.length);
-		for (IFile file : files) {
+		List<IFile> result = new ArrayList<>(files.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (file.isReadOnly()) {
 				result.add(file);
 			}
@@ -116,7 +116,7 @@ public class DefaultFileModificationValidator extends FileModificationValidator 
 		return getDefaultStatus(file);
 	}
 
-	private FileModificationValidator loadUIValidator() {
+	private FileModificationValidator loadUIValidator() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IExtensionPoint extension = Platform.getExtensionRegistry().getExtensionPoint(TeamPlugin.ID, TeamPlugin.DEFAULT_FILE_MODIFICATION_VALIDATOR_EXTENSION);
 		if (extension != null) {
 			IExtension[] extensions =  extension.getExtensions();

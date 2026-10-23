@@ -101,7 +101,7 @@ public class SynchronizeParticipantDescriptor implements ISynchronizeParticipant
 	/**
 	 * Loads a view descriptor from the registry.
 	 */
-	private void loadFromExtension() throws CoreException {
+	private void loadFromExtension() throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String identifier = configElement.getAttribute(ATT_ID);
 		label = configElement.getAttribute(ATT_NAME);
 		className = configElement.getAttribute(ATT_CLASS);
@@ -114,7 +114,7 @@ public class SynchronizeParticipantDescriptor implements ISynchronizeParticipant
 		helpContextId = configElement.getAttribute(ATT_HELP_CONTEXT_ID);
 		// Sanity check.
 		if ((label == null) || (className == null) || (identifier == null)) {
-			throw new CoreException(new Status(IStatus.ERROR, configElement.getNamespaceIdentifier(), 0, "Invalid extension (missing label or class name): " + identifier, //$NON-NLS-1$
+			throw new CoreException(new Status(IStatus.ERROR, configElement.getNamespaceIdentifier(), 0, "Invalid extension (missing label or class name): " + identifier, //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					null));
 		}
 		id = identifier;
@@ -126,6 +126,6 @@ public class SynchronizeParticipantDescriptor implements ISynchronizeParticipant
 	 */
 	@Override
 	public String toString() {
-		return "Synchronize Participant(" + getId() + ")"; //$NON-NLS-2$//$NON-NLS-1$
+		return "Synchronize Participant(" + getId() + ")"; //$NON-NLS-2$//$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

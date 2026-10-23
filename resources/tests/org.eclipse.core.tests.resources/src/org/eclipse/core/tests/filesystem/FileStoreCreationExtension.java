@@ -50,7 +50,7 @@ public class FileStoreCreationExtension implements BeforeEachCallback, AfterEach
 		case LOCAL:
 			var fileStoreLocation = FileSystemHelper
 					.getRandomLocation(FileSystemHelper.getTempDir())
-					.append(IPath.SEPARATOR + context.getDisplayName());
+					.append(IPath.SEPARATOR + context.getDisplayName()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			fileStore = EFS.getLocalFileSystem().getStore(fileStoreLocation);
 			break;
 		case IN_MEMORY:
@@ -67,7 +67,7 @@ public class FileStoreCreationExtension implements BeforeEachCallback, AfterEach
 		try {
 			fileStore.delete(EFS.NONE, null);
 		} catch (CoreException e) {
-			TestUtil.log(IStatus.ERROR, context.getDisplayName(), "Could not delete file store: " + fileStore, e);
+			TestUtil.log(IStatus.ERROR, context.getDisplayName(), "Could not delete file store: " + fileStore, e); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		switch (fileSystemType) {
 		case IN_MEMORY:

@@ -39,7 +39,7 @@ public class ResourceModelActionProvider extends SynchronizationActionProvider {
 	public ResourceModelActionProvider() {
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void initialize() {
 		super.initialize();
 		// Register the merge, overwrite and mark-as-merged handlers

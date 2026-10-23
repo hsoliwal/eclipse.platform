@@ -25,19 +25,19 @@ public class AntAntNode extends AntTaskNode {
 
 	private String fFile;
 
-	public AntAntNode(Task task, Attributes attributes) {
+	public AntAntNode(Task task, Attributes attributes) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super(task);
-		StringBuilder label = new StringBuilder("ant "); //$NON-NLS-1$
+		StringBuilder label = new StringBuilder("ant "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		fFile = attributes.getValue(IAntCoreConstants.DIR);
 		if (fFile != null) {
 			if (!FileUtils.isAbsolutePath(fFile)) {
 				File basedir = task.getProject().getBaseDir();
 				if (basedir != null) {
-					fFile = basedir.getAbsolutePath() + File.separatorChar + fFile;
+					fFile = basedir.getAbsolutePath() + File.separatorChar + fFile; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
-			label.append(fFile);
-			label.append(File.separatorChar);
+			label.append(fFile); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			label.append(File.separatorChar); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		} else {
 			File basedir = task.getProject().getBaseDir();
 			if (basedir != null) {
@@ -48,17 +48,17 @@ public class AntAntNode extends AntTaskNode {
 		if (fileName == null) {
 			fileName = "build.xml"; //$NON-NLS-1$
 		}
-		label.append(fileName);
+		label.append(fileName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		if (fFile == null || FileUtils.isAbsolutePath(fileName)) {
 			fFile = fileName;
 		} else {
-			fFile += File.separatorChar + fileName;
+			fFile += File.separatorChar + fileName; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		String more = attributes.getValue(IAntModelConstants.ATTR_TARGET);
 		if (more != null) {
-			label.append(' ');
-			label.append(more);
+			label.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			label.append(more); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		setBaseLabel(label.toString());
 	}

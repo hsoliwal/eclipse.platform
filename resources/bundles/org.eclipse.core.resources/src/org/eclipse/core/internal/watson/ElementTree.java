@@ -201,7 +201,7 @@ public class ElementTree {
 	 * @param key element key
 	 * @param data element data, or <code>null</code>
 	 */
-	public synchronized void createElement(IPath key, Object data) {
+	public synchronized void createElement(IPath key, Object data) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/* don't allow modification of the implicit root */
 		if (key.isRoot()) {
 			return;
@@ -230,7 +230,7 @@ public class ElementTree {
 	 * @param key The path of the new subtree in this tree.
 	 * @see #getSubtree(IPath)
 	 */
-	public synchronized void createSubtree(IPath key, ElementTree subtree) {
+	public synchronized void createSubtree(IPath key, ElementTree subtree) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/* don't allow creating subtrees at the root */
 		if (key.isRoot()) {
 			throw new IllegalArgumentException(Messages.watson_noModify);
@@ -264,7 +264,7 @@ public class ElementTree {
 	 * Deletes the indicated element and its descendents.
 	 * The element must be present.
 	 */
-	public synchronized void deleteElement(IPath key) {
+	public synchronized void deleteElement(IPath key) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/* don't allow modification of the implicit root */
 		if (key.isRoot()) {
 			return;
@@ -295,7 +295,7 @@ public class ElementTree {
 	 * ElementTree orientation such that the complete tree is always the
 	 * newest tree.
 	 */
-	public static int findOldest(ElementTree[] trees) {
+	public static int findOldest(ElementTree[] trees) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		/* first put all the trees in a hashtable */
 		// using LinkedHashMap to not have a random order in the while-loop below
@@ -303,7 +303,7 @@ public class ElementTree {
 
 		/* keep removing parents until only one tree remains */
 		ElementTree oldestSoFar = null;
-		while (!candidates.isEmpty()) {
+		while (!candidates.isEmpty()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			/* get a new candidate */
 			ElementTree current = candidates.iterator().next();
 
@@ -314,7 +314,7 @@ public class ElementTree {
 			ElementTree parent = current.getParent();
 
 			/* walk up chain until we hit the root or a tree we have already tested */
-			while (parent != null && parent != oldestSoFar) {
+			while (parent != null && parent != oldestSoFar) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				candidates.remove(parent);
 				parent = parent.getParent();
 			}
@@ -327,7 +327,7 @@ public class ElementTree {
 		Assert.isNotNull(oldestSoFar);
 
 		/* return the appropriate index */
-		for (int i = 0; i < trees.length; i++) {
+		for (int i = 0; i < trees.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (trees[i] == oldestSoFar) {
 				return i;
 			}
@@ -514,7 +514,7 @@ public class ElementTree {
 	 * given layers.  The two must be related and new must be newer than old.
 	 * That is, new must be an ancestor of old.
 	 */
-	public static boolean hasChanges(ElementTree newLayer, ElementTree oldLayer, IElementComparator comparator, boolean inclusive) {
+	public static boolean hasChanges(ElementTree newLayer, ElementTree oldLayer, IElementComparator comparator, boolean inclusive) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// if any of the layers are null, assume that things have changed
 		if (newLayer == null || oldLayer == null) {
 			return true;
@@ -542,7 +542,7 @@ public class ElementTree {
 			stopLayer = newLayer.getParent();
 		} else {
 			ElementTree layer = newLayer;
-			while (layer != null && layer.getParent() != null) {
+			while (layer != null && layer.getParent() != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!layer.getDataTree().isEmptyDelta()) {
 					return true;
 				}
@@ -553,7 +553,7 @@ public class ElementTree {
 		// look up from the layer at which we started to null or newLayer's parent (variably inclusive)
 		// depending on whether newLayer is mutable.
 		ElementTree layer = inclusive ? oldLayer : oldLayer.getParent();
-		while (layer != null && layer.getParent() != stopLayer) {
+		while (layer != null && layer.getParent() != stopLayer) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!layer.getDataTree().isEmptyDelta()) {
 				return true;
 			}
@@ -624,7 +624,7 @@ public class ElementTree {
 	 *  in any order, but they must all form a simple ancestral chain.
 	 * @return A new open tree with the delta chain merged in.
 	 */
-	public ElementTree mergeDeltaChain(IPath path, ElementTree[] trees) {
+	public ElementTree mergeDeltaChain(IPath path, ElementTree[] trees) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (path == null || trees == null) {
 			throw new IllegalArgumentException(NLS.bind(Messages.watson_nullArg, "ElementTree.mergeDeltaChain")); //$NON-NLS-1$
 		}
@@ -639,11 +639,11 @@ public class ElementTree {
 			ElementTree toMerge = trees[findOldest(trees)];
 
 			/* merge the trees from oldest to newest */
-			while (toMerge != null) {
+			while (toMerge != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (path.isRoot()) {
 					//copy all the children
 					IPath[] children = toMerge.getChildren(IPath.ROOT);
-					for (IPath element : children) {
+					for (IPath element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						current.createSubtree(element, toMerge.getSubtree(element));
 					}
 				} else {
@@ -654,7 +654,7 @@ public class ElementTree {
 
 				/* replace the tree in the array */
 				/* we have to go through all trees because there may be duplicates */
-				for (int i = 0; i < trees.length; i++) {
+				for (int i = 0; i < trees.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (trees[i] == toMerge) {
 						trees[i] = current;
 					}
@@ -689,7 +689,7 @@ public class ElementTree {
 	 * for this method to work.  If the data does not define that interface
 	 * this method will fail.
 	 */
-	public synchronized Object openElementData(IPath key) {
+	public synchronized Object openElementData(IPath key) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isTrue(!isImmutable());
 
 		/* don't allow modification of the implicit root */
@@ -767,9 +767,9 @@ public class ElementTree {
 	 * structure suitable for debug purposes.
 	 */
 	public String toDebugString() {
-		final StringBuilder buffer = new StringBuilder("\n"); //$NON-NLS-1$
+		final StringBuilder buffer = new StringBuilder("\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		IElementContentVisitor visitor = (unused, elementID, elementContents) -> {
-			buffer.append(elementID.requestPath() + " " + elementContents + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+			buffer.append(elementID.requestPath() + " " + elementContents + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			return true;
 		};
 		new ElementTreeIterator(this, IPath.ROOT).iterate(visitor);
@@ -779,7 +779,7 @@ public class ElementTree {
 	/** for debugging purposes only */
 	@Override
 	public String toString() {
-		return "ElementTree(" + treeStamp + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+		return "ElementTree(" + treeStamp + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	public int getTreeStamp() {

@@ -41,13 +41,13 @@ public class TeamUI {
 	/**
 	 * Property constant indicating the global ignores list has changed.
 	 */
-	public static final String GLOBAL_IGNORES_CHANGED = TeamUIPlugin.ID + "global_ignores_changed"; //$NON-NLS-1$
+	public static final String GLOBAL_IGNORES_CHANGED = TeamUIPlugin.ID + "global_ignores_changed"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant indicating the global file types list has changed.
 	 * @since 3.1
 	 */
-	public static final String GLOBAL_FILE_TYPES_CHANGED = TeamUIPlugin.ID + "global_file_types_changed"; //$NON-NLS-1$
+	public static final String GLOBAL_FILE_TYPES_CHANGED = TeamUIPlugin.ID + "global_file_types_changed"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Return the synchronize manager.
@@ -107,7 +107,7 @@ public class TeamUI {
 	 * @return an IHistoryView which is the main history view if it is found or null if it can't be found
 	 * @since 3.3
 	 */
-	public static IHistoryView showHistoryFor(IWorkbenchPage page, Object input, IHistoryPageSource pageSource) {
+	public static IHistoryView showHistoryFor(IWorkbenchPage page, Object input, IHistoryPageSource pageSource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			IHistoryView view = (IHistoryView) page.findView(IHistoryView.VIEW_ID);
 			if (view == null) {
@@ -119,7 +119,7 @@ public class TeamUI {
 			}
 			view = ((GenericHistoryView)view).findAppropriateHistoryViewFor(input, pageSource);
 			if (view == null) {
-				view = (IHistoryView) page.showView(IHistoryView.VIEW_ID, IHistoryView.VIEW_ID + System.currentTimeMillis(), IWorkbenchPage.VIEW_CREATE);
+				view = (IHistoryView) page.showView(IHistoryView.VIEW_ID, IHistoryView.VIEW_ID + System.currentTimeMillis(), IWorkbenchPage.VIEW_CREATE); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				return showInputInView(page, input, view, pageSource);
 			} else {
 				return showInputInView(page, input, view, pageSource);
@@ -168,14 +168,14 @@ public class TeamUI {
 	 * @since 3.6
 	 * @noreference This method is not intended to be referenced by clients.
 	 */
-	public static IScmUrlImportWizardPage[] getPages(final String importerId)
+	public static IScmUrlImportWizardPage[] getPages(final String importerId) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws CoreException {
 		IConfigurationElement[] elements = Platform.getExtensionRegistry()
 				.getConfigurationElementsFor(TeamUIPlugin.PLUGIN_ID,
 						IScmUrlImportWizardPage.ATT_EXTENSION);
 		if (elements.length > 0) {
-			Set<IScmUrlImportWizardPage> pages = new HashSet<>();
-			for (IConfigurationElement element : elements) {
+			Set<IScmUrlImportWizardPage> pages = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+			for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String pageImporterId = element.getAttribute(IScmUrlImportWizardPage.ATT_IMPORTER);
 				if (importerId.equals(pageImporterId)) {
 					Object ext = TeamUIPlugin.createExtension(element, IScmUrlImportWizardPage.ATT_PAGE);

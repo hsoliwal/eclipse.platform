@@ -284,7 +284,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	private static final char RIGHT_CONTRIBUTOR = MergeViewerContentProvider.RIGHT_CONTRIBUTOR;
 	private static final char LEFT_CONTRIBUTOR = MergeViewerContentProvider.LEFT_CONTRIBUTOR;
 
-	private static final String DIFF_RANGE_CATEGORY = CompareUIPlugin.PLUGIN_ID + ".DIFF_RANGE_CATEGORY"; //$NON-NLS-1$
+	private static final String DIFF_RANGE_CATEGORY = CompareUIPlugin.PLUGIN_ID + ".DIFF_RANGE_CATEGORY"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	static final boolean DEBUG= false;
 
@@ -381,9 +381,9 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	private IPreferenceStore fPreferenceStore;
 	private IPropertyChangeListener fPreferenceChangeListener;
 
-	private final HashMap<Object, Position> fNewAncestorRanges= new HashMap<>();
-	private final HashMap<Object, Position> fNewLeftRanges= new HashMap<>();
-	private final HashMap<Object, Position> fNewRightRanges= new HashMap<>();
+	private final HashMap<Object, Position> fNewAncestorRanges= new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	private final HashMap<Object, Position> fNewLeftRanges= new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	private final HashMap<Object, Position> fNewRightRanges= new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	private MergeSourceViewer fAncestor;
 	private MergeSourceViewer fLeft;
@@ -458,7 +458,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	private TextEditorPropertyAction toggleLineNumbersAction;
 	private IFindReplaceTarget fFindReplaceTarget;
 	private ChangePropertyAction fIgnoreWhitespace;
-	private final List<ChangeCompareFilterPropertyAction> fCompareFilterActions = new ArrayList<>();
+	private final List<ChangeCompareFilterPropertyAction> fCompareFilterActions = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private DocumentMerger fMerger;
 	/** The current diff */
 	private Diff fCurrentDiff;
@@ -473,7 +473,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	// calling w.getLineHeight(line) + w.getLineSpacing() +
 	// w.getLineVerticalIndent(line); again and again for the same line is too slow
 	// we therefore introduce a line height cache by viewer
-	private final Map<MergeSourceViewer, List<Integer>> lineHeightsByViewer = new HashMap<>();
+	private final Map<MergeSourceViewer, List<Integer>> lineHeightsByViewer = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/**
 	 * Preference key for highlighting current line.
@@ -484,7 +484,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 */
 	private final static String CURRENT_LINE_COLOR= AbstractDecoratedTextEditorPreferenceConstants.EDITOR_CURRENT_LINE_COLOR;
 
-	private List<SourceViewerDecorationSupport> fSourceViewerDecorationSupport = new ArrayList<>(3);
+	private List<SourceViewerDecorationSupport> fSourceViewerDecorationSupport = new ArrayList<>(3); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	// whether enhanced viewer configuration has been done
 	private boolean isConfigured = false;
 	private boolean fRedoDiff = false;
@@ -505,7 +505,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 	private int fCurrentHeight;
 
-	private final class InternalOutlineViewerCreator extends OutlineViewerCreator implements ISelectionChangedListener {
+	private final class InternalOutlineViewerCreator extends OutlineViewerCreator implements ISelectionChangedListener { //FLLDCIM: MARK — T04  IMPLEMENTS
 		@Override
 		public Viewer findStructureViewer(Viewer oldViewer,
 				ICompareInput input, Composite parent,
@@ -515,8 +515,8 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			}
 			final Viewer v = CompareUI.findStructureViewer(oldViewer, input, parent, configuration);
 			if (v != null) {
-				v.getControl().addDisposeListener(unused -> v.removeSelectionChangedListener(InternalOutlineViewerCreator.this));
-				v.addSelectionChangedListener(this);
+				v.getControl().addDisposeListener(unused -> v.removeSelectionChangedListener(InternalOutlineViewerCreator.this)); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
+				v.addSelectionChangedListener(this); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 			}
 
 			return v;
@@ -553,8 +553,8 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			return null;
 		}
 
-		private Diff findDiff(Position p, boolean left) {
-			for (Iterator<?> iterator = fMerger.rangesIterator(); iterator.hasNext();) {
+		private Diff findDiff(Position p, boolean left) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+			for (Iterator<?> iterator = fMerger.rangesIterator(); iterator.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Diff diff = (Diff) iterator.next();
 				Position diffPos;
 				if (left) {
@@ -587,7 +587,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		}
 	}
 
-	class ContributorInfo implements IElementStateListener, VerifyListener, IDocumentListener, IEncodingSupport {
+	class ContributorInfo implements IElementStateListener, VerifyListener, IDocumentListener, IEncodingSupport { //FLLDCIM: MARK — T02  IMPLEMENTS
 		private final TextMergeViewer fViewer;
 		private final Object fElement;
 		private final char fLeg;
@@ -612,7 +612,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			}
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void setEncoding(String encoding) {
 			if (fDocumentKey == null || fDocumentProvider == null) {
 				return;
@@ -676,7 +676,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			}
 		}
 
-		public IDocument getDocument() {
+		public IDocument getDocument() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			if (fDocumentProvider != null) {
 				IDocument document = fDocumentProvider.getDocument(getDocumentKey());
 				if (document != null) {
@@ -695,7 +695,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			return null;
 		}
 
-		public void setDocument(MergeSourceViewer viewer, boolean isEditable) {
+		public void setDocument(MergeSourceViewer viewer, boolean isEditable) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			// Ensure that this method is only called once
 			Assert.isTrue(fSourceViewer == null);
 			fSourceViewer = viewer;
@@ -710,14 +710,14 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			// Verify changes if the document is editable
 			if (isEditable) {
 				fNeedsValidation = true;
-				viewer.getSourceViewer().getTextWidget().addVerifyListener(this);
+				viewer.getSourceViewer().getTextWidget().addVerifyListener(this); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 			}
 		}
 
 		/*
 		 * Returns true if a new Document could be installed.
 		 */
-		private boolean internalSetDocument(MergeSourceViewer tp) {
+		private boolean internalSetDocument(MergeSourceViewer tp) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 			if (tp == null) {
 				return false;
@@ -765,12 +765,12 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 						} catch (BadPositionCategoryException ex) {
 							// silently ignored
 							if (TextMergeViewer.DEBUG) {
-								System.out.println("BadPositionCategoryException: " + ex); //$NON-NLS-1$
+								System.out.println("BadPositionCategoryException: " + ex); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							}
 						} catch (BadLocationException ex) {
 							// silently ignored
 							if (TextMergeViewer.DEBUG) {
-								System.out.println("BadLocationException: " + ex); //$NON-NLS-1$
+								System.out.println("BadLocationException: " + ex); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							}
 						}
 						this.fViewer.addNewRange(fLeg, input, range);
@@ -817,7 +817,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		/*
 		 * The viewer has a new document
 		 */
-		private void updateViewerDocument(MergeSourceViewer tp, IDocument document, Position range) {
+		private void updateViewerDocument(MergeSourceViewer tp, IDocument document, Position range) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			unsetDocument(tp);
 			if (document == null) {
 				return;
@@ -869,7 +869,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			}
 		}
 
-		private IDocument createDocument() {
+		private IDocument createDocument() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			// If the content provider is a text content provider, attempt to obtain
 			// a shared document (i.e. file buffer)
 			IDocument newDoc = connectToSharedDocument();
@@ -900,7 +900,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		 * @return the shared document or <code>null</code> if connection to a
 		 * shared document was not possible
 		 */
-		private IDocument connectToSharedDocument() {
+		private IDocument connectToSharedDocument() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IEditorInput key = getDocumentKey();
 			if (key != null) {
 				if (fDocumentProvider != null) {
@@ -950,7 +950,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			documentProvider.addElementStateListener(this);
 		}
 
-		public void disconnect() {
+		public void disconnect() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IDocumentProvider provider = null;
 			IEditorInput input = getDocumentKey();
 			synchronized(this) {
@@ -1049,7 +1049,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 					&& fDocumentProvider.getDocument(getDocumentKey()) != null);
 		}
 
-		public boolean flush() throws CoreException {
+		public boolean flush() throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			if (fDocumentProvider != null) {
 				IEditorInput input = getDocumentKey();
 				IDocument document = fDocumentProvider.getDocument(input);
@@ -1122,7 +1122,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			return !control.isDisposed();
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void elementContentReplaced(Object element) {
 			if (!checkState()) {
 				return;
@@ -1132,7 +1132,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 				this.fViewer.updateDirtyState(input, getDocumentProvider(), fLeg);
 
 				// recalculate diffs and update controls
-				new UIJob(CompareMessages.DocumentMerger_0) {
+				new UIJob(CompareMessages.DocumentMerger_0) { //FLLDCIM: MARK — T09  ANONYMOUS
 					@Override
 					public IStatus runInUIThread(IProgressMonitor monitor) {
 						update(true);
@@ -1180,7 +1180,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 		}
 
-		public boolean validateChange() {
+		public boolean validateChange() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			if (fElement == null) {
 				return true;
 			}
@@ -1241,7 +1241,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		}
 	}
 
-	class HeaderPainter implements PaintListener {
+	class HeaderPainter implements PaintListener { //FLLDCIM: MARK — T10  IMPLEMENTS
 		private static final int INSET= BIRDS_EYE_VIEW_INSET;
 
 		private RGB fIndicatorColor;
@@ -1276,7 +1276,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			gc.drawLine(x, y + h, x + w, y + h);
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void paintControl(PaintEvent e) {
 			Point s= fSummaryHeader.getSize();
 
@@ -1324,7 +1324,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		 * right behind the end of the position, the position is extended rather
 		 * than kept stable.
 		 */
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		protected void adaptToInsert() {
 			if (fPosition == fLeft.getRegion() || fPosition == fRight.getRegion()) {
 				int myStart= fPosition.offset;
@@ -1365,7 +1365,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			IRegion region= textPresentation.getExtent();
 			Diff[] changeDiffs = fMerger.getChangeDiffs(getLeg(viewer), region);
 			boolean allOutgoing = allOutgoing();
-			for (Diff diff : changeDiffs) {
+			for (Diff diff : changeDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				StyleRange range = getStyleRange(diff, region, allOutgoing);
 				if (range != null) {
 					textPresentation.mergeStyleRange(range);
@@ -1373,7 +1373,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			}
 		}
 
-		private StyleRange getStyleRange(Diff diff, IRegion region, boolean showAdditionRemoval) {
+		private StyleRange getStyleRange(Diff diff, IRegion region, boolean showAdditionRemoval) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			//Color cText = getColor(getTextColor());
 			Color cTextFill = getColor(getTextFillColor(diff, showAdditionRemoval));
 			if (cTextFill == null) {
@@ -1574,7 +1574,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 * @param style SWT style bits for top level composite of this viewer
 	 * @param configuration the configuration object
 	 */
-	public TextMergeViewer(Composite parent, int style, CompareConfiguration configuration) {
+	public TextMergeViewer(Composite parent, int style, CompareConfiguration configuration) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super(style, ResourceBundle.getBundle(BUNDLE_NAME), configuration);
 
 		operationHistoryListener = TextMergeViewer.this::historyNotification;
@@ -1715,12 +1715,12 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		};
 		fComposite.setData(INavigatable.NAVIGATOR_PROPERTY, nav);
 
-		JFaceResources.getFontRegistry().addListener(fPreferenceChangeListener);
-		JFaceResources.getColorRegistry().addListener(fPreferenceChangeListener);
+		JFaceResources.getFontRegistry().addListener(fPreferenceChangeListener); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
+		JFaceResources.getColorRegistry().addListener(fPreferenceChangeListener); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 		updateFont();
 	}
 
-	private static class LineNumberRulerToggleAction extends TextEditorPropertyAction {
+	private static class LineNumberRulerToggleAction extends TextEditorPropertyAction { //FLLDCIM: MARK — T06  IMPLEMENTS
 		public LineNumberRulerToggleAction(String label, MergeSourceViewer[] viewers, String preferenceKey) {
 			super(label, viewers, preferenceKey);
 		}
@@ -1732,7 +1732,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	}
 
 	private ChainedPreferenceStore createChainedPreferenceStore() {
-		List<IPreferenceStore> stores= new ArrayList<>(2);
+		List<IPreferenceStore> stores= new ArrayList<>(2); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		stores.add(getCompareConfiguration().getPreferenceStore());
 		stores.add(EditorsUI.getPreferenceStore());
 		return new ChainedPreferenceStore(stores.toArray(new IPreferenceStore[stores.size()]));
@@ -1771,7 +1771,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 	private String getSymbolicFontName() {
 		Class<?> clazz= getClass();
-		do {
+		do { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String fontName= clazz.getName();
 			if (JFaceResources.getFontRegistry().hasValueFor(fontName)) {
 				return fontName;
@@ -1842,7 +1842,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		updateColors(null);
 	}
 
-	private void updateColors(Display display) {
+	private void updateColors(Display display) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (display == null) {
 			display = fComposite.getDisplay();
@@ -2041,7 +2041,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 *
 	 * @since 3.3
 	 */
-	protected void setupDocument(IDocument document) {
+	protected void setupDocument(IDocument document) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String partitioning = getDocumentPartitioning();
 		if (partitioning == null || !(document instanceof IDocumentExtension3 ex3)) {
 			if (document.getDocumentPartitioner() == null) {
@@ -2102,7 +2102,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 * Unregisters from the compare configuration.
 	 * Clients may extend if they have to do additional cleanup.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void handleDispose(DisposeEvent event) {
 		OperationHistoryFactory.getOperationHistory().removeOperationHistoryListener(operationHistoryListener);
 
@@ -2171,7 +2171,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		disposeCompareFilterActions(false);
 
 		if (fSourceViewerDecorationSupport != null) {
-			for (SourceViewerDecorationSupport sourceViewerDecorationSupport : fSourceViewerDecorationSupport) {
+			for (SourceViewerDecorationSupport sourceViewerDecorationSupport : fSourceViewerDecorationSupport) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				sourceViewerDecorationSupport.dispose();
 			}
 			fSourceViewerDecorationSupport = null;
@@ -2212,7 +2212,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 * Creates the specific SWT controls for the content areas.
 	 * Clients must not call or override this method.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void createControls(Composite composite) {
 		if (PlatformUI.isWorkbenchRunning()) {
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, ICompareContextIds.TEXT_MERGE_VIEW);
@@ -2221,8 +2221,8 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		// 1st row
 		if (fMarginWidth > 0) {
 			fAncestorCanvas = new Canvas(composite, SWT.DOUBLE_BUFFERED);
-			fAncestorCanvas.addPaintListener(event -> paintSides(event.gc, fAncestor, fAncestorCanvas, false));
-			fAncestorCanvas.addMouseListener(
+			fAncestorCanvas.addPaintListener(event -> paintSides(event.gc, fAncestor, fAncestorCanvas, false)); //FLLDCIM: MARK — T10 PAINT_DAMAGE CALL
+			fAncestorCanvas.addMouseListener( //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 				new MouseAdapter() {
 					@Override
 					public void mouseDown(MouseEvent e) {
@@ -2244,14 +2244,14 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 		fSummaryHeader= new Canvas(composite, SWT.NONE);
 		fHeaderPainter= new HeaderPainter();
-		fSummaryHeader.addPaintListener(fHeaderPainter);
+		fSummaryHeader.addPaintListener(fHeaderPainter); //FLLDCIM: MARK — T10 PAINT_DAMAGE CALL
 		updateResolveStatus();
 
 		// 2nd row
 		if (fMarginWidth > 0) {
 			fLeftCanvas = new Canvas(composite, SWT.DOUBLE_BUFFERED);
-			fLeftCanvas.addPaintListener(event -> paintSides(event.gc, fLeft, fLeftCanvas, false));
-			fLeftCanvas.addMouseListener(
+			fLeftCanvas.addPaintListener(event -> paintSides(event.gc, fLeft, fLeftCanvas, false)); //FLLDCIM: MARK — T10 PAINT_DAMAGE CALL
+			fLeftCanvas.addMouseListener( //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 				new MouseAdapter() {
 					@Override
 					public void mouseDown(MouseEvent e) {
@@ -2305,8 +2305,8 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 		if (fMarginWidth > 0) {
 			fRightCanvas = new Canvas(composite, SWT.DOUBLE_BUFFERED);
-			fRightCanvas.addPaintListener(event -> paintSides(event.gc, fRight, fRightCanvas, fSynchronizedScrolling));
-			fRightCanvas.addMouseListener(
+			fRightCanvas.addPaintListener(event -> paintSides(event.gc, fRight, fRightCanvas, fSynchronizedScrolling)); //FLLDCIM: MARK — T10 PAINT_DAMAGE CALL
+			fRightCanvas.addMouseListener( //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 				new MouseAdapter() {
 					@Override
 					public void mouseDown(MouseEvent e) {
@@ -2323,7 +2323,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		fVScrollBar= fScrollCanvas.getVerticalBar();
 		fVScrollBar.setIncrement(1);
 		fVScrollBar.setVisible(true);
-		fVScrollBar.addListener(SWT.Selection,
+		fVScrollBar.addListener(SWT.Selection, //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 			event -> {
 				int vpos= ((ScrollBar) event.widget).getSelection();
 				synchronizedScrollVertical(vpos);
@@ -2331,12 +2331,12 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		);
 
 		fBirdsEyeCanvas = new Canvas(composite, SWT.DOUBLE_BUFFERED);
-		fBirdsEyeCanvas.addPaintListener(event -> {
+		fBirdsEyeCanvas.addPaintListener(event -> { //FLLDCIM: MARK — T10 PAINT_DAMAGE CALL
 			updateVScrollBar(); // Update scroll bar here as initially viewport height is wrong
 			paintBirdsEyeView((Canvas) event.widget, event.gc);
 		});
 
-		fBirdsEyeCanvas.addMouseListener(
+		fBirdsEyeCanvas.addMouseListener( //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 			new MouseAdapter() {
 				@Override
 				public void mouseDown(MouseEvent e) {
@@ -2344,7 +2344,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 				}
 			}
 		);
-		fBirdsEyeCanvas.addMouseMoveListener(
+		fBirdsEyeCanvas.addMouseMoveListener( //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 			new MouseMoveListener() {
 				private Cursor fLastCursor;
 
@@ -2372,12 +2372,12 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		}
 	}
 
-	private void hsynchViewport(final TextViewer tv1, final TextViewer tv2, final TextViewer tv3) {
+	private void hsynchViewport(final TextViewer tv1, final TextViewer tv2, final TextViewer tv3) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final StyledText st1= tv1.getTextWidget();
 		final StyledText st2= tv2.getTextWidget();
 		final StyledText st3= tv3.getTextWidget();
 		final ScrollBar sb1= st1.getHorizontalBar();
-		sb1.addSelectionListener(new SelectionAdapter() {
+		sb1.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (fSynchronizedScrolling) {
@@ -2400,7 +2400,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		}
 	}
 
-	private Diff handleMouseInSides(Canvas canvas, MergeSourceViewer tp, int my) {
+	private Diff handleMouseInSides(Canvas canvas, MergeSourceViewer tp, int my) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		int visibleHeight= tp.getViewportHeight();
 
@@ -2413,7 +2413,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 			Point region= new Point(0, 0);
 			char leg = getLeg(tp);
-			for (Iterator<?> iterator = fMerger.changesIterator(); iterator.hasNext();) {
+			for (Iterator<?> iterator = fMerger.changesIterator(); iterator.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Diff diff = (Diff) iterator.next();
 				if (diff.isDeleted()) {
 					continue;
@@ -2439,7 +2439,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		return null;
 	}
 
-	private Diff getDiffUnderMouse(Canvas canvas, int mx, int my, Rectangle r) {
+	private Diff getDiffUnderMouse(Canvas canvas, int mx, int my, Rectangle r) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (! fSynchronizedScrolling) {
 			return null;
@@ -2460,7 +2460,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 			Point region= new Point(0, 0);
 
-			for (Iterator<?> iterator = fMerger.changesIterator(); iterator.hasNext();) {
+			for (Iterator<?> iterator = fMerger.changesIterator(); iterator.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Diff diff = (Diff) iterator.next();
 				if (diff.isDeleted()) {
 					continue;
@@ -2504,7 +2504,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		return fMerger.findDiff(getViewportHeight(), fSynchronizedScrolling, canvas.getSize(), my);
 	}
 
-	private void paintBirdsEyeView(Canvas canvas, GC gc) {
+	private void paintBirdsEyeView(Canvas canvas, GC gc) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		Color c;
 		Rectangle r= new Rectangle(0, 0, 0, 0);
@@ -2519,7 +2519,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 		int y= 0;
 		boolean allOutgoing = allOutgoing();
-		for (Iterator<Diff> iterator = fMerger.rangesIterator(); iterator.hasNext();) {
+		for (Iterator<Diff> iterator = fMerger.rangesIterator(); iterator.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Diff diff = iterator.next();
 			int h= fSynchronizedScrolling ? diff.getMaxDiffHeight()
 											: diff.getRightHeight();
@@ -2573,10 +2573,10 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 * @see org.eclipse.compare.contentmergeviewer.ContentMergeViewer#handleSetFocus()
 	 * @since 3.3
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected boolean handleSetFocus() {
 		if (fRedoDiff) {
-			new UIJob(CompareMessages.DocumentMerger_0) {
+			new UIJob(CompareMessages.DocumentMerger_0) { //FLLDCIM: MARK — T09  ANONYMOUS
 				@Override
 				public IStatus runInUIThread(IProgressMonitor monitor) {
 					update(true);
@@ -2620,14 +2620,14 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected final Control createCenterControl(Composite parent) {
 		if (fSynchronizedScrolling) {
 
 
 			final Canvas canvas = new Canvas(parent, SWT.DOUBLE_BUFFERED);
 
-			canvas.addPaintListener(event -> paintCenter((Canvas) event.widget, event.gc));
+			canvas.addPaintListener(event -> paintCenter((Canvas) event.widget, event.gc)); //FLLDCIM: MARK — T10 PAINT_DAMAGE CALL
 			new HoverResizer(canvas, HORIZONTAL);
 
 			Cursor normalCursor= canvas.getDisplay().getSystemCursor(SWT.CURSOR_ARROW);
@@ -2639,7 +2639,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			fLeftToRightButton.setToolTipText(
 					Utilities.getString(getResourceBundle(), "action.CopyDiffLeftToRight.tooltip")); //$NON-NLS-1$
 			fLeftToRightButton.setVisible(false);
-			fLeftToRightButton.addSelectionListener(
+			fLeftToRightButton.addSelectionListener( //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 				new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
@@ -2654,7 +2654,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			fRightToLeftButton.setToolTipText(
 					Utilities.getString(getResourceBundle(), "action.CopyDiffRightToLeft.tooltip")); //$NON-NLS-1$
 			fRightToLeftButton.setVisible(false);
-			fRightToLeftButton.addSelectionListener(
+			fRightToLeftButton.addSelectionListener( //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 					new SelectionAdapter() {
 						@Override
 						public void widgetSelected(SelectionEvent e) {
@@ -2677,7 +2677,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		}
 	}
 
-	private boolean handleMouseMoveOverCenter(Canvas canvas, int x, int y) {
+	private boolean handleMouseMoveOverCenter(Canvas canvas, int x, int y) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Rectangle r= new Rectangle(0, 0, 0, 0);
 		Diff diff= getDiffUnderMouse(canvas, x, y, r);
 		if (diff != fButtonDiff) {
@@ -2790,7 +2790,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 *
 	 * @since 3.5
 	 */
-	protected IEditorInput getEditorInput(ISourceViewer sourceViewer) {
+	protected IEditorInput getEditorInput(ISourceViewer sourceViewer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fLeft != null && sourceViewer == fLeft.getSourceViewer()) {
 			if (fLeftContributor != null) {
 				return fLeftContributor.getDocumentKey();
@@ -2813,19 +2813,19 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	/*
 	 * Creates and initializes a text part.
 	 */
-	private MergeSourceViewer createPart(Composite parent) {
+	private MergeSourceViewer createPart(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final MergeSourceViewer viewer = new MergeSourceViewer(
 				createSourceViewer(parent, getDirection()),
 				getResourceBundle(), getCompareConfiguration().getContainer());
 		final StyledText te= viewer.getSourceViewer().getTextWidget();
 		// Clear cached line heights upon zoom changes, as they are no longer valid
-		te.addListener(SWT.ZoomChanged, unused -> resetCachedLineHeights(viewer));
+		te.addListener(SWT.ZoomChanged, unused -> resetCachedLineHeights(viewer)); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 		if (!fConfirmSave) {
 			viewer.hideSaveAction();
 		}
 
-		te.addPaintListener(event -> paint(event, viewer));
-		te.addKeyListener(
+		te.addPaintListener(event -> paint(event, viewer)); //FLLDCIM: MARK — T10 PAINT_DAMAGE CALL
+		te.addKeyListener( //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 			new KeyAdapter() {
 				@Override
 				public void keyPressed(KeyEvent e) {
@@ -2833,7 +2833,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 				}
 			}
 		);
-		te.addMouseListener(
+		te.addMouseListener( //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 			new MouseAdapter() {
 				@Override
 				public void mouseDown(MouseEvent e) {
@@ -2843,7 +2843,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			}
 		);
 
-		te.addFocusListener(
+		te.addFocusListener( //FLLDCIM: MARK — T15 FOCUS CALL
 			new FocusAdapter() {
 				@Override
 				public void focusGained(FocusEvent fe) {
@@ -2856,8 +2856,8 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			}
 		);
 
-		viewer.getSourceViewer().addViewportListener(
-			unused -> syncViewport(viewer)
+		viewer.getSourceViewer().addViewportListener( //FLLDCIM: MARK — T34 VIEWPORT_LISTENER CALL
+			unused -> syncViewport(viewer) //FLLDCIM: MARK — T34  LAMBDA
 		);
 
 		Font font= JFaceResources.getFont(fSymbolicFontName);
@@ -2924,8 +2924,8 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		viewer.addAction(MergeSourceViewer.CHANGE_ENCODING_ID, action);
 	}
 
-	private void contributeDiffBackgroundListener(final MergeSourceViewer viewer) {
-		viewer.getSourceViewer().getTextWidget().addLineBackgroundListener(
+	private void contributeDiffBackgroundListener(final MergeSourceViewer viewer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		viewer.getSourceViewer().getTextWidget().addLineBackgroundListener( //FLLDCIM: MARK — T29 STYLEDTEXT_LANE CALL
 				event -> {
 					StyledText textWidget = viewer.getSourceViewer().getTextWidget();
 					if (textWidget != null) {
@@ -2957,7 +2957,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 				part.updateActions();
 			}
 			fHandlerService.updatePaneActionHandlers(() -> {
-				for (int i= 0; i < GLOBAL_ACTIONS.length; i++) {
+				for (int i= 0; i < GLOBAL_ACTIONS.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IAction action= null;
 					if (part != null) {
 						action= part.getAction(TEXT_ACTIONS[i]);
@@ -2968,7 +2968,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		}
 	}
 
-	private void connectContributedActions(final MergeSourceViewer viewer, final boolean connect) {
+	private void connectContributedActions(final MergeSourceViewer viewer, final boolean connect) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fHandlerService != null) {
 			fHandlerService.updatePaneActionHandlers(() -> {
 				if (viewer != null) {
@@ -3006,7 +3006,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		// default implementation does nothing
 	}
 
-	private IDocument getElementDocument(char type, Object element) {
+	private IDocument getElementDocument(char type, Object element) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (element instanceof IDocument) {
 			return (IDocument) element;
 		}
@@ -3078,7 +3078,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 * @return <code>true</code> if saving was successful, or if the user didn't want to save (by pressing 'NO' in the confirmation dialog).
 	 * @since 2.0
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected boolean doSave(Object newInput, Object oldInput) {
 		// TODO: Would be good if this could be restated in terms of Saveables and moved up
 		if (oldInput != null && newInput != null) {
@@ -3128,7 +3128,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 * Initializes the text viewers of the three content areas with the given input objects.
 	 * Subclasses may extend.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void updateContent(Object ancestor, Object left, Object right) {
 		boolean emptyInput= (ancestor == null && left == null && right == null);
 
@@ -3247,7 +3247,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		if (fInitialDiffJob != null) {
 			fInitialDiffJob.cancel();
 		}
-		fInitialDiffJob = new UIJob(CompareMessages.DocumentMerger_0) {
+		fInitialDiffJob = new UIJob(CompareMessages.DocumentMerger_0) { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				fInitialDiffJob = null;
@@ -3264,7 +3264,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		fInitialDiffJob.schedule();
 	}
 
-	private void revealInitialDiff(Object right, Position leftRange, Position rightRange) {
+	private void revealInitialDiff(Object right, Position leftRange, Position rightRange) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (isPatchHunk()) {
 			if (right != null && Adapters.adapt(right, IHunk.class) != null) {
 				fLeft.getSourceViewer().setTopIndex(getHunkStart());
@@ -3288,7 +3288,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		}
 	}
 
-	private void configureSourceViewer(SourceViewer sourceViewer, boolean editable, ContributorInfo contributor) {
+	private void configureSourceViewer(SourceViewer sourceViewer, boolean editable, ContributorInfo contributor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		setEditable(sourceViewer, editable);
 		configureTextViewer(sourceViewer);
 
@@ -3304,7 +3304,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 		StyledText styleText = sourceViewer.getTextWidget();
 		LocalResourceManager LocalResManager = new LocalResourceManager(JFaceResources.getResources(), styleText);
-		styleText.addKeyListener(new KeyAdapter() {
+		styleText.addKeyListener(new KeyAdapter() { //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// MOD1 is Command on macOS and Ctrl elsewhere
@@ -3318,7 +3318,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 				}
 			}
 		});
-		styleText.addListener(SWT.Gesture, event -> {
+		styleText.addListener(SWT.Gesture, event -> { //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 			if (event.detail == SWT.GESTURE_MAGNIFY) {
 				if (event.magnification > fCurrMagni) {
 					fCurrMagni = event.magnification;
@@ -3375,7 +3375,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 * Sets the dirty state of this viewer and updates the lines.
 	 * Implements IDocumentListener.
 	 */
-	private void documentChanged(DocumentEvent e, boolean dirty) {
+	private void documentChanged(DocumentEvent e, boolean dirty) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final IDocument doc= e.getDocument();
 
 		if (doc == fLeft.getSourceViewer().getDocument()) {
@@ -3386,7 +3386,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		if (!isLeftDirty() && !isRightDirty()) {
 			fRedoDiff = false;
 			final Diff oldDiff = getLastDiff();
-			new UIJob(CompareMessages.DocumentMerger_0) {
+			new UIJob(CompareMessages.DocumentMerger_0) { //FLLDCIM: MARK — T09  ANONYMOUS
 				@Override
 				public IStatus runInUIThread(IProgressMonitor monitor) {
 					if (!getControl().isDisposed()) {
@@ -3460,7 +3460,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 * @param input the current input object of this viewer
 	 * @since 2.0
 	 */
-	protected int findInsertionPosition(char type, ICompareInput input) {
+	protected int findInsertionPosition(char type, ICompareInput input) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		ITypedElement other= null;
 		char otherType= 0;
@@ -3502,7 +3502,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		return 0;
 	}
 
-	private void setError(char type, String message) {
+	private void setError(char type, String message) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IMergeViewerContentProvider cp= getMergeContentProvider();
 		if (cp instanceof MergeViewerContentProvider mcp) {
 			switch (type) {
@@ -3522,7 +3522,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		fHasErrors= true;
 	}
 
-	private void updateDirtyState(IEditorInput key,
+	private void updateDirtyState(IEditorInput key, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IDocumentProvider documentProvider, char type) {
 		boolean dirty = documentProvider.canSaveDocument(key);
 		boolean oldLeftDirty = isLeftDirty();
@@ -3584,7 +3584,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 * @param left if <code>true</code> the contents of the left side is returned; otherwise the right side
 	 * @return the contents of the left or right document or null
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected byte[] getContents(boolean left) {
 		MergeSourceViewer v= left ? fLeft : fRight;
 		if (v != null) {
@@ -3606,7 +3606,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		return null;
 	}
 
-	private IRegion normalizeDocumentRegion(IDocument doc, IRegion region) {
+	private IRegion normalizeDocumentRegion(IDocument doc, IRegion region) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (region == null || doc == null) {
 			return region;
@@ -3631,7 +3631,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		return new Region(start, length);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected final void handleResizeAncestor(int x, int y, int width, int height) {
 		if (width > 0) {
 			Rectangle trim= fLeft.getSourceViewer().getTextWidget().computeTrim(0, 0, 0, 0);
@@ -3665,7 +3665,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		protected final void handleResizeLeftRight(int x, int y, int width1, int centerWidth, int width2,  int height) {
 			if (fBirdsEyeCanvas != null) {
 				width2-= BIRDS_EYE_VIEW_WIDTH;
@@ -3766,7 +3766,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 * Perform a two level 2- or 3-way diff.
 	 * The first level is based on line comparison, the second level on token comparison.
 	 */
-	private void doDiff() {
+	private void doDiff() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IDocument lDoc= fLeft.getSourceViewer().getDocument();
 		IDocument rDoc= fRight.getSourceViewer().getDocument();
 		if (lDoc == null || rDoc == null) {
@@ -3815,7 +3815,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 	//---- update UI stuff
 
-	private void updateControls() {
+	private void updateControls() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (getControl().isDisposed()) {
 			return;
 		}
@@ -3869,7 +3869,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		}
 	}
 
-	private boolean isNavigationButtonEnabled(boolean down, boolean deep) {
+	private boolean isNavigationButtonEnabled(boolean down, boolean deep) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String value = fPreferenceStore
 				.getString(ICompareUIConstants.PREF_NAVIGATION_END_ACTION);
 		switch (value) {
@@ -3888,7 +3888,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		return false;
 	}
 
-	private void updateResolveStatus() {
+	private void updateResolveStatus() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		RGB rgb= null;
 
@@ -3898,7 +3898,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			int unresolvedConflicting= 0;
 
 			if (fMerger.hasChanges()) {
-				for (Iterator<?> iterator = fMerger.changesIterator(); iterator	.hasNext();) {
+				for (Iterator<?> iterator = fMerger.changesIterator(); iterator	.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Diff d = (Diff) iterator.next();
 						if (!d.isResolved()) {
 							if (d.getKind() == RangeDifference.CONFLICT) {
@@ -3924,7 +3924,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		}
 	}
 
-	private void updateStatus(Diff diff) {
+	private void updateStatus(Diff diff) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		String diffDescription;
 
@@ -3955,7 +3955,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		getCompareConfiguration().getContainer().setStatusMessage(s);
 	}
 
-	private String getDiffType(Diff diff) {
+	private String getDiffType(Diff diff) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String s= ""; 	//$NON-NLS-1$
 		switch(diff.getKind()) {
 		case RangeDifference.LEFT:
@@ -3982,7 +3982,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		// find the diff's number
 		int diffNumber= 0;
 		if (fMerger.hasChanges()) {
-			for (Iterator<?> iterator = fMerger.changesIterator(); iterator.hasNext();) {
+			for (Iterator<?> iterator = fMerger.changesIterator(); iterator.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Diff d = (Diff) iterator.next();
 				diffNumber++;
 				if (d == diff) {
@@ -4012,7 +4012,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 *
 	 * @return a description of the cursor position
 	 */
-	private String getCursorPosition(MergeSourceViewer v) {
+	private String getCursorPosition(MergeSourceViewer v) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (v != null) {
 			StyledText styledText= v.getSourceViewer().getTextWidget();
 
@@ -4026,7 +4026,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 					int lineOffset= document.getLineOffset(line);
 					int occurrences= 0;
-					for (int i= lineOffset; i < caret; i++) {
+					for (int i= lineOffset; i < caret; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if ('\t' == document.getChar(i)) {
 							++ occurrences;
 						}
@@ -4057,7 +4057,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 * Creates the two items for copying a difference range from one side to the other
 	 * and adds them to the given toolbar manager.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void createToolItems(ToolBarManager tbm) {
 		fHandlerService= CompareHandlerService.createFor(getCompareConfiguration().getContainer(), fLeft.getSourceViewer().getControl().getShell());
 
@@ -4214,7 +4214,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		return part == null ? null : part.getSite().getPage();
 	}
 
-	private void configureCompareFilterActions(Object input, Object ancestor,
+	private void configureCompareFilterActions(Object input, Object ancestor, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			Object left, Object right) {
 		if (getCompareConfiguration() == null) {
 			return;
@@ -4228,9 +4228,9 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			currentFiltersMatch = true;
 			@SuppressWarnings("unchecked")
 			List<ChangeCompareFilterPropertyAction> currentFilterActions = (List<ChangeCompareFilterPropertyAction>) current;
-			for (CompareFilterDescriptor compareFilterDescriptor : compareFilterDescriptors) {
+			for (CompareFilterDescriptor compareFilterDescriptor : compareFilterDescriptors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				boolean match = false;
-				for (ChangeCompareFilterPropertyAction currentFilterAction : currentFilterActions) {
+				for (ChangeCompareFilterPropertyAction currentFilterAction : currentFilterActions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (compareFilterDescriptor.getFilterId().equals(currentFilterAction.getFilterId())) {
 						match = true;
 						break;
@@ -4247,7 +4247,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 					Boolean.TRUE);
 			disposeCompareFilterActions(true);
 			fCompareFilterActions.clear();
-			for (CompareFilterDescriptor compareFilterDescriptor : compareFilterDescriptors) {
+			for (CompareFilterDescriptor compareFilterDescriptor : compareFilterDescriptors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ChangeCompareFilterPropertyAction compareFilterAction = new ChangeCompareFilterPropertyAction(compareFilterDescriptor, getCompareConfiguration());
 				compareFilterAction.setInput(input, ancestor, left, right);
 				fCompareFilterActions.add(compareFilterAction);
@@ -4276,14 +4276,14 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 					fCompareFilterActions);
 			getCompareConfiguration().setProperty(ChangeCompareFilterPropertyAction.COMPARE_FILTERS_INITIALIZING, null);
 		} else {
-			for (ChangeCompareFilterPropertyAction action : fCompareFilterActions) {
+			for (ChangeCompareFilterPropertyAction action : fCompareFilterActions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				action.setInput(input, ancestor, left, right);
 			}
 		}
 	}
 
-	private void disposeCompareFilterActions(boolean updateActionBars) {
-		for (ChangeCompareFilterPropertyAction compareFilterAction : fCompareFilterActions) {
+	private void disposeCompareFilterActions(boolean updateActionBars) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		for (ChangeCompareFilterPropertyAction compareFilterAction : fCompareFilterActions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fLeft.removeTextAction(compareFilterAction);
 			fRight.removeTextAction(compareFilterAction);
 			fAncestor.removeTextAction(compareFilterAction);
@@ -4318,7 +4318,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 				ChangeCompareFilterPropertyAction.COMPARE_FILTER_ACTIONS, null);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void handlePropertyChangeEvent(PropertyChangeEvent event) {
 
 		// Property changes might change the height of lines,
@@ -4439,7 +4439,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 
 
-	private void setSyncScrolling(boolean newMode) {
+	private void setSyncScrolling(boolean newMode) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fSynchronizedScrolling != newMode) {
 			fSynchronizedScrolling= newMode;
 
@@ -4458,7 +4458,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void updateToolItems() {
 		if (fCopyDiffLeftToRightItem != null) {
 			fCopyDiffLeftToRightItem.setVisible(isRightEditable());
@@ -4492,7 +4492,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 	//---- painting lines
 
-	private void updateLines(IDocument d) {
+	private void updateLines(IDocument d) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean left= false;
 		boolean right= false;
 
@@ -4538,18 +4538,18 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 * @param line
 	 * @return
 	 */
-	private int getHeightBetweenLines(MergeSourceViewer tp, int fromLine, int toLine) {
+	private int getHeightBetweenLines(MergeSourceViewer tp, int fromLine, int toLine) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (fromLine == toLine) {
 			return 0;
 		}
 		StyledText w = tp.getSourceViewer().getTextWidget();
-		List<Integer> lineHeights = this.lineHeightsByViewer.get(tp);
+		List<Integer> lineHeights = this.lineHeightsByViewer.get(tp); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		if (lineHeights == null) {
-			lineHeights = new ArrayList<>();
+			lineHeights = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			lineHeights.addAll(Collections.nCopies(w.getLineCount(), null));
 			this.lineHeightsByViewer.put(tp, lineHeights);
-			tp.getSourceViewer().addTextListener(unused -> resetCachedLineHeights(tp));
+			tp.getSourceViewer().addTextListener(unused -> resetCachedLineHeights(tp)); //FLLDCIM: MARK — T28 DOCUMENT_DELTA CALL
 		}
 
 		int lineSpacing = w.getLineSpacing();
@@ -4562,7 +4562,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		}
 
 		int height = 0;
-		for (int i = fromLine; i < toLine; i++) {
+		for (int i = fromLine; i < toLine; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Integer heightAtLine = lineHeights.get(i);
 			if (heightAtLine == null) {
 				int lineOffset = w.getOffsetAtLine(i);
@@ -4576,14 +4576,14 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 	private void resetCachedLineHeights(MergeSourceViewer mergeViewer) {
 		StyledText styledText = mergeViewer.getSourceViewer().getTextWidget();
-		List<Integer> lineHeightsList = lineHeightsByViewer.get(mergeViewer);
+		List<Integer> lineHeightsList = lineHeightsByViewer.get(mergeViewer); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		if (lineHeightsList != null) {
 			lineHeightsList.clear();
 			lineHeightsList.addAll(Collections.nCopies(styledText.getLineCount(), null));
 		}
 	}
 
-	private void invalidateLines() {
+	private void invalidateLines() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (isThreeWay() && isAncestorVisible()) {
 			if (Utilities.okToUse(fAncestorCanvas)) {
 				fAncestorCanvas.redraw();
@@ -4626,7 +4626,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		return isLeftEditable() || isRightEditable();
 	}
 
-	private void paintCenter(Canvas canvas, GC g) {
+	private void paintCenter(Canvas canvas, GC g) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fLeft == null || fRight == null) {
 			// The paint event for the center control can occur before the left / right controls are created.
 			// simply ignore it in this case.
@@ -4666,7 +4666,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			Point region= new Point(0, 0);
 
 			boolean allOutgoing = allOutgoing();
-			for (Iterator<?> iterator = fMerger.changesIterator(); iterator.hasNext();) {
+			for (Iterator<?> iterator = fMerger.changesIterator(); iterator.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Diff diff = (Diff) iterator.next();
 				if (diff.isDeleted()) {
 					continue;
@@ -4710,7 +4710,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 					g.drawRectangle(w-w2, ry, w2, rh);	// right
 
 					int[] points = getCenterCurvePoints(w2, ly + lh / 2, w - w2, ry + rh / 2);
-					for (int i = 1; i < points.length; i++) {
+					for (int i = 1; i < points.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						g.drawLine(w2 + i - 1, points[i - 1], w2 + i, points[i]);
 					}
 				} else {
@@ -4724,7 +4724,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 					int[] bottomPoints = getCenterCurvePoints(fPts[6], fPts[7], fPts[4], fPts[5]);
 					g.setForeground(fillColor);
 					g.drawLine(0, bottomPoints[0], 0, topPoints[0]);
-					for (int i = 1; i < bottomPoints.length; i++) {
+					for (int i = 1; i < bottomPoints.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						g.setForeground(fillColor);
 						g.drawLine(i, bottomPoints[i], i, topPoints[i]);
 						g.setForeground(strokeColor);
@@ -4756,7 +4756,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		double height= endy - starty;
 		height= height/2;
 		int[] points= new int[width];
-		for (int i= 0; i < width; i++) {
+		for (int i= 0; i < width; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			points[i]= (int) (-height * fBasicCenterCurve[i] + height + starty);
 		}
 		return points;
@@ -4764,7 +4764,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 	private double[] buildBaseCenterCurve(int width) {
 		double[] curve = new double[width];
-		for (int x = 0; x < width; x++) {
+		for (int x = 0; x < width; x++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			curve[x] = Math.cos(Math.PI * x / width);
 		}
 		return curve;
@@ -4774,7 +4774,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		return tp.getSourceViewer().getTopInset() - tp.getSourceViewer().getTextWidget().getTopPixel();
 	}
 
-	private void paintSides(GC g, MergeSourceViewer tp, Canvas canvas, boolean right) {
+	private void paintSides(GC g, MergeSourceViewer tp, Canvas canvas, boolean right) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		Display display= canvas.getDisplay();
 
@@ -4806,7 +4806,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 			Point region= new Point(0, 0);
 			char leg = getLeg(tp);
-			for (Iterator<Diff> iterator = fMerger.changesIterator(); iterator.hasNext();) {
+			for (Iterator<Diff> iterator = fMerger.changesIterator(); iterator.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Diff diff = iterator.next();
 				if (diff.isDeleted()) {
 					continue;
@@ -4844,7 +4844,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 	private boolean allOutgoing() {
 		boolean allOutgoing = !isThreeWay();
-		for (Iterator<Diff> iterator = fMerger.changesIterator(); allOutgoing && iterator.hasNext();) {
+		for (Iterator<Diff> iterator = fMerger.changesIterator(); allOutgoing && iterator.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Diff diff = iterator.next();
 			allOutgoing &= !diff.isDeleted()
 					&& (diff.getKind() == RangeDifference.NOCHANGE || diff.getKind() == RangeDifference.CHANGE);
@@ -4852,7 +4852,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		return allOutgoing;
 	}
 
-	private void paint(PaintEvent event, MergeSourceViewer tp) {
+	private void paint(PaintEvent event, MergeSourceViewer tp) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (! fHighlightRanges) {
 			return;
@@ -4874,7 +4874,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 		char leg = getLeg(tp);
 		boolean allOutgoing = allOutgoing();
-		for (Iterator<?> iterator = fMerger.changesIterator(); iterator.hasNext();) {
+		for (Iterator<?> iterator = fMerger.changesIterator(); iterator.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Diff diff = (Diff) iterator.next();
 			if (diff.isDeleted()) {
 				continue;
@@ -4910,7 +4910,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		return palette.fill;
 	}
 
-	private ColorPalette getColorPalette(Diff diff, boolean showAdditionRemoval) {
+	private ColorPalette getColorPalette(Diff diff, boolean showAdditionRemoval) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (isThreeWay() && !isIgnoreAncestor()) {
 			switch (diff.getKind()) {
 			case RangeDifference.RIGHT:
@@ -4962,7 +4962,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			return null;
 		}
 		if (fColors == null) {
-			fColors= new HashMap<>(20);
+			fColors= new HashMap<>(20); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 		Color c= fColors.get(rgb);
 		if (c == null) {
@@ -4974,7 +4974,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 	//---- Navigating and resolving Diffs
 
-	private Diff getNextVisibleDiff(boolean down, boolean deep) {
+	private Diff getNextVisibleDiff(boolean down, boolean deep) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Diff diff= null;
 		MergeSourceViewer part= getNavigationPart();
 		if (part == null) {
@@ -4982,7 +4982,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		}
 		Point s = part.getSourceViewer().getSelectedRange();
 		char leg = getLeg(part);
-		for (;;) {
+		for (;;) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			diff = null;
 			diff = internalGetNextDiff(down, deep, part, s);
 			if (diff != null && diff.getKind() == RangeDifference.ANCESTOR
@@ -5022,10 +5022,10 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	/*
 	 * Returns true if end (or beginning) of document reached.
 	 */
-	private boolean navigate(boolean down, boolean wrap, boolean deep) {
+	private boolean navigate(boolean down, boolean wrap, boolean deep) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Diff diff= null;
 		boolean wrapped = false;
-		for (;;) {
+		for (;;) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			diff = getNextVisibleDiff(down, deep);
 			if (diff == null && wrap) {
 				if (wrapped) {
@@ -5054,7 +5054,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		}
 	}
 
-	private void handleEndOfDocumentReached(Shell shell, boolean next) {
+	private void handleEndOfDocumentReached(Shell shell, boolean next) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPreferenceStore store = CompareUIPlugin.getDefault().getPreferenceStore();
 		String value = store.getString(ICompareUIConstants.PREF_NAVIGATION_END_ACTION);
 		if (!value.equals(ICompareUIConstants.PREF_VALUE_PROMPT)) {
@@ -5156,7 +5156,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 * If <code>revealAndSelect</code> is <code>true</code> the Diff is revealed and
 	 * selected in both TextParts.
 	 */
-	private void setCurrentDiff(Diff d, boolean revealAndSelect, boolean deep) {
+	private void setCurrentDiff(Diff d, boolean revealAndSelect, boolean deep) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 //		if (d == fCurrentDiff)
 //			return;
@@ -5207,7 +5207,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	/*
 	 * Smart determines whether
 	 */
-	private void revealDiff(Diff d, boolean smart) {
+	private void revealDiff(Diff d, boolean smart) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		boolean ancestorIsVisible= false;
 		boolean leftIsVisible= false;
@@ -5251,7 +5251,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 				allButThis= fAncestor;
 			} else {
 				int vpos= 0;
-				for (Iterator<?> iterator = fMerger.rangesIterator(); iterator.hasNext();) {
+				for (Iterator<?> iterator = fMerger.rangesIterator(); iterator.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Diff diff = (Diff) iterator.next();
 					if (diff == d) {
 						break;
@@ -5326,12 +5326,12 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 
 	//--------------------------------------------------------------------------------
 
-	void copyAllUnresolved(boolean leftToRight) {
+	void copyAllUnresolved(boolean leftToRight) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fMerger.hasChanges() && isThreeWay() && !isIgnoreAncestor()) {
 			IRewriteTarget target= leftToRight ? fRight.getSourceViewer().getRewriteTarget() : fLeft.getSourceViewer().getRewriteTarget();
 			boolean compoundChangeStarted= false;
 			try {
-				for (Iterator<?> iterator = fMerger.changesIterator(); iterator.hasNext();) {
+				for (Iterator<?> iterator = fMerger.changesIterator(); iterator.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Diff diff = (Diff) iterator.next();
 					switch (diff.getKind()) {
 					case RangeDifference.LEFT:
@@ -5367,7 +5367,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	/*
 	 * Copy whole document from one side to the other.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void copy(boolean leftToRight) {
 		if (!validateChange(!leftToRight)) {
 			return;
@@ -5455,7 +5455,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 * doesn't reveal anything.
 	 * Returns true if copy was successful.
 	 */
-	private boolean copy(Diff diff, boolean leftToRight) {
+	private boolean copy(Diff diff, boolean leftToRight) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (diff != null) {
 			if (!validateChange(!leftToRight)) {
@@ -5491,7 +5491,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	/*
 	 * The height of the TextEditors in lines.
 	 */
-	private int getViewportHeight() {
+	private int getViewportHeight() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		StyledText te= fLeft.getSourceViewer().getTextWidget();
 
 		int vh= te.getClientArea().height;
@@ -5520,7 +5520,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		return fMerger.realToVirtualPosition(contributor, vpos);
 	}
 
-	private void scrollVertical(int avpos, int lvpos, int rvpos, MergeSourceViewer allBut) {
+	private void scrollVertical(int avpos, int lvpos, int rvpos, MergeSourceViewer allBut) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		int s= 0;
 
@@ -5581,7 +5581,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	/*
 	 * Updates Scrollbars with viewports.
 	 */
-	private void syncViewport(MergeSourceViewer w) {
+	private void syncViewport(MergeSourceViewer w) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (fInScrolling) {
 			return;
@@ -5691,7 +5691,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		CompareUIPlugin.log(throwable);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@SuppressWarnings("unchecked")
 	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter == IMergeViewerTestAdapter.class) {
@@ -5797,7 +5797,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		return Utilities.getBoolean(getCompareConfiguration(), ICompareUIConstants.PROP_IGNORE_ANCESTOR, false);
 	}
 
-	/* package */ void update(boolean includeControls) {
+	/* package */ void update(boolean includeControls) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (getControl().isDisposed()) {
 			return;
 		}
@@ -5816,7 +5816,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		updateToolbarLabel();
 	}
 
-	private void updateToolbarLabel() {
+	private void updateToolbarLabel() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final String DIFF_COUNT_ID = "DiffCount"; //$NON-NLS-1$
 		boolean isUpdateNeeded = false;
 		ToolBarManager tbm = (ToolBarManager) getToolBarManager(fComposite.getParent());
@@ -5834,7 +5834,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 				isUpdateNeeded = true;
 			}
 			if (isUpdateNeeded) {
-				fComposite.getDisplay().asyncExec(() -> {
+				fComposite.getDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 					// relayout in next tick
 					ToolBar control = tbm.getControl();
 					if (control != null && !control.isDisposed()) {
@@ -5870,7 +5870,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 * Return the provided start position of the hunk in the target file.
 	 * @return the provided start position of the hunk in the target file
 	 */
-	private int getHunkStart() {
+	private int getHunkStart() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Object input = getInput();
 		if (input instanceof DiffNode){
 			ITypedElement right = ((DiffNode) input).getRight();
@@ -5945,7 +5945,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 	 *
 	 * @return the text editor adapter
 	 */
-	private ITextEditor getTextEditorAdapter() {
+	private ITextEditor getTextEditorAdapter() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		return new ITextEditor() {
 			@Override
 			public void close(boolean save) {
@@ -6045,7 +6045,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 			public void dispose() {
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public IWorkbenchPartSite getSite() {
 				return new IWorkbenchPartSite() {
 					@Override
@@ -6193,7 +6193,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		getCompareConfiguration().setProperty("ALL_STRUCTURE_REFRESH", null); //$NON-NLS-1$
 	}
 
-	private void updateStructure(char leg) {
+	private void updateStructure(char leg) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String key = null;
 		switch (leg) {
 		case ANCESTOR_CONTRIBUTOR:
@@ -6212,12 +6212,12 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		getCompareConfiguration().setProperty(key, null);
 	}
 
-	private void updateFontSize(boolean increment, LocalResourceManager localResManager) {
+	private void updateFontSize(boolean increment, LocalResourceManager localResManager) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		StyledText rightStyle = fRight.getSourceViewer().getTextWidget();
 		StyledText leftStyle = fLeft.getSourceViewer().getTextWidget();
 
 		Font rightFont = rightStyle.getFont();
-		for (FontData fd : rightFont.getFontData()) {
+		for (FontData fd : rightFont.getFontData()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (increment) {
 				fCurrentHeight = Math.max(5, fd.getHeight() + 1);
 			} else {
@@ -6226,7 +6226,7 @@ public class TextMergeViewer extends ContentMergeViewer implements IAdaptable {
 		}
 
 		FontData[] baseData = JFaceResources.getTextFont().getFontData();
-		for (FontData fd : baseData) {
+		for (FontData fd : baseData) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fd.setHeight(fCurrentHeight);
 		}
 		FontDescriptor desc = FontDescriptor.createFrom(baseData);

@@ -45,7 +45,7 @@ import org.eclipse.ui.IActionBars;
  */
 public abstract class SynchronizeModelManager extends SynchronizePageActionGroup {
 
-	private static final String P_LAST_PROVIDER = TeamUIPlugin.ID + ".P_LAST_MODELPROVIDER"; //$NON-NLS-1$
+	private static final String P_LAST_PROVIDER = TeamUIPlugin.ID + ".P_LAST_MODELPROVIDER"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	private ISynchronizeModelProvider modelProvider;
 	private List toggleModelProviderActions;
@@ -55,7 +55,7 @@ public abstract class SynchronizeModelManager extends SynchronizePageActionGroup
 	/**
 	 * Action that allows changing the model providers supported by this advisor.
 	 */
-	private class ToggleModelProviderAction extends Action implements IPropertyChangeListener {
+	private class ToggleModelProviderAction extends Action implements IPropertyChangeListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 		private final ISynchronizeModelProviderDescriptor descriptor;
 		protected ToggleModelProviderAction(ISynchronizeModelProviderDescriptor descriptor) {
 			super(descriptor.getName(), IAction.AS_RADIO_BUTTON);
@@ -63,7 +63,7 @@ public abstract class SynchronizeModelManager extends SynchronizePageActionGroup
 			setToolTipText(descriptor.getName());
 			this.descriptor = descriptor;
 			update();
-			configuration.addPropertyChangeListener(this);
+			configuration.addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		}
 
 		@Override
@@ -191,7 +191,7 @@ public abstract class SynchronizeModelManager extends SynchronizePageActionGroup
 	 * It is for use by test purposes only.
 	 * @return the model root
 	 */
-	public ISynchronizeModelElement getModelRoot() {
+	public ISynchronizeModelElement getModelRoot() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (modelProvider != null && modelProvider instanceof SynchronizeModelProvider) {
 			((SynchronizeModelProvider)modelProvider).waitUntilDone(new IProgressMonitor() {
 				@Override
@@ -218,7 +218,7 @@ public abstract class SynchronizeModelManager extends SynchronizePageActionGroup
 				}
 				@Override
 				public void worked(int work) {
-					while (Display.getCurrent().readAndDispatch()) {}
+					while (Display.getCurrent().readAndDispatch()) {} //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				}
 			});
 			return modelProvider.getModelRoot();
@@ -227,14 +227,14 @@ public abstract class SynchronizeModelManager extends SynchronizePageActionGroup
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void initialize(ISynchronizePageConfiguration configuration) {
 		super.initialize(configuration);
 		ISynchronizeModelProviderDescriptor[] providers = getSupportedModelProviders();
 		// We only need switching of layouts if there is more than one model provider
 		if (providers.length > 1) {
-			toggleModelProviderActions = new ArrayList();
-			for (ISynchronizeModelProviderDescriptor provider : providers) {
+			toggleModelProviderActions = new ArrayList(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (ISynchronizeModelProviderDescriptor provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				toggleModelProviderActions.add(new ToggleModelProviderAction(provider));
 			}
 		}
@@ -252,7 +252,7 @@ public abstract class SynchronizeModelManager extends SynchronizePageActionGroup
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void fillActionBars(IActionBars actionBars) {
 		if (toggleModelProviderActions == null) {
 			return;
@@ -273,7 +273,7 @@ public abstract class SynchronizeModelManager extends SynchronizePageActionGroup
 	}
 
 	private void appendToMenu(String groupId, IContributionManager menu) {
-		for (Iterator iter = toggleModelProviderActions.iterator(); iter.hasNext();) {
+		for (Iterator iter = toggleModelProviderActions.iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (groupId == null) {
 				menu.add((Action) iter.next());
 			} else {

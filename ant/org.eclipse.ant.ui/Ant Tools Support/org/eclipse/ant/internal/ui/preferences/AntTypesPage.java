@@ -102,8 +102,8 @@ public class AntTypesPage extends AntPage {
 
 	private AddCustomDialog getCustomDialog(String title, String helpContext) {
 		Iterator<Object> types = getContents(true).iterator();
-		List<String> names = new ArrayList<>();
-		while (types.hasNext()) {
+		List<String> names = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		while (types.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Type aTask = (Type) types.next();
 			names.add(aTask.getTypeName());
 		}

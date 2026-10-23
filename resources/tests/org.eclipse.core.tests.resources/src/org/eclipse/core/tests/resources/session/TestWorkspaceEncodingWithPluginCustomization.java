@@ -47,8 +47,8 @@ public class TestWorkspaceEncodingWithPluginCustomization {
 		// create plugin_customization.ini file
 		File file = new File(FILE_NAME);
 		file.deleteOnExit();
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-			writer.write("org.eclipse.core.resources/encoding=" + CHARSET);
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
+			writer.write("org.eclipse.core.resources/encoding=" + CHARSET); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		// add pluginCustomization argument
 		sessionTestExtension.setEclipseArgument("pluginCustomization", file.toString());

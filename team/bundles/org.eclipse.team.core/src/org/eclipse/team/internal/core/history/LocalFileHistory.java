@@ -39,7 +39,7 @@ public class LocalFileHistory extends FileHistory {
 		this.includeCurrent = includeCurrent;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IFileRevision[] getContributors(IFileRevision revision) {
 
 		IFileRevision[] revisions = getFileRevisions();
@@ -47,7 +47,7 @@ public class LocalFileHistory extends FileHistory {
 		//the predecessor is the file with a timestamp that is the largest timestamp
 		//from the set of all timestamps smaller than the root file's timestamp
 		IFileRevision fileRevision = null;
-		for (IFileRevision r : revisions) {
+		for (IFileRevision r : revisions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (((LocalFileRevision) r).isPredecessorOf(revision)) {
 				//no revision has been set as of yet
 				if (fileRevision == null) {
@@ -69,7 +69,7 @@ public class LocalFileHistory extends FileHistory {
 	@Override
 	public IFileRevision getFileRevision(String id) {
 		if (revisions != null) {
-			for (IFileRevision revision : revisions) {
+			for (IFileRevision revision : revisions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (revision.getContentIdentifier().equals(id)) {
 					return revision;
 				}
@@ -89,9 +89,9 @@ public class LocalFileHistory extends FileHistory {
 	@Override
 	public IFileRevision[] getTargets(IFileRevision revision) {
 		IFileRevision[] revisions = getFileRevisions();
-		ArrayList<IFileRevision> directDescendents = new ArrayList<>();
+		ArrayList<IFileRevision> directDescendents = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-		for (IFileRevision r : revisions) {
+		for (IFileRevision r : revisions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (((LocalFileRevision) r).isDescendentOf(revision)) {
 				directDescendents.add(r);
 			}
@@ -104,7 +104,7 @@ public class LocalFileHistory extends FileHistory {
 	 *
 	 * @param monitor	a progress monitor
 	 */
-	public void refresh(IProgressMonitor monitor) throws TeamException {
+	public void refresh(IProgressMonitor monitor) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		monitor.beginTask(Messages.LocalFileHistory_RefreshLocalHistory/*, file.getProjectRelativePath().toString())*/, 300);
 		try {
 			// Include the file's current state if and only if the file exists.
@@ -113,7 +113,7 @@ public class LocalFileHistory extends FileHistory {
 			IFileState[] fileStates = file.getHistory(monitor);
 			int numRevisions = fileStates.length + (currentRevision != null ? 1 : 0);
 			revisions = new LocalFileRevision[numRevisions];
-			for (int i = 0; i < fileStates.length; i++) {
+			for (int i = 0; i < fileStates.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				revisions[i] = new LocalFileRevision(fileStates[i]);
 			}
 			if (currentRevision != null) {

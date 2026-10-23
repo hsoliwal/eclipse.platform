@@ -144,10 +144,10 @@ public class RunToLineTests {
 	 * @param skipBreakpoints    preference value for "skip breakpoints during run
 	 *                           to line"
 	 */
-	public void runToLine(final int lineNumber, int expectedLineNumber, boolean skipBreakpoints, boolean sepVM)
+	public void runToLine(final int lineNumber, int expectedLineNumber, boolean skipBreakpoints, boolean sepVM) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws Exception {
 		String fileName = "breakpoints"; //$NON-NLS-1$
-		AntLineBreakpoint breakpoint = createLineBreakpoint(5, fileName + ".xml"); //$NON-NLS-1$
+		AntLineBreakpoint breakpoint = createLineBreakpoint(5, fileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		boolean restore = DebugUITools.getPreferenceStore()
 				.getBoolean(IDebugUIConstants.PREF_SKIP_BREAKPOINTS_DURING_RUN_TO_LINE);
@@ -163,7 +163,7 @@ public class RunToLineTests {
 				activeWorkbenchWindow.addPerspectiveListener(listener);
 			};
 			Display display = DebugUIPlugin.getStandardDisplay();
-			display.syncExec(closeAll);
+			display.syncExec(closeAll); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 
 			if (sepVM) {
 				fileName += "SepVM"; //$NON-NLS-1$
@@ -185,12 +185,12 @@ public class RunToLineTests {
 				IRunToLineTarget adapter = editor.getAdapter(IRunToLineTarget.class);
 				assertNotNull(adapter, "no run to line adapter"); //$NON-NLS-1$
 				IDocumentProvider documentProvider = editor.getDocumentProvider();
-				assertNotNull(documentProvider, "The document provider should not be null for: " + editor.getTitle()); //$NON-NLS-1$
+				assertNotNull(documentProvider, "The document provider should not be null for: " + editor.getTitle()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				try {
 					// position cursor to line
 					documentProvider.connect(this);
 					IDocument document = documentProvider.getDocument(editor.getEditorInput());
-					assertNotNull(document, "The document should be available for: " + editor.getTitle()); //$NON-NLS-1$
+					assertNotNull(document, "The document should be available for: " + editor.getTitle()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					int lineOffset = document.getLineOffset(lineNumber - 1); // document is 0 based!
 					documentProvider.disconnect(this);
 					editor.selectAndReveal(lineOffset, 0);
@@ -201,7 +201,7 @@ public class RunToLineTests {
 				}
 			};
 			DebugElementEventWaiter waiter = new DebugElementEventWaiter(DebugEvent.SUSPEND, thread);
-			DebugUIPlugin.getStandardDisplay().syncExec(r);
+			DebugUIPlugin.getStandardDisplay().syncExec(r); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			Object event = waiter.waitForEvent();
 			if (event == null) {
 				throw new TestAgainException("Retest - no suspend event was recieved"); //$NON-NLS-1$
@@ -219,7 +219,7 @@ public class RunToLineTests {
 				activeWorkbenchWindow.removePerspectiveListener(listener);
 			};
 			Display display = DebugUIPlugin.getStandardDisplay();
-			display.asyncExec(cleanup);
+			display.asyncExec(cleanup); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		}
 	}
 }

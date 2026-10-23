@@ -75,7 +75,7 @@ public class ConfigurationWizard extends Wizard implements IConfigurationWizard,
 	 * Using the information entered in the main page set the provider for
 	 * the given project.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean performFinish() {
 		mainPage.finish(null);
 		try {
@@ -85,7 +85,7 @@ public class ConfigurationWizard extends Wizard implements IConfigurationWizard,
 				FileSystemProvider provider = (FileSystemProvider) RepositoryProvider.getProvider(projects[0]);
 				provider.setTargetLocation(mainPage.getLocation());
 			} else {
-				for (IProject project : projects) {
+				for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					RepositoryProvider.map(project, FileSystemPlugin.PROVIDER_ID);
 					FileSystemProvider provider = (FileSystemProvider) RepositoryProvider.getProvider(project);
 					String path = IPath.fromOSString(mainPage.getLocation()).append(project.getName()).toOSString();

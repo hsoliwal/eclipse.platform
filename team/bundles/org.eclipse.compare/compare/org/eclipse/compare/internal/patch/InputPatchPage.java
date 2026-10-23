@@ -80,10 +80,10 @@ public class InputPatchPage extends WizardPage {
 
 	// dialog store id constants
 	private final static String PAGE_NAME= "PatchWizardPage1"; //$NON-NLS-1$
-	private final static String STORE_PATCH_FILES_ID= PAGE_NAME+".PATCH_FILES"; //$NON-NLS-1$
-	private final static String STORE_PATCH_URLS_ID= PAGE_NAME+".PATCH_URLS"; //$NON-NLS-1$
-	private final static String STORE_INPUT_METHOD_ID= PAGE_NAME+".INPUT_METHOD"; //$NON-NLS-1$
-	private final static String STORE_WORKSPACE_PATH_ID= PAGE_NAME+".WORKSPACE_PATH"; //$NON-NLS-1$
+	private final static String STORE_PATCH_FILES_ID= PAGE_NAME+".PATCH_FILES"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	private final static String STORE_PATCH_URLS_ID= PAGE_NAME+".PATCH_URLS"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	private final static String STORE_INPUT_METHOD_ID= PAGE_NAME+".INPUT_METHOD"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	private final static String STORE_WORKSPACE_PATH_ID= PAGE_NAME+".WORKSPACE_PATH"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	//patch input constants
 	protected final static int CLIPBOARD= 1;
@@ -111,7 +111,7 @@ public class InputPatchPage extends WizardPage {
 	private TreeViewer fTreeViewer;
 
 	class ActivationListener extends ShellAdapter {
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void shellActivated(ShellEvent e) {
 			// allow error messages if the selected input actually has something selected in it
 			fShowError=true;
@@ -154,7 +154,7 @@ public class InputPatchPage extends WizardPage {
 		return getPatchFilePath();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createControl(Composite parent) {
 
 		Composite composite= new Composite(parent, SWT.NULL);
@@ -196,7 +196,7 @@ public class InputPatchPage extends WizardPage {
 	 *      allows the user to specify where to root the patch
 	 * @return PreviewPatchPage if multi-project patch, PatchTargetPage if single project patch
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IWizardPage getNextPage() {
 		if (!checkPageComplete()) {
 			return this;
@@ -252,7 +252,7 @@ public class InputPatchPage extends WizardPage {
 	/*
 	 * Reads in the patch contents
 	 */
-	public void readInPatch(){
+	public void readInPatch(){ //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fPatchRead) {
 			return;
 		}
@@ -277,7 +277,7 @@ public class InputPatchPage extends WizardPage {
 		}
 	}
 
-	private Reader createReader() {
+	private Reader createReader() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int inputMethod = getInputMethod();
 		if (inputMethod == CLIPBOARD) {
 			Control c = getControl();
@@ -294,7 +294,7 @@ public class InputPatchPage extends WizardPage {
 			String patchFilePath = getPatchFilePath();
 			if (patchFilePath != null) {
 				try {
-					return new FileReader(patchFilePath);
+					return new FileReader(patchFilePath); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 				} catch (FileNotFoundException ex) {
 					MessageDialog.openError(null, PatchMessages.InputPatchPage_PatchErrorDialog_title,
 							PatchMessages.InputPatchPage_PatchFileNotFound_message);
@@ -324,7 +324,7 @@ public class InputPatchPage extends WizardPage {
 							PatchMessages.InputPatchPage_PatchFileNotFound_message);
 				} else {
 					try {
-						return new FileReader(patchFile.getLocation().toFile());
+						return new FileReader(patchFile.getLocation().toFile()); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 					} catch (FileNotFoundException ex) {
 						MessageDialog.openError(null, PatchMessages.InputPatchPage_PatchErrorDialog_title,
 								PatchMessages.InputPatchPage_PatchFileNotFound_message);
@@ -360,7 +360,7 @@ public class InputPatchPage extends WizardPage {
 	/*
 	 *	Create the group for selecting the patch file
 	 */
-	private void buildPatchFileGroup(Composite parent) {
+	private void buildPatchFileGroup(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		final Composite composite= new Composite(parent, SWT.NULL);
 		GridLayout gridLayout= new GridLayout();
@@ -410,7 +410,7 @@ public class InputPatchPage extends WizardPage {
 		addWorkspaceControls(parent);
 
 		// Add listeners
-		fUseClipboardButton.addSelectionListener(new SelectionAdapter() {
+		fUseClipboardButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (!fUseClipboardButton.getSelection()) {
@@ -428,7 +428,7 @@ public class InputPatchPage extends WizardPage {
 			}
 		});
 
-		fUsePatchFileButton.addSelectionListener(new SelectionAdapter() {
+		fUsePatchFileButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (!fUsePatchFileButton.getSelection()) {
@@ -445,19 +445,19 @@ public class InputPatchPage extends WizardPage {
 				fPatchRead = false;
 			}
 		});
-		fPatchFileNameField.addSelectionListener(new SelectionAdapter() {
+		fPatchFileNameField.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				updateWidgetEnablements();
 			}
 		});
-		fPatchFileNameField.addModifyListener(unused -> {
+		fPatchFileNameField.addModifyListener(unused -> { //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 			clearErrorMessage();
 			fShowError= true;
 			fPatchRead = false;
 			updateWidgetEnablements();
 		});
-		fPatchFileBrowseButton.addSelectionListener(new SelectionAdapter() {
+		fPatchFileBrowseButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				clearErrorMessage();
@@ -466,7 +466,7 @@ public class InputPatchPage extends WizardPage {
 				updateWidgetEnablements();
 			}
 		});
-		fUseURLButton.addSelectionListener(new SelectionAdapter() {
+		fUseURLButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				clearErrorMessage();
@@ -478,13 +478,13 @@ public class InputPatchPage extends WizardPage {
 				updateWidgetEnablements();
 			}
 		});
-		fPatchURLField.addModifyListener(unused -> {
+		fPatchURLField.addModifyListener(unused -> { //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 			clearErrorMessage();
 			fShowError = true;
 			fPatchRead = false;
 			updateWidgetEnablements();
 		});
-		fUseWorkspaceButton.addSelectionListener(new SelectionAdapter() {
+		fUseWorkspaceButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (!fUseWorkspaceButton.getSelection()) {
@@ -502,12 +502,12 @@ public class InputPatchPage extends WizardPage {
 			}
 		});
 
-		fTreeViewer.addSelectionChangedListener(unused -> {
+		fTreeViewer.addSelectionChangedListener(unused -> { //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 			clearErrorMessage();
 			updateWidgetEnablements();
 		});
 
-		fTreeViewer.addDoubleClickListener(event -> {
+		fTreeViewer.addDoubleClickListener(event -> { //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
 			ISelection selection= event.getSelection();
 			if (selection instanceof TreeSelection treeSel) {
 				Object res= treeSel.getFirstElement();
@@ -526,7 +526,7 @@ public class InputPatchPage extends WizardPage {
 		});
 	}
 
-	private void addWorkspaceControls(Composite composite) {
+	private void addWorkspaceControls(Composite composite) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		Composite newComp= new Composite(composite, SWT.NONE);
 		GridLayout layout= new GridLayout(1, false);
@@ -542,17 +542,17 @@ public class InputPatchPage extends WizardPage {
 		layoutData.heightHint = 300;
 		fTreeViewer.getTree().setLayoutData(layoutData);
 
-		fTreeViewer.setLabelProvider(new WorkbenchLabelProvider());
+		fTreeViewer.setLabelProvider(new WorkbenchLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 		fTreeViewer.setContentProvider(new WorkbenchContentProvider());
 		fTreeViewer.setComparator(new ResourceComparator(ResourceComparator.NAME));
-		fTreeViewer.setInput(ResourcesPlugin.getWorkspace().getRoot());
+		fTreeViewer.setInput(ResourcesPlugin.getWorkspace().getRoot()); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 	}
 
 
 	/**
 	 * Updates the enable state of this page's controls.
 	 */
-	private void updateWidgetEnablements() {
+	private void updateWidgetEnablements() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		String error= null;
 
@@ -581,9 +581,9 @@ public class InputPatchPage extends WizardPage {
 			String path= fPatchFileNameField.getText();
 			if (path != null && path.length() > 0) {
 				File file= new File(path);
-				gotPatch= file.exists() && file.isFile() && file.length() > 0;
+				gotPatch= file.exists() && file.isFile() && file.length() > 0; //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				if (!gotPatch) {
-					error= PatchMessages.InputPatchPage_CannotLocatePatch_message + path;
+					error= PatchMessages.InputPatchPage_CannotLocatePatch_message + path; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			} else {
 				error= PatchMessages.InputPatchPage_NoFileName_message;
@@ -613,7 +613,7 @@ public class InputPatchPage extends WizardPage {
 						error = PatchMessages.InputPatchPage_PatchFileNotFound_message;
 					} else {
 						File actualFile= location.toFile();
-						gotPatch= actualFile.exists()&&actualFile.isFile()&&actualFile.length() > 0;
+						gotPatch= actualFile.exists()&&actualFile.isFile()&&actualFile.length() > 0; //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						if (!gotPatch) {
 							error= PatchMessages.InputPatchPage_FileSelectedNotPatch_message;
 						}
@@ -631,7 +631,7 @@ public class InputPatchPage extends WizardPage {
 		}
 	}
 
-	protected void handlePatchFileBrowseButtonPressed() {
+	protected void handlePatchFileBrowseButtonPressed() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		FileDialog dialog= new FileDialog(getShell(), SWT.NONE);
 		dialog.setText(PatchMessages.InputPatchPage_SelectPatchFileDialog_title);
 		String patchFilePath= getPatchFilePath();
@@ -664,13 +664,13 @@ public class InputPatchPage extends WizardPage {
 	 *
 	 * @param path the path to be added
 	 */
-	protected void setSourceName(String path) {
+	protected void setSourceName(String path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (path.length() > 0) {
 
 			String[] currentItems= fPatchFileNameField.getItems();
 			int selectionIndex= -1;
-			for (int i= 0; i < currentItems.length; i++) {
+			for (int i= 0; i < currentItems.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (currentItems[i].equals(path)) {
 					selectionIndex= i;
 				}
@@ -697,7 +697,7 @@ public class InputPatchPage extends WizardPage {
 	 *
 	 * @return boolean
 	 */
-	public boolean finish() {
+	public boolean finish() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 //		if (!ensureSourceIsValid())
 //			return false;
 
@@ -728,7 +728,7 @@ public class InputPatchPage extends WizardPage {
 	 *	Use the dialog store to restore widget values to the values that they held
 	 *	last time this wizard was used to completion
 	 */
-	private void restoreWidgetValues() {
+	private void restoreWidgetValues() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		int inputMethod= FILE;
 
@@ -744,7 +744,7 @@ public class InputPatchPage extends WizardPage {
 			// set filenames history
 			String[] sourceNames= settings.getArray(STORE_PATCH_FILES_ID);
 			if (sourceNames != null) {
-				for (String sourceName : sourceNames) {
+				for (String sourceName : sourceNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (sourceName != null && sourceName.length() > 0) {
 						fPatchFileNameField.add(sourceName);
 					}
@@ -760,7 +760,7 @@ public class InputPatchPage extends WizardPage {
 			// set URLs history
 			String[] sourceURLs= settings.getArray(STORE_PATCH_URLS_ID);
 			if (sourceURLs != null) {
-				for (String sourceURL : sourceURLs) {
+				for (String sourceURL : sourceURLs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (sourceURL != null && sourceURL.length() > 0) {
 						fPatchURLField.add(sourceURL);
 					}
@@ -808,7 +808,7 @@ public class InputPatchPage extends WizardPage {
 	 * 	Since Finish was pressed, write widget values to the dialog store so that they
 	 *	will persist into the next invocation of this wizard page
 	 */
-	void saveWidgetValues() {
+	void saveWidgetValues() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IDialogSettings settings= getDialogSettings();
 		if (settings != null) {
 
@@ -861,7 +861,7 @@ public class InputPatchPage extends WizardPage {
 	 *         is a patch file or if the clipboard contains a patch or if the
 	 *         clipboard contains an URL (we assume it points to a patch )
 	 */
-	private boolean adjustToCurrentTarget() {
+	private boolean adjustToCurrentTarget() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// readjust selection if there is a patch selected in the workspace or on the clipboard
 		// check workspace first
 		IResource patchTarget= fPatchWizard.getTarget();
@@ -869,7 +869,7 @@ public class InputPatchPage extends WizardPage {
 			Reader reader= null;
 			try {
 				try {
-					reader= new FileReader(patchTarget.getLocation().toFile());
+					reader= new FileReader(patchTarget.getLocation().toFile()); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 					if (isPatchFile(reader)) {
 						// set choice to workspace
 						setInputButtonState(WORKSPACE);
@@ -944,7 +944,7 @@ public class InputPatchPage extends WizardPage {
 		setErrorMessage(null);
 	}
 
-	private void setInputButtonState(int state) {
+	private void setInputButtonState(int state) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		switch (state) {
 		case CLIPBOARD:
@@ -1012,7 +1012,7 @@ public class InputPatchPage extends WizardPage {
 	 * @param newEntry the entry to add to the history
 	 */
 	protected static String[] addToHistory(String[] history, String newEntry) {
-		ArrayList<String> l= new ArrayList<>(Arrays.asList(history));
+		ArrayList<String> l= new ArrayList<>(Arrays.asList(history)); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		l.remove(newEntry);
 		l.add(0,newEntry);

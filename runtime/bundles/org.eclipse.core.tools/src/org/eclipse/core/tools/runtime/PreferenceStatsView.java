@@ -88,7 +88,7 @@ public class PreferenceStatsView extends SpyView {
 			nonEmptyNodes = new TreeSet<>();
 		}
 
-		private int basicSizeof(IEclipsePreferences node) {
+		private int basicSizeof(IEclipsePreferences node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			if (node instanceof EclipsePreferences) {
 				return basicSizeof((EclipsePreferences) node);
 			}
@@ -99,7 +99,7 @@ public class PreferenceStatsView extends SpyView {
 			// key/value pairs
 			try {
 				String[] keys = node.keys();
-				for (String key : keys) {
+				for (String key : keys) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					count += sizeof(key);
 					String value = node.get(key, null);
 					count += sizeof(value);
@@ -114,7 +114,7 @@ public class PreferenceStatsView extends SpyView {
 		 * 12 for the object header
 		 * 4 for each slot
 		 */
-		private int basicSizeof(EclipsePreferences node) {
+		private int basicSizeof(EclipsePreferences node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			int count = 12;
 
 			// name
@@ -138,7 +138,7 @@ public class PreferenceStatsView extends SpyView {
 			count += 4;
 			try {
 				String[] childrenNames = node.childrenNames();
-				for (String childrenName : childrenNames) {
+				for (String childrenName : childrenNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					count += sizeof(childrenName);
 				}
 			} catch (BackingStoreException e) {
@@ -161,7 +161,7 @@ public class PreferenceStatsView extends SpyView {
 			// TODO this isn't quite right but is ok for now
 			count += 4;
 			String[] keys = node.keys();
-			for (String key : keys) {
+			for (String key : keys) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				count += sizeof(key);
 				String value = node.get(key, null);
 				count += sizeof(value);
@@ -178,7 +178,7 @@ public class PreferenceStatsView extends SpyView {
 			//formula taken from BundleStats
 			int count = (int) Math.round(44 + (16 + (map.size() * 1.25 * 4)) + (24 * map.size()));
 
-			for (Map.Entry<?, ?> entry : map.entrySet()) {
+			for (Map.Entry<?, ?> entry : map.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				count += sizeof(entry.getKey());
 				count += sizeof(entry.getValue());
 			}
@@ -189,7 +189,7 @@ public class PreferenceStatsView extends SpyView {
 		 * All sizeof tests should go through this central method to weed out
 		 * duplicates.
 		 */
-		private int sizeof(Object object) {
+		private int sizeof(Object object) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			if (object == null) { //|| DeepSize.ignore(object))
 				return 0;
 			}
@@ -215,7 +215,7 @@ public class PreferenceStatsView extends SpyView {
 			return 0;
 		}
 
-		private void visitTree() throws BackingStoreException {
+		private void visitTree() throws BackingStoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			// count the number of nodes in the preferences tree
 			reset();
 			IPreferenceNodeVisitor visitor = node -> {
@@ -227,7 +227,7 @@ public class PreferenceStatsView extends SpyView {
 					if (keys == 0) {
 						emptyNodes++;
 					} else {
-						nonEmptyNodes.add(node.absolutePath() + " (" + keys + ")"); //$NON-NLS-1$//$NON-NLS-2$
+						nonEmptyNodes.add(node.absolutePath() + " (" + keys + ")"); //$NON-NLS-1$//$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 				} catch (BackingStoreException e) {
 					e.printStackTrace();
@@ -237,19 +237,19 @@ public class PreferenceStatsView extends SpyView {
 			rootNode.accept(visitor);
 		}
 
-		void updateTextView() {
-			final StringBuilder buffer = new StringBuilder();
-			buffer.append("Total node count: " + prettyPrint(nodeCount) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-			buffer.append("Nodes without keys: " + prettyPrint(emptyNodes) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-			buffer.append("Key/value pairs: " + prettyPrint(kvCount) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-			buffer.append("Total size of tree: " + prettyPrint(treeSize) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-			buffer.append("Nodes with key/value pairs:\n"); //$NON-NLS-1$
-			for (String string : nonEmptyNodes) {
-				buffer.append("\t" + string + "\n"); //$NON-NLS-1$//$NON-NLS-2$
+		void updateTextView() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+			final StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+			buffer.append("Total node count: " + prettyPrint(nodeCount) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append("Nodes without keys: " + prettyPrint(emptyNodes) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append("Key/value pairs: " + prettyPrint(kvCount) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append("Total size of tree: " + prettyPrint(treeSize) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append("Nodes with key/value pairs:\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			for (String string : nonEmptyNodes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				buffer.append("\t" + string + "\n"); //$NON-NLS-1$//$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 
 			//post changes to UI thread
-			viewer.getControl().getDisplay().asyncExec(() -> {
+			viewer.getControl().getDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				if (!viewer.getControl().isDisposed()) {
 					IDocument doc = viewer.getDocument();
 					doc.set(buffer.toString());
@@ -258,21 +258,21 @@ public class PreferenceStatsView extends SpyView {
 			});
 		}
 
-		private String prettyPrint(int i) {
-			StringBuilder buf = new StringBuilder();
-			for (;;) {
+		private String prettyPrint(int i) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+			StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+			for (;;) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (i < 1000) {
 					String val = Integer.toString(i);
 					//pad with zeros if necessary
 					if (buf.length() > 0) {
 						if (val.length() < 2) {
-							buf.append('0');
+							buf.append('0'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 						}
 						if (val.length() < 3) {
-							buf.append('0');
+							buf.append('0'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 						}
 					}
-					buf.append(val);
+					buf.append(val); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					return buf.toString();
 				}
 				if (i < 1000000) {
@@ -280,25 +280,25 @@ public class PreferenceStatsView extends SpyView {
 					//pad with zeros if necessary
 					if (buf.length() > 0) {
 						if (val.length() < 2) {
-							buf.append('0');
+							buf.append('0'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 						}
 						if (val.length() < 3) {
-							buf.append('0');
+							buf.append('0'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 						}
 					}
-					buf.append(val);
-					buf.append(',');
+					buf.append(val); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					buf.append(','); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					i = i % 1000;
 					continue;
 				}
-				buf.append(Integer.toString(i / 1000000));
-				buf.append(',');
+				buf.append(Integer.toString(i / 1000000)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				buf.append(','); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				i = i % 1000000;
 			}
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createPartControl(Composite parent) {
 
 		viewer = new TextViewer(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.WRAP | SWT.READ_ONLY);
@@ -319,7 +319,7 @@ public class PreferenceStatsView extends SpyView {
 		// Delete action shortcuts are not captured by the workbench
 		// so we need our key binding service to handle Delete keystrokes for us
 
-		this.viewer.getControl().addKeyListener(new KeyAdapter() {
+		this.viewer.getControl().addKeyListener(new KeyAdapter() { //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if (e.character == SWT.DEL) {

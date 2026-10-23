@@ -88,7 +88,7 @@ public class PatchUtils {
 		@Override
 		public InputStream getContents() throws CoreException {
 			try {
-				return Files.newInputStream(file.toPath());
+				return Files.newInputStream(file.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			} catch (IOException e) {
 				// ignore, should never happen
 			}
@@ -128,7 +128,7 @@ public class PatchUtils {
 		@Override
 		public InputStream getContents() throws CoreException {
 			try {
-				return jarFile.getInputStream(jarEntry);
+				return jarFile.getInputStream(jarEntry); //FLLDCIM: MARK — M25 M3FILE_ARCHIVE_STREAM CALL
 			} catch (IOException e) {
 				// ignore, should never happen
 			}
@@ -163,10 +163,10 @@ public class PatchUtils {
 	public static InputStream asInputStream(String name) {
 		IPath path = IPath.fromOSString(PATCHDATA).append(name);
 		try {
-			URL url = getBundle().getEntry("/" + path.toString());
+			URL url = getBundle().getEntry("/" + path.toString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			return url.openStream();
 		} catch (IOException e) {
-			throw new IllegalStateException("failed while reading " + name, e);
+			throw new IllegalStateException("failed while reading " + name, e); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 

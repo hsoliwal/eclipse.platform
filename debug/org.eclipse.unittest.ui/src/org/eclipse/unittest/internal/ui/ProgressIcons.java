@@ -52,7 +52,7 @@ public class ProgressIcons {
 		}
 	}
 
-	private final Map<ProgressIconKey, Image> progressIcons = new HashMap<>();
+	private final Map<ProgressIconKey, Image> progressIcons = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	private final Device display;
 
 	/**
@@ -89,8 +89,8 @@ public class ProgressIcons {
 		return progressIcons.computeIfAbsent(key, unused -> {
 			ImageData imageData = (ImageData) initialImageData.clone();
 			int pixelColorCode = imageData.palette.getPixel(color);
-			for (int line = 4 * imageData.height / 5; line < imageData.height; line++) {
-				for (int column = 0; column < pixelsToDraw && column < imageData.width; column++) {
+			for (int line = 4 * imageData.height / 5; line < imageData.height; line++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				for (int column = 0; column < pixelsToDraw && column < imageData.width; column++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					imageData.setAlpha(column, line, 255);
 					imageData.setPixel(column, line, pixelColorCode);
 				}

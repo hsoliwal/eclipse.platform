@@ -33,9 +33,9 @@ import org.eclipse.team.core.TeamException;
 public class SessionResourceVariantByteStore extends ResourceVariantByteStore {
 
 	private static final byte[] NO_REMOTE = new byte[0];
-	private final Map<IResource, List<IResource>> membersCache = new HashMap<>();
+	private final Map<IResource, List<IResource>> membersCache = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
-	private final Map<IResource, byte[]> syncBytesCache = new HashMap<>();
+	private final Map<IResource, byte[]> syncBytesCache = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	@Override
 	public boolean deleteBytes(IResource resource) throws TeamException {
@@ -53,7 +53,7 @@ public class SessionResourceVariantByteStore extends ResourceVariantByteStore {
 		if (getSyncBytesCache().containsKey(resource)) {
 			if (depth != IResource.DEPTH_ZERO) {
 				IResource[] members = members(resource);
-				for (IResource child : members) {
+				for (IResource child : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					flushBytes(child, (depth == IResource.DEPTH_INFINITE) ? IResource.DEPTH_INFINITE: IResource.DEPTH_ZERO);
 				}
 			}
@@ -113,7 +113,7 @@ public class SessionResourceVariantByteStore extends ResourceVariantByteStore {
 		}
 		List<IResource> members = membersCache.get(parent);
 		if (members == null) {
-			members = new ArrayList<>();
+			members = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			membersCache.put(parent, members);
 		}
 		members.add(resource);

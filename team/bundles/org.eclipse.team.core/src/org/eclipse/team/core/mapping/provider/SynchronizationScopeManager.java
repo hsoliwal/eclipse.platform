@@ -97,10 +97,10 @@ public class SynchronizationScopeManager extends PlatformObject implements ISync
 	public static ResourceMapping[] getMappingsFromProviders(ResourceTraversal[] traversals,
 			ResourceMappingContext context,
 			IProgressMonitor monitor) throws CoreException {
-		Set<ResourceMapping> result = new HashSet<>();
+		Set<ResourceMapping> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IModelProviderDescriptor[] descriptors = ModelProvider
 				.getModelProviderDescriptors();
-		for (IModelProviderDescriptor descriptor : descriptors) {
+		for (IModelProviderDescriptor descriptor : descriptors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceMapping[] mappings = getMappings(descriptor, traversals,
 					context, monitor);
 			result.addAll(Arrays.asList(mappings));
@@ -150,10 +150,10 @@ public class SynchronizationScopeManager extends PlatformObject implements ISync
 	 * @return the scheduling rule that is used when initializing and refreshing
 	 *         the scope
 	 */
-	public ISchedulingRule getSchedulingRule() {
-		Set<IProject> projects = new HashSet<>();
+	public ISchedulingRule getSchedulingRule() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		Set<IProject> projects = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		ResourceMapping[] mappings = scope.getInputMappings();
-		for (ResourceMapping mapping : mappings) {
+		for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object modelObject = mapping.getModelObject();
 			if (modelObject instanceof IResource resource) {
 				if (resource.getType() == IResource.ROOT) {
@@ -184,12 +184,12 @@ public class SynchronizationScopeManager extends PlatformObject implements ISync
 		// We need to lock the workspace when building the scope
 		final ResourceTraversal[][] traversals = new ResourceTraversal[][] { new ResourceTraversal[0] };
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		workspace.run((IWorkspaceRunnable) monitor1 -> traversals[0] = internalRefreshScope(mappings, true, monitor1),
+		workspace.run((IWorkspaceRunnable) monitor1 -> traversals[0] = internalRefreshScope(mappings, true, monitor1), //FLLDCIM: MARK — T09  LAMBDA
 				getSchedulingRule(), IResource.NONE, monitor);
 		return traversals[0];
 	}
 
-	private void internalPrepareContext(IProgressMonitor monitor) throws CoreException {
+	private void internalPrepareContext(IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (initialized) {
 			return;
 		}
@@ -201,7 +201,7 @@ public class SynchronizationScopeManager extends PlatformObject implements ISync
 		boolean firstTime = true;
 		boolean hasAdditionalResources = false;
 		int count = 0;
-		do {
+		do { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Policy.checkCanceled(monitor);
 			newTraversals = addMappingsToScope(targetMappings,
 					Policy.subMonitorFor(monitor, IProgressMonitor.UNKNOWN));
@@ -224,12 +224,12 @@ public class SynchronizationScopeManager extends PlatformObject implements ISync
 		fireMappingsChangedEvent(scope.getMappings(), scope.getTraversals());
 	}
 
-	private ResourceTraversal[] internalRefreshScope(ResourceMapping[] mappings, boolean checkForContraction, IProgressMonitor monitor) throws CoreException {
+	private ResourceTraversal[] internalRefreshScope(ResourceMapping[] mappings, boolean checkForContraction, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		monitor.beginTask(null, 100 * mappings.length + 100);
 		ScopeChangeEvent change = new ScopeChangeEvent(scope);
 		CompoundResourceTraversal refreshTraversals = new CompoundResourceTraversal();
 		CompoundResourceTraversal removedTraversals = new CompoundResourceTraversal();
-		for (ResourceMapping mapping : mappings) {
+		for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceTraversal[] previousTraversals = scope.getTraversals(mapping);
 			ResourceTraversal[] mappingTraversals = mapping.getTraversals(
 					context, Policy.subMonitorFor(monitor, 100));
@@ -289,7 +289,7 @@ public class SynchronizationScopeManager extends PlatformObject implements ISync
 
 	private ResourceMapping findAncestor(ResourceMapping mapping) {
 		ResourceMapping[] mappings = scope.getMappings(mapping.getModelProviderId());
-		for (ResourceMapping m : mappings) {
+		for (ResourceMapping m : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (m.contains(mapping)) {
 				return m;
 			}
@@ -301,13 +301,13 @@ public class SynchronizationScopeManager extends PlatformObject implements ISync
 		return ((ResourceMappingScope)scope).getCompoundTraversal().getUncoveredTraversals(traversals);
 	}
 
-	private void addResourcesToScope(ResourceTraversal[] newTraversals, IProgressMonitor monitor) throws CoreException {
+	private void addResourcesToScope(ResourceTraversal[] newTraversals, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!consultModels) {
 			return;
 		}
 		ResourceMapping[] targetMappings;
 		int count = 0;
-		do {
+		do { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceTraversal[] adjusted = adjustInputTraversals(newTraversals);
 			targetMappings = getMappingsFromProviders(adjusted,
 					context, Policy.subMonitorFor(monitor, IProgressMonitor.UNKNOWN));
@@ -389,7 +389,7 @@ public class SynchronizationScopeManager extends PlatformObject implements ISync
 			IProgressMonitor monitor) throws CoreException {
 		CompoundResourceTraversal result = new CompoundResourceTraversal();
 		ResourceMappingContext context = this.context;
-		for (ResourceMapping mapping : targetMappings) {
+		for (ResourceMapping mapping : targetMappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (scope.getTraversals(mapping) == null) {
 				ResourceTraversal[] traversals = mapping.getTraversals(context,
 						Policy.subMonitorFor(monitor, 100));
@@ -419,9 +419,9 @@ public class SynchronizationScopeManager extends PlatformObject implements ISync
 		ResourceMapping[] inputMappings = scope.getInputMappings();
 		ResourceMapping[] mappings = scope.getMappings();
 		if (inputMappings.length == mappings.length) {
-			Set<ResourceMapping> testSet = new HashSet<>();
+			Set<ResourceMapping> testSet = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			Collections.addAll(testSet, mappings);
-			for (ResourceMapping mapping : inputMappings) {
+			for (ResourceMapping mapping : inputMappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!testSet.contains(mapping)) {
 					return true;
 				}

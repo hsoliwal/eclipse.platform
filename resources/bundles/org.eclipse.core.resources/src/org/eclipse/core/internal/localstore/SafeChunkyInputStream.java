@@ -34,7 +34,7 @@ public class SafeChunkyInputStream extends InputStream {
 	}
 
 	public SafeChunkyInputStream(File target, int bufferSize) throws IOException {
-		input = new FileInputStream(target);
+		input = new FileInputStream(target); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 		buffer = new byte[bufferSize];
 	}
 
@@ -51,9 +51,9 @@ public class SafeChunkyInputStream extends InputStream {
 		return chunkLength - nextByteInChunk;
 	}
 
-	protected void buildChunk() throws IOException {
+	protected void buildChunk() throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//read buffer loads of data until an entire chunk is accumulated
-		while (true) {
+		while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (nextByteInBuffer + ILocalStoreConstants.CHUNK_DELIMITER_SIZE > bufferLength) {
 				shiftAndFillBuffer();
 			}
@@ -79,7 +79,7 @@ public class SafeChunkyInputStream extends InputStream {
 	}
 
 	protected boolean compare(byte[] source, byte[] target, int startIndex) {
-		for (byte element : target) {
+		for (byte element : target) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (source[startIndex] != element) {
 				return false;
 			}
@@ -88,7 +88,7 @@ public class SafeChunkyInputStream extends InputStream {
 		return true;
 	}
 
-	protected int find(byte[] pattern, int startIndex, int endIndex, boolean accumulate) throws IOException {
+	protected int find(byte[] pattern, int startIndex, int endIndex, boolean accumulate) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int pos = findByte(pattern[0], startIndex, endIndex);
 		if (pos == -1) {
 			return -1;
@@ -108,7 +108,7 @@ public class SafeChunkyInputStream extends InputStream {
 	}
 
 	protected int findByte(byte target, int startIndex, int endIndex) {
-		while (startIndex < endIndex) {
+		while (startIndex < endIndex) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (buffer[startIndex] == target) {
 				return startIndex;
 			}
@@ -117,7 +117,7 @@ public class SafeChunkyInputStream extends InputStream {
 		return -1;
 	}
 
-	protected void findChunkStart() throws IOException {
+	protected void findChunkStart() throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (nextByteInBuffer + ILocalStoreConstants.CHUNK_DELIMITER_SIZE > bufferLength) {
 			shiftAndFillBuffer();
 		}
@@ -136,7 +136,7 @@ public class SafeChunkyInputStream extends InputStream {
 		findChunkStart();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public int read() throws IOException {
 		if (endOfFile) {
 			return -1;
@@ -167,7 +167,7 @@ public class SafeChunkyInputStream extends InputStream {
 		if (start < 0) {
 			return;
 		}
-		for (int i = start; i >= 0; i--) {
+		for (int i = start; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (compare(chunk, ILocalStoreConstants.BEGIN_CHUNK, i)) {
 				nextByteInChunk = i + ILocalStoreConstants.CHUNK_DELIMITER_SIZE;
 				return;

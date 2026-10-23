@@ -42,7 +42,7 @@ public class ConfigurationWizard extends Wizard implements IConfigurationWizard 
 		try {
 			RepositoryProvider.map(project, PessimisticFilesystemProviderPlugin.NATURE_ID);
 		} catch (TeamException e) {
-			PessimisticFilesystemProviderPlugin.getInstance().logError(e, "Could not set sharing on " + project);
+			PessimisticFilesystemProviderPlugin.getInstance().logError(e, "Could not set sharing on " + project); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			return false;
 		}
 		return true;

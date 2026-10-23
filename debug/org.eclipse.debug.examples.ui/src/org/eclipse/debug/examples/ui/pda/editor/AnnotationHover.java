@@ -32,7 +32,7 @@ public class AnnotationHover implements IAnnotationHover {
 	public String getHoverInfo(ISourceViewer sourceViewer, int lineNumber) {
 		IAnnotationModel annotationModel = sourceViewer.getAnnotationModel();
 		Iterator<Annotation> iterator = annotationModel.getAnnotationIterator();
-		while (iterator.hasNext()) {
+		while (iterator.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Annotation annotation = iterator.next();
 			Position position = annotationModel.getPosition(annotation);
 			try {

@@ -40,7 +40,7 @@ import org.eclipse.jdt.launching.JavaRuntime;
 
 public class ProjectCreator {
 
-	public IJavaProject createJavaProjectFromJavacNode(String projectName, Javac javacTask, IProgressMonitor monitor) throws CoreException {
+	public IJavaProject createJavaProjectFromJavacNode(String projectName, Javac javacTask, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			IJavaProject javaProject = createJavaProject(projectName, monitor);
 
@@ -63,15 +63,15 @@ public class ProjectCreator {
 		}
 	}
 
-	private void setClasspath(Javac javacTask, IJavaProject javaProject, IProgressMonitor monitor) throws CoreException {
+	private void setClasspath(Javac javacTask, IJavaProject javaProject, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			org.apache.tools.ant.types.Path classpath = javacTask.getClasspath();
 			if (classpath == null) {
 				return;
 			}
-			for (String cp : classpath.list()) {
+			for (String cp : classpath.list()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				File classpathEntry = new File(cp);
-				if (classpathEntry.isFile()) {
+				if (classpathEntry.isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					addLibrary(javaProject, IPath.fromOSString(classpathEntry.getAbsolutePath()), monitor);
 				} else {
 					addContainer(javaProject, IPath.fromOSString(classpathEntry.getAbsolutePath()), monitor);
@@ -85,7 +85,7 @@ public class ProjectCreator {
 	}
 
 	private void createSourceDirectories(File destDir, String destDirName, org.apache.tools.ant.types.Path sourceDirs, IJavaProject javaProject, IProgressMonitor monitor) throws CoreException {
-		for (String srcDir : sourceDirs.list()) {
+		for (String srcDir : sourceDirs.list()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			File srcDirectory = new File(srcDir);
 			String srcDirectoryName = srcDirectory.getName();
 			String destDirPath = destDir == null ? srcDir : destDir.getAbsolutePath();
@@ -96,7 +96,7 @@ public class ProjectCreator {
 		}
 	}
 
-	private IJavaProject createJavaProject(String projectName, IProgressMonitor monitor) throws CoreException {
+	private IJavaProject createJavaProject(String projectName, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IProject project = root.getProject(projectName);
 		if (!project.exists()) {
@@ -133,7 +133,7 @@ public class ProjectCreator {
 	/**
 	 * Adds a source container to a IJavaProject.
 	 */
-	private void addSourceContainer(IJavaProject jproject, String srcName, String srcPath, String outputName, String outputPath, IProgressMonitor monitor) throws CoreException {
+	private void addSourceContainer(IJavaProject jproject, String srcName, String srcPath, String outputName, String outputPath, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IProject project = jproject.getProject();
 		IContainer container = null;
 		if (srcName == null || srcName.length() == 0) {
@@ -163,7 +163,7 @@ public class ProjectCreator {
 
 	private void addToClasspath(IJavaProject jproject, IClasspathEntry cpe, IProgressMonitor monitor) throws JavaModelException {
 		IClasspathEntry[] oldEntries = jproject.getRawClasspath();
-		for (IClasspathEntry oldEntry : oldEntries) {
+		for (IClasspathEntry oldEntry : oldEntries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (oldEntry.equals(cpe)) {
 				return;
 			}

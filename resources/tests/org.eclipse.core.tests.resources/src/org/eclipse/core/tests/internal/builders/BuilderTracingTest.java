@@ -57,7 +57,7 @@ public class BuilderTracingTest {
 	private ServiceReference<DebugOptions> debugOptionsReference;
 	private boolean debugWasEnabled;
 	private boolean tracingWasEnabled;
-	private final Map<String, String> replacedOptions = new LinkedHashMap<>();
+	private final Map<String, String> replacedOptions = new LinkedHashMap<>(); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW
 
 	@BeforeEach
 	public void setUp() {
@@ -66,13 +66,13 @@ public class BuilderTracingTest {
 		debugOptions = context.getService(debugOptionsReference);
 		debugWasEnabled = debugOptions.isDebugEnabled();
 		tracingWasEnabled = ResourceStats.isTracingBuilders();
-		for (String option : Arrays.asList(OPTION_PERF, OPTION_PERF_SUCCESS, EVENT_BUILDERS)) {
+		for (String option : Arrays.asList(OPTION_PERF, OPTION_PERF_SUCCESS, EVENT_BUILDERS)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			replacedOptions.put(option, debugOptions.getOption(option));
 		}
 		PerformanceStats.clear();
 	}
 
-	@AfterEach
+	@AfterEach //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void tearDown() throws InterruptedException {
 		if (debugWasEnabled) {
 			replacedOptions.forEach((option, value) -> {
@@ -98,7 +98,7 @@ public class BuilderTracingTest {
 	 */
 	private static void waitUntil(BooleanSupplier condition, String message) throws InterruptedException {
 		long deadline = System.currentTimeMillis() + 30_000;
-		while (!condition.getAsBoolean() && System.currentTimeMillis() < deadline) {
+		while (!condition.getAsBoolean() && System.currentTimeMillis() < deadline) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Thread.sleep(10);
 		}
 		assertTrue(condition.getAsBoolean(), message);
@@ -149,11 +149,11 @@ public class BuilderTracingTest {
 				.anyMatch(stats -> EVENT_BUILDERS.equals(stats.getEvent())
 						&& stats.getBlameString().contains(SortBuilder.class.getSimpleName())
 						&& project.getName().equals(stats.getContext())),
-				"expected a builder event blaming " + SortBuilder.class.getSimpleName() + " on " + project.getName()
+				"expected a builder event blaming " + SortBuilder.class.getSimpleName() + " on " + project.getName() //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						+ " but got " + Arrays.toString(PerformanceStats.getAllStats()));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testListenerIsNotifiedAboutEveryBuilderRun() throws Exception {
 		IProject project = createProjectWithSortBuilder("listenedProject");
 		// two runs of the same builder on the same project share event, blame and
@@ -169,7 +169,7 @@ public class BuilderTracingTest {
 		};
 
 		enableBuilderTracing();
-		PerformanceStats.addListener(listener);
+		PerformanceStats.addListener(listener); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 		try {
 			getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, createTestMonitor());
 			getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, createTestMonitor());

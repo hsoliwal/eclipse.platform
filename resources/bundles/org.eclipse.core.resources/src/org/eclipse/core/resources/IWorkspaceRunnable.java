@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.*;
  * </p>
  * @see IWorkspace#run(ICoreRunnable, IProgressMonitor)
  */
-public interface IWorkspaceRunnable extends ICoreRunnable {
+public interface IWorkspaceRunnable extends ICoreRunnable { //FLLDCIM: MARK — T09  IMPLEMENTS
 	/**
 	 * @param monitor a progress monitor, or {@code null} if progress reporting and
 	 *     cancellation are not desired.  The monitor is only valid for the duration

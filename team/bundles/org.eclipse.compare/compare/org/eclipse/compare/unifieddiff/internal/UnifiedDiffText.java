@@ -66,7 +66,7 @@ public final class UnifiedDiffText {
 	 */
 	public static int countLines(String str, int end) {
 		int result = 1;
-		for (int i = 0; i < end; i++) {
+		for (int i = 0; i < end; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (str.charAt(i) == '\n') {
 				result++;
 			}
@@ -79,7 +79,7 @@ public final class UnifiedDiffText {
 			return str;
 		}
 		int end = str.length();
-		while (end > 0 && (str.charAt(end - 1) == '\n' || str.charAt(end - 1) == '\r')) {
+		while (end > 0 && (str.charAt(end - 1) == '\n' || str.charAt(end - 1) == '\r')) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			end--;
 		}
 		return end == str.length() ? str : str.substring(0, end);
@@ -90,7 +90,7 @@ public final class UnifiedDiffText {
 			return str;
 		}
 		int start = 0;
-		while (start < str.length() && (str.charAt(start) == '\n' || str.charAt(start) == '\r')) {
+		while (start < str.length() && (str.charAt(start) == '\n' || str.charAt(start) == '\r')) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			start++;
 		}
 		return start == 0 ? str : str.substring(start);
@@ -104,9 +104,9 @@ public final class UnifiedDiffText {
 		if (str == null) {
 			return null;
 		}
-		StringBuilder sb = new StringBuilder();
-		for (int s = 0; s < tabWidth; s++) {
-			sb.append(' ');
+		StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int s = 0; s < tabWidth; s++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			sb.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return str.replace("\t", sb); //$NON-NLS-1$
 	}
@@ -118,7 +118,7 @@ public final class UnifiedDiffText {
 	public static int mapOffsetToTabExpanded(String originalStr, int offset, int tabWidth) {
 		int tabCount = 0;
 		int limit = Math.min(offset, originalStr.length());
-		for (int i = 0; i < limit; i++) {
+		for (int i = 0; i < limit; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (originalStr.charAt(i) == '\t') {
 				tabCount++;
 			}
@@ -132,20 +132,20 @@ public final class UnifiedDiffText {
 	 * The returned ranges keep the foreground styling and cover exactly the extent
 	 * of {@code foregrounds}.
 	 */
-	public static List<StyleRange> mergeStyleRanges(List<StyleRange> backgrounds, List<StyleRange> foregrounds) {
+	public static List<StyleRange> mergeStyleRanges(List<StyleRange> backgrounds, List<StyleRange> foregrounds) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (backgrounds.isEmpty()) {
 			return foregrounds;
 		}
 		if (foregrounds.isEmpty()) {
 			return backgrounds;
 		}
-		List<StyleRange> result = new ArrayList<>();
+		List<StyleRange> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		int bgIdx = 0;
-		for (StyleRange fg : foregrounds) {
+		for (StyleRange fg : foregrounds) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int fgStart = fg.start;
 			int fgEnd = fg.start + fg.length;
 			int pos = fgStart;
-			while (pos < fgEnd && bgIdx < backgrounds.size()) {
+			while (pos < fgEnd && bgIdx < backgrounds.size()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				StyleRange bg = backgrounds.get(bgIdx);
 				int bgStart = bg.start;
 				int bgEnd = bg.start + bg.length;

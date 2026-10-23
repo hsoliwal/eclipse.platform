@@ -42,29 +42,29 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class LinkedDotProjectTest {
 
-	private void linkDotProject(IProject project) throws CoreException {
+	private void linkDotProject(IProject project) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IFile dotProject = project.getFile(IProjectDescription.DESCRIPTION_FILE_NAME);
 		if (dotProject.isLinked()) {
 			return;
 		}
 		File targetDiskFile = ResourcesPlugin.getWorkspace().getRoot().getLocation().removeLastSegments(1).append(project.getName()).append(".project").toFile();
-		if (!targetDiskFile.exists()) {
+		if (!targetDiskFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try {
-				targetDiskFile.getParentFile().mkdirs();
-				Files.copy(dotProject.getLocation().toPath(), targetDiskFile.toPath());
+				targetDiskFile.getParentFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+				Files.copy(dotProject.getLocation().toPath(), targetDiskFile.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			} catch (Exception ex) {
-				throw new CoreException(Status.error(targetDiskFile + " cannot be created", ex)); //$NON-NLS-1$
+				throw new CoreException(Status.error(targetDiskFile + " cannot be created", ex)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		File sourceDiskFile = dotProject.getLocation().toFile();
 		dotProject.createLink(IPath.fromFile(targetDiskFile), IResource.FORCE | IResource.REPLACE, null);
-		sourceDiskFile.delete();
+		sourceDiskFile.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**
 	 * Tests the API method IProject#getNature
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetNature() throws CoreException {
 		IWorkspace ws = ResourcesPlugin.getWorkspace();
 		IProject project = ws.getRoot().getProject("Project");

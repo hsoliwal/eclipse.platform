@@ -27,7 +27,7 @@ import org.eclipse.ui.IWorkbenchPart;
 /**
  * Operation for copying the selected resources to the file system location
  */
-public class PutOperation extends FileSystemOperation {
+public class PutOperation extends FileSystemOperation { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	private boolean overwriteIncoming;
 
@@ -51,7 +51,7 @@ public class PutOperation extends FileSystemOperation {
 
 	}
 
-	private boolean hasOutgoingChanges(ResourceTraversal[] traversals) throws CoreException {
+	private boolean hasOutgoingChanges(ResourceTraversal[] traversals) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final RuntimeException found = new RuntimeException();
 		try {
 			FileSystemSubscriber.getInstance().accept(traversals, diff -> {

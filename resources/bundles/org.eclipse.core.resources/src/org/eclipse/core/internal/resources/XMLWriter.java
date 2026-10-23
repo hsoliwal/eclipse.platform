@@ -38,7 +38,7 @@ public class XMLWriter extends PrintWriter {
 
 	public void endTag(String name) {
 		tab--;
-		printTag('/' + name, null);
+		printTag('/' + name, null); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override
@@ -51,12 +51,12 @@ public class XMLWriter extends PrintWriter {
 		if (value != null) {
 			printTag(name, null, true, false);
 			print(getEscaped(String.valueOf(value)));
-			printTag('/' + name, null, false, true);
+			printTag('/' + name, null, false, true); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
 	public void printTabulation() {
-		for (int i = 0; i < tab; i++) {
+		for (int i = 0; i < tab; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			super.print('\t');
 		}
 	}
@@ -65,21 +65,21 @@ public class XMLWriter extends PrintWriter {
 		printTag(name, parameters, true, true);
 	}
 
-	public void printTag(String name, HashMap<String, Object> parameters, boolean shouldTab, boolean newLine) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("<"); //$NON-NLS-1$
-		sb.append(name);
+	public void printTag(String name, HashMap<String, Object> parameters, boolean shouldTab, boolean newLine) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		sb.append("<"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(name); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		if (parameters != null) {
-			for (Map.Entry<String, Object> entry : parameters.entrySet()) {
-				sb.append(" "); //$NON-NLS-1$
+			for (Map.Entry<String, Object> entry : parameters.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				sb.append(" "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				String key = entry.getKey();
-				sb.append(key);
-				sb.append("=\""); //$NON-NLS-1$
-				sb.append(getEscaped(String.valueOf(entry.getValue())));
-				sb.append("\""); //$NON-NLS-1$
+				sb.append(key); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				sb.append("=\""); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				sb.append(getEscaped(String.valueOf(entry.getValue()))); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				sb.append("\""); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
-		sb.append(">"); //$NON-NLS-1$
+		sb.append(">"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		if (shouldTab) {
 			printTabulation();
 		}
@@ -102,17 +102,17 @@ public class XMLWriter extends PrintWriter {
 	private static void appendEscapedChar(StringBuilder buffer, char c) {
 		String replacement = getReplacement(c);
 		if (replacement != null) {
-			buffer.append('&');
-			buffer.append(replacement);
-			buffer.append(';');
+			buffer.append('&'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append(replacement); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append(';'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		} else {
-			buffer.append(c);
+			buffer.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 	}
 
 	public static String getEscaped(String s) {
-		StringBuilder result = new StringBuilder(s.length() + 10);
-		for (int i = 0; i < s.length(); ++i) {
+		StringBuilder result = new StringBuilder(s.length() + 10); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < s.length(); ++i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			appendEscapedChar(result, s.charAt(i));
 		}
 		return result.toString();

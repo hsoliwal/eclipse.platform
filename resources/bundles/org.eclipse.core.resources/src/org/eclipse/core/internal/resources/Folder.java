@@ -38,7 +38,7 @@ public class Folder extends Container implements IFolder {
 		super(path, container);
 	}
 
-	protected void assertCreateRequirements(IFileStore store, IFileInfo localInfo, int updateFlags) throws CoreException {
+	protected void assertCreateRequirements(IFileStore store, IFileInfo localInfo, int updateFlags) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		checkDoesNotExist();
 		Container parent = (Container) getParent();
 		ResourceInfo info = parent.getResourceInfo(false, false);
@@ -84,7 +84,7 @@ public class Folder extends Container implements IFolder {
 		return result;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void create(int updateFlags, boolean local, IProgressMonitor monitor) throws CoreException {
 		if ((updateFlags & IResource.VIRTUAL) == IResource.VIRTUAL) {
 			createLink(LinkDescription.VIRTUAL_LOCATION, updateFlags, monitor);
@@ -138,7 +138,7 @@ public class Folder extends Container implements IFolder {
 	 * concept to mkdirs but it does not work on projects.
 	 * If this folder is created, it will be marked as being local.
 	 */
-	public void ensureExists(IProgressMonitor monitor) throws CoreException {
+	public void ensureExists(IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourceInfo info = getResourceInfo(false, false);
 		int flags = getFlags(info);
 		if (exists(flags, true)) {
@@ -176,7 +176,7 @@ public class Folder extends Container implements IFolder {
 		return FOLDER;
 	}
 
-	public void internalCreate(int updateFlags, boolean local, IProgressMonitor monitor) throws CoreException {
+	public void internalCreate(int updateFlags, boolean local, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		monitor = Policy.monitorFor(monitor);
 		try {
 			String message = NLS.bind(Messages.resources_creating, getFullPath());

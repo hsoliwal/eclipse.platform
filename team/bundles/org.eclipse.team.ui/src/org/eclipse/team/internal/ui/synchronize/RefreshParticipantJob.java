@@ -96,7 +96,7 @@ public abstract class RefreshParticipantJob extends Job {
 	/**
 	 * Refresh started/completed listener for every refresh
 	 */
-	private static List<IRefreshSubscriberListener> listeners = new ArrayList<>(1);
+	private static List<IRefreshSubscriberListener> listeners = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private static final int STARTED = 1;
 	private static final int DONE = 2;
 
@@ -161,7 +161,7 @@ public abstract class RefreshParticipantJob extends Job {
 			this.gotoAction = gotoAction;
 			setEnabled(isEnabled());
 			setToolTipText(getToolTipText());
-			gotoAction.addPropertyChangeListener(event -> {
+			gotoAction.addPropertyChangeListener(event -> { //FLLDCIM: MARK — T06  LAMBDA
 				if(event.getProperty().equals(IAction.ENABLED)) {
 					Boolean bool = (Boolean) event.getNewValue();
 					GotoActionWrapper.this.setEnabled(bool.booleanValue());
@@ -209,7 +209,7 @@ public abstract class RefreshParticipantJob extends Job {
 			super(monitor);
 			this.job = job;
 		}
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public boolean isCanceled() {
 			if (super.isCanceled()) {
 				return true;
@@ -242,7 +242,7 @@ public abstract class RefreshParticipantJob extends Job {
 	 *
 	 * @param participant the subscriber participant
 	 */
-	public RefreshParticipantJob(ISynchronizeParticipant participant, String jobName, String taskName, IRefreshSubscriberListener listener) {
+	public RefreshParticipantJob(ISynchronizeParticipant participant, String jobName, String taskName, IRefreshSubscriberListener listener) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super(jobName);
 		Assert.isNotNull(participant);
 		this.participant = participant;
@@ -291,7 +291,7 @@ public abstract class RefreshParticipantJob extends Job {
 	 * This is run by the job scheduler. A list of subscribers will be refreshed, errors will not stop the job
 	 * and it will continue to refresh the other subscribers.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus run(IProgressMonitor monitor) {
 		// Perform a pre-check for auto-build or manual build jobs
 		// when auto-refreshing
@@ -307,7 +307,7 @@ public abstract class RefreshParticipantJob extends Job {
 		// Acquiring lock to ensure only one refresh job is running at a particular time
 		boolean acquired = false;
 		try {
-			while (!acquired) {
+			while (!acquired) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					acquired = lock.acquire(1000);
 				} catch (InterruptedException e1) {
@@ -400,7 +400,7 @@ public abstract class RefreshParticipantJob extends Job {
 	private boolean isJobInFamilyRunning(Object family) {
 		Job[] jobs = Job.getJobManager().find(family);
 		if (jobs != null && jobs.length > 0) {
-			for (Job job : jobs) {
+			for (Job job : jobs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (job.getState() != Job.NONE) {
 					return true;
 				}
@@ -409,8 +409,8 @@ public abstract class RefreshParticipantJob extends Job {
 		return false;
 	}
 
-	private IStatus calculateStatus(IRefreshEvent event) {
-		StringBuilder text = new StringBuilder();
+	private IStatus calculateStatus(IRefreshEvent event) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		StringBuilder text = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		int code = IStatus.OK;
 		int changeCount = event.getChangeDescription().getChangeCount();
 		int numChanges = getChangeCount();
@@ -432,27 +432,27 @@ public abstract class RefreshParticipantJob extends Job {
 				code = IRefreshEvent.STATUS_NEW_CHANGES;
 				String numNewChanges = Integer.toString(changeCount);
 				if (changeCount == 1) {
-					text.append(NLS.bind(TeamUIMessages.RefreshCompleteDialog_newChangesSingular, (new Object[]{getName(), numNewChanges, numIncomingChanges, sep, numOutgoingChanges})));
+					text.append(NLS.bind(TeamUIMessages.RefreshCompleteDialog_newChangesSingular, (new Object[]{getName(), numNewChanges, numIncomingChanges, sep, numOutgoingChanges}))); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				} else {
-					text.append(NLS.bind(TeamUIMessages.RefreshCompleteDialog_newChangesPlural, (new Object[]{getName(), numNewChanges, numIncomingChanges, sep, numOutgoingChanges})));
+					text.append(NLS.bind(TeamUIMessages.RefreshCompleteDialog_newChangesPlural, (new Object[]{getName(), numNewChanges, numIncomingChanges, sep, numOutgoingChanges}))); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			} else {
 				// Refreshed resources contain changes
 				if (numChanges == 1) {
-					text.append(NLS.bind(TeamUIMessages.RefreshCompleteDialog_changesSingular, (new Object[]{getName(), Integer.valueOf(numChanges), numIncomingChanges, sep, numOutgoingChanges})));
+					text.append(NLS.bind(TeamUIMessages.RefreshCompleteDialog_changesSingular, (new Object[]{getName(), Integer.valueOf(numChanges), numIncomingChanges, sep, numOutgoingChanges}))); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				} else {
-					text.append(NLS.bind(TeamUIMessages.RefreshCompleteDialog_changesPlural, (new Object[]{getName(), Integer.valueOf(numChanges), numIncomingChanges, sep, numOutgoingChanges})));
+					text.append(NLS.bind(TeamUIMessages.RefreshCompleteDialog_changesPlural, (new Object[]{getName(), Integer.valueOf(numChanges), numIncomingChanges, sep, numOutgoingChanges}))); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			}
 		} else {
 			// No changes found
 			code = IRefreshEvent.STATUS_NO_CHANGES;
-			text.append(NLS.bind(TeamUIMessages.RefreshCompleteDialog_6, getName()));
+			text.append(NLS.bind(TeamUIMessages.RefreshCompleteDialog_6, getName())); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return new Status(IStatus.OK, TeamUIPlugin.ID, code, text.toString(), null);
 	}
 
-	private void initialize(final IRefreshSubscriberListener listener) {
+	private void initialize(final IRefreshSubscriberListener listener) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final GotoActionWrapper actionWrapper = new GotoActionWrapper();
 
 		IProgressMonitor group = Job.getJobManager().createProgressGroup();
@@ -470,7 +470,7 @@ public abstract class RefreshParticipantJob extends Job {
 					listener.refreshStarted(event);
 				}
 			}
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public ActionFactory.IWorkbenchAction refreshDone(IRefreshEvent event) {
 				if(listener != null) {
 					boolean isModal = isJobModal();
@@ -480,7 +480,7 @@ public abstract class RefreshParticipantJob extends Job {
 						// If the job is being run modally then simply prompt the user immediately
 						if(isModal) {
 							if(runnable != null) {
-								Job update = new UIJob("") { //$NON-NLS-1$
+								Job update = new UIJob("") { //$NON-NLS-1$ //FLLDCIM: MARK — T09  ANONYMOUS
 									@Override
 									public IStatus runInUIThread(IProgressMonitor monitor) {
 										runnable.run();
@@ -572,14 +572,14 @@ public abstract class RefreshParticipantJob extends Job {
 		}
 	}
 
-	protected void notifyListeners(final int state, final IRefreshEvent event) {
+	protected void notifyListeners(final int state, final IRefreshEvent event) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Get a snapshot of the listeners so the list doesn't change while we're firing
 		IRefreshSubscriberListener[] listenerArray;
 		synchronized (listeners) {
 			listenerArray = listeners.toArray(new IRefreshSubscriberListener[listeners.size()]);
 		}
 		// Notify each listener in a safe manner (i.e. so their exceptions don't kill us)
-		for (IRefreshSubscriberListener listener : listenerArray) {
+		for (IRefreshSubscriberListener listener : listenerArray) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Notification notification = new Notification() {
 				@Override
 				protected void notify(IRefreshSubscriberListener listener) {

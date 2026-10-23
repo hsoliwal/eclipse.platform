@@ -34,7 +34,7 @@ import org.eclipse.team.internal.ui.Utils;
 import org.eclipse.team.ui.synchronize.ISynchronizePageConfiguration;
 import org.eclipse.team.ui.synchronize.ModelParticipantAction;
 
-public abstract class ResourceModelParticipantAction extends ModelParticipantAction {
+public abstract class ResourceModelParticipantAction extends ModelParticipantAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 	public ResourceModelParticipantAction(String text, ISynchronizePageConfiguration configuration) {
 		super(text, configuration);
@@ -46,18 +46,18 @@ public abstract class ResourceModelParticipantAction extends ModelParticipantAct
 	 * @param monitor a progress monitor
 	 * @return the traversals that cover the resources in the current selection
 	 */
-	protected ResourceTraversal[] getResourceTraversals(IStructuredSelection selection, IProgressMonitor monitor) throws CoreException {
+	protected ResourceTraversal[] getResourceTraversals(IStructuredSelection selection, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			monitor.beginTask(null, selection.size() * 100);
 			CompoundResourceTraversal traversal = new CompoundResourceTraversal();
 			if (selection instanceof ITreeSelection ts) {
 				TreePath[] paths = ts.getPaths();
-				for (TreePath path : paths) {
+				for (TreePath path : paths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					ResourceTraversal[] traversals = getTraversals(path, Policy.subMonitorFor(monitor, 100));
 					traversal.addTraversals(traversals);
 				}
 			} else {
-				for (Object element : selection) {
+				for (Object element : selection) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					ResourceTraversal[] traversals = getTraversals(element, Policy.subMonitorFor(monitor, 100));
 					traversal.addTraversals(traversals);
 				}
@@ -96,7 +96,7 @@ public abstract class ResourceModelParticipantAction extends ModelParticipantAct
 	 * @param element the selected element
 	 * @return a set of traversals that cover the visible resources.
 	 */
-	private ResourceTraversal[] getTraversals(TreePath path, IProgressMonitor monitor) throws CoreException {
+	private ResourceTraversal[] getTraversals(TreePath path, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (path.getSegmentCount() > 0) {
 			DiffChangeSet set = getChangeSet(path);
 			Object o = path.getLastSegment();
@@ -107,8 +107,8 @@ public abstract class ResourceModelParticipantAction extends ModelParticipantAct
 				if (o instanceof IResource resource) {
 					int depth = getTraversalCalculator().getLayoutDepth(resource, path);
 					IDiff[] diffs = set.getDiffTree().getDiffs(resource, depth);
-					Set<IResource> resources = new HashSet<>();
-					for (IDiff diff : diffs) {
+					Set<IResource> resources = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+					for (IDiff diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						IResource r = ResourceDiffTree.getResourceFor(diff);
 						if (r != null) {
 							resources.add(r);

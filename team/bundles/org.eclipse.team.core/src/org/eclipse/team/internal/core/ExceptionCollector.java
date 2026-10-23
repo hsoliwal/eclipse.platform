@@ -34,7 +34,7 @@ import org.eclipse.core.runtime.Status;
  */
 public class ExceptionCollector {
 
-	private final List<IStatus> statuses = new ArrayList<>();
+	private final List<IStatus> statuses = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private final String message;
 	private final String pluginId;
 	private final int severity;
@@ -78,7 +78,7 @@ public class ExceptionCollector {
 		} else {
 			MultiStatus multiStatus = new MultiStatus(pluginId, severity, message, null);
 			Iterator it = statuses.iterator();
-			while (it.hasNext()) {
+			while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IStatus status = (IStatus) it.next();
 				multiStatus.merge(status);
 			}
@@ -104,7 +104,7 @@ public class ExceptionCollector {
 		IStatus status = new Status(exceptionStatus.getSeverity(), exceptionStatus.getPlugin(), exceptionStatus.getCode(), exceptionStatus.getMessage(), exception);
 		recordStatus(status);
 		IStatus[] children = status.getChildren();
-		for (IStatus status2 : children) {
+		for (IStatus status2 : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			recordStatus(status2);
 		}
 	}

@@ -51,11 +51,11 @@ import org.eclipse.ui.part.ResourceTransfer;
  *
  * @since 3.1
  */
-class CopyToClipboardAction extends SelectionListenerAction {
+class CopyToClipboardAction extends SelectionListenerAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 	private static final String EOL = System.lineSeparator();
 
-	private final static String ID= TeamUIPlugin.PLUGIN_ID + ".synchronize.action.copy";  //$NON-NLS-1$
+	private final static String ID= TeamUIPlugin.PLUGIN_ID + ".synchronize.action.copy";  //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	private final Shell fShell;
 	private final Clipboard fClipboard;
@@ -82,37 +82,37 @@ class CopyToClipboardAction extends SelectionListenerAction {
 	 * Use the name from the tree node so what is copied
 	 * matches what appears in the tree.
 	 */
-	private String getTextualClipboardContents() {
-		StringBuilder buf = new StringBuilder();
+	private String getTextualClipboardContents() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		int i = 0;
 		IStructuredSelection structuredSelection = getStructuredSelection();
 		if (structuredSelection instanceof TreeSelection ts) {
 			TreePath[] paths = ts.getPaths();
-			for (TreePath path : paths) {
+			for (TreePath path : paths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String text = getTextFor(path);
 				if (text != null && text.length() > 0) {
 					if (i > 0) {
-						buf.append(EOL);
+						buf.append(EOL); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
-					buf.append(text);
+					buf.append(text); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					i++;
 				}
 			}
 		} else {
-			for (Object element : structuredSelection) {
+			for (Object element : structuredSelection) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (element instanceof ITypedElement) {
 					if (i > 0) {
-						buf.append(EOL);
+						buf.append(EOL); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
-					buf.append(((ITypedElement)element).getName());
+					buf.append(((ITypedElement)element).getName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					i++;
 				} else {
 					IResource resource = Utils.getResource(element);
 					if (resource != null) {
 						if (i > 0) {
-							buf.append(EOL);
+							buf.append(EOL); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 						}
-						buf.append(resource.getName());
+						buf.append(resource.getName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 						i++;
 					}
 				}
@@ -121,7 +121,7 @@ class CopyToClipboardAction extends SelectionListenerAction {
 		return buf.toString();
 	}
 
-	private String getTextFor(TreePath path) {
+	private String getTextFor(TreePath path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Object element = path.getLastSegment();
 		if (element instanceof ITypedElement) {
 			return ((ITypedElement)element).getName();
@@ -146,13 +146,13 @@ class CopyToClipboardAction extends SelectionListenerAction {
 		return navigatorContentService;
 	}
 
-	private void copyResources(List<? extends IResource> selectedResources, String text) {
+	private void copyResources(List<? extends IResource> selectedResources, String text) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource[] resources = selectedResources.toArray(new IResource[selectedResources.size()]);
 		// Get the file names and a string representation
 		final int length = resources.length;
 		int actualLength = 0;
 		String[] fileNames = new String[length];
-		for (int i = 0; i < length; i++) {
+		for (int i = 0; i < length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final IPath location = resources[i].getLocation();
 			// location may be null. See bug 29491.
 			if (location != null) {
@@ -175,11 +175,11 @@ class CopyToClipboardAction extends SelectionListenerAction {
 	 * @param fileNames file names of the resources to copy to the clipboard
 	 * @param names string representation of all names
 	 */
-	private void setClipboard(IResource[] resources, String[] fileNames, String names) {
+	private void setClipboard(IResource[] resources, String[] fileNames, String names) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			// set the clipboard contents
-			List<Object> data = new ArrayList<>();
-			List<Transfer> dataTypes = new ArrayList<>();
+			List<Object> data = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			List<Transfer> dataTypes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			if (resources.length > 0) {
 				data.add(resources);
 				dataTypes.add(ResourceTransfer.getInstance());
@@ -207,7 +207,7 @@ class CopyToClipboardAction extends SelectionListenerAction {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected boolean updateSelection(IStructuredSelection selection) {
 		if (!super.updateSelection(selection)) {
 			return false;
@@ -233,7 +233,7 @@ class CopyToClipboardAction extends SelectionListenerAction {
 				return false;
 			}
 			Iterator resourcesEnum = selectedResources.iterator();
-			while (resourcesEnum.hasNext()) {
+			while (resourcesEnum.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource currentResource = (IResource) resourcesEnum.next();
 				if (!currentResource.getParent().equals(firstParent)) {
 					return false;

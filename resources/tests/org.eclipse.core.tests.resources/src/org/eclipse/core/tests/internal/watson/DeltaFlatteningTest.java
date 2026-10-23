@@ -27,7 +27,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 
 public class DeltaFlatteningTest implements IPathConstants {
 
-	private ElementTree prepareTreeForChange() {
+	private ElementTree prepareTreeForChange() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ElementTree tree = TestUtil.createTestElementTree();
 		/**
 		 * The following changes will be made to the base tree:
@@ -79,6 +79,6 @@ public class DeltaFlatteningTest implements IPathConstants {
 				ElementTreeWriter.D_INFINITE, output, DefaultElementComparator.getComparator());
 		ElementTree newTree = (ElementTree) doPipeTest(streamWriter, streamReader);
 
-		TestUtil.assertEqualTrees(this.getClass() + "test0", tree, newTree, path, depth);
+		TestUtil.assertEqualTrees(this.getClass() + "test0", tree, newTree, path, depth); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

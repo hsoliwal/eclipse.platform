@@ -51,7 +51,7 @@ public class IFolderTest {
 		assertThat(parent.findMember(folder.getName())).isNull();
 
 		IResource[] members = parent.members();
-		for (IResource member : members) {
+		for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThat(member.getName()).isNotEqualTo(folder.getName());
 		}
 		assertThat(folder).matches(it -> !workspace.getRoot().exists(it.getFullPath()),
@@ -78,7 +78,7 @@ public class IFolderTest {
 	 * Test IResource API
 	 * Test IFolder API
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFolder() throws CoreException {
 		IProgressMonitor monitor = null;
 		IWorkspace workspace = getWorkspace();
@@ -96,7 +96,7 @@ public class IFolderTest {
 		assertThat(folder.getWorkspace()).isEqualTo(workspace);
 		assertThat(folder.getProject()).isEqualTo(proj);
 		assertThat(folder.getType()).isEqualTo(IResource.FOLDER);
-		assertThat(folder.getFullPath()).isEqualTo(IPath.fromOSString("/" + PROJECT + "/" + FOLDER));
+		assertThat(folder.getFullPath()).isEqualTo(IPath.fromOSString("/" + PROJECT + "/" + FOLDER)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertThat(folder.getName()).isEqualTo(FOLDER);
 		assertThat(workspace.getRoot().getFolder(folder.getFullPath())).isEqualTo(folder);
 		assertThat(proj.getFolder(path)).isEqualTo(folder);
@@ -114,7 +114,7 @@ public class IFolderTest {
 
 		// These tests produce failure because the folder does not exist yet.
 		nonexistentFolderFailureTests(folder, proj, workspace);
-		IPath absolutePath = IPath.fromOSString(proj.getLocation().toOSString() + "/" + FOLDER);
+		IPath absolutePath = IPath.fromOSString(proj.getLocation().toOSString() + "/" + FOLDER); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertThat(folder.getLocation()).isEqualTo(absolutePath);
 
 		// Now create folder.
@@ -155,13 +155,13 @@ public class IFolderTest {
 		assertThat(nestedFolder.getProject()).isEqualTo(proj);
 		assertThat(nestedFolder.getType()).isEqualTo(IResource.FOLDER);
 		assertThat(nestedFolder.getFullPath())
-				.isEqualTo(IPath.fromOSString("/" + PROJECT + "/" + FOLDER + "/" + FOLDER));
+				.isEqualTo(IPath.fromOSString("/" + PROJECT + "/" + FOLDER + "/" + FOLDER)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertThat(nestedFolder.getName()).isEqualTo(FOLDER);
 		assertThat(workspace.getRoot().getFolder(nestedFolder.getFullPath())).isEqualTo(nestedFolder);
-		IPath projRelativePath = IPath.fromOSString(FOLDER + "/" + FOLDER);
+		IPath projRelativePath = IPath.fromOSString(FOLDER + "/" + FOLDER); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertThat(proj.getFolder(projRelativePath)).isEqualTo(nestedFolder);
 		assertThat(nestedFolder.getParent()).isEqualTo(folder);
-		assertThat(nestedFolder.getProjectRelativePath()).isEqualTo(IPath.fromOSString(FOLDER + "/" + FOLDER));
+		assertThat(nestedFolder.getProjectRelativePath()).isEqualTo(IPath.fromOSString(FOLDER + "/" + FOLDER)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		// Now the parent folder has a kid.
 		assertThat(folder).matches(it -> isLocal(it, IResource.DEPTH_ONE), "is locally available with direct children")
 				.matches(it -> isLocal(it, IResource.DEPTH_INFINITE), "is locally available with all children");
@@ -174,7 +174,7 @@ public class IFolderTest {
 
 		// The tests that failed above (becauese the folder must exist) now pass.
 		assertThat(nestedFolder).matches(IFolder::exists, "exists")
-				.matches(it -> folder.findMember(it.getName()).exists(), "is contained in folder: " + folder)
+				.matches(it -> folder.findMember(it.getName()).exists(), "is contained in folder: " + folder) //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				.matches(it -> workspace.getRoot().exists(it.getFullPath()), "is contained in workspace")
 				.matches(it -> workspace.getRoot().findMember(it.getFullPath()).exists(),
 						"is found existing in workspace")

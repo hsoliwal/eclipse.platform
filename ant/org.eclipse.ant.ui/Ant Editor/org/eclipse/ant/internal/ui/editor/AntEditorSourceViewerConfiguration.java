@@ -77,7 +77,7 @@ public class AntEditorSourceViewerConfiguration extends AntSourceViewerConfigura
 		fEditor = editor;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IContentAssistant getContentAssistant(ISourceViewer sourceViewer) {
 		fContentAssistant = new ContentAssistant();
 		AntEditorCompletionProcessor processor = new AntEditorCompletionProcessor(fEditor.getAntModel());
@@ -207,31 +207,31 @@ public class AntEditorSourceViewerConfiguration extends AntSourceViewerConfigura
 		return parent -> new DefaultInformationControl(parent, true);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String[] getIndentPrefixes(ISourceViewer sourceViewer, String contentType) {
-		List<String> list = new ArrayList<>();
+		List<String> list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		// prefix[0] is either '\t' or ' ' x tabWidth, depending on useSpaces
 
 		int tabWidth = getTabWidth(sourceViewer);
 		boolean useSpaces = fEditor.isTabsToSpacesConversionEnabled();
 
-		for (int i = 0; i <= tabWidth; i++) {
-			StringBuilder prefix = new StringBuilder();
+		for (int i = 0; i <= tabWidth; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			StringBuilder prefix = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 			if (useSpaces) {
-				for (int j = 0; j + i < tabWidth; j++) {
-					prefix.append(' ');
+				for (int j = 0; j + i < tabWidth; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					prefix.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 
 				if (i != 0) {
-					prefix.append('\t');
+					prefix.append('\t'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			} else {
-				for (int j = 0; j < i; j++) {
-					prefix.append(' ');
+				for (int j = 0; j < i; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					prefix.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 				if (i != tabWidth) {
-					prefix.append('\t');
+					prefix.append('\t'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			}
 

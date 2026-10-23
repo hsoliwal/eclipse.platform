@@ -94,7 +94,7 @@ public class CopyVisitor implements IUnifiedTreeVisitor {
 		return copyContents(node, source, destination);
 	}
 
-	protected boolean copyContents(UnifiedTreeNode node, Resource source, Resource destination) {
+	protected boolean copyContents(UnifiedTreeNode node, Resource source, Resource destination) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			if (source.isVirtual()) {
 				((Folder) destination).create(IResource.VIRTUAL, true, null);
@@ -174,7 +174,7 @@ public class CopyVisitor implements IUnifiedTreeVisitor {
 		return (Workspace) rootDestination.getWorkspace();
 	}
 
-	protected boolean isSynchronized(UnifiedTreeNode node) {
+	protected boolean isSynchronized(UnifiedTreeNode node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/* virtual resources are always deemed as being synchronized */
 		if (node.getResource().isVirtual()) {
 			return true;
@@ -203,7 +203,7 @@ public class CopyVisitor implements IUnifiedTreeVisitor {
 		getRefreshLocalVisitor().visit(node);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean visit(UnifiedTreeNode node) throws CoreException {
 		monitor.checkCanceled();
 		work = 1;

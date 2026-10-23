@@ -52,7 +52,7 @@ import org.eclipse.ui.texteditor.IDocumentProvider;
  * @since 3.3
  */
 public abstract class StructureCreator implements IStructureCreator2 {
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStructureComparator getStructure(Object input) {
 		String contents= null;
 		IDocument doc= CompareUI.getDocument(input);
@@ -102,7 +102,7 @@ public abstract class StructureCreator implements IStructureCreator2 {
 	/*
 	 * We need to create the structure in the UI thread since IDocument requires this
 	 */
-	private IStructureComparator internalCreateStructure(Object element,
+	private IStructureComparator internalCreateStructure(Object element, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IProgressMonitor monitor) {
 		final ISharedDocumentAdapter sda = SharedDocumentAdapterWrapper.getAdapter(element);
 		if (sda != null) {
@@ -164,7 +164,7 @@ public abstract class StructureCreator implements IStructureCreator2 {
 	 * in case the document is shared via a file buffer.
 	 * @param document a document
 	 */
-	protected void setupDocument(IDocument document) {
+	protected void setupDocument(IDocument document) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String partitioning = getDocumentPartitioning();
 		if (partitioning == null || !(document instanceof IDocumentExtension3 ex3)) {
 			if (document.getDocumentPartitioner() == null) {
@@ -217,7 +217,7 @@ public abstract class StructureCreator implements IStructureCreator2 {
 	 * input, then the save is issued through the shared document adapter.
 	 * @see org.eclipse.compare.structuremergeviewer.IStructureCreator#save(org.eclipse.compare.structuremergeviewer.IStructureComparator, java.lang.Object)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void save(IStructureComparator node, Object input) {
 		if (node instanceof IDocumentRange && input instanceof IEditableContent bca) {
 			IDocument document= ((IDocumentRange)node).getDocument();
@@ -279,7 +279,7 @@ public abstract class StructureCreator implements IStructureCreator2 {
 	 * @param document the document associated with the input element
 	 * @return a shared document adapter that provides the proper document key for document range nodes
 	 */
-	private final ISharedDocumentAdapter wrapSharedDocumentAdapter(ISharedDocumentAdapter elementAdapter, final Object input, final IDocument document) {
+	private final ISharedDocumentAdapter wrapSharedDocumentAdapter(ISharedDocumentAdapter elementAdapter, final Object input, final IDocument document) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// We need to wrap the adapter so that the proper document key gets returned
 		return new SharedDocumentAdapterWrapper(elementAdapter) {
 			@Override
@@ -310,7 +310,7 @@ public abstract class StructureCreator implements IStructureCreator2 {
 	 * @return the sub-structure element in the input for the given element
 	 * @throws CoreException if a parse error occurred
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ITypedElement createElement(Object element, Object input, IProgressMonitor monitor)
 			throws CoreException {
 		String[] path= getPath(element, input);
@@ -375,11 +375,11 @@ public abstract class StructureCreator implements IStructureCreator2 {
 	/**
 	 * Recursively extracts the given path from the tree.
 	 */
-	private IStructureComparator find(IStructureComparator tree, String[] path, int index) {
+	private IStructureComparator find(IStructureComparator tree, String[] path, int index) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (tree != null) {
 			Object[] children= tree.getChildren();
 			if (children != null) {
-				for (Object c : children) {
+				for (Object c : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IStructureComparator child = (IStructureComparator) c;
 					if (child instanceof ITypedElement && child instanceof DocumentRangeNode) {
 						String n1= ((DocumentRangeNode)child).getId();
@@ -459,7 +459,7 @@ public abstract class StructureCreator implements IStructureCreator2 {
 	 * @noreference This method is not intended to be referenced by clients.
 	 * @since 3.6
 	 */
-	public boolean contentsEquals(Object node1, char contributor1,
+	public boolean contentsEquals(Object node1, char contributor1, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			Object node2, char contributor2, boolean ignoreWhitespace,
 			ICompareFilter[] compareFilters) {
 
@@ -468,11 +468,11 @@ public abstract class StructureCreator implements IStructureCreator2 {
 		List<String> lines2 = LineReader.readLines(new BufferedReader(new StringReader(
 				getContents(node2, false))));
 
-		StringBuilder buffer1 = new StringBuilder();
-		StringBuilder buffer2 = new StringBuilder();
+		StringBuilder buffer1 = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		StringBuilder buffer2 = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 		int maxLines = Math.max(lines1.size(), lines2.size());
-		for (int i = 0; i < maxLines; i++) {
+		for (int i = 0; i < maxLines; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String s1 = lines1.size() > i ? (String) lines1.get(i) : ""; //$NON-NLS-1$
 			String s2 = lines2.size() > i ? (String) lines2.get(i) : ""; //$NON-NLS-1$
 
@@ -482,8 +482,8 @@ public abstract class StructureCreator implements IStructureCreator2 {
 				s2 = Utilities.applyCompareFilters(s2, contributor2, s1,
 						contributor1, compareFilters);
 			}
-			buffer1.append(s1);
-			buffer2.append(s2);
+			buffer1.append(s1); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer2.append(s2); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if (ignoreWhitespace) {
 			int l1 = buffer1.length();
@@ -491,10 +491,10 @@ public abstract class StructureCreator implements IStructureCreator2 {
 			int c1 = 0, c2 = 0;
 			int i1 = 0, i2 = 0;
 
-			while (c1 != -1) {
+			while (c1 != -1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 
 				c1 = -1;
-				while (i1 < l1) {
+				while (i1 < l1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					char c = buffer1.charAt(i1++);
 					if (!Character.isWhitespace(c)) {
 						c1 = c;
@@ -503,7 +503,7 @@ public abstract class StructureCreator implements IStructureCreator2 {
 				}
 
 				c2 = -1;
-				while (i2 < l2) {
+				while (i2 < l2) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					char c = buffer2.charAt(i2++);
 					if (!Character.isWhitespace(c)) {
 						c2 = c;

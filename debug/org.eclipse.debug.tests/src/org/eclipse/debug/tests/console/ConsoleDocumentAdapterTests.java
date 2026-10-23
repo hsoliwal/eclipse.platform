@@ -53,7 +53,7 @@ public class ConsoleDocumentAdapterTests {
 	/**
 	 * Test {@link ConsoleDocumentAdapter#setText(String)}.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetText() {
 		final ExpectingTextChangeListener eventListener = new ExpectingTextChangeListener(true, null);
 		final IDocumentAdapter docAdapter = new ConsoleDocumentAdapter(-1);
@@ -67,7 +67,7 @@ public class ConsoleDocumentAdapterTests {
 		assertNumberOfLines(docAdapter, 1);
 		checkLineMapping(docAdapter, null);
 
-		for (String s : new String[] { "", null }) {
+		for (String s : new String[] { "", null }) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			docAdapter.setText(s);
 			assertContent(docAdapter, "");
 			assertNumberOfLines(docAdapter, 1);
@@ -78,7 +78,7 @@ public class ConsoleDocumentAdapterTests {
 	/**
 	 * Test fixed width line wrap. (mostly with changes affecting a single line)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLineWrap() {
 		final Random rand = new Random(4);
 		final int wrapWidth = 10;
@@ -408,7 +408,7 @@ public class ConsoleDocumentAdapterTests {
 	/**
 	 * Test inserting text containing line delimiters.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultilineInserts() {
 		final Random rand = new Random(4);
 		final int wrapWidth = 10;
@@ -580,7 +580,7 @@ public class ConsoleDocumentAdapterTests {
 	/**
 	 * Test text remove affecting than one line.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultilineRemove() {
 		final Random rand = new Random(4);
 		final int wrapWidth = 10;
@@ -705,7 +705,7 @@ public class ConsoleDocumentAdapterTests {
 	/**
 	 * Test text change affecting and inserting more than one line.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultilineReplace() {
 		final Random rand = new Random(4);
 		final int wrapWidth = 10;
@@ -802,7 +802,7 @@ public class ConsoleDocumentAdapterTests {
 	/**
 	 * Test line wrapping is correctly updated if fixed width changed.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetWidth() {
 		final Random rand = new Random(7);
 		final ConsoleDocumentAdapter docAdapter = new ConsoleDocumentAdapter(-1);
@@ -810,10 +810,10 @@ public class ConsoleDocumentAdapterTests {
 
 		final String line0_0 = "#123456789";
 		final String line0_1 = "ABCDEF";
-		final String line0 = line0_0 + line0_1;
+		final String line0 = line0_0 + line0_1; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		final String line1 = "";
 		final String line2 = "abcd";
-		final String text = line0 + "\n" + line1 + "\r\n" + line2;
+		final String text = line0 + "\n" + line1 + "\r\n" + line2; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		docAdapter.setText(text);
 		assertEquals("#", docAdapter.getTextRange(0, 1), "Get text range failed.");
 
@@ -869,13 +869,13 @@ public class ConsoleDocumentAdapterTests {
 	 * Some test cases derived from JavaDoc examples of {@link IDocumentAdapter}
 	 * (and its super interfaces).
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInterfaceContract() {
 		final ConsoleDocumentAdapter docAdapter = new ConsoleDocumentAdapter(-1);
 		docAdapter.setDocument(new Document());
 		assertNotNull("Adapter has no legal line delimiter.", docAdapter.getLineDelimiter());
 
-		for (int width : new int[] { -1, 80 }) {
+		for (int width : new int[] { -1, 80 }) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			docAdapter.setWidth(width);
 
 			// test against documentation of
@@ -916,7 +916,7 @@ public class ConsoleDocumentAdapterTests {
 	 * {@link IDocumentAdapter#setDocument(org.eclipse.jface.text.IDocument)}
 	 * and ensure old document is indeed disconnected and not notified anymore.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testChangeDocument() {
 		final IDocumentAdapter docAdapter = new ConsoleDocumentAdapter(-1);
 		final IDocument doc1 = new Document();
@@ -940,7 +940,7 @@ public class ConsoleDocumentAdapterTests {
 	/**
 	 * Test if invalid arguments produces error log messages.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInvalidInvocations() {
 		final AtomicInteger expectedErrors = new AtomicInteger(0);
 		final ILogListener logListener = (status, unused) -> {
@@ -967,7 +967,7 @@ public class ConsoleDocumentAdapterTests {
 				// expected behavior
 			}
 
-			for (int width : new int[] { -1, -2, 80 }) {
+			for (int width : new int[] { -1, -2, 80 }) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				docAdapter.setWidth(width);
 				if (width != -2) {
 					docAdapter.setText("?");
@@ -986,7 +986,7 @@ public class ConsoleDocumentAdapterTests {
 				// returns information for this non existing line and
 				// TreeLineTracke does so for compatibility reasons
 				docAdapter.getLine(Integer.MAX_VALUE);
-				assertEquals(0, expectedErrors.get(), "Too much success with width: " + width);
+				assertEquals(0, expectedErrors.get(), "Too much success with width: " + width); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 				expectedErrors.set(4);
 				docAdapter.getLineAtOffset(Integer.MIN_VALUE);
@@ -994,14 +994,14 @@ public class ConsoleDocumentAdapterTests {
 				docAdapter.getLineAtOffset(1);
 				docAdapter.getLineAtOffset(2);
 				docAdapter.getLineAtOffset(Integer.MAX_VALUE);
-				assertEquals(0, expectedErrors.get(), "Too much success with width: " + width);
+				assertEquals(0, expectedErrors.get(), "Too much success with width: " + width); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 				expectedErrors.set(4);
 				docAdapter.getOffsetAtLine(Integer.MIN_VALUE);
 				docAdapter.getOffsetAtLine(-1);
 				docAdapter.getOffsetAtLine(1);
 				docAdapter.getOffsetAtLine(Integer.MAX_VALUE);
-				assertEquals(0, expectedErrors.get(), "Too much success with width: " + width);
+				assertEquals(0, expectedErrors.get(), "Too much success with width: " + width); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 				expectedErrors.set(6);
 				docAdapter.getTextRange(-1, 1);
@@ -1010,7 +1010,7 @@ public class ConsoleDocumentAdapterTests {
 				docAdapter.getTextRange(-1, 2);
 				docAdapter.getTextRange(0, 2);
 				docAdapter.getTextRange(0, 3);
-				assertEquals(0, expectedErrors.get(), "Too much success with width: " + width);
+				assertEquals(0, expectedErrors.get(), "Too much success with width: " + width); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 				expectedErrors.set(10);
 				docAdapter.replaceTextRange(2, 0, "");
@@ -1023,7 +1023,7 @@ public class ConsoleDocumentAdapterTests {
 				docAdapter.replaceTextRange(1, 1, "foo");
 				docAdapter.replaceTextRange(1, -1, "foo");
 				docAdapter.replaceTextRange(2, 0, "foo");
-				assertEquals(0, expectedErrors.get(), "Too much success with width: " + width);
+				assertEquals(0, expectedErrors.get(), "Too much success with width: " + width); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		} finally {
 			Platform.removeLogListener(logListener);
@@ -1039,7 +1039,7 @@ public class ConsoleDocumentAdapterTests {
 		docAdapter.setDocument(new Document());
 		final String lineDelimiter = docAdapter.getLineDelimiter();
 		final int n = 6000;
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < n; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			docAdapter.replaceTextRange(docAdapter.getCharCount(), 0, lineDelimiter);
 		}
 		assertNumberOfLines(docAdapter, n + 1);
@@ -1057,7 +1057,7 @@ public class ConsoleDocumentAdapterTests {
 	}
 
 	private static void assertLine(IDocumentAdapter docAdapter, int lineIndex, String expectedContent) {
-		assertEquals(docAdapter.getLine(lineIndex), expectedContent, "Adapter returned wrong content for line " + lineIndex + ".");
+		assertEquals(docAdapter.getLine(lineIndex), expectedContent, "Adapter returned wrong content for line " + lineIndex + "."); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -1073,16 +1073,16 @@ public class ConsoleDocumentAdapterTests {
 	 * @param rand Optional. If provided will request line from random offset of
 	 *            this line instead of first and check lines in random order.
 	 */
-	private static void checkLineMapping(IDocumentAdapter docAdapter, Random rand) {
+	private static void checkLineMapping(IDocumentAdapter docAdapter, Random rand) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final int n = docAdapter.getLineCount();
-		final List<Integer> lines = new ArrayList<>(n);
-		for (int i = 0; i < n; i++) {
+		final List<Integer> lines = new ArrayList<>(n); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
+		for (int i = 0; i < n; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			lines.add(i);
 		}
 		if (rand != null) {
 			Collections.shuffle(lines, rand);
 		}
-		for (int lineIndex : lines) {
+		for (int lineIndex : lines) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int offset = docAdapter.getOffsetAtLine(lineIndex);
 			if (rand != null) {
 				int lineLength = docAdapter.getLine(lineIndex).length();
@@ -1091,7 +1091,7 @@ public class ConsoleDocumentAdapterTests {
 				}
 			}
 			final int testLineIndex = docAdapter.getLineAtOffset(offset);
-			assertEquals(lineIndex, testLineIndex, "Got wrong line with offset " + offset + ".");
+			assertEquals(lineIndex, testLineIndex, "Got wrong line with offset " + offset + "."); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -1187,7 +1187,7 @@ public class ConsoleDocumentAdapterTests {
 			expectations.add(expectation);
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void textChanging(TextChangingEvent event) {
 			final TextEventExpectation expectation = checkCommon(TextChangeEventType.CHANGING);
 			if (expectation != null) {
@@ -1232,7 +1232,7 @@ public class ConsoleDocumentAdapterTests {
 			if (docAdapter != null && lastEvent != null) {
 				final int lastEventOffset = lastEvent.start;
 				final int lastEventLineIndex = docAdapter.getLineAtOffset(lastEventOffset);
-				assertTrue(eventLineBeforeChange <= lastEventLineIndex, "Line of event offset " + lastEventOffset + " has moved up.");
+				assertTrue(eventLineBeforeChange <= lastEventLineIndex, "Line of event offset " + lastEventOffset + " has moved up."); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 				// check if predicted changes are correct
 				final int predictedDocLength = lengthBeforeReplace - lastEvent.replaceCharCount + lastEvent.newCharCount;

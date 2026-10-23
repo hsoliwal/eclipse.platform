@@ -40,7 +40,7 @@ import org.eclipse.ui.progress.WorkbenchJob;
  *
  * @since 3.2
  */
-public abstract class ModelParticipantMergeOperation extends ModelMergeOperation {
+public abstract class ModelParticipantMergeOperation extends ModelMergeOperation { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	/**
 	 * Status code that can be returned from the {@link #performMerge(IProgressMonitor)}
@@ -65,7 +65,7 @@ public abstract class ModelParticipantMergeOperation extends ModelMergeOperation
 		super(part, manager);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void initializeContext(IProgressMonitor monitor) throws CoreException {
 		if (participant == null) {
 			participant = createParticipant();
@@ -105,10 +105,10 @@ public abstract class ModelParticipantMergeOperation extends ModelMergeOperation
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void handlePreviewRequest() {
-		Job job = new WorkbenchJob(getJobName()) {
-			@Override
+		Job job = new WorkbenchJob(getJobName()) { //FLLDCIM: MARK — T09  ANONYMOUS
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public IStatus runInUIThread(IProgressMonitor monitor) {
 				if (isPreviewInDialog()) {
 					CompareConfiguration cc = new CompareConfiguration();

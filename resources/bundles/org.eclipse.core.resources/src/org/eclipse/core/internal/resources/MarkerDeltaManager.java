@@ -40,7 +40,7 @@ class MarkerDeltaManager {
 	 */
 	protected Map<IPath, MarkerSet> assembleDeltas(long start) {
 		Map<IPath, MarkerSet> result = null;
-		for (int i = 0; i < nextFree; i++) {
+		for (int i = 0; i < nextFree; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (startIds[i] >= start) {
 				result = MarkerDelta.merge(result, batches[i]);
 			}
@@ -51,11 +51,11 @@ class MarkerDeltaManager {
 	/**
 	 * Flushes all delta batches up to but not including the given start Id.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void resetDeltas(long startId) {
 		//find offset of first batch to keep
 		int startOffset = 0;
-		for (; startOffset < nextFree; startOffset++) {
+		for (; startOffset < nextFree; startOffset++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (startIds[startOffset] >= startId) {
 				break;
 			}
@@ -94,7 +94,7 @@ class MarkerDeltaManager {
 			batches = newBatches;
 		}
 		startIds[nextFree] = start;
-		batches[nextFree] = new HashMap<>(11);
+		batches[nextFree] = new HashMap<>(11); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		return batches[nextFree++];
 	}
 }

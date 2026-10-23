@@ -77,18 +77,18 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	 */
 	public PessimisticFilesystemProvider() {
 		validator = new PessimisticModificationValidator(this);
-		fControlledResources = new HashMap<>(1);
+		fControlledResources = new HashMap<>(1); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	}
 
 	/**
 	 * Adds the resources to the control of this provider.
 	 */
-	public void addToControl(final IResource[] resources, IProgressMonitor monitor) {
+	public void addToControl(final IResource[] resources, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (PessimisticFilesystemProviderPlugin.getInstance().isDebugging()) {
 			System.out.println("Add to control:");
 			if (resources != null) {
-				for (IResource resource : resources) {
-					System.out.println("\t" + resource);
+				for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					System.out.println("\t" + resource); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			} else {
 				System.out.println("null resources");
@@ -97,9 +97,9 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 		if (resources == null || resources.length == 0) {
 			return;
 		}
-		final Set<IResource> toAdd = new HashSet<>(resources.length);
-		IWorkspaceRunnable runnable= monitor1 -> {
-			for (IResource resource : resources) {
+		final Set<IResource> toAdd = new HashSet<>(resources.length); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		IWorkspaceRunnable runnable= monitor1 -> { //FLLDCIM: MARK — T09  LAMBDA
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!isControlled(resource)) {
 					toAdd.add(resource);
 				}
@@ -107,10 +107,10 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 			Map<IContainer, Set<IResource>> byParent = sortByParent(toAdd);
 
 			monitor1.beginTask("Adding to control", 1000);
-			for (IContainer parent : byParent.keySet()) {
+			for (IContainer parent : byParent.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Set<IResource> controlledResources = fControlledResources.get(parent);
 				if (controlledResources == null) {
-					controlledResources = new HashSet<>(1);
+					controlledResources = new HashSet<>(1); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 					fControlledResources.put(parent, controlledResources);
 				}
 				controlledResources.addAll(byParent.get(parent));
@@ -125,12 +125,12 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	/**
 	 * Removes the resources from the control of this provider.
 	 */
-	public void removeFromControl(final IResource[] resources, IProgressMonitor monitor) {
+	public void removeFromControl(final IResource[] resources, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (PessimisticFilesystemProviderPlugin.getInstance().isDebugging()) {
 			System.out.println("Remove from control:");
 			if (resources != null) {
-				for (IResource resource : resources) {
-					System.out.println("\t" + resource);
+				for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					System.out.println("\t" + resource); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			} else {
 				System.out.println("null resources");
@@ -139,9 +139,9 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 		if (resources == null || resources.length == 0) {
 			return;
 		}
-		final Set<IResource> toRemove = new HashSet<>(resources.length);
-		IWorkspaceRunnable runnable= monitor1 -> {
-			for (IResource resource1 : resources) {
+		final Set<IResource> toRemove = new HashSet<>(resources.length); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		IWorkspaceRunnable runnable= monitor1 -> { //FLLDCIM: MARK — T09  LAMBDA
+			for (IResource resource1 : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (isControlled(resource1)) {
 					toRemove.add(resource1);
 				}
@@ -149,7 +149,7 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 			Map<IContainer, Set<IResource>> byParent = sortByParent(toRemove);
 
 			monitor1.beginTask("Removing from control", 1000);
-			for (IContainer parent : byParent.keySet()) {
+			for (IContainer parent : byParent.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Set<IResource> controlledResources = fControlledResources.get(parent);
 				if (controlledResources == null) {
 					deleteControlFile(parent, monitor1);
@@ -162,7 +162,7 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 					} else {
 						writeControlFile(parent, monitor1);
 					}
-					for (Iterator j= controlledResources.iterator(); j.hasNext();) {
+					for (Iterator j= controlledResources.iterator(); j.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						IResource resource2= (IResource) j.next();
 						if (!resource2.exists()) {
 							j.remove();
@@ -180,12 +180,12 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	 * Returns a map of IContainer -> Set of IResource.
 	 */
 	private Map<IContainer, Set<IResource>> sortByParent(Set<IResource> resources) {
-		Map<IContainer, Set<IResource>> byParent = new HashMap<>(1);
-		for (IResource resource : resources) {
+		Map<IContainer, Set<IResource>> byParent = new HashMap<>(1); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IContainer parent= resource.getParent();
 			Set<IResource> set = byParent.get(parent);
 			if (set == null) {
-				set = new HashSet<>(1);
+				set = new HashSet<>(1); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 				byParent.put(parent, set);
 			}
 			set.add(resource);
@@ -197,9 +197,9 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	 * Deletes the control file for the given container.
 	 */
 	private void deleteControlFile(final IContainer container, IProgressMonitor monitor) {
-		IWorkspaceRunnable runnable= monitor1 -> {
+		IWorkspaceRunnable runnable= monitor1 -> { //FLLDCIM: MARK — T09  LAMBDA
 			IFile controlFile= getControlFile(container, monitor1);
-			monitor1.beginTask("Deleting control file " + controlFile, 1);
+			monitor1.beginTask("Deleting control file " + controlFile, 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			if (controlFile.exists()) {
 				controlFile.delete(true, false, monitor1);
 			}
@@ -221,7 +221,7 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 			child.delete(true, monitor);
 		}
 		IFile controlFile= container.getFile(IPath.fromOSString(CONTROL_FILE_NAME));
-		monitor.beginTask("Creating control file " + controlFile, 2);
+		monitor.beginTask("Creating control file " + controlFile, 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		controlFile.create(new ByteArrayInputStream(new byte[0]), true, monitor);
 		controlFile.setDerived(true);
 		controlFile.setTeamPrivateMember(true);
@@ -233,8 +233,8 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	 * Reads the contents of a control file, answering the set of
 	 * resources that was specified in the file.
 	 */
-	Set<IResource> readControlFile(IFile controlFile) {
-		Set<IResource> controlledResources = new HashSet<>(1);
+	Set<IResource> readControlFile(IFile controlFile) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		Set<IResource> controlledResources = new HashSet<>(1); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		if (controlFile.exists()) {
 			try (InputStream in = controlFile.getContents(true); DataInputStream dIn = new DataInputStream(in)) {
 				int count= 0;
@@ -245,7 +245,7 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 				}
 				if (count > 0) {
 					try {
-						for(int i= 0; i < count; i++) {
+						for(int i= 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							String name= dIn.readUTF();
 							IResource resource= getProject().findMember(IPath.fromOSString(name));
 							if (resource != null) {
@@ -257,13 +257,13 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 						try {
 							controlFile.delete(true, null);
 						} catch (CoreException ce) {
-							PessimisticFilesystemProviderPlugin.getInstance().logError(ce, "Could not delete corrupt control file: " + controlFile);
+							PessimisticFilesystemProviderPlugin.getInstance().logError(ce, "Could not delete corrupt control file: " + controlFile); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						}
 					}
 				}
 			} catch (IOException | CoreException e) {
 				PessimisticFilesystemProviderPlugin.getInstance().logError(e,
-						"Could not read control file: " + controlFile);
+						"Could not read control file: " + controlFile); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		return controlledResources;
@@ -277,7 +277,7 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 		IFile controlFile= getControlFile(container, monitor);
 		Set controlledResources= fControlledResources.get(container);
 		InputStream contents= generateControlFileContents(controlledResources);
-		monitor.beginTask("Writing control file " + controlFile, 1000);
+		monitor.beginTask("Writing control file " + controlFile, 1000); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		if (contents == null) {
 			controlFile.delete(true, false, monitor);
 		} else {
@@ -290,7 +290,7 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	 * Generates an InputStream on a byte array which specifies
 	 * the resources given in controlledResources.
 	 */
-	private InputStream generateControlFileContents(Set controlledResources) {
+	private InputStream generateControlFileContents(Set controlledResources) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (controlledResources == null || controlledResources.isEmpty()) {
 			return null;
 		}
@@ -298,7 +298,7 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 		DataOutputStream out= new DataOutputStream(byteOut);
 		try {
 			out.writeInt(controlledResources.size());
-			for (Object element : controlledResources) {
+			for (Object element : controlledResources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource resource= (IResource) element;
 				out.writeUTF(resource.getProjectRelativePath().toString());
 			}
@@ -312,7 +312,7 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	@Override
 	public void setProject(IProject project) {
 		if (PessimisticFilesystemProviderPlugin.getInstance().isDebugging()) {
-			System.out.println("Set project to " + project);
+			System.out.println("Set project to " + project); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		super.setProject(project);
 		configureProject();
@@ -336,7 +336,7 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	@Override
 	public void deconfigure() {
 		if (PessimisticFilesystemProviderPlugin.getInstance().isDebugging()) {
-			System.out.println("Deconfigure " + getProject());
+			System.out.println("Deconfigure " + getProject()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		fControlledResources.clear();
@@ -346,7 +346,7 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	@Override
 	public void configureProject() {
 		if (PessimisticFilesystemProviderPlugin.getInstance().isDebugging()) {
-			System.out.println("Configure " + getProject());
+			System.out.println("Configure " + getProject()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		readControlFiles();
@@ -356,9 +356,9 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	/*
 	 * Reads the control files located in the project
 	 */
-	private void readControlFiles() {
+	private void readControlFiles() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IProject project= getProject();
-		Set<IResource> set = new HashSet<>(1);
+		Set<IResource> set = new HashSet<>(1); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		set.add(project);
 		fControlledResources.put(project.getParent(), set);
 		try {
@@ -380,12 +380,12 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	/**
 	 * Checks the resources in by marking them read-only.
 	 */
-	public void checkin(final IResource[] resources, IProgressMonitor monitor) {
+	public void checkin(final IResource[] resources, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (PessimisticFilesystemProviderPlugin.getInstance().isDebugging()) {
 			System.out.println("Check in:");
 			if (resources != null) {
-				for (IResource resource : resources) {
-					System.out.println("\t" + resource);
+				for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					System.out.println("\t" + resource); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			} else {
 				System.out.println("null resources");
@@ -394,10 +394,10 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 		if (resources == null || resources.length == 0) {
 			return;
 		}
-		final Set<IResource> modified = new HashSet<>(1);
-		IWorkspaceRunnable runnable= monitor1 -> {
+		final Set<IResource> modified = new HashSet<>(1); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		IWorkspaceRunnable runnable= monitor1 -> { //FLLDCIM: MARK — T09  LAMBDA
 			monitor1.beginTask("Checking in resources", 1000);
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (isControlled(resource)) {
 					if (resource.exists()) {
 						resource.setReadOnly(true);
@@ -417,12 +417,12 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	 *
 	 * @see PessimisticFilesystemProvider#checkin(IResource[], IProgressMonitor)
 	 */
-	public void uncheckout(final IResource[] resources, IProgressMonitor monitor) {
+	public void uncheckout(final IResource[] resources, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (PessimisticFilesystemProviderPlugin.getInstance().isDebugging()) {
 			System.out.println("Uncheckout:");
 			if (resources != null) {
-				for (IResource resource : resources) {
-					System.out.println("\t" + resource);
+				for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					System.out.println("\t" + resource); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			} else {
 				System.out.println("null resources");
@@ -431,10 +431,10 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 		if (resources == null || resources.length == 0) {
 			return;
 		}
-		final Set<IResource> modified = new HashSet<>(1);
-		IWorkspaceRunnable runnable= monitor1 -> {
+		final Set<IResource> modified = new HashSet<>(1); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		IWorkspaceRunnable runnable= monitor1 -> { //FLLDCIM: MARK — T09  LAMBDA
 			monitor1.beginTask("Unchecking in resources", 1000);
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (isControlled(resource)) {
 					if (resource.exists()) {
 						resource.setReadOnly(true);
@@ -451,12 +451,12 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	/**
 	 * Checks the resources out by marking the resources read-write.
 	 */
-	public void checkout(final IResource[] resources, IProgressMonitor monitor) {
+	public void checkout(final IResource[] resources, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (PessimisticFilesystemProviderPlugin.getInstance().isDebugging()) {
 			System.out.println("Check out:");
 			if (resources != null) {
-				for (IResource resource : resources) {
-					System.out.println("\t" + resource);
+				for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					System.out.println("\t" + resource); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			} else {
 				System.out.println("null resources");
@@ -465,10 +465,10 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 		if (resources == null || resources.length == 0) {
 			return;
 		}
-		final Set<IResource> modified = new HashSet<>(1);
-		IWorkspaceRunnable runnable= monitor1 -> {
+		final Set<IResource> modified = new HashSet<>(1); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		IWorkspaceRunnable runnable= monitor1 -> { //FLLDCIM: MARK — T09  LAMBDA
 			monitor1.beginTask("Checking out resources", 1000);
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (isControlled(resource)) {
 					if(resource.exists()) {
 						resource.setReadOnly(false);
@@ -489,7 +489,7 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	 */
 	public boolean isCheckedout(IResource resource) {
 		if (PessimisticFilesystemProviderPlugin.getInstance().isDebugging()) {
-			System.out.println("Is checked out: " + resource);
+			System.out.println("Is checked out: " + resource); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		if (resource == null) {
 			return false;
@@ -509,7 +509,7 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	 */
 	public boolean isControlled(IResource resource) {
 		if (PessimisticFilesystemProviderPlugin.getInstance().isDebugging()) {
-			System.out.println("Is controlled: " + resource);
+			System.out.println("Is controlled: " + resource); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		if (resource == null) {
 			return false;
@@ -533,7 +533,7 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	 */
 	public boolean isIgnored (IResource resource) {
 		if (PessimisticFilesystemProviderPlugin.getInstance().isDebugging()) {
-			System.out.println("Is ignored: " + resource);
+			System.out.println("Is ignored: " + resource); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		if (resource.isDerived()) {
 			if (isControlled(resource)) {
@@ -549,9 +549,9 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	 * of the file has been set to <code>true</code>, <code>false</code>
 	 * otherwise.
 	 */
-	public boolean hasContentChanged(IResource resource) {
+	public boolean hasContentChanged(IResource resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (PessimisticFilesystemProviderPlugin.getInstance().isDebugging()) {
-			System.out.println("Has content change: " + resource);
+			System.out.println("Has content change: " + resource); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		IPreferenceStore preferences= PessimisticFilesystemProviderPlugin.getInstance().getPreferenceStore();
@@ -568,7 +568,7 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 					resource.touch(null);
 				}
 			} catch (CoreException e) {
-				PessimisticFilesystemProviderPlugin.getInstance().logError(e, "Problems touching resource: " + resource);
+				PessimisticFilesystemProviderPlugin.getInstance().logError(e, "Problems touching resource: " + resource); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		return change;
@@ -576,27 +576,27 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 
 	public void appendText(IFile file, String text, boolean prepend) throws CoreException, IOException {
 		String contents = getFileContents(file);
-		StringBuilder buffer = new StringBuilder();
+		StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		if (prepend) {
-			buffer.append(text);
+			buffer.append(text); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		buffer.append(contents);
+		buffer.append(contents); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		if (!prepend) {
-			buffer.append(System.lineSeparator() + text);
+			buffer.append(System.lineSeparator() + text); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		file.setContents(buffer.toString().getBytes(), false, false, null);
 	}
 
 	public static String getFileContents(IFile file) throws IOException, CoreException {
-		StringBuilder buf = new StringBuilder();
+		StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		try (Reader reader = new InputStreamReader(new BufferedInputStream(file.getContents()))) {
 			int c;
-			while ((c = reader.read()) != -1) buf.append((char)c);
+			while ((c = reader.read()) != -1) buf.append((char)c); //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 		}
 		return buf.toString();
 	}
 
-	public static String getRandomSnippet() {
+	public static String getRandomSnippet() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		switch ((int) Math.round(Math.random() * 10)) {
 		case 0 :
 			return "este e' o meu conteudo (portuguese)";
@@ -631,7 +631,7 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	 * 						notification should occur after the current workspace runnable
 	 * 						has completed.
 	 */
-	private void fireStateChanged(final Collection<IResource> resources, boolean queueAfterWorkspaceOperation) {
+	private void fireStateChanged(final Collection<IResource> resources, boolean queueAfterWorkspaceOperation) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (resources == null || resources.isEmpty()) {
 			return;
 		}
@@ -640,7 +640,7 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 			Thread t= new Thread(() -> {
 				try {
 					ResourcesPlugin.getWorkspace().run(
-							(IWorkspaceRunnable) unused -> {
+							(IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 							},
 							null);
 				} catch (CoreException e) {
@@ -659,8 +659,8 @@ public class PessimisticFilesystemProvider extends RepositoryProvider  {
 	 * Answers a collection of all of the resources contained below
 	 * the given resource and the resource itself.
 	 */
-	private Collection<IResource> getSubtreeMembers(IResource resource) {
-		final Set<IResource> resources = new HashSet<>(1);
+	private Collection<IResource> getSubtreeMembers(IResource resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		final Set<IResource> resources = new HashSet<>(1); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IResourceVisitor visitor= resource1 -> {
 			switch (resource1.getType()) {
 			case IResource.PROJECT:

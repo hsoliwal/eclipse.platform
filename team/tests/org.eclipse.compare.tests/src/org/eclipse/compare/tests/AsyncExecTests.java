@@ -31,14 +31,14 @@ import org.junit.jupiter.api.Test;
 
 public class AsyncExecTests {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testQueueAdd() {
 		WorkQueue q = new WorkQueue();
 		assertTrue(q.isEmpty());
-		IRunnableWithProgress r = unused -> {
+		IRunnableWithProgress r = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			// Nothing to do for now
 		};
-		IRunnableWithProgress r2 = unused -> {
+		IRunnableWithProgress r2 = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			// Nothing to do for now
 		};
 		// Ensure that adding an element adds it
@@ -74,11 +74,11 @@ public class AsyncExecTests {
 		assertTrue(q.isEmpty());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWorker() {
 		final Worker w = new Worker("");
-		final List<IRunnableWithProgress> worked = new ArrayList<>();
-		IRunnableWithProgress r = new IRunnableWithProgress() {
+		final List<IRunnableWithProgress> worked = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		IRunnableWithProgress r = new IRunnableWithProgress() { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			public void run(IProgressMonitor monitor) {
 				assertTrue(w.isWorking());
@@ -86,7 +86,7 @@ public class AsyncExecTests {
 				worked.add(this);
 			}
 		};
-		IRunnableWithProgress r2 = new IRunnableWithProgress() {
+		IRunnableWithProgress r2 = new IRunnableWithProgress() { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			public void run(IProgressMonitor monitor) {
 				assertTrue(w.isWorking());
@@ -132,11 +132,11 @@ public class AsyncExecTests {
 		assertThat(worked).containsExactly(r2, r);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCancelOnRequeue() {
 		final Worker w = new Worker("");
-		final List<IRunnableWithProgress> worked = new ArrayList<>();
-		IRunnableWithProgress r = new IRunnableWithProgress() {
+		final List<IRunnableWithProgress> worked = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		IRunnableWithProgress r = new IRunnableWithProgress() { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			public void run(IProgressMonitor monitor) {
 				if (worked.isEmpty()) {
@@ -150,7 +150,7 @@ public class AsyncExecTests {
 				worked.add(this);
 			}
 		};
-		IRunnableWithProgress r2 = new IRunnableWithProgress() {
+		IRunnableWithProgress r2 = new IRunnableWithProgress() { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			public void run(IProgressMonitor monitor) {
 				assertTrue(w.isWorking());

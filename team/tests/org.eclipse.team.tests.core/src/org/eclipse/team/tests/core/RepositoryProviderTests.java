@@ -56,13 +56,13 @@ public class RepositoryProviderTests {
 
 	@Test
 	public void testProvidersRegistered() throws CoreException, TeamException {
-		List repoProviderIds = new ArrayList(Arrays.asList(RepositoryProvider.getAllProviderTypeIds()));
+		List repoProviderIds = new ArrayList(Arrays.asList(RepositoryProvider.getAllProviderTypeIds())); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		assertEquals(true, repoProviderIds.contains(RepositoryProviderBic.NATURE_ID));
 		assertEquals(true, repoProviderIds.contains(RepositoryProviderNaish.NATURE_ID));
 		assertEquals(false, repoProviderIds.contains(RepositoryProviderOtherSport.NATURE_ID));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetProviderGeneric() throws CoreException, TeamException {
 		IProject project = createTestProject("testGetProviderGeneric1");
 		IProject project2 = createTestProject("testGetProviderGeneric2");
@@ -104,7 +104,7 @@ public class RepositoryProviderTests {
 		assertNull(RepositoryProvider.getProvider(project2));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetProviderById() throws CoreException, TeamException {
 		IProject project1 = createTestProject("testGetProviderById_1");
 		IProject project2 = createTestProject("testGetProviderById_2");
@@ -129,7 +129,7 @@ public class RepositoryProviderTests {
 		assertNull(RepositoryProvider.getProvider(project2, RepositoryProviderNaish.NATURE_ID));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileModificationValidator() throws CoreException, TeamException {
 		IProject project = createTestProject("testFileModificationValidator");
 
@@ -185,7 +185,7 @@ public class RepositoryProviderTests {
 		return new Status(severity, "org.eclipse.team.tests.core", 0, "team status", null);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveDeleteHook() throws CoreException, TeamException {
 		final IProject project = createTestProject("testMoveDeleteHook");
 
@@ -245,12 +245,12 @@ public class RepositoryProviderTests {
 		bicProvider = (RepositoryProviderBic)RepositoryProvider.getProvider(newProject);
 		bicProvider.setMoveDeleteHook(hook);
 		newProject.delete(true, null);
-		for (boolean element : called) {
+		for (boolean element : called) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertTrue(element);
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveDeleteHookBetweenProjects() throws CoreException, TeamException {
 		final IProject projectA = createTestProject("testMoveDeleteHookBetweenProjects_A");
 		final IProject projectB = createTestProject("testMoveDeleteHookBetweenProjects_B");
@@ -333,7 +333,7 @@ public class RepositoryProviderTests {
 		createInWorkspace(resources);
 		resources[0].move(projectB.getFullPath().append("moveFile_new.txt"), false, null);
 		resources[1].move(projectB.getFullPath().append("movedFolder"), false, null);
-		for (int i = 0; i < calledProjectA.length; i++) {
+		for (int i = 0; i < calledProjectA.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertTrue(calledProjectA[i] && !calledProjectB[i]);
 		}
 
@@ -345,12 +345,12 @@ public class RepositoryProviderTests {
 		createInWorkspace(resources);
 		resources[0].move(projectC.getFullPath().append("moveFileOther_new.txt"), false, null);
 		resources[1].move(projectC.getFullPath().append("movedFolderOther"), false, null);
-		for (int i = 0; i < calledProjectA.length; i++) {
+		for (int i = 0; i < calledProjectA.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertTrue(calledProjectA[i] && !calledProjectB[i]);
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMapSuccess() throws CoreException, TeamException {
 		IProject project = createTestProject("testLinkSuccess");
 		IResource[] contents = buildResources(project, "changed.txt", "deleted.txt", "folder1/", "folder1/a.txt");
@@ -382,7 +382,7 @@ public class RepositoryProviderTests {
 		RepositoryProvider.map(project, RepositoryProviderWithLinking.TYPE_ID);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLinkSuccess() throws CoreException, TeamException {
 		IProject project = createTestProject("testLinkSuccess");
 		IResource[] contents = buildResources(project, "changed.txt", "deleted.txt", "folder1/", "folder1/a.txt");
@@ -405,7 +405,7 @@ public class RepositoryProviderTests {
 		folder.createLink(getRandomLocation(), IResource.ALLOW_MISSING_LOCAL, null);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMapFailure() throws CoreException, TeamException {
 		IProject project = createTestProject("testMapFailure");
 		IResource[] contents = buildResources(project, "changed.txt", "deleted.txt", "folder1/", "folder1/a.txt");
@@ -442,7 +442,7 @@ public class RepositoryProviderTests {
 		assertThat(shallowLinksAllowedException.getStatus().getCode()).isEqualTo(IResourceStatus.LINKING_NOT_ALLOWED);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLinkFailure() throws CoreException, TeamException {
 		IProject project = createTestProject("testLinkFailure");
 		IResource[] contents = buildResources(project, "changed.txt", "deleted.txt", "folder1/", "folder1/a.txt");

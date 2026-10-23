@@ -42,10 +42,10 @@ public class CopyStructuredSelectionAction extends AbstractCopySelectionAction {
 	public String getContents() {
 		// retrieves the selected contents from the selection provider
 		IStructuredSelection selection = (IStructuredSelection) selectionProvider.getSelection();
-		StringBuilder content = new StringBuilder();
-		for (Iterator<?> selectionIter = selection.iterator(); selectionIter.hasNext();) {
-			content.append(selectionIter.next());
-			content.append('\n');
+		StringBuilder content = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (Iterator<?> selectionIter = selection.iterator(); selectionIter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			content.append(selectionIter.next()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			content.append('\n'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return content.toString();
 	}

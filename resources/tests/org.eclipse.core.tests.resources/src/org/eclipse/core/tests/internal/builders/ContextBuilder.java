@@ -32,7 +32,7 @@ public class ContextBuilder extends TestBuilder {
 	public static final String BUILDER_NAME = "org.eclipse.core.tests.resources.contextbuilder";
 
 	/** Stores IBuildConfiguration -&gt; ContextBuilder */
-	private static HashMap<IBuildConfiguration, ContextBuilder> builders = new HashMap<>();
+	private static HashMap<IBuildConfiguration, ContextBuilder> builders = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	/** The context information for the last run of this builder */
 	IBuildContext contextForLastBuild = null;
 	/** The trigger for the last run of this builder */
@@ -59,7 +59,7 @@ public class ContextBuilder extends TestBuilder {
 	}
 
 	public static void assertValid() {
-		for (ContextBuilder builder : builders.values()) {
+		for (ContextBuilder builder : builders.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (builder.getRuleCalledForLastBuild) {
 				assertThat(builder.contextForLastBuild).isEqualTo(builder.contextForLastBuildInGetRule);
 				assertThat(builder.buildConfigurationForLastBuild)
@@ -69,7 +69,7 @@ public class ContextBuilder extends TestBuilder {
 	}
 
 	public static void clearStats() {
-		for (ContextBuilder builder : builders.values()) {
+		for (ContextBuilder builder : builders.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			builder.contextForLastBuild = null;
 			builder.contextForLastBuildInGetRule = null;
 			builder.buildConfigurationForLastBuild = null;

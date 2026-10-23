@@ -52,16 +52,16 @@ public class CycleBuilder extends TestBuilder {
 		singleton = this;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
 		if (beforeProjects != null) {
-			for (IProject beforeProject : beforeProjects) {
-				assertTrue(hasBeenBuilt(beforeProject), "Missing before project: " + beforeProject);
+			for (IProject beforeProject : beforeProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				assertTrue(hasBeenBuilt(beforeProject), "Missing before project: " + beforeProject); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		if (afterProjects != null) {
-			for (IProject afterProject : afterProjects) {
-				assertFalse(hasBeenBuilt(afterProject), "Missing after project: " + afterProject);
+			for (IProject afterProject : afterProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				assertFalse(hasBeenBuilt(afterProject), "Missing after project: " + afterProject); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		if (rebuildsToRequest > buildCount) {

@@ -46,7 +46,7 @@ import org.eclipse.core.runtime.CoreException;
  *
  * @see IResource#accept(IResourceVisitor)
  */
-public interface IResourceDeltaVisitor {
+public interface IResourceDeltaVisitor { //FLLDCIM: MARK — T07  IMPLEMENTS
 	/**
 	 * Visits the given resource delta.
 	 *

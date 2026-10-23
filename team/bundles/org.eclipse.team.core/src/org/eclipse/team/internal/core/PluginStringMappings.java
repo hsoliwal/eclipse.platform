@@ -29,7 +29,7 @@ public class PluginStringMappings {
 	private final String fExtensionID;
 	private final String fAttributeName;
 
-	private SortedMap<String, Integer> fMappings;
+	private SortedMap<String, Integer> fMappings; //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	public PluginStringMappings(String extensionID, String stringAttributeName) {
 		fExtensionID= extensionID;
@@ -40,9 +40,9 @@ public class PluginStringMappings {
 	 * Load all the extension patterns contributed by plugins.
 	 * @return a map with the patterns
 	 */
-	private SortedMap<String, Integer> loadPluginPatterns() {
+	private SortedMap<String, Integer> loadPluginPatterns() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
-		final SortedMap<String, Integer> result= new TreeMap<>();
+		final SortedMap<String, Integer> result= new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 
 		final TeamPlugin plugin = TeamPlugin.getPlugin();
 		if (plugin == null) {
@@ -56,9 +56,9 @@ public class PluginStringMappings {
 
 		final IExtension[] extensions =  extension.getExtensions();
 
-		for (IExtension e : extensions) {
+		for (IExtension e : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IConfigurationElement[] configElements = e.getConfigurationElements();
-			for (IConfigurationElement configElement : configElements) {
+			for (IConfigurationElement configElement : configElements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				final String ext = configElement.getAttribute(fAttributeName); //"extension");
 				final String type = configElement.getAttribute("type"); //$NON-NLS-1$
 				if (ext == null || type == null) {
@@ -82,7 +82,7 @@ public class PluginStringMappings {
 	}
 
 	public int getType(String filename) {
-		final Map<String, Integer> mappings= referenceMap();
+		final Map<String, Integer> mappings= referenceMap(); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		return mappings.containsKey(filename) ? mappings.get(filename).intValue() : Team.UNKNOWN;
 	}
 }

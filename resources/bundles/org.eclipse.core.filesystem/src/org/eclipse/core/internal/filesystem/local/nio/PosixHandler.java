@@ -42,7 +42,7 @@ public class PosixHandler extends NativeHandler {
 			| EFS.ATTRIBUTE_GROUP_READ | EFS.ATTRIBUTE_GROUP_WRITE | EFS.ATTRIBUTE_GROUP_EXECUTE // group
 			| EFS.ATTRIBUTE_OTHER_READ | EFS.ATTRIBUTE_OTHER_WRITE | EFS.ATTRIBUTE_OTHER_EXECUTE; // other
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public FileInfo fetchFileInfo(String fileName, int options) {
 		Path path = Paths.get(fileName);
 		FileInfo info = new FileInfo();
@@ -56,12 +56,12 @@ public class PosixHandler extends NativeHandler {
 		info.setName(fileNamePath == null ? "" : fileNamePath.toString()); //$NON-NLS-1$
 
 		try {
-			PosixFileAttributes attrs = Files.readAttributes(path, PosixFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+			PosixFileAttributes attrs = Files.readAttributes(path, PosixFileAttributes.class, LinkOption.NOFOLLOW_LINKS); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 			if (attrs.isSymbolicLink()) {
 				info.setAttribute(EFS.ATTRIBUTE_SYMLINK, true);
 				info.setStringAttribute(EFS.ATTRIBUTE_LINK_TARGET, Files.readSymbolicLink(path).toString());
-				attrs = Files.readAttributes(path, PosixFileAttributes.class);
+				attrs = Files.readAttributes(path, PosixFileAttributes.class); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			}
 
 			info.setExists(true);
@@ -93,10 +93,10 @@ public class PosixHandler extends NativeHandler {
 		return ATTRIBUTES;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean putFileInfo(String fileName, IFileInfo info) {
 		Path path = Paths.get(fileName);
-		Set<PosixFilePermission> perms = new HashSet<>();
+		Set<PosixFilePermission> perms = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 		if (info.getAttribute(EFS.ATTRIBUTE_OWNER_READ)) {
 			perms.add(PosixFilePermission.OWNER_READ);

@@ -40,7 +40,7 @@ public class CaseSensitivityTest {
 
 	private final boolean isCaseSensitive = Workspace.caseSensitive;
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateProjects() throws Throwable {
 		String projectName = "testProject31415";
 
@@ -62,7 +62,7 @@ public class CaseSensitivityTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateFolders() throws Throwable {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -86,7 +86,7 @@ public class CaseSensitivityTest {
 		assertThrows(CoreException.class, () -> file.create(createRandomContentsStream(), true, null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateFiles() throws Throwable {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -110,7 +110,7 @@ public class CaseSensitivityTest {
 		assertThrows(CoreException.class, () -> folder.create(true, true, null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRenameProject() throws Throwable {
 		String project1name = "project1test31415";
 		String project2name = "project2test31415";
@@ -134,7 +134,7 @@ public class CaseSensitivityTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRenameFolder() throws Throwable {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -159,7 +159,7 @@ public class CaseSensitivityTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRenameFile() throws Throwable {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -184,7 +184,7 @@ public class CaseSensitivityTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyAndMoveFolder() throws Throwable {
 		IProject sourceProject = getWorkspace().getRoot().getProject("Source");
 		createInWorkspace(sourceProject);
@@ -215,7 +215,7 @@ public class CaseSensitivityTest {
 				() -> folder1.move(destinationProject.getFullPath().append(folder1.getName()), true, null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyAndMoveFile() throws Throwable {
 		IProject sourceProject = getWorkspace().getRoot().getProject("Source");
 		createInWorkspace(sourceProject);
@@ -246,7 +246,7 @@ public class CaseSensitivityTest {
 				() -> file1.move(destinationProject.getFullPath().append(file1.getName()), true, null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyAndMoveFolderOverFile() throws Throwable {
 		IProject sourceProject = getWorkspace().getRoot().getProject("Source");
 		createInWorkspace(sourceProject);
@@ -277,7 +277,7 @@ public class CaseSensitivityTest {
 				() -> folder.move(destinationProject.getFullPath().append(folder.getName()), true, null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyAndMoveFileOverFolder() throws Throwable {
 		IProject sourceProject = getWorkspace().getRoot().getProject("Source");
 		createInWorkspace(sourceProject);
@@ -308,7 +308,7 @@ public class CaseSensitivityTest {
 				() -> file.move(destinationProject.getFullPath().append(file.getName()), true, null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyAndMoveFolderBecomeProject() throws CoreException {
 		IProject sourceProject = getWorkspace().getRoot().getProject("Source");
 		createInWorkspace(sourceProject);
@@ -328,7 +328,7 @@ public class CaseSensitivityTest {
 		assertThrows(CoreException.class, () -> folder.copy(IPath.ROOT.append(folder.getName()), true, null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyAndMoveProjectBecomeFolder() throws CoreException {
 		IProject sourceProject = getWorkspace().getRoot().getProject("Source");
 		createInWorkspace(sourceProject);
@@ -350,7 +350,7 @@ public class CaseSensitivityTest {
 				() -> sourceProject.copy(destinationProject.getFullPath().append(sourceProject.getName()), true, null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshLocalFolder1() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -365,9 +365,9 @@ public class CaseSensitivityTest {
 		IFolder herringRouge = project.getFolder(name);
 
 		// create a directory with the folder's name
-		folder.getLocation().toFile().delete();
+		folder.getLocation().toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		java.io.File dir = herringRouge.getLocation().toFile();
-		dir.mkdir();
+		dir.mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// do a refresh, which should cause a problem
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
@@ -376,7 +376,7 @@ public class CaseSensitivityTest {
 		assertTrue(herringRouge.exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshLocalFile1() throws Exception {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -401,7 +401,7 @@ public class CaseSensitivityTest {
 		assertTrue(herringRouge.exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshLocalFolder2() throws Exception {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -426,7 +426,7 @@ public class CaseSensitivityTest {
 		assertTrue(herringRouge.exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshLocalFile2() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -442,11 +442,11 @@ public class CaseSensitivityTest {
 
 		// create a directory with the folder's name
 		java.io.File localFile = file.getLocation().toFile();
-		localFile.delete();
-		assertFalse(localFile.exists());
+		localFile.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(localFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		java.io.File dir = herringRouge.getLocation().toFile();
-		dir.mkdir();
-		assertTrue(dir.exists());
+		dir.mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(dir.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// do a refresh, which should cause a problem
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
@@ -455,7 +455,7 @@ public class CaseSensitivityTest {
 		assertTrue(herringRouge.exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteResources() throws CoreException, IOException {
 		String name = "test31415";
 
@@ -474,24 +474,24 @@ public class CaseSensitivityTest {
 
 		// replace the File's filesystem rep. with a case-different name
 		java.io.File localFile = file.getLocation().toFile();
-		localFile.delete();
-		assertTrue(!localFile.exists());
+		localFile.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(!localFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		localFile = new java.io.File(file.getLocation().removeLastSegments(1).toString(), name.toUpperCase());
-		localFile.createNewFile();
-		assertTrue(localFile.exists());
+		localFile.createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(localFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		file.delete(true, null);
 
-		localFile.delete(); // so that we can change its parent folder
-		assertFalse(localFile.exists());
+		localFile.delete(); // so that we can change its parent folder //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(localFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// replace the Folder's filesystem rep. with a case-different name
 		java.io.File localFolder = folder.getLocation().toFile();
-		localFolder.delete();
-		assertFalse(localFolder.exists());
+		localFolder.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(localFolder.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		localFolder = new java.io.File(folder.getLocation().removeLastSegments(1).toString(), name.toUpperCase());
-		localFolder.mkdir();
-		assertTrue(localFolder.exists());
+		localFolder.mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(localFolder.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		folder.delete(true, null);
 	}

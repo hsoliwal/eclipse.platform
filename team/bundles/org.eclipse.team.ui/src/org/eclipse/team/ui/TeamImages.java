@@ -37,7 +37,7 @@ public class TeamImages {
 	 * @param id  the identifier for the image to retrieve
 	 * @return the image descriptor associated with the given ID
 	 */
-	public static ImageDescriptor getImageDescriptor(String id) {
+	public static ImageDescriptor getImageDescriptor(String id) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String key = null;
 		switch (id) {
 		case ISharedImages.IMG_DIRTY_OVR:

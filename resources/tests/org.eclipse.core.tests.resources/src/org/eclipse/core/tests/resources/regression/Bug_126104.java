@@ -41,7 +41,7 @@ import org.junit.jupiter.api.io.TempDir;
 @ExtendWith(WorkspaceResetExtension.class)
 public class Bug_126104 {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug(@TempDir Path tempDirectory) throws CoreException, IOException {
 		IProject project = getWorkspace().getRoot().getProject("p1");
 		IFile source = project.getFile("source");

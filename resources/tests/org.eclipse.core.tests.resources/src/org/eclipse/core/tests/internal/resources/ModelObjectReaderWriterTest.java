@@ -77,8 +77,8 @@ public class ModelObjectReaderWriterTest {
 	static final URI LONG_LOCATION_URI = LONG_LOCATION.toFile().toURI();
 	private static final String PATH_STRING = IPath.fromOSString("/abc/def").setDevice(OS.isWindows() ? "D:" : null).toString();
 
-	private HashMap<String, ProjectDescription> buildBaselineDescriptors() {
-		HashMap<String, ProjectDescription> result = new HashMap<>();
+	private HashMap<String, ProjectDescription> buildBaselineDescriptors() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		HashMap<String, ProjectDescription> result = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 
 		ProjectDescription desc = new ProjectDescription();
@@ -90,7 +90,7 @@ public class ModelObjectReaderWriterTest {
 		String[] natures = new String[1];
 		natures[0] = "org.eclipse.jdt.core.javanature";
 		desc.setNatureIds(natures);
-		HashMap<IPath, LinkDescription> linkMap = new HashMap<>();
+		HashMap<IPath, LinkDescription> linkMap = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		LinkDescription link = createLinkDescription("newLink", IResource.FOLDER, "d:/abc/def");
 		linkMap.put(link.getProjectRelativePath(), link);
 		desc.setLinkDescriptions(linkMap);
@@ -110,7 +110,7 @@ public class ModelObjectReaderWriterTest {
 		natures = new String[1];
 		natures[0] = "org.eclipse.jdt.core.javanature";
 		desc.setNatureIds(natures);
-		linkMap = new HashMap<>();
+		linkMap = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		link = createLinkDescription("newLink", IResource.FOLDER, "d:/abc/def");
 		linkMap.put(link.getProjectRelativePath(), link);
 		link = createLinkDescription("link2", IResource.FOLDER, "d:/abc");
@@ -164,7 +164,7 @@ public class ModelObjectReaderWriterTest {
 		commands[0].setBuilderName("org.eclipse.jdt.core.javabuilder");
 		commands[1] = desc.newCommand();
 		commands[1].setBuilderName("org.eclipse.ui.externaltools.ExternalToolBuilder");
-		HashMap<String, String> argMap = new HashMap<>();
+		HashMap<String, String> argMap = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		argMap.put("!{tool_show_log}", "true");
 		argMap.put("!{tool_refresh}", "${none}");
 		argMap.put("!{tool_name}", "org.eclipse.ant.core extra builder");
@@ -186,17 +186,17 @@ public class ModelObjectReaderWriterTest {
 		return result;
 	}
 
-	private void compareBuildSpecs(ICommand[] commands, ICommand[] commands2) {
+	private void compareBuildSpecs(ICommand[] commands, ICommand[] commands2) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// ASSUMPTION:  commands and commands2 are non-null
 		assertThat(commands).as("compare number of commands").hasSameSizeAs(commands2);
-		for (int i = 0; i < commands.length; i++) {
+		for (int i = 0; i < commands.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThat(commands[i].getBuilderName()).as("compare names of builders at index %s", i)
 					.isEqualTo(commands2[i].getBuilderName());
 			Map<String, String> args = commands[i].getArguments();
 			Map<String, String> args2 = commands2[i].getArguments();
 			assertThat(args.entrySet()).as("compare number of arguments for builder at index %s", i)
 					.hasSize(args2.size());
-			for (Entry<String, String> entry : args.entrySet()) {
+			for (Entry<String, String> entry : args.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String key = entry.getKey();
 				String value = entry.getValue();
 				String value2 = args2.get(key);
@@ -209,7 +209,7 @@ public class ModelObjectReaderWriterTest {
 		}
 	}
 
-	private void compareProjectDescriptions(int errorTag, ProjectDescription description, ProjectDescription description2) {
+	private void compareProjectDescriptions(int errorTag, ProjectDescription description, ProjectDescription description2) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		assertThat(description.getName()).isEqualTo(description2.getName());
 		String comment = description.getComment();
 		if (comment == null) {
@@ -240,14 +240,14 @@ public class ModelObjectReaderWriterTest {
 	private void compareProjects(IProject[] projects, IProject[] projects2) {
 		// ASSUMPTION:  projects and projects2 are non-null
 		assertThat(projects).as("compare number of projects").hasSameSizeAs(projects2);
-		for (int i = 0; i < projects.length; i++) {
+		for (int i = 0; i < projects.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThat(projects[i].getName()).as("compare names of projects at index %s", i)
 					.isEqualTo(projects2[i].getName());
 		}
 	}
 
 	protected boolean contains(Object key, Object[] array) {
-		for (Object element : array) {
+		for (Object element : array) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (key.equals(element)) {
 				return true;
 			}
@@ -268,13 +268,13 @@ public class ModelObjectReaderWriterTest {
 	}
 
 	private String getLongDescription() {
-		return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<projectDescription>" + "<name>org.eclipse.help.ui</name>" + "<comment></comment>" + "<charset>UTF-8</charset>" + "	<projects>" + "	<project>org.eclipse.core.boot</project>" + "	<project>org.eclipse.core.resources</project>" + "	<project>org.eclipse.core.runtime</project>" + "	<project>org.eclipse.help</project>" + "	<project>org.eclipse.help.appserver</project>" + "	<project>org.eclipse.search</project>" + "	<project>org.eclipse.ui</project>" + "	</projects>" + "	<buildSpec>" + "	<buildCommand>" + "	<name>org.eclipse.jdt.core.javabuilder</name>" + "	<arguments>" + "	</arguments>" + "	</buildCommand>" + "	<buildCommand>" + "	<name>org.eclipse.pde.ManifestBuilder</name>" + "	<arguments>"
+		return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<projectDescription>" + "<name>org.eclipse.help.ui</name>" + "<comment></comment>" + "<charset>UTF-8</charset>" + "	<projects>" + "	<project>org.eclipse.core.boot</project>" + "	<project>org.eclipse.core.resources</project>" + "	<project>org.eclipse.core.runtime</project>" + "	<project>org.eclipse.help</project>" + "	<project>org.eclipse.help.appserver</project>" + "	<project>org.eclipse.search</project>" + "	<project>org.eclipse.ui</project>" + "	</projects>" + "	<buildSpec>" + "	<buildCommand>" + "	<name>org.eclipse.jdt.core.javabuilder</name>" + "	<arguments>" + "	</arguments>" + "	</buildCommand>" + "	<buildCommand>" + "	<name>org.eclipse.pde.ManifestBuilder</name>" + "	<arguments>" //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ "	</arguments>" + "	</buildCommand>" + "	<buildCommand>" + "	<name>org.eclipse.pde.SchemaBuilder</name>" + "	<arguments>" + "	</arguments>" + "	</buildCommand>" + "	</buildSpec>" + "	<natures>" + "	<nature>org.eclipse.jdt.core.javanature</nature>" + "	<nature>org.eclipse.pde.PluginNature</nature>" + "	</natures>" + "	<linkedResources>" + "	<link>" + "	<name>contexts.xml</name>" + "	<type>1</type>" + "	<location>" + LONG_LOCATION + "</location>" + "	</link>" + "	<link>" + "	<name>doc</name>" + "	<type>2</type>" + "	<location>" + LONG_LOCATION + "</location>" + "	</link>" + "	<link>" + "	<name>icons</name>" + "	<type>2</type>" + "	<location>" + LONG_LOCATION + "</location>" + "	</link>" + "	<link>" + "	<name>preferences.ini</name>"
 				+ "	<type>1</type>" + "	<location>" + LONG_LOCATION + "</location>" + "	</link>" + "	<link>" + "	<name>.options</name>" + "	<type>1</type>" + "	<location>" + LONG_LOCATION + "</location>" + "	</link>" + "	<link>" + "	<name>plugin.properties</name>" + "	<type>1</type>" + "	<location>" + LONG_LOCATION + "</location>" + "	</link>" + "	<link>" + "	<name>plugin.xml</name>" + "	<type>1</type>" + "	<location>" + LONG_LOCATION + "</location>" + "	</link>" + "	<link>" + "	<name>about.html</name>" + "	<type>1</type>" + "	<location>" + LONG_LOCATION + "</location>" + "	</link>" + "	<link>" + "	<name>helpworkbench.jar</name>" + "	<type>1</type>" + "	<location>" + LONG_LOCATION + "</location>" + "	</link>" + "</linkedResources>" + "</projectDescription>";
 	}
 
 	private String getLongDescriptionURI() {
-		return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<projectDescription>" + "<name>org.eclipse.help.ui</name>" + "<comment></comment>" + "<charset>UTF-8</charset>" + "	<projects>" + "	<project>org.eclipse.core.boot</project>" + "	<project>org.eclipse.core.resources</project>" + "	<project>org.eclipse.core.runtime</project>" + "	<project>org.eclipse.help</project>" + "	<project>org.eclipse.help.appserver</project>" + "	<project>org.eclipse.search</project>" + "	<project>org.eclipse.ui</project>" + "	</projects>" + "	<buildSpec>" + "	<buildCommand>" + "	<name>org.eclipse.jdt.core.javabuilder</name>" + "	<arguments>" + "	</arguments>" + "	</buildCommand>" + "	<buildCommand>" + "	<name>org.eclipse.pde.ManifestBuilder</name>" + "	<arguments>"
+		return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + "<projectDescription>" + "<name>org.eclipse.help.ui</name>" + "<comment></comment>" + "<charset>UTF-8</charset>" + "	<projects>" + "	<project>org.eclipse.core.boot</project>" + "	<project>org.eclipse.core.resources</project>" + "	<project>org.eclipse.core.runtime</project>" + "	<project>org.eclipse.help</project>" + "	<project>org.eclipse.help.appserver</project>" + "	<project>org.eclipse.search</project>" + "	<project>org.eclipse.ui</project>" + "	</projects>" + "	<buildSpec>" + "	<buildCommand>" + "	<name>org.eclipse.jdt.core.javabuilder</name>" + "	<arguments>" + "	</arguments>" + "	</buildCommand>" + "	<buildCommand>" + "	<name>org.eclipse.pde.ManifestBuilder</name>" + "	<arguments>" //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ "	</arguments>" + "	</buildCommand>" + "	<buildCommand>" + "	<name>org.eclipse.pde.SchemaBuilder</name>" + "	<arguments>" + "	</arguments>" + "	</buildCommand>" + "	</buildSpec>" + "	<natures>" + "	<nature>org.eclipse.jdt.core.javanature</nature>" + "	<nature>org.eclipse.pde.PluginNature</nature>" + "	</natures>" + "	<linkedResources>" + "	<link>" + "	<name>contexts.xml</name>" + "	<type>1</type>" + "	<locationURI>" + LONG_LOCATION_URI + "</locationURI>" + "	</link>" + "	<link>" + "	<name>doc</name>" + "	<type>2</type>" + "	<locationURI>" + LONG_LOCATION_URI + "</locationURI>" + "	</link>" + "	<link>" + "	<name>icons</name>" + "	<type>2</type>" + "	<locationURI>" + LONG_LOCATION_URI + "</locationURI>" + "	</link>" + "	<link>"
 				+ "	<name>preferences.ini</name>" + "	<type>1</type>" + "	<locationURI>" + LONG_LOCATION_URI + "</locationURI>" + "	</link>" + "	<link>" + "	<name>.options</name>" + "	<type>1</type>" + "	<locationURI>" + LONG_LOCATION_URI + "</locationURI>" + "	</link>" + "	<link>" + "	<name>plugin.properties</name>" + "	<type>1</type>" + "	<locationURI>" + LONG_LOCATION_URI + "</locationURI>" + "	</link>" + "	<link>" + "	<name>plugin.xml</name>" + "	<type>1</type>" + "	<locationURI>" + LONG_LOCATION_URI + "</locationURI>" + "	</link>" + "	<link>" + "	<name>about.html</name>" + "	<type>1</type>" + "	<locationURI>" + LONG_LOCATION_URI + "</locationURI>" + "	</link>" + "	<link>" + "	<name>helpworkbench.jar</name>" + "	<type>1</type>" + "	<locationURI>"
 				+ LONG_LOCATION_URI + "</locationURI>" + "	</link>" + "</linkedResources>" + "</projectDescription>";
@@ -294,12 +294,12 @@ public class ModelObjectReaderWriterTest {
 	 * Verifies that project description file is written in a consistent way.
 	 * (bug 177148)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testConsistentWrite() throws Throwable {
 		String locationA = getTempDir().append("testPath1").toPortableString();
 		String locationB = getTempDir().append("testPath1").toPortableString();
 		String newline = System.lineSeparator();
-		String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + newline + "<projectDescription>" + newline + "	<name>MyProjectDescription</name>" + newline + "	<comment></comment>" + newline + "	<projects>" + newline + "	</projects>" + newline + "	<buildSpec>" + newline + "		<buildCommand>" + newline + "			<name>MyCommand</name>" + newline + "			<arguments>" + newline + "				<dictionary>" + newline + "					<key>aA</key>" + newline + "					<value>2 x ARGH!</value>" + newline + "				</dictionary>" + newline + "				<dictionary>" + newline + "					<key>b</key>" + newline + "					<value>ARGH!</value>" + newline + "				</dictionary>" + newline
+		String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + newline + "<projectDescription>" + newline + "	<name>MyProjectDescription</name>" + newline + "	<comment></comment>" + newline + "	<projects>" + newline + "	</projects>" + newline + "	<buildSpec>" + newline + "		<buildCommand>" + newline + "			<name>MyCommand</name>" + newline + "			<arguments>" + newline + "				<dictionary>" + newline + "					<key>aA</key>" + newline + "					<value>2 x ARGH!</value>" + newline + "				</dictionary>" + newline + "				<dictionary>" + newline + "					<key>b</key>" + newline + "					<value>ARGH!</value>" + newline + "				</dictionary>" + newline //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ "			</arguments>" + newline + "		</buildCommand>" + newline + "	</buildSpec>" + newline + "	<natures>" + newline + "	</natures>" + newline + "	<linkedResources>" + newline + "		<link>" + newline + "			<name>pathA</name>" + newline + "			<type>2</type>" + newline + "			<location>" + locationA + "</location>" + newline + "		</link>" + newline + "		<link>" + newline + "			<name>pathB</name>" + newline + "			<type>2</type>" + newline + "			<location>" + locationB + "</location>" + newline + "		</link>" + newline + "	</linkedResources>" + newline + "</projectDescription>" + newline;
 
 		IFileStore tempStore = fileStoreExtension.getTempStore();
@@ -308,7 +308,7 @@ public class ModelObjectReaderWriterTest {
 		ProjectDescription description = new ProjectDescription();
 		description.setLocationURI(location);
 		description.setName("MyProjectDescription");
-		HashMap<String, String> args = new HashMap<>(2);
+		HashMap<String, String> args = new HashMap<>(2); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		// key values are important
 		args.put("b", "ARGH!");
 		args.put("aA", "2 x ARGH!");
@@ -317,7 +317,7 @@ public class ModelObjectReaderWriterTest {
 		commands[0].setBuilderName("MyCommand");
 		commands[0].setArguments(args);
 		description.setBuildSpec(commands);
-		HashMap<IPath, LinkDescription> linkDescriptions = new HashMap<>(2);
+		HashMap<IPath, LinkDescription> linkDescriptions = new HashMap<>(2); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		LinkDescription link = createLinkDescription("pathB", IResource.FOLDER, locationB);
 		// key values are important
 		linkDescriptions.put(link.getProjectRelativePath(), link);
@@ -349,7 +349,7 @@ public class ModelObjectReaderWriterTest {
 		assertArrayEquals(value, readme.getNatureIds());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLocalMetaAreaReadWriteBuildSpec(@TempDir Path folder) throws CoreException, IOException {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		LocalMetaArea area = new LocalMetaArea((Workspace) workspace);
@@ -374,7 +374,7 @@ public class ModelObjectReaderWriterTest {
 
 	@Test
 	public void testInvalidProjectDescription1() throws Throwable {
-		String invalidProjectDescription = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<homeDescription>\n" + "	<name>abc</name>\n" + "	<comment></comment>\n" + "	<projects>\n" + "	</projects>\n" + "	<buildSpec>\n" + "		<buildCommand>\n" + "			<name>org.eclipse.jdt.core.javabuilder</name>\n" + "			<arguments>\n" + "			</arguments>\n" + "		</buildCommand>\n" + "	</buildSpec>\n" + "	<natures>\n" + "	<nature>org.eclipse.jdt.core.javanature</nature>\n" + "	</natures>\n" + "	<linkedResources>\n" + "		<link>\n" + "			<name>newLink</name>\n" + "			<type>2</type>\n" + "			<location>" + PATH_STRING + "</location>\n" + "		</link>\n" + "	</linkedResources>\n" + "</homeDescription>";
+		String invalidProjectDescription = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<homeDescription>\n" + "	<name>abc</name>\n" + "	<comment></comment>\n" + "	<projects>\n" + "	</projects>\n" + "	<buildSpec>\n" + "		<buildCommand>\n" + "			<name>org.eclipse.jdt.core.javabuilder</name>\n" + "			<arguments>\n" + "			</arguments>\n" + "		</buildCommand>\n" + "	</buildSpec>\n" + "	<natures>\n" + "	<nature>org.eclipse.jdt.core.javanature</nature>\n" + "	</natures>\n" + "	<linkedResources>\n" + "		<link>\n" + "			<name>newLink</name>\n" + "			<type>2</type>\n" + "			<location>" + PATH_STRING + "</location>\n" + "		</link>\n" + "	</linkedResources>\n" + "</homeDescription>"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		IWorkspace workspace = getWorkspace();
 		IPath root = workspace.getRoot().getLocation();
@@ -384,14 +384,14 @@ public class ModelObjectReaderWriterTest {
 		ProjectDescriptionReader reader = new ProjectDescriptionReader(workspace);
 		// Write out the project description file
 		removeFromFileSystem(location.toFile());
-		try (FileOutputStream output = new FileOutputStream(location.toFile())) {
+		try (FileOutputStream output = new FileOutputStream(location.toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			createInputStream(invalidProjectDescription).transferTo(output);
 		}
 		ProjectDescription projDesc = reader.read(location);
 		assertThat(projDesc).isNull();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInvalidProjectDescription2() throws Throwable {
 		String invalidProjectDescription = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<projectDescription>\n" + "	<bogusname>abc</bogusname>\n" + "</projectDescription>";
 
@@ -411,7 +411,7 @@ public class ModelObjectReaderWriterTest {
 		assertThat(projDesc.getLinks()).isNull();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInvalidProjectDescription3() throws Throwable {
 		String invalidProjectDescription = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<projectDescription>\n" + "	<name>abc</name>\n" + "	<comment></comment>\n" + "	<projects>\n" + "	</projects>\n" + "	<buildSpec>\n" + "		<badBuildCommand>\n" + "			<name>org.eclipse.jdt.core.javabuilder</name>\n" + "			<arguments>\n" + "			</arguments>\n" + "		</badBuildCommand>\n" + "	</buildSpec>\n" + "</projectDescription>";
 
@@ -432,9 +432,9 @@ public class ModelObjectReaderWriterTest {
 		assertThat(projDesc.getLinks()).isNull();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInvalidProjectDescription4() throws Throwable {
-		String invalidProjectDescription = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<projectDescription>\n" + "	<name>abc</name>\n" + "	<comment></comment>\n" + "	<projects>\n" + "	</projects>\n" + "	<buildSpec>\n" + "	</buildSpec>\n" + "	<natures>\n" + "	</natures>\n" + "	<linkedResources>\n" + "		<link>\n" + "			<name>newLink</name>\n" + "			<type>foobar</type>\n" + "			<location>" + PATH_STRING + "</location>\n" + "		</link>\n" + "	</linkedResources>\n" + "</projectDescription>";
+		String invalidProjectDescription = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<projectDescription>\n" + "	<name>abc</name>\n" + "	<comment></comment>\n" + "	<projects>\n" + "	</projects>\n" + "	<buildSpec>\n" + "	</buildSpec>\n" + "	<natures>\n" + "	</natures>\n" + "	<linkedResources>\n" + "		<link>\n" + "			<name>newLink</name>\n" + "			<type>foobar</type>\n" + "			<location>" + PATH_STRING + "</location>\n" + "		</link>\n" + "	</linkedResources>\n" + "</projectDescription>"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		IFileStore store = fileStoreExtension.getTempStore();
 		// Write out the project description file
@@ -457,7 +457,7 @@ public class ModelObjectReaderWriterTest {
 	/**
 	 * Tests a project description with a very long local location for a linked resource.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLongProjectDescription() throws Throwable {
 		String longProjectDescription = getLongDescription();
 
@@ -467,12 +467,12 @@ public class ModelObjectReaderWriterTest {
 		ProjectDescriptionReader reader = new ProjectDescriptionReader(getWorkspace());
 		// Write out the project description file
 		removeFromFileSystem(location.toFile());
-		try (FileOutputStream output = new FileOutputStream(location.toFile())) {
+		try (FileOutputStream output = new FileOutputStream(location.toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			createInputStream(longProjectDescription).transferTo(output);
 		}
 		ProjectDescription projDesc = reader.read(location);
 		removeFromFileSystem(location.toFile());
-		for (LinkDescription link : projDesc.getLinks().values()) {
+		for (LinkDescription link : projDesc.getLinks().values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThat(link.getLocationURI())
 					.as("location URI for link with relative path: %s", link.getProjectRelativePath())
 					.isEqualTo(LONG_LOCATION_URI);
@@ -482,7 +482,7 @@ public class ModelObjectReaderWriterTest {
 	/**
 	 * Tests a project description with a very long URI location for linked resource.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLongProjectDescriptionURI() throws Throwable {
 		String longProjectDescription = getLongDescriptionURI();
 		IPath location = getRandomLocation();
@@ -491,24 +491,24 @@ public class ModelObjectReaderWriterTest {
 		ProjectDescriptionReader reader = new ProjectDescriptionReader(ResourcesPlugin.getWorkspace());
 		// Write out the project description file
 		removeFromFileSystem(location.toFile());
-		try (FileOutputStream output = new FileOutputStream(location.toFile())) {
+		try (FileOutputStream output = new FileOutputStream(location.toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			createInputStream(longProjectDescription).transferTo(output);
 		}
 		ProjectDescription projDesc = reader.read(location);
 		removeFromFileSystem(location.toFile());
-		for (LinkDescription link : projDesc.getLinks().values()) {
+		for (LinkDescription link : projDesc.getLinks().values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThat(link.getLocationURI())
 					.as("location URI for link with relative path: %s", link.getProjectRelativePath())
 					.isEqualTo(LONG_LOCATION_URI);
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultiLineCharFields() throws Throwable {
-		String multiLineProjectDescription = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<projectDescription>\n" + "	<name>\n" + "      abc\n" + "   </name>\n" + "	<charset>\n" + "		ISO-8859-1\n" + "	</charset>\n" + "	<comment>This is the comment.</comment>\n" + "	<projects>\n" + "	   <project>\n" + "         org.eclipse.core.boot\n" + "      </project>\n" + "	</projects>\n" + "	<buildSpec>\n" + "		<buildCommand>\n" + "			<name>\n" + "              org.eclipse.jdt.core.javabuilder\n" + "           </name>\n" + "			<arguments>\n" + "              <key>thisIsTheKey</key>\n" + "              <value>thisIsTheValue</value>\n" + "			</arguments>\n" + "		</buildCommand>\n" + "	</buildSpec>\n" + "	<natures>\n" + "	   <nature>\n"
+		String multiLineProjectDescription = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<projectDescription>\n" + "	<name>\n" + "      abc\n" + "   </name>\n" + "	<charset>\n" + "		ISO-8859-1\n" + "	</charset>\n" + "	<comment>This is the comment.</comment>\n" + "	<projects>\n" + "	   <project>\n" + "         org.eclipse.core.boot\n" + "      </project>\n" + "	</projects>\n" + "	<buildSpec>\n" + "		<buildCommand>\n" + "			<name>\n" + "              org.eclipse.jdt.core.javabuilder\n" + "           </name>\n" + "			<arguments>\n" + "              <key>thisIsTheKey</key>\n" + "              <value>thisIsTheValue</value>\n" + "			</arguments>\n" + "		</buildCommand>\n" + "	</buildSpec>\n" + "	<natures>\n" + "	   <nature>\n" //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ "         org.eclipse.jdt.core.javanature\n" + "      </nature>\n" + "	</natures>\n" + "	<linkedResources>\n" + "		<link>\n" + "			<name>" + "newLink" + "</name>\n" + "			<type>\n" + "              2\n" + "           </type>\n" + "			<location>" + PATH_STRING + "</location>\n" + "		</link>\n" + "	</linkedResources>\n" + "</projectDescription>";
 
-		String singleLineProjectDescription = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<projectDescription>\n" + "	<name>abc</name>\n" + "	<charset>ISO-8859-1</charset>\n" + "	<comment>This is the comment.</comment>\n" + "	<projects>\n" + "	   <project>org.eclipse.core.boot</project>\n" + "	</projects>\n" + "	<buildSpec>\n" + "		<buildCommand>\n" + "			<name>org.eclipse.jdt.core.javabuilder</name>\n" + "			<arguments>\n" + "              <key>thisIsTheKey</key>\n" + "              <value>thisIsTheValue</value>\n" + "			</arguments>\n" + "		</buildCommand>\n" + "	</buildSpec>\n" + "	<natures>\n" + "	   <nature>org.eclipse.jdt.core.javanature</nature>\n" + "	</natures>\n" + "	<linkedResources>\n" + "		<link>\n"
+		String singleLineProjectDescription = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + "<projectDescription>\n" + "	<name>abc</name>\n" + "	<charset>ISO-8859-1</charset>\n" + "	<comment>This is the comment.</comment>\n" + "	<projects>\n" + "	   <project>org.eclipse.core.boot</project>\n" + "	</projects>\n" + "	<buildSpec>\n" + "		<buildCommand>\n" + "			<name>org.eclipse.jdt.core.javabuilder</name>\n" + "			<arguments>\n" + "              <key>thisIsTheKey</key>\n" + "              <value>thisIsTheValue</value>\n" + "			</arguments>\n" + "		</buildCommand>\n" + "	</buildSpec>\n" + "	<natures>\n" + "	   <nature>org.eclipse.jdt.core.javanature</nature>\n" + "	</natures>\n" + "	<linkedResources>\n" + "		<link>\n" //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ "			<name>newLink</name>\n" + "			<type>2</type>\n" + "			<location>" + PATH_STRING + "</location>\n" + "		</link>\n" + "	</linkedResources>\n" + "</projectDescription>";
 
 		IWorkspace workspace = getWorkspace();
@@ -522,10 +522,10 @@ public class ModelObjectReaderWriterTest {
 		// Write out the project description file
 		removeFromFileSystem(multiLocation.toFile());
 		removeFromFileSystem(singleLocation.toFile());
-		try (FileOutputStream output = new FileOutputStream(multiLocation.toFile())) {
+		try (FileOutputStream output = new FileOutputStream(multiLocation.toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			createInputStream(multiLineProjectDescription).transferTo(output);
 		}
-		try (FileOutputStream output = new FileOutputStream(singleLocation.toFile())) {
+		try (FileOutputStream output = new FileOutputStream(singleLocation.toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			createInputStream(singleLineProjectDescription).transferTo(output);
 		}
 		ProjectDescription multiDesc = reader.read(multiLocation);
@@ -540,7 +540,7 @@ public class ModelObjectReaderWriterTest {
 		HashMap<String, ProjectDescription> baselines = buildBaselineDescriptors();
 		ProjectDescriptionReader reader = new ProjectDescriptionReader(getWorkspace());
 
-		for (int i = 0; i < members.length; i++) {
+		for (int i = 0; i < members.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			URL currentURL = whereToLook.toURI().resolve(members[i]).toURL();
 			try (InputStream is = currentURL.openStream()) {
 				InputSource in = new InputSource(is);
@@ -550,7 +550,7 @@ public class ModelObjectReaderWriterTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDescription() throws Throwable {
 		IFileStore tempStore = fileStoreExtension.getTempStore();
 		URI location = tempStore.toURI();
@@ -558,7 +558,7 @@ public class ModelObjectReaderWriterTest {
 		ProjectDescription description = new ProjectDescription();
 		description.setLocationURI(location);
 		description.setName("MyProjectDescription");
-		HashMap<String, String> args = new HashMap<>(3);
+		HashMap<String, String> args = new HashMap<>(3); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put("ArgOne", "ARGH!");
 		args.put("ArgTwo", "2 x ARGH!");
 		args.put("NullArg", null);
@@ -594,7 +594,7 @@ public class ModelObjectReaderWriterTest {
 		});
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDescription2() throws Throwable {
 		// Use ModelObject2 to read the project description
 
@@ -607,7 +607,7 @@ public class ModelObjectReaderWriterTest {
 		ProjectDescription description = new ProjectDescription();
 		description.setLocationURI(location);
 		description.setName("MyProjectDescription");
-		HashMap<String, String> args = new HashMap<>(3);
+		HashMap<String, String> args = new HashMap<>(3); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put("ArgOne", "ARGH!");
 		ICommand[] commands = new ICommand[1];
 		commands[0] = description.newCommand();
@@ -653,7 +653,7 @@ public class ModelObjectReaderWriterTest {
 	}
 
 	// see bug 274437
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDescription3() throws Throwable {
 		IFileStore tempStore = fileStoreExtension.getTempStore();
 		URI location = tempStore.toURI();
@@ -681,7 +681,7 @@ public class ModelObjectReaderWriterTest {
 		});
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDescriptionWithSpaces() throws Throwable {
 		IFileStore store = fileStoreExtension.getTempStore();
 		IPath path = IPath.fromOSString("link");
@@ -716,7 +716,7 @@ public class ModelObjectReaderWriterTest {
 	}
 
 	// Regression for Bug 300669
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDescriptionWithFiltersAndNullProject() throws Exception {
 		String projectDescription = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" + //
 				"<projectDescription>\n" + //
@@ -751,7 +751,7 @@ public class ModelObjectReaderWriterTest {
 		ProjectDescriptionReader reader = new ProjectDescriptionReader(getWorkspace());
 		// Write out the project description file
 		removeFromFileSystem(location.toFile());
-		try (FileOutputStream output = new FileOutputStream(location.toFile())) {
+		try (FileOutputStream output = new FileOutputStream(location.toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			createInputStream(projectDescription).transferTo(output);
 		}
 		ProjectDescription projDesc = reader.read(location);

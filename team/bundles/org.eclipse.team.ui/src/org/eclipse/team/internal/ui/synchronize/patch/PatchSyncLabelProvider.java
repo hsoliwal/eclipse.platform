@@ -59,7 +59,7 @@ public class PatchSyncLabelProvider extends SynchronizationLabelProvider {
 		return super.getDiff(element);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Image getCompareImage(Image base, int kind) {
 		/*
 		 * Need to swap left and right for PatchDiffNodes as done in Apply Patch

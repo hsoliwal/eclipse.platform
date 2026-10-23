@@ -51,9 +51,9 @@ public class CompareEditorInputNavigator extends CompareNavigator {
 
 	@Override
 	protected INavigatable[] getNavigatables() {
-		List<INavigatable> result = new ArrayList<>();
+		List<INavigatable> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Object[] panes = getPanes();
-		for (Object pane : panes) {
+		for (Object pane : panes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			INavigatable navigator= getNavigator(pane);
 			if (navigator != null) {
 				result.add(navigator);
@@ -82,7 +82,7 @@ public class CompareEditorInputNavigator extends CompareNavigator {
 		if (panes == null || panes.length == 0) {
 			return false;
 		}
-		for (int i= 1; i < panes.length; i++) {
+		for (int i= 1; i < panes.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object pane= panes[i];
 			INavigatable nav = getNavigator(pane);
 			if (nav != null && nav.getInput() != null) {

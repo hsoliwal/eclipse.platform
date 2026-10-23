@@ -35,7 +35,7 @@ import org.eclipse.core.runtime.MultiStatus;
  * to run in a separate thread.
  * Example: new Thread(concurrentOperation).start();
  */
-public abstract class ConcurrentOperation implements Runnable, IWorkspaceRunnable {
+public abstract class ConcurrentOperation implements Runnable, IWorkspaceRunnable { //FLLDCIM: MARK — T09  IMPLEMENTS
 	/** workspace */
 	protected IWorkspace workspace;
 
@@ -76,7 +76,7 @@ public abstract class ConcurrentOperation implements Runnable, IWorkspaceRunnabl
 	public boolean hasStarted() {
 
 		synchronized (startedLock) {
-			while (hasStarted == STARTED_NONE) {
+			while (hasStarted == STARTED_NONE) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					startedLock.wait();
 				} catch (InterruptedException e) {
@@ -125,7 +125,7 @@ public abstract class ConcurrentOperation implements Runnable, IWorkspaceRunnabl
 	 * This method can cause deadlock.
 	 */
 	public synchronized void returnWhenInSyncPoint() {
-		while (!isWaiting && hasStarted()) {
+		while (!isWaiting && hasStarted()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -168,7 +168,7 @@ public abstract class ConcurrentOperation implements Runnable, IWorkspaceRunnabl
 		go = false;
 		isWaiting = true;
 		notify(); // notify we are in a sync point
-		while (!go) {
+		while (!go) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				wait();
 			} catch (InterruptedException e) {

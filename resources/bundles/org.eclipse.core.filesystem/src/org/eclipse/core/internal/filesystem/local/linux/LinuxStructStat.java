@@ -36,7 +36,7 @@ public class LinuxStructStat {
 	public byte[] name;
 	public byte[] linkFile; // Filled target for symbolic links
 
-	public FileInfo toFileInfo() {
+	public FileInfo toFileInfo() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		FileInfo info = new FileInfo();
 		if (name != null) {
 			info.setName(Convert.fromPlatformBytes(name, name.length));

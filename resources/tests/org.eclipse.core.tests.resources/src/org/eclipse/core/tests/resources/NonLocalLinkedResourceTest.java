@@ -69,7 +69,7 @@ public class NonLocalLinkedResourceTest {
 		MemoryTree.TREE.deleteAll();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyFile() throws CoreException {
 		IFileStore sourceStore = createFolderStore("source");
 		IFileStore destinationStore = createFolderStore("destination");
@@ -99,7 +99,7 @@ public class NonLocalLinkedResourceTest {
 		assertThrows(CoreException.class, () -> localFile.copy(localFile.getFullPath(), IResource.NONE, createTestMonitor()));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyFolder() throws CoreException {
 		IFileStore sourceStore = createFolderStore("source");
 		IProject project = getWorkspace().getRoot().getProject("project");
@@ -128,7 +128,7 @@ public class NonLocalLinkedResourceTest {
 		assertThrows(CoreException.class, () -> source.copy(source.getFullPath(), IResource.NONE, createTestMonitor()));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveFile() throws CoreException {
 		IFileStore sourceStore = createFolderStore("source");
 		IFileStore destinationStore = createFolderStore("destination");

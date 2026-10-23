@@ -30,7 +30,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class Bug_380386 {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Disabled("This regression test has to be rewritten in a proper way")
 	public void testBug() throws Exception {
 		String path = "C:\\temp";
@@ -41,8 +41,8 @@ public class Bug_380386 {
 		IStatus statusValue = pathManager.validateValue(value);
 
 		if (statusName == null || statusValue == null) {
-			System.err.println("statusName is " + (statusName == null ? "null" : ("not null: '" + statusName + "'.")));
-			System.err.println("statusValue is " + (statusValue == null ? "null" : ("not null: '" + statusValue + "'.")));
+			System.err.println("statusName is " + (statusName == null ? "null" : ("not null: '" + statusName + "'."))); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			System.err.println("statusValue is " + (statusValue == null ? "null" : ("not null: '" + statusValue + "'."))); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		} else if (statusName.isOK() && statusValue.isOK()) {
 			pathManager.setURIValue(name, value);

@@ -43,7 +43,7 @@ public class TeamAdapterFactory implements IAdapterFactory {
 
 	private static final ISynchronizationCompareAdapter COMPARE_ADAPTER = new ResourceModelPersistenceAdapter();
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 		if(adaptableObject instanceof DiffNode && adapterType == IWorkbenchAdapter.class) {
 			return (T) diffNodeAdapter;

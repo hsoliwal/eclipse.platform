@@ -48,18 +48,18 @@ import org.w3c.dom.Element;
  */
 public class EclipseClasspath {
 
-	protected List<String> srcDirs = new ArrayList<>();
-	protected List<String> classDirs = new ArrayList<>();
-	protected List<List<String>> inclusionLists = new ArrayList<>();
-	protected List<List<String>> exclusionLists = new ArrayList<>();
+	protected List<String> srcDirs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	protected List<String> classDirs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	protected List<List<String>> inclusionLists = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	protected List<List<String>> exclusionLists = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-	protected Map<String, String> variable2valueMap = new LinkedHashMap<>();
-	protected List<String> rawClassPathEntries = new ArrayList<>();
-	protected List<String> rawClassPathEntriesAbsolute = new ArrayList<>();
+	protected Map<String, String> variable2valueMap = new LinkedHashMap<>(); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW
+	protected List<String> rawClassPathEntries = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	protected List<String> rawClassPathEntriesAbsolute = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	private final IJavaProject project;
 
-	private static Map<String, IClasspathContainer> userLibraryCache = new HashMap<>();
+	private static Map<String, IClasspathContainer> userLibraryCache = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/**
 	 * Initialize object with classpath of given project.
@@ -79,15 +79,15 @@ public class EclipseClasspath {
 	 * @param bootstrap
 	 *            if true only bootstrap entries are added, if false only non-bootstrap entries are added
 	 */
-	public EclipseClasspath(IJavaProject project, ILaunchConfiguration conf, boolean bootstrap) throws CoreException {
+	public EclipseClasspath(IJavaProject project, ILaunchConfiguration conf, boolean bootstrap) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		this.project = project;
 
 		// convert IRuntimeClasspathEntry to IClasspathEntry
 		IRuntimeClasspathEntry[] runtimeEntries;
 		// see AbstractJavaLaunchConfigurationDelegate
 		runtimeEntries = JavaRuntime.computeUnresolvedRuntimeClasspath(conf);
-		List<IClasspathEntry> classpathEntries = new ArrayList<>(runtimeEntries.length);
-		for (IRuntimeClasspathEntry entry : runtimeEntries) {
+		List<IClasspathEntry> classpathEntries = new ArrayList<>(runtimeEntries.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IRuntimeClasspathEntry entry : runtimeEntries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (bootstrap && (entry.getClasspathProperty() == IRuntimeClasspathEntry.BOOTSTRAP_CLASSES) || !bootstrap
 					&& (entry.getClasspathProperty() != IRuntimeClasspathEntry.BOOTSTRAP_CLASSES)) {
 				// NOTE: See AbstractJavaLaunchConfigurationDelegate.getBootpathExt()
@@ -117,7 +117,7 @@ public class EclipseClasspath {
 	}
 
 	private void handle(IClasspathEntry[] entries) throws JavaModelException {
-		for (IClasspathEntry entry : entries) {
+		for (IClasspathEntry entry : entries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			handleSources(entry);
 			handleVariables(entry);
 			handleJars(entry);
@@ -126,7 +126,7 @@ public class EclipseClasspath {
 		}
 	}
 
-	private void handleSources(IClasspathEntry entry) throws JavaModelException {
+	private void handleSources(IClasspathEntry entry) throws JavaModelException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String projectRoot = ExportUtil.getProjectRoot(project);
 		String defaultClassDir = project.getOutputLocation().toString();
 		String defaultClassDirAbsolute = ExportUtil.resolve(project.getOutputLocation());
@@ -143,15 +143,15 @@ public class EclipseClasspath {
 			String classDirAbsolute = (classDirPath != null) ? ExportUtil.resolve(classDirPath) : defaultClassDirAbsolute;
 			rawClassPathEntries.add(classDir);
 			rawClassPathEntriesAbsolute.add(classDirAbsolute);
-			List<String> inclusionList = new ArrayList<>();
-			for (IPath inclusion : entry.getInclusionPatterns()) {
+			List<String> inclusionList = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (IPath inclusion : entry.getInclusionPatterns()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (inclusion != null) {
 					inclusionList.add(ExportUtil.removeProjectRoot(inclusion.toString(), project.getProject()));
 				}
 			}
 			inclusionLists.add(inclusionList);
-			List<String> exclusionList = new ArrayList<>();
-			for (IPath exclusion : entry.getExclusionPatterns()) {
+			List<String> exclusionList = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (IPath exclusion : entry.getExclusionPatterns()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (exclusion != null) {
 					exclusionList.add(ExportUtil.removeProjectRoot(exclusion.toString(), project.getProject()));
 				}
@@ -167,7 +167,7 @@ public class EclipseClasspath {
 	 *            source dir as IPath
 	 * @return source directory with reference, e.g. ${MYPATH}/src, if it is no link, orginal source dir is returned
 	 */
-	private String handleLinkedResource(IPath srcDirPath) {
+	private String handleLinkedResource(IPath srcDirPath) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String projectRoot = ExportUtil.getProjectRoot(project);
 		String srcDir = ExportUtil.removeProjectRoot((srcDirPath != null) ? srcDirPath.toString() : projectRoot, project.getProject());
 		if (srcDirPath == null) {
@@ -187,19 +187,19 @@ public class EclipseClasspath {
 				// path variable was used
 				String pathVariableExtension = file.getRawLocation().removeFirstSegments(1).toString(); // Bug 192726
 				String relativePath = ExportUtil.getRelativePath(pathVariableValue.toString(), projectRoot);
-				variable2valueMap.put(pathVariable + ".pathvariable", relativePath); //$NON-NLS-1$
-				variable2valueMap.put(srcDir + ".link", //$NON-NLS-1$
-						"${" + pathVariable + ".pathvariable}/" + pathVariableExtension); //$NON-NLS-1$  //$NON-NLS-2$
+				variable2valueMap.put(pathVariable + ".pathvariable", relativePath); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				variable2valueMap.put(srcDir + ".link", //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+						"${" + pathVariable + ".pathvariable}/" + pathVariableExtension); //$NON-NLS-1$  //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			} else {
-				String relativePath = ExportUtil.getRelativePath(file.getLocation() + IAntCoreConstants.EMPTY_STRING, projectRoot);
-				variable2valueMap.put(srcDir + ".link", relativePath); //$NON-NLS-1$
+				String relativePath = ExportUtil.getRelativePath(file.getLocation() + IAntCoreConstants.EMPTY_STRING, projectRoot); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				variable2valueMap.put(srcDir + ".link", relativePath); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
-			srcDir = "${" + srcDir + ".link}"; //$NON-NLS-1$ //$NON-NLS-2$
+			srcDir = "${" + srcDir + ".link}"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return srcDir;
 	}
 
-	private void handleJars(IClasspathEntry entry) {
+	private void handleJars(IClasspathEntry entry) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (entry.getContentKind() == IPackageFragmentRoot.K_BINARY && entry.getEntryKind() == IClasspathEntry.CPE_LIBRARY) {
 			String jarFile = entry.getPath().toString();
 			StringBuffer jarFileBuffer = new StringBuffer();
@@ -236,7 +236,7 @@ public class EclipseClasspath {
 	 *            filled with absolute file location
 	 * @return true if file is a classes directory
 	 */
-	private boolean handleSubProjectClassesDirectory(String file, StringBuffer jarFile, StringBuffer jarFileAbsolute) {
+	private boolean handleSubProjectClassesDirectory(String file, StringBuffer jarFile, StringBuffer jarFileAbsolute) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// class directory of a subproject?
 		if (file != null && file.indexOf('/') == 0) {
 			int i = file.indexOf('/', 1);
@@ -246,9 +246,9 @@ public class EclipseClasspath {
 			if (javaproject != null) {
 				jarFile.setLength(0);
 				jarFileAbsolute.setLength(0);
-				String location = javaproject.getProject().getName() + ".location"; //$NON-NLS-1$
+				String location = javaproject.getProject().getName() + ".location"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				jarFileAbsolute.append(ExportUtil.replaceProjectRoot(file, javaproject.getProject(), ExportUtil.getProjectRoot(javaproject)));
-				jarFile.append(ExportUtil.replaceProjectRoot(file, javaproject.getProject(), "${" + location + "}")); //$NON-NLS-1$ //$NON-NLS-2$
+				jarFile.append(ExportUtil.replaceProjectRoot(file, javaproject.getProject(), "${" + location + "}")); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				String projectRoot = ExportUtil.getProjectRoot(project);
 				String relativePath = ExportUtil.getRelativePath(ExportUtil.getProjectRoot(javaproject), projectRoot);
 				variable2valueMap.put(location, relativePath);
@@ -258,7 +258,7 @@ public class EclipseClasspath {
 		return false;
 	}
 
-	private void handleVariables(IClasspathEntry entry) {
+	private void handleVariables(IClasspathEntry entry) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (entry.getContentKind() == IPackageFragmentRoot.K_SOURCE && entry.getEntryKind() == IClasspathEntry.CPE_VARIABLE) {
 			// found variable
 			String e = entry.getPath().toString();
@@ -281,12 +281,12 @@ public class EclipseClasspath {
 				// only add empty value, if variable is new
 				variable2valueMap.put(variable, IAntCoreConstants.EMPTY_STRING);
 			}
-			rawClassPathEntriesAbsolute.add(value + path);
-			rawClassPathEntries.add("${" + variable + "}" + path); //$NON-NLS-1$ //$NON-NLS-2$
+			rawClassPathEntriesAbsolute.add(value + path); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			rawClassPathEntries.add("${" + variable + "}" + path); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
-	private void handleLibraries(IClasspathEntry entry) throws JavaModelException {
+	private void handleLibraries(IClasspathEntry entry) throws JavaModelException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (entry.getContentKind() == IPackageFragmentRoot.K_SOURCE && entry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
 			// found library
 			IClasspathContainer container = JavaCore.getClasspathContainer(entry.getPath(), project);
@@ -302,43 +302,43 @@ public class EclipseClasspath {
 			} else if (jar.startsWith(JavaCore.USER_LIBRARY_CONTAINER_ID)) {
 				// User Library
 				String libraryName = container.getDescription();
-				refName = "${" + libraryName + ".userclasspath}"; //$NON-NLS-1$ //$NON-NLS-2$
+				refName = "${" + libraryName + ".userclasspath}"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				if (container.getKind() == IClasspathContainer.K_SYSTEM) {
-					refName = "${" + libraryName + ".bootclasspath}"; //$NON-NLS-1$ //$NON-NLS-2$
+					refName = "${" + libraryName + ".bootclasspath}"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			} else {
 				// Library dependencies: e.g. Plug-in Dependencies
 				String libraryName = container.getDescription();
-				refName = "${" + libraryName + ".libraryclasspath}"; //$NON-NLS-1$ //$NON-NLS-2$
+				refName = "${" + libraryName + ".libraryclasspath}"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			userLibraryCache.put(refName, container);
 			srcDirs.add(refName);
 			classDirs.add(refName);
 			rawClassPathEntries.add(refName);
 			rawClassPathEntriesAbsolute.add(refName);
-			inclusionLists.add(new ArrayList<>());
-			exclusionLists.add(new ArrayList<>());
+			inclusionLists.add(new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			exclusionLists.add(new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 	}
 
-	private void handleProjects(IClasspathEntry entry) {
+	private void handleProjects(IClasspathEntry entry) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (entry.getContentKind() == IPackageFragmentRoot.K_SOURCE && entry.getEntryKind() == IClasspathEntry.CPE_PROJECT) {
 			// found required project on build path
 			String subProjectRoot = entry.getPath().toString();
 			IJavaProject subProject = ExportUtil.getJavaProject(subProjectRoot);
 			if (subProject == null) {
 				// project was not loaded in workspace
-				AntUIPlugin.log("project is not loaded in workspace: " + subProjectRoot, null); //$NON-NLS-1$
+				AntUIPlugin.log("project is not loaded in workspace: " + subProjectRoot, null); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				return;
 			}
 			// only add an indicator that this is a project reference
-			String classpathRef = "${" + subProject.getProject().getName() + ".classpath}"; //$NON-NLS-1$ //$NON-NLS-2$
+			String classpathRef = "${" + subProject.getProject().getName() + ".classpath}"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			srcDirs.add(classpathRef);
 			classDirs.add(classpathRef);
 			rawClassPathEntries.add(classpathRef);
 			rawClassPathEntriesAbsolute.add(classpathRef);
-			inclusionLists.add(new ArrayList<>());
-			exclusionLists.add(new ArrayList<>());
+			inclusionLists.add(new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			exclusionLists.add(new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 	}
 
@@ -452,7 +452,7 @@ public class EclipseClasspath {
 			// path variable
 			String pathVariable = value.substring(0, i + suffix.length() - 1);
 			pathVariable = ExportUtil.removePrefix(pathVariable, "${"); //$NON-NLS-1$
-			return variable2valueMap.get(pathVariable) + value.substring(i + suffix.length());
+			return variable2valueMap.get(pathVariable) + value.substring(i + suffix.length()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return value;
 	}
@@ -463,7 +463,7 @@ public class EclipseClasspath {
 	 * <p>
 	 * This is a workaround as entry.getClasspathEntry() returns null.
 	 */
-	private IClasspathEntry convertVariableClasspathEntry(IRuntimeClasspathEntry entry) {
+	private IClasspathEntry convertVariableClasspathEntry(IRuntimeClasspathEntry entry) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			ByteArrayInputStream is = new ByteArrayInputStream(entry.getMemento().getBytes());
 			@SuppressWarnings("restriction")
@@ -475,7 +475,7 @@ public class EclipseClasspath {
 			variableString = ExportUtil.removePrefix(variableString, "${");//$NON-NLS-1$
 			int i = variableString.indexOf('}');
 			if (i != -1) {
-				variableString = variableString.substring(0, i) + variableString.substring(i + 1);
+				variableString = variableString.substring(0, i) + variableString.substring(i + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			IPath path = IPath.fromOSString(variableString);
 			return JavaCore.newVariableEntry(path, null, null);

@@ -59,10 +59,10 @@ public class CustomBuildTriggerTest {
 	 * on the first build after a clean.
 	 * See bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=182781.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBuildAfterClean_builderRespondingToFull() throws CoreException {
 		IWorkspace workspace = getWorkspace();
-		IProject project = workspace.getRoot().getProject("PROJECT" + 1);
+		IProject project = workspace.getRoot().getProject("PROJECT" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		// Turn auto-building off
 		setAutoBuilding(false);
 		// Create some resources
@@ -109,10 +109,10 @@ public class CustomBuildTriggerTest {
 	 * Tests that a builder that responds only to the "incremental" trigger will be called
 	 * on the first build after a clean.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBuildAfterClean_builderRespondingToIncremental() throws CoreException {
 		IWorkspace workspace = getWorkspace();
-		IProject project = workspace.getRoot().getProject("PROJECT" + 1);
+		IProject project = workspace.getRoot().getProject("PROJECT" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		// Turn auto-building off
 		setAutoBuilding(false);
 		// Create some resources
@@ -162,10 +162,10 @@ public class CustomBuildTriggerTest {
 	 * Tests that a builder that responds only to the "auto" trigger will be called
 	 * on the first build after a clean.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBuildAfterClean_builderRespondingToAuto() throws CoreException {
 		IWorkspace workspace = getWorkspace();
-		IProject project = workspace.getRoot().getProject("PROJECT" + 1);
+		IProject project = workspace.getRoot().getProject("PROJECT" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		// Turn auto-building off
 		setAutoBuilding(false);
 		// Create some resources
@@ -214,10 +214,10 @@ public class CustomBuildTriggerTest {
 	 * Tests that a builder that does not declare itself as configurable
 	 * is not configurable.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testConfigurable() throws CoreException {
 		IWorkspace workspace = getWorkspace();
-		IProject project = workspace.getRoot().getProject("PROJECT" + 1);
+		IProject project = workspace.getRoot().getProject("PROJECT" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Turn auto-building off
 		setAutoBuilding(false);
@@ -294,10 +294,10 @@ public class CustomBuildTriggerTest {
 	 * Tests that a builder that does not declare itself as configurable
 	 * is not configurable.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNonConfigurable() throws CoreException {
 		IWorkspace workspace = getWorkspace();
-		IProject project = workspace.getRoot().getProject("PROJECT" + 1);
+		IProject project = workspace.getRoot().getProject("PROJECT" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Turn auto-building off
 		setAutoBuilding(false);
@@ -340,10 +340,10 @@ public class CustomBuildTriggerTest {
 	 * Tests that a builder that skips autobuild still receives the correct resource delta
 	 * See bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=173931
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSkipAutobuildDelta() throws CoreException {
 		IWorkspace workspace = getWorkspace();
-		IProject project = workspace.getRoot().getProject("PROJECT" + 1);
+		IProject project = workspace.getRoot().getProject("PROJECT" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		CustomTriggerBuilder.resetSingleton();
 
 		// Turn auto-building off
@@ -393,10 +393,10 @@ public class CustomBuildTriggerTest {
 	 * on the first and only first build after a clean.
 	 * See bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=206540.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCleanBuild_AfterCleanBuilder() throws CoreException {
 		IWorkspace workspace = getWorkspace();
-		IProject project = workspace.getRoot().getProject("PROJECT" + 1);
+		IProject project = workspace.getRoot().getProject("PROJECT" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Create some resources
 		project.create(createTestMonitor());
@@ -453,10 +453,10 @@ public class CustomBuildTriggerTest {
 	 * on the first and only first (non-auto) build after a clean.
 	 * See bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=206540.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCleanAutoBuild_AfterCleanBuilder() throws CoreException {
 		IWorkspace workspace = getWorkspace();
-		IProject project = workspace.getRoot().getProject("PROJECT" + 1);
+		IProject project = workspace.getRoot().getProject("PROJECT" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Create some resources
 		project.create(createTestMonitor());

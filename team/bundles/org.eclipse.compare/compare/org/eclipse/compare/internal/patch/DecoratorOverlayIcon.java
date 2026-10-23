@@ -54,9 +54,9 @@ class DecoratorOverlayIcon extends CompositeImageDescriptor {
 	/**
 	 * Draw the overlays for the receiver.
 	 */
-	private void drawOverlays() {
+	private void drawOverlays() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
-		for (int i = 0; i < overlays.length; i++) {
+		for (int i = 0; i < overlays.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ImageDescriptor overlay = overlays[i];
 			if (overlay == null) {
 				continue;
@@ -100,7 +100,7 @@ class DecoratorOverlayIcon extends CompositeImageDescriptor {
 	@Override
 	public int hashCode() {
 		int code = base.hashCode();
-		for (ImageDescriptor overlay : overlays) {
+		for (ImageDescriptor overlay : overlays) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (overlay != null) {
 				code ^= overlay.hashCode();
 			}

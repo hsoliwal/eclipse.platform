@@ -51,7 +51,7 @@ import org.eclipse.ui.progress.IProgressService;
  *
  * @since 3.3
  */
-public abstract class PageCompareEditorInput extends CompareEditorInput implements IContentChangeListener {
+public abstract class PageCompareEditorInput extends CompareEditorInput implements IContentChangeListener { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	private CompareViewerPane pagePane;
 	private ICompareInput hookedInput;
@@ -64,9 +64,9 @@ public abstract class PageCompareEditorInput extends CompareEditorInput implemen
 		super(configuration);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected CompareViewerPane createStructureInputPane(Composite parent) {
-		pagePane = new CompareViewerPane(parent, SWT.BORDER | SWT.FLAT) {
+		pagePane = new CompareViewerPane(parent, SWT.BORDER | SWT.FLAT) { //FLLDCIM: MARK — T05  ANONYMOUS
 			@Override
 			public void selectionChanged(SelectionChangedEvent ev) {
 				ISelection selection = ev.getSelection();
@@ -164,11 +164,11 @@ public abstract class PageCompareEditorInput extends CompareEditorInput implemen
 	private void hookupListeners() {
 		ISelectionProvider selectionProvider = getSelectionProvider();
 		if (selectionProvider != null) {
-			selectionProvider.addSelectionChangedListener(pagePane);
+			selectionProvider.addSelectionChangedListener(pagePane); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 		}
 		if (selectionProvider instanceof StructuredViewer sv) {
-			sv.addOpenListener(pagePane);
-			sv.addDoubleClickListener(pagePane);
+			sv.addOpenListener(pagePane); //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
+			sv.addDoubleClickListener(pagePane); //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
 		}
 	}
 
@@ -238,7 +238,7 @@ public abstract class PageCompareEditorInput extends CompareEditorInput implemen
 	 * with a progress monitor.
 	 * @param input the compare input to be prepared
 	 */
-	protected final void prepareCompareInput(final ICompareInput input) {
+	protected final void prepareCompareInput(final ICompareInput input) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (input == null) {
 			return;
 		}
@@ -250,7 +250,7 @@ public abstract class PageCompareEditorInput extends CompareEditorInput implemen
 		IProgressService manager = PlatformUI.getWorkbench().getProgressService();
 		try {
 			// TODO: we need a better progress story here (i.e. support for cancellation) bug 127075
-			manager.busyCursorWhile(monitor -> {
+			manager.busyCursorWhile(monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 				prepareInput(input, getCompareConfiguration(), monitor);
 				hookContentChangeListener(input);
 			});

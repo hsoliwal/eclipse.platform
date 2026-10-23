@@ -67,7 +67,7 @@ public class XMLCompareEditOrderedDialog extends StatusDialog {
 	 * @param ancestor the parent composite to contain the dialog area
 	 * @return the dialog area control
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createDialogArea(Composite ancestor) {
 		Composite composite= (Composite) super.createDialogArea(ancestor);
 
@@ -85,7 +85,7 @@ public class XMLCompareEditOrderedDialog extends StatusDialog {
 		fElementText= new Text(inner, SWT.BORDER);
 		fElementText.setText(fMapping.getElement());
 		fElementText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		fElementText.addModifyListener(unused -> doValidation());
+		fElementText.addModifyListener(unused -> doValidation()); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 
 		//Signature
 		label= new Label(inner, SWT.NULL);
@@ -97,7 +97,7 @@ public class XMLCompareEditOrderedDialog extends StatusDialog {
 		GridData data= new GridData(GridData.FILL_HORIZONTAL);
 		data.widthHint= convertWidthInCharsToPixels(50);
 		fSignatureText.setLayoutData(data);
-		fSignatureText.addModifyListener(unused -> doValidation());
+		fSignatureText.addModifyListener(unused -> doValidation()); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 
 		fElementText.setFocus();
 
@@ -107,7 +107,7 @@ public class XMLCompareEditOrderedDialog extends StatusDialog {
 	/**
 	 * Validate user input
 	 */
-	private void doValidation() {
+	private void doValidation() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		StatusInfo status= new StatusInfo();
 		String text= fElementText.getText();
 		String mappingKey= Mapping.getKey(fSignatureText.getText(), text);

@@ -79,7 +79,7 @@ public class MessageBundleRefactoring extends Refactoring {
 		return new RefactoringStatus();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public RefactoringStatus checkFinalConditions(IProgressMonitor monitor) throws CoreException, OperationCanceledException {
 		RefactoringStatus result = new RefactoringStatus();
 		fAccessorTypeBinding = computeAccessorClassBinding(Policy.subMonitorFor(monitor, 1));
@@ -92,7 +92,7 @@ public class MessageBundleRefactoring extends Refactoring {
 				SearchPattern.createPattern(fAccessorClass, IJavaSearchConstants.REFERENCES),
 				RefactoringScopeFactory.create(fAccessorClass), Policy.subMonitorFor(monitor, 5), result);
 		monitor.beginTask("", affectedUnits.length + 1);
-		for (ICompilationUnit unit : affectedUnits) {
+		for (ICompilationUnit unit : affectedUnits) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (unit.equals(fAccessorClass.getCompilationUnit())) {
 				continue;
 			}
@@ -102,7 +102,7 @@ public class MessageBundleRefactoring extends Refactoring {
 		return result;
 	}
 
-	private void processPropertiesFile(RefactoringStatus result, IProgressMonitor monitor) throws CoreException {
+	private void processPropertiesFile(RefactoringStatus result, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// TODO need to roll the changes to the properties file into a text edit that we can hook into
 		// the "Undo -> Refactoring" framework
 		try {
@@ -123,7 +123,7 @@ public class MessageBundleRefactoring extends Refactoring {
 		}
 	}
 
-	private void processCompilationUnit(RefactoringStatus result, ICompilationUnit unit, IProgressMonitor monitor) throws CoreException {
+	private void processCompilationUnit(RefactoringStatus result, ICompilationUnit unit, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		monitor.beginTask("", 2);
 		CompilationUnit root = new RefactoringASTParser(AST.getJLSLatest()).parse(unit, true,
 				Policy.subMonitorFor(monitor, 1));
@@ -143,12 +143,12 @@ public class MessageBundleRefactoring extends Refactoring {
 		monitor.done();
 	}
 
-	private void processAST(RefactoringStatus result, final CompilationUnit root, final ASTRewrite rewriter,
+	private void processAST(RefactoringStatus result, final CompilationUnit root, final ASTRewrite rewriter, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IProgressMonitor monitor) {
 		// keep track of the number of changes we make per line so we can get rid of the NLS comments.
 		final IntegerMap map = new IntegerMap(10);
 		ASTVisitor visitor = new ASTVisitor() {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean visit(MethodInvocation node) {
 				Name messageBundleName = getMessageBundleReceiver(node);
 				if (messageBundleName == null) {

@@ -55,7 +55,7 @@ public class MarkerManager implements IManager {
 	 *
 	 * @see IResource#createMarker(String)
 	 */
-	public void add(IResource resource, MarkerInfo newMarker) throws CoreException {
+	public void add(IResource resource, MarkerInfo newMarker) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Resource target = (Resource) resource;
 		ResourceInfo info = workspace.getResourceInfo(target.getFullPath(), false, false);
 		target.checkExists(target.getFlags(info), false);
@@ -95,14 +95,14 @@ public class MarkerManager implements IManager {
 	/**
 	 * Returns the markers in the given set of markers which match the given type.
 	 */
-	protected MarkerInfo[] basicFindMatching(MarkerSet markers, String type, boolean includeSubtypes) {
+	protected MarkerInfo[] basicFindMatching(MarkerSet markers, String type, boolean includeSubtypes) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int size = markers.size();
 		if (size <= 0) {
 			return NO_MARKER_INFO;
 		}
-		List<MarkerInfo> result = new ArrayList<>(size);
+		List<MarkerInfo> result = new ArrayList<>(size); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IMarkerSetElement[] elements = markers.elements();
-		for (IMarkerSetElement element : elements) {
+		for (IMarkerSetElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			MarkerInfo marker = (MarkerInfo) element;
 			// if the type is null then we are looking for all types of markers
 			if (type == null) {
@@ -126,14 +126,14 @@ public class MarkerManager implements IManager {
 		return result.toArray(new MarkerInfo[size]);
 	}
 
-	protected int basicFindMaxSeverity(MarkerSet markers, String type, boolean includeSubtypes) {
+	protected int basicFindMaxSeverity(MarkerSet markers, String type, boolean includeSubtypes) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int max = -1;
 		int size = markers.size();
 		if (size <= 0) {
 			return max;
 		}
 		IMarkerSetElement[] elements = markers.elements();
-		for (IMarkerSetElement element : elements) {
+		for (IMarkerSetElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			MarkerInfo marker = (MarkerInfo) element;
 			// if the type is null then we are looking for all types of markers
 			if (type == null) {
@@ -169,7 +169,7 @@ public class MarkerManager implements IManager {
 	 * method is protected to avoid creation of a synthetic accessor (it is called
 	 * from an anonymous inner class).
 	 */
-	protected void basicRemoveMarkers(ResourceInfo info, IPathRequestor requestor, String type,
+	protected void basicRemoveMarkers(ResourceInfo info, IPathRequestor requestor, String type, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			boolean includeSubtypes) {
 		MarkerSet markers = info.getMarkers(false);
 		if (markers == null) {
@@ -207,7 +207,7 @@ public class MarkerManager implements IManager {
 		info.set(ICoreConstants.M_MARKERS_SNAP_DIRTY);
 		IMarkerSetElement[] changes = new IMarkerSetElement[matching.length];
 		IResource resource = workspace.getRoot().findMember(path);
-		for (int i = 0; i < matching.length; i++) {
+		for (int i = 0; i < matching.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			changes[i] = new MarkerDelta(IResourceDelta.REMOVED, resource, (MarkerInfo) matching[i]);
 		}
 		changedMarkers(resource, changes);
@@ -224,7 +224,7 @@ public class MarkerManager implements IManager {
 		}
 		IResource resource = workspace.newResource(path, type);
 		list.ensureCapacity(list.size() + markers.length);
-		for (IMarkerSetElement marker : markers) {
+		for (IMarkerSetElement marker : markers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			list.add(new Marker(resource, ((MarkerInfo) marker).getId()));
 		}
 	}
@@ -233,7 +233,7 @@ public class MarkerManager implements IManager {
 	 * Markers have changed on the given resource. Remember the changes for
 	 * subsequent notification.
 	 */
-	protected void changedMarkers(IResource resource, IMarkerSetElement[] changes) {
+	protected void changedMarkers(IResource resource, IMarkerSetElement[] changes) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (changes == null || changes.length == 0) {
 			return;
 		}
@@ -284,7 +284,7 @@ public class MarkerManager implements IManager {
 	 * specifies a match for all types (i.e., <code>null</code> is a wildcard.
 	 */
 	public IMarker[] findMarkers(IResource target, final String type, final boolean includeSubtypes, int depth) {
-		ArrayList<IMarker> result = new ArrayList<>();
+		ArrayList<IMarker> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		doFindMarkers(target, result, type, includeSubtypes, depth);
 		if (result.isEmpty()) {
 			return NO_MARKERS;
@@ -371,7 +371,7 @@ public class MarkerManager implements IManager {
 		return cache.isSubtype(type, superType);
 	}
 
-	public void moved(final IResource source, final IResource destination, int depth) throws CoreException {
+	public void moved(final IResource source, final IResource destination, int depth) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final int count = destination.getFullPath().segmentCount();
 
 		// we removed from the source and added to the destination
@@ -389,7 +389,7 @@ public class MarkerManager implements IManager {
 			path = source.getFullPath().append(path);
 			IResource sourceChild = workspace.newResource(path, resource.getType());
 			IMarkerSetElement[] elements = markers.elements();
-			for (int i = 0; i < elements.length; i++) {
+			for (int i = 0; i < elements.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// calculate the ADDED delta
 				MarkerInfo markerInfo = (MarkerInfo) elements[i];
 				MarkerDelta delta = new MarkerDelta(IResourceDelta.ADDED, resource, markerInfo);
@@ -408,7 +408,7 @@ public class MarkerManager implements IManager {
 	/**
 	 * Adds the markers for a subtree of resources to the list.
 	 */
-	private void recursiveFindMarkers(IPath path, ArrayList<IMarker> list, String type, boolean includeSubtypes,
+	private void recursiveFindMarkers(IPath path, ArrayList<IMarker> list, String type, boolean includeSubtypes, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			int depth) {
 		ResourceInfo info = workspace.getResourceInfo(path, false, false);
 		if (info == null) {
@@ -434,7 +434,7 @@ public class MarkerManager implements IManager {
 		if (depth == IResource.DEPTH_ONE) {
 			depth = IResource.DEPTH_ZERO;
 		}
-		for (IPath child : workspace.getElementTree().getChildren(path)) {
+		for (IPath child : workspace.getElementTree().getChildren(path)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			recursiveFindMarkers(child, list, type, includeSubtypes, depth);
 		}
 	}
@@ -442,7 +442,7 @@ public class MarkerManager implements IManager {
 	/**
 	 * Finds the max severity across problem markers for a subtree of resources.
 	 */
-	private int recursiveFindMaxSeverity(IPath path, String type, boolean includeSubtypes, int depth) {
+	private int recursiveFindMaxSeverity(IPath path, String type, boolean includeSubtypes, int depth) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourceInfo info = workspace.getResourceInfo(path, false, false);
 		if (info == null) {
 			return -1;
@@ -465,7 +465,7 @@ public class MarkerManager implements IManager {
 		if (depth == IResource.DEPTH_ONE) {
 			depth = IResource.DEPTH_ZERO;
 		}
-		for (IPath child : workspace.getElementTree().getChildren(path)) {
+		for (IPath child : workspace.getElementTree().getChildren(path)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			max = Math.max(max, recursiveFindMaxSeverity(child, type, includeSubtypes, depth));
 			if (max >= IMarker.SEVERITY_ERROR) {
 				break;
@@ -477,7 +477,7 @@ public class MarkerManager implements IManager {
 	/**
 	 * Adds the markers for a subtree of resources to the list.
 	 */
-	private void recursiveRemoveMarkers(final IPath path, String type, boolean includeSubtypes, int depth) {
+	private void recursiveRemoveMarkers(final IPath path, String type, boolean includeSubtypes, int depth) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourceInfo info = workspace.getResourceInfo(path, false, false);
 		if (info == null) { // phantoms don't have markers
 			return;
@@ -501,7 +501,7 @@ public class MarkerManager implements IManager {
 		if (depth == IResource.DEPTH_ONE) {
 			depth = IResource.DEPTH_ZERO;
 		}
-		for (IPath child : workspace.getElementTree().getChildren(path)) {
+		for (IPath child : workspace.getElementTree().getChildren(path)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			recursiveRemoveMarkers(child, type, includeSubtypes, depth);
 		}
 	}
@@ -509,7 +509,7 @@ public class MarkerManager implements IManager {
 	/**
 	 * Removes the specified marker
 	 */
-	public void removeMarker(IResource resource, long id) {
+	public void removeMarker(IResource resource, long id) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		MarkerInfo markerInfo = findMarkerInfo(resource, id);
 		if (markerInfo == null) {
 			return;
@@ -566,12 +566,12 @@ public class MarkerManager implements IManager {
 		restoreFromSnap(resource);
 	}
 
-	protected void restoreFromSave(IResource resource, boolean generateDeltas) throws CoreException {
+	protected void restoreFromSave(IResource resource, boolean generateDeltas) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath sourceLocation = workspace.getMetaArea().getMarkersLocationFor(resource);
 		IPath tempLocation = workspace.getMetaArea().getBackupLocationFor(sourceLocation);
 		java.io.File sourceFile = new java.io.File(sourceLocation.toOSString());
 		java.io.File tempFile = new java.io.File(tempLocation.toOSString());
-		if (!sourceFile.exists() && !tempFile.exists()) {
+		if (!sourceFile.exists() && !tempFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return;
 		}
 		try (DataInputStream input = new DataInputStream(
@@ -585,14 +585,14 @@ public class MarkerManager implements IManager {
 		}
 	}
 
-	protected void restoreFromSnap(IResource resource) {
+	protected void restoreFromSnap(IResource resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath sourceLocation = workspace.getMetaArea().getMarkersSnapshotLocationFor(resource);
-		if (!sourceLocation.toFile().exists()) {
+		if (!sourceLocation.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return;
 		}
 		try (DataInputStream input = new DataInputStream(new SafeChunkyInputStream(sourceLocation.toFile()))) {
 			MarkerSnapshotReader reader = new MarkerSnapshotReader(workspace);
-			while (true) {
+			while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				reader.read(input);
 			}
 		} catch (EOFException eof) {
@@ -626,7 +626,7 @@ public class MarkerManager implements IManager {
 	/**
 	 * Adds the markers for a subtree of resources to the list.
 	 */
-	private void visitorFindMarkers(IPath path, final ArrayList<IMarker> list, final String type,
+	private void visitorFindMarkers(IPath path, final ArrayList<IMarker> list, final String type, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			final boolean includeSubtypes) {
 		IElementContentVisitor visitor = (unused, requestor, elementContents) -> {
 			ResourceInfo info = (ResourceInfo) elementContents;
@@ -653,7 +653,7 @@ public class MarkerManager implements IManager {
 	/**
 	 * Finds the max severity across problem markers for a subtree of resources.
 	 */
-	private int visitorFindMaxSeverity(IPath path, final String type, final boolean includeSubtypes) {
+	private int visitorFindMaxSeverity(IPath path, final String type, final boolean includeSubtypes) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		class MaxSeverityVisitor implements IElementContentVisitor {
 			int max = -1;
 

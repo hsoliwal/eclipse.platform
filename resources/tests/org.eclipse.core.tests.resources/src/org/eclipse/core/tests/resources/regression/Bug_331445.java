@@ -35,18 +35,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class Bug_331445 {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug() throws CoreException, URISyntaxException {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IProject project = root.getProject(createUniqueString());
 
 		createInWorkspace(project);
 
-		String variableName = "a" + createUniqueString();
+		String variableName = "a" + createUniqueString(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		String variablePath = "mem:/MyProject";
 		String folderName = "MyFolder";
-		String rawLinkFolderLocation = variableName + "/" + folderName;
-		String linkFolderLocation = variablePath + "/" + folderName;
+		String rawLinkFolderLocation = variableName + "/" + folderName; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String linkFolderLocation = variablePath + "/" + folderName; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		project.getPathVariableManager().setURIValue(variableName, new URI(variablePath));
 		IFolder folder = project.getFolder(createUniqueString());

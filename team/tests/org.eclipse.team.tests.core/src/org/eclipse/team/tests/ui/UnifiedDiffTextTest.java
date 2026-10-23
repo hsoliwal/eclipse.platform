@@ -141,13 +141,13 @@ public class UnifiedDiffTextTest {
 	 */
 	@Test
 	public void testMapOffsetToTabExpandedMatchesReplaceTabWithSpaces() {
-		for (String source : List.of("\ta\tb", "no tabs at all", "\t\t\t", "a\tb\nc\td", "")) {
-			for (int tabWidth : new int[] { 1, 2, 4, 8 }) {
-				for (int offset = 0; offset <= source.length(); offset++) {
+		for (String source : List.of("\ta\tb", "no tabs at all", "\t\t\t", "a\tb\nc\td", "")) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (int tabWidth : new int[] { 1, 2, 4, 8 }) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				for (int offset = 0; offset <= source.length(); offset++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String prefix = source.substring(0, offset);
 					int expected = replaceTabWithSpaces(prefix, tabWidth).length();
 					int actual = mapOffsetToTabExpanded(source, offset, tabWidth);
-					assertEquals(expected, actual, "offset " + offset + " of '" + source.replace("\t", "\\t")
+					assertEquals(expected, actual, "offset " + offset + " of '" + source.replace("\t", "\\t") //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							+ "' with tab width " + tabWidth);
 				}
 			}
@@ -194,7 +194,7 @@ public class UnifiedDiffTextTest {
 
 		List<StyleRange> result = mergeStyleRanges(List.of(background(3, 3, BACKGROUND_1)), List.of(bold));
 
-		for (StyleRange range : result) {
+		for (StyleRange range : result) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertEquals(SWT.BOLD, range.fontStyle, "font style must survive the split");
 			assertSame(FOREGROUND_1, range.foreground, "foreground must survive the split");
 		}
@@ -318,7 +318,7 @@ public class UnifiedDiffTextTest {
 	@Test
 	public void testBorderColorMatchesInterpolateAndDiffersFromFill() {
 		RGB diff = new RGB(220, 60, 60);
-		for (RGB background : new RGB[] { new RGB(255, 255, 255), new RGB(30, 30, 30) }) {
+		for (RGB background : new RGB[] { new RGB(255, 255, 255), new RGB(30, 30, 30) }) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			RGB border = borderColor(diff, background);
 			RGB fill = interpolate(diff, background, UnifiedDiffText.FILL_SCALE);
 			assertAll( //
@@ -330,7 +330,7 @@ public class UnifiedDiffTextTest {
 
 	// ------------------------------------------- getPositionForOffset
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetPositionForOffsetResetsXAfterNewlineAtRangeStart() throws Exception {
 		// Label: "abc\nxyz" — two lines, 3 chars each.
 		// Range [0, 3): "abc" — first line only, no newline.
@@ -364,19 +364,19 @@ public class UnifiedDiffTextTest {
 	 */
 	private static void assertTilesForegrounds(List<StyleRange> result, List<StyleRange> foregrounds) {
 		int resultIndex = 0;
-		for (StyleRange fg : foregrounds) {
+		for (StyleRange fg : foregrounds) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int expected = fg.start;
-			while (resultIndex < result.size() && result.get(resultIndex).start < fg.start + fg.length) {
+			while (resultIndex < result.size() && result.get(resultIndex).start < fg.start + fg.length) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				StyleRange range = result.get(resultIndex);
-				assertEquals(expected, range.start, "ranges must be contiguous and ascending: " + describe(result));
-				assertTrue(range.length > 0, "empty ranges are not allowed: " + describe(result));
+				assertEquals(expected, range.start, "ranges must be contiguous and ascending: " + describe(result)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				assertTrue(range.length > 0, "empty ranges are not allowed: " + describe(result)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				expected += range.length;
 				resultIndex++;
 			}
 			assertEquals(fg.start + fg.length, expected,
-					"the foreground extent must be covered completely: " + describe(result));
+					"the foreground extent must be covered completely: " + describe(result)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
-		assertEquals(result.size(), resultIndex, "no ranges outside the foregrounds: " + describe(result));
+		assertEquals(result.size(), resultIndex, "no ranges outside the foregrounds: " + describe(result)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private static void assertRanges(List<StyleRange> actual, String... expected) {
@@ -385,10 +385,10 @@ public class UnifiedDiffTextTest {
 
 	private static List<String> describe(List<StyleRange> ranges) {
 		return ranges.stream()
-				.map(r -> r.start + "+" + r.length + " fg=" + name(r.foreground) + " bg=" + name(r.background)).toList();
+				.map(r -> r.start + "+" + r.length + " fg=" + name(r.foreground) + " bg=" + name(r.background)).toList(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	private static String name(Color color) {
+	private static String name(Color color) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (color == null) {
 			return "null";
 		}
@@ -430,7 +430,7 @@ public class UnifiedDiffTextTest {
 	private static UnifiedDiff replaceDiff(String diffStr, UnifiedDiff... detailedDiffs) {
 		Document doc = new Document(diffStr);
 		UnifiedDiff diff = new UnifiedDiff(doc, 0, diffStr.length(), diffStr, doc, 0, diffStr.length(), diffStr,
-				new ArrayList<>(), UnifiedDiffMode.REPLACE_MODE);
+				new ArrayList<>(), UnifiedDiffMode.REPLACE_MODE); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Collections.addAll(diff.detailedDiffs, detailedDiffs);
 		return diff;
 	}

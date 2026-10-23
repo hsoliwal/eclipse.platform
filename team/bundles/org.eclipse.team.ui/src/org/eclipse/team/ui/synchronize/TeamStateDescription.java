@@ -29,7 +29,7 @@ import org.eclipse.team.ui.mapping.ITeamStateDescription;
 public class TeamStateDescription implements ITeamStateDescription {
 
 	private final int state;
-	private final Map<String, Object> properties = new HashMap<>();
+	private final Map<String, Object> properties = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/**
 	 * Create a description with the given state.
@@ -73,13 +73,13 @@ public class TeamStateDescription implements ITeamStateDescription {
 		properties.put(property, value);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean equals(Object obj) {
 		if (obj instanceof TeamStateDescription dsd) {
 			if (dsd.getStateFlags() == state) {
 				if (haveSameProperties(this, dsd)) {
 					String[] properties = getPropertyNames();
-					for (String property : properties) {
+					for (String property : properties) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						Object o1 = this.getProperty(property);
 						Object o2 = dsd.getProperty(property);
 						if (!o1.equals(o2)) {
@@ -94,15 +94,15 @@ public class TeamStateDescription implements ITeamStateDescription {
 		return super.equals(obj);
 	}
 
-	private boolean haveSameProperties(TeamStateDescription d1, TeamStateDescription d2) {
+	private boolean haveSameProperties(TeamStateDescription d1, TeamStateDescription d2) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String[] p1 = d1.getPropertyNames();
 		String[] p2 = d2.getPropertyNames();
 		if (p1.length != p2.length) {
 			return false;
 		}
-		for (String s1 : p1) {
+		for (String s1 : p1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			boolean found = false;
-			for (String s2 : p2) {
+			for (String s2 : p2) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (s1.equals(s2)) {
 					found = true;
 					break;

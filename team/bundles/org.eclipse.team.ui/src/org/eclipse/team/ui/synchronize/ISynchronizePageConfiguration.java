@@ -39,14 +39,14 @@ public interface ISynchronizePageConfiguration {
 	 * contents of a <code>SyncInfoSet</code> in which case the value
 	 * associated with this property will be <code>null</code>.
 	 */
-	public static final String P_SYNC_INFO_SET = TeamUIPlugin.ID  + ".P_SYNC_INFO_SET"; //$NON-NLS-1$
+	public static final String P_SYNC_INFO_SET = TeamUIPlugin.ID  + ".P_SYNC_INFO_SET"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant for the list of label decorators
 	 * (instance of <code>ILabelDecorator[]</code>) that will be
 	 * applied to the text and image from the label provider.
 	 */
-	public static final String P_LABEL_DECORATORS = TeamUIPlugin.ID  + ".P_LABEL_DECORATORS"; //$NON-NLS-1$
+	public static final String P_LABEL_DECORATORS = TeamUIPlugin.ID  + ".P_LABEL_DECORATORS"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant that defines the groups in the toolbar
@@ -57,14 +57,14 @@ public interface ISynchronizePageConfiguration {
 	 * can be removed but will always appear in the same order if
 	 * included.
 	 */
-	public static final String P_TOOLBAR_MENU = TeamUIPlugin.ID + ".P_TOOLBAR_MENU"; //$NON-NLS-1$
+	public static final String P_TOOLBAR_MENU = TeamUIPlugin.ID + ".P_TOOLBAR_MENU"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * The configuration property that defines
 	 * the groups in the context menu of the page. The value for this
 	 * property should be a string array.
 	 */
-	public static final String P_CONTEXT_MENU = TeamUIPlugin.ID + ".P_CONTEXT_MENU"; //$NON-NLS-1$
+	public static final String P_CONTEXT_MENU = TeamUIPlugin.ID + ".P_CONTEXT_MENU"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant that defines the groups in the drop-down view
@@ -75,7 +75,7 @@ public interface ISynchronizePageConfiguration {
 	 * can be removed but will always appear in the same order if
 	 * included.
 	 */
-	public static final String P_VIEW_MENU = TeamUIPlugin.ID + ".P_VIEW_MENU"; //$NON-NLS-1$
+	public static final String P_VIEW_MENU = TeamUIPlugin.ID + ".P_VIEW_MENU"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * The configuration property that defines the filter id that
@@ -84,7 +84,7 @@ public interface ISynchronizePageConfiguration {
 	 * participant but can be set to another id or <code>null</code>
 	 * @since 3.1
 	 */
-	public static final String P_OBJECT_CONTRIBUTION_ID = TeamUIPlugin.ID +  ".P_OBJECT_CONTRIBUTION_ID"; //$NON-NLS-1$
+	public static final String P_OBJECT_CONTRIBUTION_ID = TeamUIPlugin.ID +  ".P_OBJECT_CONTRIBUTION_ID"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant for the type of comparison used to create
@@ -92,14 +92,14 @@ public interface ISynchronizePageConfiguration {
 	 * If the comparison type is <code>THREE_WAY</code> then
 	 * modes selection applies.
 	 */
-	public static final String P_COMPARISON_TYPE = TeamUIPlugin.ID + ".P_COMPARISON_TYPE"; //$NON-NLS-1$
+	public static final String P_COMPARISON_TYPE = TeamUIPlugin.ID + ".P_COMPARISON_TYPE"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant for the mode used to filter the visible
 	 * elements of the model. The value can be one of the mode integer
 	 * constants.
 	 */
-	public static final String P_MODE = TeamUIPlugin.ID  + ".P_SYNCVIEWPAGE_MODE";	 //$NON-NLS-1$
+	public static final String P_MODE = TeamUIPlugin.ID  + ".P_SYNCVIEWPAGE_MODE";	 //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant which indicates which modes are to be available to the user.
@@ -108,7 +108,7 @@ public interface ISynchronizePageConfiguration {
 	 * Either <code>null</code> or <code>0</code> can be used to indicate that
 	 * mode filtering is not supported.
 	 */
-	public static final String P_SUPPORTED_MODES = TeamUIPlugin.ID  + ".P_SUPPORTED_MODES";	 //$NON-NLS-1$
+	public static final String P_SUPPORTED_MODES = TeamUIPlugin.ID  + ".P_SUPPORTED_MODES";	 //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant for the id of the viewer to be used for this page.
@@ -117,7 +117,7 @@ public interface ISynchronizePageConfiguration {
 	 *
 	 * @since 3.2
 	 */
-	public static final String P_VIEWER_ID = TeamUIPlugin.ID + ".P_VIEWER_ID"; //$NON-NLS-1$
+	public static final String P_VIEWER_ID = TeamUIPlugin.ID + ".P_VIEWER_ID"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant for the description (String) of the page that appears
@@ -125,7 +125,7 @@ public interface ISynchronizePageConfiguration {
 	 *
 	 * @since 3.2
 	 */
-	public static final String P_PAGE_DESCRIPTION = TeamUIPlugin.ID + ".P_PAGE_DESCRIPTION"; //$NON-NLS-1$
+	public static final String P_PAGE_DESCRIPTION = TeamUIPlugin.ID + ".P_PAGE_DESCRIPTION"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * The id of the synchronize group the determines where the synchronize

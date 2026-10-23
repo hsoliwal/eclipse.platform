@@ -24,7 +24,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 
-public class ResourceModelPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage, IPreferenceIds {
+public class ResourceModelPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage, IPreferenceIds { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	private RadioGroupFieldEditor defaultLayout;
 

@@ -71,11 +71,11 @@ public abstract class AbstractAntTest {
 	 *
 	 * @since 3.8
 	 */
-	void assertWelcomeScreenClosed() throws Exception {
+	void assertWelcomeScreenClosed() throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!welcomeClosed && PlatformUI.isWorkbenchRunning()) {
 			final IWorkbench wb = PlatformUI.getWorkbench();
 			if (wb != null) {
-				UIJob job = new UIJob("close welcome screen for Ant test suite") { //$NON-NLS-1$
+				UIJob job = new UIJob("close welcome screen for Ant test suite") { //$NON-NLS-1$ //FLLDCIM: MARK — T09  ANONYMOUS
 					@Override
 					public IStatus runInUIThread(IProgressMonitor monitor) {
 						IWorkbenchWindow window = wb.getActiveWorkbenchWindow();
@@ -101,7 +101,7 @@ public abstract class AbstractAntTest {
 	 *
 	 * @since 3.5
 	 */
-	protected void assertProject() throws Exception {
+	protected void assertProject() throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// delete any pre-existing project
 		IProject pro = ResourcesPlugin.getWorkspace().getRoot().getProject(ProjectHelper.PROJECT_NAME);
 		if (!pro.exists()) {
@@ -161,7 +161,7 @@ public abstract class AbstractAntTest {
 		run(buildFileName, args, retrieveTargets, ""); //$NON-NLS-1$
 	}
 
-	public void run(String buildFileName, String[] args, boolean retrieveTargets, String workingDir) throws CoreException {
+	public void run(String buildFileName, String[] args, boolean retrieveTargets, String workingDir) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		AntTestChecker.reset();
 		IFile buildFile = null;
 		if (buildFileName != null) {
@@ -192,7 +192,7 @@ public abstract class AbstractAntTest {
 	protected String[] getTargetNames(String buildFileName) throws CoreException {
 		TargetInfo[] infos = getTargets(buildFileName);
 		String[] names = new String[infos.length];
-		for (int i = 0; i < infos.length; i++) {
+		for (int i = 0; i < infos.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			TargetInfo info = infos[i];
 			names[i] = info.getName();
 		}
@@ -202,7 +202,7 @@ public abstract class AbstractAntTest {
 	protected String[] getTargetDescriptions(String buildFileName) throws CoreException {
 		TargetInfo[] infos = getTargets(buildFileName);
 		String[] descriptions = new String[infos.length];
-		for (int i = 0; i < infos.length; i++) {
+		for (int i = 0; i < infos.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			TargetInfo info = infos[i];
 			descriptions[i] = info.getDescription();
 		}
@@ -235,7 +235,7 @@ public abstract class AbstractAntTest {
 	 * Returns the target with the given name in the given build file or <code>null</code> if no such target can be found.
 	 */
 	protected TargetInfo getTarget(String buildFileName, String targetName) throws CoreException {
-		for (TargetInfo info : getTargets(buildFileName)) {
+		for (TargetInfo info : getTargets(buildFileName)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (info.getName().equals(targetName)) {
 				return info;
 			}

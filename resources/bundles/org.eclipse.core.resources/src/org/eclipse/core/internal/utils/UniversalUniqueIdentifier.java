@@ -105,9 +105,9 @@ public class UniversalUniqueIdentifier implements java.io.Serializable {
 			hexString = Integer.toHexString(value);
 		}
 		if (hexString.length() == 1) {
-			buffer.append("0"); //$NON-NLS-1$
+			buffer.append("0"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		buffer.append(hexString);
+		buffer.append(hexString); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
 	private static BigInteger clockValueNow() {
@@ -119,7 +119,7 @@ public class UniversalUniqueIdentifier implements java.io.Serializable {
 	}
 
 	public static int compareTime(byte[] fBits1, byte[] fBits2) {
-		for (int i = TIME_FIELD_STOP; i >= 0; i--) {
+		for (int i = TIME_FIELD_STOP; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (fBits1[i] != fBits2[i]) {
 				return (0xFF & fBits1[i]) - (0xFF & fBits2[i]);
 			}
@@ -145,7 +145,7 @@ public class UniversalUniqueIdentifier implements java.io.Serializable {
 		return address;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
@@ -161,7 +161,7 @@ public class UniversalUniqueIdentifier implements java.io.Serializable {
 		if (fBits.length != other.length) {
 			return false;
 		}
-		for (int i = 0; i < fBits.length; i++) {
+		for (int i = 0; i < fBits.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (fBits[i] != other[i]) {
 				return false;
 			}
@@ -189,7 +189,7 @@ public class UniversalUniqueIdentifier implements java.io.Serializable {
 		return fgClockSequence;
 	}
 
-	private static BigInteger nextTimestamp() {
+	private static BigInteger nextTimestamp() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		BigInteger timestamp = clockValueNow();
 		int timestampComparison;
@@ -198,7 +198,7 @@ public class UniversalUniqueIdentifier implements java.io.Serializable {
 
 		if (timestampComparison == 0) {
 			if (fgClockAdjustment == MAX_CLOCK_ADJUSTMENT) {
-				while (timestamp.compareTo(fgPreviousClockValue) == 0) {
+				while (timestamp.compareTo(fgPreviousClockValue) == 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					timestamp = clockValueNow();
 				}
 				timestamp = nextTimestamp();
@@ -236,7 +236,7 @@ public class UniversalUniqueIdentifier implements java.io.Serializable {
 		int version;
 		int timeHigh;
 
-		for (int index = TIME_FIELD_START; index < TIME_FIELD_STOP; index++) {
+		for (int index = TIME_FIELD_START; index < TIME_FIELD_STOP; index++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			results = value.divideAndRemainder(bigByte);
 			value = results[0];
 			fBits[index] = (byte) results[1].intValue();
@@ -295,23 +295,23 @@ public class UniversalUniqueIdentifier implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		StringBuilder buffer = new StringBuilder();
-		for (byte bit : fBits) {
+		StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (byte bit : fBits) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			appendByteString(buffer, bit);
 		}
 		return buffer.toString();
 	}
 
 	public String toStringAsBytes() {
-		StringBuilder result = new StringBuilder("{"); //$NON-NLS-1$
+		StringBuilder result = new StringBuilder("{"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
-		for (int i = 0; i < fBits.length; i++) {
-			result.append(fBits[i]);
+		for (int i = 0; i < fBits.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			result.append(fBits[i]); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			if (i < fBits.length + 1) {
-				result.append(',');
+				result.append(','); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
-		result.append('}');
+		result.append('}'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return result.toString();
 	}
 }

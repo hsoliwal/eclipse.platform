@@ -51,7 +51,7 @@ public class TestBug6995 {
 	/**
 	 * Create a project and configure a builder for it.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(1)
 	public void test1() throws CoreException {
 		IWorkspace workspace = getWorkspace();

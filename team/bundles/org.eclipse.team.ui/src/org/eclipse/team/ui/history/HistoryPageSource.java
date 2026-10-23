@@ -34,7 +34,7 @@ public abstract class HistoryPageSource implements IHistoryPageSource {
 	 * @return he history page source for the
 	 * given object
 	 */
-	public static IHistoryPageSource getHistoryPageSource(Object object) {
+	public static IHistoryPageSource getHistoryPageSource(Object object) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource resource = Utils.getResource(object);
 		if (resource != null) {
 			RepositoryProvider provider = RepositoryProvider.getProvider(resource.getProject());

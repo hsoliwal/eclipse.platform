@@ -67,7 +67,7 @@ import org.eclipse.ui.IActionBars;
  */
 
 public class EventsView extends TableWithTotalView {
-	static class EventsViewContentProvider implements ITreeContentProvider {
+	static class EventsViewContentProvider implements ITreeContentProvider { //FLLDCIM: MARK — M22  IMPLEMENTS
 		@Override
 		public void dispose() {
 			// do nothing
@@ -109,7 +109,7 @@ public class EventsView extends TableWithTotalView {
 			return null;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public String getColumnText(Object element, int columnIndex) {
 			if (!(element instanceof PerformanceStats stats)) {
 				return Messages.stats_badStat;
@@ -157,14 +157,14 @@ public class EventsView extends TableWithTotalView {
 			if (display.isDisposed()) {
 				return;
 			}
-			display.asyncExec(runnable);
+			display.asyncExec(runnable); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		}
 
 		@Override
 		public void eventsOccurred(final PerformanceStats[] event) {
 			asyncExec(() -> {
 				if (!getViewer().getControl().isDisposed()) {
-					getViewer().refresh();
+					getViewer().refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 				}
 			});
 		}
@@ -172,7 +172,7 @@ public class EventsView extends TableWithTotalView {
 		@Override
 		public void eventFailed(final PerformanceStats event, final long duration) {
 			asyncExec(() -> {
-				String msg = "Performance event failure: " + event.getEvent() + " blame: " + event.getBlameString() + " context: " + event.getContext() + " duration: " + duration; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+				String msg = "Performance event failure: " + event.getEvent() + " blame: " + event.getBlameString() + " context: " + event.getContext() + " duration: " + duration; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				getViewSite().getActionBars().getStatusLineManager().setErrorMessage(msg);
 				//					MessageDialog.openError(getSite().getShell(), "Performance failure", msg);
 			});
@@ -201,7 +201,7 @@ public class EventsView extends TableWithTotalView {
 	private Action resetAction;
 	private final StatsListener statsListener = new StatsListener();
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected String[] computeTotalLine(Iterator<PerformanceStats> iter) {
 		String[] totals = new String[getColumnHeaders().length];
 		int count = 0;
@@ -213,25 +213,25 @@ public class EventsView extends TableWithTotalView {
 			List<PerformanceStats> list = elements == null ? (List) Arrays.asList(elements) : Collections.emptyList();
 			iter = list.iterator();
 		}
-		while (iter.hasNext()) {
+		while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			PerformanceStats element = iter.next();
 			events += element.getRunCount();
 			time += element.getRunningTime();
 			count++;
 		}
-		totals[0] = "Total: " + count; //$NON-NLS-1$
-		totals[2] = "" + events; //$NON-NLS-1$
-		totals[3] = "" + time; //$NON-NLS-1$
+		totals[0] = "Total: " + count; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		totals[2] = "" + events; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		totals[3] = "" + time; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return totals;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void createActions() {
 		resetAction = new Action("Reset") { //$NON-NLS-1$
 			@Override
 			public void run() {
 				PerformanceStats.clear();
-				getViewer().setInput("");
+				getViewer().setInput(""); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 				updateTotals();
 			}
 		};
@@ -258,8 +258,8 @@ public class EventsView extends TableWithTotalView {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		PerformanceStats.addListener(statsListener);
-		viewer.setInput(""); //$NON-NLS-1$
+		PerformanceStats.addListener(statsListener); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
+		viewer.setInput(""); //$NON-NLS-1$ //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 	}
 
 	@Override

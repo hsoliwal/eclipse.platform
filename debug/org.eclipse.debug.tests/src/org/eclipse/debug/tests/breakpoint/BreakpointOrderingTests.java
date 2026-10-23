@@ -189,7 +189,7 @@ public class BreakpointOrderingTests {
 		}};
 
 	// Test vector with some UNIX paths
-	TestBreakpoint[] createTestBreakpoints0() {
+	TestBreakpoint[] createTestBreakpoints0() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TestBreakpoint[] fTestBps = {
  new TestBreakpoint(""), //$NON-NLS-1$
 		new TestBreakpoint("/file/text.c"), //$NON-NLS-1$
@@ -215,7 +215,7 @@ public class BreakpointOrderingTests {
 	}
 
 	// Check plain numbers
-	TestBreakpoint[] createTestBreakpoints1() {
+	TestBreakpoint[] createTestBreakpoints1() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TestBreakpoint[] fTestBps = {
  new TestLineBreakpoint("0", 0), //$NON-NLS-1$
 		new TestLineBreakpoint("1", 1), //$NON-NLS-1$
@@ -284,25 +284,25 @@ public class BreakpointOrderingTests {
 	 * Test expected ordering.
 	 * Expecting the same ordering as in which the BP's are returned by createTestBreakpoints.
 	 */
-	void executeTest(TestBreakpoint[] testBps) throws CoreException {
+	void executeTest(TestBreakpoint[] testBps) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int origSort = DebugUIPlugin.getDefault().getPreferenceStore().getInt(IInternalDebugUIConstants.PREF_BREAKPOINT_SORTING_ORDER);
 		DebugUIPlugin.getDefault().getPreferenceStore().setValue(IInternalDebugUIConstants.PREF_BREAKPOINT_SORTING_ORDER, IInternalDebugUIConstants.BREAKPOINT_SORTING_ORDER_NAME);
 		BreakpointsComparator bpCompare = new BreakpointsComparator();
 		try {
 			boolean failed = false;
-			for (int inner = 0; inner < testBps.length; inner++) {
+			for (int inner = 0; inner < testBps.length; inner++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				TestBreakpoint testInner = testBps[inner];
-				for (int outer = 0; outer < testBps.length; outer++) {
+				for (int outer = 0; outer < testBps.length; outer++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					TestBreakpoint testOuter = testBps[outer];
 					int res = bpCompare.compare(fTestViewer, testInner, testOuter);
 					boolean equalCheck = (res == 0) == (inner == outer);
 					boolean ltCheck = (res < 0) == (inner < outer);
 					if (!equalCheck) {
-						System.err.println("Equal Comparison in between " + inner + " and " + outer + " (" + testBps[inner].getText() + " and " + testBps[outer].getText() + ") failed"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+						System.err.println("Equal Comparison in between " + inner + " and " + outer + " (" + testBps[inner].getText() + " and " + testBps[outer].getText() + ") failed"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						failed = true;
 					}
 					if (!ltCheck) {
-						System.err.println("Less Comparison in between " + inner + " and " + outer + " (" + testBps[inner].getText() + " and " + testBps[outer].getText() + ") failed"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+						System.err.println("Less Comparison in between " + inner + " and " + outer + " (" + testBps[inner].getText() + " and " + testBps[outer].getText() + ") failed"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						failed = true;
 					}
 				}
@@ -310,7 +310,7 @@ public class BreakpointOrderingTests {
 			assertFalse(failed);
 		} finally {
 			DebugUIPlugin.getDefault().getPreferenceStore().setValue(IInternalDebugUIConstants.PREF_BREAKPOINT_SORTING_ORDER, origSort);
-			for (TestBreakpoint testBp : testBps) {
+			for (TestBreakpoint testBp : testBps) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				testBp.delete();
 			}
 		}

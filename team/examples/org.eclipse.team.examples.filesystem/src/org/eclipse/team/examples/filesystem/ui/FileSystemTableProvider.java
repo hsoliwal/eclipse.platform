@@ -46,7 +46,7 @@ public class FileSystemTableProvider {
 	private static final int COL_TYPE = 0;
 	private static final int COL_DATE = 1;
 
-	public TableViewer createTable(Composite parent) {
+	public TableViewer createTable(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Table table = new Table(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI | SWT.FULL_SELECTION);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
@@ -60,7 +60,7 @@ public class FileSystemTableProvider {
 
 		createColumns(table, layout, viewer);
 
-		viewer.setLabelProvider(new HistoryLabelProvider());
+		viewer.setLabelProvider(new HistoryLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 
 		// By default, reverse sort by revision.
 		HistoryComparator sorter = new HistoryComparator(COL_DATE);
@@ -79,14 +79,14 @@ public class FileSystemTableProvider {
 		TableColumn col = new TableColumn(table, SWT.NONE);
 		col.setResizable(true);
 		col.setText("Revision"); //$NON-NLS-1$
-		col.addSelectionListener(headerListener);
+		col.addSelectionListener(headerListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 		layout.addColumnData(new ColumnWeightData(20, true));
 
 		// creation date
 		col = new TableColumn(table, SWT.NONE);
 		col.setResizable(true);
 		col.setText("Date"); //$NON-NLS-1$
-		col.addSelectionListener(headerListener);
+		col.addSelectionListener(headerListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 		layout.addColumnData(new ColumnWeightData(20, true));
 
 	}
@@ -156,7 +156,7 @@ public class FileSystemTableProvider {
 		 * Compares two log entries, sorting first by the main column of this sorter,
 		 * then by subsequent columns, depending on the column sort order.
 		 */
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public int compare(Viewer compareViewer, Object o1, Object o2) {
 			/*if (o1 instanceof AbstractCVSHistoryCategory || o2 instanceof AbstractCVSHistoryCategory)
 			return 0;*/
@@ -168,7 +168,7 @@ public class FileSystemTableProvider {
 				result = super.compare(compareViewer, o1, o2);
 			} else {
 				int[] columnSortOrder = SORT_ORDERS_BY_COLUMN[columnNumber];
-				for (int element : columnSortOrder) {
+				for (int element : columnSortOrder) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					result = compareColumnValue(element, e1, e2);
 					if (result != 0)
 						break;
@@ -236,7 +236,7 @@ public class FileSystemTableProvider {
 	/**
 	 * Adds the listener that sets the sorter.
 	 */
-	private SelectionListener getColumnListener(final TableViewer tableViewer) {
+	private SelectionListener getColumnListener(final TableViewer tableViewer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/**
 		 * This class handles selections of the column headers.
 		 * Selection of the column header will cause resorting
@@ -261,7 +261,7 @@ public class FileSystemTableProvider {
 				HistoryComparator oldSorter = (HistoryComparator) tableViewer.getComparator();
 				if (oldSorter != null && column == oldSorter.getColumnNumber()) {
 					oldSorter.setReversed(!oldSorter.isReversed());
-					tableViewer.refresh();
+					tableViewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 				} else {
 					tableViewer.setComparator(new HistoryComparator(column));
 				}

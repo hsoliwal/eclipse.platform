@@ -30,7 +30,7 @@ public class AntTemplateVariableTextHover implements ITextHover {
 	public AntTemplateVariableTextHover() {
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String getHoverInfo(ITextViewer textViewer, IRegion subject) {
 		try {
 			IDocument doc = textViewer.getDocument();
@@ -40,7 +40,7 @@ public class AntTemplateVariableTextHover implements ITextHover {
 				TemplateContextType contextType = AntTemplateAccess.getDefault().getContextTypeRegistry().getContextType(TaskContextType.TASK_CONTEXT_TYPE);
 				if (contextType != null) {
 					Iterator<TemplateVariableResolver> iter = contextType.resolvers();
-					while (iter.hasNext()) {
+					while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						TemplateVariableResolver var = iter.next();
 						if (varName.equals(var.getType())) {
 							return var.getDescription();

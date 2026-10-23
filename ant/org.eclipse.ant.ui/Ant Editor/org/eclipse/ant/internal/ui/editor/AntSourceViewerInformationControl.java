@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
-public class AntSourceViewerInformationControl implements IInformationControl, IInformationControlExtension, DisposeListener {
+public class AntSourceViewerInformationControl implements IInformationControl, IInformationControlExtension, DisposeListener { //FLLDCIM: MARK — T01  IMPLEMENTS
 	/** The control's shell */
 	private Shell fShell;
 
@@ -50,7 +50,7 @@ public class AntSourceViewerInformationControl implements IInformationControl, I
 	/** The control's text widget */
 	private StyledText fText;
 
-	public AntSourceViewerInformationControl(Shell parent) {
+	public AntSourceViewerInformationControl(Shell parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		GridLayout layout;
 		GridData gd;
 
@@ -73,7 +73,7 @@ public class AntSourceViewerInformationControl implements IInformationControl, I
 		fText.setForeground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_FOREGROUND));
 		fText.setBackground(parent.getDisplay().getSystemColor(SWT.COLOR_INFO_BACKGROUND));
 
-		fText.addKeyListener(new KeyListener() {
+		fText.addKeyListener(new KeyListener() { //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -153,7 +153,7 @@ public class AntSourceViewerInformationControl implements IInformationControl, I
 
 	@Override
 	public void addDisposeListener(DisposeListener listener) {
-		fShell.addDisposeListener(listener);
+		fShell.addDisposeListener(listener); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 
 	}
 
@@ -186,7 +186,7 @@ public class AntSourceViewerInformationControl implements IInformationControl, I
 
 	@Override
 	public void addFocusListener(FocusListener listener) {
-		fText.addFocusListener(listener);
+		fText.addFocusListener(listener); //FLLDCIM: MARK — T15 FOCUS CALL
 	}
 
 	@Override

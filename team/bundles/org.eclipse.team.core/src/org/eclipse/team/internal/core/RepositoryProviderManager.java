@@ -32,7 +32,7 @@ public class RepositoryProviderManager implements IRepositoryProviderListener {
 	@Override
 	public void providerMapped(RepositoryProvider provider) {
 		Object[] allListeners = listeners.getListeners();
-		for (Object l : allListeners) {
+		for (Object l : allListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IRepositoryProviderListener listener = (IRepositoryProviderListener) l;
 			listener.providerMapped(provider);
 		}
@@ -41,7 +41,7 @@ public class RepositoryProviderManager implements IRepositoryProviderListener {
 	@Override
 	public void providerUnmapped(IProject project) {
 		Object[] allListeners = listeners.getListeners();
-		for (Object l : allListeners) {
+		for (Object l : allListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IRepositoryProviderListener listener = (IRepositoryProviderListener) l;
 			listener.providerUnmapped(project);
 		}

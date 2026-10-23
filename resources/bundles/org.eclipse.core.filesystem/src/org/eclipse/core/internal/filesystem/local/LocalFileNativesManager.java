@@ -61,7 +61,7 @@ public class LocalFileNativesManager {
 	 * Try to set the usage of natives to the provided value
 	 * @return <code>true</code> if natives are used as result of this call <code>false</code> otherwise
 	 */
-	public static boolean setUsingNative(boolean useNatives, boolean useFastLinuxNatives) {
+	public static boolean setUsingNative(boolean useNatives, boolean useFastLinuxNatives) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean nativesAreUsed;
 		if (useNatives && useFastLinuxNatives && Platform.OS.isLinux() && Platform.ARCH_X86_64.equals(Platform.getOSArch()) && LinuxFileNatives.isUsingNatives()) {
 			// Linux x86_64 architecture supports faster (bulk) file info fetching.

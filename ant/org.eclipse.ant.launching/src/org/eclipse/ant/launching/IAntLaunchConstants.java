@@ -40,7 +40,7 @@ public interface IAntLaunchConstants {
 	 * String attribute indicating the Ant targets to execute. Default value is <code>null</code> which indicates that the default target is to be
 	 * executed. Format is a comma separated listing of targets.
 	 */
-	public static final String ATTR_ANT_TARGETS = IExternalToolConstants.UI_PLUGIN_ID + ".ATTR_ANT_TARGETS"; //$NON-NLS-1$
+	public static final String ATTR_ANT_TARGETS = IExternalToolConstants.UI_PLUGIN_ID + ".ATTR_ANT_TARGETS"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * String attribute indicating the Ant targets to execute after a clean (full build) for an Ant builder. Default value is <code>null</code> which
@@ -75,25 +75,25 @@ public interface IAntLaunchConstants {
 	 * Map attribute indicating the Ant properties to be defined during the build. Default value is <code>null</code> which indicates no additional
 	 * properties will be defined.
 	 */
-	public static final String ATTR_ANT_PROPERTIES = IExternalToolConstants.UI_PLUGIN_ID + ".ATTR_ANT_PROPERTIES"; //$NON-NLS-1$
+	public static final String ATTR_ANT_PROPERTIES = IExternalToolConstants.UI_PLUGIN_ID + ".ATTR_ANT_PROPERTIES"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * String attribute indicating the Ant targets to execute. Default value is <code>null</code> which indicates that no additional property files
 	 * will be defined. Format is a comma separated listing of property files.
 	 */
-	public static final String ATTR_ANT_PROPERTY_FILES = IExternalToolConstants.UI_PLUGIN_ID + ".ATTR_ANT_PROPERTY_FILES"; //$NON-NLS-1$
+	public static final String ATTR_ANT_PROPERTY_FILES = IExternalToolConstants.UI_PLUGIN_ID + ".ATTR_ANT_PROPERTY_FILES"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Boolean attribute indicating whether or not internal targets (targets with no description) should be hidden from the user in the launch
 	 * configuration dialog. Default value is <code>false</code> which indicates that all targets will be displayed.
 	 */
-	public static final String ATTR_HIDE_INTERNAL_TARGETS = IExternalToolConstants.UI_PLUGIN_ID + ".ATTR_HIDE_INTERNAL_TARGETS"; //$NON-NLS-1$
+	public static final String ATTR_HIDE_INTERNAL_TARGETS = IExternalToolConstants.UI_PLUGIN_ID + ".ATTR_HIDE_INTERNAL_TARGETS"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Integer attribute indicating which column targets should be sorted on. A value of 0 indicates target name, 1 indicates target description, and
 	 * -1 indicates no sort. Default value is -1.
 	 */
-	public static final String ATTR_SORT_TARGETS = IExternalToolConstants.UI_PLUGIN_ID + "ATTR_SORT_TARGETS"; //$NON-NLS-1$
+	public static final String ATTR_SORT_TARGETS = IExternalToolConstants.UI_PLUGIN_ID + "ATTR_SORT_TARGETS"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Boolean attribute indicating if the default VM install should be used for the separate JRE build Default value is <code>false</code> for

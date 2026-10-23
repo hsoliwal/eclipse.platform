@@ -44,7 +44,7 @@ public class SampleDebugTarget extends DebugElement implements IDebugTarget, IMe
 
 	protected ILaunch fLaunch;
 	protected SampleEngine fEngine = new SampleEngine();
-	protected ArrayList<IMemoryBlockExtension> fMemoryBlocks = new ArrayList<>();
+	protected ArrayList<IMemoryBlockExtension> fMemoryBlocks = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	protected IThread fThread;
 	protected boolean fBusy;
 

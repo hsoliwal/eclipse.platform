@@ -48,16 +48,16 @@ public class FrameworkTests extends AbstractAntTest {
 	 * Ensures that the deprecated means of setting the class path still works correctly Do not fix deprecations unless the deprecated methods are
 	 * being removed.
 	 */
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Test
 	public void testClasspathOrderingDeprecated() throws MalformedURLException, CoreException {
 		AntCorePreferences prefs = AntCorePlugin.getPlugin().getPreferences();
 
 		String path = getProject().getFolder(ProjectHelper.LIB_FOLDER).getFile("classpathOrdering1.jar").getLocation().toFile().getAbsolutePath(); //$NON-NLS-1$
-		URL url = new URL(IAntCoreConstants.FILE_PROTOCOL + path);
+		URL url = new URL(IAntCoreConstants.FILE_PROTOCOL + path); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		path = getProject().getFolder(ProjectHelper.LIB_FOLDER).getFile("classpathOrdering2.jar").getLocation().toFile().getAbsolutePath(); //$NON-NLS-1$
-		URL url2 = new URL(IAntCoreConstants.FILE_PROTOCOL + path);
+		URL url2 = new URL(IAntCoreConstants.FILE_PROTOCOL + path); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		URL urls[] = prefs.getCustomURLs();
 		URL newUrls[] = new URL[urls.length + 2];
@@ -91,7 +91,7 @@ public class FrameworkTests extends AbstractAntTest {
 		restorePreferenceDefaults();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testClasspathOrdering() throws CoreException {
 		AntCorePreferences prefs = AntCorePlugin.getPlugin().getPreferences();
 
@@ -246,7 +246,7 @@ public class FrameworkTests extends AbstractAntTest {
 	/**
 	 * Tests retrieving target info using AntRunner Covers bug 73602 at the same time
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetTargets() throws CoreException {
 
 		AntCorePreferences prefs = AntCorePlugin.getPlugin().getPreferences();
@@ -275,13 +275,13 @@ public class FrameworkTests extends AbstractAntTest {
 	 * Tests bug 389564 for a class path entry as a url representing a remote file
 	 * system location
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAntClasspathEntryFromUrl() throws MalformedURLException, URISyntaxException {
 
 		AntCorePreferences prefs = AntCorePlugin.getPlugin().getPreferences();
 
 		String path = "//hub/home/tom/.eclipse/3.8/configuration/org.eclipse.osgi/bundles/21/2/.cp/lib/remote.jar"; //$NON-NLS-1$
-		URL url = new URI(IAntCoreConstants.FILE_PROTOCOL + path).toURL();
+		URL url = new URI(IAntCoreConstants.FILE_PROTOCOL + path).toURL(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IAntClasspathEntry entry = new AntClasspathEntry(url);
 
 		IAntClasspathEntry[] entries = prefs.getAntHomeClasspathEntries();

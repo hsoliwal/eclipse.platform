@@ -76,7 +76,7 @@ public class ConfigureProjectWizard extends Wizard {
 		return super.canFinish();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean performFinish() {
 		// If we are on the first page and the selected wizard has no pages then
 		// allow it to finish.
@@ -106,7 +106,7 @@ public class ConfigureProjectWizard extends Wizard {
 		}
 	}
 
-	public static void shareProjects(Shell shell, IProject[] projects) {
+	public static void shareProjects(Shell shell, IProject[] projects) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IWizard wizard = null;
 		// If we only have one wizard registered, we'll just use that wizard
 		// unless it doesn't have any pages
@@ -135,15 +135,15 @@ public class ConfigureProjectWizard extends Wizard {
 	 *
 	 * @return the available wizards
 	 */
-	private static AdaptableList getAvailableWizards(AdaptableList disabledWizards) {
+	private static AdaptableList getAvailableWizards(AdaptableList disabledWizards) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		AdaptableList result = new AdaptableList();
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint point = registry.getExtensionPoint(TeamUIPlugin.PLUGIN_ID, PT_CONFIGURATION);
 		if (point != null) {
 			IExtension[] extensions = point.getExtensions();
-			for (IExtension extension : extensions) {
+			for (IExtension extension : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IConfigurationElement[] elements = extension.getConfigurationElements();
-				for (IConfigurationElement element : elements) {
+				for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (element.getName().equals(TAG_WIZARD)) {
 						ConfigurationWizardElement wizard = createWizardElement(element);
 						if (wizard != null && filterItem(element)) {
@@ -162,7 +162,7 @@ public class ConfigureProjectWizard extends Wizard {
 		String extensionId = element.getAttribute(ATT_ID);
 		String extensionPluginId = element.getNamespaceIdentifier();
 		IActivityManager activityMgr = PlatformUI.getWorkbench().getActivitySupport().getActivityManager();
-		IIdentifier id = activityMgr.getIdentifier(extensionPluginId + "/" +  extensionId); //$NON-NLS-1$
+		IIdentifier id = activityMgr.getIdentifier(extensionPluginId + "/" +  extensionId); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return (!id.isEnabled());
 	}
 
@@ -199,7 +199,7 @@ public class ConfigureProjectWizard extends Wizard {
 	 *	@param config  the registry to get properties from
 	 *	@return whether initialization was successful
 	 */
-	private static boolean initializeWizard(ConfigurationWizardElement element, IConfigurationElement config) {
+	private static boolean initializeWizard(ConfigurationWizardElement element, IConfigurationElement config) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		element.setID(config.getAttribute(ATT_ID));
 		String description = ""; //$NON-NLS-1$
 		IConfigurationElement [] children = config.getChildren(TAG_DESCRIPTION);

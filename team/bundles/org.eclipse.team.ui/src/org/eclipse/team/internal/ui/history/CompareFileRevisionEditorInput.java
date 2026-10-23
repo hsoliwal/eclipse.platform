@@ -40,12 +40,12 @@ import org.eclipse.team.internal.ui.synchronize.LocalResourceTypedElement;
 import org.eclipse.team.ui.synchronize.SaveableCompareEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
 
-public class CompareFileRevisionEditorInput extends SaveableCompareEditorInput {
+public class CompareFileRevisionEditorInput extends SaveableCompareEditorInput { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	private final ITypedElement left;
 	private final ITypedElement right;
 
-	CompareInputChangeNotifier notifier = new CompareInputChangeNotifier() {
+	CompareInputChangeNotifier notifier = new CompareInputChangeNotifier() { //FLLDCIM: MARK — T07  ANONYMOUS
 		@Override
 		protected IResource[] getResources(ICompareInput input) {
 			IResource resource = getResource(input);
@@ -170,7 +170,7 @@ public class CompareFileRevisionEditorInput extends SaveableCompareEditorInput {
 		return input;
 	}
 
-	private void initLabels(ICompareInput input) {
+	private void initLabels(ICompareInput input) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		CompareConfiguration cc = getCompareConfiguration();
 		if (getLeftRevision() != null) {
 			String leftLabel = getFileRevisionLabel(getLeftRevision());
@@ -273,7 +273,7 @@ public class CompareFileRevisionEditorInput extends SaveableCompareEditorInput {
 		return element.getName();
 	}
 
-	private String getContentIdentifier(ITypedElement element){
+	private String getContentIdentifier(ITypedElement element){ //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (element instanceof FileRevisionTypedElement fileRevisionElement){
 			Object fileObject = fileRevisionElement.getFileRevision();
 			if (fileObject instanceof LocalFileRevision){

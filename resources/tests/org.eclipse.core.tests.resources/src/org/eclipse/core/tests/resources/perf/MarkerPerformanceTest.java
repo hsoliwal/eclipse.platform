@@ -40,13 +40,13 @@ public class MarkerPerformanceTest {
 
 	private TestInfo testInfo;
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetAttributes1() throws Exception {
 		//benchmark setting many attributes in a single operation
-		final IWorkspaceRunnable runnable = unused -> {
+		final IWorkspaceRunnable runnable = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			//set all attributes for each marker
-			for (int i = 0; i < NUM_MARKERS; i++) {
-				for (int j = 0; j < REPEAT; j++) {
+			for (int i = 0; i < NUM_MARKERS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				for (int j = 0; j < REPEAT; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					markers[i].setAttribute("attrib", "hello");
 				}
 			}
@@ -64,10 +64,10 @@ public class MarkerPerformanceTest {
 	@Test
 	public void testSetAttributes2() throws Exception {
 		//benchmark setting many attributes in a single operation
-		final IWorkspaceRunnable runnable = unused -> {
+		final IWorkspaceRunnable runnable = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			//set one attribute per marker, repeat for all attributes
-			for (int j = 0; j < REPEAT; j++) {
-				for (int i = 0; i < NUM_MARKERS; i++) {
+			for (int j = 0; j < REPEAT; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				for (int i = 0; i < NUM_MARKERS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					markers[i].setAttribute("attrib", "hello");
 				}
 			}
@@ -80,11 +80,11 @@ public class MarkerPerformanceTest {
 		}.run(getClass(), testInfo.getDisplayName(), 1, 1);
 	}
 
-	@BeforeEach
+	@BeforeEach //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setUp(TestInfo info) throws Exception {
 		testInfo = info;
 		final IMarker[] createdMarkers = new IMarker[NUM_MARKERS];
-		IWorkspaceRunnable runnable = unused -> {
+		IWorkspaceRunnable runnable = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			//create resources
 			project = getWorkspace().getRoot().getProject("TestProject");
 			project.create(null);
@@ -92,7 +92,7 @@ public class MarkerPerformanceTest {
 			file = project.getFile(IPath.ROOT.append("file.txt"));
 			file.create(createRandomContentsStream(), true, null);
 			//create markers
-			for (int i = 0; i < NUM_MARKERS; i++) {
+			for (int i = 0; i < NUM_MARKERS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				createdMarkers[i] = file.createMarker(IMarker.BOOKMARK);
 			}
 		};

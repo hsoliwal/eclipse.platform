@@ -90,7 +90,7 @@ public abstract class TeamAction extends AbstractHandler implements IObjectActio
 
 	private IWorkbenchPart targetPart;
 	private IWorkbenchWindow window;
-	private IPartListener2 targetPartListener = new IPartListener2() {
+	private IPartListener2 targetPartListener = new IPartListener2() { //FLLDCIM: MARK — T20  ANONYMOUS
 		@Override
 		public void partActivated(IWorkbenchPartReference partRef) {
 		}
@@ -146,9 +146,9 @@ public abstract class TeamAction extends AbstractHandler implements IObjectActio
 	public static <T> T[] getSelectedAdaptables(ISelection selection, Class<T> c) {
 		ArrayList<T> result = null;
 		if (selection != null && !selection.isEmpty()) {
-			result = new ArrayList<>();
+			result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			Iterator elements = ((IStructuredSelection) selection).iterator();
-			while (elements.hasNext()) {
+			while (elements.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				T adapter = getAdapter(elements.next(), c);
 				if (c.isInstance(adapter)) {
 					result.add(adapter);
@@ -191,8 +191,8 @@ public abstract class TeamAction extends AbstractHandler implements IObjectActio
 		if (selectedResources.length == 0) {
 			return new IProject[0];
 		}
-		ArrayList<IProject> projects = new ArrayList<>();
-		for (IResource resource : selectedResources) {
+		ArrayList<IProject> projects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IResource resource : selectedResources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() == IResource.PROJECT) {
 				projects.add((IProject) resource);
 			}
@@ -235,8 +235,8 @@ public abstract class TeamAction extends AbstractHandler implements IObjectActio
 	 */
 	protected ResourceMapping[] getSelectedResourceMappings(String providerId) {
 		Object[] elements = getSelection().toArray();
-		ArrayList<ResourceMapping> providerMappings = new ArrayList<>();
-		for (Object object : elements) {
+		ArrayList<ResourceMapping> providerMappings = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Object object : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object adapted = getResourceMapping(object);
 			if (adapted instanceof ResourceMapping mapping) {
 				if (providerId == null || isMappedToProvider(mapping, providerId)) {
@@ -256,7 +256,7 @@ public abstract class TeamAction extends AbstractHandler implements IObjectActio
 
 	private boolean isMappedToProvider(ResourceMapping element, String providerId) {
 		IProject[] projects = element.getProjects();
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			RepositoryProvider provider = RepositoryProvider.getProvider(project);
 			if (provider != null && provider.getID().equals(providerId)) {
 				return true;
@@ -270,7 +270,7 @@ public abstract class TeamAction extends AbstractHandler implements IObjectActio
 	 *
 	 * @return the shell
 	 */
-	protected Shell getShell() {
+	protected Shell getShell() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (shell != null) {
 			return shell;
 		} else if (targetPart != null) {
@@ -297,7 +297,7 @@ public abstract class TeamAction extends AbstractHandler implements IObjectActio
 	 * @param problemMessage  the message to display in the case of errors
 	 * @param progressKind  one of PROGRESS_BUSYCURSOR or PROGRESS_DIALOG
 	 */
-	final protected void run(final IRunnableWithProgress runnable, final String problemMessage, int progressKind) {
+	final protected void run(final IRunnableWithProgress runnable, final String problemMessage, int progressKind) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final Exception[] exceptions = new Exception[] {null};
 		switch (progressKind) {
 			case PROGRESS_BUSYCURSOR :
@@ -399,11 +399,11 @@ public abstract class TeamAction extends AbstractHandler implements IObjectActio
 	 */
 	protected Hashtable<RepositoryProvider, List<IResource>> getProviderMapping(IResource[] resources) {
 		Hashtable<RepositoryProvider, List<IResource>> result = new Hashtable<>();
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			RepositoryProvider provider = RepositoryProvider.getProvider(resource.getProject());
 			List<IResource> list = result.get(provider);
 			if (list == null) {
-				list = new ArrayList<>();
+				list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				result.put(provider, list);
 			}
 			list.add(resource);
@@ -531,7 +531,7 @@ public abstract class TeamAction extends AbstractHandler implements IObjectActio
 		return null;
 	}
 
-	private void execute(IWorkbenchWindow activeWorkbenchWindow,
+	private void execute(IWorkbenchWindow activeWorkbenchWindow, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IWorkbenchPart part, ISelection selection)
 			throws InvocationTargetException, InterruptedException {
 		// If the action is run from within an editor, try and find the

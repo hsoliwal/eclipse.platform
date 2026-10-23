@@ -89,7 +89,7 @@ public class RefreshManager implements IRefreshResult, IManager, EclipsePreferen
 			final boolean autoRefresh = Platform.getPreferencesService().getBoolean(ResourcesPlugin.PI_RESOURCES,
 					ResourcesPlugin.PREF_AUTO_REFRESH, false, null);
 			String jobName = autoRefresh ? Messages.refresh_installMonitorsOnWorkspace : Messages.refresh_uninstallMonitorsOnWorkspace;
-			MonitorJob.createSystem(jobName, getWorkspace().getRoot(),
+			MonitorJob.createSystem(jobName, getWorkspace().getRoot(), //FLLDCIM: MARK — T09 BACKGROUND_MODEL_THREAD CALL
 					(ICoreRunnable) monitor -> manageAutoRefresh(autoRefresh, monitor)).schedule();
 		}
 	}

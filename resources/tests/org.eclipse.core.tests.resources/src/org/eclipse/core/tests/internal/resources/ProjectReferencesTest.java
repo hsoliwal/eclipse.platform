@@ -50,7 +50,7 @@ public class ProjectReferencesTest {
 	private static final String bc1 = "Variant1";
 	private static final String nonExistentBC = "foo";
 
-	@BeforeEach
+	@BeforeEach //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setUp() throws Exception {
 		project0 = getWorkspace().getRoot().getProject("ProjectReferencesTest_p0");
 		project1 = getWorkspace().getRoot().getProject("ProjectReferencesTest_p1");
@@ -109,7 +109,7 @@ public class ProjectReferencesTest {
 	 *
 	 * Removing a build configuration removes associated build configuration references
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testChangingBuildConfigurations() throws CoreException {
 		IProjectDescription desc = project0.getDescription();
 		IBuildConfiguration[] refs = new IBuildConfiguration[] {project0v1, project1v0};
@@ -151,7 +151,7 @@ public class ProjectReferencesTest {
 	 * Tests that setting build configuration level dynamic references
 	 * trumps the project level dynamic references when it comes to order.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMixedProjectAndBuildConfigRefs() throws CoreException {
 		// Set project variant references
 		IProjectDescription desc = project0.getDescription();
@@ -185,7 +185,7 @@ public class ProjectReferencesTest {
 				.containsExactly(project1.getActiveBuildConfig(), project3.getActiveBuildConfig());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetAndGetProjectReferences() throws CoreException {
 		// Set project references
 		IProjectDescription desc = project0.getDescription();
@@ -226,7 +226,7 @@ public class ProjectReferencesTest {
 		description.setDynamicReferences(projects);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetAndGetProjectConfigReferences() throws CoreException {
 		// Set project variant references
 		IProjectDescription desc = project0.getDescription();

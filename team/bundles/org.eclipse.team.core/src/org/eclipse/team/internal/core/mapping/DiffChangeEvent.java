@@ -35,13 +35,13 @@ public class DiffChangeEvent implements IDiffChangeEvent {
 
 	// List that accumulate changes
 	// SyncInfo
-	private final Map<IPath, IDiff> changedResources = new HashMap<>();
-	private final Set<IPath> removedResources = new HashSet<>();
-	private final Map<IPath, IDiff> addedResources = new HashMap<>();
+	private final Map<IPath, IDiff> changedResources = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	private final Set<IPath> removedResources = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Map<IPath, IDiff> addedResources = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	private boolean reset = false;
 
-	private final List<IStatus> errors = new ArrayList<>();
+	private final List<IStatus> errors = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	/**
 	 * Create a diff change event

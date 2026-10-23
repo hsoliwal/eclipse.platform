@@ -71,7 +71,7 @@ import org.eclipse.osgi.util.NLS;
  *  -  when projects are deleted, opened, closed, or moved
  *  - when linked resources are created, deleted, or moved.
  */
-public class AliasManager implements IManager, ILifecycleListener, IResourceChangeListener {
+public class AliasManager implements IManager, ILifecycleListener, IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 
 	class FindAliasesDoit implements Consumer<IResource> {
 		private final int aliasType;
@@ -82,7 +82,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 			this.searchPath = aliasResource.getFullPath();
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void accept(IResource match) {
 			//don't record the resource we're computing aliases against as a match
 			if (match.getFullPath().isPrefixOf(searchPath)) {
@@ -135,7 +135,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 
 		HashMapWithSortedKeys() {
 			keys = new TreeSet<>(IFileStore::compareTo);
-			map = new HashMap<>(100);
+			map = new HashMap<>(100); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 
 		Object put(IFileStore key, Object value) {
@@ -180,7 +180,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 		 * Adds the given resource to the map, keyed by the given location.
 		 * Returns true if a new entry was added, and false otherwise.
 		 */
-		public boolean add(IFileStore location, IResource resource) {
+		public boolean add(IFileStore location, IResource resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			Object oldValue = map.get(location);
 			if (oldValue == null) {
 				map.put(location, resource);
@@ -190,7 +190,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 				if (resource.equals(oldValue)) {
 					return false;//duplicate
 				}
-				ArrayList<Object> newValue = new ArrayList<>(2);
+				ArrayList<Object> newValue = new ArrayList<>(2); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				newValue.add(oldValue);
 				newValue.add(resource);
 				map.put(location, newValue);
@@ -216,24 +216,24 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 		 * Invoke the given doit for every resource whose location has the
 		 * given location as a prefix.
 		 */
-		public void matchingPrefixDo(IFileStore prefix, Consumer<IResource> doit) {
+		public void matchingPrefixDo(IFileStore prefix, Consumer<IResource> doit) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			Set<IFileStore> matching;
 			IFileStore prefixParent = prefix.getParent();
 			if (prefixParent != null) {
 				//endPoint is the smallest possible path greater than the prefix that doesn't
 				//match the prefix
-				IFileStore endPoint = prefixParent.getChild(prefix.getName() + "\0"); //$NON-NLS-1$
+				IFileStore endPoint = prefixParent.getChild(prefix.getName() + "\0"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				matching = map.keysSubSet(prefix, endPoint);
 			} else {
 				matching = map.keys();
 			}
-			for (IFileStore key : matching) {
+			for (IFileStore key : matching) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Object value = map.get(key);
 				if (value == null) {
 					return;
 				}
 				if (value instanceof List) {
-					for (Object element : ((List<?>) value)) {
+					for (Object element : ((List<?>) value)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (element instanceof IResource) {
 							doit.accept((IResource) element);
 						}
@@ -254,7 +254,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 				return;
 			}
 			if (value instanceof List) {
-				for (Object element : ((List<?>) value)) {
+				for (Object element : ((List<?>) value)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (element instanceof IResource) {
 						doit.accept((IResource) element);
 					}
@@ -268,15 +268,15 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 		 * Calls the given doit with the project of every resource in the map
 		 * whose location overlaps another resource in the map.
 		 */
-		public void overLappingResourcesDo(Consumer<IResource> doit) {
+		public void overLappingResourcesDo(Consumer<IResource> doit) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IFileStore previousStore = null;
 			IResource previousResource = null;
-			for (IFileStore currentStore : map.keys()) {
+			for (IFileStore currentStore : map.keys()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				//value is either single resource or List of resources
 				IResource currentResource = null;
 				Object value = map.get(currentStore);
 				if (value instanceof List) {
-					for (Object element : ((List<?>) value)) {
+					for (Object element : ((List<?>) value)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (element instanceof IResource) {
 							doit.accept(((IResource) element).getProject());
 						}
@@ -312,7 +312,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 		 * Removes the given location from the map.  Returns true if anything
 		 * was actually removed, and false otherwise.
 		 */
-		public boolean remove(IFileStore location, IResource resource) {
+		public boolean remove(IFileStore location, IResource resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			Object oldValue = map.get(location);
 			if (oldValue == null) {
 				return false;
@@ -337,13 +337,13 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 	/**
 	 * The set of IProjects that have aliases.
 	 */
-	protected final Set<IResource> aliasedProjects = new HashSet<>();
+	protected final Set<IResource> aliasedProjects = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	/**
 	 * A temporary set of aliases.  Used during computeAliases, but maintained
 	 * as a field as an optimization to prevent recreating the set.
 	 */
-	protected final HashSet<IResource> aliases = new HashSet<>();
+	protected final HashSet<IResource> aliases = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	/**
 	 * The set of resources that have had structure changes that might
@@ -388,7 +388,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 		this.workspace = workspace;
 	}
 
-	private void addToLocationsMap(IProject project) {
+	private void addToLocationsMap(IProject project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IFileStore location = ((Resource) project).getStore();
 		if (location != null) {
 			locationsMap.add(location, project);
@@ -404,7 +404,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 		if (links == null) {
 			return;
 		}
-		for (LinkDescription linkDesc : links.values()) {
+		for (LinkDescription linkDesc : links.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource link = project.findMember(linkDesc.getProjectRelativePath());
 			if (link != null) {
 				try {
@@ -449,7 +449,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 		nonDefaultResourceCount = 0;
 		//build table of IPath (file system location) -> IResource (project or linked resource)
 		IProject[] projects = workspace.getRoot().getProjects(IContainer.INCLUDE_HIDDEN);
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (project.isAccessible()) {
 				addToLocationsMap(project);
 			}
@@ -501,7 +501,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 	 * Returns all resources pointing to the given location, or an empty array if there are none.
 	 */
 	public IResource[] findResources(IFileStore location) {
-		final ArrayList<IResource> resources = new ArrayList<>();
+		final ArrayList<IResource> resources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		locationsMap.matchingResourcesDo(location, resource -> resources.add(resource));
 		return resources.toArray(new IResource[0]);
 	}
@@ -510,7 +510,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 	 * Returns all aliases of this resource, and any aliases of subtrees of this
 	 * resource.  Returns null if no aliases are found.
 	 */
-	private void computeDeepAliases(IResource resource, IFileStore location) {
+	private void computeDeepAliases(IResource resource, IFileStore location) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//if the location is invalid then there won't be any aliases to update
 		if (location == null) {
 			return;
@@ -524,7 +524,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 			try {
 				IResource[] members = ((IProject) resource).members();
 				final FileSystemResourceManager localManager = workspace.getFileSystemManager();
-				for (IResource member : members) {
+				for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (member.isLinked()) {
 						IFileStore linkLocation = localManager.getStore(member);
 						if (linkLocation != null) {
@@ -538,7 +538,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void handleEvent(LifecycleEvent event) {
 		/*
 		 * We can't determine the end state for most operations because they may
@@ -593,7 +593,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 	 * Computes the aliases of the given resource at the given location, and
 	 * adds them to the "aliases" collection.
 	 */
-	private void internalComputeAliases(IResource resource, IFileStore location) {
+	private void internalComputeAliases(IResource resource, IFileStore location) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IFileStore searchLocation = location;
 		if (searchLocation == null) {
 			searchLocation = ((Resource) resource).getStore();
@@ -610,7 +610,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 		 * resource with a matching location.  All matches are then added to the
 		 * "aliases" set.
 		 */
-		do {
+		do { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			locationsMap.matchingResourcesDo(searchLocation, findAliases);
 			suffix = IPath.fromOSString(searchLocation.getName()).append(suffix);
 			searchLocation = searchLocation.getParent();
@@ -625,7 +625,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void resourceChanged(IResourceChangeEvent event) {
 		if (changedProjects) {
 			// no need to evaluate delta, we already know projects have changed
@@ -646,7 +646,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 		// invalidate location map if any project has the description changed
 		// or was closed/opened
 		IResourceDelta[] changed = delta.getAffectedChildren(IResourceDelta.CHANGED, IContainer.INCLUDE_HIDDEN);
-		for (IResourceDelta element : changed) {
+		for (IResourceDelta element : changed) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if ((element.getFlags() & IResourceDelta.DESCRIPTION) == IResourceDelta.DESCRIPTION || (element.getFlags() & IResourceDelta.OPEN) == IResourceDelta.OPEN) {
 				changedProjects = true;
 				return;
@@ -680,7 +680,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 	 * @param depth whether to search for aliases on all children of the given
 	 * resource.  Only depth ZERO and INFINITE are used.
 	 */
-	public void updateAliases(IResource resource, IFileStore location, int depth, IProgressMonitor monitor) throws CoreException {
+	public void updateAliases(IResource resource, IFileStore location, int depth, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		monitor = IProgressMonitor.nullSafe(monitor);
 		if (hasNoAliases(resource)) {
 			return;
@@ -695,7 +695,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 			return;
 		}
 		FileSystemResourceManager localManager = workspace.getFileSystemManager();
-		for (IResource alias : new ArrayList<>(aliases)) {
+		for (IResource alias : new ArrayList<>(aliases)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			monitor.subTask(NLS.bind(Messages.links_updatingDuplicate, alias.getFullPath()));
 			if (alias.getType() == IResource.PROJECT) {
 				if (checkDeletion((Project) alias, location)) {
@@ -723,7 +723,7 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 	 * can come from different threads, but we only want a single thread to process
 	 * them at a time.
 	 */
-	private synchronized boolean checkStructuralChanges() {
+	private synchronized boolean checkStructuralChanges() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean hadChanges = false;
 		if (changedProjects) {
 			//if a project is added or removed, just recompute the whole world
@@ -733,10 +733,10 @@ public class AliasManager implements IManager, ILifecycleListener, IResourceChan
 			buildLocationsMap();
 		} else {
 			// incrementally update location map for changed links
-			Collection<IResource> changedLinksSnapshots = new HashSet<>(changedLinks);
+			Collection<IResource> changedLinksSnapshots = new HashSet<>(changedLinks); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			changedLinks.removeAll(changedLinksSnapshots);
 			hadChanges = !changedLinksSnapshots.isEmpty();
-			for (IResource resource : changedLinksSnapshots) {
+			for (IResource resource : changedLinksSnapshots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (resource.isAccessible() && resource.isLinked()) {
 					addToLocationsMap(resource, ((Resource) resource).getStore());
 				}

@@ -1857,7 +1857,7 @@ public interface IWorkspace extends IAdaptable {
 		// meant to be overridden with a parallel implementation for local files:
 		Objects.requireNonNull(contentMap);
 		SubMonitor subMon = SubMonitor.convert(monitor, contentMap.size());
-		for (Entry<IFile, byte[]> e : contentMap.entrySet()) {
+		for (Entry<IFile, byte[]> e : contentMap.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			e.getKey().write(e.getValue(), force, derived, keepHistory, subMon.split(1));
 		}
 	}
