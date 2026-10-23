@@ -605,7 +605,7 @@ public class SynchronizeManager implements ISynchronizeManager {
 		File file = getStateFile();
 		Reader reader;
 		try {
-			reader = new BufferedReader(new FileReader(file));
+			reader = new BufferedReader(new FileReader(file)); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 		} catch (FileNotFoundException e) {
 			return;
 		}
@@ -653,7 +653,7 @@ public class SynchronizeManager implements ISynchronizeManager {
 			ref.save(participantData);
 		}
 		try {
-			try (Writer writer = new BufferedWriter(new FileWriter(getStateFile()))) {
+			try (Writer writer = new BufferedWriter(new FileWriter(getStateFile()))) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 				xmlMemento.save(writer);
 			}
 		} catch (IOException e) {

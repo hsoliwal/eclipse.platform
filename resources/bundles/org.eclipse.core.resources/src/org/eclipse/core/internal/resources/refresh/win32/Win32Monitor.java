@@ -92,7 +92,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 
 		@Override
 		public boolean exists() {
-			return file.exists();
+			return file.exists(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 
 		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
@@ -281,7 +281,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 		@Override
 		public boolean exists() {
 			IPath location = resource.getLocation();
-			return location == null ? false : location.toFile().exists();
+			return location == null ? false : location.toFile().exists(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 
 		@Override

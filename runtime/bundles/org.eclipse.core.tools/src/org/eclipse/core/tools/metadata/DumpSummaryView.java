@@ -94,7 +94,7 @@ public class DumpSummaryView extends SpyView {
 		}
 		output.append(dump.getOffset()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		output.append('/'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		output.append(dump.getFile().length()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		output.append(dump.getFile().length()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		output.append(" byte(s) read"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 		// updates the view contents

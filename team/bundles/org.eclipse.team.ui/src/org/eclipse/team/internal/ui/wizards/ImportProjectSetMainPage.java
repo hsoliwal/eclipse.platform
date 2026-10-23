@@ -275,12 +275,12 @@ public class ImportProjectSetMainPage extends TeamWizardPage {
 		} else {
 			// See if the file exists
 			File f = new File(file);
-			if (!f.exists()) {
+			if (!f.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				messageType = ERROR;
 				setMessage(TeamUIMessages.ImportProjectSetMainPage_The_specified_file_does_not_exist_4, messageType);
 				setPageComplete(false);
 				return;
-			} else if (f.isDirectory()) {
+			} else if (f.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				messageType = ERROR;
 				setMessage(TeamUIMessages.ImportProjectSetMainPage_You_have_specified_a_folder_5, messageType);
 				setPageComplete(false);

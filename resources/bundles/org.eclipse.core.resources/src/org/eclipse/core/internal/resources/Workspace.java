@@ -2364,7 +2364,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		initializePreferenceLookupOrder();
 
 		// create root location
-		localMetaArea.locationFor(getRoot()).toFile().mkdirs();
+		localMetaArea.locationFor(getRoot()).toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		startup(new NullProgressMonitor());
 		// restart the notification manager so it is initialized with the right tree

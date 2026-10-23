@@ -320,7 +320,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		IPath location = wc.getLocation();
 		ILaunchConfiguration handle = wc.doSave();
 		File file = location.toFile();
-		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$
+		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$ //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// retrieve attributes
 		assertEquals(handle.getAttribute("String1", "Missing"), "String1", "String1 should be String1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -380,7 +380,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		IPath location = wc.getLocation();
 		ILaunchConfiguration handle = wc.doSave();
 		File file = location.toFile();
-		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$
+		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$ //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		Map<?, ?> attributes = handle.getAttributes();
 		// retrieve attributes
@@ -407,7 +407,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		IPath location = wc.getLocation();
 		ILaunchConfiguration handle = wc.doSave();
 		File file = location.toFile();
-		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$
+		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$ //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		Map<?, ?> attributes = handle.getAttributes();
 		assertEquals(2, attributes.size(), "should have two attributes"); //$NON-NLS-1$
@@ -430,7 +430,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		IPath location = wc.getLocation();
 		ILaunchConfiguration handle = wc.doSave();
 		File file = location.toFile();
-		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$
+		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$ //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		Map<?, ?> attributes = handle.getAttributes();
 		assertEquals(0, attributes.size(), "should have no attributes"); //$NON-NLS-1$
@@ -450,7 +450,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		IPath location = wc.getLocation();
 		ILaunchConfiguration handle = wc.doSave();
 		File file = location.toFile();
-		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$
+		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$ //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// retrieve attributes
 		assertTrue(handle.getAttribute("String1", "Missing").equals("String1"), "String1 should be String1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -491,7 +491,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		IPath location = wc.getLocation();
 		ILaunchConfiguration handle = wc.doSave();
 		File file = location.toFile();
-		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$
+		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$ //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// retrieve attributes
 		assertTrue(handle.getAttribute("String1", "Missing").equals("String1"), "String1 should be String1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -528,7 +528,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		ILaunchConfigurationWorkingCopy wc = newConfiguration(null, "config2delete"); //$NON-NLS-1$
 		ILaunchConfiguration handle = wc.doSave();
 		File file = wc.getLocation().toFile();
-		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$
+		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$ //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// retrieve attributes
 		assertTrue(handle.getAttribute("String1", "Missing").equals("String1"), "String1 should be String1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -557,7 +557,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		IPath location = wc.getLocation();
 		ILaunchConfiguration handle = wc.doSave();
 		File file = location.toFile();
-		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$
+		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$ //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// retrieve attributes
 		assertTrue(handle.getAttribute("String1", "Missing").equals("String1"), "String1 should be String1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -600,7 +600,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		IPath location = wc.getLocation();
 		ILaunchConfiguration handle = wc.doSave();
 		File file = location.toFile();
-		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$
+		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$ //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// retrieve attributes
 		assertTrue(handle.getAttribute("String1", "Missing").equals("String1"), "String1 should be String1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -643,7 +643,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		IPath location = wc.getLocation();
 		ILaunchConfiguration handle = wc.doSave();
 		File file = location.toFile();
-		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$
+		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$ //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// retrieve attributes
 		assertTrue(handle.getAttribute("String1", "Missing").equals("String1"), "String1 should be String1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -1029,7 +1029,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		IPath location = wc.getLocation();
 		ILaunchConfiguration handle = wc.doSave();
 		File file = location.toFile();
-		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$
+		assertTrue(file.exists(), "Configuration file should exist"); //$NON-NLS-1$ //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// retrieve attributes
 		assertEquals(handle.getAttribute("String1", "Missing"), "String1", "String1 should be String1"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
@@ -1209,15 +1209,15 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		assertTrue(handle.exists(), "Configuration should exist"); //$NON-NLS-1$
 
 		File dir = TestsPlugin.getFileInPlugin("test-import"); //$NON-NLS-1$
-		assertTrue(dir.exists(), "Import directory does not exist"); //$NON-NLS-1$
+		assertTrue(dir.exists(), "Import directory does not exist"); //$NON-NLS-1$ //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		LaunchManager manager = (LaunchManager) getLaunchManager();
 
 		Listener listener = new Listener();
 		try {
 			getLaunchManager().addLaunchConfigurationListener(listener);
 			// import
-			manager.importConfigurations(dir.listFiles(
-					(FileFilter) file -> file.isFile() && file.getName().endsWith(ILaunchConfiguration.LAUNCH_CONFIGURATION_FILE_EXTENSION)),
+			manager.importConfigurations(dir.listFiles( //FLLDCIM: MARK — M31 M3FILE_IO CALL
+					(FileFilter) file -> file.isFile() && file.getName().endsWith(ILaunchConfiguration.LAUNCH_CONFIGURATION_FILE_EXTENSION)), //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				null);
 
 			// should be one removed

@@ -118,7 +118,7 @@ public class HistoryDialog extends SelectionDialog {
 			Path targetPath = Path.of(History.INSTANCE.getDirectory().getAbsolutePath(),
 					sourcePath.getFileName().toString());
 			try {
-				Files.copy(sourcePath, targetPath);
+				Files.copy(sourcePath, targetPath); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				History.INSTANCE.add(new HistoryItem(targetPath.toFile()));
 			} catch (IOException e1) {
 				UnitTestPlugin.log(e1);

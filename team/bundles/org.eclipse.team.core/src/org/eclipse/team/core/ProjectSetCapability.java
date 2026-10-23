@@ -243,7 +243,7 @@ public abstract class ProjectSetCapability {
 		for (IProject eachProj : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (eachProj.exists()) {
 				existingProjects.add(eachProj);
-			} else if (new File(eachProj.getParent().getLocation().toFile(), eachProj.getName()).exists()) {
+			} else if (new File(eachProj.getParent().getLocation().toFile(), eachProj.getName()).exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				existingProjects.add(eachProj);
 			}
 		}

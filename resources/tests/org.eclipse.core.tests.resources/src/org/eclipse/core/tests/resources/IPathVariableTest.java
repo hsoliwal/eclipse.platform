@@ -618,7 +618,7 @@ public class IPathVariableTest {
 		ProjectInfo info = (ProjectInfo) ((Project) existingProject).getResourceInfo(false, false);
 		info.clear(ICoreConstants.M_USED);
 		String dotProjectPath = existingProject.getLocation().append(".project").toOSString();
-		FileWriter fstream = new FileWriter(dotProjectPath);
+		FileWriter fstream = new FileWriter(dotProjectPath); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 		try (BufferedWriter out = new BufferedWriter(fstream)) {
 			out.write(dorProjectContent);
 		}

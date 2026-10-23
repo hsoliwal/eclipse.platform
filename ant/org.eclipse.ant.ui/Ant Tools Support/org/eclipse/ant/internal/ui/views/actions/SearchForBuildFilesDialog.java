@@ -392,14 +392,14 @@ public class SearchForBuildFilesDialog extends InputDialog {
 			input = input.replace("*", ".*"); //$NON-NLS-1$ //$NON-NLS-2$
 			// replace "?" with ".?"
 			input = input.replace("?", ".?"); //$NON-NLS-1$ //$NON-NLS-2$
-			pattern = Pattern.compile(input);
+			pattern = Pattern.compile(input); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		}
 
 		@Override
 		public boolean visit(IResourceProxy proxy) {
 			if (proxy.getType() == IResource.FILE) {
 				Matcher matcher = pattern.matcher(proxy.getName()); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
-				if (matcher.find()) {
+				if (matcher.find()) { //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 					results.add(proxy.requestResource());
 				}
 				return false;

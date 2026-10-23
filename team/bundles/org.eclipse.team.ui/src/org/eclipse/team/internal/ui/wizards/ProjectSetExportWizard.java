@@ -90,20 +90,20 @@ public class ProjectSetExportWizard extends Wizard implements IExportWizard {
 					PsfFilenameStore.getInstance().remember(filename);
 					File file = new File(filename);
 					File parentFile = file.getParentFile();
-					if (parentFile != null && !parentFile.exists()) {
+					if (parentFile != null && !parentFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						boolean r = MessageDialog.openQuestion(getShell(), TeamUIMessages.ProjectSetExportWizard_Question_4, TeamUIMessages.ProjectSetExportWizard_Target_directory_does_not_exist__Would_you_like_to_create_it__5); //
 						if (!r) {
 							result[0] = false;
 							return;
 						}
-						r = parentFile.mkdirs();
+						r = parentFile.mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						if (!r) {
 							MessageDialog.openError(getShell(), TeamUIMessages.ProjectSetExportWizard_Export_Problems_6, TeamUIMessages.ProjectSetExportWizard_An_error_occurred_creating_the_target_directory_7); //
 							result[0] = false;
 							return;
 						}
 					}
-					if (file.exists() && file.isFile()) {
+					if (file.exists() && file.isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						boolean r = MessageDialog.openQuestion(getShell(), TeamUIMessages.ProjectSetExportWizard_Question_8, TeamUIMessages.ProjectSetExportWizard_Target_already_exists__Would_you_like_to_overwrite_it__9); //
 						if (!r) {
 							result[0] = false;
@@ -135,7 +135,7 @@ public class ProjectSetExportWizard extends Wizard implements IExportWizard {
 					UIProjectSetSerializationContext context = new UIProjectSetSerializationContext(getShell(), filename);
 
 					try (BufferedWriter writer = new BufferedWriter(
-							new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+							new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 						// if file was written to the workspace, perform the validateEdit
 						if (!locationPage.isSaveToFileSystem()) {
 							locationPage.validateEditWorkspaceFile(getShell());

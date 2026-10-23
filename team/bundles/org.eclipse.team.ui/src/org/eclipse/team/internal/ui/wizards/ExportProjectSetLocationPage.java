@@ -200,7 +200,7 @@ public class ExportProjectSetLocationPage extends TeamWizardPage {
 			complete = false;
 		} else {
 			File f = new File(file);
-			if (f.isDirectory()) {
+			if (f.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				setErrorMessage(TeamUIMessages.ExportProjectSetMainPage_You_have_specified_a_folder_5);
 				complete = false;
 			} else {

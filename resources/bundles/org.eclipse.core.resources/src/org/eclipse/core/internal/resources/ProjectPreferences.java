@@ -742,7 +742,7 @@ public class ProjectPreferences extends EclipsePreferences {
 					String systemLineSeparator = System.lineSeparator();
 					String fileLineSeparator = fileInWorkspace.getLineSeparator(true);
 					if (!systemLineSeparator.equals(fileLineSeparator)) {
-						s = s.replaceAll(systemLineSeparator, fileLineSeparator);
+						s = s.replaceAll(systemLineSeparator, fileLineSeparator); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 					}
 					byte[] input = s.getBytes(StandardCharsets.UTF_8);
 					// make sure that preference folder and file are in sync

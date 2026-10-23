@@ -50,7 +50,7 @@ public class Bug_265810 {
 
 	public IPath createFolderAtRandomLocation() throws IOException {
 		IPath path = IPath.fromPath(tempDirectory).append(createUniqueString());
-		path.toFile().createNewFile();
+		path.toFile().createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		return path;
 	}
 

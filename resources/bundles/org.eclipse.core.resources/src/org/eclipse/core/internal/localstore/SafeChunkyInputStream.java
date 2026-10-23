@@ -34,7 +34,7 @@ public class SafeChunkyInputStream extends InputStream {
 	}
 
 	public SafeChunkyInputStream(File target, int bufferSize) throws IOException {
-		input = new FileInputStream(target);
+		input = new FileInputStream(target); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 		buffer = new byte[bufferSize];
 	}
 

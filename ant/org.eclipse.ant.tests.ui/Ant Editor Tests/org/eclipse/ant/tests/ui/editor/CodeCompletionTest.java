@@ -503,7 +503,7 @@ public class CodeCompletionTest {
 
 		File file = getBuildFile("dependencytest.xml"); //$NON-NLS-1$
 		processor.setEditedFile(file);
-		String documentText = Files.readString(file.toPath());
+		String documentText = Files.readString(file.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		processor.setLineNumber(35);
 		processor.setColumnNumber(41);

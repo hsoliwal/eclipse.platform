@@ -61,14 +61,14 @@ public class ProjectSnapshotPerfManualTest {
 	private static final String REFRESH_SNAPSHOT_FILE_LOCATION = ".settings/resource-index.zip";
 
 	protected int countChildren(File root) {
-		String[] children = root.list();
+		String[] children = root.list(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		if (children == null) {
 			return 0;
 		}
 		int result = 0;
 		for (String element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			File child = new File(root, element);
-			if (child.isDirectory()) {
+			if (child.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				result += countChildren(child);
 			}
 			result++;
@@ -84,7 +84,7 @@ public class ProjectSnapshotPerfManualTest {
 	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSnapshotImportPerformance() throws Exception {
 		// test if the test can be done in this machine
-		assumeTrue(bigSiteLocation.toFile().isDirectory());
+		assumeTrue(bigSiteLocation.toFile().isDirectory()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// create common objects
 		final IProject project = getWorkspace().getRoot().getProject("MyTestProject");
@@ -150,7 +150,7 @@ public class ProjectSnapshotPerfManualTest {
 		project.close(null);
 		project.delete(false, false, null);
 		IPath snapshotFile = bigSiteLocation.append(REFRESH_SNAPSHOT_FILE_LOCATION);
-		snapshotFile.toFile().delete();
+		snapshotFile.toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// open the project again with standard refresh
 		project.create(description, null);

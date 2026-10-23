@@ -258,7 +258,7 @@ public class CompareOpenPerformanceTest {
 
 	private static void writeCsv(String content) throws IOException {
 		File targetDir = new File("target"); //$NON-NLS-1$
-		if (!targetDir.isDirectory() && !targetDir.mkdirs()) {
+		if (!targetDir.isDirectory() && !targetDir.mkdirs()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			targetDir = new File(System.getProperty("java.io.tmpdir")); //$NON-NLS-1$
 		}
 		File csvFile = new File(targetDir, "compare-open-performance.csv"); //$NON-NLS-1$

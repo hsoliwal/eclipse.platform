@@ -75,7 +75,7 @@ public class RefreshLocalTest implements ICoreConstants {
 		createInWorkspace(file);
 
 		//change the case of the folder on disk
-		project.getLocation().append("A").toFile().renameTo((project.getLocation().append("a").toFile()));
+		project.getLocation().append("A").toFile().renameTo((project.getLocation().append("a").toFile())); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// refresh the project
 		project.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
@@ -134,10 +134,10 @@ public class RefreshLocalTest implements ICoreConstants {
 		removeFromFileSystem(file);
 		//
 		File target = file.getLocation().toFile();
-		target.mkdirs();
+		target.mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		//
 		assertTrue(file.exists());
-		assertTrue(target.isDirectory());
+		assertTrue(target.isDirectory()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		file.refreshLocal(IResource.DEPTH_ZERO, null);
 		assertFalse(file.exists());
 		IFolder folder = project.getFolder("file");

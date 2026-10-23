@@ -121,7 +121,7 @@ public class ProcessConsoleTests {
 		Platform.removeLogListener(errorLogListener);
 		waitForConsoleRelatedJobs();
 		for (File tmpFile : tmpFiles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
-			tmpFile.delete();
+			tmpFile.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		tmpFiles.clear();
 
@@ -155,7 +155,7 @@ public class ProcessConsoleTests {
 	 */
 	private File createTmpFile(String filename) throws IOException {
 		File file = DebugUIPlugin.getDefault().getStateLocation().addTrailingSeparator().append(filename).toFile();
-		boolean fileCreated = file.createNewFile();
+		boolean fileCreated = file.createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertTrue(fileCreated, "Failed to prepare temporary test file.");
 		tmpFiles.add(file);
 		return file;
@@ -274,7 +274,7 @@ public class ProcessConsoleTests {
 	@Test
 	public void testProcessTerminationNotificationWithInputFile() throws Exception {
 		File inFile = DebugUIPlugin.getDefault().getStateLocation().addTrailingSeparator().append("testStdin.txt").toFile();
-		boolean fileCreated = inFile.createNewFile();
+		boolean fileCreated = inFile.createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertTrue(fileCreated, "Failed to prepare input file.");
 		try {
 			ILaunchConfigurationType launchType = DebugPlugin.getDefault().getLaunchManager().getLaunchConfigurationType(LaunchConfigurationTests.ID_TEST_LAUNCH_TYPE);
@@ -285,7 +285,7 @@ public class ProcessConsoleTests {
 			TestUtil.log(IStatus.INFO, testInfo.getDisplayName(), "Process terminates before Console is initialized.");
 			processTerminationTest(launchConfiguration, true);
 		} finally {
-			inFile.delete();
+			inFile.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 	}
 
@@ -329,10 +329,10 @@ public class ProcessConsoleTests {
 		final String testContent = "Hello World!";
 		final File outFile = createTmpFile("test.out");
 		Map<String, Object> launchConfigAttributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
-		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_FILE, outFile.getCanonicalPath());
+		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_FILE, outFile.getCanonicalPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, true);
 		doConsoleOutputTest(testContent.getBytes(), launchConfigAttributes);
-		assertThat(readAllBytes(outFile.toPath())).as("content redirected to file").containsExactly(testContent.getBytes());
+		assertThat(readAllBytes(outFile.toPath())).as("content redirected to file").containsExactly(testContent.getBytes()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**
@@ -343,15 +343,15 @@ public class ProcessConsoleTests {
 		final String testContent = "Hello World!";
 		final File outFile = createTmpFile("test-append.out");
 		Map<String, Object> launchConfigAttributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
-		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_FILE, outFile.getCanonicalPath());
+		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_FILE, outFile.getCanonicalPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		launchConfigAttributes.put(IDebugUIConstants.ATTR_APPEND_TO_FILE, true);
 		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, true);
 		doConsoleOutputTest(testContent.getBytes(), launchConfigAttributes);
-		assertThat(readAllBytes(outFile.toPath())).as("content redirected to file").containsExactly(testContent.getBytes());
+		assertThat(readAllBytes(outFile.toPath())).as("content redirected to file").containsExactly(testContent.getBytes()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		String appendedContent = "append";
 		doConsoleOutputTest(appendedContent.getBytes(), launchConfigAttributes);
-		assertThat(readAllBytes(outFile.toPath())).as("content redirected to file").containsExactly((testContent + appendedContent).getBytes()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		assertThat(readAllBytes(outFile.toPath())).as("content redirected to file").containsExactly((testContent + appendedContent).getBytes()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**
@@ -366,22 +366,22 @@ public class ProcessConsoleTests {
 		final String testContent = "1.\n2.\n3.\n";
 		File outFile = createTmpFile("test.[out]");
 		Map<String, Object> launchConfigAttributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
-		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_FILE, outFile.getCanonicalPath());
+		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_FILE, outFile.getCanonicalPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, false);
 		IOConsole console = doConsoleOutputTest(testContent.getBytes(), launchConfigAttributes);
-		assertThat(readAllBytes(outFile.toPath())).as("content redirected to file").containsExactly(testContent.getBytes());
+		assertThat(readAllBytes(outFile.toPath())).as("content redirected to file").containsExactly(testContent.getBytes()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertEquals(2, console.getDocument().getNumberOfLines(), "Output in console.");
 
 		outFile = createTmpFile("exhaustive[128-32].out");
-		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_FILE, outFile.getCanonicalPath());
+		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_FILE, outFile.getCanonicalPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		console = doConsoleOutputTest(testContent.getBytes(), launchConfigAttributes);
-		assertThat(readAllBytes(outFile.toPath())).as("content redirected to file").containsExactly(testContent.getBytes());
+		assertThat(readAllBytes(outFile.toPath())).as("content redirected to file").containsExactly(testContent.getBytes()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertEquals(2, console.getDocument().getNumberOfLines(), "Output in console.");
 
 		outFile = createTmpFile("ug(ly.out");
-		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_FILE, outFile.getCanonicalPath());
+		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_FILE, outFile.getCanonicalPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		console = doConsoleOutputTest(testContent.getBytes(), launchConfigAttributes);
-		assertThat(readAllBytes(outFile.toPath())).as("content redirected to file").containsExactly(testContent.getBytes());
+		assertThat(readAllBytes(outFile.toPath())).as("content redirected to file").containsExactly(testContent.getBytes()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertEquals(2, console.getDocument().getNumberOfLines(), "Output in console.");
 	}
 
@@ -514,7 +514,7 @@ public class ProcessConsoleTests {
 		try {
 			Map<String, Object> launchConfigAttributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			launchConfigAttributes.put(DebugPlugin.ATTR_CONSOLE_ENCODING, consoleEncoding);
-			launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_FILE, outFile.getCanonicalPath());
+			launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_FILE, outFile.getCanonicalPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, false);
 			final IProcess process = mockProcess.toRuntimeProcess("redirectBinaryOutput", launchConfigAttributes);
 			final ProcessConsole console = new ProcessConsole(process, new ConsoleColorProvider(), consoleEncoding);
@@ -524,7 +524,7 @@ public class ProcessConsoleTests {
 				BooleanSupplier waitForFileWritten = () -> {
 					try {
 						TestUtil.processUIEvents(20);
-						return readAllBytes(outFile.toPath()).length < output.length;
+						return readAllBytes(outFile.toPath()).length < output.length; //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					} catch (Exception e) {
 						// try again
 					}
@@ -533,7 +533,7 @@ public class ProcessConsoleTests {
 				Supplier<String> errorMessageProvider = () -> {
 					byte[] actualOutput = new byte[0];
 					try {
-						actualOutput = readAllBytes(outFile.toPath());
+						actualOutput = readAllBytes(outFile.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					} catch (IOException e) {
 						// Proceed as if output was empty
 					}
@@ -548,7 +548,7 @@ public class ProcessConsoleTests {
 			mockProcess.destroy();
 		}
 
-		byte[] receivedOutput = Files.readAllBytes(outFile.toPath());
+		byte[] receivedOutput = Files.readAllBytes(outFile.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertThat(receivedOutput).as("received output").isEqualTo(output);
 	}
 
@@ -563,12 +563,12 @@ public class ProcessConsoleTests {
 		String consoleEncoding = StandardCharsets.UTF_8.name();
 
 		final File inFile = createTmpFile("testinput.bin");
-		Files.write(inFile.toPath(), input);
+		Files.write(inFile.toPath(), input); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		final MockProcess mockProcess = new MockProcess(input.length, TestUtil.DEFAULT_TIMEOUT);
 		try {
 			Map<String, Object> launchConfigAttributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			launchConfigAttributes.put(DebugPlugin.ATTR_CONSOLE_ENCODING, consoleEncoding);
-			launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_STDIN_FILE, inFile.getCanonicalPath());
+			launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_STDIN_FILE, inFile.getCanonicalPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, false);
 			final IProcess process = mockProcess.toRuntimeProcess("redirectBinaryInput", launchConfigAttributes);
 			final ProcessConsole console = new ProcessConsole(process, new ConsoleColorProvider(), consoleEncoding);
@@ -596,12 +596,12 @@ public class ProcessConsoleTests {
 		String consoleEncoding = StandardCharsets.UTF_8.name();
 
 		final File inFile = createTmpFile("testinput-eof.txt");
-		Files.write(inFile.toPath(), input);
+		Files.write(inFile.toPath(), input); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		final MockProcess mockProcess = new MockProcess(MockProcess.RUN_FOREVER);
 		try {
 			Map<String, Object> launchConfigAttributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			launchConfigAttributes.put(DebugPlugin.ATTR_CONSOLE_ENCODING, consoleEncoding);
-			launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_STDIN_FILE, inFile.getCanonicalPath());
+			launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_STDIN_FILE, inFile.getCanonicalPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, false);
 			final IProcess process = mockProcess.toRuntimeProcess("inputFromFileEof", launchConfigAttributes);
 			final ProcessConsole console = new ProcessConsole(process, new ConsoleColorProvider(), consoleEncoding);

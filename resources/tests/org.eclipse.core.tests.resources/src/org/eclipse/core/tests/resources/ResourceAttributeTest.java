@@ -282,8 +282,8 @@ public class ResourceAttributeTest {
 		// cleared
 		String s = link.getLocation().toOSString();
 
-		link.getLocation().toFile().delete();
-		new File(s).createNewFile();
+		link.getLocation().toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		new File(s).createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertFalse(link.getResourceAttributes().isSymbolicLink());
 	}
 

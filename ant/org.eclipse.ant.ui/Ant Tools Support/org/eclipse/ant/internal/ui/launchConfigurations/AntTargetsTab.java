@@ -787,11 +787,11 @@ public class AntTargetsTab extends AbstractLaunchConfigurationTab {
 				return null;
 			}
 			File file = new File(expandedLocation);
-			if (!file.exists()) {
+			if (!file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				setErrorMessage(AntLaunchConfigurationMessages.AntTargetsTab_15);
 				return null;
 			}
-			if (!file.isFile()) {
+			if (!file.isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				setErrorMessage(AntLaunchConfigurationMessages.AntTargetsTab_16);
 				return null;
 			}

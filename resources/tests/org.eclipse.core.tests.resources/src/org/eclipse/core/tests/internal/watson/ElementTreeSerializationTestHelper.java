@@ -145,15 +145,15 @@ public final class ElementTreeSerializationTestHelper implements ArgumentsProvid
 		ElementTreeReader reader = new ElementTreeReader(fac);
 
 		/* Write the element tree. */
-		Files.createDirectories(tempDir);
+		Files.createDirectories(tempDir); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		Path tempFile = tempDir.resolve("TestFlattening");
-		try (OutputStream fos = Files.newOutputStream(tempFile)) {
+		try (OutputStream fos = Files.newOutputStream(tempFile)) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			DataOutputStream dos = new DataOutputStream(fos);
 			writing.doWrite(writer, dos);
 		}
 
 		/* Read the element tree. */
-		try (InputStream fis = Files.newInputStream(tempFile); DataInputStream dis = new DataInputStream(fis)) {
+		try (InputStream fis = Files.newInputStream(tempFile); DataInputStream dis = new DataInputStream(fis)) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			newTree = reading.doRead(reader, dis);
 		}
 		return newTree;

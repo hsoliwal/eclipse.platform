@@ -46,12 +46,12 @@ public class SafeFileInputStream extends FilterInputStream {
 
 	private static InputStream getInputStream(String targetPath, String tempPath, int bufferSize) throws IOException {
 		File target = new File(targetPath);
-		if (!target.exists()) {
+		if (!target.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			if (tempPath == null) {
 				tempPath = target.getAbsolutePath() + EXTENSION; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			target = new File(tempPath);
 		}
-		return new BufferedInputStream(new FileInputStream(target), bufferSize);
+		return new BufferedInputStream(new FileInputStream(target), bufferSize); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 	}
 }

@@ -196,7 +196,7 @@ public final class UnitTestModel {
 	public ITestRunSession importTestRunSession(String url, IProgressMonitor monitor) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws InvocationTargetException, InterruptedException {
 		monitor.beginTask(ModelMessages.UnitTestModel_importing_from_url, IProgressMonitor.UNKNOWN);
-		final String trimmedUrl = url.trim().replaceAll("\r\n?|\n", ""); //$NON-NLS-1$ //$NON-NLS-2$
+		final String trimmedUrl = url.trim().replaceAll("\r\n?|\n", ""); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		final TestRunHandler handler = new TestRunHandler(monitor);
 
 		final CoreException[] exception = { null };

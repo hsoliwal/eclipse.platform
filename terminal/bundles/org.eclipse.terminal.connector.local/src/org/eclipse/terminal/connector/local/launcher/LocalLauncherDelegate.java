@@ -144,7 +144,7 @@ public class LocalLauncherDelegate extends AbstractLauncherDelegate {
 					String resolved = vm.performStringSubstitution(initialCwd);
 
 					IPath p = new Path(resolved);
-					if (p.toFile().canRead() && p.toFile().isDirectory()) {
+					if (p.toFile().canRead() && p.toFile().isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						cwd = p.toOSString();
 					}
 				} catch (CoreException ex) {
@@ -197,10 +197,10 @@ public class LocalLauncherDelegate extends AbstractLauncherDelegate {
 							if (location == null) {
 								continue;
 							}
-							if (location.toFile().isFile()) {
+							if (location.toFile().isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 								location = location.removeLastSegments(1);
 							}
-							if (location.toFile().isDirectory() && location.toFile().canRead()) {
+							if (location.toFile().isDirectory() && location.toFile().canRead()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 								dir = location.toFile().getAbsolutePath();
 								break;
 							}
@@ -208,7 +208,7 @@ public class LocalLauncherDelegate extends AbstractLauncherDelegate {
 
 						if (element instanceof IPath || element instanceof File) {
 							File f = element instanceof IPath i ? i.toFile() : (File) element;
-							if (f.isDirectory() && f.canRead()) {
+							if (f.isDirectory() && f.canRead()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 								dir = f.getAbsolutePath();
 								break;
 							}

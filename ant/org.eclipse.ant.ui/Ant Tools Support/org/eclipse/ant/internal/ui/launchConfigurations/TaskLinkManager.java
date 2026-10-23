@@ -68,7 +68,7 @@ public class TaskLinkManager {
 					taskLink = new FileLink(file, null, -1, -1, lineNumber);
 				} else if (fileName != null) {
 					File javaIOFile = FileUtils.getFileUtils().resolveFile(null, fileName);
-					if (javaIOFile.exists()) {
+					if (javaIOFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						taskLink = new ExternalHyperlink(javaIOFile, lineNumber);
 					}
 				}

@@ -2558,7 +2558,7 @@ public class IProjectTest  {
 		project.delete(true, monitor);
 		monitor.assertUsedUp();
 		IPath p = ((Workspace) getWorkspace()).getMetaArea().locationFor(project);
-		assertFalse(p.toFile().exists());
+		assertFalse(p.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		IProject otherProject = getWorkspace().getRoot().getProject(createUniqueString());
 		createInWorkspace(otherProject);

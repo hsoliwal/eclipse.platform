@@ -110,17 +110,17 @@ public class FixDotProjectPathResourceListener implements IResourceChangeListene
 			return;
 		}
 		File targetDiskFile = getMetaDataFilePath(project.getName(), dotProject.getProjectRelativePath()).toFile();
-		if (!targetDiskFile.exists()) {
+		if (!targetDiskFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try {
-				targetDiskFile.getParentFile().mkdirs();
-				Files.copy(dotProject.getLocation().toPath(), targetDiskFile.toPath());
+				targetDiskFile.getParentFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+				Files.copy(dotProject.getLocation().toPath(), targetDiskFile.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			} catch (Exception ex) {
 				throw new CoreException(Status.error(targetDiskFile + " cannot be created", ex)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		File sourceDiskFile = dotProject.getLocation().toFile();
 		dotProject.createLink(IPath.fromFile(targetDiskFile), IResource.FORCE | IResource.REPLACE, null);
-		sourceDiskFile.delete();
+		sourceDiskFile.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	private IPath getMetaDataFilePath(String name, IPath projectRelativePath) {
@@ -152,7 +152,7 @@ public class FixDotProjectPathResourceListener implements IResourceChangeListene
 			return;
 		}
 		try (InputStream contents = file.getContents()) {
-			Files.copy(contents, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(contents, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		} catch (IOException | CoreException ex) {
 			ex.printStackTrace();
 		}
@@ -165,7 +165,7 @@ public class FixDotProjectPathResourceListener implements IResourceChangeListene
 					.filter(IFile.class::isInstance)
 					.map(IFile.class::cast)
 					.filter(IFile::isLinked)
-					.filter(file -> file.getProject().getLocation().append(file.getProjectRelativePath()).toFile().isFile())
+					.filter(file -> file.getProject().getLocation().append(file.getProjectRelativePath()).toFile().isFile()) //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					.forEach(file -> {
 						try {
 							file.delete(false, false, null);

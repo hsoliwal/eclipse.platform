@@ -182,10 +182,10 @@ public class ContributedClasspathEntriesEntry extends AbstractRuntimeClasspathEn
 					fgSWTEntries.add(JavaRuntime.newArchiveRuntimeClasspathEntry(fragmentPath));
 				} else { // folder
 					File bundleFolder = fragmentPath.toFile();
-					if (!bundleFolder.isDirectory()) {
+					if (!bundleFolder.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						continue;
 					}
-					String[] names = bundleFolder.list((unused, name) -> name.endsWith(".jar")); //$NON-NLS-1$
+					String[] names = bundleFolder.list((unused, name) -> name.endsWith(".jar")); //$NON-NLS-1$ //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					for (String jarName : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						fgSWTEntries.add(JavaRuntime.newArchiveRuntimeClasspathEntry(fragmentPath.append(jarName)));
 					}

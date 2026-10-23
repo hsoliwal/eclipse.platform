@@ -835,7 +835,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 				if (rangeWithFont.font != null) {
 					gc.setFont(rangeWithFont.font);
 				}
-				String[] lines = sub.split("\n"); //$NON-NLS-1$
+				String[] lines = sub.split("\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 				if (lines.length > 1) {
 					for (int i = 0; i < lines.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						String line = lines[i].replace("\r", ""); //$NON-NLS-1$ //$NON-NLS-2$
@@ -875,7 +875,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 			} else {
 				int lfCount = 0;
 				if (sub.contains("\n")) { //$NON-NLS-1$
-					lfCount = sub.split("\n", -1).length - 1; //$NON-NLS-1$
+					lfCount = sub.split("\n", -1).length - 1; //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 					sub = sub.substring(sub.lastIndexOf("\n") + 1); //$NON-NLS-1$
 				}
 				Point p = gc.stringExtent(sub);
@@ -1152,7 +1152,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 					} else {
 						// mark first line until end
 						if (diffLines == null) {
-							diffLines = diffStr.split("\n"); //$NON-NLS-1$
+							diffLines = diffStr.split("\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 							diffStrDoc = new Document(diffStr);
 						}
 						String firstLine = diffLines[fromLine - 1];

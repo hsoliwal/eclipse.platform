@@ -65,7 +65,7 @@ abstract public class FilterTests extends AbstractViewerModelTest implements ITe
 
 		Pattern fPattern;
 		TestViewerFilter(String pattern) {
-			fPattern = Pattern.compile(pattern);
+			fPattern = Pattern.compile(pattern); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		}
 
 
@@ -83,7 +83,7 @@ abstract public class FilterTests extends AbstractViewerModelTest implements ITe
 		Pattern fPattern;
 		Object fParentElement;
 		TestTMVFilter(String pattern, Object parentElement) {
-			fPattern = Pattern.compile(pattern);
+			fPattern = Pattern.compile(pattern); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			fParentElement = parentElement;
 		}
 

@@ -48,17 +48,17 @@ public class LinkedDotProjectTest {
 			return;
 		}
 		File targetDiskFile = ResourcesPlugin.getWorkspace().getRoot().getLocation().removeLastSegments(1).append(project.getName()).append(".project").toFile();
-		if (!targetDiskFile.exists()) {
+		if (!targetDiskFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try {
-				targetDiskFile.getParentFile().mkdirs();
-				Files.copy(dotProject.getLocation().toPath(), targetDiskFile.toPath());
+				targetDiskFile.getParentFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+				Files.copy(dotProject.getLocation().toPath(), targetDiskFile.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			} catch (Exception ex) {
 				throw new CoreException(Status.error(targetDiskFile + " cannot be created", ex)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		File sourceDiskFile = dotProject.getLocation().toFile();
 		dotProject.createLink(IPath.fromFile(targetDiskFile), IResource.FORCE | IResource.REPLACE, null);
-		sourceDiskFile.delete();
+		sourceDiskFile.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**

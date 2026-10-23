@@ -1037,7 +1037,7 @@ public class IWorkspaceTest {
 			assertFalse(workspace.validateProjectLocation(open, openProjectLocation.append("sub")).isOK());
 
 			//an existing project cannot overlap the location of any linked resource in that project
-			linkLocation.toFile().mkdirs();
+			linkLocation.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			assertTrue(workspace.validateProjectLocation(open, linkLocation).isOK());
 			IFolder link = open.getFolder("link");
 			link.createLink(linkLocation, IResource.NONE, createTestMonitor());

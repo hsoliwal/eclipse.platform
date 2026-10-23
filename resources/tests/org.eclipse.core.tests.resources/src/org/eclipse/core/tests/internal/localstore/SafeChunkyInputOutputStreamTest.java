@@ -56,8 +56,8 @@ public class SafeChunkyInputOutputStreamTest {
 	public void setUp() throws Exception {
 		streams = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		temp = getRandomLocation().append("temp").toFile();
-		temp.mkdirs();
-		assertTrue(temp.isDirectory(), "could not create temp directory");
+		temp.mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(temp.isDirectory(), "could not create temp directory"); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		target = new File(temp, "target");
 	}
 
@@ -76,7 +76,7 @@ public class SafeChunkyInputOutputStreamTest {
 	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBufferLimit() throws Exception {
 		Workspace.clear(target); // make sure there was nothing here before
-		assertFalse(target.exists());
+		assertFalse(target.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// use only one chunk but bigger than the buffer
 		int bufferSize = 10024;
@@ -109,7 +109,7 @@ public class SafeChunkyInputOutputStreamTest {
 	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFailure() throws Exception {
 		Workspace.clear(target); // make sure there was nothing here before
-		assertFalse(target.exists());
+		assertFalse(target.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// misc
 		byte[] fakeEnd = new byte[ILocalStoreConstants.END_CHUNK.length];
@@ -190,7 +190,7 @@ public class SafeChunkyInputOutputStreamTest {
 	@Test
 	public void testAlmostEmpty() throws Exception {
 		Workspace.clear(target); // make sure there was nothing here before
-		assertFalse(target.exists());
+		assertFalse(target.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// open the file but don't write anything.
 		try (SafeChunkyOutputStream output = new SafeChunkyOutputStream(target)) {
@@ -205,7 +205,7 @@ public class SafeChunkyInputOutputStreamTest {
 	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSimple() throws Exception {
 		Workspace.clear(target); // make sure there was nothing here before
-		assertFalse(target.exists());
+		assertFalse(target.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// write chunks
 		byte[] chunk1 = createRandomString().getBytes();

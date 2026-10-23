@@ -243,7 +243,7 @@ public class ProjectPreferencesTest {
 		// get settings filename
 		File file = getFileInFilesystem(project, qualifier);
 		Properties props = new Properties();
-		try (BufferedReader reader = Files.newBufferedReader(file.toPath())) {
+		try (BufferedReader reader = Files.newBufferedReader(file.toPath())) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			props.load(reader);
 		}
 
@@ -253,7 +253,7 @@ public class ProjectPreferencesTest {
 		props.put(newKey, newValue);
 
 		// save the file and ensure timestamp is different
-		try (FileOutputStream fileOutput = new FileOutputStream(file)) {
+		try (FileOutputStream fileOutput = new FileOutputStream(file)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			try (OutputStream output = new BufferedOutputStream(fileOutput)) {
 				props.store(output, null);
 			}
@@ -356,7 +356,7 @@ public class ProjectPreferencesTest {
 
 		// should be nothing in the file system
 		assertFalse(file.exists());
-		assertFalse(file.getLocation().toFile().exists());
+		assertFalse(file.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// store a preference key/value pair
 		IScopeContext context = new ProjectScope(project);
@@ -508,8 +508,8 @@ public class ProjectPreferencesTest {
 		Properties properties = new Properties();
 		properties.put("key", "value");
 		File file = settingsFile.getLocation().toFile();
-		file.getParentFile().mkdirs();
-		try (OutputStream fileOutput = new FileOutputStream(file)) {
+		file.getParentFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		try (OutputStream fileOutput = new FileOutputStream(file)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			try (OutputStream output = new BufferedOutputStream(fileOutput)) {
 				properties.store(output, null);
 			}
@@ -767,8 +767,8 @@ public class ProjectPreferencesTest {
 
 		//create file with preferences that will be discovered during refresh
 		File folder = new File(project.getLocation().toOSString() + "/.settings"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
-		folder.mkdir();
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(folder.getPath() + "/" + nodeName + ".prefs"))) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		folder.mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(folder.getPath() + "/" + nodeName + ".prefs"))) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			bw.write("#Fri Jan 28 10:28:45 CET 2011\neclipse.preferences.version=1\nKEY=VALUE");
 		}
 
@@ -795,7 +795,7 @@ public class ProjectPreferencesTest {
 		//preferences were changed so the new file should contain two lines: 'KEY=VALUE' and 'NEW_KEY=NEW_VALUE'
 		folder = new File(project.getLocation().toOSString() + "/.settings"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		List<String> lines;
-		try (BufferedReader br = new BufferedReader(new FileReader(folder.getPath() + "/" + nodeName + ".prefs"))) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		try (BufferedReader br = new BufferedReader(new FileReader(folder.getPath() + "/" + nodeName + ".prefs"))) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			lines = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			String line = br.readLine();
 			while (line != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
@@ -914,8 +914,8 @@ public class ProjectPreferencesTest {
 
 		//create file with preferences that will be discovered during refresh
 		File folder = new File(project.getLocation().toOSString() + "/.settings"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
-		folder.mkdir();
-		try (BufferedWriter bw = new BufferedWriter(new FileWriter(folder.getPath() + "/" + nodeName + ".prefs"))) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		folder.mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(folder.getPath() + "/" + nodeName + ".prefs"))) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			bw.write("#Fri Jan 28 10:28:45 CET 2011\neclipse.preferences.version=1\nKEY=VALUE");
 		}
 
@@ -984,7 +984,7 @@ public class ProjectPreferencesTest {
 		// get settings filename
 		File file = getFileInFilesystem(project, qualifier);
 		Properties props = new Properties();
-		try (BufferedReader input = Files.newBufferedReader(file.toPath())) {
+		try (BufferedReader input = Files.newBufferedReader(file.toPath())) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			props.load(input);
 		}
 
@@ -1049,20 +1049,20 @@ public class ProjectPreferencesTest {
 
 		// copy the data into a buffer for later use
 		File fileInFS = getFileInFilesystem(project, qualifier);
-		byte[] buffer = Files.readAllBytes(fileInFS.toPath());
+		byte[] buffer = Files.readAllBytes(fileInFS.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// remove the file from the project
 		IFile fileInWS = getFileInWorkspace(project, qualifier);
 		fileInWS.delete(IResource.NONE, createTestMonitor());
 		assertFalse(fileInWS.exists());
-		assertFalse(fileInFS.exists());
+		assertFalse(fileInFS.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		IEclipsePreferences projectNode = (IEclipsePreferences) service.getRootNode().node(ProjectScope.SCOPE).node(project.getName());
 		// when the pref file is deleted, the node will be cleared, but not removed
 		assertTrue(isNodeCleared(projectNode, new String[] { qualifier }));
 		//		assertNull("3.3", projectNode.node(qualifier).get(oldKey, null));
 
 		// create the file in the project and discover it via a refresh local
-		try (OutputStream fileOutput = new FileOutputStream(fileInFS)) {
+		try (OutputStream fileOutput = new FileOutputStream(fileInFS)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			try (OutputStream output = new BufferedOutputStream(fileOutput)) {
 				try (InputStream input = new BufferedInputStream(new ByteArrayInputStream(buffer))) {
 					input.transferTo(output);
@@ -1437,12 +1437,12 @@ public class ProjectPreferencesTest {
 
 		IFile prefsFile = project1.getFile(".settings/nodeA.prefs");
 		File settingsFile = new File(prefsFile.getLocationURI());
-		assertTrue(settingsFile.exists());
+		assertTrue(settingsFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		ProjectPreferences.updatePreferences(prefsFile);
 
-		settingsFile.delete(); // delete the preference file on file system
-		assertFalse(settingsFile.exists());
+		settingsFile.delete(); // delete the preference file on file system //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(settingsFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// will cause a FNFE in FileSystemResourceManager#read, see bug 521490
 		// but it should be handled silently
@@ -1463,12 +1463,12 @@ public class ProjectPreferencesTest {
 		// see bug#522214
 		File projectFolder = new File(project1.getLocationURI());
 		File settingsFolder = new File(projectFolder, ".settings");
-		assertTrue(projectFolder.exists());
-		assertTrue(settingsFolder.exists());
+		assertTrue(projectFolder.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(settingsFolder.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// create the preference file also out of synch with the workspace
 		File prefsFile = new File(settingsFolder, "nodeA.prefs");
-		prefsFile.createNewFile();
+		prefsFile.createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// now add some project preference and save them
 		Preferences prefs1 = new ProjectScope(project1).getNode(nodeA);

@@ -99,17 +99,17 @@ public class FileContentManager implements IFileContentManager {
 			IPath pluginStateLocation = TeamPlugin.getPlugin().getStateLocation().append(STATE_FILE);
 			File f = pluginStateLocation.toFile();
 
-			if (!f.exists()) {
+			if (!f.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				return false;
 			}
 
-			try (DataInputStream input = new DataInputStream(new FileInputStream(f))) {
+			try (DataInputStream input = new DataInputStream(new FileInputStream(f))) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 					map.putAll(readOldFormatExtensionMappings(input));
 			} catch (IOException ex) {
 				TeamPlugin.log(IStatus.ERROR, ex.getMessage(), ex);
 				return false;
 			} finally {
-				f.delete();
+				f.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			}
 
 			return true;

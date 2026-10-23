@@ -438,7 +438,7 @@ public class UnifiedTree {
 	private static class PatternHolder {
 		//Initialize-on-demand Holder class to avoid compiling Pattern if never needed
 		//Pattern: A UNIX or Windows relative path that just points backward
-		static final Pattern TRIVIAL_SYMLINK_PATTERN = Pattern.compile( //
+		static final Pattern TRIVIAL_SYMLINK_PATTERN = Pattern.compile( // //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 				Platform.OS.isWindows() ? "\\.[.\\\\]*" : "\\.[./]*"); //$NON-NLS-1$//$NON-NLS-2$
 	}
 
@@ -470,12 +470,12 @@ public class UnifiedTree {
 					if (rootProjPath != null) {
 						try {
 							java.io.File rootProjFile = new java.io.File(rootProjPath.toOSString());
-							rootPathHistory.insertShorter(rootProjFile.getCanonicalPath() + '/'); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+							rootPathHistory.insertShorter(rootProjFile.getCanonicalPath() + '/'); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						} catch (IOException ioe) {
 							/*ignore here*/
 						}
 					}
-					rootPathHistory.insertShorter(rootFile.getCanonicalPath() + '/'); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+					rootPathHistory.insertShorter(rootFile.getCanonicalPath() + '/'); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				}
 			} catch (CoreException | IOException e) {
 				/*ignore*/

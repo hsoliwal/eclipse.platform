@@ -158,10 +158,10 @@ public class IProjectTest {
 		IFile file2 = folder.getFile("file2.txt");
 
 		IPath location = Platform.getLocation().append(project.getFullPath());
-		location.toFile().mkdirs();
+		location.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// create in file-system
-		location.append(folder.getName()).toFile().mkdirs();
+		location.append(folder.getName()).toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		createInFileSystem(location.append(folder.getName()).append(file2.getName()));
 		createInFileSystem(location.append(file1.getName()));
 

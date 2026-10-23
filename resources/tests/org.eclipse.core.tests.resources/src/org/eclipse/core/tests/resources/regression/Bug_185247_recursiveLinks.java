@@ -277,7 +277,7 @@ public class Bug_185247_recursiveLinks {
 	}
 
 	private static void createDirectory(File directory) {
-		assertTrue(directory.mkdirs(), "failed to create test directory: " + directory); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		assertTrue(directory.mkdirs(), "failed to create test directory: " + directory); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	void createSymlink(File directory, String linkName, String linkTarget) throws IOException {

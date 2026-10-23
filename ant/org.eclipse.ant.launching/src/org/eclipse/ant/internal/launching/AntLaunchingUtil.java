@@ -324,7 +324,7 @@ public final class AntLaunchingUtil {
 			return file;
 		}
 		File ioFile = file.getLocation().toFile();
-		if (ioFile.exists()) {// needs to handle case insensitivity on WINOS
+		if (ioFile.exists()) {// needs to handle case insensitivity on WINOS //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			files = ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(ioFile.toURI());
 			if (files.length > 0) {
 				return files[0];

@@ -165,7 +165,7 @@ public class LaunchTests {
 		for (int i = 0; i < segmentsToWrite; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			folder = folder.resolve(subPathElementsName);
 		}
-		File workingDirectory = Files.createDirectories(folder).toFile();
+		File workingDirectory = Files.createDirectories(folder).toFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertTrue(workingDirectory.toString().length() > WINDOWS_MAX_PATH);
 
 		// Just launch any process in a directory with a path longer than
@@ -185,10 +185,10 @@ public class LaunchTests {
 		for (int i = 0; i < segmentsToWrite; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			folder = folder.resolve(subPathElementsName);
 		}
-		File workingDirectory = Files.createDirectories(folder).toFile();
+		File workingDirectory = Files.createDirectories(folder).toFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertTrue(workingDirectory.toString().length() > WINDOWS_MAX_PATH);
 		File jar = new File(workingDirectory, "dummy.jar");
-		try (JarOutputStream stream = new JarOutputStream(new FileOutputStream(jar))) {
+		try (JarOutputStream stream = new JarOutputStream(new FileOutputStream(jar))) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			stream.putNextEntry(new ZipEntry("TEST"));
 			stream.write(1);
 		}

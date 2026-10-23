@@ -55,7 +55,7 @@ public class FileFilter extends ViewerFilter { //FLLDCIM: MARK — T23  IMPLEMEN
 		fExtension = extension;
 		if (extension.indexOf('|') > 0) { // Shouldn't be the first char!
 			// This is a pattern; compile and cache it for better performance
-			fExtnPattern = Pattern.compile(fExtension, Pattern.CASE_INSENSITIVE);
+			fExtnPattern = Pattern.compile(fExtension, Pattern.CASE_INSENSITIVE); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		} else {
 			fExtnPattern = null;
 		}

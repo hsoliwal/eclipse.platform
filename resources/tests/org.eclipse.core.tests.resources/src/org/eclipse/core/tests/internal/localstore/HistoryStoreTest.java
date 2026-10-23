@@ -1005,7 +1005,7 @@ public class HistoryStoreTest {
 			fileInfo.setLastModified(myLong);
 			historyStore.addState(file.getFullPath(), ((Resource) file).getStore(), fileInfo, true);
 			contents = "This file has some contents in testGetContents.";
-			try (FileOutputStream output = new FileOutputStream(file.getLocation().toFile())) {
+			try (FileOutputStream output = new FileOutputStream(file.getLocation().toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 				createInputStream(contents).transferTo(output);
 			}
 			file.refreshLocal(IResource.DEPTH_INFINITE, null);
@@ -1017,7 +1017,7 @@ public class HistoryStoreTest {
 			fileInfo.setLastModified(myLong);
 			historyStore.addState(secondValidFile.getFullPath(), ((Resource) secondValidFile).getStore(), fileInfo, true);
 			contents = "A file with some other contents in testGetContents.";
-			try (FileOutputStream output = new FileOutputStream(secondValidFile.getLocation().toFile())) {
+			try (FileOutputStream output = new FileOutputStream(secondValidFile.getLocation().toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 				createInputStream(contents).transferTo(output);
 			}
 			secondValidFile.refreshLocal(IResource.DEPTH_INFINITE, null);

@@ -49,8 +49,8 @@ public class DiffViewerComparator extends ViewerComparator {
 
 			if (Pattern.matches(pattern, label0) //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 					&& Pattern.matches(pattern, label1)) { //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
-				int oldStart0 = Integer.parseInt(label0.split(",")[0]); //$NON-NLS-1$
-				int oldStart1 = Integer.parseInt(label1.split(",")[0]); //$NON-NLS-1$
+				int oldStart0 = Integer.parseInt(label0.split(",")[0]); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
+				int oldStart1 = Integer.parseInt(label1.split(",")[0]); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 
 				return oldStart0 - oldStart1;
 			}

@@ -53,7 +53,7 @@ public class ZipFileStore extends FileStore {
 		String myName = path.toString();
 		try (ZipInputStream in = new ZipInputStream(rootStore.openInputStream(EFS.NONE, monitor))) {
 			ZipEntry current;
-			while ((current = in.getNextEntry()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			while ((current = in.getNextEntry()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP //FLLDCIM: MARK — M25 M3FILE_ARCHIVE_STREAM CALL
 				final String currentPath = current.getName();
 				if (isParent(myName, currentPath)) {
 					entries.put(currentPath, current);
@@ -128,7 +128,7 @@ public class ZipFileStore extends FileStore {
 		try (ZipInputStream in = new ZipInputStream(rootStore.openInputStream(EFS.NONE, monitor))) {
 			String myPath = path.toString();
 			ZipEntry current;
-			while ((current = in.getNextEntry()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			while ((current = in.getNextEntry()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP //FLLDCIM: MARK — M25 M3FILE_ARCHIVE_STREAM CALL
 				String currentPath = current.getName();
 				if (myPath.equals(currentPath)) {
 					return convertZipEntryToFileInfo(current);
@@ -162,7 +162,7 @@ public class ZipFileStore extends FileStore {
 	 */
 	private ZipEntry findEntry(String name, ZipInputStream in) throws IOException {
 		ZipEntry current;
-		while ((current = in.getNextEntry()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+		while ((current = in.getNextEntry()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP //FLLDCIM: MARK — M25 M3FILE_ARCHIVE_STREAM CALL
 			if (current.getName().equals(name)) {
 				return current;
 			}

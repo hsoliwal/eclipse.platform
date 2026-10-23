@@ -151,7 +151,7 @@ public class ArgumentParsingTests {
 		if (! needsQuoting(s)) {
 			return s;
 		}
-		return "\"" + s.replaceAll("([\\\\]*)\"", "$1$1\\\\\"").replaceAll("([\\\\]*)\\z", "$1$1") + "\""; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		return "\"" + s.replaceAll("([\\\\]*)\"", "$1$1\\\\\"").replaceAll("([\\\\]*)\\z", "$1$1") + "\""; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 	}
 
 	// -- tests:

@@ -365,9 +365,9 @@ public class CaseSensitivityTest {
 		IFolder herringRouge = project.getFolder(name);
 
 		// create a directory with the folder's name
-		folder.getLocation().toFile().delete();
+		folder.getLocation().toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		java.io.File dir = herringRouge.getLocation().toFile();
-		dir.mkdir();
+		dir.mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// do a refresh, which should cause a problem
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
@@ -442,11 +442,11 @@ public class CaseSensitivityTest {
 
 		// create a directory with the folder's name
 		java.io.File localFile = file.getLocation().toFile();
-		localFile.delete();
-		assertFalse(localFile.exists());
+		localFile.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(localFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		java.io.File dir = herringRouge.getLocation().toFile();
-		dir.mkdir();
-		assertTrue(dir.exists());
+		dir.mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(dir.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// do a refresh, which should cause a problem
 		project.refreshLocal(IResource.DEPTH_INFINITE, null);
@@ -474,24 +474,24 @@ public class CaseSensitivityTest {
 
 		// replace the File's filesystem rep. with a case-different name
 		java.io.File localFile = file.getLocation().toFile();
-		localFile.delete();
-		assertTrue(!localFile.exists());
+		localFile.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(!localFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		localFile = new java.io.File(file.getLocation().removeLastSegments(1).toString(), name.toUpperCase());
-		localFile.createNewFile();
-		assertTrue(localFile.exists());
+		localFile.createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(localFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		file.delete(true, null);
 
-		localFile.delete(); // so that we can change its parent folder
-		assertFalse(localFile.exists());
+		localFile.delete(); // so that we can change its parent folder //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(localFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// replace the Folder's filesystem rep. with a case-different name
 		java.io.File localFolder = folder.getLocation().toFile();
-		localFolder.delete();
-		assertFalse(localFolder.exists());
+		localFolder.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(localFolder.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		localFolder = new java.io.File(folder.getLocation().removeLastSegments(1).toString(), name.toUpperCase());
-		localFolder.mkdir();
-		assertTrue(localFolder.exists());
+		localFolder.mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(localFolder.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		folder.delete(true, null);
 	}

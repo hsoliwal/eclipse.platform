@@ -261,12 +261,12 @@ public class CheckMissingNaturesListener implements IResourceChangeListener, IPr
 		if (!file.isAccessible()) {
 			return;
 		}
-		Pattern pattern = Pattern.compile(".*<" + IModelObjectConstants.NATURE + ">\\s*(" + natureId.replace(".", "\\.") + ")\\s*</" + IModelObjectConstants.NATURE + ">.*", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		Pattern pattern = Pattern.compile(".*<" + IModelObjectConstants.NATURE + ">\\s*(" + natureId.replace(".", "\\.") + ")\\s*</" + IModelObjectConstants.NATURE + ">.*", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 				Pattern.DOTALL);
 		try {
 			String content = file.readString();
 			Matcher matcher = pattern.matcher(content); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
-			if (matcher.matches() && matcher.groupCount() > 0) {
+			if (matcher.matches() && matcher.groupCount() > 0) { //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 				marker.setAttribute(IMarker.CHAR_START, matcher.start(1));
 				marker.setAttribute(IMarker.CHAR_END, matcher.end(1));
 			}

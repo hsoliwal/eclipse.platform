@@ -441,9 +441,9 @@ public class AntClasspathBlock {
 		if (path.length() > 0) {
 			rootDir = new File(path, "lib"); //$NON-NLS-1$
 			File parentDir = rootDir.getParentFile();
-			if (parentDir == null || !parentDir.exists()) {
+			if (parentDir == null || !parentDir.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				container.setErrorMessage(AntPreferencesMessages.AntClasspathBlock_56);
-			} else if (!rootDir.exists()) {
+			} else if (!rootDir.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				container.setErrorMessage(AntPreferencesMessages.AntClasspathBlock_7);
 			} else {
 				invalid = false;
@@ -485,12 +485,12 @@ public class AntClasspathBlock {
 		AntClasspathContentProvider contentProvider = (AntClasspathContentProvider) treeViewer.getContentProvider();
 		contentProvider.setRefreshEnabled(false);
 		contentProvider.removeAllGlobalAntClasspathEntries();
-		String[] names = rootDir.list();
+		String[] names = rootDir.list(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		if (names != null) {
 			Arrays.sort(names);
 			for (String name : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				File file = new File(rootDir, name);
-				if (file.isFile() && file.getPath().endsWith(".jar")) { //$NON-NLS-1$
+				if (file.isFile() && file.getPath().endsWith(".jar")) { //$NON-NLS-1$ //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					try {
 						URL url = new URL(IAntCoreConstants.FILE_PROTOCOL + file.getAbsolutePath()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						contentProvider.add(ClasspathModel.ANT_HOME, url);

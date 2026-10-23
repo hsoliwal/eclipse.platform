@@ -375,7 +375,7 @@ public class FileSystemResourceManagerTest implements ICoreConstants {
 		createInFileSystem(folder);
 		/* force = true */
 		write(folder, true, null);
-		assertTrue(folder.getLocation().toFile().isDirectory());
+		assertTrue(folder.getLocation().toFile().isDirectory()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		/* force = false */
 		assertThrows(CoreException.class, () -> write(folder, false, null));
 		removeFromFileSystem(folder);
@@ -383,11 +383,11 @@ public class FileSystemResourceManagerTest implements ICoreConstants {
 		/* inexisting resource on destination */
 		/* force = true */
 		write(folder, true, null);
-		assertTrue(folder.getLocation().toFile().isDirectory());
+		assertTrue(folder.getLocation().toFile().isDirectory()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		removeFromFileSystem(folder);
 		/* force = false */
 		write(folder, false, null);
-		assertTrue(folder.getLocation().toFile().isDirectory());
+		assertTrue(folder.getLocation().toFile().isDirectory()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**

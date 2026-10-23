@@ -39,7 +39,7 @@ import org.eclipse.ui.console.TextConsole;
 public abstract class AbstractJavacPatternMatcher implements IPatternMatchListenerDelegate {
 
 	protected TextConsole fConsole;
-	private static Pattern fgLineNumberPattern = Pattern.compile("\\d+"); //$NON-NLS-1$
+	private static Pattern fgLineNumberPattern = Pattern.compile("\\d+"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 	private static List<AbstractJavacPatternMatcher> fgPatternMatchers = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private final Map<String, IFile> fFileNameToIFile = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
@@ -110,7 +110,7 @@ public abstract class AbstractJavacPatternMatcher implements IPatternMatchListen
 			synchronized (fgLineNumberPattern) {
 				matcher = fgLineNumberPattern.matcher(lineLine); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			}
-			if (matcher.find()) {
+			if (matcher.find()) { //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 				String lineString = matcher.group();
 				return Integer.parseInt(lineString);
 			}

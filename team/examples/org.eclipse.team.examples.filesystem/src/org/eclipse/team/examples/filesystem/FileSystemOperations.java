@@ -346,17 +346,17 @@ public class FileSystemOperations {
 		// Handle an outgoing deletion
 		File diskFile = provider.getFile(localFile);
 		if (!localFile.exists()) {
-			diskFile.delete();
+			diskFile.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			synchronizer.flush(localFile, IResource.DEPTH_ZERO);
 		} else {
 			// Otherwise, upload the contents
 			try (InputStream in = localFile.getContents()) {
-				if (!diskFile.getParentFile().exists()) {
-					diskFile.getParentFile().mkdirs();
+				if (!diskFile.getParentFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+					diskFile.getParentFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				}
-				try (FileOutputStream out = new FileOutputStream(diskFile)) {
+				try (FileOutputStream out = new FileOutputStream(diskFile)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 					//Copy the contents of the local file to the remote file:
-					StreamUtil.pipe(in, out, diskFile.length(), progress, diskFile.getName());
+					StreamUtil.pipe(in, out, diskFile.length(), progress, diskFile.getName()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					// Mark the file as read-only to require another checkout
 					localFile.setReadOnly(true);
 				}
@@ -399,7 +399,7 @@ public class FileSystemOperations {
 					toDelete.add(diskFile);
 				} else if (folder.exists() && remote == null) {
 					// Create the remote directory and sync up the local
-					diskFile.mkdir();
+					diskFile.mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					synchronizer.setBaseBytes(folder, provider.getResourceVariant(folder).asBytes());
 				}
 			}
@@ -412,12 +412,12 @@ public class FileSystemOperations {
 
 			// Remove any empty folders
 			for (File diskFile : toDelete) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
-				File[] fileList = diskFile.listFiles();
+				File[] fileList = diskFile.listFiles(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				if(fileList == null) {
 					throw new TeamException("Content from directory '" + diskFile.getAbsolutePath() + "' can not be listed."); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				if (fileList.length == 0) {
-					diskFile.delete();
+					diskFile.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					synchronizer.flush(container, IResource.DEPTH_INFINITE);
 				}
 			}

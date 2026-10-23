@@ -177,8 +177,8 @@ public class HistoryItem {
 	 * @throws IOException in case of I/O failure
 	 */
 	public void removeSwapFile() throws IOException {
-		if (historyFile != null && historyFile.exists()) {
-			Files.delete(historyFile.toPath());
+		if (historyFile != null && historyFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			Files.delete(historyFile.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 	}
 
@@ -195,7 +195,7 @@ public class HistoryItem {
 		if (this.session == null) {
 			return;
 		}
-		try (FileOutputStream out = new FileOutputStream(target)) {
+		try (FileOutputStream out = new FileOutputStream(target)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			@SuppressWarnings("restriction")
 			Transformer transformer = org.eclipse.core.internal.runtime.XmlProcessorFactory
 					.createTransformerFactoryWithErrorOnDOCTYPE().newTransformer();
@@ -318,8 +318,8 @@ public class HistoryItem {
 	 */
 	public Long getSizeOnDisk() {
 		File file = getFile();
-		if (file != null && file.isFile()) {
-			return Long.valueOf(file.length());
+		if (file != null && file.isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			return Long.valueOf(file.length()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		return null;
 	}

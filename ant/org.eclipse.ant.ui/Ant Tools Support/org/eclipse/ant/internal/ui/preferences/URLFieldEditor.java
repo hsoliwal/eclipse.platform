@@ -63,7 +63,7 @@ public class URLFieldEditor extends StringButtonFieldEditor {
 		File f = null;
 		if (url != null) {
 			f = new File(url.getFile());
-			if (!f.exists()) {
+			if (!f.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				f = null;
 			}
 		}

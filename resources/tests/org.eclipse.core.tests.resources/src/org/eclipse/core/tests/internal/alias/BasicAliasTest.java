@@ -205,7 +205,7 @@ public class BasicAliasTest {
 		createInWorkspace(buildResources(fLinked, "/a/", "/a/a", "/a/b"));
 
 		linkOverlapLocation = wrapInCanonicalIPath(tempDirectory);
-		linkOverlapLocation.toFile().mkdirs();
+		linkOverlapLocation.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		fLinkOverlap1.createLink(linkOverlapLocation, IResource.NONE, null);
 		fLinkOverlap2.createLink(linkOverlapLocation, IResource.NONE, null);
@@ -287,11 +287,11 @@ public class BasicAliasTest {
 		// the projects have the same segments but different id
 		IProjectDescription desc1 = getWorkspace().newProjectDescription(testProject1.getName());
 		IPath location1 = IPath.fromOSString(devices[0] + location); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
-		assertFalse(location1.toFile().exists());
+		assertFalse(location1.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		desc1.setLocation(location1);
 		IProjectDescription desc2 = getWorkspace().newProjectDescription(testProject2.getName());
 		IPath location2 = IPath.fromOSString(devices[1] + location); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
-		assertFalse(location2.toFile().exists());
+		assertFalse(location2.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		desc2.setLocation(location2);
 
 		testProject1.create(desc1, createTestMonitor());
@@ -519,7 +519,7 @@ public class BasicAliasTest {
 		// the link will still exist, but the location won't
 		assertTrue(linkDest.exists());
 		assertFalse(overlapDest.exists());
-		assertFalse(linkDest.getLocation().toFile().exists());
+		assertFalse(linkDest.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertEquals(linkDest.getLocation(), overlapDest.getLocation());
 
 		sourceFile.copy(overlapDest.getFullPath(), IResource.NONE, createTestMonitor());
@@ -599,12 +599,12 @@ public class BasicAliasTest {
 		assertEquals(lLinked.getLocation(), lOverlap.getLocation());
 
 		assertFalse(lOverlap.exists());
-		assertFalse(lOverlap.getLocation().toFile().exists());
+		assertFalse(lOverlap.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertTrue(lOverlap.isSynchronized(IResource.DEPTH_INFINITE));
 
 		// now the linked resource will still exist but its local contents won't
 		assertTrue(lLinked.exists());
-		assertFalse(lLinked.getLocation().toFile().exists());
+		assertFalse(lLinked.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertTrue(lLinked.isSynchronized(IResource.DEPTH_INFINITE));
 		assertThrows(CoreException.class, () -> lLinked.setContents(createRandomContentsStream(), IResource.NONE, createTestMonitor()));
 
@@ -624,7 +624,7 @@ public class BasicAliasTest {
 		fOverlap.delete(IResource.NONE, createTestMonitor());
 		// linked resources don't disappear on deletion of underlying file
 		assertTrue(fLinked.exists());
-		assertFalse(fLinked.getLocation().toFile().exists());
+		assertFalse(fLinked.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		fOverlap.create(IResource.NONE, true, createTestMonitor());
 		assertOverlap(fOverlap, fLinked);
@@ -633,7 +633,7 @@ public class BasicAliasTest {
 		fLinked.delete(IResource.NONE, createTestMonitor());
 		// deleting a link should not delete file system contents
 		assertTrue(fOverlap.exists());
-		assertTrue(fOverlap.getLocation().toFile().exists());
+		assertTrue(fOverlap.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		fLinked.createLink(fOverlap.getLocation(), IResource.NONE, createTestMonitor());
 		assertOverlap(fOverlap, fLinked);

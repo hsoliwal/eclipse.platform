@@ -293,14 +293,14 @@ public class NatureTest {
 		java.io.File desc = descStore.toLocalFile(EFS.NONE, createTestMonitor());
 
 		java.io.File descTmp = new java.io.File(desc.getPath() + ".tmp"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
-		Files.copy(desc.toPath(), descTmp.toPath());
+		Files.copy(desc.toPath(), descTmp.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		setNatures(project, new String[] { NATURE_EARTH }, false);
 
 		assertHasEnabledNature(NATURE_EARTH);
 		assertThat(project.getNature(NATURE_EARTH)).isNotNull();
 
-		Files.copy(descTmp.toPath(), desc.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		Files.copy(descTmp.toPath(), desc.toPath(), StandardCopyOption.REPLACE_EXISTING); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		// Make sure enough time has past to bump file's
 		// timestamp during the copy
 		org.eclipse.core.tests.resources.ResourceTestUtil

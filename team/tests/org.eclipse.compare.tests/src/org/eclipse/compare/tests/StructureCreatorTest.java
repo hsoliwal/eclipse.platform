@@ -133,7 +133,7 @@ public class StructureCreatorTest {
 		} };
 
 		StructureCreator creator = new StructureCreator() {
-			private final Pattern whitespace = Pattern.compile("\\s+");
+			private final Pattern whitespace = Pattern.compile("\\s+"); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			private Matcher matcher = null;
 
 			@Override

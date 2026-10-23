@@ -238,7 +238,7 @@ public class PathVariableUtil {
 
 	// the format is PARENT-COUNT-ARGUMENT
 	static public int getParentVariableCount(String variableString) {
-		String items[] = variableString.split("-"); //$NON-NLS-1$
+		String items[] = variableString.split("-"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		if (items.length == 3) {
 			try {
 				int count = Integer.parseInt(items[1]);
@@ -252,7 +252,7 @@ public class PathVariableUtil {
 
 	// the format is PARENT-COUNT-ARGUMENT
 	static public String getParentVariableArgument(String variableString) {
-		String items[] = variableString.split("-"); //$NON-NLS-1$
+		String items[] = variableString.split("-"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		if (items.length == 3) {
 			return items[2];
 		}

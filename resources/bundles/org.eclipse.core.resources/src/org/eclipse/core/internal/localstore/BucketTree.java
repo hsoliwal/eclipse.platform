@@ -117,12 +117,12 @@ public class BucketTree {
 		if (depthRequested <= currentDepth) {
 			return true;
 		}
-		File[] subDirs = bucketDir.listFiles();
+		File[] subDirs = bucketDir.listFiles(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		if (subDirs == null) {
 			return true;
 		}
 		for (File subDir : subDirs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
-			if (subDir.isDirectory()) {
+			if (subDir.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				if (!internalAccept(visitor, base, subDir, depthRequested, currentDepth + 1)) {
 					return false;
 				}
@@ -158,10 +158,10 @@ public class BucketTree {
 	 */
 	private void saveVersion() throws CoreException {
 		File versionFile = getVersionFile();
-		if (!versionFile.getParentFile().exists()) {
-			versionFile.getParentFile().mkdirs();
+		if (!versionFile.getParentFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			versionFile.getParentFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
-		try (FileOutputStream stream = new FileOutputStream(versionFile)) {
+		try (FileOutputStream stream = new FileOutputStream(versionFile)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			stream.write(current.getVersion());
 		} catch (IOException e) {
 			String message = NLS.bind(Messages.resources_writeWorkspaceMeta, versionFile.getAbsolutePath());

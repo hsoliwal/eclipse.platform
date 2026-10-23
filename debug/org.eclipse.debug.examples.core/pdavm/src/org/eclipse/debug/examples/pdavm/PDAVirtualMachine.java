@@ -392,7 +392,7 @@ public class PDAVirtualMachine {
 		// Load all the code into memory
 		StringWriter stringWriter = new StringWriter();
 		List<String> code = new LinkedList<>();
-		try (FileReader fileReader = new FileReader(inputFile)) {
+		try (FileReader fileReader = new FileReader(inputFile)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			int c = fileReader.read();
 			while (c != -1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (c == '\n') {
@@ -804,7 +804,7 @@ public class PDAVirtualMachine {
 		sendCommandResponse("ok\n"); //$NON-NLS-1$
 	}
 
-	private static Pattern fPackPattern = Pattern.compile("%([a-fA-F0-9][a-fA-F0-9])"); //$NON-NLS-1$
+	private static Pattern fPackPattern = Pattern.compile("%([a-fA-F0-9][a-fA-F0-9])"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 
 	void debugData(Args args) {
 		PDAThread thread = args.getThreadArg();
@@ -871,7 +871,7 @@ public class PDAVirtualMachine {
 			StringBuilder lineBuf = new StringBuilder(line.length()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 			Matcher matcher = fPackPattern.matcher(line); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			int lastMatchEnd = 0;
-			while (matcher.find()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			while (matcher.find()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 				lineBuf.append(line.substring(lastMatchEnd, matcher.start())); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				String charCode = line.substring(matcher.start() + 1, matcher.start() + 3);
 				try {

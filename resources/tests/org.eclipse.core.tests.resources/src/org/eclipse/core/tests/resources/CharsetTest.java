@@ -470,7 +470,7 @@ public class CharsetTest {
 
 		// test that we can get the charset, when the file is out-of-sync
 		createInWorkspace(file);
-		assertTrue(file.getLocation().toFile().delete());
+		assertTrue(file.getLocation().toFile().delete()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		file.getCharset(true);
 
 		createInFileSystem(file);
@@ -505,7 +505,7 @@ public class CharsetTest {
 		assertTrue(file.getCharset().equals("ascii"));
 
 		// 3) Change the content type of the file under eclipse's feet
-		try (FileWriter writer = new FileWriter(file.getLocation().toFile())) {
+		try (FileWriter writer = new FileWriter(file.getLocation().toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			writer.write(utf);
 		}
 		touchInFilesystem(file);
@@ -520,7 +520,7 @@ public class CharsetTest {
 		assertTrue(file.getCharset().equals("UTF-8"));
 
 		// 4) Change the content type of the file under eclipse's feet once more (to non-default).
-		try (FileWriter writer = new FileWriter(file.getLocation().toFile())) {
+		try (FileWriter writer = new FileWriter(file.getLocation().toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			writer.write(ascii);
 		}
 		touchInFilesystem(file);
@@ -964,13 +964,13 @@ public class CharsetTest {
 
 			IFile resourcesPrefs = getResourcesPreferenceFile(project, false);
 			assertTrue(resourcesPrefs.exists());
-			String prefsContent = Files.readString(resourcesPrefs.getLocation().toFile().toPath());
+			String prefsContent = Files.readString(resourcesPrefs.getLocation().toFile().toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			assertTrue(prefsContent.contains(ResourcesPlugin.getEncoding()));
 			file1.setCharset("CHARSET1", createTestMonitor());
 			assertTrue(resourcesPrefs.exists());
 			waitForCharsetManagerJob();
 
-			prefsContent = Files.readString(resourcesPrefs.getLocation().toFile().toPath());
+			prefsContent = Files.readString(resourcesPrefs.getLocation().toFile().toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			assertTrue(prefsContent.contains(ResourcesPlugin.getEncoding()));
 
 			backgroundVerifier.reset();
@@ -1314,7 +1314,7 @@ public class CharsetTest {
 		IProject project = workspace.getRoot().getProject(createUniqueString());
 		IFile file = project.getFile("file.txt");
 		createInWorkspace(file);
-		file.getLocation().toFile().delete();
+		file.getLocation().toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		CoreException e = assertThrows(CoreException.class, file::getContentDescription);
 		assertEquals(IResourceStatus.RESOURCE_NOT_FOUND, e.getStatus().getCode(), "the resource should not exist");
 	}

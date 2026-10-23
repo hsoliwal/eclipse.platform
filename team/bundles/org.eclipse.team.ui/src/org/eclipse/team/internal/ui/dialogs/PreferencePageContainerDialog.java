@@ -387,7 +387,7 @@ public class PreferencePageContainerDialog extends TrayDialog
 				} else {
 					//remove mnemonic see bug 75886
 					String title = currentPage.getTitle();
-					title = title.replaceAll("&", "");//$NON-NLS-1$ //$NON-NLS-2$
+					title = title.replaceAll("&", "");//$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 					setMessage(title);
 				}
 			} else {

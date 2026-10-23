@@ -31,7 +31,7 @@ public abstract class NativeHandler {
 	protected static final String[] EMPTY_STRING_ARRAY = {};
 
 	public String[] listDirectoryNames(String fileName) {
-		String[] names = new File(fileName).list();
+		String[] names = new File(fileName).list(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		return names == null ? EMPTY_STRING_ARRAY : names;
 	}
 

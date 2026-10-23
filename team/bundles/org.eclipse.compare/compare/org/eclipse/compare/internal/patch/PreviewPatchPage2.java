@@ -718,8 +718,8 @@ public class PreviewPatchPage2 extends WizardPage {
 
 		} else {
 
-			Pattern addedPattern = Pattern.compile(addedLinesRegex);
-			Pattern removedPattern = Pattern.compile(removedLinesRegex);
+			Pattern addedPattern = Pattern.compile(addedLinesRegex); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
+			Pattern removedPattern = Pattern.compile(removedLinesRegex); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 
 			for (FilePatch2 fileDiff : fPatcher.getDiffs()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				for (IHunk hunk : fileDiff.getHunks()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP

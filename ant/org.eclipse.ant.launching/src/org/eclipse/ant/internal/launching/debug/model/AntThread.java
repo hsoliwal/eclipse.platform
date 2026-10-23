@@ -280,7 +280,7 @@ public class AntThread extends AntDebugElement implements IThread {
 
 	public void buildStack(String data) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		synchronized (fFrames) {
-			String[] strings = data.split(DebugMessageIds.MESSAGE_DELIMITER);
+			String[] strings = data.split(DebugMessageIds.MESSAGE_DELIMITER); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			// 0 STACK message
 			// 1 targetName
 			// 2 taskName
@@ -343,7 +343,7 @@ public class AntThread extends AntDebugElement implements IThread {
 	public void newProperties(String data) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		synchronized (fPropertiesLock) {
 			try {
-				String[] datum = data.split(DebugMessageIds.MESSAGE_DELIMITER);
+				String[] datum = data.split(DebugMessageIds.MESSAGE_DELIMITER); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 				if (fUserProperties == null) {
 					initializePropertyGroups();
 				}

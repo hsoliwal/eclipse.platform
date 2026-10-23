@@ -64,12 +64,12 @@ public class FileSystemResourceVariant extends CachedResourceVariant {
 	@Override
 	protected String getCachePath() {
 		// append the timestamp to the file path to give each variant a unique path
-		return getFilePath() + " " + ioFile.lastModified(); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		return getFilePath() + " " + ioFile.lastModified(); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	private String getFilePath() {
 		try {
-			return ioFile.getCanonicalPath();
+			return ioFile.getCanonicalPath(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		} catch (IOException e) {
 			// Failed for some reason. Try the absolute path.
 			FileSystemPlugin.log(new Status(IStatus.ERROR, FileSystemPlugin.ID, 0,
@@ -90,13 +90,13 @@ public class FileSystemResourceVariant extends CachedResourceVariant {
 
 	@Override
 	public boolean isContainer() {
-		return ioFile.isDirectory();
+		return ioFile.isDirectory(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	@Override
 	public String getContentIdentifier() {
 		// Use the modification timestamp as the content identifier
-		return new Date(ioFile.lastModified()).toString();
+		return new Date(ioFile.lastModified()).toString(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class FileSystemResourceVariant extends CachedResourceVariant {
 		if (bytes == null) {
 			// For simplicity, convert the timestamp to it's string representation.
 			// A more optimal storage format would be the 8 bytes that make up the long.
-			bytes = Long.toString(ioFile.lastModified()).getBytes();
+			bytes = Long.toString(ioFile.lastModified()).getBytes(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		return bytes;
 	}
@@ -115,7 +115,7 @@ public class FileSystemResourceVariant extends CachedResourceVariant {
 	 */
 	public FileSystemResourceVariant[] members() {
 		if (isContainer()) {
-			java.io.File[] members = ioFile.listFiles();
+			java.io.File[] members = ioFile.listFiles(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			if (members == null) {
 				members = new java.io.File[0];
 			}
@@ -130,7 +130,7 @@ public class FileSystemResourceVariant extends CachedResourceVariant {
 
 	public InputStream getContents() throws TeamException {
 		try {
-			return new BufferedInputStream(new FileInputStream(ioFile));
+			return new BufferedInputStream(new FileInputStream(ioFile)); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 		} catch (FileNotFoundException e) {
 			throw new TeamException("Failed to fetch contents for " + getFilePath(), e); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}

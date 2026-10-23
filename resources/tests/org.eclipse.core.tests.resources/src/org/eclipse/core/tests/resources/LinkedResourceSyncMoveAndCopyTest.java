@@ -162,7 +162,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		assertTrue(folderLink.isSynchronized(IResource.DEPTH_INFINITE));
 		internalMovedAndCopyTest(folderLink, IResource.NONE, false);
 
-		folderLocation.toFile().mkdir();
+		folderLocation.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		fileStoreExtension.deleteOnTearDown(folderLocation);
 
 		assertFalse(folderLink.isSynchronized(IResource.DEPTH_INFINITE));
@@ -183,7 +183,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		assertTrue(folderLink.isSynchronized(IResource.DEPTH_INFINITE));
 		internalMovedAndCopyTest(folderLink, IResource.SHALLOW, true);
 
-		folderLocation.toFile().mkdir();
+		folderLocation.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		fileStoreExtension.deleteOnTearDown(folderLocation);
 
 		assertFalse(folderLink.isSynchronized(IResource.DEPTH_INFINITE));
@@ -316,7 +316,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		assertTrue(folder.isSynchronized(IResource.DEPTH_INFINITE));
 		internalMovedAndCopyTest(folder, IResource.NONE, false);
 
-		folderLocation.toFile().mkdir();
+		folderLocation.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		fileStoreExtension.deleteOnTearDown(folderLocation);
 
 		assertFalse(folder.isSynchronized(IResource.DEPTH_INFINITE));
@@ -341,7 +341,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		assertTrue(folder.isSynchronized(IResource.DEPTH_INFINITE));
 		internalMovedAndCopyTest(folder, IResource.SHALLOW, true);
 
-		folderLocation.toFile().mkdir();
+		folderLocation.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		fileStoreExtension.deleteOnTearDown(folderLocation);
 
 		assertFalse(folder.isSynchronized(IResource.DEPTH_INFINITE));

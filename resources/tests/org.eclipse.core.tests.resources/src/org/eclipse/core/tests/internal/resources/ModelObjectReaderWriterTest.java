@@ -384,7 +384,7 @@ public class ModelObjectReaderWriterTest {
 		ProjectDescriptionReader reader = new ProjectDescriptionReader(workspace);
 		// Write out the project description file
 		removeFromFileSystem(location.toFile());
-		try (FileOutputStream output = new FileOutputStream(location.toFile())) {
+		try (FileOutputStream output = new FileOutputStream(location.toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			createInputStream(invalidProjectDescription).transferTo(output);
 		}
 		ProjectDescription projDesc = reader.read(location);
@@ -467,7 +467,7 @@ public class ModelObjectReaderWriterTest {
 		ProjectDescriptionReader reader = new ProjectDescriptionReader(getWorkspace());
 		// Write out the project description file
 		removeFromFileSystem(location.toFile());
-		try (FileOutputStream output = new FileOutputStream(location.toFile())) {
+		try (FileOutputStream output = new FileOutputStream(location.toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			createInputStream(longProjectDescription).transferTo(output);
 		}
 		ProjectDescription projDesc = reader.read(location);
@@ -491,7 +491,7 @@ public class ModelObjectReaderWriterTest {
 		ProjectDescriptionReader reader = new ProjectDescriptionReader(ResourcesPlugin.getWorkspace());
 		// Write out the project description file
 		removeFromFileSystem(location.toFile());
-		try (FileOutputStream output = new FileOutputStream(location.toFile())) {
+		try (FileOutputStream output = new FileOutputStream(location.toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			createInputStream(longProjectDescription).transferTo(output);
 		}
 		ProjectDescription projDesc = reader.read(location);
@@ -522,10 +522,10 @@ public class ModelObjectReaderWriterTest {
 		// Write out the project description file
 		removeFromFileSystem(multiLocation.toFile());
 		removeFromFileSystem(singleLocation.toFile());
-		try (FileOutputStream output = new FileOutputStream(multiLocation.toFile())) {
+		try (FileOutputStream output = new FileOutputStream(multiLocation.toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			createInputStream(multiLineProjectDescription).transferTo(output);
 		}
-		try (FileOutputStream output = new FileOutputStream(singleLocation.toFile())) {
+		try (FileOutputStream output = new FileOutputStream(singleLocation.toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			createInputStream(singleLineProjectDescription).transferTo(output);
 		}
 		ProjectDescription multiDesc = reader.read(multiLocation);
@@ -751,7 +751,7 @@ public class ModelObjectReaderWriterTest {
 		ProjectDescriptionReader reader = new ProjectDescriptionReader(getWorkspace());
 		// Write out the project description file
 		removeFromFileSystem(location.toFile());
-		try (FileOutputStream output = new FileOutputStream(location.toFile())) {
+		try (FileOutputStream output = new FileOutputStream(location.toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			createInputStream(projectDescription).transferTo(output);
 		}
 		ProjectDescription projDesc = reader.read(location);

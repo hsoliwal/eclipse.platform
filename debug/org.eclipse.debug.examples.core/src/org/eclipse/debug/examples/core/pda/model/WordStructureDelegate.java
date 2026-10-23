@@ -28,7 +28,7 @@ public class WordStructureDelegate implements ILogicalStructureTypeDelegate {
 	public boolean providesLogicalStructure(IValue value) {
 		try {
 			String string = value.getValueString();
-			String[] words = string.split("\\W+"); //$NON-NLS-1$
+			String[] words = string.split("\\W+"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			return words.length > 1;
 		} catch (DebugException e) {
 		}

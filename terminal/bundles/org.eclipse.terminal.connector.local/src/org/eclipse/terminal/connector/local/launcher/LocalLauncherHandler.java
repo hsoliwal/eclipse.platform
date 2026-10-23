@@ -57,10 +57,10 @@ public class LocalLauncherHandler extends AbstractHandler {
 			if (input instanceof IPathEditorInput) {
 				IPath path = ((IPathEditorInput) input).getPath();
 				if (path != null) {
-					if (path.toFile().isFile()) {
+					if (path.toFile().isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						path = path.removeLastSegments(1);
 					}
-					if (path.toFile().isDirectory() && path.toFile().canRead()) {
+					if (path.toFile().isDirectory() && path.toFile().canRead()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						selection = new StructuredSelection(path);
 					}
 				}

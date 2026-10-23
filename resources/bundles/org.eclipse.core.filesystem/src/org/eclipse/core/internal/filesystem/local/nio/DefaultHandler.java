@@ -39,11 +39,11 @@ public class DefaultHandler extends NativeHandler {
 	public FileInfo fetchFileInfo(String fileName, int options) {
 		Path path = Paths.get(fileName);
 		FileInfo info = new FileInfo();
-		boolean exists = Files.exists(path);
+		boolean exists = Files.exists(path); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		info.setExists(exists);
 
 		try {
-			BasicFileAttributes readAttributes = Files.readAttributes(path, BasicFileAttributes.class);
+			BasicFileAttributes readAttributes = Files.readAttributes(path, BasicFileAttributes.class); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 			// Even if it doesn't exist then check for symbolic link information.
 			if (readAttributes.isSymbolicLink()) {

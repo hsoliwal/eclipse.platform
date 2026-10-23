@@ -324,7 +324,7 @@ public class AddCustomDialog extends StatusDialog {
 		ZipFile sourceFile = getSpecifiedSourceFile();
 		if (sourceFile == null) {
 			File file = new File(sourceNameField.getText());
-			if (file.exists()) {
+			if (file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				provider = FileSystemStructureProvider.INSTANCE;
 				element = selectFiles(file, provider);
 			}

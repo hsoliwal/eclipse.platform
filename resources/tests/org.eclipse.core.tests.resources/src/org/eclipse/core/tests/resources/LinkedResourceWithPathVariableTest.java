@@ -147,7 +147,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 		//low order bits are current time, high order bits are static counter
 		IPath parent = IPath.fromOSString(VARIABLE_NAME);
 		IPath path = FileSystemHelper.computeRandomLocation(parent);
-		while (pathVars.resolvePath(path).toFile().exists()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+		while (pathVars.resolvePath(path).toFile().exists()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -164,7 +164,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 		// low order bits are current time, high order bits are static counter
 		IPath parent = IPath.fromOSString(PROJECT_VARIABLE_NAME);
 		IPath path = FileSystemHelper.computeRandomLocation(parent);
-		while (pathVars.resolvePath(path).toFile().exists()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+		while (pathVars.resolvePath(path).toFile().exists()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -181,7 +181,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 		// low order bits are current time, high order bits are static counter
 		IPath parent = IPath.fromOSString(PROJECT_RELATIVE_VARIABLE_NAME);
 		IPath path = FileSystemHelper.computeRandomLocation(parent);
-		while (pathVars.resolvePath(path).toFile().exists()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+		while (pathVars.resolvePath(path).toFile().exists()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -345,8 +345,8 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 		// creates a variable-based location
 		IPath variableBasedLocation = null;
 		IPath targetPath = existingProjectInSubDirectory.getLocation().removeLastSegments(1).append("outside.txt");
-		if (!targetPath.toFile().exists()) {
-			targetPath.toFile().createNewFile();
+		if (!targetPath.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			targetPath.toFile().createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		fileStoreExtension.deleteOnTearDown(targetPath);
 
@@ -393,8 +393,8 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 		// creates a variable-based location
 		URI variableBasedLocation = null;
 		IPath targetPath = existingProjectInSubDirectory.getLocation().removeLastSegments(3).append("outside.txt");
-		if (!targetPath.toFile().exists()) {
-			targetPath.toFile().createNewFile();
+		if (!targetPath.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			targetPath.toFile().createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		fileStoreExtension.deleteOnTearDown(targetPath);
 
@@ -941,8 +941,8 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 		// creates a variable-based location
 		IPath variableBasedLocation = null;
 		IPath targetPath = existingProjectInSubDirectory.getLocation().removeLastSegments(1).append("outside.txt");
-		if (!targetPath.toFile().exists()) {
-			targetPath.toFile().createNewFile();
+		if (!targetPath.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			targetPath.toFile().createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		fileStoreExtension.deleteOnTearDown(targetPath);
 

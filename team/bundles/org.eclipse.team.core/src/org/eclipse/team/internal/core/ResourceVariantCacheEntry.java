@@ -65,8 +65,8 @@ public class ResourceVariantCacheEntry {
 		File ioFile = getFile();
 		try {
 			try {
-				if (ioFile.exists()) {
-					return new FileInputStream(ioFile);
+				if (ioFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+					return new FileInputStream(ioFile); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 				}
 			} catch (IOException e) {
 				// Try to purge the cache and continue
@@ -122,7 +122,7 @@ public class ResourceVariantCacheEntry {
 		try {
 
 			// Open the cache file for writing
-			try (OutputStream out = (state == UNINITIALIZED) ? new BufferedOutputStream(new FileOutputStream(ioFile))
+			try (OutputStream out = (state == UNINITIALIZED) ? new BufferedOutputStream(new FileOutputStream(ioFile)) //FLLDCIM: MARK — M31 M3FILE_IO NEW
 					// If the entry is READY, the contents must have been read in another thread.
 					// We still need to red the contents but they can be ignored since presumably they are the same
 					: new ByteArrayOutputStream()) {
@@ -173,8 +173,8 @@ public class ResourceVariantCacheEntry {
 			return 0;
 		}
 		File ioFile = getFile();
-		if (ioFile.exists()) {
-			return ioFile.length();
+		if (ioFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			return ioFile.length(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		return 0;
 	}

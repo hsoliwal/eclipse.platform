@@ -250,7 +250,7 @@ public abstract class Bucket {
 	 * Tries to delete as many empty levels as possible.
 	 */
 	private void cleanUp(File toDelete) {
-		if (!toDelete.delete()) {
+		if (!toDelete.delete()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			// if deletion didn't go well, don't bother trying to delete the parent dir
 			return;
 		}
@@ -367,12 +367,12 @@ public abstract class Bucket {
 	}
 
 	private Map<String, Object> loadEntries(File indexFile) throws CoreException, IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
-		if (!indexFile.isFile()) {
+		if (!indexFile.isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return Collections.EMPTY_MAP; // remember file does not exist
 		}
 		Map<String, Object> resultEntries = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		try (DataInputStream source = new DataInputStream(
-				new BufferedInputStream(new FileInputStream(indexFile), 8192))) {
+				new BufferedInputStream(new FileInputStream(indexFile), 8192))) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			int version = source.readByte();
 			if (version != getVersion()) {
 				// unknown version
@@ -435,8 +435,8 @@ public abstract class Bucket {
 			if (parent == null) {
 				throw new IOException();//caught and rethrown below
 			}
-			parent.mkdirs();
-			try (DataOutputStream destination = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(location), 8192))) {
+			parent.mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			try (DataOutputStream destination = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(location), 8192))) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 				destination.write(getVersion());
 				destination.writeInt(entriesSnapshot.size());
 				for (java.util.Map.Entry<String, Object> entry : entriesSnapshot.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP

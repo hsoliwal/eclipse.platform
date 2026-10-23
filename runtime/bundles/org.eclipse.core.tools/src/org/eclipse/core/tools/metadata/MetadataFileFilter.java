@@ -33,6 +33,6 @@ class MetadataFileFilter implements FileFilter {
 
 	@Override
 	public boolean accept(File file) {
-		return file.isFile() && Arrays.binarySearch(fileNames, file.getName()) >= 0;
+		return file.isFile() && Arrays.binarySearch(fileNames, file.getName()) >= 0; //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 }

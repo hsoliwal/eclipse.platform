@@ -148,11 +148,11 @@ public class SymlinkResourceTest {
 	 */
 	protected void createGithubBug2220Structure(IFileStore rootDir) throws CoreException, IOException {
 		Path root = rootDir.toLocalFile(EFS.NONE, createTestMonitor()).toPath();
-		Files.createDirectories(root.resolve("A"));
-		Files.createDirectories(root.resolve("X/Y/Z"));
-		Files.createDirectories(root.resolve("X/Y/D"));
+		Files.createDirectories(root.resolve("A")); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		Files.createDirectories(root.resolve("X/Y/Z")); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		Files.createDirectories(root.resolve("X/Y/D")); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		Files.createSymbolicLink(root.resolve("A/B"), root.resolve("X/Y/Z"));
-		Files.createDirectories(root.resolve("A/B/C"));
+		Files.createDirectories(root.resolve("A/B/C")); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		Files.createSymbolicLink(root.resolve("A/B/C/D"), Paths.get("../../D"));
 		Files.createSymbolicLink(root.resolve("A/B/C/E"), Paths.get("../../Z"));
 	}

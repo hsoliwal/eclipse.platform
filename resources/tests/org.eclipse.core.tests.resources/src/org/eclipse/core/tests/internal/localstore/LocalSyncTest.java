@@ -54,7 +54,7 @@ public class LocalSyncTest implements ICoreConstants {
 
 	private boolean existsInFileSystemWithNoContent(IResource resource) {
 		IPath path = resource.getLocation();
-		return path.toFile().exists() && path.toFile().length() == 0;
+		return path.toFile().exists() && path.toFile().length() == 0; //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD

@@ -145,11 +145,11 @@ public class AntClasspathPage implements IAntBlockContainer {
 		final String extension = ".jar"; //$NON-NLS-1$
 		URL[] urls = new URL[0];
 
-		if (!location.exists()) {
+		if (!location.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return urls;
 		}
 
-		if (!location.isDirectory()) {
+		if (!location.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			urls = new URL[1];
 			String path = location.getPath();
 			if (path.toLowerCase().endsWith(extension)) {
@@ -158,7 +158,7 @@ public class AntClasspathPage implements IAntBlockContainer {
 			return urls;
 		}
 
-		File[] matches = location.listFiles((FilenameFilter) (unused, name) -> name.toLowerCase().endsWith(extension));
+		File[] matches = location.listFiles((FilenameFilter) (unused, name) -> name.toLowerCase().endsWith(extension)); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		urls = new URL[matches.length];
 		for (int i = 0; i < matches.length; ++i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP

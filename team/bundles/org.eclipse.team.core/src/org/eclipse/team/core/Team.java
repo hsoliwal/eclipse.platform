@@ -448,11 +448,11 @@ public final class Team {
 		String GLOBALIGNORE_FILE = ".globalIgnores"; //$NON-NLS-1$
 		IPath pluginStateLocation = TeamPlugin.getPlugin().getStateLocation().append(GLOBALIGNORE_FILE);
 		File f = pluginStateLocation.toFile();
-		if (!f.exists()) {
+		if (!f.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return false;
 		}
 		try {
-			try (DataInputStream dis = new DataInputStream(new FileInputStream(f))) {
+			try (DataInputStream dis = new DataInputStream(new FileInputStream(f))) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 				int ignoreCount = 0;
 				try {
 					ignoreCount = dis.readInt();
@@ -467,7 +467,7 @@ public final class Team {
 					globalIgnore.put(pattern, Boolean.valueOf(enabled));
 				}
 			}
-			f.delete();
+			f.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		} catch (FileNotFoundException e) {
 			// not a fatal error, there just happens not to be any state to read
 		} catch (IOException ex) {

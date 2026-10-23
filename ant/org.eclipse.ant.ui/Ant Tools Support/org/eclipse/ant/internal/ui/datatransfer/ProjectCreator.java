@@ -71,7 +71,7 @@ public class ProjectCreator {
 			}
 			for (String cp : classpath.list()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				File classpathEntry = new File(cp);
-				if (classpathEntry.isFile()) {
+				if (classpathEntry.isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					addLibrary(javaProject, IPath.fromOSString(classpathEntry.getAbsolutePath()), monitor);
 				} else {
 					addContainer(javaProject, IPath.fromOSString(classpathEntry.getAbsolutePath()), monitor);

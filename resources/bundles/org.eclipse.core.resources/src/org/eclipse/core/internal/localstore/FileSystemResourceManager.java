@@ -607,7 +607,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 	public IHistoryStore getHistoryStore() {
 		if (_historyStore == null) {
 			IPath location = getWorkspace().getMetaArea().getHistoryStoreLocation();
-			location.toFile().mkdirs();
+			location.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			IFileStore store = EFS.getLocalFileSystem().getStore(location);
 			_historyStore = new HistoryStore2(getWorkspace(), store, 256);
 		}

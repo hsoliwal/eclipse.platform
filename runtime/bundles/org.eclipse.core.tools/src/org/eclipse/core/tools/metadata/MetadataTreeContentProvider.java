@@ -77,7 +77,7 @@ public class MetadataTreeContentProvider extends AbstractTreeContentProvider { /
 	 */
 	@Override
 	protected boolean acceptInput(Object input) {
-		return (input instanceof File) && ((File) input).isDirectory();
+		return (input instanceof File) && ((File) input).isDirectory(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**
@@ -151,7 +151,7 @@ public class MetadataTreeContentProvider extends AbstractTreeContentProvider { /
 		monitor.beginTask("Scanning dir " + dir, 100); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		try {
 			// looks for files of registered types in this directory
-			File[] selectedFiles = dir.listFiles(fileFilter);
+			File[] selectedFiles = dir.listFiles(fileFilter); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			monitor.worked(1);
 			Arrays.sort(selectedFiles);
 			for (File selectedFile : selectedFiles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
@@ -159,7 +159,7 @@ public class MetadataTreeContentProvider extends AbstractTreeContentProvider { /
 				dirNode.addChild(childNode);
 			}
 			// looks for files of registered types in its subdirectories
-			File[] subDirs = dir.listFiles(directoryFilter);
+			File[] subDirs = dir.listFiles(directoryFilter); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			monitor.worked(1);
 			Arrays.sort(subDirs);
 

@@ -276,7 +276,7 @@ public class SeparateVMTests {
 		IFile iFile = getProject().getFolder("buildfiles").getFile("log.xml"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertTrue(iFile.exists(), "Could not find log file named: log.xml"); //$NON-NLS-1$
 		File file = iFile.getLocation().toFile();
-		String content = Files.readString(file.toPath());
+		String content = Files.readString(file.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertTrue(content.length() > 0, "XML logging file is empty"); //$NON-NLS-1$
 	}
 

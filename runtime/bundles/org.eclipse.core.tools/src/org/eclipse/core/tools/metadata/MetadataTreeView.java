@@ -80,7 +80,7 @@ public class MetadataTreeView extends SpyView {
 
 			File file = (File) fileNode.getValue();
 			// we have no interest in directories
-			if (!file.isFile()) {
+			if (!file.isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				return;
 			}
 
@@ -177,7 +177,7 @@ public class MetadataTreeView extends SpyView {
 		if (file == null) {
 			return;
 		}
-		if (!file.isDirectory()) {
+		if (!file.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			ErrorUtil.showErrorMessage("Selected item is not a directory", "Error selecting metadata location"); //$NON-NLS-1$ //$NON-NLS-2$
 			return;
 		}

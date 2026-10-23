@@ -571,7 +571,7 @@ public class MarkerManager implements IManager {
 		IPath tempLocation = workspace.getMetaArea().getBackupLocationFor(sourceLocation);
 		java.io.File sourceFile = new java.io.File(sourceLocation.toOSString());
 		java.io.File tempFile = new java.io.File(tempLocation.toOSString());
-		if (!sourceFile.exists() && !tempFile.exists()) {
+		if (!sourceFile.exists() && !tempFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return;
 		}
 		try (DataInputStream input = new DataInputStream(
@@ -587,7 +587,7 @@ public class MarkerManager implements IManager {
 
 	protected void restoreFromSnap(IResource resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath sourceLocation = workspace.getMetaArea().getMarkersSnapshotLocationFor(resource);
-		if (!sourceLocation.toFile().exists()) {
+		if (!sourceLocation.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return;
 		}
 		try (DataInputStream input = new DataInputStream(new SafeChunkyInputStream(sourceLocation.toFile()))) {

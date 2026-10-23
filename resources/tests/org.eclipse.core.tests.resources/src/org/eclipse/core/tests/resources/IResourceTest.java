@@ -161,12 +161,12 @@ public class IResourceTest {
 	 */
 	protected static Set<File> getAllFilesForDirectory(File dir) {
 		Set<File> result = new HashSet<>(50); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
-		String[] members = dir.list();
+		String[] members = dir.list(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		if (members != null) {
 			for (String member2 : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				File member = new File(dir, member2);
 				result.add(member);
-				if (member.isDirectory()) {
+				if (member.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					result.addAll(getAllFilesForDirectory(member));
 				}
 			}
@@ -190,9 +190,9 @@ public class IResourceTest {
 		if (resource.getLocation() != null && (resource.getType() != IResource.PROJECT || ((IProject) resource).isOpen())) {
 			java.io.File file = resource.getLocation().toFile();
 			if (considerUnsyncLocalFiles) {
-				if (file.exists()) {
+				if (file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					result.add(file);
-					if (file.isDirectory()) {
+					if (file.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						result.addAll(getAllFilesForDirectory(file));
 					}
 				}
@@ -605,7 +605,7 @@ public class IResourceTest {
 			case S_FILE_TO_FOLDER :
 				createInWorkspace(target);
 				removeFromFileSystem(target);
-				target.getLocation().toFile().mkdirs();
+				target.getLocation().toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				if (addVerifier) {
 					verifier.reset();
 					// we only get a delta if the receiver of refreshLocal
@@ -798,7 +798,7 @@ public class IResourceTest {
 
 		IPath projectPath = project1.getLocation().removeLastSegments(1).append("NewProject");
 		fileStoreExtension.deleteOnTearDown(projectPath);
-		projectPath.toFile().mkdirs();
+		projectPath.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		project1.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
 		project2.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
@@ -928,15 +928,15 @@ public class IResourceTest {
 				: source.getLocation().removeLastSegments(1).append(destination.removeLastSegments(1)).toFile();
 		File destinationFile = destination.isAbsolute() ? destination.toFile()
 				: source.getLocation().removeLastSegments(1).append(destination).removeTrailingSeparator().toFile();
-		if (!destinationParent.exists()) {
+		if (!destinationParent.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			expectedFailMessageReceiver.accept("parent of destination does not exist");
 			return true;
 		}
-		if (!destinationParent.isDirectory()) {
+		if (!destinationParent.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			expectedFailMessageReceiver.accept("parent of destination is not a directory");
 			return true;
 		}
-		if (destinationFile.exists()) {
+		if (destinationFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			expectedFailMessageReceiver.accept("destination already exists");
 			return true;
 		}
@@ -954,11 +954,11 @@ public class IResourceTest {
 			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean visit(IResource toVisit) throws CoreException {
 				File target = toVisit.getLocation().toFile();
-				if (target.exists() != toVisit.exists()) {
+				if (target.exists() != toVisit.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					hasUnsynchronizedResources[0] = true;
 					return false;
 				}
-				if (target.isFile() != (toVisit.getType() == IResource.FILE)) {
+				if (target.isFile() != (toVisit.getType() == IResource.FILE)) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					hasUnsynchronizedResources[0] = true;
 					return false;
 				}
@@ -966,18 +966,18 @@ public class IResourceTest {
 					hasUnsynchronizedResources[0] = true;
 					return false;
 				}
-				if (target.isFile()) {
+				if (target.isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					return false;
 				}
 				// Process children that only exist in file system but not in workspace
-				String[] list = target.list();
+				String[] list = target.list(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				if (list == null) {
 					return true;
 				}
 				IContainer container = (IContainer) toVisit;
 				for (String element : list) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					File file = new File(target, element);
-					IResource child = file.isFile() ? (IResource) container.getFile(IPath.fromOSString(element))
+					IResource child = file.isFile() ? (IResource) container.getFile(IPath.fromOSString(element)) //FLLDCIM: MARK — M31 M3FILE_IO CALL
 							: container.getFolder(IPath.fromOSString(element));
 					if (!child.exists()) {
 						visit(child);
@@ -1009,7 +1009,7 @@ public class IResourceTest {
 		logListener.assertNoLoggedErrors();
 		// assert there is no duplicate folder in the workspace.
 		IPath destProjLocInWs = getWorkspace().getRoot().getLocation().append(destProj.getName());
-		assertFalse(destProjLocInWs.toFile().exists(),
+		assertFalse(destProjLocInWs.toFile().exists(), //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				"Project folder should not exist in workspace when copied to external location");
 	}
 
@@ -1033,9 +1033,9 @@ public class IResourceTest {
 		logListener.assertNoLoggedErrors();
 		// assert there is no duplicate folder in the workspace.
 		IPath destProjLocInWs = getWorkspace().getRoot().getLocation().append(destProj.getName());
-		assertFalse(destProjLocInWs.toFile().exists(),
+		assertFalse(destProjLocInWs.toFile().exists(), //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				"Project folder should not exist in workspace when copied to external location");
-		assertTrue(destProj.getLocation().toFile().exists(), "Project folder should exist in external location");
+		assertTrue(destProj.getLocation().toFile().exists(), "Project folder should exist in external location"); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**
@@ -1056,7 +1056,7 @@ public class IResourceTest {
 		logListener.assertNoLoggedErrors();
 		// assert there is no duplicate folder in the workspace.
 		IPath destProjLocInWs = getWorkspace().getRoot().getLocation().append(destProj.getName());
-		assertTrue(destProjLocInWs.toFile().exists(),
+		assertTrue(destProjLocInWs.toFile().exists(), //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				"Project folder should exist in workspace when copied with default location");
 	}
 
@@ -1209,7 +1209,7 @@ public class IResourceTest {
 				@SuppressWarnings("unchecked")
 				Set<File> oldFiles = (Set<File>) oldState[1];
 				for (File oldFile : oldFiles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
-					if (oldFile.exists() == wasResourceAccessible) {
+					if (oldFile.exists() == wasResourceAccessible) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						return false;
 					}
 				}
@@ -1877,7 +1877,7 @@ public class IResourceTest {
 			removeFromWorkspace(topFolder);
 			removeFromWorkspace(topFile);
 			createInFileSystem(EFS.getFileSystem(EFS.SCHEME_FILE).getStore(fileLocation));
-			folderLocation.toFile().mkdirs();
+			folderLocation.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			topFolder.createLink(folderLocation, IResource.NONE, createTestMonitor());
 			topFile.createLink(fileLocation, IResource.NONE, createTestMonitor());
 			createInWorkspace(deepFile);
@@ -1905,7 +1905,7 @@ public class IResourceTest {
 			removeFromWorkspace(topFolder);
 			removeFromWorkspace(topFile);
 			createInFileSystem(EFS.getFileSystem(EFS.SCHEME_FILE).getStore(varMan.resolvePath(variableFileLocation)));
-			varMan.resolvePath(variableFolderLocation).toFile().mkdirs();
+			varMan.resolvePath(variableFolderLocation).toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			topFolder.createLink(variableFolderLocation, IResource.NONE, createTestMonitor());
 			topFile.createLink(variableFileLocation, IResource.NONE, createTestMonitor());
 			createInWorkspace(deepFile);

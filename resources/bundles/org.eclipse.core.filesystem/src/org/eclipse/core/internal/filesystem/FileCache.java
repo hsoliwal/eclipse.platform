@@ -82,7 +82,7 @@ public class FileCache {
 		IPath location = FileSystemAccess.getCacheLocation();
 		File cacheParent = new File(location.toFile(), CACHE_DIR_NAME);
 		cleanOldCache(cacheParent);
-		cacheParent.mkdirs();
+		cacheParent.mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		//make sure we have a unique non-existing cache directory
 		cacheDir = getUniqueDirectory(cacheParent, true);
 	}
@@ -133,11 +133,11 @@ public class FileCache {
 	}
 
 	private void clearImmutableFlag(File target) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
-		if (!target.exists()) {
+		if (!target.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return;
 		}
-		if (target.isDirectory()) {
-			File[] children = target.listFiles();
+		if (target.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			File[] children = target.listFiles(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			if (children != null) {
 				for (File element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					clearImmutableFlag(element);
@@ -178,9 +178,9 @@ public class FileCache {
 		//find an unused directory name
 		do { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			dir = new File(parent, Long.toString(System.currentTimeMillis() + i++));
-		} while (dir.exists());
+		} while (dir.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		if (create) {
-			dir.mkdir();
+			dir.mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		return dir;
 	}

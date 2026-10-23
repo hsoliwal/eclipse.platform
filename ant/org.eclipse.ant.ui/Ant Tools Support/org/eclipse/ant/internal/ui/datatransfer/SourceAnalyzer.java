@@ -220,8 +220,8 @@ public class SourceAnalyzer {
 	}
 
 	private static void findFiles(File base, File dir, String extension, Set<String> visited) {
-		if (dir.isDirectory()) {
-			for (File element : dir.listFiles()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+		if (dir.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			for (File element : dir.listFiles()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				findFiles(base, element, extension, visited);
 			}
 		} else if (dir.getAbsolutePath().endsWith(extension)) {

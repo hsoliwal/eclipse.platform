@@ -193,7 +193,7 @@ public class PDAWatchpoint extends PDALineBreakpoint implements IWatchpoint {
 	 * @param event breakpoint event
 	 */
 	private void handleHit(PDARunControlEvent event) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
-		String[] strings = event.fMessage.split(" "); //$NON-NLS-1$
+		String[] strings = event.fMessage.split(" "); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		if (strings.length == 4) {
 			String fv = strings[3];
 			int j = fv.indexOf("::"); //$NON-NLS-1$

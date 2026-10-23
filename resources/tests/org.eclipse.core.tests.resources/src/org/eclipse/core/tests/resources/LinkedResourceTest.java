@@ -130,7 +130,7 @@ public class LinkedResourceTest {
 		closedProject.close(createTestMonitor());
 		removeFromWorkspace(new IResource[] { nonExistingProject, nonExistingFolderInExistingProject, nonExistingFolderInExistingFolder, nonExistingFolderInOtherExistingProject, nonExistingFolderInNonExistingProject, nonExistingFolderInNonExistingFolder, nonExistingFileInExistingProject, nonExistingFileInOtherExistingProject, nonExistingFileInExistingFolder });
 		removeFromFileSystem(resolve(nonExistingLocation).toFile());
-		resolve(localFolder).toFile().mkdirs();
+		resolve(localFolder).toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		createInFileSystem(resolve(localFile));
 	}
 
@@ -190,7 +190,7 @@ public class LinkedResourceTest {
 			dir = new File(dir + File.separator + "sub"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			fileStoreExtension.deleteOnTearDown(IPath.fromOSString(dir.getAbsolutePath()));
 			dir = new File(dir + File.separator + "dir" + File.separator + "more" + File.separator + "proj"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
-			dir.mkdirs();
+			dir.mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			desc.setLocation(IPath.fromOSString(dir.getAbsolutePath()));
 			existingProjectInSubDirectory.create(desc, createTestMonitor());
 		}
@@ -216,7 +216,7 @@ public class LinkedResourceTest {
 		//now try to create with the flag (should succeed)
 		folder.createLink(location, IResource.ALLOW_MISSING_LOCAL, createTestMonitor());
 		assertEquals(resolve(location), folder.getLocation());
-		assertFalse(resolve(location).toFile().exists());
+		assertFalse(resolve(location).toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		//getting children should succeed (and be empty)
 		assertThat(folder.members()).isEmpty();
 
@@ -234,7 +234,7 @@ public class LinkedResourceTest {
 		assertThrows(CoreException.class, () -> folder.createLink(canonicalPathLocation, IResource.NONE, createTestMonitor()));
 		folder.createLink(canonicalPathLocation, IResource.ALLOW_MISSING_LOCAL, createTestMonitor());
 		assertEquals(canonicalPathLocation, folder.getLocation());
-		assertFalse(canonicalPathLocation.toFile().exists());
+		assertFalse(canonicalPathLocation.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// creating child should fail
 		assertThrows(CoreException.class,
@@ -311,7 +311,7 @@ public class LinkedResourceTest {
 
 		//change back to folder
 		removeFromFileSystem(resolvedLocation.toFile());
-		resolvedLocation.toFile().mkdirs();
+		resolvedLocation.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		folder.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
 		assertTrue(folder.exists());
@@ -606,7 +606,7 @@ public class LinkedResourceTest {
 
 		// test copy project when linked resources don't exist with force=false
 		destination.delete(IResource.NONE, createTestMonitor());
-		assertTrue(resolve(fileLocation).toFile().delete());
+		assertTrue(resolve(fileLocation).toFile().delete()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		assertThrows(CoreException.class,
 				() -> existingProject.copy(destination.getFullPath(), IResource.NONE, createTestMonitor()));
@@ -1115,7 +1115,7 @@ public class LinkedResourceTest {
 				}
 				IPath resolvedLocation = resolve(location);
 				//The corresponding location in the local file system does not exist.
-				if (!resolvedLocation.toFile().exists()) {
+				if (!resolvedLocation.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					return true;
 				}
 				//The workspace contains a resource of a different type at the same path as this resource
@@ -1131,7 +1131,7 @@ public class LinkedResourceTest {
 					return true;
 				}
 				//The corresponding location in the local file system is occupied by a directory (as opposed to a file)
-				if (resolvedLocation.toFile().isDirectory()) {
+				if (resolvedLocation.toFile().isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					return true;
 				}
 				//passed all failure case so it should succeed
@@ -1147,7 +1147,7 @@ public class LinkedResourceTest {
 					return monitor instanceof CancelingProgressMonitor;
 				}
 				IPath resolvedLocation = resolve(location);
-				if (!resource.exists() || !resolvedLocation.toFile().exists()) {
+				if (!resource.exists() || !resolvedLocation.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					return false;
 				}
 				if (!resource.getLocation().equals(resolvedLocation)) {
@@ -1215,7 +1215,7 @@ public class LinkedResourceTest {
 					return true;
 				}
 				//The corresponding location in the local file system does not exist.
-				if (!resolve(location).toFile().exists()) {
+				if (!resolve(location).toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					return true;
 				}
 				//The workspace contains a resource of a different type at the same path as this resource
@@ -1231,7 +1231,7 @@ public class LinkedResourceTest {
 					return true;
 				}
 				//The corresponding location in the local file system is occupied by a file (as opposed to a directory)
-				if (resolve(location).toFile().isFile()) {
+				if (resolve(location).toFile().isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					return true;
 				}
 				//passed all failure case so it should succeed
@@ -1247,7 +1247,7 @@ public class LinkedResourceTest {
 					return monitor instanceof CancelingProgressMonitor;
 				}
 				IPath resolvedLocation = resolve(location);
-				if (!resource.exists() || !resolvedLocation.toFile().exists()) {
+				if (!resource.exists() || !resolvedLocation.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					return false;
 				}
 				if (!resource.getLocation().equals(resolvedLocation)) {
@@ -1305,7 +1305,7 @@ public class LinkedResourceTest {
 		linkedFile.createLink(location, IResource.ALLOW_MISSING_LOCAL, createTestMonitor());
 		assertEquals(IResource.NULL_STAMP, linkedFile.getModificationStamp());
 		// create local file
-		resolve(location).toFile().createNewFile();
+		resolve(location).toFile().createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		linkedFile.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
 		assertTrue(linkedFile.getModificationStamp() >= 0);
 
@@ -1772,13 +1772,13 @@ public class LinkedResourceTest {
 		IPath resolvedBaseLocation = resolve(baseLocation);
 		fileStoreExtension.deleteOnTearDown(resolvedBaseLocation);
 		IPath symlinkTarget = resolvedBaseLocation.append("dir1/target");
-		symlinkTarget.toFile().mkdirs();
+		symlinkTarget.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		createSymLink(resolvedBaseLocation.toFile(), "symlink", symlinkTarget.toOSString(), true);
 		IPath linkChildLocation = baseLocation.append("symlink/dir2");
 		IPath resolvedLinkChildLocation = resolve(linkChildLocation);
 		File linkChild = resolvedLinkChildLocation.toFile();
-		linkChild.mkdir();
-		assertTrue(linkChild.exists(), "Could not create link at location: " + linkChild); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		linkChild.mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(linkChild.exists(), "Could not create link at location: " + linkChild); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		IFolder folder = nonExistingFolderInExistingProject;
 		folder.createLink(linkChildLocation, IResource.NONE, createTestMonitor());
@@ -1797,9 +1797,9 @@ public class LinkedResourceTest {
 		IPath resolvedBaseLocation = resolve(baseLocation);
 		fileStoreExtension.deleteOnTearDown(resolvedBaseLocation);
 		IPath symlinkTarget = resolvedBaseLocation.append("dir1/A");
-		symlinkTarget.append("B/C").toFile().mkdirs();
+		symlinkTarget.append("B/C").toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		IPath linkParentDir = resolvedBaseLocation.append("dir2");
-		linkParentDir.toFile().mkdirs();
+		linkParentDir.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		createSymLink(linkParentDir.toFile(), "symlink", symlinkTarget.toOSString(), true);
 
 		IFolder folder = nonExistingFolderInExistingProject;
@@ -1809,10 +1809,10 @@ public class LinkedResourceTest {
 		assertTrue(folder.getFolder("B/C").exists());
 		assertEquals(symLink, folder.getLocation());
 		// Delete the symlink and the directory that contains it.
-		symLink.toFile().delete();
-		linkParentDir.toFile().delete();
+		symLink.toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		linkParentDir.toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		// Check that the directory that contained the symlink has been deleted.
-		assertFalse(linkParentDir.toFile().exists());
+		assertFalse(linkParentDir.toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		// Refresh the project.
 		folder.getParent().refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
 		// Check that the linked folder still exists.

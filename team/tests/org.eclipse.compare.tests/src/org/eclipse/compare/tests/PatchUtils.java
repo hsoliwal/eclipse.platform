@@ -88,7 +88,7 @@ public class PatchUtils {
 		@Override
 		public InputStream getContents() throws CoreException {
 			try {
-				return Files.newInputStream(file.toPath());
+				return Files.newInputStream(file.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			} catch (IOException e) {
 				// ignore, should never happen
 			}
@@ -128,7 +128,7 @@ public class PatchUtils {
 		@Override
 		public InputStream getContents() throws CoreException {
 			try {
-				return jarFile.getInputStream(jarEntry);
+				return jarFile.getInputStream(jarEntry); //FLLDCIM: MARK — M25 M3FILE_ARCHIVE_STREAM CALL
 			} catch (IOException e) {
 				// ignore, should never happen
 			}

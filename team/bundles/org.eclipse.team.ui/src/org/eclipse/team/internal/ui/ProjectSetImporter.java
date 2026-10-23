@@ -210,7 +210,7 @@ public class ProjectSetImporter {
 	}
 
 	private static XMLMemento filenameToXMLMemento(String filename) throws InvocationTargetException {
-		try (InputStreamReader reader = new InputStreamReader(new FileInputStream(filename), StandardCharsets.UTF_8)){
+		try (InputStreamReader reader = new InputStreamReader(new FileInputStream(filename), StandardCharsets.UTF_8)){ //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			return XMLMemento.createReadRoot(reader);
 		} catch (FileNotFoundException e) {
 			throw new InvocationTargetException(e);

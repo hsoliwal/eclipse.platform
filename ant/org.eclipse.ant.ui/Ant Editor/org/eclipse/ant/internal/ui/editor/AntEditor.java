@@ -884,7 +884,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 			}
 		}
 		File externalFile = new File(path);
-		if (externalFile.exists()) {
+		if (externalFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			new ExternalHyperlink(externalFile, -1).linkActivated();
 			return null;
 		}

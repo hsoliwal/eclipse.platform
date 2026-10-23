@@ -349,10 +349,10 @@ public class WorkspaceTest {
 		IPath workingLocation = project.getWorkingLocation("org.eclipse.core.tests.resources");
 		IPath linkTarget = getRandomLocation();
 		fileStoreExtension.deleteOnTearDown(linkTarget);
-		linkTarget.toFile().mkdirs();
+		linkTarget.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		File file = linkTarget.append("aFile").toFile();
-		assertTrue(file.createNewFile());
-		assertTrue(file.exists());
+		assertTrue(file.createNewFile()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(file.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		// Create a symlink in the working location of the project pointing to
 		// linkTarget.
 		createSymLink(workingLocation.toFile(), "link", linkTarget.toOSString(), true);
@@ -360,8 +360,8 @@ public class WorkspaceTest {
 		project.delete(true, monitor);
 		monitor.assertUsedUp();
 		assertFalse(project.exists(), "Project deletion failed");
-		assertFalse(workingLocation.toFile().exists(), "Working location was not deleted");
-		assertTrue(file.exists(), "File inside a symlinked directory got deleted");
+		assertFalse(workingLocation.toFile().exists(), "Working location was not deleted"); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(file.exists(), "File inside a symlinked directory got deleted"); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD

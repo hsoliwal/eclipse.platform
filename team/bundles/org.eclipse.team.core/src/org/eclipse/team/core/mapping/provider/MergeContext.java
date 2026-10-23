@@ -257,22 +257,22 @@ public abstract class MergeContext extends SynchronizationContext implements IMe
 			// Ignore
 		}
 		File tmpFile = getTempFile(file);
-		if (tmpFile.exists()) {
-			tmpFile.delete();
+		if (tmpFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			tmpFile.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 	}
 
 	private OutputStream getTempOutputStream(IFile file) throws CoreException {
 		File tmpFile = getTempFile(file);
-		if (tmpFile.exists()) {
-			tmpFile.delete();
+		if (tmpFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			tmpFile.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		File parent = tmpFile.getParentFile();
-		if (!parent.exists()) {
-			parent.mkdirs();
+		if (!parent.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			parent.mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		try {
-			return new BufferedOutputStream(new FileOutputStream(tmpFile));
+			return new BufferedOutputStream(new FileOutputStream(tmpFile)); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 		} catch (FileNotFoundException e) {
 			TeamPlugin.log(IStatus.ERROR, NLS.bind("Could not open temporary file {0} for writing: {1}", //$NON-NLS-1$
 					tmpFile.getAbsolutePath(), e.getMessage()), e);
@@ -295,7 +295,7 @@ public abstract class MergeContext extends SynchronizationContext implements IMe
 		}
 		File tmpFile = getTempFile(file);
 		try {
-			return new BufferedInputStream(new FileInputStream(tmpFile));
+			return new BufferedInputStream(new FileInputStream(tmpFile)); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 		} catch (FileNotFoundException e) {
 			throw new CoreException(new Status(IStatus.ERROR, TeamPlugin.ID, IMergeStatus.INTERNAL_ERROR,
 					NLS.bind(Messages.MergeContext_4, tmpFile.getAbsolutePath(), e.getMessage()), e));

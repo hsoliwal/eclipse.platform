@@ -377,7 +377,7 @@ public class Patcher implements IHunkFilter {
 				if (expectedLD != null) {
 					String patchLD= TextUtilities.determineLineDelimiter(contents, expectedLD);
 					if (!expectedLD.equals(patchLD)) {
-						contents= contents.replaceAll(patchLD, expectedLD);
+						contents= contents.replaceAll(patchLD, expectedLD); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 					}
 				}
 			}

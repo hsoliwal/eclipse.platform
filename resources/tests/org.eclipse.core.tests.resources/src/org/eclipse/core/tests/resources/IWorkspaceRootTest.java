@@ -629,7 +629,7 @@ public class IWorkspaceRootTest {
 		IFile file = parent.getFile(IPath.fromOSString(createUniqueString()));
 		if (linked) {
 			IPath path = getTempDir().append(createUniqueString());
-			path.toFile().createNewFile();
+			path.toFile().createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			file.createLink(URIUtil.toURI(path), updateFlags, createTestMonitor());
 			if ((updateFlags & IResource.TEAM_PRIVATE) == IResource.TEAM_PRIVATE) {
 				file.setTeamPrivateMember(true);
@@ -644,7 +644,7 @@ public class IWorkspaceRootTest {
 		IFolder folder = parent.getFolder(IPath.fromOSString(createUniqueString()));
 		if (linked) {
 			IPath path = getTempDir().append(createUniqueString());
-			path.toFile().mkdir();
+			path.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			folder.createLink(URIUtil.toURI(path), updateFlags, createTestMonitor());
 			if ((updateFlags & IResource.TEAM_PRIVATE) == IResource.TEAM_PRIVATE) {
 				folder.setTeamPrivateMember(true);

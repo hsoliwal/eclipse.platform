@@ -100,7 +100,7 @@ public class AntHomeClasspathEntry extends AbstractRuntimeClasspathEntry {
 			}
 		} else {
 			IPath libDir = IPath.fromOSString(antHomeLocation).append("lib"); //$NON-NLS-1$
-			for (String name : resolveAntHome().list()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (String name : resolveAntHome().list()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				IPath path = IPath.fromOSString(name);
 				String fileExtension = path.getFileExtension();
 				if ("jar".equalsIgnoreCase(fileExtension)) { //$NON-NLS-1$
@@ -118,10 +118,10 @@ public class AntHomeClasspathEntry extends AbstractRuntimeClasspathEntry {
 		IPath libDir = IPath.fromOSString(antHomeLocation).append("lib"); //$NON-NLS-1$
 		File lib = libDir.toFile();
 		File parentDir = lib.getParentFile();
-		if (parentDir == null || !parentDir.exists()) {
+		if (parentDir == null || !parentDir.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			abort(MessageFormat.format(AntLaunchConfigurationMessages.AntHomeClasspathEntry_10, antHomeLocation), null);
 		}
-		if (!lib.exists() || !lib.isDirectory()) {
+		if (!lib.exists() || !lib.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			abort(MessageFormat.format(AntLaunchConfigurationMessages.AntHomeClasspathEntry_11, antHomeLocation), null);
 		}
 		return lib;

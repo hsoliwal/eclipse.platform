@@ -1000,7 +1000,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 	 */
 	public ProjectDescription read(IPath location) throws IOException {
 		try (
-			BufferedInputStream file = new BufferedInputStream(new FileInputStream(location.toFile()));
+			BufferedInputStream file = new BufferedInputStream(new FileInputStream(location.toFile())); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 		) {
 			return read(new InputSource(file));
 		}

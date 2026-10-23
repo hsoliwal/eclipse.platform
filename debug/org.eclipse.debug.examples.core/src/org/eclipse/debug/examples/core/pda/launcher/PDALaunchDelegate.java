@@ -56,7 +56,7 @@ public class PDALaunchDelegate extends LaunchConfigurationDelegate {
 			javaVMExec += ".exe"; //$NON-NLS-1$
 		}
 		File exe = new File(javaVMExec);
-		if (!exe.exists()) {
+		if (!exe.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			abort(MessageFormat.format("Specified java VM executable {0} does not exist.", javaVMExec), null); //$NON-NLS-1$
 		}
 		commandList.add(javaVMExec);

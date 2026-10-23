@@ -114,7 +114,7 @@ public class FileDiffResultTest {
 		assertThat(filePatchResult.getOriginalContents()).isNotNull();
 		assertThat(filePatchResult.getPatchedContents()).isNotNull();
 
-		try (InputStream fileInput = Files.newInputStream(project.getFile(NEW_FILENAME).getLocation().toPath());
+		try (InputStream fileInput = Files.newInputStream(project.getFile(NEW_FILENAME).getLocation().toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				InputStream originalContents = filePatchResult.getOriginalContents()) {
 			assertThat(fileInput).hasSameContentAs(originalContents);
 		}
@@ -153,7 +153,7 @@ public class FileDiffResultTest {
 		assertThat(filePatchResult.getOriginalContents()).isNotNull();
 		assertThat(filePatchResult.getPatchedContents()).isNotNull();
 
-		try (InputStream fileInput = Files.newInputStream(project.getFile(NEW_FILENAME).getLocation().toPath());
+		try (InputStream fileInput = Files.newInputStream(project.getFile(NEW_FILENAME).getLocation().toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				InputStream originalContents = filePatchResult.getOriginalContents()) {
 			assertThat(fileInput).hasSameContentAs(originalContents);
 		}

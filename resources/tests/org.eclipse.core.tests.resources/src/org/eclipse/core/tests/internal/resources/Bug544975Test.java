@@ -56,10 +56,10 @@ public class Bug544975Test {
 			project.close(new NullProgressMonitor());
 
 			Path projectPath = Paths.get(project.getLocationURI());
-			assertTrue(Files.exists(projectPath), "Test project must exist on file system");
+			assertTrue(Files.exists(projectPath), "Test project must exist on file system"); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 			Path filePath = projectPath.resolve("someFile.txt");
-			Files.delete(filePath);
+			Files.delete(filePath); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			filePath = projectPath.resolve("someOtherFile.txt");
 			Files.createFile(filePath);
 
@@ -91,10 +91,10 @@ public class Bug544975Test {
 		project.close(new NullProgressMonitor());
 
 		Path projectPath = Paths.get(project.getLocationURI());
-		assertTrue(Files.exists(projectPath), "Test project must exist on file system");
+		assertTrue(Files.exists(projectPath), "Test project must exist on file system"); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		Path filePath = projectPath.resolve("someFile.txt");
-		Files.delete(filePath);
+		Files.delete(filePath); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		filePath = projectPath.resolve("someOtherFile.txt");
 		Files.createFile(filePath);
 

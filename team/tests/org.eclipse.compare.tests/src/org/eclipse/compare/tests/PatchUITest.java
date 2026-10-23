@@ -164,7 +164,7 @@ public class PatchUITest {
 		InputStream expectedIS = PatchUtils.asInputStream("exp_addition.txt");
 		InputStream actualIS = testProject.getFile("exp_addition.txt").getContents();
 
-		String expected = PatchUtils.asString(expectedIS).replaceAll("\r?\n", "\r\n");
+		String expected = PatchUtils.asString(expectedIS).replaceAll("\r?\n", "\r\n"); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		String actual = PatchUtils.asString(actualIS);
 		assertThat(actual).isEqualTo(expected);
 

@@ -479,7 +479,7 @@ public class AntModel implements IAntModel {
 
 	private void setExtraProperties(Project project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fProperties != null) {
-			Pattern pattern = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$
+			Pattern pattern = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			IStringVariableManager manager = VariablesPlugin.getDefault().getStringVariableManager();
 			for (String name : fProperties.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String value = fProperties.get(name);
@@ -1838,7 +1838,7 @@ public class AntModel implements IAntModel {
 		IPath path = getLocationProvider().getLocation();
 		if (path != null) {
 			File buildfile = path.toFile();
-			try (FileReader reader = new FileReader(buildfile)) {
+			try (FileReader reader = new FileReader(buildfile)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 				QualifiedName[] options = new QualifiedName[] { IContentDescription.CHARSET };
 				IContentDescription desc = Platform.getContentTypeManager().getDescriptionFor(reader, buildfile.getName(), options);
 				if (desc != null) {

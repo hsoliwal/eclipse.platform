@@ -63,7 +63,7 @@ public class TestBug208833 {
 
 		// move the project to another location, before the workbench is started again
 		// to emulate disconnection of a device (e.g. USB key) or a remote file system
-		assertTrue(project.getLocation().toFile()
+		assertTrue(project.getLocation().toFile() //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				.renameTo(new File(project.getLocation().toFile().getAbsolutePath() + "_temp"))); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
@@ -82,7 +82,7 @@ public class TestBug208833 {
 		assertFalse(p1.isOpen());
 
 		// move the project back
-		assertTrue(new File(p1.getLocation().toFile().getAbsolutePath() + "_temp").renameTo(p1.getLocation().toFile())); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		assertTrue(new File(p1.getLocation().toFile().getAbsolutePath() + "_temp").renameTo(p1.getLocation().toFile())); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// now the project should be opened without any problems
 		p1.open(null);

@@ -283,7 +283,7 @@ public class BuildFileCreator {
 		File dir = new File(projectRoot);
 		FilenameFilter filter = (unused, name) -> name.endsWith(".xml"); //$NON-NLS-1$
 
-		File[] files = dir.listFiles(filter);
+		File[] files = dir.listFiles(filter); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		if (files == null) {
 			return;
 		}
@@ -415,8 +415,8 @@ public class BuildFileCreator {
 					if (home != null && home.isPrefixOf(cpentry.getPath())) {
 						variable2valueMap.put("ECLIPSE_HOME", home.toString()); //$NON-NLS-1$
 						jarFile = "${ECLIPSE_HOME}" + jarFile.substring(home.toString().length()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
-					} else if (!new File(jarFile).exists() && jarFile.startsWith('/' + projectName) //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
-							&& new File(projectRoot, jarFile.substring(('/' + projectName).length())).exists()) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+					} else if (!new File(jarFile).exists() && jarFile.startsWith('/' + projectName) //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO CALL
+							&& new File(projectRoot, jarFile.substring(('/' + projectName).length())).exists()) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						// workaround that additional jars are stored with
 						// leading project root in container object, although
 						// they are relative and indeed correctly stored in

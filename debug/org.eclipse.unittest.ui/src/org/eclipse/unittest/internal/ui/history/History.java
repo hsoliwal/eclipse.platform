@@ -51,8 +51,8 @@ public class History implements ITestRunSessionListener {
 	 */
 	public File getDirectory() throws IllegalStateException {
 		File historyDir = UnitTestPlugin.getDefault().getStateLocation().append(HISTORY_DIR_NAME).toFile();
-		if (!historyDir.isDirectory()) {
-			historyDir.mkdir();
+		if (!historyDir.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			historyDir.mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		return historyDir;
 	}
@@ -64,7 +64,7 @@ public class History implements ITestRunSessionListener {
 	 */
 	public List<HistoryItem> getHistory() {
 		if (!wasRead) {
-			Arrays.stream(getDirectory().listFiles()).map(HistoryItem::new).forEach(items::add);
+			Arrays.stream(getDirectory().listFiles()).map(HistoryItem::new).forEach(items::add); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			wasRead = true;
 		}
 		return Collections.unmodifiableList(items);

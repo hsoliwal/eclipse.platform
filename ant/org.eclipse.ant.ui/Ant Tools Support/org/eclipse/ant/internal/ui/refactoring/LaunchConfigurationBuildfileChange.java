@@ -178,7 +178,7 @@ public class LaunchConfigurationBuildfileChange extends Change {
 		if (fNewBuildfileLocation != null) {
 			// generate the new configuration name
 			String launchConfigurationName = fLaunchConfiguration.getName();
-			fNewLaunchConfigurationName = launchConfigurationName.replaceAll(oldBuildFileName, newBuildfileName);
+			fNewLaunchConfigurationName = launchConfigurationName.replaceAll(oldBuildFileName, newBuildfileName); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			if (launchConfigurationName.equals(fNewLaunchConfigurationName)
 					|| (!undo && DebugPlugin.getDefault().getLaunchManager().isExistingLaunchConfigurationName(fNewLaunchConfigurationName))) {
 				fNewLaunchConfigurationName = null;
@@ -232,18 +232,18 @@ public class LaunchConfigurationBuildfileChange extends Change {
 		String oldBuildfileLocation = fNewLaunchConfiguration.getAttribute(IExternalToolConstants.ATTR_LOCATION, IAntCoreConstants.EMPTY_STRING);
 		String oldProjectName;
 		if (fNewBuildfileLocation != null) {
-			String newBuildFileLocation = oldBuildfileLocation.replaceFirst(fOldBuildfileLocation, fNewBuildfileLocation);
+			String newBuildFileLocation = oldBuildfileLocation.replaceFirst(fOldBuildfileLocation, fNewBuildfileLocation); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			fNewLaunchConfiguration.setAttribute(IExternalToolConstants.ATTR_LOCATION, newBuildFileLocation);
 			fNewLaunchConfiguration.setMappedResources(new IResource[] { getAssociatedFile(newBuildFileLocation) });
 		}
 		if (fNewProjectName != null) {
 			oldProjectName = fOldProjectName;
 			fNewLaunchConfiguration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, fNewProjectName);
-			String newBuildFileLocation = oldBuildfileLocation.replaceFirst(oldProjectName, fNewProjectName);
+			String newBuildFileLocation = oldBuildfileLocation.replaceFirst(oldProjectName, fNewProjectName); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			fNewLaunchConfiguration.setAttribute(IExternalToolConstants.ATTR_LOCATION, newBuildFileLocation);
 			fNewLaunchConfiguration.setMappedResources(new IResource[] { getAssociatedFile(newBuildFileLocation) });
 			String launchConfigurationName = fLaunchConfiguration.getName();
-			fNewLaunchConfigurationName = launchConfigurationName.replaceFirst(oldProjectName, fNewProjectName);
+			fNewLaunchConfigurationName = launchConfigurationName.replaceFirst(oldProjectName, fNewProjectName); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			if (launchConfigurationName.equals(fNewLaunchConfigurationName)
 					|| DebugPlugin.getDefault().getLaunchManager().isExistingLaunchConfigurationName(fNewLaunchConfigurationName)) {
 				fNewLaunchConfigurationName = null;

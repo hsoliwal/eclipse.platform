@@ -402,7 +402,7 @@ public class ISynchronizerTest {
 		IPath syncInfoPath = Platform.getLocation().append(".testsyncinfo");
 		File file = syncInfoPath.toFile();
 		fileStoreExtension.deleteOnTearDown(syncInfoPath);
-		try (OutputStream fileOutput = new FileOutputStream(file)) {
+		try (OutputStream fileOutput = new FileOutputStream(file)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			try (DataOutputStream output = new DataOutputStream(fileOutput)) {
 				final List<QualifiedName> list = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				visitor = resource -> {
@@ -439,7 +439,7 @@ public class ISynchronizerTest {
 		flushAllSyncInfo(getWorkspace().getRoot());
 
 		// read in the data
-		try (InputStream fileInput = Files.newInputStream(file.toPath())) {
+		try (InputStream fileInput = Files.newInputStream(file.toPath())) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try (DataInputStream input = new DataInputStream(fileInput)) {
 				IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 					SyncInfoReader reader = new SyncInfoReader((Workspace) getWorkspace(), synchronizer);

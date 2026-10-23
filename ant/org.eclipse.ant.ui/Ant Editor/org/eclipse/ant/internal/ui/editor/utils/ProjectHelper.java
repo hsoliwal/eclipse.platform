@@ -667,7 +667,7 @@ public class ProjectHelper extends ProjectHelper2 {
 		if ((source instanceof File)) {
 			buildFile = (File) source;
 			buildFile = getFileUtils().normalize(buildFile.getAbsolutePath());
-			return new FileInputStream(buildFile);
+			return new FileInputStream(buildFile); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 		} else if (source instanceof String) {
 			IAntModel model = getAntModel();
 			String encoding = IAntCoreConstants.UTF_8;

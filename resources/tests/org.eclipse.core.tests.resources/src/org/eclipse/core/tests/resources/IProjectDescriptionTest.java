@@ -102,7 +102,7 @@ public class IProjectDescriptionTest {
 		createInWorkspace(file);
 		IMarker marker = file.createMarker(IMarker.BOOKMARK);
 		Path backup = getTempDir().append("dotProjectBackup").toPath();
-		Files.copy(descriptionFile.getLocation().toPath(), backup);
+		Files.copy(descriptionFile.getLocation().toPath(), backup); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		try {
 			removeFromFileSystem(descriptionFile);
 
@@ -112,13 +112,13 @@ public class IProjectDescriptionTest {
 			getWorkspace().save(true, createTestMonitor());
 			assertDoesNotExistInFileSystem(descriptionFile);
 
-			Files.copy(backup, descriptionFile.getLocation().toPath());
+			Files.copy(backup, descriptionFile.getLocation().toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			project.open(createTestMonitor());
 			assertThat(project).matches(IProject::isOpen, "is open");
 			assertThat(file).matches(IResource::exists, "exists");
 			assertNotNull(file.findMarker(marker.getId()));
 		} finally {
-			Files.deleteIfExists(backup);
+			Files.deleteIfExists(backup); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 	}
 
@@ -134,7 +134,7 @@ public class IProjectDescriptionTest {
 		IFolder filtered = project.getFolder("filtered");
 		createInWorkspace(new IResource[] { linkParent, filtered });
 		IPath linkTarget = getRandomLocation();
-		Files.writeString(Files.createDirectories(linkTarget.toPath()).resolve("linked.txt"), "linked");
+		Files.writeString(Files.createDirectories(linkTarget.toPath()).resolve("linked.txt"), "linked"); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		try {
 			linkParent.getFile("linked.txt").createLink(linkTarget.append("linked.txt"), IResource.NONE, createTestMonitor());
 			filtered.createFilter(IResourceFilterDescription.EXCLUDE_ALL | IResourceFilterDescription.FILES,
@@ -311,7 +311,7 @@ public class IProjectDescriptionTest {
 		IFolder linkParent = child.getFolder("linkParent");
 		createInWorkspace(linkParent);
 		IPath linkTarget = getRandomLocation();
-		Files.writeString(Files.createDirectories(linkTarget.toPath()).resolve("linked.txt"), "linked");
+		Files.writeString(Files.createDirectories(linkTarget.toPath()).resolve("linked.txt"), "linked"); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		try {
 			linkParent.getFile("linked.txt").createLink(linkTarget.append("linked.txt"), IResource.NONE, createTestMonitor());
 
@@ -414,7 +414,7 @@ public class IProjectDescriptionTest {
 			assertThrows(CoreException.class,
 					() -> source.move(destinationDescription, IResource.FORCE, createTestMonitor()));
 
-			assertFalse(sourceLocation.append(IProjectDescription.DESCRIPTION_FILE_NAME).toFile().exists());
+			assertFalse(sourceLocation.append(IProjectDescription.DESCRIPTION_FILE_NAME).toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			assertThat(source).matches(not(IProject::exists), "does not exist");
 			assertThat(destination).matches(IProject::isOpen, "is open");
 			IFile movedFile = destination.getFile(file.getProjectRelativePath());

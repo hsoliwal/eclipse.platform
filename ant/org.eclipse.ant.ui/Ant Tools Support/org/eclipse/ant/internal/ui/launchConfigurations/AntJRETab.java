@@ -118,7 +118,7 @@ public class AntJRETab extends JavaJRETab {
 		try {
 			String args = configuration.getAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, (String) null);
 			if (args != null) {
-				Pattern pattern = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$
+				Pattern pattern = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 				IStringVariableManager manager = VariablesPlugin.getDefault().getStringVariableManager();
 				String[] arguments = ExternalToolsUtil.parseStringIntoList(args);
 				if (arguments != null) {

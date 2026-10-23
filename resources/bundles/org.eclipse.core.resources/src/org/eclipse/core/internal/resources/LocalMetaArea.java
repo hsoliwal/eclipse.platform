@@ -99,7 +99,7 @@ public class LocalMetaArea implements ICoreConstants {
 		java.io.File file = locationFor(target).toFile();
 		//make sure area is empty
 		Workspace.clear(file);
-		file.mkdirs();
+		file.mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class LocalMetaArea implements ICoreConstants {
 	public synchronized void createMetaArea() throws CoreException {
 		java.io.File workspaceLocation = metaAreaLocation.toFile();
 		Workspace.clear(workspaceLocation);
-		if (!workspaceLocation.mkdirs()) {
+		if (!workspaceLocation.mkdirs()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			String message = NLS.bind(Messages.resources_writeWorkspaceMeta, workspaceLocation);
 			throw new ResourceException(IResourceStatus.FAILED_WRITE_METADATA, null, message, null);
 		}
@@ -120,7 +120,7 @@ public class LocalMetaArea implements ICoreConstants {
 	 */
 	public void delete(IProject target) throws CoreException {
 		IPath path = locationFor(target);
-		if (!Workspace.clear(path.toFile()) && path.toFile().exists()) {
+		if (!Workspace.clear(path.toFile()) && path.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			String message = NLS.bind(Messages.resources_deleteMeta, target.getFullPath());
 			throw new ResourceException(IResourceStatus.FAILED_DELETE_METADATA, target.getFullPath(), message, null);
 		}
@@ -273,15 +273,15 @@ public class LocalMetaArea implements ICoreConstants {
 
 	public boolean hasSavedProject(IProject project) {
 		//if there is a location file, then the project exists
-		return getOldDescriptionLocationFor(project).toFile().exists() || locationFor(project).append(F_PROJECT_LOCATION).toFile().exists();
+		return getOldDescriptionLocationFor(project).toFile().exists() || locationFor(project).append(F_PROJECT_LOCATION).toFile().exists(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	public boolean hasSavedWorkspace() {
-		return metaAreaLocation.toFile().exists() || getBackupLocationFor(metaAreaLocation).toFile().exists();
+		return metaAreaLocation.toFile().exists() || getBackupLocationFor(metaAreaLocation).toFile().exists(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	public boolean hasSavedProjects() {
-		return projectMetaLocation.toFile().exists();
+		return projectMetaLocation.toFile().exists(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**
@@ -313,7 +313,7 @@ public class LocalMetaArea implements ICoreConstants {
 	 */
 	public ProjectDescription readOldDescription(IProject project) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath path = getOldDescriptionLocationFor(project);
-		if (!path.toFile().exists()) {
+		if (!path.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return null;
 		}
 		IPath tempPath = getBackupLocationFor(path);
@@ -376,10 +376,10 @@ public class LocalMetaArea implements ICoreConstants {
 	public void readPrivateDescription(IProject target, ProjectDescription description) {
 		IPath locationFile = locationFor(target).append(F_PROJECT_LOCATION);
 		java.io.File file = locationFile.toFile();
-		if (!file.exists()) {
+		if (!file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			locationFile = getBackupLocationFor(locationFile);
 			file = locationFile.toFile();
-			if (!file.exists()) {
+			if (!file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				return;
 			}
 		}

@@ -243,7 +243,7 @@ public class ZipFileStructureCreator implements IStructureCreator {
 		ZipFolder root= new ZipFolder(""); //$NON-NLS-1$
 		try {
 			for (;;) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
-				ZipEntry entry= zip.getNextEntry();
+				ZipEntry entry= zip.getNextEntry(); //FLLDCIM: MARK — M25 M3FILE_ARCHIVE_STREAM CALL
 				if (entry == null) {
 					break;
 				}

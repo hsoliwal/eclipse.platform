@@ -294,7 +294,7 @@ public class InputPatchPage extends WizardPage {
 			String patchFilePath = getPatchFilePath();
 			if (patchFilePath != null) {
 				try {
-					return new FileReader(patchFilePath);
+					return new FileReader(patchFilePath); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 				} catch (FileNotFoundException ex) {
 					MessageDialog.openError(null, PatchMessages.InputPatchPage_PatchErrorDialog_title,
 							PatchMessages.InputPatchPage_PatchFileNotFound_message);
@@ -324,7 +324,7 @@ public class InputPatchPage extends WizardPage {
 							PatchMessages.InputPatchPage_PatchFileNotFound_message);
 				} else {
 					try {
-						return new FileReader(patchFile.getLocation().toFile());
+						return new FileReader(patchFile.getLocation().toFile()); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 					} catch (FileNotFoundException ex) {
 						MessageDialog.openError(null, PatchMessages.InputPatchPage_PatchErrorDialog_title,
 								PatchMessages.InputPatchPage_PatchFileNotFound_message);
@@ -581,7 +581,7 @@ public class InputPatchPage extends WizardPage {
 			String path= fPatchFileNameField.getText();
 			if (path != null && path.length() > 0) {
 				File file= new File(path);
-				gotPatch= file.exists() && file.isFile() && file.length() > 0;
+				gotPatch= file.exists() && file.isFile() && file.length() > 0; //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				if (!gotPatch) {
 					error= PatchMessages.InputPatchPage_CannotLocatePatch_message + path; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
@@ -613,7 +613,7 @@ public class InputPatchPage extends WizardPage {
 						error = PatchMessages.InputPatchPage_PatchFileNotFound_message;
 					} else {
 						File actualFile= location.toFile();
-						gotPatch= actualFile.exists()&&actualFile.isFile()&&actualFile.length() > 0;
+						gotPatch= actualFile.exists()&&actualFile.isFile()&&actualFile.length() > 0; //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						if (!gotPatch) {
 							error= PatchMessages.InputPatchPage_FileSelectedNotPatch_message;
 						}
@@ -869,7 +869,7 @@ public class InputPatchPage extends WizardPage {
 			Reader reader= null;
 			try {
 				try {
-					reader= new FileReader(patchTarget.getLocation().toFile());
+					reader= new FileReader(patchTarget.getLocation().toFile()); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 					if (isPatchFile(reader)) {
 						// set choice to workspace
 						setInputButtonState(WORKSPACE);

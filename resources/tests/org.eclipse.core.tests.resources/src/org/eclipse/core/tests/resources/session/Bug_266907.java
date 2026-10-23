@@ -76,8 +76,8 @@ public class Bug_266907 {
 
 		// move .project to a temp location
 		Path dotProjectCopy = getTempDir().append("dotProjectCopy").toPath();
-		Files.copy(dotProject, dotProjectCopy);
-		Files.delete(dotProject);
+		Files.copy(dotProject, dotProjectCopy); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		Files.delete(dotProject); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
@@ -93,8 +93,8 @@ public class Bug_266907 {
 		Path dotProject = project.getFile(".project").getLocation().toPath();
 		Path dotProjectCopy = getTempDir().append("dotProjectCopy").toPath();
 
-		Files.copy(dotProjectCopy, dotProject);
-		Files.delete(dotProjectCopy);
+		Files.copy(dotProjectCopy, dotProject); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		Files.delete(dotProjectCopy); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		project.open(createTestMonitor());
 		assertThat(project).matches(IProject::isAccessible, "is accessible");

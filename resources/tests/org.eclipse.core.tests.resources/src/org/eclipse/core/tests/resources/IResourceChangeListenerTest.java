@@ -1669,20 +1669,20 @@ public class IResourceChangeListenerTest {
 	public void testRemoveAndCreateUnderlyingFileForLinkedResource() throws CoreException, IOException {
 		IPath path = getTempDir().addTrailingSeparator().append(createUniqueString());
 		fileStoreExtension.deleteOnTearDown(path);
-		path.toFile().createNewFile();
+		path.toFile().createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		IFile linkedFile = project1.getFile(createUniqueString());
 		linkedFile.createLink(path, IResource.NONE, createTestMonitor());
 
 		// check the delta when underlying file is removed
 		verifier.addExpectedChange(linkedFile, IResourceDelta.CHANGED, IResourceDelta.LOCAL_CHANGED);
-		path.toFile().delete();
+		path.toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		project1.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
 		assertDelta();
 
 		// check the delta when underlying file is recreated
 		verifier.addExpectedChange(linkedFile, IResourceDelta.CHANGED, IResourceDelta.LOCAL_CHANGED | IResourceDelta.CONTENT);
-		path.toFile().createNewFile();
+		path.toFile().createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		project1.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
 		assertDelta();
@@ -1693,19 +1693,19 @@ public class IResourceChangeListenerTest {
 		IPath path = getTempDir().addTrailingSeparator().append(createUniqueString());
 		fileStoreExtension.deleteOnTearDown(path);
 
-		path.toFile().mkdir();
+		path.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		IFolder linkedFolder = project1.getFolder(createUniqueString());
 		linkedFolder.createLink(path, IResource.NONE, createTestMonitor());
 
 		// check the delta when underlying folder is removed
 		verifier.addExpectedChange(linkedFolder, IResourceDelta.CHANGED, IResourceDelta.LOCAL_CHANGED);
-		path.toFile().delete();
+		path.toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		project1.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
 		assertDelta();
 
 		// check the delta when underlying folder is recreated
 		verifier.addExpectedChange(linkedFolder, IResourceDelta.CHANGED, IResourceDelta.LOCAL_CHANGED);
-		path.toFile().mkdir();
+		path.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		project1.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
 		assertDelta();
 	}
@@ -1715,7 +1715,7 @@ public class IResourceChangeListenerTest {
 		IPath path = getTempDir().addTrailingSeparator().append(createUniqueString());
 		fileStoreExtension.deleteOnTearDown(path);
 
-		path.toFile().mkdir();
+		path.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		IFolder linkedFolder = project1.getFolder(createUniqueString());
 		linkedFolder.createLink(path, IResource.NONE, createTestMonitor());
 

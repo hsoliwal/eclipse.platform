@@ -158,7 +158,7 @@ public class Synchronizer implements ISynchronizer {
 	protected void restoreFromSave(IResource resource) throws CoreException {
 		IPath sourceLocation = workspace.getMetaArea().getSyncInfoLocationFor(resource);
 		IPath tempLocation = workspace.getMetaArea().getBackupLocationFor(sourceLocation);
-		if (!sourceLocation.toFile().exists() && !tempLocation.toFile().exists()) {
+		if (!sourceLocation.toFile().exists() && !tempLocation.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return;
 		}
 		try (DataInputStream input = new DataInputStream(
@@ -174,7 +174,7 @@ public class Synchronizer implements ISynchronizer {
 
 	protected void restoreFromSnap(IResource resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath sourceLocation = workspace.getMetaArea().getSyncInfoSnapshotLocationFor(resource);
-		if (!sourceLocation.toFile().exists()) {
+		if (!sourceLocation.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return;
 		}
 		try (DataInputStream input = new DataInputStream(new SafeChunkyInputStream(sourceLocation.toFile()))) {

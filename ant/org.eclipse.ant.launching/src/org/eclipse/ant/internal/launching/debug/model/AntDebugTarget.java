@@ -352,7 +352,7 @@ public class AntDebugTarget extends AntDebugElement implements IDebugTarget, IDe
 	 */
 	public void breakpointHit(String event) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// determine which breakpoint was hit, and set the thread's breakpoint
-		String[] datum = event.split(DebugMessageIds.MESSAGE_DELIMITER);
+		String[] datum = event.split(DebugMessageIds.MESSAGE_DELIMITER); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		String fileName = datum[1];
 		int lineNumber = Integer.parseInt(datum[2]);
 		boolean found = false;

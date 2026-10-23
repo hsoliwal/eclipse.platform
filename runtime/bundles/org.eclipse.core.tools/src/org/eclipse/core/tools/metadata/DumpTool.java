@@ -65,7 +65,7 @@ public class DumpTool implements IApplication {
 		}
 
 		File toDump = new File(fileName);
-		if (!toDump.exists()) {
+		if (!toDump.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			System.err.println("File \"" + toDump.getAbsolutePath() + "\" does not exist"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			return Integer.valueOf(1);
 		}
@@ -78,7 +78,7 @@ public class DumpTool implements IApplication {
 		System.out.println("DumpTool started...");
 		System.out.println("Analyzing: "+fileName); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-		if (toDump.isFile()) {
+		if (toDump.isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			files = new String[]{fileName};
 		} else {
 			files = extractFiles(fileName);
@@ -116,7 +116,7 @@ public class DumpTool implements IApplication {
 		System.out.print(". Bytes read: "); //$NON-NLS-1$
 		System.out.print(dump.getOffset());
 		System.out.print(" / Total: "); //$NON-NLS-1$
-		System.out.println(dump.getFile().length());
+		System.out.println(dump.getFile().length()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	private String[] extractFiles(String directory) {
@@ -151,14 +151,14 @@ public class DumpTool implements IApplication {
 		monitor.beginTask("Scanning dir " + dir, 100); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		try {
 			// looks for files of registered types in this directory
-			File[] selectedFiles = dir.listFiles(fileFilter);
+			File[] selectedFiles = dir.listFiles(fileFilter); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			monitor.worked(1);
 			Arrays.sort(selectedFiles);
 			for (File selectedFile : selectedFiles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fileList.add(selectedFile.getAbsolutePath());
 			}
 			// looks for files of registered types in its subdirectories
-			File[] subDirs = dir.listFiles(directoryFilter);
+			File[] subDirs = dir.listFiles(directoryFilter); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			monitor.worked(1);
 			Arrays.sort(subDirs);
 

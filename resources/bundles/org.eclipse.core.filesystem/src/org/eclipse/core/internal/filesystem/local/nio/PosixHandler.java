@@ -56,12 +56,12 @@ public class PosixHandler extends NativeHandler {
 		info.setName(fileNamePath == null ? "" : fileNamePath.toString()); //$NON-NLS-1$
 
 		try {
-			PosixFileAttributes attrs = Files.readAttributes(path, PosixFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+			PosixFileAttributes attrs = Files.readAttributes(path, PosixFileAttributes.class, LinkOption.NOFOLLOW_LINKS); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 			if (attrs.isSymbolicLink()) {
 				info.setAttribute(EFS.ATTRIBUTE_SYMLINK, true);
 				info.setStringAttribute(EFS.ATTRIBUTE_LINK_TARGET, Files.readSymbolicLink(path).toString());
-				attrs = Files.readAttributes(path, PosixFileAttributes.class);
+				attrs = Files.readAttributes(path, PosixFileAttributes.class); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			}
 
 			info.setExists(true);

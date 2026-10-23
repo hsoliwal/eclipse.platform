@@ -247,8 +247,8 @@ public class IResourceTest {
 		source.copy(destinationPath, true, createTestMonitor());
 
 		IFile destination = project.getFile(destinationPath);
-		long expected = source.getLocation().toFile().lastModified();
-		long actual = destination.getLocation().toFile().lastModified();
+		long expected = source.getLocation().toFile().lastModified(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		long actual = destination.getLocation().toFile().lastModified(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		// java.io.File.lastModified() has only second accuracy on some OSes
 		long difference = Math.abs(expected - actual);
 		assertTrue(difference <= 1000, "time difference>1000ms: " + difference); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
@@ -465,7 +465,7 @@ public class IResourceTest {
 
 		final String newContents = "some other contents";
 		Thread.sleep(5000);
-		try (FileOutputStream output = new FileOutputStream(target.getLocation().toFile())) {
+		try (FileOutputStream output = new FileOutputStream(target.getLocation().toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			createInputStream(newContents).transferTo(output);
 		}
 

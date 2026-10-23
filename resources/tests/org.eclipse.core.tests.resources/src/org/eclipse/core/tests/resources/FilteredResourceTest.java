@@ -93,7 +93,7 @@ public class FilteredResourceTest {
 		createInWorkspace(new IResource[] {existingProject, otherExistingProject, closedProject, existingFolderInExistingProject, existingFolderInExistingFolder, existingFileInExistingProject});
 		closedProject.close(createTestMonitor());
 		removeFromWorkspace(new IResource[] {nonExistingFolderInExistingProject, nonExistingFolderInExistingFolder, nonExistingFolderInOtherExistingProject, nonExistingFolder2InOtherExistingProject, nonExistingFileInExistingProject, nonExistingFileInOtherExistingProject, nonExistingFileInExistingFolder});
-		resolve(localFolder).toFile().mkdirs();
+		resolve(localFolder).toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		createInFileSystem(resolve(localFile));
 	}
 
@@ -287,7 +287,7 @@ public class FilteredResourceTest {
 		assertThat(members).isEmpty();
 
 		IFile newFile = existingFolderInExistingFolder.getFile("foo.cpp");
-		assertThat(newFile.getLocation().toFile().createNewFile())
+		assertThat(newFile.getLocation().toFile().createNewFile()) //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				.withFailMessage("file creation not successful: %s", newFile).isTrue();
 
 		existingFolderInExistingFolder.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
@@ -301,7 +301,7 @@ public class FilteredResourceTest {
 		assertThat(members).isEmpty();
 
 		newFile = existingFolderInExistingFolder.getFile("foo.h");
-		assertThat(newFile.getLocation().toFile().createNewFile())
+		assertThat(newFile.getLocation().toFile().createNewFile()) //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				.withFailMessage("file creation not successful: %s", newFile).isTrue();
 
 		existingFolderInExistingFolder.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
@@ -329,7 +329,7 @@ public class FilteredResourceTest {
 
 		// create a file that shows under both
 		newFile = existingFolderInExistingFolder.getFile("foo.text");
-		assertThat(newFile.getLocation().toFile().createNewFile())
+		assertThat(newFile.getLocation().toFile().createNewFile()) //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				.withFailMessage("file creation not successful: %s", newFile).isTrue();
 
 		existingFolderInExistingFolder.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
@@ -1286,7 +1286,7 @@ public class FilteredResourceTest {
 		// rename a.txt to A.txt in the file system
 		File ioFile = file_a_txt.getLocation().toFile();
 		assertThat(ioFile).exists();
-		ioFile.renameTo(new File(file_a_txt.getLocation().removeLastSegments(1).append("A.txt").toString()));
+		ioFile.renameTo(new File(file_a_txt.getLocation().removeLastSegments(1).append("A.txt").toString())); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		assertThat(file_a_txt).matches(it -> !workspace.validateFiltered(it).isOK(), "is filtered");
 

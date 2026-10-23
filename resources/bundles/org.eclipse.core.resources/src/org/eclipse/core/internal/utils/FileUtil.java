@@ -72,7 +72,7 @@ public class FileUtil {
 		}
 		try {
 			final String pathString = path.toOSString();
-			final String canonicalPath = new java.io.File(pathString).getCanonicalPath();
+			final String canonicalPath = new java.io.File(pathString).getCanonicalPath(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			//only create a new path if necessary
 			if (canonicalPath.equals(pathString)) {
 				return path;
@@ -116,7 +116,7 @@ public class FileUtil {
 				if (MACOSX) {
 					// IFileInfo.getName() may not return the real name of the file on Mac OS X.
 					// Obtain the real name of the file from a listing of its parent directory.
-					String[] names = realPath.toFile().list((unused, n) -> n.equalsIgnoreCase(segment));
+					String[] names = realPath.toFile().list((unused, n) -> n.equalsIgnoreCase(segment)); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					String realName;
 					if (names == null || names.length == 0) {
 						// The remainder of the path doesn't exist on the file system - copy from

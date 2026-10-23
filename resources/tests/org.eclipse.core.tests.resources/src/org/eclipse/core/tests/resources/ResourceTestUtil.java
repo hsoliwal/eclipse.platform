@@ -134,9 +134,9 @@ public final class ResourceTestUtil {
 	 * random contents.
 	 */
 	public static void createInFileSystem(IPath path) throws CoreException, IOException {
-		path.toFile().getParentFile().mkdirs();
+		path.toFile().getParentFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		try (InputStream input = createRandomContentsStream();
-				OutputStream output = new FileOutputStream(path.toFile())) {
+				OutputStream output = new FileOutputStream(path.toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			input.transferTo(output);
 		}
 	}
@@ -339,7 +339,7 @@ public final class ResourceTestUtil {
 		if (path == null) {
 			path = computeDefaultLocation(resource);
 		}
-		return path.toFile().exists();
+		return path.toFile().exists(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	private static IPath computeDefaultLocation(IResource target) {
@@ -481,7 +481,7 @@ public final class ResourceTestUtil {
 	public static String readStringInFileSystem(IFile file) throws IOException {
 		IPath location = file.getLocation();
 		assertNotNull(location, "location was null for file: " + file); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
-		return new String(Files.readAllBytes(location.toPath()), StandardCharsets.UTF_8);
+		return new String(Files.readAllBytes(location.toPath()), StandardCharsets.UTF_8); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**
@@ -511,7 +511,7 @@ public final class ResourceTestUtil {
 	private static boolean isInSync(IResource resource) {
 		IPath location = resource.getLocation();
 		long localTimeStamp = resource.getLocalTimeStamp();
-		return getLastModifiedTime(location) == localTimeStamp || location.toFile().lastModified() == localTimeStamp;
+		return getLastModifiedTime(location) == localTimeStamp || location.toFile().lastModified() == localTimeStamp; //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	private static long getLastModifiedTime(IPath fileLocation) {
@@ -702,16 +702,16 @@ public final class ResourceTestUtil {
 		for (int i = 97/*a*/; i < 123/*z*/; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c = (char) i;
 			java.io.File rootFile = new java.io.File(c + ":\\"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
-			if (rootFile.exists() && rootFile.canWrite()) {
+			if (rootFile.exists() && rootFile.canWrite()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				//sometimes canWrite can return true but we are still not allowed to create a file - see bug 379284.
 				File probe = new File(rootFile, createUniqueString());
 				try {
-					probe.createNewFile();
+					probe.createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				} catch (IOException e) {
 					//can't create a file here.. try another device
 					continue;
 				} finally {
-					probe.delete();
+					probe.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				}
 				if (devices[0] == null) {
 					devices[0] = c + ":/"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
@@ -728,7 +728,7 @@ public final class ResourceTestUtil {
 	 * Wraps the given path into a canonical IPath.
 	 */
 	public static IPath wrapInCanonicalIPath(Path path) throws IOException {
-		return IPath.fromOSString(path.toFile().getCanonicalPath());
+		return IPath.fromOSString(path.toFile().getCanonicalPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**

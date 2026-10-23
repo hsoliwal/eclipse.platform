@@ -49,7 +49,7 @@ public class AntEditorTests {
 		String hoverText = hover.getHoverInfo(editor.getViewer(), region);
 		assertNotNull(hoverText, "Expecting a hovertext object"); //$NON-NLS-1$
 		String correctResultRegEx = "<html><body text=\"#.*\" bgcolor=\"#.*\"><h5>Path Elements:</h5><ul><li>.*</html>"; //$NON-NLS-1$
-		assertTrue(hoverText.matches(correctResultRegEx),
+		assertTrue(hoverText.matches(correctResultRegEx), //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 				"Expected the following hover text to match regex: " + correctResultRegEx); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 

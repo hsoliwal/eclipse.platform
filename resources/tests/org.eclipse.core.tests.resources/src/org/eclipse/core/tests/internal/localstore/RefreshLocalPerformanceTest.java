@@ -40,14 +40,14 @@ public class RefreshLocalPerformanceTest {
 	public Date startDate;
 
 	protected int countChildren(File root) {
-		String[] children = root.list();
+		String[] children = root.list(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		if (children == null) {
 			return 0;
 		}
 		int result = 0;
 		for (String element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			File child = new File(root, element);
-			if (child.isDirectory()) {
+			if (child.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				result += countChildren(child);
 			}
 			result++;
@@ -74,7 +74,7 @@ public class RefreshLocalPerformanceTest {
 	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLocalRefreshPerformance() throws Exception {
 		// test if the test can be done in this machine
-		assumeTrue(bigSiteLocation.toFile().isDirectory());
+		assumeTrue(bigSiteLocation.toFile().isDirectory()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// create common objects
 		int n = 10;

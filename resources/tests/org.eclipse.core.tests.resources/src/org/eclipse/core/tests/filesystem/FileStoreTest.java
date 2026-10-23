@@ -121,7 +121,7 @@ public class FileStoreTest {
 
 	private IFileStore getDirFileStore(String path) throws CoreException {
 		IFileStore store = EFS.getLocalFileSystem().getStore(IPath.fromOSString(path));
-		if (!store.toLocalFile(EFS.NONE, createTestMonitor()).exists()) {
+		if (!store.toLocalFile(EFS.NONE, createTestMonitor()).exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			store.mkdir(EFS.NONE, null);
 		}
 		return store;
@@ -373,7 +373,7 @@ public class FileStoreTest {
 
 	@Test
 	public void testFileAttributeCopyForSmallFiles() throws CoreException, IOException {
-		Path root = Files.createDirectories(randomUniqueNotExistingPath());
+		Path root = Files.createDirectories(randomUniqueNotExistingPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		Path sourceFile = root.resolve("source.txt");
 		Files.writeString(sourceFile, "This is a test file.");
 		Path targetFile = root.resolve("target.txt");
@@ -383,8 +383,8 @@ public class FileStoreTest {
 
 		sourceStore.copy(targetStore, EFS.NONE, new NullProgressMonitor());
 
-		String sourceContent = Files.readString(sourceFile);
-		String targetContent = Files.readString(targetFile);
+		String sourceContent = Files.readString(sourceFile); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		String targetContent = Files.readString(targetFile); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertEquals(sourceContent, targetContent);
 	}
 
@@ -672,17 +672,17 @@ public class FileStoreTest {
 	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetFileStore() throws Exception {
 		// create files
-		Path root = Files.createDirectories(randomUniqueNotExistingPath());
+		Path root = Files.createDirectories(randomUniqueNotExistingPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		File file = root.resolve("test.txt").toFile();
-		file.createNewFile();
-		assertTrue(file.exists());
+		file.createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(file.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		IFileStore tempStore = createDir(getFileStore(root.resolve("temp")), true);
 		createDir(getFileStore(root.resolve("temp/temp2")), true);
 
 		file = root.resolve("temp/temp2/test.txt").toFile();
-		file.createNewFile();
-		assertTrue(file.exists());
+		file.createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(file.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// check the parent reference
 		IPath relativePath = IPath.fromOSString("../test.txt");
@@ -753,7 +753,7 @@ public class FileStoreTest {
 				"/a/d", //
 				"/aa", //
 				"/b").stream().map(s -> prefix + s).toList(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
-		List<String> pathsTrimmed = paths.stream().map(s -> s //
+		List<String> pathsTrimmed = paths.stream().map(s -> s // //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 				.replaceAll("/$", "") // remove trailing slashes
 				.replaceAll("/[^/]+/\\.\\./", "/") // collapse /a/../ to /
 				.replaceAll("/\\./", "/") // collapse /./ to /

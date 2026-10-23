@@ -275,7 +275,7 @@ public class UnifiedTreeTest {
 		IFolder link = project.getFolder("link");
 
 		File file = new File(ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile(), "link");
-		file.mkdir();
+		file.mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		IFileStore fileStore = EFS.getLocalFileSystem().fromLocalFile(file);
 		link.createLink(fileStore.toURI(), IResource.NONE, null);
@@ -297,8 +297,8 @@ public class UnifiedTreeTest {
 
 		String filePath = "a/b/c/file.txt";
 		File javaFile = new File(project.getLocation().toFile(), filePath);
-		assertTrue(javaFile.getParentFile().mkdirs());
-		assertTrue(javaFile.createNewFile());
+		assertTrue(javaFile.getParentFile().mkdirs()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(javaFile.createNewFile()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		IFolder folder = project.getFolder("a");
 		IFile file = project.getFile(filePath);

@@ -85,7 +85,7 @@ public class LocalStoreRegressionTests {
 		/* evaluate test environment */
 		IPath root = getWorkspace().getRoot().getLocation().append("" + new Date().getTime()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		File temp = root.toFile();
-		temp.mkdirs();
+		temp.mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		File target = new File(temp, "target");
 		Workspace.clear(target); // make sure there was nothing here before

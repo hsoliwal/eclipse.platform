@@ -58,16 +58,16 @@ public class SafeFileInputOutputStreamTest {
 	@BeforeEach
 	public void setUp() throws Exception {
 		temp = getRandomLocation().append("temp");
-		temp.toFile().mkdirs();
+		temp.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		fileStoreExtension.deleteOnTearDown(temp);
-		assertTrue(temp.toFile().isDirectory(), "could not create temp directory");
+		assertTrue(temp.toFile().isDirectory(), "could not create temp directory"); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSafeFileInputStream() throws IOException {
 		File target = new File(temp.toFile(), "target");
 		Workspace.clear(target); // make sure there was nothing here before
-		assertFalse(target.exists());
+		assertFalse(target.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// define temp path
 		IPath parentLocation = IPath.fromOSString(target.getParentFile().getAbsolutePath());
@@ -83,8 +83,8 @@ public class SafeFileInputOutputStreamTest {
 		try(SafeFileOutputStream safeStream = createSafeStream(target.getAbsolutePath(), tempLocation.toOSString())) {
 			createInputStream(contents).transferTo(safeStream);
 		}
-		assertTrue(target.exists());
-		assertFalse(tempFile.exists());
+		assertTrue(target.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertFalse(tempFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		try (InputStream diskContents = new SafeFileInputStream(tempLocation.toOSString(), target.getAbsolutePath())) {
 			assertThat(diskContents).hasContent(contents);
 		}
@@ -95,7 +95,7 @@ public class SafeFileInputOutputStreamTest {
 	public void testSimple() throws IOException {
 		File target = new File(temp.toFile(), "target");
 		Workspace.clear(target); // make sure there was nothing here before
-		assertTrue(!target.exists());
+		assertTrue(!target.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		String contents = createRandomString();
 
 		// basic use (like a FileOutputStream)
@@ -111,10 +111,10 @@ public class SafeFileInputOutputStreamTest {
 		File tempFile;
 		try (SafeFileOutputStream safeStream = createSafeStream(target)) {
 			tempFile = new File(safeStream.getTempFilePath());
-			assertTrue(tempFile.exists());
+			assertTrue(tempFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			createInputStream(contents).transferTo(safeStream);
 		}
-		assertFalse(tempFile.exists());
+		assertFalse(tempFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		try (InputStream diskContents = getContents(target)) {
 			assertThat(diskContents).hasContent(contents);
 		}
@@ -125,7 +125,7 @@ public class SafeFileInputOutputStreamTest {
 	public void testSpecifiedTempFile() throws IOException {
 		File target = new File(temp.toFile(), "target");
 		Workspace.clear(target); // make sure there was nothing here before
-		assertTrue(!target.exists());
+		assertTrue(!target.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// define temp path
 		IPath parentLocation = IPath.fromOSString(target.getParentFile().getAbsolutePath());
@@ -135,11 +135,11 @@ public class SafeFileInputOutputStreamTest {
 		File tempFile = tempLocation.toFile();
 		// we did not have a file on the destination, so we should not have a temp file
 		try (SafeFileOutputStream safeStream = createSafeStream(target.getAbsolutePath(), tempLocation.toOSString())) {
-			assertFalse(tempFile.exists());
+			assertFalse(tempFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			// update target contents
 			createInputStream(contents).transferTo(safeStream);
 		}
-		assertFalse(tempFile.exists());
+		assertFalse(tempFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		try (InputStream diskContents = getContents(target)) {
 			assertThat(diskContents).hasContent(contents);
 		}
@@ -147,11 +147,11 @@ public class SafeFileInputOutputStreamTest {
 		contents = createRandomString();
 		// now we should have a temp file
 		try (SafeFileOutputStream safeStream = createSafeStream(target.getAbsolutePath(), tempLocation.toOSString())) {
-			assertTrue(tempFile.exists());
+			assertTrue(tempFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			// update target contents
 			createInputStream(contents).transferTo(safeStream);
 		}
-		assertFalse(tempFile.exists());
+		assertFalse(tempFile.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		try (InputStream diskContents = getContents(target)) {
 			assertThat(diskContents).hasContent(contents);
 		}

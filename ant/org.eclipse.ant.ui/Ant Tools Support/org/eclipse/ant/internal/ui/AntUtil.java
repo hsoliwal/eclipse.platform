@@ -200,7 +200,7 @@ public final class AntUtil {
 		if (allArgs != null) {
 			// filter arguments to avoid resolving variables that will prompt the user
 			List<String> filtered = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
-			Pattern pattern = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$
+			Pattern pattern = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			IStringVariableManager manager = VariablesPlugin.getDefault().getStringVariableManager();
 			for (String arg : ExternalToolsUtil.parseStringIntoList(allArgs)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (arg.startsWith("-D")) { //$NON-NLS-1$
@@ -275,7 +275,7 @@ public final class AntUtil {
 	 */
 	private static File getBuildFile(String path) {
 		File buildFile = new File(path);
-		if (!buildFile.isFile() || !buildFile.exists()) {
+		if (!buildFile.isFile() || !buildFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return null;
 		}
 
@@ -283,7 +283,7 @@ public final class AntUtil {
 	}
 
 	private static IAntModel getAntModel(final File buildFile, URL[] urls, boolean needsLexical, boolean needsPosition, boolean needsTask) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
-		if (buildFile == null || !buildFile.exists()) {
+		if (buildFile == null || !buildFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return null;
 		}
 		IDocument doc = getDocument(buildFile);
@@ -644,7 +644,7 @@ public final class AntUtil {
 	 * @since 3.8
 	 */
 	public static boolean isKnownAntFile(File file) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
-		if (file != null && !file.isDirectory()) {
+		if (file != null && !file.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			String filename = file.getName();
 			IContentType type = Platform.getContentTypeManager().findContentTypeFor(filename);
 			if (type != null) {
@@ -742,7 +742,7 @@ public final class AntUtil {
 		buf.append(getKnownBuildFileExtensionsAsPattern()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		buf.append(")"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		try {
-			Pattern p = Pattern.compile(buf.toString());
+			Pattern p = Pattern.compile(buf.toString()); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			return p.matcher(name).matches(); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		}
 		catch (PatternSyntaxException pse) {

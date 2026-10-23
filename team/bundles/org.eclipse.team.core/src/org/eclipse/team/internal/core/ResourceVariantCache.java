@@ -158,18 +158,18 @@ public class ResourceVariantCache {
 	private synchronized void createCacheDirectory() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath cacheLocation = getCachePath();
 		File file = cacheLocation.toFile();
-		if (file.exists()) {
+		if (file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try {
 				deleteFile(file);
 			} catch (TeamException e) {
 				// Check to see if were in an acceptable state
-				File[] fileList = file.listFiles();
-				if (file.exists() && (!file.isDirectory() || (fileList != null && fileList.length != 0))) {
+				File[] fileList = file.listFiles(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+				if (file.exists() && (!file.isDirectory() || (fileList != null && fileList.length != 0))) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					TeamPlugin.log(e);
 				}
 			}
 		}
-		if (! file.exists() && ! file.mkdirs()) {
+		if (! file.exists() && ! file.mkdirs()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			TeamPlugin.log(new TeamException(NLS.bind(Messages.RemoteContentsCache_fileError, file.getAbsolutePath())));
 		}
 		cacheEntries = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
@@ -183,7 +183,7 @@ public class ResourceVariantCache {
 		cacheDirSize = 0;
 		IPath cacheLocation = getCachePath();
 		File file = cacheLocation.toFile();
-		if (file.exists()) {
+		if (file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try {
 				deleteFile(file);
 			} catch (TeamException e) {
@@ -194,8 +194,8 @@ public class ResourceVariantCache {
 	}
 
 	private void deleteFile(File file) throws TeamException {
-		if (file.isDirectory()) {
-			File[] children = file.listFiles();
+		if (file.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			File[] children = file.listFiles(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			if(children == null) {
 				throw new TeamException(NLS.bind(Messages.RemoteContentsCache_fileError, file.getAbsolutePath()));
 			}
@@ -203,7 +203,7 @@ public class ResourceVariantCache {
 				deleteFile(f);
 			}
 		}
-		if (! file.delete()) {
+		if (! file.delete()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			throw new TeamException(NLS.bind(Messages.RemoteContentsCache_fileError, file.getAbsolutePath()));
 		}
 	}

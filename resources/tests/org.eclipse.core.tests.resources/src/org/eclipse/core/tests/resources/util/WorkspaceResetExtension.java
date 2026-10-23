@@ -104,7 +104,7 @@ public class WorkspaceResetExtension implements AfterEachCallback, BeforeEachCal
 	private void assertWorkspaceFolderEmpty() {
 		final String metadataDirectoryName = ".metadata";
 		File workspaceLocation = getWorkspace().getRoot().getLocation().toFile();
-		File[] remainingFilesInWorkspace = workspaceLocation
+		File[] remainingFilesInWorkspace = workspaceLocation //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				.listFiles(file -> !file.getName().equals(metadataDirectoryName));
 		assertThat(remainingFilesInWorkspace).as("check workspace folder is empty").isEmpty();
 	}

@@ -44,7 +44,7 @@ public class TestWorkspaceEncodingExistingWorkspace {
 	@ExecuteInHost
 	public void setUpWorkspace() throws IOException {
 		Path projectsTree = sessionWorkspace.getWorkspaceDirectory().resolve(".metadata/.plugins/org.eclipse.core.resources/.projects");
-		Files.createDirectories(projectsTree);
+		Files.createDirectories(projectsTree); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	@Test

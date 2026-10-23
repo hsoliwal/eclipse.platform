@@ -315,7 +315,7 @@ public class PatchTest {
 
 		// look for the patchdata folder entry
 		String patchdataName = null;
-		Enumeration<JarEntry> entries = jarFile.entries();
+		Enumeration<JarEntry> entries = jarFile.entries(); //FLLDCIM: MARK — M25 M3FILE_ARCHIVE_STREAM CALL
 		while (entries.hasMoreElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			JarEntry entry = entries.nextElement();
 			String entryName = entry.getName();
@@ -329,7 +329,7 @@ public class PatchTest {
 			return null;
 
 		Map<String, PatchTestConfiguration> result = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
-		entries = jarFile.entries();
+		entries = jarFile.entries(); //FLLDCIM: MARK — M25 M3FILE_ARCHIVE_STREAM CALL
 		while (entries.hasMoreElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			JarEntry entry = entries.nextElement();
 			String entryName = entry.getName();
@@ -362,17 +362,17 @@ public class PatchTest {
 
 		IPath patchdataFolderPath = IPath.fromOSString(patchdataUrl.getPath());
 		File patchdataFolderFile = patchdataFolderPath.toFile();
-		assertTrue(patchdataFolderFile.isDirectory());
-		File[] listOfSubfolders = patchdataFolderFile.listFiles((FileFilter) File::isDirectory);
+		assertTrue(patchdataFolderFile.isDirectory()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		File[] listOfSubfolders = patchdataFolderFile.listFiles((FileFilter) File::isDirectory); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		for (File subfolder : listOfSubfolders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Path pcPath = IPath.fromOSString(subfolder.getPath() + "/" + PATCH_CONFIGURATION).toPath(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 			if (subfolder.getName().equals("CVS"))
 				continue;
-			if (Files.exists(pcPath)) {
+			if (Files.exists(pcPath)) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				Properties properties = new Properties();
 				try {
-					properties.load(Files.newBufferedReader(pcPath));
+					properties.load(Files.newBufferedReader(pcPath)); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				} catch (IOException e) {
 					fail("IOException occurred while loading the Patch Configuration file for " + subfolder.toString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
@@ -389,13 +389,13 @@ public class PatchTest {
 		if (skipTest)
 			return;
 		String pf = p.getProperty("patchFile", "patch.txt");
-		String[] cf = p.getProperty("contextFile", "context.txt").split(",");
-		String[] erf = p.getProperty("expectedResultFile", "exp_context").split(",");
+		String[] cf = p.getProperty("contextFile", "context.txt").split(","); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
+		String[] erf = p.getProperty("expectedResultFile", "exp_context").split(","); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		// optional, can't guess the file name here, it might left empty intentionally
 		String[] arf = null;
 		String arfp = p.getProperty("actualResultFile", null);
 		if (arfp != null)
-			arf = arfp.split(",");
+			arf = arfp.split(","); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		int fuzzFactor = Integer.parseInt(p.getProperty("fuzzFactor", "0"));
 		boolean ignoreWhitespace = Boolean.valueOf(p.getProperty("ignoreWhitespace", "false")).booleanValue();
 		int prefixSegmentStrip = Integer.parseInt(p.getProperty("prefixSegmentStrip", "0"));

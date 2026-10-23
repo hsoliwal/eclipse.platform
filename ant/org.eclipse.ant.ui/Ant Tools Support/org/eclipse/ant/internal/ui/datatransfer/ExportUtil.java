@@ -524,8 +524,8 @@ public class ExportUtil {
 	 */
 	public static boolean existsUserFile(String filename) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		File buildFile = new File(filename);
-		if (buildFile.exists()) {
-			try (BufferedReader in = new BufferedReader(new FileReader(buildFile))) {
+		if (buildFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			try (BufferedReader in = new BufferedReader(new FileReader(buildFile))) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 				int i = BuildFileCreator.WARNING.indexOf(NEWLINE);
 				String warning = BuildFileCreator.WARNING.substring(0, i);
 				String line;
@@ -643,9 +643,9 @@ public class ExportUtil {
 		if (s == null || s.equals(IAntCoreConstants.EMPTY_STRING)) {
 			return;
 		}
-		Pattern pattern = Pattern.compile("\\$\\{.*?\\}"); // ${var} //$NON-NLS-1$
+		Pattern pattern = Pattern.compile("\\$\\{.*?\\}"); // ${var} //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		Matcher matcher = pattern.matcher(s); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
-		while (matcher.find()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+		while (matcher.find()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			String variable = matcher.group();
 			String value;
 			try {
@@ -663,7 +663,7 @@ public class ExportUtil {
 				value = "env." + variable.substring("env_var:".length()); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			File file = new File(value);
-			if (file.exists()) {
+			if (file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				value = getRelativePath(file.getAbsolutePath(), projectRoot);
 			}
 			variable2valueMap.put(variable, value);

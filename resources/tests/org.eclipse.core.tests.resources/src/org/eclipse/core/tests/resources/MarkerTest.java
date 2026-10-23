@@ -1075,7 +1075,7 @@ public class MarkerTest {
 
 		// write all the markers to the output stream
 		File file = Platform.getLocation().append(".testmarkers").toFile();
-		try (OutputStream fileOutput = new FileOutputStream(file)) {
+		try (OutputStream fileOutput = new FileOutputStream(file)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			try (DataOutputStream output = new DataOutputStream(fileOutput)) {
 				final List<String> list = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				IResourceVisitor visitor = resource -> {
@@ -1110,7 +1110,7 @@ public class MarkerTest {
 		assertMarkersDoNotExist(expected);
 
 		// read in the markers from the file
-		try (InputStream fileInput = Files.newInputStream(file.toPath())) {
+		try (InputStream fileInput = Files.newInputStream(file.toPath())) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try (DataInputStream input = new DataInputStream(fileInput)) {
 				IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 					MarkerReader reader = new MarkerReader((Workspace) getWorkspace());
@@ -1131,7 +1131,7 @@ public class MarkerTest {
 		assertThat(actual).containsExactlyInAnyOrder(expected);
 
 		// cleanup
-		assertTrue(file.delete());
+		assertTrue(file.delete()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
@@ -1164,7 +1164,7 @@ public class MarkerTest {
 
 		// write all the markers to the output stream
 		File file = Platform.getLocation().append(".testmarkers").toFile();
-		try(OutputStream fileOutput = new FileOutputStream(file)) {
+		try(OutputStream fileOutput = new FileOutputStream(file)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			try(DataOutputStream output = new DataOutputStream(fileOutput)) {
 				final List<String> list = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				visitor = resource -> {
@@ -1199,7 +1199,7 @@ public class MarkerTest {
 		assertMarkersDoNotExist(expected);
 
 		// read in the markers from the file
-		try (InputStream fileInput = Files.newInputStream(file.toPath())) {
+		try (InputStream fileInput = Files.newInputStream(file.toPath())) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try (DataInputStream input = new DataInputStream(fileInput)) {
 				IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 					MarkerReader reader = new MarkerReader((Workspace) getWorkspace());
@@ -1220,7 +1220,7 @@ public class MarkerTest {
 		assertThat(actual).containsExactlyInAnyOrder(expected);
 
 		// cleanup
-		assertTrue(file.delete());
+		assertTrue(file.delete()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**

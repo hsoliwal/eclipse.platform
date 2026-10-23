@@ -40,9 +40,9 @@ public class AntSourceContainer extends AbstractSourceContainer {
 	public Object[] findSourceElements(String path) throws CoreException {
 		ArrayList<IStorage> sources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		File osFile = new File(path);
-		if (osFile.exists()) {
+		if (osFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try {
-				IPath canonicalPath = IPath.fromOSString(osFile.getCanonicalPath());
+				IPath canonicalPath = IPath.fromOSString(osFile.getCanonicalPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				IFile[] files = fRoot.findFilesForLocationURI(canonicalPath.makeAbsolute().toFile().toURI());
 				if (files.length > 0) {
 					for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP

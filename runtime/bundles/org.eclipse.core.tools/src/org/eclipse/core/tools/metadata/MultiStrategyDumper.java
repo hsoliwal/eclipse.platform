@@ -94,7 +94,7 @@ public abstract class MultiStrategyDumper extends AbstractDumper {
 	 */
 	@Override
 	protected InputStream openInputStream(File file) throws IOException {
-		return new FileInputStream(file);
+		return new FileInputStream(file); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 	}
 
 }

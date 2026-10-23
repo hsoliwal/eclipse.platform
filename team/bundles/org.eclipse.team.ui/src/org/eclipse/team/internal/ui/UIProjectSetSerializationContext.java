@@ -90,7 +90,7 @@ public class UIProjectSetSerializationContext extends ProjectSetSerializationCon
 			@Override
 			public boolean needsPrompt(IResource resource) {
 				if (resource instanceof IProject project) {
-					return (project.exists() || getTargetFile(project).exists()) && resources.contains(resource);
+					return (project.exists() || getTargetFile(project).exists()) && resources.contains(resource); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				}
 				return false;
 			}

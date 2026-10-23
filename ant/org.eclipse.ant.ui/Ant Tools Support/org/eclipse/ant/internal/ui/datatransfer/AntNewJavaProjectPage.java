@@ -361,7 +361,7 @@ public class AntNewJavaProjectPage extends WizardPage {
 	 */
 	private File getBuildFile(String locationFieldContents) {
 		File buildFile = new File(locationFieldContents);
-		if (!buildFile.isFile() || !buildFile.exists()) {
+		if (!buildFile.isFile() || !buildFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return null;
 		}
 

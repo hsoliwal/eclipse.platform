@@ -50,9 +50,9 @@ public class SyncAliasTest {
 		final IWorkspaceRoot root = getWorkspace().getRoot();
 		File fsRoot = root.getLocation().toFile();
 		File fsParent = new File(fsRoot, "parent");
-		fsParent.mkdirs();
+		fsParent.mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		final File childProject = new File(fsParent, "nestedProject");
-		childProject.mkdirs();
+		childProject.mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		final IProject nestedProject = root.getProject("nestedProject");
 		final IFolder nestedTarget = nestedProject.getFolder("target");
 
@@ -79,9 +79,9 @@ public class SyncAliasTest {
 
 		getWorkspace().run((IWorkspaceRunnable) monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 			File file = new File(childProject, "target/classes/META-INF/ejb.xml");
-			file.getParentFile().mkdirs();
+			file.getParentFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try {
-				FileOutputStream fos = new FileOutputStream(file);
+				FileOutputStream fos = new FileOutputStream(file); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 				fos.close();
 			} catch (IOException e) {
 				throw new CoreException(new Status(IStatus.ERROR, "org.eclipse.core.tests.resources", "Test failed due to unexpected IOException"));

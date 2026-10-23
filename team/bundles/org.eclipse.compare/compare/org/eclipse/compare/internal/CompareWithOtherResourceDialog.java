@@ -580,8 +580,8 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 						project.open(null);
 					} catch (CoreException e) { // in case .project file or folder has been deleted
 						IPath projectPath = stateLocation.append(TMP_PROJECT_NAME);
-						projectPath.toFile().mkdirs();
-						try (FileOutputStream output = new FileOutputStream(
+						projectPath.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+						try (FileOutputStream output = new FileOutputStream( //FLLDCIM: MARK — M31 M3FILE_IO NEW
 								projectPath.append(".project").toOSString()) //$NON-NLS-1$
 						) {
 							output.write(TMP_PROJECT_FILE.getBytes());
@@ -633,7 +633,7 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 				if (!project.isOpen()) {
 					project.open(null);
 				}
-				if (path.toFile().isFile()) {
+				if (path.toFile().isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					r = getTmpFolder(project).getFile(resourceName);
 					if (r.exists()) { 	// add a number to file's name when there already is a file with that name in a folder
 						String extension = path.getFileExtension();

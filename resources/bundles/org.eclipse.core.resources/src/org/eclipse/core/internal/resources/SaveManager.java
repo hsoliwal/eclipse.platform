@@ -311,20 +311,20 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			saveMasterTable(ISaveContext.FULL_SAVE, backup);
 		} catch (CoreException e) {
 			Policy.log(e.getStatus());
-			backup.toFile().delete();
+			backup.toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return;
 		}
-		if (location.toFile().exists() && !location.toFile().delete()) {
+		if (location.toFile().exists() && !location.toFile().delete()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return;
 		}
 		try {
 			saveMasterTable(ISaveContext.FULL_SAVE, location);
 		} catch (CoreException e) {
 			Policy.log(e.getStatus());
-			location.toFile().delete();
+			location.toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return;
 		}
-		backup.toFile().delete();
+		backup.toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**
@@ -593,7 +593,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			}
 			return true;
 		};
-		String[] candidates = target.list(filter);
+		String[] candidates = target.list(filter); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		if (candidates != null) {
 			removeFiles(target, candidates, Collections.<String> emptyList());
 		}
@@ -671,7 +671,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 				}
 			}
 			if (delete) {
-				new java.io.File(root, candidate).delete();
+				new java.io.File(root, candidate).delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			}
 		}
 	}
@@ -679,8 +679,8 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	private void removeGarbage(DataOutputStream output, IPath location, IPath tempLocation) throws IOException {
 		if (output.size() == 0) {
 			output.close();
-			location.toFile().delete();
-			tempLocation.toFile().delete();
+			location.toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			tempLocation.toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 	}
 
@@ -700,7 +700,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			}
 		}
 		java.io.File target = location.toFile().getParentFile();
-		String[] candidates = target.list();
+		String[] candidates = target.list(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		if (candidates == null) {
 			return;
 		}
@@ -714,7 +714,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		valuables.add(location.lastSegment());
 		java.io.File target = location.toFile().getParentFile();
 		FilenameFilter filter = (unused, name) -> name.endsWith(LocalMetaArea.F_TREE);
-		String[] candidates = target.list(filter);
+		String[] candidates = target.list(filter); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		if (candidates != null) {
 			removeFiles(target, candidates, valuables);
 		}
@@ -725,7 +725,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			location = workspace.getMetaArea().getTreeLocationFor(project, false);
 			valuables.add(location.lastSegment());
 			target = location.toFile().getParentFile();
-			candidates = target.list(filter);
+			candidates = target.list(filter); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			if (candidates != null) {
 				removeFiles(target, candidates, valuables);
 			}
@@ -752,20 +752,20 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 
 		// delete the snapshot file, if any
 		java.io.File file = workspace.getMetaArea().getMarkersSnapshotLocationFor(resource).toFile();
-		if (file.exists()) {
-			file.delete();
+		if (file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			file.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
-		if (file.exists()) {
+		if (file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			message = Messages.resources_resetMarkers;
 			throw new ResourceException(IResourceStatus.FAILED_DELETE_METADATA, resource.getFullPath(), message, null);
 		}
 
 		// delete the snapshot file, if any
 		file = workspace.getMetaArea().getSyncInfoSnapshotLocationFor(resource).toFile();
-		if (file.exists()) {
-			file.delete();
+		if (file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			file.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
-		if (file.exists()) {
+		if (file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			message = Messages.resources_resetSync;
 			throw new ResourceException(IResourceStatus.FAILED_DELETE_METADATA, resource.getFullPath(), message, null);
 		}
@@ -883,7 +883,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		boolean status = true;
 		IPath snapshotPath = workspace.getMetaArea().getRefreshLocationFor(project);
 		java.io.File snapshotFile = snapshotPath.toFile();
-		if (!snapshotFile.exists()) {
+		if (!snapshotFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return false;
 		}
 		if (Policy.DEBUG_RESTORE) {
@@ -945,10 +945,10 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		masterTable.clear();
 		IPath location = workspace.getMetaArea().getSafeTableLocationFor(ResourcesPlugin.PI_RESOURCES);
 		java.io.File target = location.toFile();
-		if (!target.exists()) {
+		if (!target.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			location = workspace.getMetaArea().getBackupLocationFor(location);
 			target = location.toFile();
-			if (!target.exists()) {
+			if (!target.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				return;
 			}
 		}
@@ -1047,13 +1047,13 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			IPath snapLocation = workspace.getMetaArea().getSnapshotLocationFor(workspace.getRoot());
 			java.io.File localFile = snapLocation.toFile();
 
-			if (!localFile.exists()) {
+			if (!localFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				// The snapshot corresponding to the current tree version doesn't exist.
 				// Try the legacy non-versioned snapshot, but ignore it if it is older than
 				// the tree.
 				snapLocation = workspace.getMetaArea().getLegacySnapshotLocationFor(workspace.getRoot());
 				localFile = snapLocation.toFile();
-				if (!localFile.exists() || isSnapshotOlderThanTree(localFile)) {
+				if (!localFile.exists() || isSnapshotOlderThanTree(localFile)) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					// If the snapshot file doesn't exist, there was no crash.
 					// Just initialize the snapshot file and return.
 					initSnap(Policy.subMonitorFor(monitor, Policy.totalWork / 2));
@@ -1101,14 +1101,14 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	private boolean isSnapshotOlderThanTree(File snapshot) {
 		IPath treeLocation = workspace.getMetaArea().getTreeLocationFor(workspace.getRoot(), false);
 		File tree = treeLocation.toFile();
-		if (!tree.exists()) {
+		if (!tree.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			treeLocation = workspace.getMetaArea().getBackupLocationFor(treeLocation);
 			tree = treeLocation.toFile();
-			if (!tree.exists()) {
+			if (!tree.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				return false;
 			}
 		}
-		return snapshot.lastModified() < tree.lastModified();
+		return snapshot.lastModified() < tree.lastModified(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**
@@ -1152,7 +1152,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		long start = System.currentTimeMillis();
 		IPath treeLocation = workspace.getMetaArea().getTreeLocationFor(workspace.getRoot(), false);
 		IPath tempLocation = workspace.getMetaArea().getBackupLocationFor(treeLocation);
-		if (!treeLocation.toFile().exists() && !tempLocation.toFile().exists()) {
+		if (!treeLocation.toFile().exists() && !tempLocation.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			savedStates = Collections.synchronizedMap(new HashMap<>(10)); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			return;
 		}
@@ -1184,7 +1184,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			monitor.beginTask("", Policy.totalWork); //$NON-NLS-1$
 			IPath treeLocation = workspace.getMetaArea().getTreeLocationFor(project, false);
 			IPath tempLocation = workspace.getMetaArea().getBackupLocationFor(treeLocation);
-			if (!treeLocation.toFile().exists() && !tempLocation.toFile().exists()) {
+			if (!treeLocation.toFile().exists() && !tempLocation.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				return false;
 			}
 			try (
@@ -1216,8 +1216,8 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		String message;
 		IPath snapshotPath = null;
 		monitor.beginTask("", Policy.totalWork); //$NON-NLS-1$
-		try (ZipInputStream zip = new ZipInputStream(new FileInputStream(snapshotFile))) {
-			ZipEntry treeEntry = zip.getNextEntry();
+		try (ZipInputStream zip = new ZipInputStream(new FileInputStream(snapshotFile))) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
+			ZipEntry treeEntry = zip.getNextEntry(); //FLLDCIM: MARK — M25 M3FILE_ARCHIVE_STREAM CALL
 			if (treeEntry == null || !treeEntry.getName().equals("resource-index.tree")) { //$NON-NLS-1$
 				return false;
 			}
@@ -1658,8 +1658,8 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	public void startup(IProgressMonitor monitor) throws CoreException {
 		restore(monitor);
 		java.io.File table = workspace.getMetaArea().getSafeTableLocationFor(ResourcesPlugin.PI_RESOURCES).toFile();
-		if (!table.exists()) {
-			table.getParentFile().mkdirs();
+		if (!table.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			table.getParentFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 	}
 
@@ -1679,7 +1679,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	}
 
 	private void validateMasterTableBeforeSave(java.io.File target) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
-		if (target.exists()) {
+		if (target.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			MasterTable previousMasterTable = new MasterTable();
 			try (
 				SafeChunkyInputStream input = new SafeChunkyInputStream(target);
@@ -1712,7 +1712,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		try {
 			messageBuffer.append("Timestamps and tree sequence numbers from file:"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			java.nio.file.Path targetPath = Paths.get(target.getAbsolutePath());
-			List<String> masterTableFileContents = Files.readAllLines(targetPath, Charset.defaultCharset());
+			List<String> masterTableFileContents = Files.readAllLines(targetPath, Charset.defaultCharset()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			for (String line : masterTableFileContents) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (line != null) {
 					boolean isPropertiesTimestamp = line.startsWith("#"); //$NON-NLS-1$

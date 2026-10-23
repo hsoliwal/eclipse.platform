@@ -251,7 +251,7 @@ public class IFileTest {
 			removeFromWorkspace(file);
 			// project must exist to access file system store.
 			if (file.getProject().exists()) {
-				file.getRawLocation().toFile().delete();
+				file.getRawLocation().toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				createInFileSystem(file);
 				if (Platform.OS.isWindows()) {
 					Files.setAttribute(file.getRawLocation().toPath(), "dos:hidden", Boolean.TRUE);
@@ -265,13 +265,13 @@ public class IFileTest {
 			return;
 		}
 		if (file.getName().equals(WORKSPACE_ONLY_HIDDEN)) {
-			file.getRawLocation().toFile().delete();
+			file.getRawLocation().toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			createInFileSystem(file);
 			if (Platform.OS.isWindows()) {
 				Files.setAttribute(file.getRawLocation().toPath(), "dos:hidden", Boolean.TRUE);
 			}
 			file.refreshLocal(1, null);
-			file.getRawLocation().toFile().delete();
+			file.getRawLocation().toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return;
 		}
 		if (file.getName().equals(DOES_NOT_EXIST)) {
@@ -339,7 +339,7 @@ public class IFileTest {
 		file.create(null, false, monitor);
 		monitor.assertUsedUp();
 		assertFalse(file.isLocal(IResource.DEPTH_ZERO));
-		assertFalse(file.getLocation().toFile().exists());
+		assertFalse(file.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		createInFileSystem(file);
 		assertFalse(file.isLocal(IResource.DEPTH_ZERO));
 
@@ -348,7 +348,7 @@ public class IFileTest {
 		monitor.assertUsedUp();
 
 		assertTrue(file.isLocal(IResource.DEPTH_ZERO));
-		assertTrue(file.getLocation().toFile().exists());
+		assertTrue(file.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		// cleanup
 		removeFromWorkspace(file);
 
@@ -360,7 +360,7 @@ public class IFileTest {
 		file.create(null, false, monitor);
 		monitor.assertUsedUp();
 		assertFalse(file.isLocal(IResource.DEPTH_ZERO));
-		assertFalse(file.getLocation().toFile().exists());
+		assertFalse(file.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		monitor.prepare();
 		assertThrows(CoreException.class, () -> file.appendContents(createRandomContentsStream(), IResource.FORCE, monitor));
@@ -376,7 +376,7 @@ public class IFileTest {
 		file.create(null, false, monitor);
 		monitor.assertUsedUp();
 		assertFalse(file.isLocal(IResource.DEPTH_ZERO));
-		assertFalse(file.getLocation().toFile().exists());
+		assertFalse(file.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		createInFileSystem(file);
 		assertFalse(file.isLocal(IResource.DEPTH_ZERO));
 
@@ -394,7 +394,7 @@ public class IFileTest {
 		file.create(null, false, monitor);
 		monitor.assertUsedUp();
 		assertFalse(file.isLocal(IResource.DEPTH_ZERO));
-		assertFalse(file.getLocation().toFile().exists());
+		assertFalse(file.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		monitor.prepare();
 		assertThrows(CoreException.class, () -> file.appendContents(createRandomContentsStream(), IResource.NONE, monitor));
@@ -445,7 +445,7 @@ public class IFileTest {
 				IPath fileLocation = file.getLocation();
 				boolean force = ((Boolean) args[2]).booleanValue();
 				boolean fileExistsInWS = file.exists();
-				boolean fileExistsInFS = fileLocation != null && fileLocation.toFile().exists();
+				boolean fileExistsInFS = fileLocation != null && fileLocation.toFile().exists(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 				// parent must be accessible
 				if (!file.getParent().isAccessible()) {
@@ -515,7 +515,7 @@ public class IFileTest {
 
 		IFolder subFolder = projects[0].getFolder("subFolder");
 		subFolder.create(true, true, null);
-		subFolder.getRawLocation().toFile().delete();
+		subFolder.getRawLocation().toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		IFile orphan = subFolder.getFile("myParentDoesNotExist.txt");
 		monitor.prepare();

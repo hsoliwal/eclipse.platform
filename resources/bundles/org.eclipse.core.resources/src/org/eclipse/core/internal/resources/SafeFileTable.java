@@ -70,10 +70,10 @@ public class SafeFileTable {
 	public void restore() throws CoreException {
 		java.io.File target = location.toFile();
 		table = new Properties();
-		if (!target.exists()) {
+		if (!target.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return;
 		}
-		try (FileInputStream input = new FileInputStream(target)) {
+		try (FileInputStream input = new FileInputStream(target)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			table.load(input);
 		} catch (IOException e) {
 			String message = Messages.resources_exSafeRead;
@@ -83,7 +83,7 @@ public class SafeFileTable {
 
 	public void save() throws CoreException {
 		java.io.File target = location.toFile();
-		try (FileOutputStream output = new FileOutputStream(target)) {
+		try (FileOutputStream output = new FileOutputStream(target)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			table.store(output, "safe table"); //$NON-NLS-1$
 		} catch (IOException e) {
 			String message = Messages.resources_exSafeSave;

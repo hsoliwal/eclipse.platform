@@ -63,7 +63,7 @@ public class Bug_185247_LinuxTests {
 		testMethodName = testInfo.getTestMethod().get().getName();
 		IPath randomLocation = IPath.fromPath(tempDirectory);
 		testCasesLocation = randomLocation.append("bug185247LinuxTests");
-		assertTrue(testCasesLocation.toFile().mkdirs(), "failed to create test location: " + testCasesLocation); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		assertTrue(testCasesLocation.toFile().mkdirs(), "failed to create test location: " + testCasesLocation); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		extractTestCasesArchive(testCasesLocation);
 	}
 
@@ -141,11 +141,11 @@ public class Bug_185247_LinuxTests {
 	}
 
 	private static void executeCommand(String[] command, File outputDirectory) throws Exception {
-		assertTrue(outputDirectory.exists(), "output directory does not exist: " + outputDirectory); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		assertTrue(outputDirectory.exists(), "output directory does not exist: " + outputDirectory); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		ProcessBuilder processBuilder = new ProcessBuilder(command);
 		File commandOutputFile = new File(outputDirectory, "commandOutput.txt");
-		if (!commandOutputFile.exists()) {
-			assertTrue(commandOutputFile.createNewFile(),
+		if (!commandOutputFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			assertTrue(commandOutputFile.createNewFile(), //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					"failed to create standard output and error file for unzip command");
 		}
 		processBuilder.redirectOutput(commandOutputFile);
@@ -153,13 +153,13 @@ public class Bug_185247_LinuxTests {
 		Process process = processBuilder.start();
 		int commandExitCode = process.waitFor();
 		String output = formatCommandOutput(command, commandOutputFile);
-		assertTrue(commandOutputFile.delete(), "Failed to delete command output file. " + output); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		assertTrue(commandOutputFile.delete(), "Failed to delete command output file. " + output); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertEquals(0, commandExitCode, "Failed to execute commmand. " + output); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private static String formatCommandOutput(String[] command, File commandOutputFile) throws IOException {
 		Path commandOutputPath = Paths.get(commandOutputFile.getAbsolutePath());
-		List<String> commandOutputLines = Files.readAllLines(commandOutputPath);
+		List<String> commandOutputLines = Files.readAllLines(commandOutputPath); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		List<String> commandOutputHeader = Arrays.asList("Command:", Arrays.toString(command), "Output:");
 		List<String> commandToString = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		commandToString.addAll(commandOutputHeader);

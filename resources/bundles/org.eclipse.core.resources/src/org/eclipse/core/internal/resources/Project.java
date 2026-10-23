@@ -559,7 +559,7 @@ public class Project extends Container implements IProject {
 			return null;
 		}
 		IPath result = workspace.getMetaArea().getWorkingLocation(this, id);
-		result.toFile().mkdirs();
+		result.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		return result;
 	}
 
@@ -1143,7 +1143,7 @@ public class Project extends Container implements IProject {
 				// for the first time and opening it from a previous close (restoring it from disk)
 				boolean used = info.isSet(M_USED);
 				boolean snapshotLoaded = false;
-				if (!used && !workspace.getMetaArea().getRefreshLocationFor(this).toFile().exists()) {
+				if (!used && !workspace.getMetaArea().getRefreshLocationFor(this).toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					//auto-load a refresh snapshot if it is set
 					final boolean hasSavedDescription = getLocalManager().hasSavedDescription(this);
 					if (hasSavedDescription) {
@@ -1238,7 +1238,7 @@ public class Project extends Container implements IProject {
 		// force refresh to force reading project preferences via
 		// org.eclipse.core.internal.resources.ProjectPreferences.updatePreferences(IFile)
 		IPath location = file.getLocation();
-		if (!file.exists() && location != null && location.toFile().exists()) {
+		if (!file.exists() && location != null && location.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			file.refreshLocal(IResource.DEPTH_ZERO, monitor);
 		}
 		String charset = workspace.getCharsetManager().getCharsetFor(getFullPath(), false);
