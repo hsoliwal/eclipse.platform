@@ -51,7 +51,7 @@ public class BenchCopyFile {
 	public void testCopyFile() throws Exception {
 		createInFileSystem(fileStore);
 		IFileStore[] output = new IFileStore[COUNT];
-		for (int i = 0; i < output.length; i++) {
+		for (int i = 0; i < output.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			output[i] = fileStore;
 		}
 

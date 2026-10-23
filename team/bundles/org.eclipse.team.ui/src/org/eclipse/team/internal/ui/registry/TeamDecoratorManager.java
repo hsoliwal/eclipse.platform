@@ -48,14 +48,14 @@ public class TeamDecoratorManager {
 		return descriptors.get(providerId);
 	}
 
-	protected void lazyInitialize() {
+	protected void lazyInitialize() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (descriptors != null) {
 			return;
 		}
 		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(TeamUIPlugin.ID, PT_TEAM_DECORATORS);
 		IExtension[] extensions = point.getExtensions();
-		descriptors = new HashMap<>(extensions.length * 2 + 1);
-		for (IExtension extension : extensions) {
+		descriptors = new HashMap<>(extensions.length * 2 + 1); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (IExtension extension : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			TeamDecoratorDescription desc = null;
 			try {
 				desc = new TeamDecoratorDescription(extension);

@@ -63,7 +63,7 @@ public class SafeFileInputOutputStreamTest {
 		assertTrue(temp.toFile().isDirectory(), "could not create temp directory");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSafeFileInputStream() throws IOException {
 		File target = new File(temp.toFile(), "target");
 		Workspace.clear(target); // make sure there was nothing here before
@@ -71,7 +71,7 @@ public class SafeFileInputOutputStreamTest {
 
 		// define temp path
 		IPath parentLocation = IPath.fromOSString(target.getParentFile().getAbsolutePath());
-		IPath tempLocation = parentLocation.append(target.getName() + ".backup");
+		IPath tempLocation = parentLocation.append(target.getName() + ".backup"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		String contents = createRandomString();
 		File tempFile = tempLocation.toFile();
 
@@ -91,7 +91,7 @@ public class SafeFileInputOutputStreamTest {
 		Workspace.clear(target); // make sure there was nothing here before
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSimple() throws IOException {
 		File target = new File(temp.toFile(), "target");
 		Workspace.clear(target); // make sure there was nothing here before
@@ -121,7 +121,7 @@ public class SafeFileInputOutputStreamTest {
 		Workspace.clear(target); // make sure there was nothing here before
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSpecifiedTempFile() throws IOException {
 		File target = new File(temp.toFile(), "target");
 		Workspace.clear(target); // make sure there was nothing here before
@@ -129,7 +129,7 @@ public class SafeFileInputOutputStreamTest {
 
 		// define temp path
 		IPath parentLocation = IPath.fromOSString(target.getParentFile().getAbsolutePath());
-		IPath tempLocation = parentLocation.append(target.getName() + ".backup");
+		IPath tempLocation = parentLocation.append(target.getName() + ".backup"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		String contents = createRandomString();
 		File tempFile = tempLocation.toFile();

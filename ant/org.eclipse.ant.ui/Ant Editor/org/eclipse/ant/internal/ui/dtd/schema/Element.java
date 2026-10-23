@@ -27,7 +27,7 @@ public class Element extends Atom implements IElement {
 	private boolean fUndefined = true;
 	private boolean fText;
 	private IModel fModel;
-	private final Map<String, IAttribute> fMap = new HashMap<>(4);
+	private final Map<String, IAttribute> fMap = new HashMap<>(4); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	private Dfm fElementDfm;
 
 	/**

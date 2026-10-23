@@ -101,7 +101,7 @@ public class DiffChangeSet extends ChangeSet {
 	public void add(IDiff[] diffs) {
 		try {
 			tree.beginInput();
-			for (IDiff diff : diffs) {
+			for (IDiff diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				add(diff);
 			}
 		} finally {
@@ -132,7 +132,7 @@ public class DiffChangeSet extends ChangeSet {
 		if (diffs.length > 0) {
 			try {
 				tree.beginInput();
-				for (IDiff diff : diffs) {
+				for (IDiff diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IResource r = tree.getResource(diff);
 					if (r != null) {
 						tree.remove(r);
@@ -156,7 +156,7 @@ public class DiffChangeSet extends ChangeSet {
 	public void remove(IPath[] paths) {
 		try {
 			tree.beginInput();
-			for (IPath path : paths) {
+			for (IPath path : paths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				tree.remove(path);
 			}
 		} finally {
@@ -168,7 +168,7 @@ public class DiffChangeSet extends ChangeSet {
 	public void remove(IResource[] resources) {
 		try {
 			tree.beginInput();
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				tree.remove(resource);
 			}
 		} finally {

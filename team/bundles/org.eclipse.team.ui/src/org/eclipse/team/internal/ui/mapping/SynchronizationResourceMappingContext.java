@@ -110,13 +110,13 @@ public final class SynchronizationResourceMappingContext extends
 		return null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IResource[] fetchMembers(IContainer container, IProgressMonitor monitor) throws CoreException {
-		Set<IResource> result = new HashSet<>();
+		Set<IResource> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IResource[] children = container.members();
 		Collections.addAll(result, children);
 		IPath[] childPaths = context.getDiffTree().getChildren(container.getFullPath());
-		for (IPath path : childPaths) {
+		for (IPath path : childPaths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IDiff delta = context.getDiffTree().getDiff(path);
 			IResource child;
 			if (delta == null) {
@@ -145,9 +145,9 @@ public final class SynchronizationResourceMappingContext extends
 
 	@Override
 	public IProject[] getProjects() {
-		Set<IProject> projects = new HashSet<>();
+		Set<IProject> projects = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IResource[] roots = context.getScope().getRoots();
-		for (IResource resource : roots) {
+		for (IResource resource : roots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			projects.add(resource.getProject());
 		}
 		return projects.toArray(new IProject[projects.size()]);

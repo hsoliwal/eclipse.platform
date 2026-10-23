@@ -42,7 +42,7 @@ public interface ITeamContentProviderManager {
 	 * {@link org.eclipse.ui.navigator.IExtensionStateModel} used by the Common
 	 * Navigator framework.
 	 */
-	public static final String P_SYNCHRONIZATION_PAGE_CONFIGURATION = TeamUIPlugin.ID +  ".synchronizationPageConfiguration"; //$NON-NLS-1$
+	public static final String P_SYNCHRONIZATION_PAGE_CONFIGURATION = TeamUIPlugin.ID +  ".synchronizationPageConfiguration"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	/**
 	 * Property constant used to store and retrieve the synchronization context
 	 * from the {@link org.eclipse.ui.navigator.IExtensionStateModel} used by
@@ -50,7 +50,7 @@ public interface ITeamContentProviderManager {
 	 * with an {@link ISynchronizePageConfiguration} when models are being
 	 * shown in an {@link ISynchronizePage}.
 	 */
-	public static final String P_SYNCHRONIZATION_CONTEXT = TeamUIPlugin.ID + ".synchronizationContext"; //$NON-NLS-1$
+	public static final String P_SYNCHRONIZATION_CONTEXT = TeamUIPlugin.ID + ".synchronizationContext"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant used to store and retrieve the resource mapping scope
@@ -59,7 +59,7 @@ public interface ITeamContentProviderManager {
 	 * with an {@link ISynchronizePageConfiguration} when models are being
 	 * shown in an {@link ISynchronizePage}.
 	 */
-	public static final String P_SYNCHRONIZATION_SCOPE = TeamUIPlugin.ID + ".synchronizationScope"; //$NON-NLS-1$
+	public static final String P_SYNCHRONIZATION_SCOPE = TeamUIPlugin.ID + ".synchronizationScope"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant used to store and retrieve the page layout
@@ -68,14 +68,14 @@ public interface ITeamContentProviderManager {
 	 * TREE_LAYOUT and FLAT_LAYOUT. Other may be added
 	 * @since 3.3
 	 */
-	public static final String PROP_PAGE_LAYOUT = TeamUIPlugin.ID + ".pageLayout"; //$NON-NLS-1$
+	public static final String PROP_PAGE_LAYOUT = TeamUIPlugin.ID + ".pageLayout"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Value for the PROP_PAGE_LAYOUT that indicates that the models should display
 	 * their elements in tree form.
 	 * @since 3.3
 	 */
-	public static final String TREE_LAYOUT = TeamUIPlugin.ID + ".treeLayout"; //$NON-NLS-1$
+	public static final String TREE_LAYOUT = TeamUIPlugin.ID + ".treeLayout"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Value for the PROP_PAGE_LAYOUT that indicates that the models should display
@@ -84,13 +84,13 @@ public interface ITeamContentProviderManager {
 	 * to FLAT_LAYOUT.
 	 * @since 3.3
 	 */
-	public static final String FLAT_LAYOUT = TeamUIPlugin.ID + ".flatLayout"; //$NON-NLS-1$
+	public static final String FLAT_LAYOUT = TeamUIPlugin.ID + ".flatLayout"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant used during property change notification to indicate
 	 * that one one or more model providers have either been enabled or disabled.
 	 */
-	public static final String PROP_ENABLED_MODEL_PROVIDERS = TeamUIPlugin.ID + ".ENABLED_MODEL_PROVIDERS"; //$NON-NLS-1$
+	public static final String PROP_ENABLED_MODEL_PROVIDERS = TeamUIPlugin.ID + ".ENABLED_MODEL_PROVIDERS"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Return descriptors for all the registered content extensions.

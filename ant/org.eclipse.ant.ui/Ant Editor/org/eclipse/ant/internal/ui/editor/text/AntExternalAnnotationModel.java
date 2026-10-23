@@ -27,15 +27,15 @@ import org.eclipse.jface.text.source.AnnotationModelEvent;
 
 public class AntExternalAnnotationModel extends AnnotationModel implements IProblemRequestor {
 
-	private final List<XMLProblemAnnotation> fGeneratedAnnotations = new ArrayList<>();
-	private final List<IProblem> fCollectedProblems = new ArrayList<>();
+	private final List<XMLProblemAnnotation> fGeneratedAnnotations = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private final List<IProblem> fCollectedProblems = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	@Override
 	public void acceptProblem(IProblem problem) {
 		fCollectedProblems.add(problem);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void endReporting() {
 		boolean temporaryProblemsChanged = false;
 
@@ -49,7 +49,7 @@ public class AntExternalAnnotationModel extends AnnotationModel implements IProb
 
 			if (fCollectedProblems != null && fCollectedProblems.size() > 0) {
 				Iterator<IProblem> e = fCollectedProblems.iterator();
-				while (e.hasNext()) {
+				while (e.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 
 					IProblem problem = e.next();
 

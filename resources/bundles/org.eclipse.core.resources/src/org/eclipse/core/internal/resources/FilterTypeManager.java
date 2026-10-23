@@ -30,19 +30,19 @@ class FilterTypeManager implements IManager {
 
 	private static final String FILTER_ELEMENT = "filterMatcher"; //$NON-NLS-1$
 
-	private final HashMap<String, IFilterMatcherDescriptor> factories = new HashMap<>();
+	private final HashMap<String, IFilterMatcherDescriptor> factories = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
-	public FilterTypeManager() {
+	public FilterTypeManager() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IExtensionPoint point = RegistryFactory.getRegistry().getExtensionPoint(ResourcesPlugin.PI_RESOURCES, ResourcesPlugin.PT_FILTER_MATCHERS);
 		if (point != null) {
 			// initial population
-			for (IExtension extension : point.getExtensions()) {
+			for (IExtension extension : point.getExtensions()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				processExtension(extension);
 			}
 			RegistryFactory.getRegistry().addListener(new IRegistryEventListener() {
 				@Override
 				public void added(IExtension[] extensions) {
-					for (IExtension extension : extensions) {
+					for (IExtension extension : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						processExtension(extension);
 					}
 				}
@@ -54,7 +54,7 @@ class FilterTypeManager implements IManager {
 
 				@Override
 				public void removed(IExtension[] extensions) {
-					for (IExtension extension : extensions) {
+					for (IExtension extension : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						processRemovedExtension(extension);
 					}
 				}
@@ -77,7 +77,7 @@ class FilterTypeManager implements IManager {
 
 	protected void processExtension(IExtension extension) {
 		IConfigurationElement[] elements = extension.getConfigurationElements();
-		for (IConfigurationElement element : elements) {
+		for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element.getName().equalsIgnoreCase(FILTER_ELEMENT)) {
 				IFilterMatcherDescriptor desc = new FilterDescriptor(element);
 				factories.put(desc.getId(), desc);
@@ -87,7 +87,7 @@ class FilterTypeManager implements IManager {
 
 	protected void processRemovedExtension(IExtension extension) {
 		IConfigurationElement[] elements = extension.getConfigurationElements();
-		for (IConfigurationElement element : elements) {
+		for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element.getName().equalsIgnoreCase(FILTER_ELEMENT)) {
 				IFilterMatcherDescriptor desc = new FilterDescriptor(element, false);
 				factories.remove(desc.getId());

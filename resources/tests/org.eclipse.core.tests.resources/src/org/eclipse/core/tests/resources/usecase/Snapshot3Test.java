@@ -44,7 +44,7 @@ public class Snapshot3Test {
 		getWorkspace().save(true, null);
 	}
 
-	public void testVerifyPreviousSession() throws CoreException {
+	public void testVerifyPreviousSession() throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// MyProject
 		IProject project = getWorkspace().getRoot().getProject(SnapshotTest.PROJECT_1);
 		assertTrue(project.exists());

@@ -40,10 +40,10 @@ import org.eclipse.team.ui.synchronize.SynchronizePageActionGroup;
 /**
  * Provides a flat layout
  */
-public class FlatModelProvider extends SynchronizeModelProvider {
+public class FlatModelProvider extends SynchronizeModelProvider { //FLLDCIM: MARK — T38  IMPLEMENTS
 
 	public static class FlatModelProviderDescriptor implements ISynchronizeModelProviderDescriptor {
-		public static final String ID = TeamUIPlugin.ID + ".modelprovider_flat"; //$NON-NLS-1$
+		public static final String ID = TeamUIPlugin.ID + ".modelprovider_flat"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		@Override
 		public String getId() {
 			return ID;
@@ -59,7 +59,7 @@ public class FlatModelProvider extends SynchronizeModelProvider {
 	}
 	private static final FlatModelProviderDescriptor flatDescriptor = new FlatModelProviderDescriptor();
 
-	private static final String P_LAST_RESOURCESORT = TeamUIPlugin.ID + ".P_LAST_RESOURCE_SORT"; //$NON-NLS-1$
+	private static final String P_LAST_RESOURCESORT = TeamUIPlugin.ID + ".P_LAST_RESOURCE_SORT"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	private int sortCriteria = FlatComparator.PATH;
 
@@ -74,7 +74,7 @@ public class FlatModelProvider extends SynchronizeModelProvider {
 		@Override
 		public String getName() {
 			IResource resource = getResource();
-			return resource.getName() + " - " + resource.getFullPath().toString(); //$NON-NLS-1$
+			return resource.getName() + " - " + resource.getFullPath().toString(); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -110,7 +110,7 @@ public class FlatModelProvider extends SynchronizeModelProvider {
 			return getComparator().compare(s1, s2);
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public int compare(Viewer viewer, Object o1, Object o2) {
 
 			if (o1 instanceof FullPathSyncInfoElement && o2 instanceof FullPathSyncInfoElement) {
@@ -214,7 +214,7 @@ public class FlatModelProvider extends SynchronizeModelProvider {
 		initialize(configuration);
 	}
 
-	private void initialize(ISynchronizePageConfiguration configuration) {
+	private void initialize(ISynchronizePageConfiguration configuration) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			IDialogSettings pageSettings = getConfiguration().getSite().getPageSettings();
 			if(pageSettings != null) {
@@ -250,8 +250,8 @@ public class FlatModelProvider extends SynchronizeModelProvider {
 			;
 		}
 		SyncInfo[] infos = getSyncInfoSet().getSyncInfos();
-		List<IDiffElement> result = new ArrayList<>();
-		for (SyncInfo info : infos) {
+		List<IDiffElement> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result.add(createModelObject(node, info));
 		}
 		return result.toArray(new IDiffElement[result.size()]);

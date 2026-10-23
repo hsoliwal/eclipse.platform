@@ -26,7 +26,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class FindUnusedMemberHandler extends AbstractHandler {
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		ISelection sel = HandlerUtil.getCurrentSelection(event);
 		if (!(sel instanceof IStructuredSelection)) {
@@ -35,9 +35,9 @@ public class FindUnusedMemberHandler extends AbstractHandler {
 
 		IStructuredSelection currentSelection = HandlerUtil.getCurrentStructuredSelection(event);
 
-		ArrayList<IJavaElement> allCus = new ArrayList<>();
+		ArrayList<IJavaElement> allCus = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		try {
-			for (Object element : currentSelection.toArray()) {
+			for (Object element : currentSelection.toArray()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (element instanceof IJavaElement) {
 					collectCompilationUnits((IJavaElement) element, allCus);
 				}
@@ -78,7 +78,7 @@ public class FindUnusedMemberHandler extends AbstractHandler {
 	private void handlePotentialCompilationUnitChildren(IJavaElement current, Collection<IJavaElement> res)
 			throws JavaModelException {
 		IJavaElement[] children = ((IParent) current).getChildren();
-		for (IJavaElement element : children) {
+		for (IJavaElement element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			collectCompilationUnits(element, res);
 		}
 	}

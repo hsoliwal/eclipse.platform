@@ -74,7 +74,7 @@ public abstract class AbstractSynchronizePage extends Page implements ISynchroni
 				modes = new DirectionFilterActionGroup(configuration);
 			}
 		}
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void fillActionBars(IActionBars actionBars) {
 			super.fillActionBars(actionBars);
 			if (modes == null) {
@@ -113,7 +113,7 @@ public abstract class AbstractSynchronizePage extends Page implements ISynchroni
 		configuration.addActionContribution(new ModeFilterActions());
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createControl(Composite parent) {
 		composite = new Composite(parent, SWT.NONE);
 		//sc.setContent(composite);
@@ -231,7 +231,7 @@ public abstract class AbstractSynchronizePage extends Page implements ISynchroni
 	 *
 	 * @see org.eclipse.core.runtime.IAdaptable#getAdapter(java.lang.Class)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public <T> T getAdapter(Class<T> key) {
 		if (key.equals(ISelectionProvider.class)) {
 			return (T) changesViewer;

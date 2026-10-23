@@ -63,7 +63,7 @@ import org.eclipse.ui.navigator.ICommonContentExtensionSite;
  * registered. The third is for the case where a resource mapping does not
  * have a model provider registered (this may be considered an error case).
  */
-public class ResourceModelContentProvider extends SynchronizationContentProvider implements ITreePathContentProvider {
+public class ResourceModelContentProvider extends SynchronizationContentProvider implements ITreePathContentProvider { //FLLDCIM: MARK — M22  IMPLEMENTS
 
 	private WorkbenchContentProvider provider;
 
@@ -107,7 +107,7 @@ public class ResourceModelContentProvider extends SynchronizationContentProvider
 			return false;
 		}
 		IResource[] roots = scope.getRoots();
-		for (IResource root : roots) {
+		for (IResource root : roots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getFullPath().isPrefixOf(root.getFullPath())) {
 				return true;
 			}
@@ -138,7 +138,7 @@ public class ResourceModelContentProvider extends SynchronizationContentProvider
 		super.propertyChange(event);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Object[] getChildrenInContext(ISynchronizationContext context, Object parentOrPath, Object[] children) {
 		Object parent = internalGetElement(parentOrPath);
 		if (parent instanceof IResource resource) {
@@ -160,8 +160,8 @@ public class ResourceModelContentProvider extends SynchronizationContentProvider
 	}
 
 	private Object[] internalGetChildren(ISynchronizationContext context, Object parent, Object[] children) {
-		List<Object> result = new ArrayList<>(children.length);
-		for (Object object : children) {
+		List<Object> result = new ArrayList<>(children.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Object object : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// If the parent is a TreePath then the subclass is
 			// TreePath aware and we can send a TrePath to the
 			// isVisible method
@@ -175,7 +175,7 @@ public class ResourceModelContentProvider extends SynchronizationContentProvider
 		return result.toArray(new Object[result.size()]);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected ResourceTraversal[] getTraversals(ISynchronizationContext context, Object elementOrPath) {
 		Object object = internalGetElement(elementOrPath);
 		ISynchronizationScope scope = context.getScope();
@@ -191,12 +191,12 @@ public class ResourceModelContentProvider extends SynchronizationContentProvider
 		// Next, check if the object is within the scope
 		if (object instanceof IResource resource) {
 			if (scope.contains(resource)) {
-				List<ResourceTraversal> result = new ArrayList<>();
+				List<ResourceTraversal> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				ResourceTraversal[] traversals = scope.getTraversals();
 				if(traversals == null) {
 					return result.toArray(new ResourceTraversal[result.size()]);
 				}
-				for (ResourceTraversal traversal : traversals) {
+				for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (traversal.contains(resource)) {
 						boolean include = false;
 						int depth = traversal.getDepth();
@@ -204,7 +204,7 @@ public class ResourceModelContentProvider extends SynchronizationContentProvider
 							include = true;
 						} else {
 							IResource[] roots = traversal.getResources();
-							for (IResource root : roots) {
+							for (IResource root : roots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 								if (root.equals(resource)) {
 									include = true;
 									break;
@@ -227,8 +227,8 @@ public class ResourceModelContentProvider extends SynchronizationContentProvider
 				// The resource is a parent of an in-scope resource
 				// TODO: fails due to use of roots
 				ResourceMapping[] mappings = scope.getMappings(ModelProvider.RESOURCE_MODEL_PROVIDER_ID);
-				List<ResourceTraversal> result = new ArrayList<>();
-				for (ResourceMapping resourceMapping : mappings) {
+				List<ResourceTraversal> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+				for (ResourceMapping resourceMapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Object element = resourceMapping.getModelObject();
 					IResource root = getResource(element);
 					if (root != null) {
@@ -272,8 +272,8 @@ public class ResourceModelContentProvider extends SynchronizationContentProvider
 	}
 
 	private IResource[] getResources(ISynchronizationContext context, IPath[] paths) {
-		List<IResource> resources = new ArrayList<>();
-		for (IPath path : paths) {
+		List<IResource> resources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IPath path : paths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = getResource(context, path);
 			if (resource != null) {
 				resources.add(resource);
@@ -282,7 +282,7 @@ public class ResourceModelContentProvider extends SynchronizationContentProvider
 		return resources.toArray(new IResource[resources.size()]);
 	}
 
-	private IResource getResource(ISynchronizationContext context, IPath path) {
+	private IResource getResource(ISynchronizationContext context, IPath path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Does the resource exist locally
 		IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
 		if (resource != null) {
@@ -355,7 +355,7 @@ public class ResourceModelContentProvider extends SynchronizationContentProvider
 	protected void refresh() {
 		Utils.syncExec((Runnable) () -> {
 			TreeViewer treeViewer = ((TreeViewer)getViewer());
-			treeViewer.refresh();
+			treeViewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		}, getViewer().getControl());
 	}
 
@@ -413,14 +413,14 @@ public class ResourceModelContentProvider extends SynchronizationContentProvider
 		Utils.syncExec((Runnable) () -> handleChange(event), (StructuredViewer)getViewer());
 	}
 
-	private void handleChange(IDiffChangeEvent event) {
-		List<IResource> refreshes = new ArrayList<>();
-		List<IResource> additions = new ArrayList<>();
-		List<IResource> removals = new ArrayList<>();
+	private void handleChange(IDiffChangeEvent event) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<IResource> refreshes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<IResource> additions = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<IResource> removals = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (isFlatPresentation()) {
 			Set existingResources = getVisibleResources();
 			IResource[] changedResources = getChangedResources(event, existingResources);
-			for (IResource resource : changedResources) {
+			for (IResource resource : changedResources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (event.getTree().getDiff(resource.getFullPath()) != null) {
 					if (existingResources.contains(resource)) {
 						refreshes.add(resource);
@@ -435,7 +435,7 @@ public class ResourceModelContentProvider extends SynchronizationContentProvider
 		} else {
 			IProject[] changedProjects = getChangedProjects(event);
 			Set existingProjects = getVisibleProjects();
-			for (IProject project : changedProjects) {
+			for (IProject project : changedProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (hasVisibleChanges(event.getTree(), project)) {
 					if (existingProjects.contains(project)) {
 						refreshes.add(project);
@@ -460,8 +460,8 @@ public class ResourceModelContentProvider extends SynchronizationContentProvider
 					viewer.remove(viewer.getInput(), removals.toArray());
 				}
 				if (!refreshes.isEmpty()) {
-					for (Object element : refreshes) {
-						viewer.refresh(element);
+					for (Object element : refreshes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+						viewer.refresh(element); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 					}
 				}
 			} finally {
@@ -488,24 +488,24 @@ public class ResourceModelContentProvider extends SynchronizationContentProvider
 		});
 	}
 
-	private IProject[] getChangedProjects(IDiffChangeEvent event) {
-		Set<IResource> result = new HashSet<>();
+	private IProject[] getChangedProjects(IDiffChangeEvent event) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		Set<IResource> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IDiff[] changes = event.getChanges();
-		for (IDiff diff : changes) {
+		for (IDiff diff : changes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = ResourceDiffTree.getResourceFor(diff);
 			if (resource != null) {
 				result.add(resource.getProject());
 			}
 		}
 		IDiff[] additions = event.getAdditions();
-		for (IDiff diff : additions) {
+		for (IDiff diff : additions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = ResourceDiffTree.getResourceFor(diff);
 			if (resource != null) {
 				result.add(resource.getProject());
 			}
 		}
 		IPath[] removals = event.getRemovals();
-		for (IPath path : removals) {
+		for (IPath path : removals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (path.segmentCount() > 0) {
 				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(path.segment(0));
 				result.add(project);
@@ -518,8 +518,8 @@ public class ResourceModelContentProvider extends SynchronizationContentProvider
 		TreeViewer viewer = (TreeViewer)getViewer();
 		Tree tree = viewer.getTree();
 		TreeItem[] children = tree.getItems();
-		Set<IResource> result = new HashSet<>();
-		for (TreeItem control : children) {
+		Set<IResource> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (TreeItem control : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object data = control.getData();
 			IResource resource = Utils.getResource(data);
 			if (resource != null && resource.getType() == IResource.PROJECT) {
@@ -533,8 +533,8 @@ public class ResourceModelContentProvider extends SynchronizationContentProvider
 		TreeViewer viewer = (TreeViewer)getViewer();
 		Tree tree = viewer.getTree();
 		TreeItem[] children = tree.getItems();
-		Set<IResource> result = new HashSet<>();
-		for (TreeItem control : children) {
+		Set<IResource> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (TreeItem control : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object data = control.getData();
 			IResource resource = Utils.getResource(data);
 			if (resource != null) {
@@ -544,31 +544,31 @@ public class ResourceModelContentProvider extends SynchronizationContentProvider
 		return result;
 	}
 
-	private IResource[] getChangedResources(IDiffChangeEvent event, Set existingResources) {
-		Set<IResource> result = new HashSet<>();
+	private IResource[] getChangedResources(IDiffChangeEvent event, Set existingResources) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		Set<IResource> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IDiff[] changes = event.getChanges();
-		for (IDiff diff : changes) {
+		for (IDiff diff : changes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = ResourceDiffTree.getResourceFor(diff);
 			if (resource != null) {
 				result.add(resource);
 			}
 		}
 		IDiff[] additions = event.getAdditions();
-		for (IDiff diff : additions) {
+		for (IDiff diff : additions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = ResourceDiffTree.getResourceFor(diff);
 			if (resource != null) {
 				result.add(resource);
 			}
 		}
 		IPath[] removals = event.getRemovals();
-		for (IPath path : removals) {
+		for (IPath path : removals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (path.segmentCount() > 0) {
 				IResource resource = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
 				if (resource != null) {
 					result.add(resource);
 				} else {
 					// We need to check the list of displayed resources to see if one matches the given path
-					for (Object element : existingResources) {
+					for (Object element : existingResources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						resource = (IResource) element;
 						if (resource.getFullPath().equals(path)) {
 							result.add(resource);

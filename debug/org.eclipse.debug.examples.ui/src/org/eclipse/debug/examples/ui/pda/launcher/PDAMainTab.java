@@ -49,7 +49,7 @@ public class PDAMainTab extends AbstractLaunchConfigurationTab {
 	private Text fProgramText;
 	private Button fProgramButton;
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createControl(Composite parent) {
 		Font font = parent.getFont();
 
@@ -73,10 +73,10 @@ public class PDAMainTab extends AbstractLaunchConfigurationTab {
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		fProgramText.setLayoutData(gd);
 		fProgramText.setFont(font);
-		fProgramText.addModifyListener(unused -> updateLaunchConfigurationDialog());
+		fProgramText.addModifyListener(unused -> updateLaunchConfigurationDialog()); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 
 		fProgramButton = createPushButton(comp, "&Browse...", null); //$NON-NLS-1$
-		fProgramButton.addSelectionListener(new SelectionAdapter() {
+		fProgramButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				browsePDAFiles();
@@ -103,7 +103,7 @@ public class PDAMainTab extends AbstractLaunchConfigurationTab {
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		//#ifdef ex1
 //#		// TODO: Exercise 1 - retrieve the program path attribute from the launch configuration
@@ -124,7 +124,7 @@ public class PDAMainTab extends AbstractLaunchConfigurationTab {
 		//#endif
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 		String program = fProgramText.getText().trim();
 		if (program.length() == 0) {
@@ -154,7 +154,7 @@ public class PDAMainTab extends AbstractLaunchConfigurationTab {
 		return "Main"; //$NON-NLS-1$
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean isValid(ILaunchConfiguration launchConfig) {
 		setErrorMessage(null);
 		setWarningMessage(null);

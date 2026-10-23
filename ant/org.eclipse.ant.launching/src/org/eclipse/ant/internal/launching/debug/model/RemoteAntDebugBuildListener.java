@@ -33,7 +33,7 @@ import org.eclipse.debug.core.model.IBreakpoint;
 import org.eclipse.debug.core.model.ILineBreakpoint;
 import org.eclipse.debug.core.model.IProcess;
 
-public class RemoteAntDebugBuildListener extends RemoteAntBuildListener implements IAntDebugController {
+public class RemoteAntDebugBuildListener extends RemoteAntBuildListener implements IAntDebugController { //FLLDCIM: MARK — T27  IMPLEMENTS
 
 	// sockets to communicate with the remote Ant debug build logger
 	private Socket fRequestSocket;
@@ -54,11 +54,11 @@ public class RemoteAntDebugBuildListener extends RemoteAntBuildListener implemen
 			setDaemon(true);
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void run() {
 			try {
 				String message = null;
-				while (fResponseReader != null) {
+				while (fResponseReader != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					BufferedReader reader;
 					synchronized (RemoteAntDebugBuildListener.this) {
 						reader = fResponseReader;
@@ -95,7 +95,7 @@ public class RemoteAntDebugBuildListener extends RemoteAntBuildListener implemen
 		// fDebug= true;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void receiveMessage(String message) {
 		if (message.startsWith(DebugMessageIds.BUILD_STARTED)) {
 			buildStarted();
@@ -129,9 +129,9 @@ public class RemoteAntDebugBuildListener extends RemoteAntBuildListener implemen
 		}
 	}
 
-	private void buildStarted() {
+	private void buildStarted() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IProcess process = getProcess();
-		while (process == null) {
+		while (process == null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				synchronized (this) {
 					wait(400);
@@ -153,9 +153,9 @@ public class RemoteAntDebugBuildListener extends RemoteAntBuildListener implemen
 		fTarget.buildStarted();
 	}
 
-	private boolean connectRequest() {
+	private boolean connectRequest() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Exception exception = null;
-		for (int i = 1; i < 20; i++) {
+		for (int i = 1; i < 20; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				fRequestSocket = new Socket("localhost", fRequestPort); //$NON-NLS-1$
 				fRequestWriter = new PrintWriter(fRequestSocket.getOutputStream(), true);
@@ -211,7 +211,7 @@ public class RemoteAntDebugBuildListener extends RemoteAntBuildListener implemen
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected synchronized void shutDown() {
 		if (fTarget != null) {
 			try {
@@ -282,12 +282,12 @@ public class RemoteAntDebugBuildListener extends RemoteAntBuildListener implemen
 		sendRequest(DebugMessageIds.STEP_OVER);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void handleBreakpoint(IBreakpoint breakpoint, boolean add) {
 		if (fTarget == null || !fTarget.supportsBreakpoint(breakpoint)) {
 			return;
 		}
-		StringBuilder message = new StringBuilder();
+		StringBuilder message = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		if (add) {
 			try {
 				if (!breakpoint.isEnabled()) {
@@ -298,15 +298,15 @@ public class RemoteAntDebugBuildListener extends RemoteAntBuildListener implemen
 				AntLaunching.log(e);
 				return;
 			}
-			message.append(DebugMessageIds.ADD_BREAKPOINT);
+			message.append(DebugMessageIds.ADD_BREAKPOINT); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		} else {
-			message.append(DebugMessageIds.REMOVE_BREAKPOINT);
+			message.append(DebugMessageIds.REMOVE_BREAKPOINT); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		message.append(DebugMessageIds.MESSAGE_DELIMITER);
-		message.append(breakpoint.getMarker().getResource().getLocation().toOSString());
-		message.append(DebugMessageIds.MESSAGE_DELIMITER);
+		message.append(DebugMessageIds.MESSAGE_DELIMITER); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		message.append(breakpoint.getMarker().getResource().getLocation().toOSString()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		message.append(DebugMessageIds.MESSAGE_DELIMITER); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		try {
-			message.append(((ILineBreakpoint) breakpoint).getLineNumber());
+			message.append(((ILineBreakpoint) breakpoint).getLineNumber()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			sendRequest(message.toString());
 		}
 		catch (CoreException ce) {
@@ -324,12 +324,12 @@ public class RemoteAntDebugBuildListener extends RemoteAntBuildListener implemen
 		sendRequest(DebugMessageIds.STACK);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public StringBuffer unescapeString(StringBuffer property) {
 		if (property.indexOf("\\r") == -1 && property.indexOf("\\n") == -1) { //$NON-NLS-1$ //$NON-NLS-2$
 			return property;
 		}
-		for (int i = 0; i < property.length(); i++) {
+		for (int i = 0; i < property.length(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if ('\\' == property.charAt(i)) {
 				String newString = ""; //$NON-NLS-1$
 				if ('r' == property.charAt(i + 1)) {

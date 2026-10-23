@@ -50,7 +50,7 @@ public class AddPropertyDialog extends Dialog {
 		fInitialValues = initialValues;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createDialogArea(Composite parent) {
 		Composite comp = (Composite) super.createDialogArea(parent);
 		((GridLayout) comp.getLayout()).numColumns = 2;
@@ -65,7 +65,7 @@ public class AddPropertyDialog extends Dialog {
 		gd.widthHint = 300;
 		fNameText.setLayoutData(gd);
 		fNameText.setFont(comp.getFont());
-		fNameText.addModifyListener(unused -> updateButtons());
+		fNameText.addModifyListener(unused -> updateButtons()); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 
 		fValueLabel = new Label(comp, SWT.NONE);
 		fValueLabel.setText(AntPreferencesMessages.AddPropertyDialog__Value__2);
@@ -77,7 +77,7 @@ public class AddPropertyDialog extends Dialog {
 		gd.widthHint = 300;
 		fValueText.setLayoutData(gd);
 		fValueText.setFont(comp.getFont());
-		fValueText.addModifyListener(unused -> updateButtons());
+		fValueText.addModifyListener(unused -> updateButtons()); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 
 		Button variablesButton = new Button(comp, SWT.PUSH);
 		variablesButton.setText(AntPreferencesMessages.AddPropertyDialog_2);
@@ -88,7 +88,7 @@ public class AddPropertyDialog extends Dialog {
 		variablesButton.setLayoutData(gd);
 		variablesButton.setFont(comp.getFont());
 
-		variablesButton.addSelectionListener(new SelectionAdapter() {
+		variablesButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent se) {
 				getVariable();

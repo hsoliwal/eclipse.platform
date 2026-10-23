@@ -107,7 +107,7 @@ public class SymlinkTest {
 		FileSystemHelper.createSymLink(dir.toLocalFile(EFS.NONE, getMonitor()), src, tgt, isDir);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBrokenSymlinkAttributes() throws Exception {
 		long testStartTime = System.currentTimeMillis();
 		makeLinkStructure();
@@ -152,7 +152,7 @@ public class SymlinkTest {
 	}
 
 	// Moving a broken symlink is possible.
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBrokenSymlinkMove() throws Exception {
 		IFileStore baseStore = fileStoreExtension.getFileStore();
 		makeLinkStructure();
@@ -206,7 +206,7 @@ public class SymlinkTest {
 		assertThat(infos).isEmpty();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRecursiveSymlink() throws Exception {
 		IFileStore baseStore = fileStoreExtension.getFileStore();
 		mkLink(baseStore, "l1", "l2", false);
@@ -247,7 +247,7 @@ public class SymlinkTest {
 		assertThat(infos).hasSize(1);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSymlinkAttributes() throws Exception {
 		makeLinkStructure();
 		assertFalse(iFile.getAttribute(EFS.ATTRIBUTE_SYMLINK));
@@ -300,7 +300,7 @@ public class SymlinkTest {
 	}
 
 	// Writing to symlinked dir.
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSymlinkDirWrite() throws Exception {
 		makeLinkStructure();
 		IFileStore childFile = llDir.getChild("subFile");
@@ -337,14 +337,14 @@ public class SymlinkTest {
 	/**
 	 * TODO Fix this test.  See https://bugs.eclipse.org/bugs/show_bug.cgi?id=172346
 	 */
-	public void _testSymlinkExtendedChars() throws Exception {
+	public void _testSymlinkExtendedChars() throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IFileStore baseStore = fileStoreExtension.getFileStore();
 		IFileStore childDir = baseStore.getChild(specialCharName);
 		ensureExists(childDir, true);
-		IFileStore childFile = baseStore.getChild("ff" + specialCharName);
+		IFileStore childFile = baseStore.getChild("ff" + specialCharName); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		ensureExists(childFile, false);
-		mkLink(baseStore, "l" + specialCharName, specialCharName, true);
-		mkLink(baseStore, "lf" + specialCharName, "ff" + specialCharName, false);
+		mkLink(baseStore, "l" + specialCharName, specialCharName, true); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		mkLink(baseStore, "lf" + specialCharName, "ff" + specialCharName, false); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IFileInfo[] infos = baseStore.childInfos(EFS.NONE, getMonitor());
 		assertThat(infos).hasSize(4);
 		assertThat(infos).allSatisfy(info -> {
@@ -362,7 +362,7 @@ public class SymlinkTest {
 		});
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSymlinkPutLastModified() throws Exception {
 		assumeFalse(OS.isMac(), "setting EFS.SET_LAST_MODIFIED fails on Mac");
 
@@ -392,7 +392,7 @@ public class SymlinkTest {
 		assertEquals(illDir.getStringAttribute(EFS.ATTRIBUTE_LINK_TARGET), "lDir");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSymlinkPutReadOnly() throws Exception {
 		//check that putInfo() "writes through" the symlink
 		makeLinkStructure();
@@ -425,7 +425,7 @@ public class SymlinkTest {
 		assertEquals(illDir.getStringAttribute(EFS.ATTRIBUTE_LINK_TARGET), "lDir");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSymlinkPutExecutable() throws Exception {
 		assumeTrue(isAttributeSupported(EFS.ATTRIBUTE_EXECUTABLE),
 				"only relevant for platforms supporting hidden attribute");
@@ -451,7 +451,7 @@ public class SymlinkTest {
 		assertEquals(illDir.getStringAttribute(EFS.ATTRIBUTE_LINK_TARGET), "lDir");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSymlinkPutHidden() throws Exception {
 		assumeTrue(isAttributeSupported(EFS.ATTRIBUTE_HIDDEN),
 				"only relevant for platforms supporting hidden attribute");
@@ -483,7 +483,7 @@ public class SymlinkTest {
 
 	// Removing a symlink keeps the link target intact.
 	// Symlinks being broken due to remove are set to non-existent.
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSymlinkRemove() throws Exception {
 		makeLinkStructure();
 		lFile.delete(EFS.NONE, getMonitor());

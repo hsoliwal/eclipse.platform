@@ -38,7 +38,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
  * Adapter to create breakpoints in PDA files.
  */
 public class PDABreakpointAdapter implements IToggleBreakpointsTargetExtension {
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void toggleLineBreakpoints(IWorkbenchPart part, ISelection selection) throws CoreException {
 		ITextEditor textEditor = getEditor(part);
 		if (textEditor != null) {
@@ -46,7 +46,7 @@ public class PDABreakpointAdapter implements IToggleBreakpointsTargetExtension {
 			ITextSelection textSelection = (ITextSelection) selection;
 			int lineNumber = textSelection.getStartLine();
 			IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(DebugCorePlugin.ID_PDA_DEBUG_MODEL);
-			for (int i = 0; i < breakpoints.length; i++) {
+			for (int i = 0; i < breakpoints.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IBreakpoint breakpoint = breakpoints[i];
 				if (breakpoint instanceof ILineBreakpoint && resource.equals(breakpoint.getMarker().getResource())) {
 					if (((ILineBreakpoint)breakpoint).getLineNumber() == (lineNumber + 1)) {
@@ -114,12 +114,12 @@ public class PDABreakpointAdapter implements IToggleBreakpointsTargetExtension {
 		return getVariableAndFunctionName(part, selection) != null;
 	}
 
-	protected void toggleWatchpoint(IResource resource, int lineNumber, String fcn, String var, boolean access,
+	protected void toggleWatchpoint(IResource resource, int lineNumber, String fcn, String var, boolean access, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean modification) throws CoreException
 	{
 		// look for existing watchpoint to delete
 		IBreakpoint[] breakpoints = DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(DebugCorePlugin.ID_PDA_DEBUG_MODEL);
-		for (int i = 0; i < breakpoints.length; i++) {
+		for (int i = 0; i < breakpoints.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IBreakpoint breakpoint = breakpoints[i];
 			if (breakpoint instanceof PDAWatchpoint watchpoint && resource.equals(breakpoint.getMarker().getResource())) {
 				String otherVar = watchpoint.getVariableName();
@@ -143,7 +143,7 @@ public class PDABreakpointAdapter implements IToggleBreakpointsTargetExtension {
 	 * @return the variable and function names at the current line, or <code>null</code> if none.
 	 *  The array has two elements, the first is the variable name, the second is the function name.
 	 */
-	protected String[] getVariableAndFunctionName(IWorkbenchPart part, ISelection selection) {
+	protected String[] getVariableAndFunctionName(IWorkbenchPart part, ISelection selection) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ITextEditor editor = getEditor(part);
 		if (editor != null && selection instanceof ITextSelection textSelection) {
 			IDocumentProvider documentProvider = editor.getDocumentProvider();
@@ -175,19 +175,19 @@ public class PDABreakpointAdapter implements IToggleBreakpointsTargetExtension {
 	 * @param line line numbner at which the variable is defined
 	 * @return name of function defining the variable
 	 */
-	private String getFunctionName(IDocument document, String varName, int line) {
+	private String getFunctionName(IDocument document, String varName, int line) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// This is a simple guess at the function name - look for the labels preceeding
 		// the variable definition, and then see if there are any 'calls' to that
 		// label. If none, assumet the variable is in the "_main_" function
 		String source = document.get();
 		int lineIndex = line - 1;
-		while (lineIndex >= 0) {
+		while (lineIndex >= 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				IRegion information = document.getLineInformation(lineIndex);
 				String lineText = document.get(information.getOffset(), information.getLength());
 				if (lineText.startsWith(":")) { //$NON-NLS-1$
 					String label = lineText.substring(1);
-					if (source.contains("call " + label)) { //$NON-NLS-1$
+					if (source.contains("call " + label)) { //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						return label;
 					}
 				}

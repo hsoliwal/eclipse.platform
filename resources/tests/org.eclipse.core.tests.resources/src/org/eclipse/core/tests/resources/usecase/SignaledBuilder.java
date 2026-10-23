@@ -28,7 +28,7 @@ public class SignaledBuilder extends IncrementalProjectBuilder {
 	/**
 	 * associate IProject-&gt;SignaledBuilder
 	 */
-	private static HashMap<IProject, SignaledBuilder> instances = new HashMap<>(10);
+	private static HashMap<IProject, SignaledBuilder> instances = new HashMap<>(10); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	protected boolean wasExecuted;
 
 	public static SignaledBuilder getInstance(IProject project) {

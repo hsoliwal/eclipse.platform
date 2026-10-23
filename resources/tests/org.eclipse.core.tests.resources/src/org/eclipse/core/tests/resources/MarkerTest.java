@@ -91,13 +91,13 @@ public class MarkerTest {
 	private boolean originalRefreshSetting;
 	private MarkersChangeListener registeredResourceChangeLister;
 
-	private void setResourceChangeListener(MarkersChangeListener listener) throws CoreException {
+	private void setResourceChangeListener(MarkersChangeListener listener) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// removeResourceChangeListener need to happen in an atomic workspace operation
 		// otherwise it would be removed while auto refresh is running
 		// and might even get called in another thread after removing in this thread
 		// listener.shutDown();
 		if (registeredResourceChangeLister != null) {
-			getWorkspace().run(unused -> getWorkspace().removeResourceChangeListener(registeredResourceChangeLister), null);
+			getWorkspace().run(unused -> getWorkspace().removeResourceChangeListener(registeredResourceChangeLister), null); //FLLDCIM: MARK — T09  LAMBDA
 		}
 		registeredResourceChangeLister = listener;
 		if (listener == null) {
@@ -106,15 +106,15 @@ public class MarkerTest {
 		// addResourceChangeListener need to happen in an atomic workspace operation
 		// otherwise it would be added while auto refresh is running
 		// and might get called in another thread before explicit refresh in this thread
-		getWorkspace().run(unused -> {
+		getWorkspace().run(unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			getWorkspace().addResourceChangeListener(listener);
 			// listener.active();
 		}, null);
 	}
 
 	protected void addChildren(ArrayList<String> result, IPath root, int breadth, int depth) {
-		for (int i = 1; i < breadth + 1; i++) {
-			IPath child = root.append(i + "");
+		for (int i = 1; i < breadth + 1; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			IPath child = root.append(i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			if (depth == 0) {
 				result.add(child.toString());
 				return;
@@ -126,25 +126,25 @@ public class MarkerTest {
 	}
 
 	protected void assertMarkersDoNotExist(IMarker[] markers) {
-		for (IMarker marker : markers) {
+		for (IMarker marker : markers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertMarkerDoesNotExist(marker);
 		}
 	}
 
 	protected void assertMarkerDoesNotExist(IMarker marker) {
 		assertFalse(marker.exists(),
-				String.format("marker '%s' exists unexpectedly for resource '%s'", marker, marker.getResource()));
+				String.format("marker '%s' exists unexpectedly for resource '%s'", marker, marker.getResource())); //FLLDCIM: MARK — M11 FORMAT_PRECOMPUTE CALL
 	}
 
 	protected void assertMarkersExist(IMarker[] markers) {
-		for (IMarker marker : markers) {
+		for (IMarker marker : markers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertMarkerExists(marker);
 		}
 	}
 
 	protected void assertMarkerExists(IMarker marker) {
 		assertTrue(marker.exists(),
-				String.format("marker '%s' does not exist for resource '%s'", marker, marker.getResource()));
+				String.format("marker '%s' does not exist for resource '%s'", marker, marker.getResource())); //FLLDCIM: MARK — M11 FORMAT_PRECOMPUTE CALL
 	}
 
 	private void assertMarkerHasAttributeValue(IMarker marker, String attributeName, Object expectedValue)
@@ -165,15 +165,15 @@ public class MarkerTest {
 	}
 
 	private void assertMarkerIsSubtype(IMarker marker, String superType) throws CoreException {
-		assertTrue(marker.isSubtypeOf(superType), String.format("Marker '%s' is no subtype of %s", marker, superType));
+		assertTrue(marker.isSubtypeOf(superType), String.format("Marker '%s' is no subtype of %s", marker, superType)); //FLLDCIM: MARK — M11 FORMAT_PRECOMPUTE CALL
 	}
 
 	private void assertMarkerIsNoSubtype(IMarker marker, String superType) throws CoreException {
-		assertFalse(marker.isSubtypeOf(superType), String.format("Marker '%s' is subtype of %s", marker, superType));
+		assertFalse(marker.isSubtypeOf(superType), String.format("Marker '%s' is subtype of %s", marker, superType)); //FLLDCIM: MARK — M11 FORMAT_PRECOMPUTE CALL
 	}
 
 	public IResource[] createLargeHierarchy() throws CoreException {
-		ArrayList<String> result = new ArrayList<>();
+		ArrayList<String> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		result.add("/");
 		new MarkerTest().addChildren(result, IPath.ROOT, 3, 4);
 		String[] names = result.toArray(new String[result.size()]);
@@ -184,8 +184,8 @@ public class MarkerTest {
 
 	protected IMarker[] createMarkers(final IResource[] hosts, final String type) throws CoreException {
 		final IMarker[] result = new IMarker[hosts.length];
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
-			for (int i = 0; i < hosts.length; i++) {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
+			for (int i = 0; i < hosts.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				result[i] = hosts[i].createMarker(type);
 			}
 		}, createTestMonitor());
@@ -227,7 +227,7 @@ public class MarkerTest {
 	/**
 	 * Tests the appearance of marker changes in the resource delta.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMarkerChangesInDelta3() throws CoreException {
 		// Create and register a listener.
 		final MarkersChangeListener listener = new MarkersChangeListener();
@@ -238,7 +238,7 @@ public class MarkerTest {
 
 		// MOVE the resource
 		IPath destination = resource.getFullPath().removeLastSegments(1)
-				.append(resource.getFullPath().lastSegment() + "new");
+				.append(resource.getFullPath().lastSegment() + "new"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		markers[0] = resource.createMarker(IMarker.BOOKMARK);
 		IResource child = ((IProject) resource).members()[0];
 		markers[1] = child.createMarker(IMarker.TASK);
@@ -258,7 +258,7 @@ public class MarkerTest {
 		// there should be no changes since markers are not copied
 		resource = getWorkspace().getRoot().findMember("2");
 		destination = resource.getFullPath().removeLastSegments(1)
-				.append(resource.getFullPath().lastSegment() + "copy");
+				.append(resource.getFullPath().lastSegment() + "copy"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		resource.createMarker(IMarker.BOOKMARK);
 		listener.reset();
 		resource.copy(destination, false, createTestMonitor());
@@ -275,10 +275,10 @@ public class MarkerTest {
 	public void testCopyResource() {
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateMarker() throws CoreException {
 		// create markers on our hierarchy of resources
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// Create and register a listener.
 			MarkersChangeListener listener = new MarkersChangeListener();
 			setResourceChangeListener(listener);
@@ -295,19 +295,19 @@ public class MarkerTest {
 
 		// try creating a marker on a resource which does't exist
 		IResource testResource = getWorkspace().getRoot().getFile(IPath.fromOSString("non/existant/resource"));
-		assertFalse(testResource.exists(), "resource should not exist: " + testResource);
+		assertFalse(testResource.exists(), "resource should not exist: " + testResource); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertThrows(CoreException.class, () -> testResource.createMarker(IMarker.PROBLEM),
 				testResource.getFullPath().toString());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateMarkerWithAttributes() throws CoreException {
 		// Create and register a listener.
 		MarkersChangeListener listener = new MarkersChangeListener();
 		setResourceChangeListener(listener);
 
 		// create markers on our hierarchy of resources
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			listener.reset();
 
 			IMarker[] markers = new IMarker[] { //
@@ -323,7 +323,7 @@ public class MarkerTest {
 	@Test
 	public void testCreateNullMarkerWithAttributesShouldFail() {
 		// create markers on our hierarchy of resources
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThrows(RuntimeException.class, () -> resource.createMarker(null, null));
 		}
 	}
@@ -332,7 +332,7 @@ public class MarkerTest {
 	public void testCreateMarkerWithAttributesOnAResourceWhichDoesNotExistShouldFail() {
 		// try creating a marker on a resource which does't exist
 		IResource testResource = getWorkspace().getRoot().getFile(IPath.fromOSString("non/existant/resource"));
-		assertFalse(testResource.exists(), "resource should not exist: " + testResource);
+		assertFalse(testResource.exists(), "resource should not exist: " + testResource); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertThrows(CoreException.class,
 				() -> testResource.createMarker(IMarker.PROBLEM, Map.of(IMarker.MESSAGE, "My text")),
 				testResource.getFullPath().toString());
@@ -347,7 +347,7 @@ public class MarkerTest {
 		// Create and register a listener.
 		MarkersNumberOfDeltasChangeListener listener = new MarkersNumberOfDeltasChangeListener();
 		getWorkspace().addResourceChangeListener(listener);
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			listener.reset();
 			// each setAttributes triggers one additional resource change event
 			IMarker marker = resource.createMarker(TEST_PROBLEM_MARKER);
@@ -364,7 +364,7 @@ public class MarkerTest {
 		// Create and register a listener.
 		MarkersNumberOfDeltasChangeListener listener = new MarkersNumberOfDeltasChangeListener();
 		getWorkspace().addResourceChangeListener(listener);
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			listener.reset();
 			// createMarker with attributes triggers only one resource change event
 			listener.reset();
@@ -378,14 +378,14 @@ public class MarkerTest {
 
 	@Test
 	public void testCreationTime() throws CoreException {
-		for (IResource element : resources) {
+		for (IResource element : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IMarker marker = element.createMarker(IMarker.PROBLEM);
 			assertThat(marker.getCreationTime())
 					.withFailMessage("creation time for marker in resource %s is not set", element.getFullPath()).isNotZero();
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteMarker() throws CoreException {
 		IMarker marker = null;
 
@@ -394,7 +394,7 @@ public class MarkerTest {
 		setResourceChangeListener(listener);
 
 		// for each resource in the hierarchy do...
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// create the marker, assert that it exists, and then remove it
 			listener.reset();
 			marker = resource.createMarker(IMarker.PROBLEM);
@@ -440,7 +440,7 @@ public class MarkerTest {
 		getWorkspace().deleteMarkers(new IMarker[0]);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFindMarkers() throws CoreException {
 		// test finding some markers which actually exist
 		IMarker[] markers = createMarkers(resources, IMarker.PROBLEM);
@@ -510,7 +510,7 @@ public class MarkerTest {
 		IFile file = project.getFile("foo.txt");
 		file.create(createRandomContentsStream(), true, null);
 		IMarker marker = file.createMarker(IMarker.PROBLEM);
-		marker.setAttributes(new HashMap<>());
+		marker.setAttributes(new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		marker.setAttribute(IMarker.SEVERITY, testValue);
 		assertMarkerHasAttributeValue(marker, IMarker.SEVERITY, testValue);
 		project.delete(true, true, null);
@@ -519,7 +519,7 @@ public class MarkerTest {
 	/**
 	 * Tests public API method IResource#findMaxProblemSeverity
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFindMaxProblemSeverity() throws CoreException {
 		final IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject project = root.getProject("testFindMaxProblemSeverity");
@@ -578,7 +578,7 @@ public class MarkerTest {
 	/**
 	 * Tests public API method IMarker#isSubTypeOf
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIsSubTypeOf() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("testisSubType");
 		IMarker marker, task, problem, testProblem, invalid;
@@ -629,13 +629,13 @@ public class MarkerTest {
 	/**
 	 * Tests the appearance of marker changes in the resource delta.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMarkerChangesInDelta() throws CoreException {
 		// Create and register a listener.
 		MarkersChangeListener listener = new MarkersChangeListener();
 		setResourceChangeListener(listener);
 
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IMarker[] markers = new IMarker[3];
 
 			// ADD a marker
@@ -710,11 +710,11 @@ public class MarkerTest {
 	 * Particularly, checks that the MarkerDelta attributes reflect the
 	 * state of the marker before the change occurred.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMarkerDeltaAttributes() throws CoreException {
 		// create markers on various resources
 		final IMarker[] markers = new IMarker[3];
-		IWorkspaceRunnable body = unused -> {
+		IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			markers[0] = resources[0].createMarker(IMarker.BOOKMARK);
 			markers[1] = resources[1].createMarker(IMarker.BOOKMARK);
 			markers[1].setAttribute(IMarker.CHAR_START, 5);
@@ -751,7 +751,7 @@ public class MarkerTest {
 
 		// add+change
 		listener.expectChanges(markers[1]);
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			markers[1].setAttribute(IMarker.CHAR_START, 5);
 			markers[1].setAttribute(IMarker.CHAR_END, 10);
 		}, createTestMonitor());
@@ -759,7 +759,7 @@ public class MarkerTest {
 
 		// change+remove same marker
 		listener.expectChanges(markers[1]);
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			markers[1].setAttribute(IMarker.CHAR_START, 5);
 			markers[1].setAttribute(IMarker.CHAR_START, null);
 		}, createTestMonitor());
@@ -767,7 +767,7 @@ public class MarkerTest {
 
 		// change multiple markers
 		listener.expectChanges(markers);
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			markers[0].setAttribute(IMarker.CHAR_START, 5);
 			markers[1].setAttribute(IMarker.CHAR_START, 10);
 			markers[2].setAttribute(IMarker.PRIORITY, IMarker.PRIORITY_LOW);
@@ -778,7 +778,7 @@ public class MarkerTest {
 	/**
 	 * Tests the appearance of marker changes in the resource delta.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMarkerDeltasCopyResource() throws CoreException {
 		// Create and register a listener.
 		final MarkersChangeListener listener = new MarkersChangeListener();
@@ -788,7 +788,7 @@ public class MarkerTest {
 		final Hashtable<IResource, IMarker> table = new Hashtable<>(1);
 		final int[] count = new int[1];
 		count[0] = 0;
-		IWorkspaceRunnable body = unused -> {
+		IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			IResourceVisitor visitor = resource -> {
 				if (resource.getType() == IResource.ROOT || resource.getType() == IResource.PROJECT) {
 					return true;
@@ -805,10 +805,10 @@ public class MarkerTest {
 
 		// copy all non-project resources
 		IProject[] projects = getWorkspace().getRoot().getProjects();
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource[] children = project.members();
-			for (IResource element : children) {
-				IPath destination = IPath.fromOSString(element.getName() + "copy");
+			for (IResource element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				IPath destination = IPath.fromOSString(element.getName() + "copy"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				element.copy(destination, true, createTestMonitor());
 			}
 		}
@@ -819,15 +819,15 @@ public class MarkerTest {
 	/**
 	 * Tests the appearance of marker changes in the resource delta.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMarkerDeltasMerge() throws CoreException {
 		// Create and register a listener.
 		final MarkersChangeListener listener = new MarkersChangeListener();
 		setResourceChangeListener(listener);
 
-		for (final IResource resource : resources) {
+		for (final IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// ADD + REMOVE = nothing
-			IWorkspaceRunnable addAndRemoveOperation = unused -> {
+			IWorkspaceRunnable addAndRemoveOperation = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				listener.reset();
 				IMarker marker = resource.createMarker(IMarker.PROBLEM);
 				assertMarkerExists(marker);
@@ -842,7 +842,7 @@ public class MarkerTest {
 			// cannot re-assign variable value within the code below, so must
 			// put our marker value inside an array and set the element.
 			AtomicReference<IMarker> addAndChangeMarker = new AtomicReference<>();
-			IWorkspaceRunnable addAndChangeOperation = unused -> {
+			IWorkspaceRunnable addAndChangeOperation = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				listener.reset();
 				addAndChangeMarker.set(resource.createMarker(IMarker.PROBLEM));
 				assertMarkerExists(addAndChangeMarker.get());
@@ -881,7 +881,7 @@ public class MarkerTest {
 
 			IMarker changeAndChangeMarker = resource.createMarker(IMarker.PROBLEM);
 			assertMarkerExists(changeAndChangeMarker);
-			IWorkspaceRunnable changeAndChangeOperation = unused -> {
+			IWorkspaceRunnable changeAndChangeOperation = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				listener.reset();
 				changeAndChangeMarker.setAttribute(IMarker.MESSAGE, "my message text");
 				assertMarkerHasAttributeValue(changeAndChangeMarker, IMarker.MESSAGE, "my message text");
@@ -896,7 +896,7 @@ public class MarkerTest {
 			// CHANGE + REMOVE = REMOVE
 			IMarker changeAndRemoveMarker = resource.createMarker(IMarker.PROBLEM);
 			assertMarkerExists(changeAndRemoveMarker);
-			IWorkspaceRunnable changeAndRemoveOperation = unused -> {
+			IWorkspaceRunnable changeAndRemoveOperation = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				listener.reset();
 				changeAndRemoveMarker.setAttribute(IMarker.MESSAGE, "my message text");
 				assertMarkerHasAttributeValue(changeAndRemoveMarker, IMarker.MESSAGE, "my message text");
@@ -915,7 +915,7 @@ public class MarkerTest {
 	/**
 	 * Tests the appearance of marker changes in the resource delta.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMarkerDeltasMoveFolder(TestInfo testInfo) throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		final IProject project = root.getProject("MyProject");
@@ -959,7 +959,7 @@ public class MarkerTest {
 	/**
 	 * Tests the appearance of marker changes in the resource delta.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMarkerDeltasMoveFile(TestInfo testInfo) throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		final IProject project = root.getProject("MyProject");
@@ -983,7 +983,7 @@ public class MarkerTest {
 		// move the files in one atomic workspace operation to prevent background jobs
 		// (e.g. charset/encoding validation) from running between the two moves and
 		// adding unexpected marker changes to the listener
-		getWorkspace().run(monitor -> {
+		getWorkspace().run(monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 			file.move(destFile.getFullPath(), IResource.FORCE, monitor);
 			subFile.move(destSubFile.getFullPath(), IResource.FORCE, monitor);
 		}, createTestMonitor());
@@ -1007,7 +1007,7 @@ public class MarkerTest {
 	/**
 	 * Tests the appearance of marker changes in the resource delta.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMarkerDeltasMoveProject() throws Exception {
 		// Create and register a listener.
 		final MarkersChangeListener listener = new MarkersChangeListener();
@@ -1017,7 +1017,7 @@ public class MarkerTest {
 		final Hashtable<IResource, IMarker> table = new Hashtable<>(1);
 		final int[] count = new int[1];
 		count[0] = 0;
-		IWorkspaceRunnable body = unused -> {
+		IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			IResourceVisitor visitor = resource -> {
 				if (resource.getType() == IResource.ROOT) {
 					return true;
@@ -1034,8 +1034,8 @@ public class MarkerTest {
 
 		// move all resources
 		IProject[] projects = getWorkspace().getRoot().getProjects();
-		for (IProject project : projects) {
-			IPath destination = IPath.fromOSString(project.getName() + "move");
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			IPath destination = IPath.fromOSString(project.getName() + "move"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			project.move(destination, true, createTestMonitor());
 		}
 		cancelAndJoin(ContentDescriptionManager.FAMILY_DESCRIPTION_CACHE_FLUSH);
@@ -1061,7 +1061,7 @@ public class MarkerTest {
 		getWorkspace().getRoot().accept(visitor);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMarkerSave() throws Exception {
 		IMarker[] newMarkers = createMarkers(resources, IMarker.PROBLEM);
 		IMarker[] expected = new IMarker[newMarkers.length * 3];
@@ -1077,7 +1077,7 @@ public class MarkerTest {
 		File file = Platform.getLocation().append(".testmarkers").toFile();
 		try (OutputStream fileOutput = new FileOutputStream(file)) {
 			try (DataOutputStream output = new DataOutputStream(fileOutput)) {
-				final List<String> list = new ArrayList<>(5);
+				final List<String> list = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				IResourceVisitor visitor = resource -> {
 					ResourceInfo info = ((Resource) resource).getResourceInfo(false, false);
 					if (info == null) {
@@ -1112,7 +1112,7 @@ public class MarkerTest {
 		// read in the markers from the file
 		try (InputStream fileInput = Files.newInputStream(file.toPath())) {
 			try (DataInputStream input = new DataInputStream(fileInput)) {
-				IWorkspaceRunnable body = unused -> {
+				IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 					MarkerReader reader = new MarkerReader((Workspace) getWorkspace());
 					try {
 						reader.read(input, true);
@@ -1134,11 +1134,11 @@ public class MarkerTest {
 		assertTrue(file.delete());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMarkerSaveTransient() throws Exception {
 		// create the markers on the resources. create both transient
 		// and persistent markers.
-		final ArrayList<IMarker> persistentMarkers = new ArrayList<>();
+		final ArrayList<IMarker> persistentMarkers = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IResourceVisitor visitor = resource -> {
 			IMarker marker = resource.createMarker(IMarker.PROBLEM);
 			persistentMarkers.add(marker);
@@ -1166,7 +1166,7 @@ public class MarkerTest {
 		File file = Platform.getLocation().append(".testmarkers").toFile();
 		try(OutputStream fileOutput = new FileOutputStream(file)) {
 			try(DataOutputStream output = new DataOutputStream(fileOutput)) {
-				final List<String> list = new ArrayList<>(5);
+				final List<String> list = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				visitor = resource -> {
 					ResourceInfo info = ((Resource) resource).getResourceInfo(false, false);
 					if (info == null) {
@@ -1201,7 +1201,7 @@ public class MarkerTest {
 		// read in the markers from the file
 		try (InputStream fileInput = Files.newInputStream(file.toPath())) {
 			try (DataInputStream input = new DataInputStream(fileInput)) {
-				IWorkspaceRunnable body = unused -> {
+				IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 					MarkerReader reader = new MarkerReader((Workspace) getWorkspace());
 					try {
 						reader.read(input, true);
@@ -1247,9 +1247,9 @@ public class MarkerTest {
 		assertMarkerExists(marker);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetGetAttribute() throws CoreException {
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String resourcePath = resource.getFullPath().toString();
 
 			// getting a non-existant attribute should return null
@@ -1296,7 +1296,7 @@ public class MarkerTest {
 					() -> marker.setAttributes(new String[] { IMarker.LINE_NUMBER },
 							new Object[] { Integer.valueOf(4) }),
 					resourcePath);
-			HashMap<String, String> attributes = new HashMap<>();
+			HashMap<String, String> attributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			attributes.put(IMarker.MESSAGE, "Hello");
 			assertThrows(CoreException.class, () -> marker.setAttributes(attributes), resourcePath);
 		}
@@ -1305,7 +1305,7 @@ public class MarkerTest {
 	@Test
 	public void testGetAttributesEquality() throws Exception {
 		final String value = "Some value";
-		for (int i = 0; i < resources.length; i++) {
+		for (int i = 0; i < resources.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IMarker marker = resources[i].createMarker(IMarker.PROBLEM, Map.of(String.valueOf(i), value));
 
 			// Check we can get the value by equal key
@@ -1318,9 +1318,9 @@ public class MarkerTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetGetAttribute2() throws CoreException {
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String resourcePath = resource.getFullPath().toString();
 
 			// getting a non-existant attribute should return null or the specified default
@@ -1401,34 +1401,34 @@ public class MarkerTest {
 		Job.getJobManager().join(family, null);
 	}
 
-	private static void logDeltaEvent(IResourceChangeEvent event) {
-		StringBuilder s = new StringBuilder();
-		s.append("Logging resource change event");
-		s.append(System.lineSeparator());
-		s.append("thread: ");
-		s.append(Thread.currentThread().getName());
-		s.append(System.lineSeparator());
-		s.append("type: ");
-		s.append(event.getType());
-		s.append(System.lineSeparator());
-		s.append("buildKind: ");
-		s.append(event.getBuildKind());
-		s.append(System.lineSeparator());
-		s.append("resource: ");
-		s.append(event.getResource());
-		s.append(System.lineSeparator());
-		s.append("source: ");
-		s.append(event.getSource());
+	private static void logDeltaEvent(IResourceChangeEvent event) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		StringBuilder s = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		s.append("Logging resource change event"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append("thread: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append(Thread.currentThread().getName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append("type: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append(event.getType()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append("buildKind: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append(event.getBuildKind()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append("resource: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append(event.getResource()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append("source: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		s.append(event.getSource()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		IResourceDelta delta = event.getDelta();
 		if (delta != null) {
-			s.append(System.lineSeparator());
-			s.append("Delta:");
-			IResourceDeltaVisitor visitor = d -> {
-				s.append(System.lineSeparator());
-				s.append("\tkind: ");
-				s.append(d.getKind());
-				s.append(", resource: ");
-				s.append(d.getResource());
+			s.append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			s.append("Delta:"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			IResourceDeltaVisitor visitor = d -> { //FLLDCIM: MARK — T07  LAMBDA
+				s.append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				s.append("\tkind: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				s.append(d.getKind()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				s.append(", resource: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				s.append(d.getResource()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				return true;
 			};
 			try {

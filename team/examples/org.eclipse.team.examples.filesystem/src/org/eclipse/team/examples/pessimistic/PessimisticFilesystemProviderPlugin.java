@@ -48,7 +48,7 @@ public class PessimisticFilesystemProviderPlugin extends AbstractUIPlugin {
 	/**
 	 * The nature identifier.
 	 */
-	public static final String NATURE_ID = PLUGIN_ID + ".pessimisticnature";
+	public static final String NATURE_ID = PLUGIN_ID + ".pessimisticnature"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Constructor required by plugin lifecycle.
@@ -56,7 +56,7 @@ public class PessimisticFilesystemProviderPlugin extends AbstractUIPlugin {
 	public PessimisticFilesystemProviderPlugin() {
 		super();
 		instance = this;
-		fListeners = new ArrayList<>(1);
+		fListeners = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		//setDebugging(true);
 	}
 
@@ -70,7 +70,7 @@ public class PessimisticFilesystemProviderPlugin extends AbstractUIPlugin {
 	/**
 	 * Initializes the default preferences for this plugin.
 	 */
-	protected void initializeDefaultPreferences() {
+	protected void initializeDefaultPreferences() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPreferenceStore store = getPreferenceStore();
 
 		store.setDefault(
@@ -132,7 +132,7 @@ public class PessimisticFilesystemProviderPlugin extends AbstractUIPlugin {
 	public void fireResourcesChanged(IResource[] resources) {
 		if (resources == null || resources.length == 0 || fListeners.isEmpty())
 			return;
-		for (IResourceStateListener listener : fListeners) {
+		for (IResourceStateListener listener : fListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			listener.stateChanged(resources);
 		}
 	}

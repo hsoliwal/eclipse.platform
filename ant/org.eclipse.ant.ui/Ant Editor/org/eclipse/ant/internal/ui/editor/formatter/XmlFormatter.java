@@ -59,7 +59,7 @@ public class XmlFormatter {
 		return format(text, prefs, -1);
 	}
 
-	private static String format(String text, FormattingPreferences prefs, int indent) {
+	private static String format(String text, FormattingPreferences prefs, int indent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isNotNull(text);
 
 		FormattingPreferences applyPrefs;
@@ -97,7 +97,7 @@ public class XmlFormatter {
 		return format(text, null);
 	}
 
-	public static void format(TemplateBuffer templateBuffer, AntContext antContext, FormattingPreferences prefs) {
+	public static void format(TemplateBuffer templateBuffer, AntContext antContext, FormattingPreferences prefs) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String templateString = templateBuffer.getString();
 		IDocument fullDocument = new Document(antContext.getDocument().get());
 
@@ -126,7 +126,7 @@ public class XmlFormatter {
 		IDocument templateDocument = createDocument(origTemplateDoc.get(), createPositions(offsets));
 
 		String leadingText = getLeadingText(fullDocument, antContext.getAntModel(), completionOffset);
-		String newTemplateString = leadingText + templateString;
+		String newTemplateString = leadingText + templateString; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		int indent = XmlDocumentFormatter.computeIndent(leadingText, prefs.getTabWidth());
 
 		newTemplateString = format(newTemplateString, prefs, indent);
@@ -150,11 +150,11 @@ public class XmlFormatter {
 	}
 
 	private static void positionsToVariables(Position[] positions, TemplateVariable[] variables, int start) {
-		for (int i = 0; i != variables.length; i++) {
+		for (int i = 0; i != variables.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			TemplateVariable variable = variables[i];
 
 			int[] offsets = new int[variable.getOffsets().length];
-			for (int j = 0; j != offsets.length; j++) {
+			for (int j = 0; j != offsets.length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				offsets[j] = positions[j].getOffset() - start;
 			}
 
@@ -162,7 +162,7 @@ public class XmlFormatter {
 		}
 	}
 
-	private static Document createDocument(String string, Position[] positions) throws IllegalArgumentException {
+	private static Document createDocument(String string, Position[] positions) throws IllegalArgumentException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Document doc = new Document(string);
 		try {
 			if (positions != null) {
@@ -178,12 +178,12 @@ public class XmlFormatter {
 						return true;
 					}
 				});
-				for (Position position : positions) {
+				for (Position position : positions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					try {
 						doc.addPosition(POS_CATEGORY, position);
 					}
 					catch (BadLocationException e) {
-						throw new IllegalArgumentException("Position outside of string. offset: " + position.offset + ", length: " //$NON-NLS-1$//$NON-NLS-2$
+						throw new IllegalArgumentException("Position outside of string. offset: " + position.offset + ", length: " //$NON-NLS-1$//$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 								+ position.length + ", string size: " + string.length(), e); //$NON-NLS-1$
 					}
 				}
@@ -198,24 +198,24 @@ public class XmlFormatter {
 	public static String trimBegin(String toBeTrimmed) {
 
 		int i = 0;
-		while ((i != toBeTrimmed.length()) && Character.isWhitespace(toBeTrimmed.charAt(i))) {
+		while ((i != toBeTrimmed.length()) && Character.isWhitespace(toBeTrimmed.charAt(i))) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			i++;
 		}
 
 		return toBeTrimmed.substring(i);
 	}
 
-	private static int[] variablesToOffsets(TemplateVariable[] variables, int start) {
-		List<Integer> list = new ArrayList<>();
-		for (int i = 0; i != variables.length; i++) {
+	private static int[] variablesToOffsets(TemplateVariable[] variables, int start) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<Integer> list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (int i = 0; i != variables.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int[] offsets = variables[i].getOffsets();
-			for (int j = 0; j != offsets.length; j++) {
+			for (int j = 0; j != offsets.length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				list.add(Integer.valueOf(offsets[j]));
 			}
 		}
 
 		int[] offsets = new int[list.size()];
-		for (int i = 0; i != offsets.length; i++) {
+		for (int i = 0; i != offsets.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			offsets[i] = list.get(i).intValue() + start;
 		}
 
@@ -237,9 +237,9 @@ public class XmlFormatter {
 			return IAntCoreConstants.EMPTY_STRING;
 		}
 
-		StringBuilder buf = new StringBuilder();
-		buf.append(XmlDocumentFormatter.getLeadingWhitespace(node.getOffset(), document));
-		buf.append(XmlDocumentFormatter.createIndent());
+		StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		buf.append(XmlDocumentFormatter.getLeadingWhitespace(node.getOffset(), document)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buf.append(XmlDocumentFormatter.createIndent()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return buf.toString();
 	}
 
@@ -248,7 +248,7 @@ public class XmlFormatter {
 
 		if (positions != null) {
 			p = new Position[positions.length];
-			for (int i = 0; i < positions.length; i++) {
+			for (int i = 0; i < positions.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				p[i] = new Position(positions[i], 0);
 			}
 		}

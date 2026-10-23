@@ -25,27 +25,27 @@ public interface IPessimisticFilesystemConstants {
 	/**
 	 * Preference name for when checked in files are saved.
 	 */
-	String PREF_CHECKED_IN_FILES_SAVED = PREFIX + "WhenCheckedInFilesAreSaved";
+	String PREF_CHECKED_IN_FILES_SAVED = PREFIX + "WhenCheckedInFilesAreSaved"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	/**
 	 * Preference name for when checked in files are edited with a UI context.
 	 */
-	String PREF_CHECKED_IN_FILES_EDITED = PREFIX + "WhenCheckedInFilesAreEdited";
+	String PREF_CHECKED_IN_FILES_EDITED = PREFIX + "WhenCheckedInFilesAreEdited"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	/**
 	 * Preference name for when checked in files are edited without a UI context.
 	 */
-	String PREF_CHECKED_IN_FILES_EDITED_NOPROMPT = PREFIX + "WhenCheckedInFilesAreEditedNoPrompt";
+	String PREF_CHECKED_IN_FILES_EDITED_NOPROMPT = PREFIX + "WhenCheckedInFilesAreEditedNoPrompt"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	/**
 	 * Preference name for the option to always fail validate edit.
 	 */
-	String PREF_FAIL_VALIDATE_EDIT= PREFIX + "FailValidateEdit";
+	String PREF_FAIL_VALIDATE_EDIT= PREFIX + "FailValidateEdit"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	/**
 	 * Preference name for the option to touch files during validate edit calls
 	 */
-	String PREF_TOUCH_DURING_VALIDATE_EDIT= PREFIX + "ChangeFileContents";
+	String PREF_TOUCH_DURING_VALIDATE_EDIT= PREFIX + "ChangeFileContents"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	/**
 	 * Preference name for the option to add files to the repository provider.
 	 */
-	String PREF_ADD_TO_CONTROL= PREFIX + "AddToControl";
+	String PREF_ADD_TO_CONTROL= PREFIX + "AddToControl"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Preference option indicating that the user should be prompted.

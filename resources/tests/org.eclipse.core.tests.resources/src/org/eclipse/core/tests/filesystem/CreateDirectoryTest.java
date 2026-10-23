@@ -163,7 +163,7 @@ public class CreateDirectoryTest {
 		}
 
 		CoreException e = assertThrows(CoreException.class, () -> {
-			IFileStore localFileTopDir = EFS.getStore(URI.create("file:/" + device + ":" + UUID.randomUUID()));
+			IFileStore localFileTopDir = EFS.getStore(URI.create("file:/" + device + ":" + UUID.randomUUID())); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			localFileTopDir.mkdir(EFS.SHALLOW, getMonitor());
 			fail("Should not be reached");
 		});
@@ -173,10 +173,10 @@ public class CreateDirectoryTest {
 
 	private String findNonExistingDevice() {
 		String device = null;
-		for (int i = 97/*a*/; i < 123/*z*/; i++) {
+		for (int i = 97/*a*/; i < 123/*z*/; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c = (char) i;
-			if (!new File(c + ":\\").exists()) {
-				device = "" + c;
+			if (!new File(c + ":\\").exists()) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				device = "" + c; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				break;
 			}
 		}

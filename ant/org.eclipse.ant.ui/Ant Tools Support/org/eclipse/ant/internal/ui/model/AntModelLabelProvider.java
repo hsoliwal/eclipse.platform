@@ -68,7 +68,7 @@ public class AntModelLabelProvider extends StyledCellLabelProvider implements IC
 		return normalForeground;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public StyledString getStyledText(Object element) {
 		if (element instanceof AntTargetNode node) {
 			return new StyledString(node.getLabel());

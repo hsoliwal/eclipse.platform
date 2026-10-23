@@ -67,7 +67,7 @@ public class HistoryItem {
 	 *
 	 * @param session a {@link TestRunSession} object
 	 */
-	public HistoryItem(TestRunSession session) {
+	public HistoryItem(TestRunSession session) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		this.session = session;
 		this.name = session.getTestRunName();
 		this.startTime = session.getStartTime();
@@ -191,7 +191,7 @@ public class HistoryItem {
 	 * @throws CoreException                        in case of storing operation
 	 *                                              failure
 	 */
-	void storeSessionToFile(File target) throws TransformerFactoryConfigurationError, CoreException {
+	void storeSessionToFile(File target) throws TransformerFactoryConfigurationError, CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (this.session == null) {
 			return;
 		}
@@ -232,7 +232,7 @@ public class HistoryItem {
 			File historyDir = History.INSTANCE.getDirectory();
 			String isoTime = new SimpleDateFormat("yyyyMMdd-HHmmss.SSS") //$NON-NLS-1$
 					.format(new Date(getStartDate().toEpochMilli()));
-			String swapFileName = session.getTestRunName() + '@' + isoTime + ".xml"; //$NON-NLS-1$
+			String swapFileName = session.getTestRunName() + '@' + isoTime + ".xml"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			this.historyFile = new File(historyDir, swapFileName);
 		}
 

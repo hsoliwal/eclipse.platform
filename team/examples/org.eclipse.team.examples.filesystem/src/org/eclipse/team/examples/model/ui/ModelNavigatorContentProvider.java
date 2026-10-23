@@ -55,7 +55,7 @@ import org.eclipse.ui.navigator.SaveablesProvider;
  * to override the resource content extension so that model projects will
  * replace the corresponding resource project in the Project Explorer.
  */
-public class ModelNavigatorContentProvider extends BaseWorkbenchContentProvider
+public class ModelNavigatorContentProvider extends BaseWorkbenchContentProvider //FLLDCIM: MARK — M22  IMPLEMENTS
 implements ICommonContentProvider, IResourceChangeListener, IPipelinedTreeContentProvider, ITeamStateChangeListener, IAdaptable {
 
 	private ICommonContentExtensionSite extensionSite;
@@ -142,27 +142,27 @@ implements ICommonContentProvider, IResourceChangeListener, IPipelinedTreeConten
 		super.inputChanged(viewer, oldInput, newInput);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void teamStateChanged(ITeamStateChangeEvent event) {
 		// We need to listen to team state changes in order to determine when we need
 		// to perform label updates on model elements.
 		// We actually just refresh all projects that contain changes.
 		// This is inefficient but will do for an example
-		Set<ModelProject> refreshProjects = new HashSet<>();
+		Set<ModelProject> refreshProjects = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IResource[] addedRoots = event.getAddedRoots();
-		for (IResource resource : addedRoots) {
+		for (IResource resource : addedRoots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isModelProject(resource.getProject())) {
 				refreshProjects.add((ModelProject) ModelObject.create(resource.getProject()));
 			}
 		}
 		IResource[] removedRoots = event.getRemovedRoots();
-		for (IResource resource : removedRoots) {
+		for (IResource resource : removedRoots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isModelProject(resource.getProject())) {
 				refreshProjects.add((ModelProject) ModelObject.create(resource.getProject()));
 			}
 		}
 		IResource[] changed = event.getChangedResources();
-		for (IResource resource : changed) {
+		for (IResource resource : changed) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isModelProject(resource.getProject())) {
 				refreshProjects.add((ModelProject) ModelObject.create(resource.getProject()));
 			}
@@ -171,14 +171,14 @@ implements ICommonContentProvider, IResourceChangeListener, IPipelinedTreeConten
 		refreshProjects(refreshProjects.toArray(new ModelProject[refreshProjects.size()]));
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void resourceChanged(IResourceChangeEvent event) {
 		if (viewer == null) return;
 		IResourceDelta delta = event.getDelta();
 		IResourceDelta[] children = delta.getAffectedChildren();
 		boolean refreshAll = false;
-		List<ModelProject> refreshProjects = new ArrayList<>();
-		for (IResourceDelta childDelta : children) {
+		List<ModelProject> refreshProjects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IResourceDelta childDelta : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isModelProject(childDelta.getResource())) {
 				if (isProjectChange(childDelta)) {
 					refreshAll = true;
@@ -196,17 +196,17 @@ implements ICommonContentProvider, IResourceChangeListener, IPipelinedTreeConten
 	}
 
 	private void refreshProjects(final ModelProject[] projects) {
-		Display.getDefault().asyncExec(() -> {
+		Display.getDefault().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			if (!getViewer().getControl().isDisposed()) {
-				for (ModelProject project : projects) {
-					((AbstractTreeViewer)getViewer()).refresh(project, true);
+				for (ModelProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					((AbstractTreeViewer)getViewer()).refresh(project, true); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 				}
 			}
 		});
 	}
 
 	private void refreshViewer() {
-		Display.getDefault().asyncExec(() -> {
+		Display.getDefault().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			if (!getViewer().getControl().isDisposed()) {
 				getViewer().refresh();
 			}
@@ -237,12 +237,12 @@ implements ICommonContentProvider, IResourceChangeListener, IPipelinedTreeConten
 		// Nothing to do
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void getPipelinedElements(Object anInput, Set theCurrentElements) {
 		// Replace any model projects with a ModelProject
 		if (anInput instanceof IWorkspaceRoot) {
-			List newProjects = new ArrayList();
-			for (Iterator iter = theCurrentElements.iterator(); iter.hasNext();) {
+			List newProjects = new ArrayList(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (Iterator iter = theCurrentElements.iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Object element = iter.next();
 				if (element instanceof IProject) {
 					IProject project = (IProject) element;
@@ -266,10 +266,10 @@ implements ICommonContentProvider, IResourceChangeListener, IPipelinedTreeConten
 		return aSuggestedParent;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public PipelinedShapeModification interceptAdd(PipelinedShapeModification anAddModification) {
 		if (anAddModification.getParent() instanceof IWorkspaceRoot) {
-			for (Iterator iter = anAddModification.getChildren().iterator(); iter.hasNext();) {
+			for (Iterator iter = anAddModification.getChildren().iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Object element = iter.next();
 				if (element instanceof IProject) {
 					IProject project = (IProject) element;

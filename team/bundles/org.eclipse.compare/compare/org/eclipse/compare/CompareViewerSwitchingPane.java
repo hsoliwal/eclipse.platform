@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.Display;
  *
  * @since 2.0
  */
-public abstract class CompareViewerSwitchingPane extends CompareViewerPane {
+public abstract class CompareViewerSwitchingPane extends CompareViewerPane { //FLLDCIM: MARK — T05  IMPLEMENTS
 	private Viewer fViewer;
 	private final boolean fControlVisibility;
 	private String fTitle;
@@ -83,15 +83,15 @@ public abstract class CompareViewerSwitchingPane extends CompareViewerPane {
 	 *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the parent</li>
 	 * </ul>
 	 */
-	public CompareViewerSwitchingPane(Composite parent, int style, boolean visibility) {
+	public CompareViewerSwitchingPane(Composite parent, int style, boolean visibility) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super(parent, style);
 
 		fControlVisibility= visibility;
 
 		setViewer(new NullViewer(this));
 
-		addDisposeListener(
-			unused -> {
+		addDisposeListener( //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
+			unused -> { //FLLDCIM: MARK — T01  LAMBDA
 				if (fViewer != null) {
 					fViewer.removeSelectionChangedListener(CompareViewerSwitchingPane.this);
 				}
@@ -113,7 +113,7 @@ public abstract class CompareViewerSwitchingPane extends CompareViewerPane {
 		return fViewer;
 	}
 
-	private void setViewer(Viewer newViewer) {
+	private void setViewer(Viewer newViewer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (newViewer == fViewer) {
 			return;
 		}
@@ -153,11 +153,11 @@ public abstract class CompareViewerSwitchingPane extends CompareViewerPane {
 
 			boolean newEmpty= isEmpty();
 
-			fViewer.addSelectionChangedListener(this);
+			fViewer.addSelectionChangedListener(this); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 
 			if (fViewer instanceof StructuredViewer sv) {
-				sv.addDoubleClickListener(this);
-				sv.addOpenListener(this);
+				sv.addDoubleClickListener(this); //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
+				sv.addOpenListener(this); //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
 			}
 
 			if (oldEmpty != newEmpty) {	// re-layout my container
@@ -215,7 +215,7 @@ public abstract class CompareViewerSwitchingPane extends CompareViewerPane {
 		// do we have focus?
 		Display display= getDisplay();
 		if (display != null) {
-			for (Control focus= display.getFocusControl(); focus != null; focus= focus.getParent()) {
+			for (Control focus= display.getFocusControl(); focus != null; focus= focus.getParent()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (focus == this) {
 					return true;
 				}
@@ -249,7 +249,7 @@ public abstract class CompareViewerSwitchingPane extends CompareViewerPane {
 	 *
 	 * @param input the new input object or <code>null</code>
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setInput(Object input) {
 		if (!inputChanged(input)) {
 			return;
@@ -339,7 +339,7 @@ public abstract class CompareViewerSwitchingPane extends CompareViewerPane {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@SuppressWarnings("unchecked")
 	public <T> T getAdapter(Class<T> adapter) {
 		if (adapter == INavigatable.class) {

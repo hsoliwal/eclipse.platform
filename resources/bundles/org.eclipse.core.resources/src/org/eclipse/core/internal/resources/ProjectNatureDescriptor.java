@@ -111,7 +111,7 @@ public class ProjectNatureDescriptor implements IProjectNatureDescriptor {
 	/**
 	 * Initialize this nature descriptor based on the provided extension point.
 	 */
-	protected void readExtension(IExtension natureExtension) throws CoreException {
+	protected void readExtension(IExtension natureExtension) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//read the extension
 		id = natureExtension.getUniqueIdentifier();
 		if (id == null) {
@@ -120,11 +120,11 @@ public class ProjectNatureDescriptor implements IProjectNatureDescriptor {
 		label = natureExtension.getLabel();
 		IConfigurationElement[] elements = natureExtension.getConfigurationElements();
 		int count = elements.length;
-		ArrayList<String> requiredList = new ArrayList<>(count);
-		ArrayList<String> setList = new ArrayList<>(count);
-		ArrayList<String> builderList = new ArrayList<>(count);
-		ArrayList<String> contentTypeList = new ArrayList<>(count);
-		for (int i = 0; i < count; i++) {
+		ArrayList<String> requiredList = new ArrayList<>(count); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		ArrayList<String> setList = new ArrayList<>(count); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		ArrayList<String> builderList = new ArrayList<>(count); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		ArrayList<String> contentTypeList = new ArrayList<>(count); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IConfigurationElement element = elements[i];
 			String name = element.getName();
 			if (name.equalsIgnoreCase("requires-nature")) { //$NON-NLS-1$
@@ -168,6 +168,6 @@ public class ProjectNatureDescriptor implements IProjectNatureDescriptor {
 	 */
 	@Override
 	public String toString() {
-		return "ProjectNatureDescriptor(" + id + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+		return "ProjectNatureDescriptor(" + id + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

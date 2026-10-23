@@ -128,7 +128,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 	 *
 	 * @since 3.0
 	 */
-	private class EditorSelectionChangedListener implements ISelectionChangedListener {
+	private class EditorSelectionChangedListener implements ISelectionChangedListener { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 		/**
 		 * Installs this selection changed listener with the given selection provider. If the selection provider is a post selection provider, post
@@ -140,9 +140,9 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 			}
 
 			if (selectionProvider instanceof IPostSelectionProvider provider) {
-				provider.addPostSelectionChangedListener(this);
+				provider.addPostSelectionChangedListener(this); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 			} else {
-				selectionProvider.addSelectionChangedListener(this);
+				selectionProvider.addSelectionChangedListener(this); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 			}
 		}
 
@@ -242,7 +242,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 					|| LinkedModeModel.hasInstalledModel(fDocument);
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public IStatus run(IProgressMonitor progressMonitor) {
 
 			fProgressMonitor = progressMonitor;
@@ -273,8 +273,8 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 
 			// Add occurrence annotations
 			int length = fPositions.size();
-			Map<Annotation, Position> annotationMap = new HashMap<>(length);
-			for (int i = 0; i < length; i++) {
+			Map<Annotation, Position> annotationMap = new HashMap<>(length); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+			for (int i = 0; i < length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 
 				if (isCanceled()) {
 					return Status.CANCEL_STATUS;
@@ -317,7 +317,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 			} else {
 				removeOccurrenceAnnotations();
 				Iterator<Map.Entry<Annotation, Position>> iter = annotationMap.entrySet().iterator();
-				while (iter.hasNext()) {
+				while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Entry<Annotation, Position> mapEntry = iter.next();
 					annotationModel.addAnnotation(mapEntry.getKey(), mapEntry.getValue());
 				}
@@ -331,9 +331,9 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 	 *
 	 * @since 3.1
 	 */
-	class OccurrencesFinderJobCanceler implements IDocumentListener, ITextInputListener {
+	class OccurrencesFinderJobCanceler implements IDocumentListener, ITextInputListener { //FLLDCIM: MARK — T28  IMPLEMENTS
 
-		public void install() {
+		public void install() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			ISourceViewer sourceViewer = getSourceViewer();
 			if (sourceViewer == null) {
 				return;
@@ -425,7 +425,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 	/**
 	 * Selection changed listener for the outline view.
 	 */
-	protected ISelectionChangedListener fSelectionChangedListener = event -> {
+	protected ISelectionChangedListener fSelectionChangedListener = event -> { //FLLDCIM: MARK — T04  LAMBDA
 		fSelectionSetFromOutline = false;
 		doSelectionChanged(event);
 		fSelectionSetFromOutline = true;
@@ -508,7 +508,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 		setAction("renameInFile", action); //$NON-NLS-1$
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void initializeEditor() {
 		setPreferenceStore(AntUIPlugin.getDefault().getCombinedPreferenceStore());
 		setCompatibilityMode(false);
@@ -533,7 +533,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 		AntModelCore.getDefault().addAntModelListener(fAntModelListener);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Override
 	public <T> T getAdapter(Class<T> key) {
 		if (key.equals(IContentOutlinePage.class)) {
@@ -589,7 +589,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 		return part != null && part.equals(this);
 	}
 
-	public void setSelection(AntElementNode reference, boolean moveCursor) {
+	public void setSelection(AntElementNode reference, boolean moveCursor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fSelectionSetFromOutline) {
 			// the work has all just been done via a selection setting in the outline
 			fSelectionSetFromOutline = false;
@@ -607,7 +607,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 			markInNavigationHistory();
 		}
 
-		while (reference.getImportNode() != null) {
+		while (reference.getImportNode() != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			reference = reference.getImportNode();
 		}
 		if (reference.isExternal()) {
@@ -661,7 +661,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 		return ((AntEditorSourceViewerConfiguration) getSourceViewerConfiguration()).affectsTextPresentation(event);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void handlePreferenceStoreChanged(PropertyChangeEvent event) {
 		String property = event.getProperty();
 
@@ -788,7 +788,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 		openTarget(target);
 	}
 
-	protected void openTarget(Object node) {
+	protected void openTarget(Object node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String errorMessage = null;
 		if (node instanceof AntElementNode) {
 			errorMessage = openNode((AntElementNode) node);
@@ -812,7 +812,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 	 *            The region to find the navigation target
 	 * @return the navigation target at the specified region
 	 */
-	public Object findTarget(IRegion region) {
+	public Object findTarget(IRegion region) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ISourceViewer viewer = getSourceViewer();
 		IAntElement node = null;
 
@@ -865,7 +865,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 		return errorMessage;
 	}
 
-	private String openInEditor(String path, File buildFile) {
+	private String openInEditor(String path, File buildFile) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		File buildFileParent = null;
 		if (buildFile != null) {
 			buildFileParent = buildFile.getParentFile();
@@ -946,7 +946,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 		return super.isTabsToSpacesConversionEnabled(); // provide package visibility
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void dispose() {
 		disposed = true;
 		if (fEditorSelectionChangedListener != null) {
@@ -1045,7 +1045,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 
 	private void postImageChange(final AntElementNode node) {
 		if (!isDisposed()) {
-			PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+			PlatformUI.getWorkbench().getDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				if (isDisposed()) {
 					return;
 				}
@@ -1101,7 +1101,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void reconciled() {
 		if (fInitialReconcile) {
 			updateForInitialReconcile();
@@ -1111,14 +1111,14 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 		if (config == null) {
 			return; // editor has been disposed.
 		}
-		for (IAutoEditStrategy strategy : config.getAutoEditStrategies(getViewer(), null)) {
+		for (IAutoEditStrategy strategy : config.getAutoEditStrategies(getViewer(), null)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (strategy instanceof AntAutoEditStrategy) {
 				((AntAutoEditStrategy) strategy).reconciled();
 			}
 		}
 
 		if (!isDisposed()) {
-			PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+			PlatformUI.getWorkbench().getDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				if (isDisposed()) {
 					return;
 				}
@@ -1208,7 +1208,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 	 *            the model for the buildfile
 	 * @since 3.1
 	 */
-	protected void updateOccurrenceAnnotations(ITextSelection selection, AntModel antModel) {
+	protected void updateOccurrenceAnnotations(ITextSelection selection, AntModel antModel) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (fOccurrencesFinderJob != null) {
 			fOccurrencesFinderJob.cancel();
@@ -1243,7 +1243,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 		fOccurrencesFinderJob.run(new NullProgressMonitor());
 	}
 
-	private void removeOccurrenceAnnotations() {
+	private void removeOccurrenceAnnotations() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IDocumentProvider documentProvider = getDocumentProvider();
 		if (documentProvider == null) {
 			return;
@@ -1269,7 +1269,7 @@ public class AntEditor extends TextEditor implements IReconcilingParticipant, IP
 		if (annotationModel instanceof IAnnotationModelExtension) {
 			((IAnnotationModelExtension) annotationModel).replaceAnnotations(fOccurrenceAnnotations, null);
 		} else {
-			for (Annotation annotation : fOccurrenceAnnotations) {
+			for (Annotation annotation : fOccurrenceAnnotations) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				annotationModel.removeAnnotation(annotation);
 			}
 		}

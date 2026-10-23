@@ -44,7 +44,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
  */
 public class OpenExternalAntDocHandler extends AbstractHandler {
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IEditorPart part = HandlerUtil.getActiveEditor(event);
 		if (part instanceof AntEditor editor) {
@@ -71,7 +71,7 @@ public class OpenExternalAntDocHandler extends AbstractHandler {
 		return null;
 	}
 
-	public URL getExternalLocation(AntElementNode node, AntEditor editor) throws MalformedURLException {
+	public URL getExternalLocation(AntElementNode node, AntEditor editor) throws MalformedURLException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		URL baseLocation = getBaseLocation();
 		if (baseLocation == null) {
 			return null;

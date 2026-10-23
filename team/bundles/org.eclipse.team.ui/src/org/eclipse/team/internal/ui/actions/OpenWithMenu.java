@@ -76,7 +76,7 @@ public class OpenWithMenu extends ContributionItem {
 	/**
 	 * The id of this action.
 	 */
-	public static final String ID = PlatformUI.PLUGIN_ID + ".OpenWithMenu";//$NON-NLS-1$
+	public static final String ID = PlatformUI.PLUGIN_ID + ".OpenWithMenu";//$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Match both the input and id, so that different types of editor can be
@@ -163,7 +163,7 @@ public class OpenWithMenu extends ContributionItem {
 	 * @param preferredEditor
 	 *            the descriptor of the preferred editor, or <code>null</code>
 	 */
-	private MenuItem createMenuItem(Menu menu,
+	private MenuItem createMenuItem(Menu menu, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			final IEditorDescriptor descriptor,
 			final IEditorDescriptor preferredEditor) {
 		// XXX: Would be better to use bold here, but SWT does not support it.
@@ -181,7 +181,7 @@ public class OpenWithMenu extends ContributionItem {
 				openEditor(descriptor, false);
 			}
 		};
-		menuItem.addListener(SWT.Selection, listener);
+		menuItem.addListener(SWT.Selection, listener); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 		return menuItem;
 	}
 
@@ -191,7 +191,7 @@ public class OpenWithMenu extends ContributionItem {
 	 * @param menu
 	 *            the menu to add the item to
 	 */
-	private void createOtherMenuItem(final Menu menu) {
+	private void createOtherMenuItem(final Menu menu) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final IFileRevision fileResource = getFileRevision();
 		if (fileResource == null) {
 			return;
@@ -213,10 +213,10 @@ public class OpenWithMenu extends ContributionItem {
 				}
 			}
 		};
-		menuItem.addListener(SWT.Selection, listener);
+		menuItem.addListener(SWT.Selection, listener); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void fill(Menu menu, int index) {
 		final IFileRevision fileRevision = getFileRevision();
 		if (fileRevision == null) {
@@ -229,14 +229,14 @@ public class OpenWithMenu extends ContributionItem {
 				.getDefaultEditor(fileRevision);
 
 		IEditorDescriptor[] editors = Utils.getEditors(fileRevision);
-		Collections.sort(Arrays.asList(editors), comparer);
+		Collections.sort(Arrays.asList(editors), comparer); //FLLDCIM: MARK — M16 SORT_LANE CALL
 		boolean defaultFound = false;
 
 		// Check that we don't add it twice. This is possible
 		// if the same editor goes to two mappings.
-		ArrayList<IEditorDescriptor> alreadyMapped = new ArrayList<>();
+		ArrayList<IEditorDescriptor> alreadyMapped = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-		for (IEditorDescriptor editor : editors) {
+		for (IEditorDescriptor editor : editors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!alreadyMapped.contains(editor)) {
 				createMenuItem(menu, editor, preferredEditor);
 				if (defaultTextEditor != null
@@ -274,13 +274,13 @@ public class OpenWithMenu extends ContributionItem {
 			}
 		};
 
-		menuItem.addListener(SWT.Selection, listener);
+		menuItem.addListener(SWT.Selection, listener); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 	}
 
 	/**
 	 * Opens the given editor on the selected file revision.
 	 */
-	protected void openEditor(IEditorDescriptor editorDescriptor,
+	protected void openEditor(IEditorDescriptor editorDescriptor, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			boolean openUsingDescriptor) {
 		IFileRevision fileRevision = getFileRevision();
 		if (fileRevision == null) {
@@ -314,7 +314,7 @@ public class OpenWithMenu extends ContributionItem {
 		}
 	}
 
-	private IFileRevision getFileRevision() {
+	private IFileRevision getFileRevision() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IStructuredSelection structSel = selection;
 
 		IFileRevision revision = null;
@@ -325,7 +325,7 @@ public class OpenWithMenu extends ContributionItem {
 
 		Object[] objArray = structSel.toArray();
 
-		for (Object tempRevision : objArray) {
+		for (Object tempRevision : objArray) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// If not a revision, don't try opening
 			if (tempRevision instanceof AbstractHistoryCategory) {
 				continue;

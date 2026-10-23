@@ -32,7 +32,7 @@ public class AntTestTask2 extends Task {
 	public void execute() throws BuildException {
 		Echo echo = new Echo();
 		echo.setProject(getProject());
-		echo.setMessage("Testing Ant in Eclipse with a custom task2: " + fMessage); //$NON-NLS-1$
+		echo.setMessage("Testing Ant in Eclipse with a custom task2: " + fMessage); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		echo.execute();
 	}
 

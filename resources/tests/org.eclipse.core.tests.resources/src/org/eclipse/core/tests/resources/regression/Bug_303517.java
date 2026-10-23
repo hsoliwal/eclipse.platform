@@ -79,7 +79,7 @@ public class Bug_303517 {
 	/**
 	 * Tests that file deleted is updated after #getContents
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testExists() throws Exception {
 		IFile f = getWorkspace().getRoot().getFile(IPath.fromOSString(resourcePaths[resourcePaths.length - 1]));
 		assertThat(f).matches(IResource::exists, "exists");
@@ -105,7 +105,7 @@ public class Bug_303517 {
 	/**
 	 * Tests that file discovered out-of-sync during #getContents is updated
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetContents() throws Exception {
 		IFile f = getWorkspace().getRoot().getFile(IPath.fromOSString(resourcePaths[resourcePaths.length - 1]));
 		assertThat(f).matches(IResource::exists, "exists");
@@ -132,7 +132,7 @@ public class Bug_303517 {
 	/**
 	 * Tests that file discovered out-of-sync during #getContents is updated
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetContentsTrue() throws Exception {
 		IFile f = getWorkspace().getRoot().getFile(IPath.fromOSString(resourcePaths[resourcePaths.length - 1]));
 		assertThat(f).matches(IResource::exists, "exists");
@@ -183,7 +183,7 @@ public class Bug_303517 {
 	/**
 	 * Tests that when changing resource gender is correctly picked up.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testChangeResourceGender() throws Exception {
 		IResource f = getWorkspace().getRoot().getFile(IPath.fromOSString(resourcePaths[resourcePaths.length - 1]));
 		assertThat(f).matches(IResource::exists, "exists");

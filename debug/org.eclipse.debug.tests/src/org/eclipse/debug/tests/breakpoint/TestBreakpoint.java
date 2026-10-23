@@ -42,7 +42,7 @@ public class TestBreakpoint extends Breakpoint {
 
 	TestBreakpoint(String text, final String markerType) {
 		final IResource resource = ResourcesPlugin.getWorkspace().getRoot();
-		IWorkspaceRunnable wr = unused -> {
+		IWorkspaceRunnable wr = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			// create the marker
 			setMarker(resource.createMarker(markerType));
 			ensureMarker().setAttribute(ID, getModelIdentifier());
@@ -51,7 +51,7 @@ public class TestBreakpoint extends Breakpoint {
 		try {
 			ResourcesPlugin.getWorkspace().run(wr, null);
 		} catch (CoreException e) {
-			fail("Unexpected exception: " + e); //$NON-NLS-1$
+			fail("Unexpected exception: " + e); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 	}

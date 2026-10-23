@@ -53,7 +53,7 @@ public class IgnorePreferencePage extends PreferencePage implements IWorkbenchPr
 	 *
 	 * @param ancestor  the parent for the preference page
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createContents(Composite ancestor) {
 
 		Composite parent = new Composite(ancestor, SWT.NULL);
@@ -78,7 +78,7 @@ public class IgnorePreferencePage extends PreferencePage implements IWorkbenchPr
 		//gd.widthHint = convertWidthInCharsToPixels(30);
 		gd.heightHint = 300;
 		ignoreTable.setLayoutData(gd);
-		ignoreTable.addListener(SWT.Selection, unused -> handleSelection());
+		ignoreTable.addListener(SWT.Selection, unused -> handleSelection()); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 
 		Composite buttons = new Composite(parent, SWT.NULL);
 		buttons.setLayoutData(new GridData(GridData.VERTICAL_ALIGN_BEGINNING));
@@ -89,12 +89,12 @@ public class IgnorePreferencePage extends PreferencePage implements IWorkbenchPr
 
 		addButton = new Button(buttons, SWT.PUSH);
 		addButton.setText(TeamUIMessages.IgnorePreferencePage_add);
-		addButton.addListener(SWT.Selection, unused -> addIgnore());
+		addButton.addListener(SWT.Selection, unused -> addIgnore()); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 
 		removeButton = new Button(buttons, SWT.PUSH);
 		removeButton.setText(TeamUIMessages.IgnorePreferencePage_remove);
 		removeButton.setEnabled(false);
-		removeButton.addListener(SWT.Selection, unused -> removeIgnore());
+		removeButton.addListener(SWT.Selection, unused -> removeIgnore()); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 		fillTable(Team.getAllIgnores());
 		Dialog.applyDialogFont(ancestor);
 		setButtonLayoutData(addButton);
@@ -116,7 +116,7 @@ public class IgnorePreferencePage extends PreferencePage implements IWorkbenchPr
 		String[] patterns = new String[count];
 		boolean[] enabled = new boolean[count];
 		TableItem[] items = ignoreTable.getItems();
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			patterns[i] = items[i].getText();
 			enabled[i] = items[i].getChecked();
 		}
@@ -134,14 +134,14 @@ public class IgnorePreferencePage extends PreferencePage implements IWorkbenchPr
 	}
 
 	private void fillTable(IIgnoreInfo[] ignore) {
-		for (IIgnoreInfo info : ignore) {
+		for (IIgnoreInfo info : ignore) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			TableItem item = new TableItem(ignoreTable, SWT.NONE);
 			item.setText(TextProcessor.process(info.getPattern(), ".*")); //$NON-NLS-1$
 			item.setChecked(info.getEnabled());
 		}
 	}
 
-	private void addIgnore() {
+	private void addIgnore() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		InputDialog dialog = new InputDialog(getShell(), TeamUIMessages.IgnorePreferencePage_enterPatternShort, TeamUIMessages.IgnorePreferencePage_enterPatternLong, null, null) {
 			@Override
@@ -162,7 +162,7 @@ public class IgnorePreferencePage extends PreferencePage implements IWorkbenchPr
 		}
 		// Check if the item already exists
 		TableItem[] items = ignoreTable.getItems();
-		for (TableItem item : items) {
+		for (TableItem item : items) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (item.getText().equals(pattern)) {
 				MessageDialog.openWarning(getShell(), TeamUIMessages.IgnorePreferencePage_patternExistsShort, TeamUIMessages.IgnorePreferencePage_patternExistsLong);
 				return;

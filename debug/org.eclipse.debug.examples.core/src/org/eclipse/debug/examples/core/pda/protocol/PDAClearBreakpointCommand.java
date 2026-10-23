@@ -26,7 +26,7 @@ package org.eclipse.debug.examples.core.pda.protocol;
 public class PDAClearBreakpointCommand extends PDACommand {
 
 	public PDAClearBreakpointCommand(int line) {
-		super("clear " + line); //$NON-NLS-1$
+		super("clear " + line); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override

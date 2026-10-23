@@ -44,7 +44,7 @@ public class SafeFileTable {
 		Set<Object> set = table.keySet();
 		String[] keys = set.toArray(new String[set.size()]);
 		IPath[] files = new IPath[keys.length];
-		for (int i = 0; i < keys.length; i++) {
+		for (int i = 0; i < keys.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			files[i] = IPath.fromOSString(keys[i]);
 		}
 		return files;

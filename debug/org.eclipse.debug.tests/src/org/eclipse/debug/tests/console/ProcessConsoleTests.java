@@ -95,7 +95,7 @@ public class ProcessConsoleTests {
 	 * Log messages with severity error received while running a single test
 	 * method.
 	 */
-	private final List<IStatus> loggedErrors = Collections.synchronizedList(new ArrayList<>());
+	private final List<IStatus> loggedErrors = Collections.synchronizedList(new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	/** Listener to count error messages in {@link ConsolePlugin} log. */
 	private final ILogListener errorLogListener = (status, unused) -> {
@@ -105,7 +105,7 @@ public class ProcessConsoleTests {
 	};
 
 	/** Temporary test files created by a test. Will be deleted on teardown. */
-	private final ArrayList<File> tmpFiles = new ArrayList<>();
+	private final ArrayList<File> tmpFiles = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	private TestInfo testInfo;
 
@@ -120,7 +120,7 @@ public class ProcessConsoleTests {
 	public void tearDown() throws Exception {
 		Platform.removeLogListener(errorLogListener);
 		waitForConsoleRelatedJobs();
-		for (File tmpFile : tmpFiles) {
+		for (File tmpFile : tmpFiles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			tmpFile.delete();
 		}
 		tmpFiles.clear();
@@ -134,14 +134,14 @@ public class ProcessConsoleTests {
 	}
 
 	private Stream<String> errorsToStrings() {
-		return loggedErrors.stream().map(status -> status.toString() + throwableToString(status.getException()));
+		return loggedErrors.stream().map(status -> status.toString() + throwableToString(status.getException())); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private static String throwableToString(Throwable throwable) {
 		if (throwable == null) {
 			return "";
 		}
-		return System.lineSeparator() + "Stack trace: " + Stream.of(throwable.getStackTrace()).map(Object::toString).collect(Collectors.joining(System.lineSeparator()));
+		return System.lineSeparator() + "Stack trace: " + Stream.of(throwable.getStackTrace()).map(Object::toString).collect(Collectors.joining(System.lineSeparator())); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -203,8 +203,8 @@ public class ProcessConsoleTests {
 	 * @param numTwoByteCharacters number of two byte UTF-8 characters to send
 	 *            to process
 	 */
-	public void processConsoleUTF8Input(String prefix, int numTwoByteCharacters) throws Exception {
-		final String input = prefix + String.join("", Collections.nCopies(numTwoByteCharacters, "\u00F8"));
+	public void processConsoleUTF8Input(String prefix, int numTwoByteCharacters) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		final String input = prefix + String.join("", Collections.nCopies(numTwoByteCharacters, "\u00F8")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		final MockProcess mockProcess = new MockProcess(input.getBytes(StandardCharsets.UTF_8).length, TestUtil.DEFAULT_TIMEOUT);
 		try {
 			final ILaunch launch = new Launch(null, ILaunchManager.RUN_MODE, null);
@@ -235,7 +235,7 @@ public class ProcessConsoleTests {
 	 * <code>ProcessConsole.class</code> family.
 	 * </p>
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInputReadJobCancel() throws Exception {
 		final MockProcess mockProcess = new MockProcess(MockProcess.RUN_FOREVER);
 		try {
@@ -298,12 +298,12 @@ public class ProcessConsoleTests {
 	 *            perform its initialization. If <code>false</code> the process
 	 *            is guaranteed to run until the ProcessConsole was initialized.
 	 */
-	public void processTerminationTest(ILaunchConfiguration launchConfig, boolean terminateBeforeConsoleInitialization) throws Exception {
+	public void processTerminationTest(ILaunchConfiguration launchConfig, boolean terminateBeforeConsoleInitialization) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final AtomicBoolean terminationSignaled = new AtomicBoolean(false);
 		final Process mockProcess = new MockProcess(null, null, terminateBeforeConsoleInitialization ? 0 : -1);
 		final IProcess process = DebugPlugin.newProcess(new Launch(launchConfig, ILaunchManager.RUN_MODE, null), mockProcess, testInfo.getDisplayName());
 		final ProcessConsole console = new ProcessConsole(process, new ConsoleColorProvider());
-		console.addPropertyChangeListener(event -> {
+		console.addPropertyChangeListener(event -> { //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 				if (event.getSource() == console && IConsoleConstants.P_CONSOLE_OUTPUT_COMPLETE.equals(event.getProperty())) {
 					terminationSignaled.set(true);
 				}
@@ -328,7 +328,7 @@ public class ProcessConsoleTests {
 	public void testRedirectOutputToFile() throws Exception {
 		final String testContent = "Hello World!";
 		final File outFile = createTmpFile("test.out");
-		Map<String, Object> launchConfigAttributes = new HashMap<>();
+		Map<String, Object> launchConfigAttributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_FILE, outFile.getCanonicalPath());
 		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, true);
 		doConsoleOutputTest(testContent.getBytes(), launchConfigAttributes);
@@ -342,7 +342,7 @@ public class ProcessConsoleTests {
 	public void testAppendOutputToFile() throws Exception {
 		final String testContent = "Hello World!";
 		final File outFile = createTmpFile("test-append.out");
-		Map<String, Object> launchConfigAttributes = new HashMap<>();
+		Map<String, Object> launchConfigAttributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_FILE, outFile.getCanonicalPath());
 		launchConfigAttributes.put(IDebugUIConstants.ATTR_APPEND_TO_FILE, true);
 		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, true);
@@ -351,7 +351,7 @@ public class ProcessConsoleTests {
 
 		String appendedContent = "append";
 		doConsoleOutputTest(appendedContent.getBytes(), launchConfigAttributes);
-		assertThat(readAllBytes(outFile.toPath())).as("content redirected to file").containsExactly((testContent + appendedContent).getBytes());
+		assertThat(readAllBytes(outFile.toPath())).as("content redirected to file").containsExactly((testContent + appendedContent).getBytes()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -361,11 +361,11 @@ public class ProcessConsoleTests {
 	 * Test a filename with special characters which is still a valid regular
 	 * expression and a filename whose name is an invalid regular expression.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug333239_regexSpecialCharactersInOutputFilename() throws Exception {
 		final String testContent = "1.\n2.\n3.\n";
 		File outFile = createTmpFile("test.[out]");
-		Map<String, Object> launchConfigAttributes = new HashMap<>();
+		Map<String, Object> launchConfigAttributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_FILE, outFile.getCanonicalPath());
 		launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, false);
 		IOConsole console = doConsoleOutputTest(testContent.getBytes(), launchConfigAttributes);
@@ -398,13 +398,13 @@ public class ProcessConsoleTests {
 	 *            specify behavior
 	 * @return the console object after it has finished
 	 */
-	private IOConsole doConsoleOutputTest(byte[] testContent, Map<String, Object> launchConfigAttributes) throws Exception {
+	private IOConsole doConsoleOutputTest(byte[] testContent, Map<String, Object> launchConfigAttributes) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final MockProcess mockProcess = new MockProcess(new ByteArrayInputStream(testContent), null, MockProcess.RUN_FOREVER);
 		final IProcess process = mockProcess.toRuntimeProcess("Output Redirect", launchConfigAttributes);
 		final String encoding = launchConfigAttributes != null ? (String) launchConfigAttributes.get(DebugPlugin.ATTR_CONSOLE_ENCODING) : null;
 		final AtomicBoolean consoleFinished = new AtomicBoolean(false);
 		final ProcessConsole console = new ProcessConsole(process, new ConsoleColorProvider(), encoding);
-		console.addPropertyChangeListener((PropertyChangeEvent event) -> {
+		console.addPropertyChangeListener((PropertyChangeEvent event) -> { //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 			if (event.getSource() == console && IConsoleConstants.P_CONSOLE_OUTPUT_COMPLETE.equals(event.getProperty())) {
 				consoleFinished.set(true);
 			}
@@ -444,7 +444,7 @@ public class ProcessConsoleTests {
 	 * This should cover the situation that a process produce output before
 	 * ProcessConsole is initialized and more output after console is ready.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testOutput() throws Exception {
 		String[] lines = new String[] {
 				"'Native' process started.",
@@ -457,7 +457,7 @@ public class ProcessConsoleTests {
 			final MockProcess mockProcess = new MockProcess(new PipedInputStream(procOut), null, MockProcess.RUN_FOREVER);
 			sysout.println(lines[0]);
 			try {
-				Map<String, Object> launchConfigAttributes = new HashMap<>();
+				Map<String, Object> launchConfigAttributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 				launchConfigAttributes.put(DebugPlugin.ATTR_CONSOLE_ENCODING, consoleEncoding);
 				final IProcess process = mockProcess.toRuntimeProcess("simpleOutput", launchConfigAttributes);
 				sysout.println(lines[1]);
@@ -481,14 +481,14 @@ public class ProcessConsoleTests {
 					Supplier<String> errorMessageProvider = () -> {
 						String expected = String.join(System.lineSeparator(), lines);
 						String actual = console.getDocument().get();
-						return "Not all lines have been written, expected: " + expected + ", was: " + actual;
+						return "Not all lines have been written, expected: " + expected + ", was: " + actual; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					};
 					waitWhile(waitForLastLineWritten, errorMessageProvider);
 
-					for (int i = 0; i < lines.length; i++) {
+					for (int i = 0; i < lines.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						IRegion lineInfo = console.getDocument().getLineInformation(i);
 						String line = console.getDocument().get(lineInfo.getOffset(), lineInfo.getLength());
-						assertEquals(lines[i], line, "Wrong content in line " + i);
+						assertEquals(lines[i], line, "Wrong content in line " + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 				} finally {
 					console.destroy();
@@ -504,7 +504,7 @@ public class ProcessConsoleTests {
 	 * output to file. The process output must not be changed in any way due to
 	 * the redirection. See bug 558463.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBinaryOutputToFile() throws Exception {
 		byte[] output = new byte[] { (byte) 0xac };
 		String consoleEncoding = StandardCharsets.UTF_8.name();
@@ -512,7 +512,7 @@ public class ProcessConsoleTests {
 		final File outFile = createTmpFile("testoutput.bin");
 		final MockProcess mockProcess = new MockProcess(new ByteArrayInputStream(output), null, MockProcess.RUN_FOREVER);
 		try {
-			Map<String, Object> launchConfigAttributes = new HashMap<>();
+			Map<String, Object> launchConfigAttributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			launchConfigAttributes.put(DebugPlugin.ATTR_CONSOLE_ENCODING, consoleEncoding);
 			launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_FILE, outFile.getCanonicalPath());
 			launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, false);
@@ -537,7 +537,7 @@ public class ProcessConsoleTests {
 					} catch (IOException e) {
 						// Proceed as if output was empty
 					}
-					return "File has not been written, expected: " + Arrays.toString(output) + ", was: " + Arrays.toString(actualOutput);
+					return "File has not been written, expected: " + Arrays.toString(output) + ", was: " + Arrays.toString(actualOutput); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				};
 				waitWhile(waitForFileWritten, errorMessageProvider);
 				mockProcess.destroy();
@@ -557,7 +557,7 @@ public class ProcessConsoleTests {
 	 * console. The input must not be changed in any way due to the redirection.
 	 * See bug 558463.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBinaryInputFromFile() throws Exception {
 		byte[] input = new byte[] { (byte) 0xac };
 		String consoleEncoding = StandardCharsets.UTF_8.name();
@@ -566,7 +566,7 @@ public class ProcessConsoleTests {
 		Files.write(inFile.toPath(), input);
 		final MockProcess mockProcess = new MockProcess(input.length, TestUtil.DEFAULT_TIMEOUT);
 		try {
-			Map<String, Object> launchConfigAttributes = new HashMap<>();
+			Map<String, Object> launchConfigAttributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			launchConfigAttributes.put(DebugPlugin.ATTR_CONSOLE_ENCODING, consoleEncoding);
 			launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_STDIN_FILE, inFile.getCanonicalPath());
 			launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, false);
@@ -590,7 +590,7 @@ public class ProcessConsoleTests {
 	 * Test that a process reading its standard input from a file receives EOF
 	 * after the whole file content.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInputFromFileSendsEof() throws Exception {
 		byte[] input = "0 8 1\n2 7 1\n3 4 2\n".getBytes(StandardCharsets.US_ASCII);
 		String consoleEncoding = StandardCharsets.UTF_8.name();
@@ -599,7 +599,7 @@ public class ProcessConsoleTests {
 		Files.write(inFile.toPath(), input);
 		final MockProcess mockProcess = new MockProcess(MockProcess.RUN_FOREVER);
 		try {
-			Map<String, Object> launchConfigAttributes = new HashMap<>();
+			Map<String, Object> launchConfigAttributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			launchConfigAttributes.put(DebugPlugin.ATTR_CONSOLE_ENCODING, consoleEncoding);
 			launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_STDIN_FILE, inFile.getCanonicalPath());
 			launchConfigAttributes.put(IDebugUIConstants.ATTR_CAPTURE_IN_CONSOLE, false);
@@ -626,7 +626,7 @@ public class ProcessConsoleTests {
 	 * view is hidden/minimized, no console should update its name. When the
 	 * view is shown again, the visible console should resume updates.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testConsoleNameUpdateForVisibleAndHiddenConsoles() throws Exception {
 		final IConsoleManager consoleManager = ConsolePlugin.getDefault().getConsoleManager();
 		final IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();

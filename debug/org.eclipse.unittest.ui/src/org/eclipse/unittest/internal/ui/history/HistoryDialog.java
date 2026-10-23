@@ -91,7 +91,7 @@ public class HistoryDialog extends SelectionDialog {
 		return fTable.getControl();
 	}
 
-	private void createButtons(Composite res) {
+	private void createButtons(Composite res) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Composite buttons = new Composite(res, SWT.NONE);
 		buttons.setLayoutData(new GridData(SWT.FILL, SWT.DEFAULT, false, false));
 		RowLayout rowLayout = new RowLayout(SWT.VERTICAL);
@@ -99,14 +99,14 @@ public class HistoryDialog extends SelectionDialog {
 		buttons.setLayout(rowLayout);
 		fRemoveButton = new Button(buttons, SWT.PUSH);
 		fRemoveButton.setText(Messages.HistoryDialog_remove);
-		fRemoveButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(unused -> {
-			for (Object selected : getResult()) {
+		fRemoveButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(unused -> { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
+			for (Object selected : getResult()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				History.INSTANCE.remove((HistoryItem) selected);
 			}
-			fTable.refresh();
+			fTable.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		}));
 		Button importButton = new Button(buttons, SWT.PUSH);
-		importButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(unused -> {
+		importButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(unused -> { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			FileDialog fileDialog = new FileDialog(getShell());
 			fileDialog.setFilterExtensions("*.xml"); //$NON-NLS-1$
 			fileDialog.setText(Messages.HistoryDialog_selectImport);
@@ -123,11 +123,11 @@ public class HistoryDialog extends SelectionDialog {
 			} catch (IOException e1) {
 				UnitTestPlugin.log(e1);
 			}
-			fTable.refresh();
+			fTable.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		}));
 		importButton.setText(Messages.HistoryDialog_import);
 		fExportButton = new Button(buttons, SWT.PUSH);
-		fExportButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(unused -> {
+		fExportButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(unused -> { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			DirectoryDialog directoryDialog = new DirectoryDialog(getShell());
 			directoryDialog.setText(Messages.HistoryDialog_selectExport);
 			String path = directoryDialog.open();
@@ -135,7 +135,7 @@ public class HistoryDialog extends SelectionDialog {
 				return;
 			}
 			File directory = new File(path);
-			for (Object object : getResult()) {
+			for (Object object : getResult()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				HistoryItem historyItem = (HistoryItem) object;
 				try {
 					historyItem.storeSessionToFile(new File(directory, historyItem.getFile().getName()));
@@ -143,13 +143,13 @@ public class HistoryDialog extends SelectionDialog {
 					UnitTestPlugin.log(e1);
 				}
 			}
-			fTable.refresh();
+			fTable.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		}));
 		fExportButton.setText(Messages.HistoryDialog_export);
 		updateButtons();
 	}
 
-	private TableViewer createTable(Composite parent) {
+	private TableViewer createTable(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TableViewer table = new TableViewer(parent);
 		table.setContentProvider(new ArrayContentProvider());
 		table.setComparator(new ViewerComparator() {
@@ -163,7 +163,7 @@ public class HistoryDialog extends SelectionDialog {
 		int fontSize = table.getTable().getFont().getFontData()[0].getHeight();
 		table.getTable().setHeaderVisible(true);
 		TableViewerColumn visibleColumn = new TableViewerColumn(table, SWT.DEFAULT);
-		visibleColumn.setLabelProvider(new ColumnLabelProvider() {
+		visibleColumn.setLabelProvider(new ColumnLabelProvider() { //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 			@Override
 			public String getText(Object element) {
 				return ((HistoryItem) element).getCurrentTestRunSession().filter(fCurrentlyVisible::contains)
@@ -172,7 +172,7 @@ public class HistoryDialog extends SelectionDialog {
 		});
 		visibleColumn.getColumn().setWidth(2 * fontSize);
 		TableViewerColumn nameColumn = new TableViewerColumn(table, SWT.DEFAULT);
-		nameColumn.setLabelProvider(new ColumnLabelProvider() {
+		nameColumn.setLabelProvider(new ColumnLabelProvider() { //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 			@Override
 			public String getText(Object element) {
 				return ((HistoryItem) element).getName();
@@ -181,7 +181,7 @@ public class HistoryDialog extends SelectionDialog {
 		nameColumn.getColumn().setWidth(20 * fontSize);
 		nameColumn.getColumn().setText(Messages.HistoryDialog_name);
 		TableViewerColumn dateColumn = new TableViewerColumn(table, SWT.DEFAULT);
-		dateColumn.setLabelProvider(new ColumnLabelProvider() {
+		dateColumn.setLabelProvider(new ColumnLabelProvider() { //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 			@Override
 			public String getText(Object element) {
 				Instant startDate = ((HistoryItem) element).getStartDate();
@@ -193,7 +193,7 @@ public class HistoryDialog extends SelectionDialog {
 		dateColumn.getColumn().setWidth(25 * fontSize);
 		dateColumn.getColumn().setText(Messages.HistoryDialog_date);
 		TableViewerColumn progressColumn = new TableViewerColumn(table, SWT.DEFAULT);
-		progressColumn.setLabelProvider(new ColumnLabelProvider() {
+		progressColumn.setLabelProvider(new ColumnLabelProvider() { //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 			@Override
 			public String getText(Object element) {
 				return ((HistoryItem) element).getCurrentTestRunSession().filter(TestRunSession::isRunning)
@@ -203,35 +203,35 @@ public class HistoryDialog extends SelectionDialog {
 		progressColumn.getColumn().setWidth(2 * fontSize);
 		progressColumn.getColumn().setText(Messages.HistoryDialog_progress);
 		TableViewerColumn successColumn = new TableViewerColumn(table, SWT.DEFAULT);
-		successColumn.setLabelProvider(new ColumnLabelProvider() {
+		successColumn.setLabelProvider(new ColumnLabelProvider() { //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 			@Override
 			public String getText(Object element) {
 				int failures = ((HistoryItem) element).getFailureCount();
 				if (failures == 0) {
 					return "✅"; //$NON-NLS-1$
 				}
-				return "❌ " + failures + Messages.HistoryDialog_failures; //$NON-NLS-1$
+				return "❌ " + failures + Messages.HistoryDialog_failures; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		});
 		successColumn.getColumn().setWidth(15 * fontSize);
 		successColumn.getColumn().setText(Messages.HistoryDialog_result);
 		TableViewerColumn sizeColumn = new TableViewerColumn(table, SWT.DEFAULT);
-		sizeColumn.setLabelProvider(new ColumnLabelProvider() {
+		sizeColumn.setLabelProvider(new ColumnLabelProvider() { //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 			@Override
 			public String getText(Object element) {
 				Long size = ((HistoryItem) element).getSizeOnDisk();
 				if (size != null) {
-					return size.toString() + " B"; //$NON-NLS-1$
+					return size.toString() + " B"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				return Character.toString('?');
 			}
 		});
 		sizeColumn.getColumn().setText(Messages.HistoryDialog_size);
 		sizeColumn.getColumn().setWidth(10 * fontSize);
-		table.setInput(History.INSTANCE.getHistory());
+		table.setInput(History.INSTANCE.getHistory()); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		table.setSelection(new StructuredSelection(getInitialElementSelections().toArray()));
-		table.addSelectionChangedListener(
-				event -> setSelectionResult(((IStructuredSelection) event.getSelection()).toArray()));
+		table.addSelectionChangedListener( //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
+				event -> setSelectionResult(((IStructuredSelection) event.getSelection()).toArray())); //FLLDCIM: MARK — T04  LAMBDA
 		return table;
 	}
 

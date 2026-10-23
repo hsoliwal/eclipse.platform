@@ -49,16 +49,16 @@ public class ReplaceLocalHistory extends ShowLocalHistory {
 			return;
 		}
 		Runnable r = () -> showCompareInDialog(getShell(), file);
-		TeamUIPlugin.getStandardDisplay().asyncExec(r);
+		TeamUIPlugin.getStandardDisplay().asyncExec(r); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 	}
 
-	private void showCompareInDialog(Shell shell, Object object){
+	private void showCompareInDialog(Shell shell, Object object){ //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IHistoryPageSource pageSource = LocalHistoryPageSource.getInstance();
 		if (pageSource != null && pageSource.canShowHistoryFor(object)) {
 			CompareConfiguration cc = new CompareConfiguration();
 			cc.setLeftEditable(false);
 			cc.setRightEditable(false);
-			HistoryPageCompareEditorInput input = new HistoryPageCompareEditorInput(cc, pageSource, object) {
+			HistoryPageCompareEditorInput input = new HistoryPageCompareEditorInput(cc, pageSource, object) { //FLLDCIM: MARK — T09  ANONYMOUS
 				@Override
 				public boolean isEditionSelectionDialog() {
 					return true;
@@ -81,8 +81,8 @@ public class ReplaceLocalHistory extends ShowLocalHistory {
 						return;
 					}
 					var handler = new NotifyDefaultSelectionOnWidgetSelectedHandler(tree);
-					tree.addSelectionListener(handler);
-					tree.addMouseListener(handler);
+					tree.addSelectionListener(handler); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
+					tree.addMouseListener(handler); //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 				}
 
 				private Tree getTree(IPage page) {
@@ -94,7 +94,7 @@ public class ReplaceLocalHistory extends ShowLocalHistory {
 					if (children == null) {
 						return null;
 					}
-					for (Control child : children) {
+					for (Control child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (child instanceof Tree t) {
 							return t;
 						}

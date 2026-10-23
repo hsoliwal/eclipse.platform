@@ -91,7 +91,7 @@ public class SymlinkResourceTest {
 	 * /X/Y/Z/C so ../../Z points (recursive) to /X/Y/Z. /X/Y/D and /X/Y/Z is what
 	 * we expect to resolve but we fail in both cases with NoSuchFileException.
 	 */
-	@ParameterizedTest
+	@ParameterizedTest //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@ValueSource(booleans = { false, true })
 	public void testGithubBug2220(boolean useAdvancedLinkCheck) throws Exception {
 		assumeTrue(canCreateSymLinks(), "only relevant for platforms supporting symbolic links");
@@ -103,7 +103,7 @@ public class SymlinkResourceTest {
 			createInWorkspace(project);
 
 			/* Re-use projects which are cleaned up automatically */
-			getWorkspace().run((IWorkspaceRunnable) unused -> {
+			getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				/* delete open project because we must re-open with BACKGROUND_REFRESH */
 				project.delete(IResource.NEVER_DELETE_PROJECT_CONTENT, createTestMonitor());
 				project.create(null);
@@ -126,8 +126,8 @@ public class SymlinkResourceTest {
 					resourceCount++;
 					// We have 1 root + .settings + prefs + + .project + 10 elements --> 14 elements
 					// to visit at most
-					System.out.println(resourceCount + " visited: " + resource.getFullPath());
-					assertTrue(resourceCount <= 15, "Expected max 15 elements to visit, got: " + resourceCount);
+					System.out.println(resourceCount + " visited: " + resource.getFullPath()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+					assertTrue(resourceCount <= 15, "Expected max 15 elements to visit, got: " + resourceCount); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					return true;
 				}
 			});
@@ -170,7 +170,7 @@ public class SymlinkResourceTest {
 	 * been visited before.
 	 * See <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=232426">bug 232426</a>
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug232426() throws Exception {
 		assumeTrue(canCreateSymLinks(), "only relevant for platforms supporting symbolic links");
 		assumeTrue(UnifiedTree.isAdvancedRecursiveLinkChecksEnabled(), "Will hang the simple implementation");
@@ -178,7 +178,7 @@ public class SymlinkResourceTest {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
 		/* Re-use projects which are cleaned up automatically */
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			/* delete open project because we must re-open with BACKGROUND_REFRESH */
 			project.delete(IResource.NEVER_DELETE_PROJECT_CONTENT, createTestMonitor());
 			project.create(null);
@@ -200,13 +200,13 @@ public class SymlinkResourceTest {
 			public boolean visit(IResource resource) {
 				resourceCount++;
 				// We have 1 root + 4 folders + 5 elements --> 10 elements to visit at most
-				assertTrue(resourceCount <= 10, "Expected max 10 elements to visit, got: " + resourceCount);
+				assertTrue(resourceCount <= 10, "Expected max 10 elements to visit, got: " + resourceCount); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				return true;
 			}
 		});
 	}
 
-	@ParameterizedTest
+	@ParameterizedTest //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@ValueSource(booleans = { false, true })
 	public void testBug358830(boolean useAdvancedLinkCheck) throws Exception {
 		assumeTrue(canCreateSymLinks(), "only relevant for platforms supporting symbolic links");
@@ -216,7 +216,7 @@ public class SymlinkResourceTest {
 			IProject project = getWorkspace().getRoot().getProject("Project");
 			createInWorkspace(project);
 			/* Re-use projects which are cleaned up automatically */
-			getWorkspace().run((IWorkspaceRunnable) unused -> {
+			getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				/* delete open project because we must re-open with BACKGROUND_REFRESH */
 				project.delete(IResource.NEVER_DELETE_PROJECT_CONTENT, createTestMonitor());
 				project.create(null);

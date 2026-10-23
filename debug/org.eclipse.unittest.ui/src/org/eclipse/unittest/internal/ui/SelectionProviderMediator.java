@@ -35,7 +35,7 @@ import org.eclipse.jface.viewers.StructuredViewer;
  */
 public class SelectionProviderMediator implements IPostSelectionProvider {
 
-	private class InternalListener implements ISelectionChangedListener, FocusListener {
+	private class InternalListener implements ISelectionChangedListener, FocusListener { //FLLDCIM: MARK — T04  IMPLEMENTS
 		@Override
 		public void selectionChanged(SelectionChangedEvent event) {
 			doSelectionChanged(event);
@@ -53,7 +53,7 @@ public class SelectionProviderMediator implements IPostSelectionProvider {
 		}
 	}
 
-	private class InternalPostSelectionListener implements ISelectionChangedListener {
+	private class InternalPostSelectionListener implements ISelectionChangedListener { //FLLDCIM: MARK — T04  IMPLEMENTS
 		@Override
 		public void selectionChanged(SelectionChangedEvent event) {
 			doPostSelectionChanged(event);
@@ -81,16 +81,16 @@ public class SelectionProviderMediator implements IPostSelectionProvider {
 		fPostSelectionChangedListeners = new ListenerList<>();
 		fViewerInFocus = viewerInFocus;
 
-		for (StructuredViewer viewer : fViewers) {
-			viewer.addSelectionChangedListener(listener);
-			viewer.addPostSelectionChangedListener(new InternalPostSelectionListener());
+		for (StructuredViewer viewer : fViewers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			viewer.addSelectionChangedListener(listener); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
+			viewer.addPostSelectionChangedListener(new InternalPostSelectionListener()); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 			Control control = viewer.getControl();
-			control.addFocusListener(listener);
+			control.addFocusListener(listener); //FLLDCIM: MARK — T15 FOCUS CALL
 		}
 	}
 
 	private void doFocusChanged(Widget control) {
-		for (StructuredViewer viewer : fViewers) {
+		for (StructuredViewer viewer : fViewers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (viewer.getControl() == control) {
 				propagateFocusChanged(viewer);
 				return;
@@ -124,7 +124,7 @@ public class SelectionProviderMediator implements IPostSelectionProvider {
 		if (fSelectionChangedListeners != null) {
 			SelectionChangedEvent event = new SelectionChangedEvent(this, getSelection());
 
-			for (ISelectionChangedListener listener : fSelectionChangedListeners) {
+			for (ISelectionChangedListener listener : fSelectionChangedListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				listener.selectionChanged(event);
 			}
 		}
@@ -134,7 +134,7 @@ public class SelectionProviderMediator implements IPostSelectionProvider {
 		if (fPostSelectionChangedListeners != null) {
 			SelectionChangedEvent event = new SelectionChangedEvent(this, getSelection());
 
-			for (ISelectionChangedListener listener : fPostSelectionChangedListeners) {
+			for (ISelectionChangedListener listener : fPostSelectionChangedListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				listener.selectionChanged(event);
 			}
 		}

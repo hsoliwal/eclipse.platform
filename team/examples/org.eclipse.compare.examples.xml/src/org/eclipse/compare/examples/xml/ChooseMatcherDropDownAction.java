@@ -52,7 +52,7 @@ class ChooseMatcherDropDownAction extends Action implements IMenuCreator {
 		return null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Menu getMenu(Control parent) {
 		XMLPlugin plugin= XMLPlugin.getDefault();
 		Menu menu= new Menu(parent);
@@ -64,25 +64,25 @@ class ChooseMatcherDropDownAction extends Action implements IMenuCreator {
 
 		Set<String> keySetIdMaps = IdMaps.keySet();
 		Set<String> keySetIdMapsInternal = IdMapsInternal.keySet();
-		ArrayList<String> internalIdMapsAL= new ArrayList<>();
-		for (String idmap_name : keySetIdMapsInternal) {
+		ArrayList<String> internalIdMapsAL= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (String idmap_name : keySetIdMapsInternal) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			internalIdMapsAL.add(idmap_name);
 		}
 		Object[] internalIdMapsA= internalIdMapsAL.toArray();
 		Arrays.sort(internalIdMapsA);
-		for (Object internalIdA : internalIdMapsA) {
+		for (Object internalIdA : internalIdMapsA) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			addActionToMenu(menu, new SelectMatcherAction((String) internalIdA, fViewer));
 		}
 		new MenuItem(menu, SWT.SEPARATOR);
 
-		ArrayList<String> userIdMapsAL= new ArrayList<>();
-		for (String idmap_name : keySetIdMaps) {
+		ArrayList<String> userIdMapsAL= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (String idmap_name : keySetIdMaps) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			userIdMapsAL.add(idmap_name);
 		}
 
 		HashMap<String, ArrayList<String>> OrderedElements = plugin.getOrderedElements();
 		Set<String> keySetOrdered = OrderedElements.keySet();
-		for (String idmap_name : keySetOrdered) {
+		for (String idmap_name : keySetOrdered) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!keySetIdMaps.contains(idmap_name)) {
 				userIdMapsAL.add(idmap_name);
 			}
@@ -90,7 +90,7 @@ class ChooseMatcherDropDownAction extends Action implements IMenuCreator {
 
 		Object[] userIdMapsA= userIdMapsAL.toArray();
 		Arrays.sort(userIdMapsA);
-		for (Object userIdA : userIdMapsA) {
+		for (Object userIdA : userIdMapsA) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			addActionToMenu(menu, new SelectMatcherAction((String) userIdA, fViewer));
 		}
 

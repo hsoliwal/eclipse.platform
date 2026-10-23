@@ -95,12 +95,12 @@ public class FileCache {
 	 * @return The cached file
 	 * @throws CoreException on errors using the source filestore or writing the cache file
 	 */
-	public java.io.File cache(IFileStore source, IProgressMonitor monitor) throws CoreException {
+	public java.io.File cache(IFileStore source, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			SubMonitor subMonitor = SubMonitor.convert(monitor, NLS.bind(Messages.copying, toString()), 3);
 			IFileInfo myInfo = source.fetchInfo(EFS.IGNORE_NAME_CASE, subMonitor.newChild(1));
 			if (!myInfo.exists()) {
-				return new File(cacheDir, "Non-Existent-" + System.currentTimeMillis()); //$NON-NLS-1$
+				return new File(cacheDir, "Non-Existent-" + System.currentTimeMillis()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			File result;
 			if (myInfo.isDirectory()) {
@@ -132,14 +132,14 @@ public class FileCache {
 		new LocalFile(cacheParent).delete(EFS.NONE, null);
 	}
 
-	private void clearImmutableFlag(File target) {
+	private void clearImmutableFlag(File target) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!target.exists()) {
 			return;
 		}
 		if (target.isDirectory()) {
 			File[] children = target.listFiles();
 			if (children != null) {
-				for (File element : children) {
+				for (File element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					clearImmutableFlag(element);
 				}
 			}
@@ -176,7 +176,7 @@ public class FileCache {
 		File dir;
 		long i = 0;
 		//find an unused directory name
-		do {
+		do { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			dir = new File(parent, Long.toString(System.currentTimeMillis() + i++));
 		} while (dir.exists());
 		if (create) {

@@ -67,7 +67,7 @@ public class TestMultipleBuildersOfSameType {
 	/**
 	 * Create projects, setup a builder, and do an initial build.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(1)
 	public void test1() throws CoreException {
 		IResource[] resources = {project1, unsorted1, sorted1, unsortedFile1};

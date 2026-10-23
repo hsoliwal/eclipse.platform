@@ -53,12 +53,12 @@ public class SubscriberSyncInfoSet extends SyncInfoTree {
 	 * Progress is provided by the background event handler and errors are passed through
 	 * the chain to the view.
 	 */
-	public void connect(final ISyncInfoSetChangeListener listener) {
+	public void connect(final ISyncInfoSetChangeListener listener) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (handler == null) {
 			// Should only use this connect if the set has a handler
 			throw new UnsupportedOperationException();
 		} else {
-			handler.run(monitor -> {
+			handler.run(monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 				try {
 					beginInput();
 					monitor.beginTask(null, 100);

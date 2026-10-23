@@ -47,7 +47,7 @@ public class AntAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 	 * @param c
 	 *            the command to deal with
 	 */
-	private synchronized void autoIndentAfterNewLine(IDocument d, DocumentCommand c) {
+	private synchronized void autoIndentAfterNewLine(IDocument d, DocumentCommand c) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (c.offset == -1 || d.getLength() == 0 || fModel.getProjectNode(false) == null) {
 			return;
@@ -64,8 +64,8 @@ public class AntAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 			if (!nextNodeIsEndTag(c.offset, d)) {
 				correct.append(XmlDocumentFormatter.createIndent());
 			}
-			StringBuilder buf = new StringBuilder(c.text);
-			buf.append(correct);
+			StringBuilder buf = new StringBuilder(c.text); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+			buf.append(correct); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			fAccumulatedChange += buf.length();
 
 			int line = d.getLineOfOffset(position);
@@ -124,7 +124,7 @@ public class AntAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		fAccumulatedChange = 0;
 	}
 
-	private void smartPaste(IDocument document, DocumentCommand command) {
+	private void smartPaste(IDocument document, DocumentCommand command) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			if (command.offset == -1 || document.getLength() == 0 || fModel.getProjectNode(false) == null) {
 				return;
@@ -157,7 +157,7 @@ public class AntAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 			StringBuffer addition = new StringBuffer();
 			int insertLength = 0;
 			int lines = temp.getNumberOfLines();
-			for (int l = firstLine; l < lines; l++) { // we don't change the number of lines while adding indents
+			for (int l = firstLine; l < lines; l++) { // we don't change the number of lines while adding indents //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 
 				IRegion r = temp.getLineInformation(l);
 				int lineOffset = r.getOffset();
@@ -230,13 +230,13 @@ public class AntAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 	 * @throws BadLocationException
 	 *             on concurrent document modification
 	 */
-	private void cutIndent(Document document, int line, int toDelete) throws BadLocationException {
+	private void cutIndent(Document document, int line, int toDelete) throws BadLocationException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IRegion region = document.getLineInformation(line);
 		int from = region.getOffset();
 		int endOffset = region.getOffset() + region.getLength();
 
 		int to = from;
-		while (toDelete > 0 && to < endOffset) {
+		while (toDelete > 0 && to < endOffset) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char ch = document.getChar(to);
 			if (!Character.isWhitespace(ch)) {
 				break;
@@ -278,7 +278,7 @@ public class AntAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 		int size = 0;
 		int tablen = getVisualTabLengthPreference();
 
-		for (int i = 0; i < seq.length(); i++) {
+		for (int i = 0; i < seq.length(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char ch = seq.charAt(i);
 			if (ch == '\t') {
 				size += tablen - size % tablen;
@@ -302,7 +302,7 @@ public class AntAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 	 *            length
 	 * @return the difference in length of <code>correct</code> and <code>current</code>
 	 */
-	private int subtractIndent(CharSequence correct, CharSequence current, StringBuffer difference) {
+	private int subtractIndent(CharSequence correct, CharSequence current, StringBuffer difference) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int c1 = computeVisualLength(correct);
 		int c2 = computeVisualLength(current);
 		int diff = c1 - c2;
@@ -312,7 +312,7 @@ public class AntAutoEditStrategy extends DefaultIndentLineAutoEditStrategy {
 
 		difference.setLength(0);
 		int len = 0, i = 0;
-		while (len < diff) {
+		while (len < diff) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c = correct.charAt(i++);
 			difference.append(c);
 			len += computeVisualLength(c);

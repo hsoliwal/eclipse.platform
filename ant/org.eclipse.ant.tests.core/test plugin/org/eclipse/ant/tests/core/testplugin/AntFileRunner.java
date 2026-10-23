@@ -25,7 +25,7 @@ public class AntFileRunner {
 
 	private static final String BASE_DIR_PREFIX = "-Dbasedir="; //$NON-NLS-1$
 
-	public void run(IFile buildFile, String[] targets, String[] args, String baseDir, boolean captureOutput) throws CoreException {
+	public void run(IFile buildFile, String[] targets, String[] args, String baseDir, boolean captureOutput) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		AntRunner runner = new AntRunner();
 
@@ -43,7 +43,7 @@ public class AntFileRunner {
 			if (args != null) {
 				System.arraycopy(args, 0, runnerArgs, 0, args.length);
 			}
-			runnerArgs[length - 1] = BASE_DIR_PREFIX + baseDir;
+			runnerArgs[length - 1] = BASE_DIR_PREFIX + baseDir; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		runner.setArguments(runnerArgs);
 
@@ -71,7 +71,7 @@ public class AntFileRunner {
 			// as one of the arguments, so it needs to be appended.
 			runnerArgs = new String[args.length + 1];
 			System.arraycopy(args, 0, runnerArgs, 0, args.length);
-			runnerArgs[args.length] = BASE_DIR_PREFIX + baseDir;
+			runnerArgs[args.length] = BASE_DIR_PREFIX + baseDir; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		runner.setArguments(runnerArgs);
 

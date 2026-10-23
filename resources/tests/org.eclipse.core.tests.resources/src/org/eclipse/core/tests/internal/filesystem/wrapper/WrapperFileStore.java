@@ -64,7 +64,7 @@ public class WrapperFileStore extends FileStore {
 	@Override
 	public IFileStore[] childStores(int options, IProgressMonitor monitor) throws CoreException {
 		IFileStore[] childStores = baseStore.childStores(options, monitor);
-		for (int i = 0; i < childStores.length; i++) {
+		for (int i = 0; i < childStores.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// replace ordinary file store with wrapper version
 			childStores[i] = createNewWrappedStore(childStores[i]);
 		}

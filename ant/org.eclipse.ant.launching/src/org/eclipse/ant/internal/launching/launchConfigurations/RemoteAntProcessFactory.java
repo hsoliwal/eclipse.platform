@@ -27,7 +27,7 @@ public class RemoteAntProcessFactory implements IProcessFactory {
 	@Override
 	public IProcess newProcess(ILaunch launch, Process process, String label, Map<String, String> attributes) {
 		if (attributes == null) {
-			attributes = new HashMap<>(1);
+			attributes = new HashMap<>(1); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 		attributes.put(IProcess.ATTR_PROCESS_TYPE, IAntLaunchConstants.ID_ANT_PROCESS_TYPE);
 		return new RemoteAntRuntimeProcess(launch, process, label, attributes);

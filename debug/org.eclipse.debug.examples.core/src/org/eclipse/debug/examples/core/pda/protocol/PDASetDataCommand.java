@@ -30,7 +30,7 @@ package org.eclipse.debug.examples.core.pda.protocol;
 public class PDASetDataCommand extends PDACommand {
 
 	public PDASetDataCommand(int threadId, int index, String value) {
-		super("setdata " + threadId + " " + index + " " + value); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		super("setdata " + threadId + " " + index + " " + value); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 

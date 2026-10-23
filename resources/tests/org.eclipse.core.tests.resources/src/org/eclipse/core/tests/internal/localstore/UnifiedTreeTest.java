@@ -59,8 +59,8 @@ public class UnifiedTreeTest {
 	private final FileStoreAutoDeleteExtension fileStoreExtension = new FileStoreAutoDeleteExtension();
 
 	protected void createFiles(IFileStore folder, Hashtable<String, String> set) throws Exception {
-		for (int i = 0; i < LIMIT; i++) {
-			IFileStore child = folder.getChild("fsFile" + i);
+		for (int i = 0; i < LIMIT; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			IFileStore child = folder.getChild("fsFile" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			try (OutputStream out = child.openOutputStream(EFS.NONE, null)) {
 				out.write("contents".getBytes());
 			}
@@ -70,9 +70,9 @@ public class UnifiedTreeTest {
 
 	protected void createFiles(final IContainer target, final Hashtable<String, String> set) throws CoreException {
 		final Workspace workspace = (Workspace) getWorkspace();
-		IWorkspaceRunnable operation = unused -> {
-			for (int i = 0; i < LIMIT; i++) {
-				IFile child = target.getFile(IPath.fromOSString("wbFile" + i));
+		IWorkspaceRunnable operation = unused -> { //FLLDCIM: MARK — T09  LAMBDA
+			for (int i = 0; i < LIMIT; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				IFile child = target.getFile(IPath.fromOSString("wbFile" + i)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				workspace.createResource(child, false);
 				String location = child.getLocation().toOSString();
 				set.put(location, "");
@@ -83,8 +83,8 @@ public class UnifiedTreeTest {
 
 	protected void createResourcesInFileSystem(IFileStore folder, Hashtable<String, String> set) throws Exception {
 		createFiles(folder, set);
-		for (int i = 0; i < LIMIT; i++) {
-			IFileStore child = folder.getChild("fsFolder" + i);
+		for (int i = 0; i < LIMIT; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			IFileStore child = folder.getChild("fsFolder" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			child.mkdir(EFS.NONE, null);
 			set.put(child.toString(), "");
 			if (i < (LIMIT / 2)) {
@@ -95,8 +95,8 @@ public class UnifiedTreeTest {
 
 	protected void createResourcesInWorkspace(IContainer target, Hashtable<String, String> set) throws CoreException {
 		createFiles(target, set);
-		for (int i = 0; i < LIMIT; i++) {
-			IFolder child = target.getFolder(IPath.fromOSString("wbFolder" + i));
+		for (int i = 0; i < LIMIT; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			IFolder child = target.getFolder(IPath.fromOSString("wbFolder" + i)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			child.create(true, true, null);
 			String location = child.getLocation().toOSString();
 			set.put(location, "");
@@ -110,7 +110,7 @@ public class UnifiedTreeTest {
 	 * Creates some resources in the file system and some in the workspace. After that,
 	 * makes sure the visitor is going to walk through all of them.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTraverseMechanismInFolder() throws Throwable {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -155,7 +155,7 @@ public class UnifiedTreeTest {
 	 * Creates some resources in the file system and some in the workspace. After that,
 	 * makes sure the visitor is going to walk through some of them.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTraverseMechanismInFolderSkippingSomeChildren() throws Throwable {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -214,7 +214,7 @@ public class UnifiedTreeTest {
 	 * Creates some resources in the file system and some in the workspace. After that,
 	 * makes sure the visitor is going to walk through all of them.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTraverseMechanismInProject() throws Throwable {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -255,7 +255,7 @@ public class UnifiedTreeTest {
 	/**
 	 * Regression test for 342968 - Resource layers asks IFileTree for info of linked resources
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test342968() throws CoreException {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("test");
 		createInWorkspace(project);
@@ -290,7 +290,7 @@ public class UnifiedTreeTest {
 		assertTrue(rf.exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test368376() throws CoreException, IOException {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(createUniqueString());
 		createInWorkspace(project);

@@ -67,13 +67,13 @@ public class ColumnPresentationTests implements ITestModelUpdatesListenerConstan
 		destroyViewer();
 	}
 
-	void createViewer() {
+	void createViewer() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fDisplay = PlatformUI.getWorkbench().getDisplay();
 		fShell = new Shell(fDisplay);
 		fShell.setSize(800, 600);
 		fShell.setLayout(new FillLayout());
 		fViewer = new TreeModelViewer(fShell, SWT.VIRTUAL, new PresentationContext("TestViewer")); //$NON-NLS-1$
-		fViewer.getTree().addControlListener(new ControlListener() {
+		fViewer.getTree().addControlListener(new ControlListener() { //FLLDCIM: MARK — T11 VIEWPORT_RESIZE_DELTA CALL
 			@Override
 			public void controlResized(ControlEvent e) {
 				fResized = true;
@@ -111,8 +111,8 @@ public class ColumnPresentationTests implements ITestModelUpdatesListenerConstan
 
 		static String[] makeDefaultColumnIds() {
 			String[] columnIds = new String[5];
-			for (int i = 0; i < columnIds.length; i++) {
-				columnIds[i] = "ColumnId_" + i; //$NON-NLS-1$
+			for (int i = 0; i < columnIds.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				columnIds[i] = "ColumnId_" + i; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			return columnIds;
 		}
@@ -175,17 +175,17 @@ public class ColumnPresentationTests implements ITestModelUpdatesListenerConstan
 
 		MyColumnPresentation2() {
 			super();
-			for (int i = 0; i < columnIds.length; i++) {
+			for (int i = 0; i < columnIds.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				columnIds[i] += "_2"; //$NON-NLS-1$
 			}
 			repliedWidths = new int[columnIds.length];
 			Arrays.fill(repliedWidths, -2);
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public int getInitialColumnWidth(String id, int treeWidgetWidth,
 				String[] visibleColumnIds) {
-			for (int i = 0; i < columnIds.length; i++) {
+			for (int i = 0; i < columnIds.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (id.equals(columnIds[i]) && i == 0) {
 					repliedWidths[i] = 2 * (treeWidgetWidth / visibleColumnIds.length);
 					return repliedWidths[i];
@@ -241,7 +241,7 @@ public class ColumnPresentationTests implements ITestModelUpdatesListenerConstan
 
 	private TestModel makeModel(MyColumnPresentation cp, String rootSufffix) throws Exception {
 		MyModel model = new MyModel(cp);
-		model.setRoot(new TestElement(model, "root" + rootSufffix, new TestElement[] { //$NON-NLS-1$
+		model.setRoot(new TestElement(model, "root" + rootSufffix, new TestElement[] { //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		new TestElement(model, "1", true, true, new TestElement[0]), //$NON-NLS-1$
 		new TestElement(model, "2", true, false, new TestElement[0]), //$NON-NLS-1$
 		new TestElement(model, "3", false, true, new TestElement[0]), //$NON-NLS-1$
@@ -249,7 +249,7 @@ public class ColumnPresentationTests implements ITestModelUpdatesListenerConstan
 		new TestElement(model, "5", new TestElement[0]), //$NON-NLS-1$
 		new TestElement(model, "6", new TestElement[0]) })); //$NON-NLS-1$
 		fListener.reset(TreePath.EMPTY, model.getRootElement(), -1, true, false);
-		fViewer.setInput(model.getRootElement());
+		fViewer.setInput(model.getRootElement()); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		waitWhile(() -> !fListener.isFinished(), createListenerErrorMessage());
 		model.validateData(fViewer, TreePath.EMPTY);
 		return model;
@@ -263,7 +263,7 @@ public class ColumnPresentationTests implements ITestModelUpdatesListenerConstan
 	 * average of tree width / number of visible columns, which is the logic in
 	 * InternalTreeModelViewer.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInitialColumnAverageWidth() throws Exception {
 		fResized = false;
 
@@ -279,7 +279,7 @@ public class ColumnPresentationTests implements ITestModelUpdatesListenerConstan
 			return;
 		}
 
-		for (int i = 0; i < columns.length - 1; i++) {
+		for (int i = 0; i < columns.length - 1; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertEquals(avgWidth, columns[i].getWidth());
 		}
 		// Checking of the width of the last column is not reliable.
@@ -293,7 +293,7 @@ public class ColumnPresentationTests implements ITestModelUpdatesListenerConstan
 	 * Also, we verify that the initial columns width is the width computed by
 	 * the IColumnPresentation2 implementation.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInitialColumnWidth() throws Exception {
 		fResized = false;
 
@@ -307,7 +307,7 @@ public class ColumnPresentationTests implements ITestModelUpdatesListenerConstan
 			return;
 		}
 
-		for (int i = 0; i < columns.length; i++) {
+		for (int i = 0; i < columns.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int width = colPre.repliedWidths[i];
 			if (width != -1) {
 				assertEquals(width, columns[i].getWidth());
@@ -321,18 +321,18 @@ public class ColumnPresentationTests implements ITestModelUpdatesListenerConstan
 	 * is not used when there are user settings inside the viewer which are
 	 * created from user resizing columns.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRespectUserSettings() throws Exception {
 		MyColumnPresentation2 colPre = new MyColumnPresentation2();
 		makeModel(colPre, "m2"); //$NON-NLS-1$
 		TreeColumn[] columns = fViewer.getTree().getColumns();
 		// simulate user resizing each column width
 		int[] newWidths = new int[columns.length];
-		for (int i = 0; i < columns.length; i++) {
+		for (int i = 0; i < columns.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			newWidths[i] = columns[i].getWidth() + 10;
 			columns[i].setWidth(newWidths[i]);
 		}
-		for (int i = 0; i < columns.length; i++) {
+		for (int i = 0; i < columns.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertEquals(newWidths[i], columns[i].getWidth());
 		}
 		// get InternalTreeModelViewer to rebuild columns due to change of
@@ -342,7 +342,7 @@ public class ColumnPresentationTests implements ITestModelUpdatesListenerConstan
 		makeModel(colPre, "m3"); //$NON-NLS-1$
 		// verify user resized widths are used instead of the initial widths from IColumnPresentation2
 		columns = fViewer.getTree().getColumns();
-		for (int i = 0; i < columns.length; i++) {
+		for (int i = 0; i < columns.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertEquals(newWidths[i], columns[i].getWidth());
 		}
 
@@ -355,7 +355,7 @@ public class ColumnPresentationTests implements ITestModelUpdatesListenerConstan
 		waitWhile(() -> fViewer.getTree().getColumns().length != newWidths.length, createColumnsErrorMessage());
 		// verify user resized widths are used instead of the initial widths from IColumnPresentation2
 		columns = fViewer.getTree().getColumns();
-		for (int i = 0; i < columns.length; i++) {
+		for (int i = 0; i < columns.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertEquals(newWidths[i], columns[i].getWidth());
 		}
 	}
@@ -366,18 +366,18 @@ public class ColumnPresentationTests implements ITestModelUpdatesListenerConstan
 	 * is not used when there are user settings inside the viewer which are
 	 * restored from memento, e.g., restoring workspace, etc.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRespectMemento() throws Exception {
 		MyColumnPresentation2 colPre = new MyColumnPresentation2();
 		makeModel(colPre, "m2"); //$NON-NLS-1$
 		TreeColumn[] columns = fViewer.getTree().getColumns();
 		// simulate user resizing each column width
 		int[] newWidths = new int[columns.length];
-		for (int i = 0; i < columns.length; i++) {
+		for (int i = 0; i < columns.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			newWidths[i] = columns[i].getWidth() + 10;
 			columns[i].setWidth(newWidths[i]);
 		}
-		for (int i = 0; i < columns.length; i++) {
+		for (int i = 0; i < columns.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertEquals(newWidths[i], columns[i].getWidth());
 		}
 		// save memento
@@ -392,7 +392,7 @@ public class ColumnPresentationTests implements ITestModelUpdatesListenerConstan
 		makeModel(colPre, "m2"); //$NON-NLS-1$
 		// verify widths from memento are used instead of the initial widths from IColumnPresentation2
 		columns = fViewer.getTree().getColumns();
-		for (int i = 0; i < columns.length; i++) {
+		for (int i = 0; i < columns.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertEquals(newWidths[i], columns[i].getWidth());
 		}
 	}
@@ -401,7 +401,7 @@ public class ColumnPresentationTests implements ITestModelUpdatesListenerConstan
 	 * In this test: verify that tree viewer can handle the column presentation
 	 * changing its available column IDs between runs (bug 360015).
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testChangedColumnIds() throws Exception {
 		MyColumnPresentation colPre = new MyColumnPresentation();
 
@@ -425,16 +425,16 @@ public class ColumnPresentationTests implements ITestModelUpdatesListenerConstan
 
 		// verify user resized widths are used instead of the initial widths from IColumnPresentation2
 		columns = fViewer.getTree().getColumns();
-		for (int i = 0; i < columns.length; i++) {
+		for (int i = 0; i < columns.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertEquals(newColumnIds[i], columns[i].getText());
 		}
 	}
 
 	private Supplier<String> createColumnsErrorMessage() {
-		return () -> "Unexpected columns number: " + fViewer.getTree().getColumns().length;
+		return () -> "Unexpected columns number: " + fViewer.getTree().getColumns().length; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private Supplier<String> createListenerErrorMessage() {
-		return () -> "Listener not finished: " + fListener;
+		return () -> "Listener not finished: " + fListener; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

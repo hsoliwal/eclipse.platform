@@ -49,8 +49,8 @@ public class BenchWorkspace {
 	 * Creates the given number of problem markers on each resource in the workspace.
 	 */
 	private void addProblems(final int problemCount) throws CoreException {
-		IWorkspaceRunnable runnable = unused -> getWorkspace().getRoot().accept(resource -> {
-			for (int i = 0; i < problemCount; i++) {
+		IWorkspaceRunnable runnable = unused -> getWorkspace().getRoot().accept(resource -> { //FLLDCIM: MARK — T09  LAMBDA
+			for (int i = 0; i < problemCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IMarker marker = resource.createMarker(IMarker.PROBLEM);
 				marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
 			}
@@ -59,40 +59,40 @@ public class BenchWorkspace {
 		getWorkspace().run(runnable, null);
 	}
 
-	public String[] defineHierarchy() {
+	public String[] defineHierarchy() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//define a hierarchy with NUM_FOLDERS folders, NUM_FILES files.
 		String[] names = new String[NUM_FOLDERS * (FILES_PER_FOLDER + 1)];
 		//create the folders
 		final int MAX_DEPTH = 10;
 		final int MAX_SPAN = NUM_FOLDERS / MAX_DEPTH;
 		int i = 0;
-		for (int depth = 0; depth < MAX_DEPTH; depth++) {
-			for (int span = 0; span < MAX_SPAN; span++) {
+		for (int depth = 0; depth < MAX_DEPTH; depth++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (int span = 0; span < MAX_SPAN; span++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (depth == 0) {
-					names[i] = "TestProject/" + span + "/";
+					names[i] = "TestProject/" + span + "/"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				} else {
-					names[i] = names[i - MAX_SPAN] + span + "/";
+					names[i] = names[i - MAX_SPAN] + span + "/"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				i++;
 			}
 		}
 		//create files for each folder
-		for (int folder = 0; folder < NUM_FOLDERS; folder++) {
-			for (int file = 0; file < FILES_PER_FOLDER; file++) {
-				names[i++] = names[folder] + "file" + file;
+		for (int folder = 0; folder < NUM_FOLDERS; folder++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (int file = 0; file < FILES_PER_FOLDER; file++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				names[i++] = names[folder] + "file" + file; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		return names;
 	}
 
-	int findMaxProblemSeverity(IWorkspaceRoot root) throws CoreException {
+	int findMaxProblemSeverity(IWorkspaceRoot root) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		class ResourceVisitor implements IResourceVisitor {
 			int maxSeverity = -1;
 
 			@Override
 			public boolean visit(IResource resource) throws CoreException {
 				IMarker[] markers = resource.findMarkers(IMarker.PROBLEM, true, IResource.DEPTH_ZERO);
-				for (IMarker marker : markers) {
+				for (IMarker marker : markers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					int severity = marker.getAttribute(IMarker.SEVERITY, -1);
 					if (severity > maxSeverity) {
 						maxSeverity = severity;
@@ -113,7 +113,7 @@ public class BenchWorkspace {
 	@BeforeEach
 	public void setUp(TestInfo info) throws Exception {
 		testInfo = info;
-		IWorkspaceRunnable runnable = unused -> {
+		IWorkspaceRunnable runnable = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			//create resources
 			project = getWorkspace().getRoot().getProject("TestProject");
 			project.create(null);
@@ -150,10 +150,10 @@ public class BenchWorkspace {
 		waitForBuild();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCountResourcesDuringOperation() throws Exception {
 		final Workspace workspace = (Workspace) getWorkspace();
-		IWorkspaceRunnable runnable = unused -> {
+		IWorkspaceRunnable runnable = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			//touch all files
 			workspace.getRoot().accept(resource -> {
 				resource.touch(null);

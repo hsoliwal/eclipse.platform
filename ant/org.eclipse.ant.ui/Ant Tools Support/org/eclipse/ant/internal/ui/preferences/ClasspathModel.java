@@ -30,7 +30,7 @@ public class ClasspathModel extends AbstractClasspathEntry {
 	private GlobalClasspathEntries fUserGlobalEntry;
 	private GlobalClasspathEntries fContributedGlobalEntry;
 
-	public Object addEntry(Object entry) {
+	public Object addEntry(Object entry) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (entry instanceof GlobalClasspathEntries) {
 			if (!fChildEntries.contains(entry)) {
 				fChildEntries.add((IAntClasspathEntry) entry);
@@ -39,7 +39,7 @@ public class ClasspathModel extends AbstractClasspathEntry {
 			return null;
 		}
 		ClasspathEntry newEntry = createEntry(entry, null);
-		for (IAntClasspathEntry element : fChildEntries) {
+		for (IAntClasspathEntry element : fChildEntries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element instanceof GlobalClasspathEntries) {
 				if (((GlobalClasspathEntries) element).contains(newEntry)) {
 					return null;
@@ -52,7 +52,7 @@ public class ClasspathModel extends AbstractClasspathEntry {
 		return newEntry;
 	}
 
-	public Object addEntry(int entryType, Object entry) {
+	public Object addEntry(int entryType, Object entry) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IClasspathEntry entryParent = null;
 		switch (entryType) {
 			case ANT_HOME:
@@ -81,7 +81,7 @@ public class ClasspathModel extends AbstractClasspathEntry {
 		}
 
 		ClasspathEntry newEntry = createEntry(entry, entryParent);
-		for (IAntClasspathEntry element : fChildEntries) {
+		for (IAntClasspathEntry element : fChildEntries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element instanceof GlobalClasspathEntries) {
 				if (((GlobalClasspathEntries) element).contains(newEntry)) {
 					return null;
@@ -105,7 +105,7 @@ public class ClasspathModel extends AbstractClasspathEntry {
 	 *            kind of entries to retrieve
 	 * @return entries of the specified kind, possibly empty
 	 */
-	public IAntClasspathEntry[] getEntries(int entryType) {
+	public IAntClasspathEntry[] getEntries(int entryType) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		switch (entryType) {
 			case ANT_HOME:
 				if (fAntHomeEntry != null) {
@@ -172,7 +172,7 @@ public class ClasspathModel extends AbstractClasspathEntry {
 
 	public void removeAll(Object[] entries) {
 
-		for (Object object : entries) {
+		for (Object object : entries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (object instanceof ClasspathEntry) {
 				IClasspathEntry entryParent = ((ClasspathEntry) object).getParent();
 				if (entryParent instanceof GlobalClasspathEntries) {
@@ -192,7 +192,7 @@ public class ClasspathModel extends AbstractClasspathEntry {
 			fAntHomeEntry = createGlobalEntry(entries, name, false, true, ANT_HOME);
 		} else {
 			fAntHomeEntry.removeAll();
-			for (IAntClasspathEntry entry : entries) {
+			for (IAntClasspathEntry entry : entries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fAntHomeEntry.addEntry(new ClasspathEntry(entry, fAntHomeEntry));
 			}
 		}
@@ -202,7 +202,7 @@ public class ClasspathModel extends AbstractClasspathEntry {
 
 		GlobalClasspathEntries global = new GlobalClasspathEntries(name, this, canBeRemoved, type);
 
-		for (IAntClasspathEntry entry : entries) {
+		for (IAntClasspathEntry entry : entries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			global.addEntry(new ClasspathEntry(entry, global));
 		}
 
@@ -218,7 +218,7 @@ public class ClasspathModel extends AbstractClasspathEntry {
 			fUserGlobalEntry = createGlobalEntry(entries, name, true, true, GLOBAL_USER);
 		} else {
 			fUserGlobalEntry.removeAll();
-			for (IAntClasspathEntry entry : entries) {
+			for (IAntClasspathEntry entry : entries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fUserGlobalEntry.addEntry(new ClasspathEntry(entry, fUserGlobalEntry));
 			}
 		}
@@ -230,15 +230,15 @@ public class ClasspathModel extends AbstractClasspathEntry {
 			fContributedGlobalEntry = createGlobalEntry(entries, name, false, true, CONTRIBUTED);
 		} else {
 			fContributedGlobalEntry.removeAll();
-			for (IAntClasspathEntry entry : entries) {
+			for (IAntClasspathEntry entry : entries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fContributedGlobalEntry.addEntry(new ClasspathEntry(entry, fContributedGlobalEntry));
 			}
 		}
 	}
 
 	private IAntClasspathEntry[] getUserEntries() {
-		List<IAntClasspathEntry> userEntries = new ArrayList<>(fChildEntries.size());
-		for (IAntClasspathEntry element : fChildEntries) {
+		List<IAntClasspathEntry> userEntries = new ArrayList<>(fChildEntries.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IAntClasspathEntry element : fChildEntries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element instanceof GlobalClasspathEntries) {
 				continue;
 			}

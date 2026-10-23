@@ -90,7 +90,7 @@ public class AntClasspathTab extends JavaClasspathTab {
 	@Override
 	public void entriesChanged(IClasspathViewer viewer) {
 		super.entriesChanged(viewer);
-		for (ILaunchConfigurationTab tab : getLaunchConfigurationDialog().getTabs()) {
+		for (ILaunchConfigurationTab tab : getLaunchConfigurationDialog().getTabs()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (tab instanceof AntTargetsTab) {
 				((AntTargetsTab) tab).setDirty(true);
 			}
@@ -108,10 +108,10 @@ public class AntClasspathTab extends JavaClasspathTab {
 		return validateAntHome();
 	}
 
-	private boolean validateAntHome() {
+	private boolean validateAntHome() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ClasspathModel model = getModel();
 		IClasspathEntry userEntry = model.getUserEntry();
-		for (IClasspathEntry entry : userEntry.getEntries()) {
+		for (IClasspathEntry entry : userEntry.getEntries()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IRuntimeClasspathEntry runtimeEntry = ((ClasspathEntry) entry).getDelegate();
 			if (runtimeEntry instanceof AntHomeClasspathEntry) {
 				try {

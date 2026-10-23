@@ -64,7 +64,7 @@ public class ConfigureSynchronizeScheduleComposite extends Composite {
 		createMainDialogArea(parent);
 	}
 
-	private void initializeValues() {
+	private void initializeValues() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean enableBackground = schedule.isEnabled();
 		boolean hours = false;
 
@@ -96,7 +96,7 @@ public class ConfigureSynchronizeScheduleComposite extends Composite {
 		}
 	}
 
-	protected void createMainDialogArea(Composite parent) {
+	protected void createMainDialogArea(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		GC gc = new GC(parent);
 		gc.setFont(JFaceResources.getDialogFont());
 		FontMetrics	fontMetrics = gc.getFontMetrics();
@@ -119,7 +119,7 @@ public class ConfigureSynchronizeScheduleComposite extends Composite {
 		gridData.horizontalSpan = 3;
 		enableBackgroundRefresh.setLayoutData(gridData);
 		enableBackgroundRefresh.setText(TeamUIMessages.ConfigureRefreshScheduleDialog_3);
-		enableBackgroundRefresh.addSelectionListener(new SelectionListener() {
+		enableBackgroundRefresh.addSelectionListener(new SelectionListener() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				updateEnablements();
@@ -137,7 +137,7 @@ public class ConfigureSynchronizeScheduleComposite extends Composite {
 		startTime.setLayoutData(gridData);
 
 		repeatEvery = createIndentedButton(area, TeamUIMessages.ConfigureRefreshScheduleDialog_4, 20);
-		repeatEvery.addSelectionListener(new SelectionListener() {
+		repeatEvery.addSelectionListener(new SelectionListener() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				updateEnablements();
@@ -151,12 +151,12 @@ public class ConfigureSynchronizeScheduleComposite extends Composite {
 		gridData = new GridData();
 		gridData.widthHint = 35;
 		timeInterval.setLayoutData(gridData);
-		timeInterval.addModifyListener(unused -> updateEnablements());
-		timeInterval.addVerifyListener(e -> {
+		timeInterval.addModifyListener(unused -> updateEnablements()); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
+		timeInterval.addVerifyListener(e -> { //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 			String string = e.text;
 			char[] chars = new char[string.length()];
 			string.getChars(0, chars.length, chars, 0);
-			for (char element : chars) {
+			for (char element : chars) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!('0' <= element && element <= '9')) {
 					e.doit = false;
 					return;
@@ -179,7 +179,7 @@ public class ConfigureSynchronizeScheduleComposite extends Composite {
 		updateEnablements();
 	}
 
-	public void saveValues() {
+	public void saveValues() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (enableBackgroundRefresh.getSelection()) {
 
 			// start time
@@ -222,7 +222,7 @@ public class ConfigureSynchronizeScheduleComposite extends Composite {
 		schedule.getRefreshable().setRefreshSchedule(schedule);
 	}
 
-	public void updateEnablements() {
+	public void updateEnablements() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!enableBackgroundRefresh.getSelection()) {
 			validator.setComplete(null);
 		} else {

@@ -51,7 +51,7 @@ public class Bug_266907 {
 	static SessionTestExtension sessionTestExtension = SessionTestExtension.forPlugin(PI_RESOURCES_TESTS)
 			.withCustomization(SessionTestExtension.createCustomWorkspace()).create();
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(1)
 	public void test1CreateProjectAndDeleteProjectFile() throws Exception {
 		// Ensure that no asynchronous save job restores the .project file after
@@ -80,7 +80,7 @@ public class Bug_266907 {
 		Files.delete(dotProject);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(2)
 	public void test2RestoreWorkspaceFile() throws Exception {
 		final IWorkspace workspace = getWorkspace();

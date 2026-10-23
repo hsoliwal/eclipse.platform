@@ -78,7 +78,7 @@ public class LaunchTests {
 	private Runnable writeDebugTargetsTask;
 	private TestInfo testInfo;
 
-	@BeforeEach
+	@BeforeEach //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setUp(TestInfo testInfo) throws Exception {
 		this.testInfo = testInfo;
 		final Launch launch = new Launch(null, ILaunchManager.RUN_MODE, null);
@@ -154,7 +154,7 @@ public class LaunchTests {
 		assertTrue(testExecution(readIsDisconnectedTask, writeProcessesTask));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProcessLaunchWithLongWorkingDirectory(@TempDir Path tempDir) throws CoreException, IOException {
 		assumeTrue(Platform.OS.isWindows());
 
@@ -162,7 +162,7 @@ public class LaunchTests {
 		String subPathElementsName = "subfolder-with-relatively-long-name";
 		Path folder = tempDir;
 		int segmentsToWrite = (LONG_PATH_LENGTH_TARGET - rootLength) / subPathElementsName.length();
-		for (int i = 0; i < segmentsToWrite; i++) {
+		for (int i = 0; i < segmentsToWrite; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			folder = folder.resolve(subPathElementsName);
 		}
 		File workingDirectory = Files.createDirectories(folder).toFile();
@@ -174,7 +174,7 @@ public class LaunchTests {
 		startProcessAndAssertOutputContains(List.of("java", "--version"), workingDirectory, true, "jdk");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProcessLaunchWithLongExecutablePath(@TempDir Path tempDir) throws CoreException, IOException {
 		assumeTrue(Platform.OS.isWindows());
 
@@ -182,7 +182,7 @@ public class LaunchTests {
 		String subPathElementsName = "another-one-with-a-long-path-name-2";
 		Path folder = tempDir;
 		int segmentsToWrite = (LONG_PATH_LENGTH_TARGET - rootLength) / subPathElementsName.length();
-		for (int i = 0; i < segmentsToWrite; i++) {
+		for (int i = 0; i < segmentsToWrite; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			folder = folder.resolve(subPathElementsName);
 		}
 		File workingDirectory = Files.createDirectories(folder).toFile();
@@ -208,7 +208,7 @@ public class LaunchTests {
 		assertThat(output.toLowerCase(Locale.ENGLISH)).contains(expectedOutput);
 	}
 
-	private boolean testExecution(final Runnable readTask, final Runnable writeTask) {
+	private boolean testExecution(final Runnable readTask, final Runnable writeTask) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/*
 		 * Normally 10 times trial is sufficient to reproduce concurrent
 		 * modification error, but 2000 is chosen for better stability of test.
@@ -221,11 +221,11 @@ public class LaunchTests {
 
 		Job job = new Job("modify debug target") { //$NON-NLS-1$
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			protected IStatus run(IProgressMonitor monitor) {
 				try {
 					semaphore.acquire();
-					for (int i = 0; i < maxTrialCount; i++) {
+					for (int i = 0; i < maxTrialCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (monitor.isCanceled()) {
 							return Status.CANCEL_STATUS;
 						}
@@ -246,7 +246,7 @@ public class LaunchTests {
 		semaphore.release();
 
 		try {
-			while (runs.get() < maxTrialCount) {
+			while (runs.get() < maxTrialCount) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// try to read launch data
 				readTask.run();
 
@@ -256,7 +256,7 @@ public class LaunchTests {
 				}
 			}
 		} finally {
-			System.out.println(testInfo.getDisplayName() + " runs: " + runs); //$NON-NLS-1$
+			System.out.println(testInfo.getDisplayName() + " runs: " + runs); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			job.cancel();
 		}
 

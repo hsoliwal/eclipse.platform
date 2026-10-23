@@ -50,7 +50,7 @@ public class AntEditorTests {
 		assertNotNull(hoverText, "Expecting a hovertext object"); //$NON-NLS-1$
 		String correctResultRegEx = "<html><body text=\"#.*\" bgcolor=\"#.*\"><h5>Path Elements:</h5><ul><li>.*</html>"; //$NON-NLS-1$
 		assertTrue(hoverText.matches(correctResultRegEx),
-				"Expected the following hover text to match regex: " + correctResultRegEx); //$NON-NLS-1$
+				"Expected the following hover text to match regex: " + correctResultRegEx); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Test
@@ -64,7 +64,7 @@ public class AntEditorTests {
 		assertNotNull(hoverText, "Expecting a hovertext object"); //$NON-NLS-1$
 		String correctResult = "<p>value with spaces</body></html>"; //$NON-NLS-1$
 		assertTrue(hoverText.endsWith(correctResult),
-				"Expected the following hover text to end with: " + correctResult); //$NON-NLS-1$
+				"Expected the following hover text to end with: " + correctResult); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class AntEditorTests {
 		assertNotNull(hoverText, "Expecting a hovertext object"); //$NON-NLS-1$
 		String correctResult = "<h5>Includes:</h5><li>*.xml</li><p><p><h5>Excludes:</h5><li>**/*Test*</li></body></html>"; //$NON-NLS-1$
 		assertTrue(hoverText.endsWith(correctResult),
-				"Expected the following hover text to end with: " + correctResult + "was: " + hoverText); //$NON-NLS-1$ //$NON-NLS-2$
+				"Expected the following hover text to end with: " + correctResult + "was: " + hoverText); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Test
@@ -102,12 +102,12 @@ public class AntEditorTests {
 		IRegion region = hover.getHoverRegion(editor.getViewer(), offset);
 		String hoverText = hover.getHoverInfo(editor.getViewer(), region);
 		assertNotNull(hoverText, "Expecting a hovertext object"); //$NON-NLS-1$
-		String correctResult = "Ant UI Tests" + File.separatorChar + "buildfiles" + File.separatorChar + "nothere not found."; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String correctResult = "Ant UI Tests" + File.separatorChar + "buildfiles" + File.separatorChar + "nothere not found."; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertTrue(hoverText.endsWith(correctResult),
-				"Expected the following hover text to ends with: " + correctResult); //$NON-NLS-1$
+				"Expected the following hover text to ends with: " + correctResult); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileSetHover() throws PartInitException, BadLocationException {
 		IFile file = getIFile("refid.xml"); //$NON-NLS-1$
 		AntEditor editor = (AntEditor) EditorTestHelper.openInEditor(file, "org.eclipse.ant.ui.internal.editor.AntEditor", true); //$NON-NLS-1$
@@ -120,15 +120,15 @@ public class AntEditorTests {
 				"Expected to see '<h5>Includes:</h5><li>include</li>'"); //$NON-NLS-1$
 		assertTrue(hoverText.contains("<h5>Excludes:</h5><li>exclude</li>"), //$NON-NLS-1$
 				"Expected to see '<h5>Excludes:</h5><li>exclude</li>'"); //$NON-NLS-1$
-		String text = "<li>**" + File.separator + "SCCS" + File.separator + "**</li>"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		String text = "<li>**" + File.separator + "SCCS" + File.separator + "**</li>"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertTrue(hoverText.contains(text), "Expected to see '<li>**/SCCS/**</li>'"); //$NON-NLS-1$
-		text = "<li>**" + File.separator + ".DS_Store</li>"; //$NON-NLS-1$ //$NON-NLS-2$
+		text = "<li>**" + File.separator + ".DS_Store</li>"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertTrue(hoverText.contains(text), "Expected to see '<li>**/.DS_Store</li>'"); //$NON-NLS-1$
-		text = "<li>**" + File.separator + ".bzrignore</li>"; //$NON-NLS-1$ //$NON-NLS-2$
+		text = "<li>**" + File.separator + ".bzrignore</li>"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertTrue(hoverText.contains(text), "Expected to see '<li>**/.bzrignore</li>'"); //$NON-NLS-1$
-		text = "<li>**" + File.separator + ".gitattributes</li>"; //$NON-NLS-1$ //$NON-NLS-2$
+		text = "<li>**" + File.separator + ".gitattributes</li>"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertTrue(hoverText.contains(text), "Expected to see '<li>**/.gitattributes</li>'"); //$NON-NLS-1$
-		text = "<li>**" + File.separator + ".hgtags</li>"; //$NON-NLS-1$ //$NON-NLS-2$
+		text = "<li>**" + File.separator + ".hgtags</li>"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertTrue(hoverText.contains(text), "Expected to see '<li>**/.hgtags</li>'"); //$NON-NLS-1$
 	}
 
@@ -325,7 +325,7 @@ public class AntEditorTests {
 		IDocument doc = editor.getDocumentProvider().getDocument(editor.getEditorInput());
 		String text = doc.get(region.getOffset(), region.getLength());
 		assertTrue(region.getLength() == 7 && "compile".equals(text), //$NON-NLS-1$
-				"Region incorrect. Expected length of 7 and text of \"compile\", length was " + region.getLength() //$NON-NLS-1$
+				"Region incorrect. Expected length of 7 and text of \"compile\", length was " + region.getLength() //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						+ " and text was " + text); //$NON-NLS-1$
 	}
 
@@ -339,7 +339,7 @@ public class AntEditorTests {
 		assertNotNull(doc, "Should have a document"); //$NON-NLS-1$
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testOpenImportViaClasspath() throws PartInitException {
 		IFile file = getIFile("importViaClasspath.xml"); //$NON-NLS-1$
 		AntEditor editor = (AntEditor) EditorTestHelper.openInEditor(file, "org.eclipse.ant.ui.internal.editor.AntEditor", true); //$NON-NLS-1$

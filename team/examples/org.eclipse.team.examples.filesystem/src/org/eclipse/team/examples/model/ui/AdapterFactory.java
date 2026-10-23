@@ -33,7 +33,7 @@ public class AdapterFactory implements IAdapterFactory {
 	private CompareAdapter compareAdapter;
 	private static Object historyPageSource = new FileSystemHistoryPageSource();
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 		if (adapterType == IWorkbenchAdapter.class && adaptableObject instanceof ModelObject)
 			return adapterType.cast(modelAdapter);

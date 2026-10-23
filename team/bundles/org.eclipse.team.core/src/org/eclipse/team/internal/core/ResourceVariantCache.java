@@ -38,7 +38,7 @@ public class ResourceVariantCache {
 	private static final long CACHE_FILE_LIFESPAN = 60*60*1000; // 1hr
 
 	// Map of registered caches indexed by local name of a QualifiedName
-	private static Map<String, ResourceVariantCache> caches = new HashMap<>(); // String (local name) > RemoteContentsCache
+	private static Map<String, ResourceVariantCache> caches = new HashMap<>(); // String (local name) > RemoteContentsCache //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	private final String name;
 	private Map<String, ResourceVariantCacheEntry> cacheEntries;
@@ -100,7 +100,7 @@ public class ResourceVariantCache {
 
 	public static synchronized void shutdown() {
 		String[] keys = caches.keySet().toArray(new String[caches.size()]);
-		for (String id : keys) {
+		for (String id : keys) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			disableCache(id);
 		}
 	}
@@ -131,14 +131,14 @@ public class ResourceVariantCache {
 		if ((lastCacheCleanup!=-1) && (current - lastCacheCleanup < CACHE_FILE_LIFESPAN)) {
 			return;
 		}
-		List<ResourceVariantCacheEntry> stale = new ArrayList<>();
-		for (ResourceVariantCacheEntry entry : cacheEntries.values()) {
+		List<ResourceVariantCacheEntry> stale = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ResourceVariantCacheEntry entry : cacheEntries.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			long lastHit = entry.getLastAccessTimeStamp();
 			if ((current - lastHit) > CACHE_FILE_LIFESPAN){
 				stale.add(entry);
 			}
 		}
-		for (ResourceVariantCacheEntry entry : stale) {
+		for (ResourceVariantCacheEntry entry : stale) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			entry.dispose();
 		}
 	}
@@ -155,7 +155,7 @@ public class ResourceVariantCache {
 		cacheEntries.remove(id);
 	}
 
-	private synchronized void createCacheDirectory() {
+	private synchronized void createCacheDirectory() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath cacheLocation = getCachePath();
 		File file = cacheLocation.toFile();
 		if (file.exists()) {
@@ -172,7 +172,7 @@ public class ResourceVariantCache {
 		if (! file.exists() && ! file.mkdirs()) {
 			TeamPlugin.log(new TeamException(NLS.bind(Messages.RemoteContentsCache_fileError, file.getAbsolutePath())));
 		}
-		cacheEntries = new HashMap<>();
+		cacheEntries = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		lastCacheCleanup = -1;
 		cacheDirSize = 0;
 	}
@@ -199,7 +199,7 @@ public class ResourceVariantCache {
 			if(children == null) {
 				throw new TeamException(NLS.bind(Messages.RemoteContentsCache_fileError, file.getAbsolutePath()));
 			}
-			for (File f : children) {
+			for (File f : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				deleteFile(f);
 			}
 		}

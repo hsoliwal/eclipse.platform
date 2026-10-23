@@ -67,8 +67,8 @@ public class AntTasksPage extends AntPage {
 
 	private AddCustomDialog getCustomDialog(String title, String helpContext) {
 		Iterator<Object> tasks = getContents(true).iterator();
-		List<String> names = new ArrayList<>();
-		while (tasks.hasNext()) {
+		List<String> names = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		while (tasks.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Task task = (Task) tasks.next();
 			names.add(task.getTaskName());
 		}

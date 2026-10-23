@@ -54,7 +54,7 @@ public class MidiAdapterFactory implements IAdapterFactory {
 
 	private static IModelProxyFactory fgCheckboxModelProxyFactory = new CheckboxModelProxyFactory();
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Override
 	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 		if (IElementContentProvider.class.equals(adapterType)) {

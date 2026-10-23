@@ -63,8 +63,8 @@ public class RootResourceSynchronizationScope extends AbstractResourceMappingSco
 
 	@Override
 	public ResourceMapping[] getMappings() {
-		List<ResourceMapping> result = new ArrayList<>();
-		for (IResource resource : roots) {
+		List<ResourceMapping> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IResource resource : roots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object o = resource.getAdapter(ResourceMapping.class);
 			if (o instanceof ResourceMapping) {
 				result.add((ResourceMapping) o);

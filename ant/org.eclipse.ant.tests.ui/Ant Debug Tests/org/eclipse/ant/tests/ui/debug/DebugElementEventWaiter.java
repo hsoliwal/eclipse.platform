@@ -20,7 +20,7 @@ import org.eclipse.debug.core.DebugEvent;
  * Waits for an event on a specific element
  */
 
-public class DebugElementEventWaiter extends DebugEventWaiter {
+public class DebugElementEventWaiter extends DebugEventWaiter { //FLLDCIM: MARK — T27  IMPLEMENTS
 
 	protected Object fElement;
 

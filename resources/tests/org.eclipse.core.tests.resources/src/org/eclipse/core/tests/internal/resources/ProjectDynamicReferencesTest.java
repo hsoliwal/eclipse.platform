@@ -69,7 +69,7 @@ public class ProjectDynamicReferencesTest {
 		DynamicReferenceProvider.clear();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testReferencedProjects() throws CoreException {
 		assertThat(project0.getReferencedProjects()).as("referenced projects of Project0").isEmpty();
 		assertThat(project1.getReferencedProjects()).as("referenced projects of Project1").isEmpty();
@@ -113,7 +113,7 @@ public class ProjectDynamicReferencesTest {
 		assertThat(project2.getReferencedProjects()).as("referenced projects of Project2").isEmpty();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testReferencedBuildConfigs() throws CoreException {
 		assertThat(project0.getReferencedBuildConfigs(IBuildConfiguration.DEFAULT_CONFIG_NAME, false))
 				.as("referenced build configs of Project0").isEmpty();
@@ -139,7 +139,7 @@ public class ProjectDynamicReferencesTest {
 				.as("referenced build configs of Project2").isEmpty();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testReferencingProjects() throws CoreException {
 		assertThat(project0.getReferencingProjects()).as("referencing projects of Project0").isEmpty();
 		assertThat(project1.getReferencingProjects()).as("referencing projects of Project1").isEmpty();
@@ -183,7 +183,7 @@ public class ProjectDynamicReferencesTest {
 				project1);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testComputeProjectOrder() throws CoreException {
 		IProject[] allProjects = new IProject[] { project0, project1, project2 };
 
@@ -251,7 +251,7 @@ public class ProjectDynamicReferencesTest {
 
 	public static final class DynamicReferenceProvider implements IDynamicReferenceProvider
 	{
-		private static final Map<IProject, List<IProject>> dependentProjects = new HashMap<>();
+		private static final Map<IProject, List<IProject>> dependentProjects = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 		@Override
 		public List<IProject> getDependentProjects(IBuildConfiguration buildConfiguration) throws CoreException {
@@ -264,7 +264,7 @@ public class ProjectDynamicReferencesTest {
 		}
 
 		public static void addReference(IProject project, IProject dependentProject) {
-			List<IProject> depProjects = dependentProjects.computeIfAbsent(project, unused -> new ArrayList<>());
+			List<IProject> depProjects = dependentProjects.computeIfAbsent(project, unused -> new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			depProjects.add(dependentProject);
 		}
 

@@ -40,7 +40,7 @@ public class MemoryViewSamplePlugin extends AbstractUIPlugin {
 	private ResourceBundle resourceBundle;
 
 	private final static String ICONS_PATH = "icons/full/";//$NON-NLS-1$
-	private final static String PATH_OBJECT = ICONS_PATH + "obj16/"; //Model object icons //$NON-NLS-1$
+	private final static String PATH_OBJECT = ICONS_PATH + "obj16/"; //Model object icons //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	public final static String IMG_OBJ_HEX_TREE = "IMB_OBJ_HEX_TREE"; //$NON-NLS-1$
 	public final static String IMG_OBJ_MEMORY_SEGMENT = "IMG_OBJ_MEMORY_SEGMENT"; //$NON-NLS-1$
@@ -104,9 +104,9 @@ public class MemoryViewSamplePlugin extends AbstractUIPlugin {
 
 	@Override
 	protected void initializeImageRegistry(ImageRegistry reg) {
-		declareImage(IMG_OBJ_HEX_TREE, PATH_OBJECT + "hex_tree.gif"); //$NON-NLS-1$
-		declareImage(IMG_OBJ_MEMORY_SEGMENT, PATH_OBJECT + "memory_segment.gif"); //$NON-NLS-1$
-		declareImage(IMG_OBJ_MEMORY_UNIT, PATH_OBJECT + "memory_unit.gif"); //$NON-NLS-1$
+		declareImage(IMG_OBJ_HEX_TREE, PATH_OBJECT + "hex_tree.gif"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareImage(IMG_OBJ_MEMORY_SEGMENT, PATH_OBJECT + "memory_segment.gif"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareImage(IMG_OBJ_MEMORY_UNIT, PATH_OBJECT + "memory_unit.gif"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**

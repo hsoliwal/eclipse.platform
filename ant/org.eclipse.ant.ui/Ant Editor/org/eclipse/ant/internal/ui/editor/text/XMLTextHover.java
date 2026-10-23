@@ -63,7 +63,7 @@ public class XMLTextHover implements ITextHover, ITextHoverExtension, IInformati
 	 * Formats a message as HTML text. Expects the message to already be properly escaped
 	 */
 	private String formatMessage(String message) {
-		StringBuilder buffer = new StringBuilder();
+		StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		HTMLPrinter.addPageProlog(buffer);
 		HTMLPrinter.addParagraph(buffer, message);
 		HTMLPrinter.addPageEpilog(buffer);
@@ -74,11 +74,11 @@ public class XMLTextHover implements ITextHover, ITextHoverExtension, IInformati
 	 * Formats a message as HTML text.
 	 */
 	private String formatPathMessage(String[] list) {
-		StringBuilder buffer = new StringBuilder();
+		StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		HTMLPrinter.addPageProlog(buffer);
 		HTMLPrinter.addSmallHeader(buffer, AntEditorTextMessages.XMLTextHover_4);
 		HTMLPrinter.startBulletList(buffer);
-		for (String element : list) {
+		for (String element : list) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			HTMLPrinter.addBullet(buffer, element);
 		}
 		HTMLPrinter.endBulletList(buffer);
@@ -86,7 +86,7 @@ public class XMLTextHover implements ITextHover, ITextHoverExtension, IInformati
 		return buffer.toString();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String getHoverInfo(ITextViewer textViewer, IRegion hoverRegion) {
 
 		if (!(textViewer instanceof ISourceViewer sourceViewer)) {
@@ -111,7 +111,7 @@ public class XMLTextHover implements ITextHover, ITextHoverExtension, IInformati
 
 	}
 
-	private String getAntModelHoverMessage(AntModel antModel, IRegion hoverRegion, ITextViewer textViewer) {
+	private String getAntModelHoverMessage(AntModel antModel, IRegion hoverRegion, ITextViewer textViewer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			IDocument document = textViewer.getDocument();
 			int offset = hoverRegion.getOffset();
@@ -159,7 +159,7 @@ public class XMLTextHover implements ITextHover, ITextHoverExtension, IInformati
 
 	private String getAnnotationModelHoverMessage(IAnnotationModel model, IRegion hoverRegion) {
 		Iterator<Annotation> e = model.getAnnotationIterator();
-		while (e.hasNext()) {
+		while (e.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Annotation a = e.next();
 			if (a instanceof XMLProblemAnnotation) {
 				Position p = model.getPosition(a);
@@ -192,12 +192,12 @@ public class XMLTextHover implements ITextHover, ITextHoverExtension, IInformati
 		return formatSetMessage(includes, excludes);
 	}
 
-	private String formatSetMessage(String[] includes, String[] excludes) {
-		StringBuilder buffer = new StringBuilder();
+	private String formatSetMessage(String[] includes, String[] excludes) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		HTMLPrinter.addPageProlog(buffer);
 		if (includes != null && includes.length > 0) {
 			HTMLPrinter.addSmallHeader(buffer, AntEditorTextMessages.XMLTextHover_5);
-			for (String include : includes) {
+			for (String include : includes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				HTMLPrinter.addBullet(buffer, include);
 			}
 		}
@@ -205,7 +205,7 @@ public class XMLTextHover implements ITextHover, ITextHoverExtension, IInformati
 		HTMLPrinter.addParagraph(buffer, IAntCoreConstants.EMPTY_STRING);
 		if (excludes != null && excludes.length > 0) {
 			HTMLPrinter.addSmallHeader(buffer, AntEditorTextMessages.XMLTextHover_6);
-			for (String exclude : excludes) {
+			for (String exclude : excludes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				HTMLPrinter.addBullet(buffer, exclude);
 			}
 		}
@@ -221,7 +221,7 @@ public class XMLTextHover implements ITextHover, ITextHoverExtension, IInformati
 		return null;
 	}
 
-	public static IRegion getRegion(ITextViewer textViewer, int offset) {
+	public static IRegion getRegion(ITextViewer textViewer, int offset) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IDocument document = textViewer.getDocument();
 
 		int start = -1;
@@ -234,7 +234,7 @@ public class XMLTextHover implements ITextHover, ITextHoverExtension, IInformati
 			if (document.getChar(pos) == '"') {
 				pos--;
 			}
-			while (pos >= 0) {
+			while (pos >= 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				c = document.getChar(pos);
 				if (c != '.' && c != '-' && c != '/' && c != '\\' && c != ' ' && c != ')' && c != '(' && c != ':'
 						&& !Character.isJavaIdentifierPart(c) && pos != offset) {
@@ -248,7 +248,7 @@ public class XMLTextHover implements ITextHover, ITextHoverExtension, IInformati
 			pos = offset;
 			int length = document.getLength();
 
-			while (pos < length) {
+			while (pos < length) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				c = document.getChar(pos);
 				if (c != '.' && c != '-' && c != '/' && c != '\\' && c != ' ' && c != ')' && c != '(' && c != ':'
 						&& !Character.isJavaIdentifierPart(c)) {
@@ -275,10 +275,10 @@ public class XMLTextHover implements ITextHover, ITextHoverExtension, IInformati
 				return new Region(start, end - start);
 			} else {
 				try { // correct for spaces at beginning or end
-					while (document.getChar(start + 1) == ' ') {
+					while (document.getChar(start + 1) == ' ') { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						start++;
 					}
-					while (document.getChar(end - 1) == ' ') {
+					while (document.getChar(end - 1) == ' ') { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						end--;
 					}
 				}
@@ -308,7 +308,7 @@ public class XMLTextHover implements ITextHover, ITextHoverExtension, IInformati
 		return region;
 	}
 
-	private static IRegion cleanRegionForNonProperty(int offset, IDocument document, IRegion region) throws BadLocationException {
+	private static IRegion cleanRegionForNonProperty(int offset, IDocument document, IRegion region) throws BadLocationException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// do not allow spaces in region that is not a property
 		IRegion r = region;
 		String text = document.get(r.getOffset(), r.getLength());
@@ -318,7 +318,7 @@ public class XMLTextHover implements ITextHover, ITextHoverExtension, IInformati
 		}
 		StringTokenizer tokenizer = new StringTokenizer(text, " "); //$NON-NLS-1$
 		if (tokenizer.countTokens() != 1) {
-			while (tokenizer.hasMoreTokens()) {
+			while (tokenizer.hasMoreTokens()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String token = tokenizer.nextToken();
 				int index = text.indexOf(token);
 				if (r.getOffset() + index <= offset && r.getOffset() + index + token.length() >= offset) {

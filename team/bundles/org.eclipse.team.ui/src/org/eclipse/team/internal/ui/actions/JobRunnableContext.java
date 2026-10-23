@@ -72,7 +72,7 @@ public class JobRunnableContext implements ITeamRunnableContext {
 	/*
 	 * Class that provides a resource job (i.e. resource specific interactions)
 	 */
-	private class ResourceJob extends WorkspaceJob implements IContextJob {
+	private class ResourceJob extends WorkspaceJob implements IContextJob { //FLLDCIM: MARK — T09  IMPLEMENTS
 		private final IRunnableWithProgress runnable;
 		public ResourceJob(String name, IRunnableWithProgress runnable) {
 			super(name);

@@ -70,7 +70,7 @@ public class InternalFileSystemCore implements IRegistryChangeListener {
 	 * @return The file system
 	 * @throws CoreException on filesystem related errors
 	 */
-	public IFileSystem getFileSystem(String scheme) throws CoreException {
+	public IFileSystem getFileSystem(String scheme) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (scheme == null) {
 			throw new NullPointerException();
 		}
@@ -126,7 +126,7 @@ public class InternalFileSystemCore implements IRegistryChangeListener {
 	public IFileStore getStore(URI uri) throws CoreException {
 		final String scheme = uri.getScheme();
 		if (scheme == null) {
-			Policy.error(EFS.ERROR_INTERNAL, Messages.noScheme + uri);
+			Policy.error(EFS.ERROR_INTERNAL, Messages.noScheme + uri); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return getFileSystem(scheme).getStore(uri);
 	}
@@ -135,14 +135,14 @@ public class InternalFileSystemCore implements IRegistryChangeListener {
 	 * Returns the fully initialized file system registry
 	 * @return The file system registry
 	 */
-	private synchronized ConcurrentMap<String, Object> getFileSystemRegistry() {
+	private synchronized ConcurrentMap<String, Object> getFileSystemRegistry() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fileSystems == null) {
 			fileSystems = new ConcurrentHashMap<>();
 			IExtensionPoint point = RegistryFactory.getRegistry().getExtensionPoint(EFS.PI_FILE_SYSTEM, EFS.PT_FILE_SYSTEMS);
 			IExtension[] extensions = point.getExtensions();
-			for (IExtension extension : extensions) {
+			for (IExtension extension : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IConfigurationElement[] elements = extension.getConfigurationElements();
-				for (IConfigurationElement element : elements) {
+				for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if ("filesystem".equals(element.getName())) { //$NON-NLS-1$
 						String scheme = element.getAttribute("scheme"); //$NON-NLS-1$
 						if (scheme != null) {

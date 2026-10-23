@@ -42,7 +42,7 @@ import org.eclipse.debug.core.model.IProcess;
  * Parts adapted from org.eclipse.jdt.internal.junit.ui.RemoteTestRunnerClient The client side of the RemoteAntBuildLogger. Handles the marshaling of
  * the different messages.
  */
-public class RemoteAntBuildListener implements ILaunchesListener {
+public class RemoteAntBuildListener implements ILaunchesListener { //FLLDCIM: MARK — T27  IMPLEMENTS
 	public abstract static class ListenerSafeRunnable implements ISafeRunnable {
 		@Override
 		public void handleException(Throwable exception) {
@@ -82,7 +82,7 @@ public class RemoteAntBuildListener implements ILaunchesListener {
 			fServerPort = port;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void run() {
 			try {
 				fServerSocket = new ServerSocket(fServerPort);
@@ -93,7 +93,7 @@ public class RemoteAntBuildListener implements ILaunchesListener {
 				// See https://bugs.eclipse.org/bugs/show_bug.cgi?id=414516
 				// the launch can be terminated but we haven't been notified yet
 				String message;
-				while (fLaunch != null && !fLaunch.isTerminated() && fBufferedReader != null && (message = fBufferedReader.readLine()) != null) {
+				while (fLaunch != null && !fLaunch.isTerminated() && fBufferedReader != null && (message = fBufferedReader.readLine()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					receiveMessage(message);
 				}
 			}
@@ -146,7 +146,7 @@ public class RemoteAntBuildListener implements ILaunchesListener {
 		connection.start();
 	}
 
-	protected synchronized void shutDown() {
+	protected synchronized void shutDown() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fLaunch = null;
 		if (DebugPlugin.getDefault() != null) {
 			DebugPlugin.getDefault().getLaunchManager().removeLaunchListener(this);
@@ -180,7 +180,7 @@ public class RemoteAntBuildListener implements ILaunchesListener {
 		}
 	}
 
-	protected void receiveMessage(String message) {
+	protected void receiveMessage(String message) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (message.startsWith(MessageIds.TASK)) {
 			receiveTaskMessage(message);
 		} else if (message.startsWith(MessageIds.TARGET)) {
@@ -192,7 +192,7 @@ public class RemoteAntBuildListener implements ILaunchesListener {
 			if (index > 0) {
 				int priority = Integer.parseInt(message.substring(0, index));
 				String msg = message.substring(index + 1);
-				writeMessage(msg + System.lineSeparator(), priority);
+				writeMessage(msg + System.lineSeparator(), priority); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				if (msg.startsWith("BUILD FAILED")) { //$NON-NLS-1$
 					fBuildFailed = true;
 				} else if (fBuildFailed) {
@@ -214,7 +214,7 @@ public class RemoteAntBuildListener implements ILaunchesListener {
 		if (tokenizer.hasMoreTokens()) {
 			int locationLength = Integer.parseInt(tokenizer.nextToken());
 			String location = tokenizer.nextToken();
-			while (location.length() < locationLength) { // path with a comma in
+			while (location.length() < locationLength) { // path with a comma in //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// it
 				location += ","; //$NON-NLS-1$
 				location += tokenizer.nextToken();
@@ -222,10 +222,10 @@ public class RemoteAntBuildListener implements ILaunchesListener {
 			int lineNumber = Integer.parseInt(tokenizer.nextToken());
 			generateLink(msg, location, lineNumber, 0, msg.length() - 1);
 		}
-		writeMessage(msg + System.lineSeparator(), Project.MSG_INFO);
+		writeMessage(msg + System.lineSeparator(), Project.MSG_INFO); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	private void receiveTaskMessage(String message) {
+	private void receiveTaskMessage(String message) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String msg = message.substring(MessageIds.TASK.length());
 		int index = msg.indexOf(',');
 		int priority = Integer.parseInt(msg.substring(0, index));
@@ -238,11 +238,11 @@ public class RemoteAntBuildListener implements ILaunchesListener {
 		int lineLength = Integer.parseInt(msg.substring(index2 + 1, index3));
 		int index4 = index3 + 1 + lineLength;
 		String line = msg.substring(index3 + 1, index4);
-		StringBuilder labelBuff = new StringBuilder();
-		labelBuff.append('[');
-		labelBuff.append(taskName);
-		labelBuff.append("] "); //$NON-NLS-1$
-		labelBuff.append(line);
+		StringBuilder labelBuff = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		labelBuff.append('['); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		labelBuff.append(taskName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		labelBuff.append("] "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		labelBuff.append(line); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		line = labelBuff.toString();
 
 		fLastTaskName = taskName;
@@ -284,7 +284,7 @@ public class RemoteAntBuildListener implements ILaunchesListener {
 	protected IProcess getProcess() {
 		if (fProcess == null) {
 			if (fProcessId != null) {
-				for (IProcess process : DebugPlugin.getDefault().getLaunchManager().getProcesses()) {
+				for (IProcess process : DebugPlugin.getDefault().getLaunchManager().getProcesses()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (fProcessId.equals(process.getAttribute(AbstractEclipseBuildLogger.ANT_PROCESS_ID))) {
 						fProcess = process;
 						break;
@@ -295,7 +295,7 @@ public class RemoteAntBuildListener implements ILaunchesListener {
 		return fProcess;
 	}
 
-	private AntStreamMonitor getMonitor(int priority) {
+	private AntStreamMonitor getMonitor(int priority) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IProcess process = getProcess();
 		if (process == null) {
 			return null;
@@ -344,7 +344,7 @@ public class RemoteAntBuildListener implements ILaunchesListener {
 		}
 
 		int size = AntLaunching.LEFT_COLUMN_SIZE - (tname.length() + 6);
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fullMessage.append(' ');
 		}
 
@@ -355,13 +355,13 @@ public class RemoteAntBuildListener implements ILaunchesListener {
 		AntStreamMonitor monitor = getMonitor(priority);
 		if (monitor == null) {
 			if (fMessageQueue == null) {
-				fMessageQueue = new ArrayList<>();
+				fMessageQueue = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			}
 			fMessageQueue.add(message);
 			return;
 		}
 		if (fMessageQueue != null) {
-			for (String oldMessage : fMessageQueue) {
+			for (String oldMessage : fMessageQueue) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				monitor.append(oldMessage);
 			}
 			fMessageQueue = null;
@@ -381,7 +381,7 @@ public class RemoteAntBuildListener implements ILaunchesListener {
 
 	@Override
 	public void launchesRemoved(ILaunch[] launches) {
-		for (ILaunch launch : launches) {
+		for (ILaunch launch : launches) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (launch.equals(fLaunch)) {
 				shutDown();
 				return;

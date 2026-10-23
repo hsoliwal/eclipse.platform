@@ -32,7 +32,7 @@ class TestAgainExtension implements TestExecutionExceptionHandler {
 	public void handleTestExecutionException(ExtensionContext context, Throwable throwable) throws Throwable {
 		printError(context, throwable);
 		context.getTestMethod().ifPresent(method -> {
-			while (counter.incrementAndGet() <= RETRY_COUNT) {
+			while (counter.incrementAndGet() <= RETRY_COUNT) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					context.getExecutableInvoker().invoke(method, context.getRequiredTestInstance());
 				} catch (TestAgainException t) {
@@ -46,7 +46,7 @@ class TestAgainExtension implements TestExecutionExceptionHandler {
 	}
 
 	private void printError(ExtensionContext context, Throwable e) {
-		String errorMessage = String.format("%s failed attempt %s. Re-testing.", //$NON-NLS-1$
+		String errorMessage = String.format("%s failed attempt %s. Re-testing.", //$NON-NLS-1$ //FLLDCIM: MARK — M11 FORMAT_PRECOMPUTE CALL
 				context.getDisplayName(), counter.get());
 		System.out.println(errorMessage);
 		e.printStackTrace();

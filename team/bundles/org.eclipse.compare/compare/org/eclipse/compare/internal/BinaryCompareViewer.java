@@ -48,7 +48,7 @@ public class BinaryCompareViewer extends AbstractViewer {
 	private final Label fMessage;
 	private final CompareConfiguration compareConfiguration;
 
-	public BinaryCompareViewer(Composite parent, final CompareConfiguration cc) {
+	public BinaryCompareViewer(Composite parent, final CompareConfiguration cc) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if(PlatformUI.isWorkbenchRunning()) {
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, ICompareContextIds.BINARY_COMPARE_VIEW);
@@ -77,7 +77,7 @@ public class BinaryCompareViewer extends AbstractViewer {
 		return fComposite;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setInput(Object input) {
 		if (fComposite != null && input instanceof ICompareInput) {
 			fInput= (ICompareInput) input;
@@ -88,7 +88,7 @@ public class BinaryCompareViewer extends AbstractViewer {
 
 				if (left != null && right != null) {
 					int pos= 0;
-					while (true) {
+					while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						int l= left.read();
 						int r= right.read();
 						if (l != r) {

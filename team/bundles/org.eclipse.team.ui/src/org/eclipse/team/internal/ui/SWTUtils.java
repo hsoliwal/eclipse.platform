@@ -59,7 +59,7 @@ public class SWTUtils {
 	public static Link createPreferenceLink(final Shell shell, Composite parent, final String pageId, final String[] displayIds, String message) {
 		Link link = new Link(parent, SWT.NONE);
 		link.setText(getLinkLabel(pageId, message));
-		link.addSelectionListener(new SelectionAdapter() {
+		link.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				PreferenceDialog prefDialog = PreferencesUtil.createPreferenceDialogOn(shell, pageId, displayIds, null);
@@ -84,7 +84,7 @@ public class SWTUtils {
 	 * @return IPreferenceNode
 	 */
 	private static IPreferenceNode getPreferenceNode(String pageId) {
-		for (IPreferenceNode next : PlatformUI.getWorkbench().getPreferenceManager()
+		for (IPreferenceNode next : PlatformUI.getWorkbench().getPreferenceManager() //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				.getElements(PreferenceManager.PRE_ORDER)) {
 			if (next.getId().equals(pageId)) {
 				return next;
@@ -203,7 +203,7 @@ public class SWTUtils {
 	 *                <code>MARGINS_NONE</code> or <code>MARGINS_DIALOG</code>.
 	 * @return the grid layout
 	 */
-	public static GridLayout createGridLayout(int numColumns, PixelConverter converter, int margins) {
+	public static GridLayout createGridLayout(int numColumns, PixelConverter converter, int margins) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final GridLayout layout= new GridLayout(numColumns, false);
 		layout.horizontalSpacing= converter.convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_SPACING);
 		layout.verticalSpacing= converter.convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_SPACING);
@@ -302,7 +302,7 @@ public class SWTUtils {
 
 	public static int calculateControlSize(PixelConverter converter, Control [] controls, int start, int end) {
 		int minimum= converter.convertHorizontalDLUsToPixels(IDialogConstants.BUTTON_WIDTH);
-		for (int i = start; i <= end; i++) {
+		for (int i = start; i <= end; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final int length= controls[i].computeSize(SWT.DEFAULT, SWT.DEFAULT).x;
 			if (minimum < length) {
 				minimum= length;
@@ -317,7 +317,7 @@ public class SWTUtils {
 
 	public static void equalizeControls(PixelConverter converter, Control [] controls, int start, int end) {
 		final int size= calculateControlSize(converter, controls, start, end);
-		for (int i = start; i <= end; i++) {
+		for (int i = start; i <= end; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final Control button= controls[i];
 			if (button.getLayoutData() instanceof GridData) {
 				((GridData)button.getLayoutData()).widthHint= size;
@@ -327,7 +327,7 @@ public class SWTUtils {
 
 	public static int getWidthInCharsForLongest(PixelConverter converter, String [] strings) {
 		int minimum= 0;
-		for (String string : strings) {
+		for (String string : strings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final int length = converter.convertWidthInCharsToPixels(string.length());
 			if (minimum < length) {
 				minimum= length;

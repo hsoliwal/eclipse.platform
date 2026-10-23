@@ -90,7 +90,7 @@ public abstract class LinuxFileNatives {
 			return EMPTY_STRING_ARRAY;
 		}
 		String[] names = new String[result.length];
-		for (int i = 0; i < result.length; i++) {
+		for (int i = 0; i < result.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			names[i] = Convert.fromPlatformBytes(result[i], result[i].length);
 		}
 		return names;
@@ -104,14 +104,14 @@ public abstract class LinuxFileNatives {
 		}
 		int count = stats.length;
 		IFileInfo[] infos = new IFileInfo[count];
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			var st = stats[i].toFileInfo();
 			infos[i] = st;
 		}
 		return infos;
 	}
 
-	public static FileInfo fetchFileInfo(String fileName) {
+	public static FileInfo fetchFileInfo(String fileName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		FileInfo info = null;
 		byte[] name = fileNameToBytes(fileName);
 		LinuxStructStat stat = new LinuxStructStat();
@@ -155,7 +155,7 @@ public abstract class LinuxFileNatives {
 		return info;
 	}
 
-	public static boolean putFileInfo(String fileName, IFileInfo info) {
+	public static boolean putFileInfo(String fileName, IFileInfo info) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int code = 0;
 		byte[] name = fileNameToBytes(fileName);
 		if (name == null) {

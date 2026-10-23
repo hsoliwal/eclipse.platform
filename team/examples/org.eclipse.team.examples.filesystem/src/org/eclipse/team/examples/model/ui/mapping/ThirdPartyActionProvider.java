@@ -72,28 +72,28 @@ public class ThirdPartyActionProvider extends CommonActionProvider {
 		return (ISynchronizationContext)getExtensionStateModel().getProperty(ITeamContentProviderManager.P_SYNCHRONIZATION_CONTEXT);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void init(ICommonActionExtensionSite aSite) {
 		super.init(aSite);
 		exampleAction = new Action("3rd Party Action") {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void run() {
-				StringBuilder buffer = new StringBuilder();
+				StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 				boolean addComma = false;
 				IStructuredSelection selection = (IStructuredSelection)getContext().getSelection();
 				ResourceMapping[] mappings = getResourceMappings(selection.toArray());
-				for (ResourceMapping mapping : mappings) {
+				for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					ISynchronizationCompareAdapter adapter = getCompareAdpater(mapping);
 					if (adapter != null) {
 						String name = adapter.getName(mapping);
 						if (addComma) {
-							buffer.append(", ");
+							buffer.append(", "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 						}
-						buffer.append(name);
+						buffer.append(name); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 						addComma = true;
 					}
 				}
-				MessageDialog.openInformation(getActionSite().getViewSite().getShell(), "Example Action", "You have executed a third party action on the selected elements: " + buffer.toString());
+				MessageDialog.openInformation(getActionSite().getViewSite().getShell(), "Example Action", "You have executed a third party action on the selected elements: " + buffer.toString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		};
 	}
@@ -118,8 +118,8 @@ public class ThirdPartyActionProvider extends CommonActionProvider {
 	}
 
 	private ResourceMapping[] getResourceMappings(Object[] objects) {
-		List<ResourceMapping> result = new ArrayList<>();
-		for (Object object : objects) {
+		List<ResourceMapping> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Object object : objects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceMapping mapping = getResourceMapping(object);
 			if (mapping != null)
 				result.add(mapping);
@@ -127,7 +127,7 @@ public class ThirdPartyActionProvider extends CommonActionProvider {
 		return result.toArray(new ResourceMapping[result.size()]);
 	}
 
-	private ResourceMapping getResourceMapping(Object o) {
+	private ResourceMapping getResourceMapping(Object o) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (o instanceof ResourceMapping) {
 			return (ResourceMapping) o;
 		}

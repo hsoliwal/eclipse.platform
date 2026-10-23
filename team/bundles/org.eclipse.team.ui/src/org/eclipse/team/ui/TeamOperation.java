@@ -55,7 +55,7 @@ import org.eclipse.ui.progress.IProgressConstants;
  * @see org.eclipse.core.runtime.jobs.IJobChangeListener
  * @since 3.0
  */
-public abstract class TeamOperation extends JobChangeAdapter implements IRunnableWithProgress {
+public abstract class TeamOperation extends JobChangeAdapter implements IRunnableWithProgress { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	private final IWorkbenchPart part;
 	private final IRunnableContext context;
@@ -331,7 +331,7 @@ public abstract class TeamOperation extends JobChangeAdapter implements IRunnabl
 	protected Shell getShell() {
 		final Shell[] shell = new Shell[] { null };
 		if (Display.getCurrent() == null) {
-			Display.getDefault().syncExec(() -> shell[0] = Utils.getShell(getSite()));
+			Display.getDefault().syncExec(() -> shell[0] = Utils.getShell(getSite())); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		} else {
 			shell[0] = Utils.getShell(getSite());
 		}

@@ -26,7 +26,7 @@ import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.IWorkingSetManager;
 import org.eclipse.ui.PlatformUI;
 
-public class ImportProjectSetOperation extends TeamOperation {
+public class ImportProjectSetOperation extends TeamOperation { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	private String psfFileContents;
 	private String urlString;
@@ -111,10 +111,10 @@ public class ImportProjectSetOperation extends TeamOperation {
 		return TeamUIMessages.ImportProjectSetMainPage_jobName;
 	}
 
-	private void createWorkingSet(IWorkingSet[] workingSets, IProject[] projects) {
+	private void createWorkingSet(IWorkingSet[] workingSets, IProject[] projects) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IWorkingSetManager manager = PlatformUI.getWorkbench().getWorkingSetManager();
 		String workingSetName;
-		for (IWorkingSet workingSet : workingSets) {
+		for (IWorkingSet workingSet : workingSets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			workingSetName = workingSet.getName();
 			IWorkingSet oldSet = manager.getWorkingSet(workingSetName);
 			if (oldSet == null) {

@@ -26,10 +26,10 @@ public class RemoteFileStore extends MemoryFileStore {
 	private static String createAuthoritySegment(String userInfo, String host, int port) {
 		String authority = host;
 		if (userInfo != null) {
-			authority = userInfo + "___" + authority;
+			authority = userInfo + "___" + authority; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		if (port != -1) {
-			authority += "___" + port;
+			authority += "___" + port; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return authority;
 	}

@@ -45,7 +45,7 @@ public class OptionTests extends AbstractAntTest {
 
 	static {
 		Version antVersion = Platform.getBundle("org.apache.ant").getVersion(); //$NON-NLS-1$
-		VERSION = "Apache Ant(TM) version " + antVersion.getMajor() + '.' + antVersion.getMinor() + '.' //$NON-NLS-1$
+		VERSION = "Apache Ant(TM) version " + antVersion.getMajor() + '.' + antVersion.getMinor() + '.' //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ antVersion.getMicro();
 		PLUGIN_VERSION = antVersion.toString();
 	}
@@ -160,11 +160,11 @@ public class OptionTests extends AbstractAntTest {
 
 		try (InputStream stream = file.getContents();
 				InputStreamReader in = new InputStreamReader(new BufferedInputStream(stream))) {
-			StringBuilder buffer = new StringBuilder();
+			StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 			char[] readBuffer = new char[2048];
 			int n = in.read(readBuffer);
-			while (n > 0) {
-				buffer.append(readBuffer, 0, n);
+			while (n > 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				buffer.append(readBuffer, 0, n); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				n = in.read(readBuffer);
 			}
 			assertThat(buffer.toString()).startsWith("Buildfile"); //$NON-NLS-1$

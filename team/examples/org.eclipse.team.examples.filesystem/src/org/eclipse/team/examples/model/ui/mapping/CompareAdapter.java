@@ -75,9 +75,9 @@ public class CompareAdapter extends SynchronizationCompareAdapter {
 
 	@Override
 	public ResourceMapping[] restore(IMemento memento) {
-		List<ResourceMapping> result = new ArrayList<>();
+		List<ResourceMapping> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IMemento[] children = memento.getChildren(CTX_MODEL_MAPPINGS);
-		for (IMemento child : children) {
+		for (IMemento child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceMapping mapping = restoreMapping(child);
 			if (mapping != null)
 				result.add(mapping);
@@ -87,7 +87,7 @@ public class CompareAdapter extends SynchronizationCompareAdapter {
 
 	@Override
 	public void save(ResourceMapping[] mappings, IMemento memento) {
-		for (ResourceMapping mapping : mappings) {
+		for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object o = mapping.getModelObject();
 			if (o instanceof ModelObject) {
 				ModelObject mo = (ModelObject) o;

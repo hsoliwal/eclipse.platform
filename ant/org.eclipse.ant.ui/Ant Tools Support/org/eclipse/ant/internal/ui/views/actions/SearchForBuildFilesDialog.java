@@ -59,7 +59,7 @@ public class SearchForBuildFilesDialog extends InputDialog {
 	/**
 	 * List of <code>IFile</code> objects that were found
 	 */
-	private List<IResource> results = new ArrayList<>();
+	private List<IResource> results = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	/**
 	 * List of <code>IResource</code> objects in which to search.
 	 *
@@ -144,7 +144,7 @@ public class SearchForBuildFilesDialog extends InputDialog {
 		return composite;
 	}
 
-	private void createScopeGroup(Composite composite, Font font) {
+	private void createScopeGroup(Composite composite, Font font) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Group scope = new Group(composite, SWT.NONE);
 		scope.setText(AntViewActionMessages.SearchForBuildFilesDialog_Scope_5);
 		GridData data = new GridData(GridData.FILL_BOTH);
@@ -169,12 +169,12 @@ public class SearchForBuildFilesDialog extends InputDialog {
 		workspaceScopeButton = new Button(radioComposite, SWT.RADIO);
 		workspaceScopeButton.setFont(font);
 		workspaceScopeButton.setText(AntViewActionMessages.SearchForBuildFilesDialog__Workspace_6);
-		workspaceScopeButton.addSelectionListener(selectionListener);
+		workspaceScopeButton.addSelectionListener(selectionListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 
 		workingSetScopeButton = new Button(radioComposite, SWT.RADIO);
 		workingSetScopeButton.setFont(font);
 		workingSetScopeButton.setText(AntViewActionMessages.SearchForBuildFilesDialog_Wor_king_Set__7);
-		workingSetScopeButton.addSelectionListener(selectionListener);
+		workingSetScopeButton.addSelectionListener(selectionListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 
 		selectRadioButton(workspaceScopeButton);
 
@@ -189,7 +189,7 @@ public class SearchForBuildFilesDialog extends InputDialog {
 		chooseButton.setLayoutData(data);
 		chooseButton.setFont(font);
 		chooseButton.setText(AntViewActionMessages.SearchForBuildFilesDialog__Choose____8);
-		chooseButton.addSelectionListener(new SelectionAdapter() {
+		chooseButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent evt) {
 				handleChooseButtonPressed();
@@ -296,15 +296,15 @@ public class SearchForBuildFilesDialog extends InputDialog {
 	 * @param set
 	 *            the working set scope for the search
 	 */
-	private void setWorkingSet(IWorkingSet set) {
+	private void setWorkingSet(IWorkingSet set) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (set == null) {
 			searchScopes = null;
 			workingSetText.setText(IAntCoreConstants.EMPTY_STRING);
 			validateInput();
 			return;
 		}
-		searchScopes = new ArrayList<>();
-		for (IAdaptable adaptable : set.getElements()) {
+		searchScopes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IAdaptable adaptable : set.getElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// Try to get an IResource object from each element
 			IResource resource = null;
 			if (adaptable instanceof IResource) {
@@ -346,14 +346,14 @@ public class SearchForBuildFilesDialog extends InputDialog {
 	/**
 	 * When the user presses the search button (tied to the OK id), search the workspace for files matching the regular expression in the input field.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void okPressed() {
 		String input = getInput();
 		settings.put(IAntUIPreferenceConstants.ANTVIEW_LAST_SEARCH_STRING, input);
 		settings.put(IAntUIPreferenceConstants.ANTVIEW_INCLUDE_ERROR_SEARCH_RESULTS, includeErrorResultButton.getSelection());
 		settings.put(IAntUIPreferenceConstants.ANTVIEW_LAST_WORKINGSET_SEARCH_SCOPE, getWorkingSetName());
 		settings.put(IAntUIPreferenceConstants.ANTVIEW_USE_WORKINGSET_SEARCH_SCOPE, workingSetScopeButton.getSelection());
-		results = new ArrayList<>(); // Clear previous results
+		results = new ArrayList<>(); // Clear previous results //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		ResourceProxyVisitor visitor = new ResourceProxyVisitor();
 		if (searchScopes == null || searchScopes.isEmpty()) {
 			try {
@@ -364,7 +364,7 @@ public class SearchForBuildFilesDialog extends InputDialog {
 			}
 		} else {
 			Iterator<IResource> iter = searchScopes.iterator();
-			while (iter.hasNext()) {
+			while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					iter.next().accept(visitor, IResource.NONE);
 				}
@@ -379,7 +379,7 @@ public class SearchForBuildFilesDialog extends InputDialog {
 	/**
 	 * Searches for files whose name matches the given regular expression.
 	 */
-	class ResourceProxyVisitor implements IResourceProxyVisitor {
+	class ResourceProxyVisitor implements IResourceProxyVisitor { //FLLDCIM: MARK — T07  IMPLEMENTS
 		Pattern pattern;
 
 		ResourceProxyVisitor() {
@@ -398,7 +398,7 @@ public class SearchForBuildFilesDialog extends InputDialog {
 		@Override
 		public boolean visit(IResourceProxy proxy) {
 			if (proxy.getType() == IResource.FILE) {
-				Matcher matcher = pattern.matcher(proxy.getName());
+				Matcher matcher = pattern.matcher(proxy.getName()); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 				if (matcher.find()) {
 					results.add(proxy.requestResource());
 				}

@@ -29,7 +29,7 @@ public class DebugTestModelPresentation extends LabelProvider implements IDebugM
 	@Override
 	public String getText(Object element) {
 		if (element instanceof TestBreakpoint) {
-			return "TestBreakpoint: " + ((TestBreakpoint) element).getText();
+			return "TestBreakpoint: " + ((TestBreakpoint) element).getText(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return super.getText(element);
 	}

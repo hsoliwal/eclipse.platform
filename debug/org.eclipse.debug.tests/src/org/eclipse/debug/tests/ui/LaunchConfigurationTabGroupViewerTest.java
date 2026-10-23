@@ -69,7 +69,7 @@ public class LaunchConfigurationTabGroupViewerTest {
 
 		final ILaunchConfigurationTab[] tabs = runOnDialog(createAndSelect1LaunchConfig);
 
-		for (ILaunchConfigurationTab tab : tabs) {
+		for (ILaunchConfigurationTab tab : tabs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThat(((SpyTab) tab)).matches(SpyTab::isInitializedExactlyOnce, "should have been initialized exactly once");
 		}
 	}
@@ -83,7 +83,7 @@ public class LaunchConfigurationTabGroupViewerTest {
 
 		final ILaunchConfigurationTab[] tabs = runOnDialog(createAndSelect1LaunchConfig);
 
-		for (ILaunchConfigurationTab tab : tabs) {
+		for (ILaunchConfigurationTab tab : tabs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThat(((SpyTab) tab)).matches(not(SpyTab::isDeactivated), "should NOT have been deactivated");
 		}
 	}
@@ -101,7 +101,7 @@ public class LaunchConfigurationTabGroupViewerTest {
 		assertThat(defaultTab).matches(not(SpyTab::isDeactivated), "should NOT have been deactivated");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testActivatingTabTwiceDoesNotDeactivateIt() {
 		int tabIndex = 1;
 
@@ -121,7 +121,7 @@ public class LaunchConfigurationTabGroupViewerTest {
 		assertThat(activeTab).matches(not(SpyTab::isDeactivated), "should NOT have been deactivated");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testOtherTabInOtherConfigIsActivated() {
 		int secondTabIndex = 1;
 
@@ -142,14 +142,14 @@ public class LaunchConfigurationTabGroupViewerTest {
 		assertThat(((SpyTab) tabs[0])).matches(not(SpyTab::isActivated), "should not have been activated");
 
 		// No tab should have been deactivated in the 2nd configuration
-		for (ILaunchConfigurationTab tab : tabs) {
+		for (ILaunchConfigurationTab tab : tabs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThat(((SpyTab) tab)).matches(not(SpyTab::isDeactivated), "should not have been deactivated");
 		}
 
 		assertThat(((SpyTab) tabs[secondTabIndex])).matches(SpyTab::isActivated, "should have been activated");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testOnlyDefaultTabInOtherConfigIsActivated() {
 		int overflowTabIndex = Integer.MAX_VALUE;
 
@@ -172,7 +172,7 @@ public class LaunchConfigurationTabGroupViewerTest {
 		assertThat(((SpyTab) tabs[0])).matches(SpyTab::isActivated, "Should have been activated");
 
 		// All other tabs should not have been activated
-		for (int i = 1; i < tabs.length; i++) {
+		for (int i = 1; i < tabs.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThat(((SpyTab) tabs[i])).matches(not(SpyTab::isActivated), "Should not have been activated");
 		}
 	}
@@ -194,14 +194,14 @@ public class LaunchConfigurationTabGroupViewerTest {
 		assertThat(((SpyTab) tabs[secondTabIndex])).matches(SpyTab::isActivated, "should have been activated");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testActivateAllTabs() {
 		ThrowingRunnable<CoreException> activateSeveralTab = () -> {
 			// Create and select launch config
 			fLaunchConfigurationsDialog.getTabViewer().setInput(createLaunchConfigurationInstance());
 
 			// Select all tabs
-			for (int i = 0; i < fLaunchConfigurationsDialog.getTabViewer().getTabs().length; i++) {
+			for (int i = 0; i < fLaunchConfigurationsDialog.getTabViewer().getTabs().length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fLaunchConfigurationsDialog.getTabViewer().setActiveTab(i);
 			}
 		};
@@ -209,20 +209,20 @@ public class LaunchConfigurationTabGroupViewerTest {
 		final ILaunchConfigurationTab[] tabs = runOnDialog(activateSeveralTab);
 
 		// All tabs should have been activated exactly once
-		for (int i = 0; i < tabs.length; i++) {
-			assertThat(((SpyTab) tabs[i])).matches(SpyTab::isActivatedExactlyOnce, "Tab '" + i + "' should have been activated exactly once");
+		for (int i = 0; i < tabs.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			assertThat(((SpyTab) tabs[i])).matches(SpyTab::isActivatedExactlyOnce, "Tab '" + i + "' should have been activated exactly once"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
 	private ILaunchConfigurationWorkingCopy createLaunchConfigurationInstance() throws CoreException {
-		return fLaunchConfigurationType.newInstance(null, "MyLaunchConfiguration_" + System.currentTimeMillis());
+		return fLaunchConfigurationType.newInstance(null, "MyLaunchConfiguration_" + System.currentTimeMillis()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	private <T extends Exception> ILaunchConfigurationTab[] runOnDialog(ThrowingRunnable<T> runnable) {
+	private <T extends Exception> ILaunchConfigurationTab[] runOnDialog(ThrowingRunnable<T> runnable) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		AtomicReference<ILaunchConfigurationTab[]> tabsRef = new AtomicReference<>();
 		AtomicReference<Throwable> throwableRef = new AtomicReference<>();
 
-		Display.getCurrent().asyncExec(() -> {
+		Display.getCurrent().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			try {
 
 				runnable.run();

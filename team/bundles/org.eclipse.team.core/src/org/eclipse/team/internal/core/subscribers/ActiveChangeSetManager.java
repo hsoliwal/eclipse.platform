@@ -61,7 +61,7 @@ public abstract class ActiveChangeSetManager extends ChangeSetManager implements
 	 */
 	protected ChangeSet getChangeSet(IResourceDiffTree tree) {
 		ChangeSet[] sets = getSets();
-		for (ChangeSet changeSet : sets) {
+		for (ChangeSet changeSet : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (((DiffChangeSet)changeSet).getDiffTree() == tree) {
 				return changeSet;
 			}
@@ -143,7 +143,7 @@ public abstract class ActiveChangeSetManager extends ChangeSetManager implements
 	 */
 	public ActiveChangeSet getSet(String name) {
 		ChangeSet[] sets = getSets();
-		for (ChangeSet set : sets) {
+		for (ChangeSet set : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (set.getName().equals(name) && set instanceof ActiveChangeSet) {
 				return (ActiveChangeSet)set;
 			}
@@ -159,8 +159,8 @@ public abstract class ActiveChangeSetManager extends ChangeSetManager implements
 	 * @return the created set
 	 */
 	public ActiveChangeSet createSet(String title, IFile[] files) throws CoreException {
-		List<IDiff> infos = new ArrayList<>();
-		for (IFile file : files) {
+		List<IDiff> infos = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IDiff diff = getDiff(file);
 			if (diff != null) {
 				infos.add(diff);
@@ -209,13 +209,13 @@ public abstract class ActiveChangeSetManager extends ChangeSetManager implements
 	}
 
 	private IPath[] getAllResources(IDiffChangeEvent event) {
-		Set<IPath> allResources = new HashSet<>();
+		Set<IPath> allResources = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IDiff[] addedResources = event.getAdditions();
-		for (IDiff diff : addedResources) {
+		for (IDiff diff : addedResources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			allResources.add(diff.getPath());
 		}
 		IDiff[] changedResources = event.getChanges();
-		for (IDiff diff : changedResources) {
+		for (IDiff diff : changedResources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			allResources.add(diff.getPath());
 		}
 		IPath[] removals = event.getRemovals();
@@ -231,12 +231,12 @@ public abstract class ActiveChangeSetManager extends ChangeSetManager implements
 	protected void handleAddedResources(ChangeSet set, IDiff[] diffs) {
 		if (isSingleSetPerResource() && ((ActiveChangeSet)set).isUserCreated()) {
 			IResource[] resources = new IResource[diffs.length];
-			for (int i = 0; i < resources.length; i++) {
+			for (int i = 0; i < resources.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				resources[i] = ((DiffChangeSet)set).getDiffTree().getResource(diffs[i]);
 			}
 			// Remove the added files from any other set that contains them
 			ChangeSet[] sets = getSets();
-			for (ChangeSet otherSet : sets) {
+			for (ChangeSet otherSet : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (otherSet != set && ((ActiveChangeSet)otherSet).isUserCreated()) {
 					otherSet.remove(resources);
 				}
@@ -300,7 +300,7 @@ public abstract class ActiveChangeSetManager extends ChangeSetManager implements
 		CompoundResourceTraversal traversal = new CompoundResourceTraversal();
 		traversal.addTraversals(traversals);
 		ChangeSet[] sets = getSets();
-		for (ChangeSet set : sets) {
+		for (ChangeSet set : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			handleIntersect(traversal, set);
 		}
 		return traversal.asTraversals();
@@ -308,7 +308,7 @@ public abstract class ActiveChangeSetManager extends ChangeSetManager implements
 
 	private void handleIntersect(CompoundResourceTraversal traversal, ChangeSet set) {
 		IResource[] resources = set.getResources();
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (traversal.isCovered(resource, IResource.DEPTH_ZERO)) {
 				traversal.addResources(resources, IResource.DEPTH_ZERO);
 				return;
@@ -321,7 +321,7 @@ public abstract class ActiveChangeSetManager extends ChangeSetManager implements
 	 * into the given preferences node.
 	 * @param prefs a preferences node
 	 */
-	protected void save(Preferences prefs) {
+	protected void save(Preferences prefs) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// No need to save the sets if the manager has never been initialized
 		if (!isInitialized()) {
 			return;
@@ -329,14 +329,14 @@ public abstract class ActiveChangeSetManager extends ChangeSetManager implements
 		// Clear the persisted state before saving the new state
 		try {
 			String[] oldSetNames = prefs.childrenNames();
-			for (String string : oldSetNames) {
+			for (String string : oldSetNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				prefs.node(string).removeNode();
 			}
 		} catch (BackingStoreException e) {
 			TeamPlugin.log(IStatus.ERROR, NLS.bind(Messages.SubscriberChangeSetCollector_5, getName()), e);
 		}
 		ChangeSet[] sets = getSets();
-		for (ChangeSet set : sets) {
+		for (ChangeSet set : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (set instanceof ActiveChangeSet && !set.isEmpty()) {
 				// Since the change set title is stored explicitly, the name of
 				// the child preference node doesn't matter as long as it
@@ -369,18 +369,18 @@ public abstract class ActiveChangeSetManager extends ChangeSetManager implements
 	 * @return Escaped output string
 	 */
 	private static String escapePrefName(String string) {
-		StringBuilder out = new StringBuilder();
-		for (int i = 0; i < string.length(); i++) {
+		StringBuilder out = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < string.length(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c = string.charAt(i);
 			switch (c) {
 			case '/':
-				out.append("\\s"); //$NON-NLS-1$
+				out.append("\\s"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case '\\':
-				out.append("\\\\"); //$NON-NLS-1$
+				out.append("\\\\"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			default:
-				out.append(c);
+				out.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 		return out.toString();
@@ -392,11 +392,11 @@ public abstract class ActiveChangeSetManager extends ChangeSetManager implements
 	 * @param prefs
 	 *            a preferences node
 	 */
-	protected void load(Preferences prefs) {
+	protected void load(Preferences prefs) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String defaultSetTitle = prefs.get(CTX_DEFAULT_SET, null);
 		try {
 			String[] childNames = prefs.childrenNames();
-			for (String string : childNames) {
+			for (String string : childNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Preferences childPrefs = prefs.node(string);
 				ActiveChangeSet set = createSet(childPrefs);
 				if (!set.isEmpty()) {

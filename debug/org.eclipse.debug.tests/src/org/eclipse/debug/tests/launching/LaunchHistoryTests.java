@@ -120,7 +120,7 @@ public class LaunchHistoryTests {
 	 * If we launch config A, then config B, and then config A again, A should
 	 * be the most recent launch
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testHistoryReodering() throws CoreException {
 		LaunchHistory runhistory = getRunLaunchHistory();
 		assertNotNull(runhistory, "The run launch history should not be null"); //$NON-NLS-1$
@@ -145,7 +145,7 @@ public class LaunchHistoryTests {
 	 * If we rename a launch configuration it should not effect the launch
 	 * history if the renamed configuration is present in the history.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRenameConfigHistoryUpdate() throws CoreException {
 		LaunchHistory runhistory = getRunLaunchHistory();
 		assertNotNull(runhistory, "The run launch history should not be null"); //$NON-NLS-1$

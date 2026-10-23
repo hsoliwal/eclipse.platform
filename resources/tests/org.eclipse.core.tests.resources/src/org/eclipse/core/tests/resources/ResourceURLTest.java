@@ -66,7 +66,7 @@ public class ResourceURLTest {
 	}
 
 	private URL getURL(IPath path) throws Throwable {
-		return new URI("platform:/resource" + path.makeAbsolute().toString()).toURL();
+		return new URI("platform:/resource" + path.makeAbsolute().toString()).toURL(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private URL getURL(IResource resource) throws Throwable {
@@ -77,7 +77,7 @@ public class ResourceURLTest {
 	public void testBasicURLs() throws Throwable {
 		IResource[] resources = buildResources(getWorkspace().getRoot(), resourcePaths);
 		createInWorkspace(resources);
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			checkURL(resource);
 		}
 	}
@@ -91,7 +91,7 @@ public class ResourceURLTest {
 		project.open(null);
 		IResource[] resources = buildResources(project, resourcePaths);
 		createInWorkspace(resources);
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			checkURL(resource);
 		}
 	}
@@ -99,7 +99,7 @@ public class ResourceURLTest {
 	@Test
 	public void testNonExistantURLs() throws Throwable {
 		IResource[] resources = buildResources(getWorkspace().getRoot(), resourcePaths);
-		for (int i = 1; i < resources.length; i++) {
+		for (int i = 1; i < resources.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final int index = i;
 			assertThrows(IOException.class, () -> checkURL(resources[index]));
 		}
@@ -113,7 +113,7 @@ public class ResourceURLTest {
 		IProject project = getWorkspace().getRoot().getProject("My Project");
 		IFile file = project.getFile("a.txt");
 		createInWorkspace(file, CONTENT);
-		URL url = new URI(PlatformURLResourceConnection.RESOURCE_URL_STRING + "My%20Project/a.txt").toURL();
+		URL url = new URI(PlatformURLResourceConnection.RESOURCE_URL_STRING + "My%20Project/a.txt").toURL(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		try (InputStream stream = url.openStream()) {
 			assertThat(stream).hasContent(CONTENT);
 		}

@@ -105,12 +105,12 @@ public class DeltaDataTree extends AbstractDataTree {
 	 * and vice-versa.  This method destructively changes the tree
 	 * as opposed to making a copy.
 	 */
-	public DeltaDataTree asReverseComparisonTree(IComparator comparator) {
+	public DeltaDataTree asReverseComparisonTree(IComparator comparator) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/* don't reverse the root node if it's the absolute root (name==null) */
 		if (rootNode.getName() == null) {
 			AbstractDataTreeNode[] children = rootNode.getChildren();
 			int nextChild = 0;
-			for (AbstractDataTreeNode c : children) {
+			for (AbstractDataTreeNode c : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				AbstractDataTreeNode newChild = c.asReverseComparisonNode(comparator);
 				if (newChild != null) {
 					children[nextChild++] = newChild;
@@ -168,7 +168,7 @@ public class DeltaDataTree extends AbstractDataTree {
 	 * given path will be the root node of the returned tree.  Both this
 	 * tree and other tree must contain the given path.
 	 */
-	protected DeltaDataTree basicCompare(DeltaDataTree other, IComparator comparator, IPath path) {
+	protected DeltaDataTree basicCompare(DeltaDataTree other, IComparator comparator, IPath path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		DeltaDataTree newTree;
 		if (this == other) {
 			newTree = new DeltaDataTree();
@@ -178,7 +178,7 @@ public class DeltaDataTree extends AbstractDataTree {
 			DeltaDataTree tree = other;
 
 			/* Iterate through the receiver's ancestors until the receiver is reached */
-			while ((tree = tree.getParent()) != this) {
+			while ((tree = tree.getParent()) != this) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				//ancestor may not contain the given path
 				AbstractDataTreeNode treeNode = tree.searchLocalNodeAt(path);
 				if (treeNode != null) {
@@ -192,7 +192,7 @@ public class DeltaDataTree extends AbstractDataTree {
 			DeltaDataTree tree = this;
 
 			/* Iterate through the receiver's ancestors until the other tree is reached */
-			while ((tree = tree.getParent()) != other) {
+			while ((tree = tree.getParent()) != other) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				assembled = assembled.assembleWith(tree.asBackwardDelta().searchNodeAt(path));
 			}
 			AbstractDataTreeNode comparedRoot = assembled.compareWithParent(path, this, comparator);
@@ -242,7 +242,7 @@ public class DeltaDataTree extends AbstractDataTree {
 	 * will contain a NodeComparison object that describes the differences
 	 * between the two trees.
 	 */
-	public DeltaDataTree compareWith(DeltaDataTree other, IComparator comparator) {
+	public DeltaDataTree compareWith(DeltaDataTree other, IComparator comparator) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		DeltaDataTree newTree;
 		if (this == other) {
@@ -254,7 +254,7 @@ public class DeltaDataTree extends AbstractDataTree {
 			DeltaDataTree tree = other;
 
 			/* Iterate through the receiver's ancestors until the receiver is reached */
-			while ((tree = tree.getParent()) != this) {
+			while ((tree = tree.getParent()) != this) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				assembled = tree.getRootNode().assembleWith(assembled);
 			}
 			AbstractDataTreeNode comparedRoot = assembled.compareWithParent(rootKey(), this, comparator);
@@ -264,7 +264,7 @@ public class DeltaDataTree extends AbstractDataTree {
 			DeltaDataTree tree = this;
 
 			/* Iterate through the receiver's ancestors until the other tree is reached */
-			while ((tree = tree.getParent()) != other) {
+			while ((tree = tree.getParent()) != other) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				assembled = assembled.assembleWith(tree.asBackwardDelta().getRootNode());
 			}
 			AbstractDataTreeNode comparedRoot = assembled.compareWithParent(rootKey(), this, comparator);
@@ -397,7 +397,7 @@ public class DeltaDataTree extends AbstractDataTree {
 	public AbstractDataTreeNode findNodeAt(IPath key) {
 		AbstractDataTreeNode node = rootNode;
 		int segmentCount = key.segmentCount();
-		for (int i = 0; i < segmentCount; i++) {
+		for (int i = 0; i < segmentCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			node = node.childAtOrNull(key.segment(i));
 			if (node == null) {
 				return null;
@@ -428,7 +428,7 @@ public class DeltaDataTree extends AbstractDataTree {
 	 * @param comparer the comparer used to compare data objects
 	 * @return the new delta
 	 */
-	public DeltaDataTree forwardDeltaWith(DeltaDataTree sourceTree, IComparator comparer) {
+	public DeltaDataTree forwardDeltaWith(DeltaDataTree sourceTree, IComparator comparer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		DeltaDataTree newTree;
 		if (this == sourceTree) {
 			newTree = this.newEmptyDeltaTree();
@@ -437,7 +437,7 @@ public class DeltaDataTree extends AbstractDataTree {
 			DeltaDataTree treeParent = sourceTree;
 
 			/* Iterate through the sourceTree's ancestors until the receiver is reached */
-			while ((treeParent = treeParent.getParent()) != this) {
+			while ((treeParent = treeParent.getParent()) != this) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				assembled = treeParent.getRootNode().assembleWith(assembled);
 			}
 			newTree = new DeltaDataTree(assembled, this);
@@ -467,7 +467,7 @@ public class DeltaDataTree extends AbstractDataTree {
 	/**
 	 * Returns the child nodes of a node in the tree.
 	 */
-	protected AbstractDataTreeNode[] getChildNodes(IPath parentKey) {
+	protected AbstractDataTreeNode[] getChildNodes(IPath parentKey) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		/* Algorithm:
 		 *   for each delta in chain (going backwards),
@@ -479,10 +479,10 @@ public class DeltaDataTree extends AbstractDataTree {
 
 		AbstractDataTreeNode[] childNodes = null;
 		int keyLength = parentKey.segmentCount();
-		for (DeltaDataTree tree = this; tree != null; tree = tree.parent) {
+		for (DeltaDataTree tree = this; tree != null; tree = tree.parent) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			AbstractDataTreeNode node = tree.rootNode;
 			boolean complete = !node.isDelta();
-			for (int i = 0; i < keyLength; i++) {
+			for (int i = 0; i < keyLength; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				node = node.childAtOrNull(parentKey.segment(i));
 				if (node == null) {
 					break;
@@ -533,7 +533,7 @@ public class DeltaDataTree extends AbstractDataTree {
 			return NO_CHILDREN;
 		}
 		IPath[] answer = new IPath[len];
-		for (int i = 0; i < len; ++i) {
+		for (int i = 0; i < len; ++i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			answer[i] = parentKey.append(childNodes[i].name);
 		}
 		return answer;
@@ -545,7 +545,7 @@ public class DeltaDataTree extends AbstractDataTree {
 	 * @param key
 	 *	key of node for which to return data.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Object getData(IPath key) {
 
 		/* Algorithm:
@@ -557,10 +557,10 @@ public class DeltaDataTree extends AbstractDataTree {
 		 */
 
 		int keyLength = key.segmentCount();
-		for (DeltaDataTree tree = this; tree != null; tree = tree.parent) {
+		for (DeltaDataTree tree = this; tree != null; tree = tree.parent) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			AbstractDataTreeNode node = tree.rootNode;
 			boolean complete = !node.isDelta();
-			for (int i = 0; i < keyLength; i++) {
+			for (int i = 0; i < keyLength; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				node = node.childAtOrNull(key.segment(i));
 				if (node == null) {
 					break;
@@ -604,7 +604,7 @@ public class DeltaDataTree extends AbstractDataTree {
 		AbstractDataTreeNode[] childNodes = getChildNodes(parentKey);
 		int len = childNodes.length;
 		String[] namesOfChildren = new String[len];
-		for (int i = 0; i < len; ++i) {
+		for (int i = 0; i < len; ++i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			namesOfChildren[i] = childNodes[i].name;
 		}
 		return namesOfChildren;
@@ -636,7 +636,7 @@ public class DeltaDataTree extends AbstractDataTree {
 	 */
 	protected boolean hasAncestor(DeltaDataTree ancestor) {
 		DeltaDataTree myParent = this;
-		while ((myParent = myParent.getParent()) != null) {
+		while ((myParent = myParent.getParent()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (myParent == ancestor) {
 				return true;
 			}
@@ -665,13 +665,13 @@ public class DeltaDataTree extends AbstractDataTree {
 	 *
 	 * @param key  key of node for which we want to retrieve data.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public DataTreeLookup lookup(IPath key) {
 		int keyLength = key.segmentCount();
-		for (DeltaDataTree tree = this; tree != null; tree = tree.parent) {
+		for (DeltaDataTree tree = this; tree != null; tree = tree.parent) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			AbstractDataTreeNode node = tree.rootNode;
 			boolean complete = !node.isDelta();
-			for (int i = 0; i < keyLength; i++) {
+			for (int i = 0; i < keyLength; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				node = node.childAtOrNull(key.segment(i));
 				if (node == null) {
 					break;
@@ -704,12 +704,12 @@ public class DeltaDataTree extends AbstractDataTree {
 	 *
 	 * @param key  key of node for which we want to retrieve data.
 	 */
-	public DataTreeLookup lookupIgnoreCase(IPath key) {
+	public DataTreeLookup lookupIgnoreCase(IPath key) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int keyLength = key.segmentCount();
-		for (DeltaDataTree tree = this; tree != null; tree = tree.parent) {
+		for (DeltaDataTree tree = this; tree != null; tree = tree.parent) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			AbstractDataTreeNode node = tree.rootNode;
 			boolean complete = !node.isDelta();
-			for (int i = 0; i < keyLength; i++) {
+			for (int i = 0; i < keyLength; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				node = node.childAtIgnoreCase(key.segment(i));
 				if (node == null) {
 					break;
@@ -739,7 +739,7 @@ public class DeltaDataTree extends AbstractDataTree {
 	public void makeComplete() {
 		AbstractDataTreeNode assembled = getRootNode();
 		DeltaDataTree myParent = getParent();
-		while (myParent != null) {
+		while (myParent != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assembled = myParent.getRootNode().assembleWith(assembled);
 			myParent = myParent.getParent();
 		}
@@ -763,7 +763,7 @@ public class DeltaDataTree extends AbstractDataTree {
 		} else {
 			childNodes = new AbstractDataTreeNode[numChildren];
 			/* do for each child */
-			for (int i = numChildren; --i >= 0;) {
+			for (int i = numChildren; --i >= 0;) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				childNodes[i] = copyCompleteSubtree(key.append(childNames[i]));
 			}
 		}
@@ -857,7 +857,7 @@ public class DeltaDataTree extends AbstractDataTree {
 	 * @param key
 	 *	key of subtree whose contents we want to copy.
 	 */
-	protected AbstractDataTreeNode safeNaiveCopyCompleteSubtree(IPath key) {
+	protected AbstractDataTreeNode safeNaiveCopyCompleteSubtree(IPath key) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			String[] childNames = getNamesOfChildren(key);
 			int numChildren = childNames.length;
@@ -868,7 +868,7 @@ public class DeltaDataTree extends AbstractDataTree {
 				childNodes = new AbstractDataTreeNode[numChildren];
 				/* do for each child */
 				int actualChildCount = 0;
-				for (int i = numChildren; --i >= 0;) {
+				for (int i = numChildren; --i >= 0;) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					childNodes[i] = safeCopyCompleteSubtree(key.append(childNames[i]));
 					if (childNodes[i] != null) {
 						actualChildCount++;
@@ -877,7 +877,7 @@ public class DeltaDataTree extends AbstractDataTree {
 				//if there are less actual children due to concurrent deletion, shrink the child array
 				if (actualChildCount < numChildren) {
 					AbstractDataTreeNode[] actualChildNodes = new AbstractDataTreeNode[actualChildCount];
-					for (int iOld = 0, iNew = 0; iOld < numChildren; iOld++) {
+					for (int iOld = 0, iNew = 0; iOld < numChildren; iOld++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (childNodes[iOld] != null) {
 							actualChildNodes[iNew++] = childNodes[iOld];
 						}
@@ -895,12 +895,12 @@ public class DeltaDataTree extends AbstractDataTree {
 	 * Returns the specified node.  Search in the parent if necessary.  Return null
 	 * if the node is not found or if it has been deleted
 	 */
-	protected AbstractDataTreeNode searchNodeAt(IPath key) {
+	protected AbstractDataTreeNode searchNodeAt(IPath key) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int keyLength = key.segmentCount();
-		for (DeltaDataTree tree = this; tree != null; tree = tree.parent) {
+		for (DeltaDataTree tree = this; tree != null; tree = tree.parent) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			AbstractDataTreeNode node = tree.rootNode;
 			boolean complete = !node.isDelta();
-			for (int i = 0; i < keyLength; i++) {
+			for (int i = 0; i < keyLength; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				node = node.childAtOrNull(key.segment(i));
 				if (node == null) {
 					break;
@@ -928,12 +928,12 @@ public class DeltaDataTree extends AbstractDataTree {
 	 * been deleted. Like {@link DeltaDataTree#searchNodeAt(IPath)} but does NOT
 	 * search in the parent.
 	 */
-	protected AbstractDataTreeNode searchLocalNodeAt(IPath key) {
+	protected AbstractDataTreeNode searchLocalNodeAt(IPath key) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int keyLength = key.segmentCount();
 		DeltaDataTree tree = this;
 		AbstractDataTreeNode node = tree.rootNode;
 		boolean complete = !node.isDelta();
-		for (int i = 0; i < keyLength; i++) {
+		for (int i = 0; i < keyLength; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			node = node.childAtOrNull(key.segment(i));
 			if (node == null) {
 				break;
@@ -1009,7 +1009,7 @@ public class DeltaDataTree extends AbstractDataTree {
 	 */
 	public void storeStrings(StringPool set) {
 		AbstractDataTreeNode root = null;
-		for (DeltaDataTree dad = this; dad != null; dad = dad.getParent()) {
+		for (DeltaDataTree dad = this; dad != null; dad = dad.getParent()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			root = dad.getRootNode();
 			if (root != null) {
 				root.storeStrings(set);
@@ -1022,15 +1022,15 @@ public class DeltaDataTree extends AbstractDataTree {
 	public String toString() {
 		DeltaDataTree root = getParent();
 		if (root == null && isEmptyDelta()) {
-			return this.getClass().getSimpleName() + " -> rootNode=" + rootNode.toShortString(); //$NON-NLS-1$
+			return this.getClass().getSimpleName() + " -> rootNode=" + rootNode.toShortString(); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		int depth = root == null ? 0 : 1;
-		while (root != null && root.getParent() != null) {
+		while (root != null && root.getParent() != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			root = root.getParent();
 			depth++;
 		}
 
-		return this.getClass().getSimpleName() + ' ' + getRootData() //
+		return this.getClass().getSimpleName() + ' ' + getRootData() // //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ "-> " + (parent == null ? null : parent.getRootData()) // $NON-NLS-1$ //$NON-NLS-1$
 				+ "-> depth " + depth //$NON-NLS-1$
 				+ "-> " + (parent == null ? null : root.getRootData()) // $NON-NLS-1$ //$NON-NLS-1$

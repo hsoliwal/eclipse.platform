@@ -24,14 +24,14 @@ import org.eclipse.team.core.synchronize.SyncInfoSetChangeEvent;
 
 public class SyncInfoTreeChangeEvent extends SyncInfoSetChangeEvent implements ISyncInfoTreeChangeEvent {
 
-	private final Set<IResource> removedSubtrees = new HashSet<>();
-	private final Set<IResource> addedSubtrees = new HashSet<>();
+	private final Set<IResource> removedSubtrees = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<IResource> addedSubtrees = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	public SyncInfoTreeChangeEvent(SyncInfoSet set) {
 		super(set);
 	}
 
-	public void removedSubtreeRoot(IResource root) {
+	public void removedSubtreeRoot(IResource root) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (addedSubtrees.contains(root)) {
 			// The root was added and removed which is a no-op
 			addedSubtrees.remove(root);
@@ -42,7 +42,7 @@ public class SyncInfoTreeChangeEvent extends SyncInfoSetChangeEvent implements I
 			// (in which case it need not be added).
 			// Also, remove any exisiting roots that are children
 			// of the new root
-			for (Iterator<IResource> iter = removedSubtrees.iterator(); iter.hasNext();) {
+			for (Iterator<IResource> iter = removedSubtrees.iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource element = iter.next();
 				// check if the root is already in the list
 				if (root.equals(element)) {
@@ -79,7 +79,7 @@ public class SyncInfoTreeChangeEvent extends SyncInfoSetChangeEvent implements I
 	}
 
 	private boolean isDescendantOfAddedRoot(IResource resource) {
-		for (IResource root : addedSubtrees) {
+		for (IResource root : addedSubtrees) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isParent(root, resource)) {
 				// There is a higher added root already in the list
 				return true;

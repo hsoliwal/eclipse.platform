@@ -43,10 +43,10 @@ import org.eclipse.team.core.mapping.provider.SynchronizationScopeManager;
  * remote state of resources change.
  * @since 3.2
  */
-public class SubscriberScopeManager extends SynchronizationScopeManager implements ISubscriberChangeListener {
+public class SubscriberScopeManager extends SynchronizationScopeManager implements ISubscriberChangeListener { //FLLDCIM: MARK — T38  IMPLEMENTS
 
 	private final Subscriber subscriber;
-	private final Map<ModelProvider, ISynchronizationScopeParticipant> participants = new HashMap<>();
+	private final Map<ModelProvider, ISynchronizationScopeParticipant> participants = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/**
 	 * Create a manager for the given subscriber and input.
@@ -82,7 +82,7 @@ public class SubscriberScopeManager extends SynchronizationScopeManager implemen
 
 	@Override
 	public void dispose() {
-		for (ISynchronizationScopeParticipant participant : participants.values()) {
+		for (ISynchronizationScopeParticipant participant : participants.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			participant.dispose();
 		}
 		super.dispose();
@@ -90,17 +90,17 @@ public class SubscriberScopeManager extends SynchronizationScopeManager implemen
 
 	@Override
 	public void initialize(IProgressMonitor monitor) throws CoreException {
-		ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) monitor1 -> {
+		ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) monitor1 -> { //FLLDCIM: MARK — T09  LAMBDA
 			SubscriberScopeManager.super.initialize(monitor1);
 			hookupParticipants();
-			getSubscriber().addListener(SubscriberScopeManager.this);
+			getSubscriber().addListener(SubscriberScopeManager.this); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 		}, getSchedulingRule(), IResource.NONE, monitor);
 	}
 
 	@Override
 	public ResourceTraversal[] refresh(final ResourceMapping[] mappings, IProgressMonitor monitor) throws CoreException {
-		final List<ResourceTraversal[]> result = new ArrayList<>(1);
-		ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) monitor1 -> {
+		final List<ResourceTraversal[]> result = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) monitor1 -> { //FLLDCIM: MARK — T09  LAMBDA
 			result.add(SubscriberScopeManager.super.refresh(mappings, monitor1));
 			hookupParticipants();
 		}, getSchedulingRule(), IResource.NONE, monitor);
@@ -117,7 +117,7 @@ public class SubscriberScopeManager extends SynchronizationScopeManager implemen
 	 * appropriately
 	 */
 	/* private */ void hookupParticipants() {
-		for (ModelProvider provider : getScope().getModelProviders()) {
+		for (ModelProvider provider : getScope().getModelProviders()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!participants.containsKey(provider)) {
 				ISynchronizationScopeParticipant p = createParticipant(provider);
 				if (p != null) {
@@ -140,9 +140,9 @@ public class SubscriberScopeManager extends SynchronizationScopeManager implemen
 
 	@Override
 	public void subscriberResourceChanged(ISubscriberChangeEvent[] deltas) {
-		List<IResource> changedResources = new ArrayList<>();
-		List<IProject> changedProjects = new ArrayList<>();
-		for (ISubscriberChangeEvent event : deltas) {
+		List<IResource> changedResources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<IProject> changedProjects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ISubscriberChangeEvent event : deltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if ((event.getFlags() & (ISubscriberChangeEvent.ROOT_ADDED | ISubscriberChangeEvent.ROOT_REMOVED)) != 0) {
 				changedProjects.add(event.getResource().getProject());
 			}
@@ -153,13 +153,13 @@ public class SubscriberScopeManager extends SynchronizationScopeManager implemen
 		fireChange(changedResources.toArray(new IResource[changedResources.size()]), changedProjects.toArray(new IProject[changedProjects.size()]));
 	}
 
-	private void fireChange(final IResource[] resources, final IProject[] projects) {
-		final Set<ResourceMapping> result = new HashSet<>();
-		for (final ISynchronizationScopeParticipant participant : participants.values()) {
+	private void fireChange(final IResource[] resources, final IProject[] projects) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		final Set<ResourceMapping> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (final ISynchronizationScopeParticipant participant : participants.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
 				public void run() throws Exception {
-					for (ResourceMapping mapping : participant
+					for (ResourceMapping mapping : participant //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							.handleContextChange(SubscriberScopeManager.this.getScope(), resources, projects)) {
 						result.add(mapping);
 					}

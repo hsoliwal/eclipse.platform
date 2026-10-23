@@ -26,7 +26,7 @@ import org.eclipse.core.resources.refresh.RefreshProvider;
 
 public class TestRefreshProvider extends RefreshProvider implements IRefreshMonitor {
 	private final List<AssertionError> failures = new CopyOnWriteArrayList<>();
-	private final Set<Object> monitoredResources = Collections.synchronizedSet(new HashSet<>());
+	private final Set<Object> monitoredResources = Collections.synchronizedSet(new HashSet<>()); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 	private static volatile TestRefreshProvider instance;
 
 	public static TestRefreshProvider getInstance() {
@@ -64,7 +64,7 @@ public class TestRefreshProvider extends RefreshProvider implements IRefreshMoni
 	@Override
 	public IRefreshMonitor installMonitor(IResource resource, IRefreshResult result) {
 		if (!monitoredResources.add(resource)) {
-			failures.add(new AssertionError("installMonitor on resource that is already monitored: " + resource));
+			failures.add(new AssertionError("installMonitor on resource that is already monitored: " + resource)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return this;
 	}
@@ -76,7 +76,7 @@ public class TestRefreshProvider extends RefreshProvider implements IRefreshMoni
 			return;
 		}
 		if (!monitoredResources.remove(resource)) {
-			failures.add(new AssertionError("Unmonitor on resource that is not monitored: " + resource));
+			failures.add(new AssertionError("Unmonitor on resource that is not monitored: " + resource)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 }

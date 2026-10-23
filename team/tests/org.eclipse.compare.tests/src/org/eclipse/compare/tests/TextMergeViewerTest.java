@@ -94,14 +94,14 @@ public class TextMergeViewerTest  {
 	 * @param b stream b
 	 * @return whether the two streams contain the same contents
 	 */
-	public static boolean compareContent(InputStream a, InputStream b) {
+	public static boolean compareContent(InputStream a, InputStream b) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int c, d;
 		if (a == null && b == null)
 			return true;
 		try {
 			if (a == null || b == null)
 				return false;
-			while ((c = a.read()) == (d = b.read()) && (c != -1 && d != -1)) {
+			while ((c = a.read()) == (d = b.read()) && (c != -1 && d != -1)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				//body not needed
 			}
 			return (c == -1 && d == -1);
@@ -147,7 +147,7 @@ public class TextMergeViewerTest  {
 		public boolean isEditable() {
 			return false;
 		}
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public ITypedElement replace(ITypedElement child, ITypedElement other) {
 			if (child == null) {	// add child
 				// clone the other and return it as the new child
@@ -257,7 +257,7 @@ public class TextMergeViewerTest  {
 		runInDialog(input, runnable, new CompareConfiguration());
 	}
 
-	private void runInDialog(Object input, Runnable runnable,
+	private void runInDialog(Object input, Runnable runnable, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			final CompareConfiguration cc) throws Exception {
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		Dialog dialog = new Dialog(shell) {
@@ -410,7 +410,7 @@ public class TextMergeViewerTest  {
 		assertNull(testNode.getLeft());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyEmptyRightToLeftAndModify() throws Exception {
 		DiffNode parentNode = new DiffNode(new ParentTestElement(), new ParentTestElement());
 		int kind = leftIsChanged() ? Differencer.ADDITION : Differencer.DELETION;
@@ -435,7 +435,7 @@ public class TextMergeViewerTest  {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyEmptyLeftToRightAndModify() throws Exception {
 		DiffNode parentNode = new DiffNode(new ParentTestElement(), new ParentTestElement());
 		int kind = leftIsChanged() ? Differencer.DELETION : Differencer.ADDITION;
@@ -479,23 +479,23 @@ public class TextMergeViewerTest  {
 	}
 
 	private static String manyLines(String prefix, int count) {
-		StringBuilder content = new StringBuilder();
-		for (int i = 0; i < count; i++) {
-			content.append(prefix).append(' ').append(i).append('\n');
+		StringBuilder content = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			content.append(prefix).append(' ').append(i).append('\n'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return content.toString();
 	}
 
-	private static void waitForChanges(IMergeViewerTestAdapter ta) {
+	private static void waitForChanges(IMergeViewerTestAdapter ta) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Display display = Display.getCurrent();
 		long deadline = System.currentTimeMillis() + 30_000;
 		// A self-rescheduling timer keeps the loop waking so the deadline is enforced
 		// even while blocked in Display.sleep().
 		Runnable[] wake = new Runnable[1];
-		wake[0] = () -> display.timerExec(50, wake[0]);
-		display.timerExec(50, wake[0]);
+		wake[0] = () -> display.timerExec(50, wake[0]); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
+		display.timerExec(50, wake[0]); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		try {
-			while (ta.getChangesCount() == 0) {
+			while (ta.getChangesCount() == 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (System.currentTimeMillis() > deadline) {
 					fail("no differences within 30000ms");
 				}
@@ -504,11 +504,11 @@ public class TextMergeViewerTest  {
 				}
 			}
 		} finally {
-			display.timerExec(-1, wake[0]);
+			display.timerExec(-1, wake[0]); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCompareFilter() throws Exception {
 		DiffNode parentNode = new DiffNode(new ParentTestElement(),
 				new ParentTestElement());
@@ -533,7 +533,7 @@ public class TextMergeViewerTest  {
 				IMergeViewerTestAdapter ta = (IMergeViewerTestAdapter) adapter;
 				assertEquals(ta.getChangesCount(), 1);
 
-				Map<String, ICompareFilter> filters = new HashMap<>();
+				Map<String, ICompareFilter> filters = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 				filters.put("filter.id", new ICompareFilter() {
 					@Override
 					public void setInput(Object input, Object ancestor,
@@ -542,7 +542,7 @@ public class TextMergeViewerTest  {
 						assertThat(rightElement).isSameAs(right);
 					}
 
-					@Override
+					@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 					public IRegion[] getFilteredRegions(
 							HashMap lineComparison) {
 						Object thisLine = lineComparison.get(THIS_LINE);
@@ -597,7 +597,7 @@ public class TextMergeViewerTest  {
 	}
 
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCompareWithIgnoreWhitespaceContributor() throws Exception {
 		String leftTxt = "str\n= \"Hello\nWorld\"";
 		String rightTxt = "str\n\n= \"Hello\n\nWorld\""; // added newLine in offset 4 and 14
@@ -646,7 +646,7 @@ public class TextMergeViewerTest  {
 		}, cc);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDocumentAsTypedElement() throws Exception {
 		class DocumentAsTypedElement extends Document implements ITypedElement {
 
@@ -680,10 +680,10 @@ public class TextMergeViewerTest  {
 	public void testToolbarLabelContribution() throws Exception {
 
 		IPath path = IPath.fromOSString("labelContributionData/" + "file1.java");
-		URL url = CompareTestPlugin.getDefault().getBundle().getEntry("/" + path.toString());
+		URL url = CompareTestPlugin.getDefault().getBundle().getEntry("/" + path.toString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		IPath path1= IPath.fromOSString("labelContributionData/" + "file2.java");
-		URL url1 = CompareTestPlugin.getDefault().getBundle().getEntry("/" + path1.toString());
+		URL url1 = CompareTestPlugin.getDefault().getBundle().getEntry("/" + path1.toString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		DiffNode parentNode = new DiffNode(new ParentTestElement(), new ParentTestElement());
 		DiffNode testNode = new DiffNode(parentNode, Differencer.CHANGE, null, new EditableTestElement(url.openStream().readAllBytes()), new EditableTestElement(url1.openStream().readAllBytes()));
@@ -692,7 +692,7 @@ public class TextMergeViewerTest  {
 	}
 
 	CompareViewerPane fCompareViewerPane;
-	private void runInDialogWithToolbarDiffLabel(DiffNode testNode) throws Exception {
+	private void runInDialogWithToolbarDiffLabel(DiffNode testNode) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		CompareConfiguration compareConfig = new CompareConfiguration();
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
@@ -724,13 +724,13 @@ public class TextMergeViewerTest  {
 	}
 
 	private void processQueuedEvents() {
-		while (Display.getCurrent().readAndDispatch()) {
+		while (Display.getCurrent().readAndDispatch()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					// Process all the events in the queue
 		}
 
 	}
 
-	private void runInDialogWithPartioner(Object input, Runnable runnable, final CompareConfiguration cc) throws Exception {
+	private void runInDialogWithPartioner(Object input, Runnable runnable, final CompareConfiguration cc) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		Dialog dialog = new Dialog(shell) {
 			@Override
@@ -816,7 +816,7 @@ public class TextMergeViewerTest  {
 
 	private static DocumentMerger testDocumentMerger = null;
 
-	private void runInDialogWithIgnoreWhitespaceContributor(Object input, Runnable runnable,
+	private void runInDialogWithIgnoreWhitespaceContributor(Object input, Runnable runnable, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			final CompareConfiguration cc) throws Exception {
 		Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		Dialog dialog = new Dialog(shell) {
@@ -840,7 +840,7 @@ public class TextMergeViewerTest  {
 		viewer = null;
 	}
 
-	private static DocumentMerger createDocumentMerger(TestMergeViewer testMergeViewer, CompareConfiguration cc) {
+	private static DocumentMerger createDocumentMerger(TestMergeViewer testMergeViewer, CompareConfiguration cc) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		return new DocumentMerger(new IDocumentMergerInput() {
 
 			@Override

@@ -50,7 +50,7 @@ public class FileLinkTests {
 	@BeforeEach
 	public void setUp() throws Exception {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
-		testProject = workspace.getRoot().getProject("FileLinkTest-" + UUID.randomUUID());
+		testProject = workspace.getRoot().getProject("FileLinkTest-" + UUID.randomUUID()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		testProject.create(null);
 		testProject.open(null);
 		testFile = testProject.getFile("filelinktest.txt");
@@ -93,7 +93,7 @@ public class FileLinkTests {
 		assertEquals(0, selection.getEndLine());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileLinkWithSelection() throws Exception {
 		FileLink link = new FileLink(testFile, null, 7, 5, -1);
 		link.linkActivated();

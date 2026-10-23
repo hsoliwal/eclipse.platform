@@ -81,7 +81,7 @@ final public class TeamPlugin extends Plugin {
 		new QualifiedName("org.eclipse.team.core", "repository");  //$NON-NLS-1$  //$NON-NLS-2$
 
 	// The id for the Bundle Import extension point
-	public static final String EXTENSION_POINT_BUNDLE_IMPORTERS = ID + ".bundleImporters"; //$NON-NLS-1$
+	public static final String EXTENSION_POINT_BUNDLE_IMPORTERS = ID + ".bundleImporters"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	// The one and only plug-in instance
 	private static TeamPlugin plugin;
@@ -180,13 +180,13 @@ final public class TeamPlugin extends Plugin {
 		}
 	}
 
-	public static RepositoryProviderType getAliasType(String id) {
+	public static RepositoryProviderType getAliasType(String id) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IExtensionPoint extension = Platform.getExtensionRegistry().getExtensionPoint(TeamPlugin.ID, TeamPlugin.REPOSITORY_EXTENSION);
 		if (extension != null) {
 			IExtension[] extensions =  extension.getExtensions();
-			for (IExtension ext : extensions) {
+			for (IExtension ext : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IConfigurationElement[] configElements = ext.getConfigurationElements();
-				for (IConfigurationElement configElement : configElements) {
+				for (IConfigurationElement configElement : configElements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String aliasId = configElement.getAttribute("canImportId"); //$NON-NLS-1$
 					if (aliasId != null && aliasId.equals(id)) {
 						String extensionId = configElement.getAttribute("id"); //$NON-NLS-1$
@@ -200,13 +200,13 @@ final public class TeamPlugin extends Plugin {
 		return null;
 	}
 
-	public static IPath[] getMetaFilePaths(String id) {
+	public static IPath[] getMetaFilePaths(String id) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IExtensionPoint extension = Platform.getExtensionRegistry().getExtensionPoint(TeamPlugin.ID, TeamPlugin.REPOSITORY_EXTENSION);
 		if (extension != null) {
 			IExtension[] extensions =  extension.getExtensions();
-			for (IExtension ext : extensions) {
+			for (IExtension ext : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IConfigurationElement[] configElements = ext.getConfigurationElements();
-				for (IConfigurationElement configElement : configElements) {
+				for (IConfigurationElement configElement : configElements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String extensionId = configElement.getAttribute("id"); //$NON-NLS-1$
 					String metaFilePaths = configElement.getAttribute("metaFilePaths"); //$NON-NLS-1$
 					if (extensionId != null && extensionId.equals(id) && metaFilePaths != null) {
@@ -220,9 +220,9 @@ final public class TeamPlugin extends Plugin {
 	}
 
 	private static IPath[] getPaths(String metaFilePaths) {
-		List<IPath> result = new ArrayList<>();
+		List<IPath> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		StringTokenizer t = new StringTokenizer(metaFilePaths, ","); //$NON-NLS-1$
-		while (t.hasMoreTokens()) {
+		while (t.hasMoreTokens()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String next = t.nextToken();
 			IPath path = new Path(null, next);
 			result.add(path);

@@ -74,7 +74,7 @@ public class LocalLauncherDelegate extends AbstractLauncherDelegate {
 		return new LocalWizardConfigurationPanel(container);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public CompletableFuture<?> execute(Map<String, Object> properties) {
 		Assert.isNotNull(properties);
 
@@ -171,7 +171,7 @@ public class LocalLauncherDelegate extends AbstractLauncherDelegate {
 			if (selection instanceof IStructuredSelection && !selection.isEmpty()) {
 				String dir = null;
 				Iterator<?> iter = ((IStructuredSelection) selection).iterator();
-				while (iter.hasNext()) {
+				while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Object element = iter.next();
 
 					Bundle bundle = Platform.getBundle("org.eclipse.core.resources"); //$NON-NLS-1$
@@ -219,7 +219,7 @@ public class LocalLauncherDelegate extends AbstractLauncherDelegate {
 					properties.put(ITerminalsConnectorConstants.PROP_PROCESS_WORKING_DIR, dir);
 
 					String basename = new Path(dir).lastSegment();
-					properties.put(ITerminalsConnectorConstants.PROP_TITLE, basename + " (" + terminalTitle + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+					properties.put(ITerminalsConnectorConstants.PROP_TITLE, basename + " (" + terminalTitle + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
 		}
@@ -269,7 +269,7 @@ public class LocalLauncherDelegate extends AbstractLauncherDelegate {
 	 *
 	 * @return The default shell to launch.
 	 */
-	private final File defaultShell() {
+	private final File defaultShell() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String shell = null;
 		if (Platform.OS_WIN32.equals(Platform.getOS())) {
 			if (System.getenv("ComSpec") != null && !"".equals(System.getenv("ComSpec").trim())) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -292,7 +292,7 @@ public class LocalLauncherDelegate extends AbstractLauncherDelegate {
 		return new File(shell);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ITerminalConnector createTerminalConnector(Map<String, Object> properties) throws CoreException {
 		Assert.isNotNull(properties);
 
@@ -362,7 +362,7 @@ public class LocalLauncherDelegate extends AbstractLauncherDelegate {
 		}
 
 		// Set the ECLIPSE_HOME and ECLIPSE_WORKSPACE environment variables
-		List<String> envpList = new ArrayList<>();
+		List<String> envpList = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (envp != null) {
 			envpList.addAll(Arrays.asList(envp));
 		}
@@ -373,7 +373,7 @@ public class LocalLauncherDelegate extends AbstractLauncherDelegate {
 			try {
 				URI uri = URIUtil.fromString(eclipseHomeLocation);
 				File f = URIUtil.toFile(uri);
-				envpList.add("ECLIPSE_HOME=" + f.getAbsolutePath()); //$NON-NLS-1$
+				envpList.add("ECLIPSE_HOME=" + f.getAbsolutePath()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			} catch (URISyntaxException e) {
 				/* ignored on purpose */ }
 		}
@@ -384,7 +384,7 @@ public class LocalLauncherDelegate extends AbstractLauncherDelegate {
 			if (org.eclipse.core.resources.ResourcesPlugin.getWorkspace() != null
 					&& org.eclipse.core.resources.ResourcesPlugin.getWorkspace().getRoot() != null
 					&& org.eclipse.core.resources.ResourcesPlugin.getWorkspace().getRoot().getLocation() != null) {
-				envpList.add("ECLIPSE_WORKSPACE=" + org.eclipse.core.resources.ResourcesPlugin.getWorkspace().getRoot() //$NON-NLS-1$
+				envpList.add("ECLIPSE_WORKSPACE=" + org.eclipse.core.resources.ResourcesPlugin.getWorkspace().getRoot() //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						.getLocation().toOSString());
 			}
 		}

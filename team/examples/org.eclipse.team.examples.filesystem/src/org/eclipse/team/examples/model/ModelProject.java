@@ -34,7 +34,7 @@ public class ModelProject extends ModelContainer {
 	public static void makeModProject(IProject project, IProgressMonitor monitor) throws CoreException {
 		IProjectDescription description = project.getDescription();
 		String[] natureIds = description.getNatureIds();
-		List<String> result = new ArrayList<>();
+		List<String> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Collections.addAll(result, natureIds);
 		result.add(ModelNature.NATURE_ID);
 		description.setNatureIds(result.toArray(new String[result.size()]));

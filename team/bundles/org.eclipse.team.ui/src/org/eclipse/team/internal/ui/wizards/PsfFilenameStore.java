@@ -45,7 +45,7 @@ public class PsfFilenameStore extends PsfStore {
 		// Singleton
 	}
 
-	public void setDefaultFromSelection(IWorkbench workbench) {
+	public void setDefaultFromSelection(IWorkbench workbench) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Scan the workbench for a selected PSF file
 		IWorkbenchWindow wnd = workbench.getActiveWorkbenchWindow();
 		IWorkbenchPage pg = wnd.getActivePage();

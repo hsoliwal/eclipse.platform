@@ -49,7 +49,7 @@ public class BuilderEventTest {
 		getWorkspace().removeResourceChangeListener(listener);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testEventsOnClean() throws CoreException {
 		// Create some resource handles
 		IProject project = getWorkspace().getRoot().getProject("PROJECT");

@@ -81,8 +81,8 @@ public class PluginListView extends SpyView implements IStructuredContentProvide
 		// Create viewer.
 		ListViewer viewer = new ListViewer(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
 		viewer.setContentProvider(this);
-		viewer.setLabelProvider(new PluginListLabelProvider());
-		viewer.setInput(""); //$NON-NLS-1$
+		viewer.setLabelProvider(new PluginListLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
+		viewer.setInput(""); //$NON-NLS-1$ //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		getSite().setSelectionProvider(viewer);
 	}
 }

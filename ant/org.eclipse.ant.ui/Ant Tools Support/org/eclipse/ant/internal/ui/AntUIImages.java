@@ -43,63 +43,63 @@ public class AntUIImages {
 	private static String ICONS_PATH = "$nl$/icons/full/"; //$NON-NLS-1$
 
 	// Use IPath and toOSString to build the names to ensure they have the slashes correct
-	private final static String LOCALTOOL = ICONS_PATH + "elcl16/"; //basic colors - size 16x16 //$NON-NLS-1$
-	private final static String OBJECT = ICONS_PATH + "obj16/"; //basic colors - size 16x16 //$NON-NLS-1$
-	private final static String OVR = ICONS_PATH + "ovr16/"; //basic colors - size 7x8 //$NON-NLS-1$
-	private final static String WIZ = ICONS_PATH + "wizban/"; //$NON-NLS-1$
-	private static final String T_ETOOL = ICONS_PATH + "etool16"; //$NON-NLS-1$
+	private final static String LOCALTOOL = ICONS_PATH + "elcl16/"; //basic colors - size 16x16 //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	private final static String OBJECT = ICONS_PATH + "obj16/"; //basic colors - size 16x16 //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	private final static String OVR = ICONS_PATH + "ovr16/"; //basic colors - size 7x8 //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	private final static String WIZ = ICONS_PATH + "wizban/"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	private static final String T_ETOOL = ICONS_PATH + "etool16"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Declare all images
 	 */
-	private static void declareImages() {
+	private static void declareImages() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Ant Editor images
-		declareRegistryImage(IAntUIConstants.IMG_PROPERTY, OBJECT + "property_obj.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_TASK_PROPOSAL, OBJECT + "task_obj.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_TEMPLATE_PROPOSAL, OBJECT + "template_obj.svg"); //$NON-NLS-1$
+		declareRegistryImage(IAntUIConstants.IMG_PROPERTY, OBJECT + "property_obj.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_TASK_PROPOSAL, OBJECT + "task_obj.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_TEMPLATE_PROPOSAL, OBJECT + "template_obj.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-		declareRegistryImage(IAntUIConstants.IMG_SEGMENT_EDIT, T_ETOOL + "segment_edit.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_MARK_OCCURRENCES, T_ETOOL + "mark_occurrences.svg"); //$NON-NLS-1$
+		declareRegistryImage(IAntUIConstants.IMG_SEGMENT_EDIT, T_ETOOL + "segment_edit.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_MARK_OCCURRENCES, T_ETOOL + "mark_occurrences.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Ant View Actions
-		declareRegistryImage(IAntUIConstants.IMG_ANT, OBJECT + "ant.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_REMOVE, LOCALTOOL + "remove_co.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_REMOVE_ALL, LOCALTOOL + "removeall_co.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_ADD, LOCALTOOL + "add_co.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_RUN, LOCALTOOL + "run_tool.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_SEARCH, LOCALTOOL + "search.svg"); //$NON-NLS-1$
+		declareRegistryImage(IAntUIConstants.IMG_ANT, OBJECT + "ant.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_REMOVE, LOCALTOOL + "remove_co.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_REMOVE_ALL, LOCALTOOL + "removeall_co.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_ADD, LOCALTOOL + "add_co.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_RUN, LOCALTOOL + "run_tool.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_SEARCH, LOCALTOOL + "search.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-		declareRegistryImage(IAntUIConstants.IMG_FILTER_INTERNAL_TARGETS, LOCALTOOL + "filter_internal_targets.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_FILTER_IMPORTED_ELEMENTS, LOCALTOOL + "filter_imported_elements.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_FILTER_PROPERTIES, LOCALTOOL + "filter_properties.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_FILTER_TOP_LEVEL, LOCALTOOL + "filter_top_level.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_LINK_WITH_EDITOR, LOCALTOOL + "synced.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_SORT_OUTLINE, LOCALTOOL + "alpha_mode.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_REFRESH, LOCALTOOL + "refresh.svg"); //$NON-NLS-1$
+		declareRegistryImage(IAntUIConstants.IMG_FILTER_INTERNAL_TARGETS, LOCALTOOL + "filter_internal_targets.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_FILTER_IMPORTED_ELEMENTS, LOCALTOOL + "filter_imported_elements.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_FILTER_PROPERTIES, LOCALTOOL + "filter_properties.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_FILTER_TOP_LEVEL, LOCALTOOL + "filter_top_level.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_LINK_WITH_EDITOR, LOCALTOOL + "synced.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_SORT_OUTLINE, LOCALTOOL + "alpha_mode.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_REFRESH, LOCALTOOL + "refresh.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Ant View Labels
-		declareRegistryImage(IAntUIConstants.IMG_ANT_PROJECT, OBJECT + "ant_buildfile.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_ANT_TARGET, OBJECT + "targetpublic_obj.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_ANT_TARGET_INTERNAL, OBJECT + "targetinternal_obj.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_ANT_DEFAULT_TARGET, OBJECT + "defaulttarget_obj.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_ANT_TARGET_ERROR, OBJECT + "ant_target_err.svg"); //$NON-NLS-1$
+		declareRegistryImage(IAntUIConstants.IMG_ANT_PROJECT, OBJECT + "ant_buildfile.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_ANT_TARGET, OBJECT + "targetpublic_obj.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_ANT_TARGET_INTERNAL, OBJECT + "targetinternal_obj.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_ANT_DEFAULT_TARGET, OBJECT + "defaulttarget_obj.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_ANT_TARGET_ERROR, OBJECT + "ant_target_err.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// ANT objects
-		declareRegistryImage(IAntUIConstants.IMG_TAB_CLASSPATH, OBJECT + "classpath.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_ANT_TYPE, OBJECT + "type.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_ANT_TASKDEF, OBJECT + "taskdef_obj.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_ANT_MACRODEF, OBJECT + "macrodef_obj.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_ANT_IMPORT, OBJECT + "import_obj.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_ANT_ECLIPSE_RUNTIME_OBJECT, OBJECT + "eclipse16.svg"); //$NON-NLS-1$
+		declareRegistryImage(IAntUIConstants.IMG_TAB_CLASSPATH, OBJECT + "classpath.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_ANT_TYPE, OBJECT + "type.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_ANT_TASKDEF, OBJECT + "taskdef_obj.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_ANT_MACRODEF, OBJECT + "macrodef_obj.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_ANT_IMPORT, OBJECT + "import_obj.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_ANT_ECLIPSE_RUNTIME_OBJECT, OBJECT + "eclipse16.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-		declareRegistryImage(IAntUIConstants.IMG_WIZARD_BANNER, WIZ + "ant_wiz.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_EXPORT_WIZARD_BANNER, WIZ + "export_ant_wiz.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_TAB_ANT_TARGETS, LOCALTOOL + "ant_targets.svg"); //$NON-NLS-1$
+		declareRegistryImage(IAntUIConstants.IMG_WIZARD_BANNER, WIZ + "ant_wiz.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_EXPORT_WIZARD_BANNER, WIZ + "export_ant_wiz.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_TAB_ANT_TARGETS, LOCALTOOL + "ant_targets.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Overlays
-		declareRegistryImage(IAntUIConstants.IMG_OVR_ERROR, OVR + "error_co.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_OVR_WARNING, OVR + "warning_co.svg"); //$NON-NLS-1$
-		declareRegistryImage(IAntUIConstants.IMG_OVR_IMPORT, OVR + "import_co.svg"); //$NON-NLS-1$
+		declareRegistryImage(IAntUIConstants.IMG_OVR_ERROR, OVR + "error_co.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_OVR_WARNING, OVR + "warning_co.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		declareRegistryImage(IAntUIConstants.IMG_OVR_IMPORT, OVR + "import_co.svg"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**

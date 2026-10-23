@@ -40,9 +40,9 @@ public class UnitTestLaunchListener implements ILaunchListener {
 	 * TestRunner once to a launch. Once a test runner is connected, it is removed
 	 * from the set.
 	 */
-	private final HashSet<ILaunch> fTrackedLaunches = new HashSet<>(20);
+	private final HashSet<ILaunch> fTrackedLaunches = new HashSet<>(20); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void launchAdded(ILaunch launch) {
 		ILaunchConfiguration config = launch.getLaunchConfiguration();
 		if (config == null) {
@@ -84,7 +84,7 @@ public class UnitTestLaunchListener implements ILaunchListener {
 				.noneMatch(session -> launch.equals(session.getLaunch()))) {
 			TestRunSession testRunSession = new TestRunSession(launch);
 			UnitTestModel.getInstance().addTestRunSession(testRunSession);
-			for (TestRunListener listener : TestListenerRegistry.getDefault().getUnitTestRunListeners()) {
+			for (TestRunListener listener : TestListenerRegistry.getDefault().getUnitTestRunListeners()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				listener.sessionLaunched(testRunSession);
 			}
 		}

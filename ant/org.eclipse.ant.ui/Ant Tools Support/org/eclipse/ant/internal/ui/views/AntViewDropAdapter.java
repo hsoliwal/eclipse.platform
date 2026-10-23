@@ -44,7 +44,7 @@ public class AntViewDropAdapter extends DropTargetAdapter {
 		Object data = event.data;
 		if (data instanceof String[]) {
 			BusyIndicator.showWhile(null, () -> {
-				for (String string : (String[]) data) {
+				for (String string : (String[]) data) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					processString(string);
 				}
 			});
@@ -64,7 +64,7 @@ public class AntViewDropAdapter extends DropTargetAdapter {
 			return;
 		}
 		String name = buildFile.getFullPath().toString();
-		for (AntProjectNode node : view.getProjects()) {
+		for (AntProjectNode node : view.getProjects()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			AntProjectNodeProxy existingProject = (AntProjectNodeProxy) node;
 			if (existingProject.getBuildFileName().equals(name)) {
 				// Don't parse projects that have already been added.

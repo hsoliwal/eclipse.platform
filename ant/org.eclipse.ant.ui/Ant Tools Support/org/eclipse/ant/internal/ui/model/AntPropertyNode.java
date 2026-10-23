@@ -43,28 +43,28 @@ public class AntPropertyNode extends AntTaskNode {
 	 */
 	private Map<String, String> fProperties = null;
 
-	public AntPropertyNode(Task task, Attributes attributes) {
+	public AntPropertyNode(Task task, Attributes attributes) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super(task);
 		String label = attributes.getValue(IAntCoreConstants.NAME);
 		if (label == null) {
 			label = attributes.getValue(IAntCoreConstants.FILE);
 			if (label != null) {
 				fReferencedName = label;
-				label = "file=" + label; //$NON-NLS-1$
+				label = "file=" + label; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			} else {
 				label = attributes.getValue(IAntModelConstants.ATTR_RESOURCE);
 				if (label != null) {
 					fReferencedName = label;
-					label = "resource=" + label; //$NON-NLS-1$
+					label = "resource=" + label; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				} else {
 					label = attributes.getValue(IAntModelConstants.ATTR_ENVIRONMENT);
 					if (label != null) {
-						label = "environment=" + label; //$NON-NLS-1$
+						label = "environment=" + label; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					} else {
 						label = attributes.getValue("srcFile"); //$NON-NLS-1$
 						if (label != null) {
 							fReferencedName = label;
-							label = "srcFile=" + label; //$NON-NLS-1$
+							label = "srcFile=" + label; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						}
 					}
 				}
@@ -94,7 +94,7 @@ public class AntPropertyNode extends AntTaskNode {
 	/**
 	 * Sets the properties in the project.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean configure(boolean validateFully) {
 		if (fConfigured) {
 			return false;
@@ -136,7 +136,7 @@ public class AntPropertyNode extends AntTaskNode {
 	 */
 	public void addProperty(String propertyName, String value) {
 		if (fProperties == null) {
-			fProperties = new HashMap<>(1);
+			fProperties = new HashMap<>(1); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 		fProperties.put(propertyName, value);
 	}
@@ -176,7 +176,7 @@ public class AntPropertyNode extends AntTaskNode {
 		return fOccurrencesIdentifier;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean isRegionPotentialReference(IRegion region) {
 		boolean superOK = super.isRegionPotentialReference(region);
 		if (!getTask().getTaskName().equals("property") || !superOK) { //$NON-NLS-1$
@@ -206,7 +206,7 @@ public class AntPropertyNode extends AntTaskNode {
 		return false;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public List<Integer> computeIdentifierOffsets(String identifier) {
 		if (!getTask().getTaskName().equals("property")) { //$NON-NLS-1$
 			return super.computeIdentifierOffsets(identifier);
@@ -215,7 +215,7 @@ public class AntPropertyNode extends AntTaskNode {
 		if (textToSearch == null || textToSearch.length() == 0 || identifier.length() == 0) {
 			return null;
 		}
-		List<Integer> results = new ArrayList<>();
+		List<Integer> results = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (fBaseLabel != null) {
 			if (fBaseLabel.equals(identifier)) {
 				int nameOffset = textToSearch.indexOf(IAntCoreConstants.NAME);
@@ -226,7 +226,7 @@ public class AntPropertyNode extends AntTaskNode {
 		if (fValue != null) {
 			int valueOffset = textToSearch.indexOf(fOccurrencesStartingPoint);
 			int endOffset = getOffset() + getLength();
-			while (valueOffset < endOffset) {
+			while (valueOffset < endOffset) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				valueOffset = textToSearch.indexOf(identifier, valueOffset);
 				if (valueOffset == -1 || valueOffset > endOffset) {
 					break;
@@ -238,7 +238,7 @@ public class AntPropertyNode extends AntTaskNode {
 		return results;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean isFromDeclaration(IRegion region) {
 		if (fBaseLabel == null) {
 			return false;

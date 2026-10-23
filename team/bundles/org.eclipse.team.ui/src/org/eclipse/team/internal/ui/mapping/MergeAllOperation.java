@@ -30,7 +30,7 @@ import org.eclipse.team.ui.mapping.SynchronizationOperation;
 import org.eclipse.team.ui.synchronize.ISynchronizePageConfiguration;
 import org.eclipse.team.ui.synchronize.ModelMergeOperation;
 
-public final class MergeAllOperation extends SynchronizationOperation {
+public final class MergeAllOperation extends SynchronizationOperation { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	private final IMergeContext context;
 	private final String jobName;
@@ -41,10 +41,10 @@ public final class MergeAllOperation extends SynchronizationOperation {
 		this.context = context;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void execute(IProgressMonitor monitor) throws InvocationTargetException,
 			InterruptedException {
-		new ModelMergeOperation(getPart(), ((SynchronizationContext)context).getScopeManager()) {
+		new ModelMergeOperation(getPart(), ((SynchronizationContext)context).getScopeManager()) { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			public boolean isPreviewRequested() {
 				return false;
@@ -58,7 +58,7 @@ public final class MergeAllOperation extends SynchronizationOperation {
 			protected ISynchronizationContext getContext() {
 				return context;
 			}
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			protected void executeMerge(IProgressMonitor monitor) throws CoreException {
 				monitor.beginTask(null, 100);
 				if (!hasChangesOfInterest()) {
@@ -82,7 +82,7 @@ public final class MergeAllOperation extends SynchronizationOperation {
 			private IMergeContext getMergeContext() {
 				return (IMergeContext)getContext();
 			}
-			private boolean promptToContinue(final IStatus status) {
+			private boolean promptToContinue(final IStatus status) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 				final boolean[] result = new boolean[] { false };
 				Runnable runnable = () -> {
 					ErrorDialog dialog = new ErrorDialog(getShell(), TeamUIMessages.ModelMergeOperation_0, TeamUIMessages.ModelMergeOperation_1, status, IStatus.ERROR | IStatus.WARNING | IStatus.INFO) {
@@ -108,7 +108,7 @@ public final class MergeAllOperation extends SynchronizationOperation {
 					int code = dialog.open();
 					result[0] = code == 0;
 				};
-				getShell().getDisplay().syncExec(runnable);
+				getShell().getDisplay().syncExec(runnable); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				return (result[0]);
 			}
 		}.run(monitor);

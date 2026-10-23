@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
 @SuppressWarnings("restriction")
 public class ContentTypeView extends SpyView {
 
-	private static class ContentTypeContentProvider extends AbstractTreeContentProvider {
+	private static class ContentTypeContentProvider extends AbstractTreeContentProvider { //FLLDCIM: MARK — M22  IMPLEMENTS
 
 		public ContentTypeContentProvider() {
 			super(true);
@@ -64,8 +64,8 @@ public class ContentTypeView extends SpyView {
 		@Override
 		protected void rebuild(Viewer viewer, Object input) {
 			IContentType[] allTypes = ContentTypeManager.getInstance().getAllContentTypes();
-			Set<ContentTypePropertySource> visited = new HashSet<>(allTypes.length);
-			for (IContentType allType : allTypes) {
+			Set<ContentTypePropertySource> visited = new HashSet<>(allTypes.length); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+			for (IContentType allType : allTypes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				addContentType(allType, visited);
 			}
 		}
@@ -78,7 +78,7 @@ public class ContentTypeView extends SpyView {
 	public void createPartControl(Composite parent) {
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setContentProvider(new ContentTypeContentProvider());
-		viewer.setInput(""); //$NON-NLS-1$
+		viewer.setInput(""); //$NON-NLS-1$ //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		getSite().setSelectionProvider(viewer);
 	}
 }

@@ -76,7 +76,7 @@ public class SyncInfoToDiffConverter {
 		};
 	}
 
-	private static int asSyncInfoKind(IThreeWayDiff diff) {
+	private static int asSyncInfoKind(IThreeWayDiff diff) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int kind = diff.getKind();
 		if (diff.getKind() == IDiff.NO_CHANGE) {
 			return SyncInfo.IN_SYNC;
@@ -112,7 +112,7 @@ public class SyncInfoToDiffConverter {
 		return syncKind;
 	}
 
-	public IDiff getDeltaFor(SyncInfo info) {
+	public IDiff getDeltaFor(SyncInfo info) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (info.getComparator().isThreeWay()) {
 			ITwoWayDiff local = getLocalDelta(info);
 			ITwoWayDiff remote = getRemoteDelta(info);
@@ -141,7 +141,7 @@ public class SyncInfoToDiffConverter {
 		}
 	}
 
-	private ITwoWayDiff getRemoteDelta(SyncInfo info) {
+	private ITwoWayDiff getRemoteDelta(SyncInfo info) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int direction = SyncInfo.getDirection(info.getKind());
 		if (direction == SyncInfo.INCOMING || direction == SyncInfo.CONFLICTING) {
 			IResourceVariant ancestor = info.getBase();
@@ -181,7 +181,7 @@ public class SyncInfoToDiffConverter {
 		return new ResourceVariantFileRevision(variant);
 	}
 
-	private ITwoWayDiff getLocalDelta(SyncInfo info) {
+	private ITwoWayDiff getLocalDelta(SyncInfo info) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int direction = SyncInfo.getDirection(info.getKind());
 		if (direction == SyncInfo.OUTGOING || direction == SyncInfo.CONFLICTING) {
 			IResourceVariant ancestor = info.getBase();
@@ -226,7 +226,7 @@ public class SyncInfoToDiffConverter {
 		return null;
 	}
 
-	public SyncInfo asSyncInfo(IDiff diff, IResourceVariantComparator comparator) {
+	public SyncInfo asSyncInfo(IDiff diff, IResourceVariantComparator comparator) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (diff instanceof ResourceDiff rd) {
 			IResource local = rd.getResource();
 			IFileRevision afterState = rd.getAfterState();

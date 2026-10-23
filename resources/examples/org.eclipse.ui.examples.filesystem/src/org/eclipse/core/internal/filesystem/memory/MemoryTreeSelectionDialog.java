@@ -56,7 +56,7 @@ public class MemoryTreeSelectionDialog extends SelectionDialog {
 		super(parentShell);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void buttonPressed(int buttonId) {
 		if (buttonId == CREATE_FILE_ID || buttonId == CREATE_FOLDER_ID) {
 			try {
@@ -71,7 +71,7 @@ public class MemoryTreeSelectionDialog extends SelectionDialog {
 				} else {
 					toCreate.mkdir(EFS.NONE, null);
 				}
-				tree.refresh();
+				tree.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 			} catch (Exception e) {
 				IStatus status = Policy.createStatus(e);
 				ErrorDialog.openError(getShell(), null, null, status);
@@ -97,8 +97,8 @@ public class MemoryTreeSelectionDialog extends SelectionDialog {
 		data.heightHint = 300;
 		tree.getControl().setLayoutData(data);
 		tree.setContentProvider(new WorkbenchContentProvider());
-		tree.setLabelProvider(new WorkbenchLabelProvider());
-		tree.setInput(new MemoryFileStore(IPath.ROOT));
+		tree.setLabelProvider(new WorkbenchLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
+		tree.setInput(new MemoryFileStore(IPath.ROOT)); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 
 		createNewElementArea(parent);
 

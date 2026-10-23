@@ -48,7 +48,7 @@ public class DeleteTest {
 		createInWorkspace(project);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteOpenProject() throws Exception {
 		IFolder folder = project.getFolder("folder");
 		IFile file = folder.getFile("file");
@@ -181,7 +181,7 @@ public class DeleteTest {
 		assertFalse(filePath.toFile().isFile());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteClosedProject() throws Throwable {
 		IFolder folder = project.getFolder("folder");
 		IFile file = folder.getFile("file");
@@ -193,7 +193,7 @@ public class DeleteTest {
 
 		/* initialize common objects */
 		createInWorkspace(new IResource[] {project, folder});
-		getWorkspace().run(monitor -> file.create(null, true, monitor), createTestMonitor());
+		getWorkspace().run(monitor -> file.create(null, true, monitor), createTestMonitor()); //FLLDCIM: MARK — T09  LAMBDA
 		createInWorkspace(file);
 		IPath folderPath = folder.getLocation();
 		IPath filePath = file.getLocation();
@@ -267,7 +267,7 @@ public class DeleteTest {
 		assertFalse(filePath.toFile().exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteResource() throws Throwable {
 		/* test's hierarchy
 

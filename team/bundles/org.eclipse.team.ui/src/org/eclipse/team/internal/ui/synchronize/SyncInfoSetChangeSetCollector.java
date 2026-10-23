@@ -53,7 +53,7 @@ public abstract class SyncInfoSetChangeSetCollector extends ChangeSetManager {
 	 * UI thread or the provider's event handler thread so updates
 	 * done by this listener will update the view properly.
 	 */
-	ISyncInfoSetChangeListener changeSetListener = new ISyncInfoSetChangeListener() {
+	ISyncInfoSetChangeListener changeSetListener = new ISyncInfoSetChangeListener() { //FLLDCIM: MARK — T38  ANONYMOUS
 
 		@Override
 		public void syncInfoSetReset(SyncInfoSet set, IProgressMonitor monitor) {
@@ -126,7 +126,7 @@ public abstract class SyncInfoSetChangeSetCollector extends ChangeSetManager {
 	 */
 	protected void remove(IResource[] resources) {
 		ChangeSet[] sets = getSets();
-		for (ChangeSet set : sets) {
+		for (ChangeSet set : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			set.remove(resources);
 		}
 	}
@@ -155,7 +155,7 @@ public abstract class SyncInfoSetChangeSetCollector extends ChangeSetManager {
 	public void reset(SyncInfoSet seedSet) {
 		// First, remove all the sets
 		ChangeSet[] sets = getSets();
-		for (ChangeSet set2 : sets) {
+		for (ChangeSet set2 : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			remove(set2);
 		}
 		if (seedSet != null) {
@@ -178,12 +178,12 @@ public abstract class SyncInfoSetChangeSetCollector extends ChangeSetManager {
 	 * @param event the set change event.
 	 */
 	public void handleChange(ISyncInfoSetChangeEvent event) {
-		List<IResource> removals = new ArrayList<>();
-		List<SyncInfo> additions = new ArrayList<>();
+		List<IResource> removals = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<SyncInfo> additions = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		removals.addAll(Arrays.asList(event.getRemovedResources()));
 		additions.addAll(Arrays.asList(event.getAddedResources()));
 		SyncInfo[] changed = event.getChangedResources();
-		for (SyncInfo info : changed) {
+		for (SyncInfo info : changed) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			additions.add(info);
 			removals.add(info.getLocal());
 		}
@@ -263,7 +263,7 @@ public abstract class SyncInfoSetChangeSetCollector extends ChangeSetManager {
 	 */
 	protected ChangeSet getChangeSet(SyncInfoSet set) {
 		ChangeSet[] sets = getSets();
-		for (ChangeSet changeSet : sets) {
+		for (ChangeSet changeSet : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (((CheckedInChangeSet)changeSet).getSyncInfoSet() == set) {
 				return changeSet;
 			}

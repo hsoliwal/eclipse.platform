@@ -77,7 +77,7 @@ public class ResourceAttributeTest {
 		resource.setResourceAttributes(attributes);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAttributeArchive() throws CoreException {
 		assumeTrue(isAttributeSupported(EFS.ATTRIBUTE_ARCHIVE),
 				"only relevant for platforms supporting archive attribute");
@@ -101,7 +101,7 @@ public class ResourceAttributeTest {
 		assertFalse(project.getResourceAttributes().isArchive());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAttributeExecutable() throws CoreException {
 		assumeTrue(isAttributeSupported(EFS.ATTRIBUTE_EXECUTABLE),
 				"only relevant for platforms supporting executable attribute");
@@ -126,7 +126,7 @@ public class ResourceAttributeTest {
 		assertTrue(project.getResourceAttributes().isExecutable());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAttributeHidden() throws CoreException {
 		assumeTrue(isAttributeSupported(EFS.ATTRIBUTE_HIDDEN),
 				"only relevant for platforms supporting hidden attribute");
@@ -150,7 +150,7 @@ public class ResourceAttributeTest {
 		assertFalse(project.getResourceAttributes().isHidden());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAttributeReadOnly() throws CoreException {
 		assumeTrue(isAttributeSupported(EFS.ATTRIBUTE_READ_ONLY),
 				"only relevant for platforms supporting read-only attribute");
@@ -185,7 +185,7 @@ public class ResourceAttributeTest {
 		assertNull(project.getResourceAttributes());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNonExistingResource() throws CoreException {
 		//asking for attributes of a non-existent resource should return null
 		IProject project = getWorkspace().getRoot().getProject("testNonExistingResource");
@@ -215,7 +215,7 @@ public class ResourceAttributeTest {
 	 * Test commented out because current failing on Hudson.
 	 * See https://bugs.eclipse.org/bugs/show_bug.cgi?id=397353
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Disabled("currently failing on Hudson: see https://bugs.eclipse.org/bugs/show_bug.cgi?id=397353")
 	public void testRefreshExecutableOnFolder() throws CoreException {
 		assumeTrue(isAttributeSupported(EFS.ATTRIBUTE_EXECUTABLE),
@@ -244,7 +244,7 @@ public class ResourceAttributeTest {
 		assertFalse(fileExists);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAttributeSymlink() throws Exception {
 		assumeTrue(canCreateSymLinks(), "only relevant for platforms supporting symbolic links");
 
@@ -287,7 +287,7 @@ public class ResourceAttributeTest {
 		assertFalse(link.getResourceAttributes().isSymbolicLink());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAttributes() throws CoreException {
 		int[] attributes = new int[] {EFS.ATTRIBUTE_GROUP_READ, EFS.ATTRIBUTE_GROUP_WRITE, EFS.ATTRIBUTE_GROUP_EXECUTE, EFS.ATTRIBUTE_OTHER_READ, EFS.ATTRIBUTE_OTHER_WRITE, EFS.ATTRIBUTE_OTHER_EXECUTE};
 
@@ -295,7 +295,7 @@ public class ResourceAttributeTest {
 		IFile file = project.getFile(createUniqueString());
 		createInWorkspace(file, createRandomString());
 
-		for (int attribute : attributes) {
+		for (int attribute : attributes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// only activate this test on platforms that support it
 			if (!isAttributeSupported(attribute)) {
 				continue;

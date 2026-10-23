@@ -99,7 +99,7 @@ public class CompareOpenEfficiencyTest {
 			this.bytes = content;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public InputStream getContents() {
 			contentReads.incrementAndGet();
 			return new FilterInputStream(new ByteArrayInputStream(bytes)) {
@@ -156,7 +156,7 @@ public class CompareOpenEfficiencyTest {
 	 * A compare input that counts {@code prepareInput} invocations and records
 	 * whether they ran on the UI thread.
 	 */
-	private static final class CountingCompareEditorInput extends CompareEditorInput {
+	private static final class CountingCompareEditorInput extends CompareEditorInput { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 		private final ITypedElement left;
 		private final ITypedElement right;
@@ -211,7 +211,7 @@ public class CompareOpenEfficiencyTest {
 		processQueuedEvents();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetContentsCallCountPerSide() throws Exception {
 		store().setValue(ComparePreferencePage.UNIFIED_DIFF, false);
 		CountingElement leftElement = new CountingElement("left.txt", //$NON-NLS-1$
@@ -226,7 +226,7 @@ public class CompareOpenEfficiencyTest {
 			return adapter != null && adapter.getChangesCount() > 0;
 		}, "merge viewer did not report a diff"); //$NON-NLS-1$
 
-		System.out.println("PERF-EFFICIENCY getContents left=" + leftElement.reads() //$NON-NLS-1$
+		System.out.println("PERF-EFFICIENCY getContents left=" + leftElement.reads() //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ " right=" + rightElement.reads()); //$NON-NLS-1$
 
 		assertReadsWithinBound("left", leftElement.reads()); //$NON-NLS-1$
@@ -259,14 +259,14 @@ public class CompareOpenEfficiencyTest {
 
 	private static void assertBytesWithinBound(String side, long bytes) {
 		assertTrue(bytes <= MAX_BINARY_BYTES_PER_SIDE,
-				"read " + bytes + " bytes from the " + side + " side of a " + BINARY_SIZE //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				"read " + bytes + " bytes from the " + side + " side of a " + BINARY_SIZE //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						+ " byte binary, exceeding the bound of " + MAX_BINARY_BYTES_PER_SIDE); //$NON-NLS-1$
 	}
 
 	private static void assertReadsWithinBound(String side, int reads) {
-		assertTrue(reads >= 1, "expected at least one getContents() call on the " + side + " side"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue(reads >= 1, "expected at least one getContents() call on the " + side + " side"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertTrue(reads <= MAX_GET_CONTENTS_PER_SIDE,
-				"getContents() called " + reads + " times on the " + side //$NON-NLS-1$ //$NON-NLS-2$
+				"getContents() called " + reads + " times on the " + side //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						+ " side, exceeding the known worst case of " + MAX_GET_CONTENTS_PER_SIDE); //$NON-NLS-1$
 	}
 
@@ -336,31 +336,31 @@ public class CompareOpenEfficiencyTest {
 		}
 	}
 
-	private static void pumpUntil(BooleanSupplier condition, String failMessage) {
+	private static void pumpUntil(BooleanSupplier condition, String failMessage) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Display display = Display.getCurrent();
 		long deadline = System.currentTimeMillis() + TIMEOUT_MILLIS;
 		// A self-rescheduling timer keeps the loop waking so the deadline is
 		// enforced even while blocked in Display.sleep().
 		Runnable[] wake = new Runnable[1];
-		wake[0] = () -> display.timerExec(50, wake[0]);
-		display.timerExec(50, wake[0]);
+		wake[0] = () -> display.timerExec(50, wake[0]); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
+		display.timerExec(50, wake[0]); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		try {
-			while (!condition.getAsBoolean()) {
+			while (!condition.getAsBoolean()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (System.currentTimeMillis() > deadline) {
-					fail(failMessage + " within " + TIMEOUT_MILLIS + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+					fail(failMessage + " within " + TIMEOUT_MILLIS + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				if (!display.readAndDispatch()) {
 					display.sleep();
 				}
 			}
 		} finally {
-			display.timerExec(-1, wake[0]);
+			display.timerExec(-1, wake[0]); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		}
 	}
 
 	private void processQueuedEvents() {
 		Display display = Display.getCurrent();
-		while (display.readAndDispatch()) {
+		while (display.readAndDispatch()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// drain the event queue
 		}
 	}

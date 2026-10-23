@@ -33,7 +33,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class Bug_217673 {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		final IProject project = workspace.getRoot().getProject(

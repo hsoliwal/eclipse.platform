@@ -40,7 +40,7 @@ public abstract class AbstractSynchronizeScope implements ISynchronizeScope {
 	/*
 	 * Key for scope in memento
 	 */
-	private static final String CTX_SUBSCRIBER_SCOPE_TYPE = TeamUIPlugin.ID + ".SCOPE_TYPE"; //$NON-NLS-1$
+	private static final String CTX_SUBSCRIBER_SCOPE_TYPE = TeamUIPlugin.ID + ".SCOPE_TYPE"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/*
 	 * Scope change listeners
@@ -129,7 +129,7 @@ public abstract class AbstractSynchronizeScope implements ISynchronizeScope {
 		synchronized(listeners) {
 			allListeners = listeners.getListeners();
 		}
-		for (Object l : allListeners) {
+		for (Object l : allListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final IPropertyChangeListener listener = (IPropertyChangeListener) l;
 			SafeRunner.run(new SafeRunnable() {
 				@Override
@@ -177,7 +177,7 @@ public abstract class AbstractSynchronizeScope implements ISynchronizeScope {
 	public boolean contains(IResource resource) {
 		IResource[] roots = getRoots();
 		IPath resourcePath = resource.getFullPath();
-		for (IResource root : roots) {
+		for (IResource root : roots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (root.getFullPath().isPrefixOf(resourcePath)) {
 				return true;
 			}
@@ -193,9 +193,9 @@ public abstract class AbstractSynchronizeScope implements ISynchronizeScope {
 	 * @since 3.2
 	 */
 	public ResourceMapping[] getMappings() {
-		List<ResourceMapping> result = new ArrayList<>();
+		List<ResourceMapping> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IResource[] roots = getRoots();
-		for (IResource resource : roots) {
+		for (IResource resource : roots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result.add(resource.getAdapter(ResourceMapping.class));
 		}
 		return result.toArray(new ResourceMapping[result.size()]);

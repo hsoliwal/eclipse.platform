@@ -130,7 +130,7 @@ public class NatureTest {
 	/**
 	 * Tests invalid additions to the set of natures for a project.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInvalidAdditions() throws Throwable {
 		createInWorkspace(project);
 		setNatures(project, new String[] { NATURE_SIMPLE }, false);
@@ -190,7 +190,7 @@ public class NatureTest {
 		assertHasEnabledNature(NATURE_SIMPLE);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNatureLifecyle() throws Throwable {
 		createInWorkspace(project);
 
@@ -227,12 +227,12 @@ public class NatureTest {
 	/**
 	 * Test simple addition and removal of natures.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSimpleNature() throws Throwable {
 		createInWorkspace(project);
 
 		String[][] valid = getValidNatureSets();
-		for (String[] element : valid) {
+		for (String[] element : valid) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			setNatures(project, element, false);
 		}
 		//configure a valid nature before starting invalid tests
@@ -241,7 +241,7 @@ public class NatureTest {
 
 		//now do invalid tests and ensure simple nature is still configured
 		String[][] invalid = getInvalidNatureSets();
-		for (String[] element : invalid) {
+		for (String[] element : invalid) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			setNatures(project, element, true);
 			assertHasEnabledNature(NATURE_SIMPLE);
 			assertDoesNotHaveNature(NATURE_WATER);
@@ -253,13 +253,13 @@ public class NatureTest {
 	 * Test addition of nature that requires the workspace root.
 	 * See bugs 127562 and  128709.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug127562Nature() throws Throwable {
 		createInWorkspace(project);
 		IWorkspace ws = project.getWorkspace();
 
 		String[][] valid = getValidNatureSets();
-		for (String[] element : valid) {
+		for (String[] element : valid) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			setNatures(project, element, false);
 		}
 
@@ -285,14 +285,14 @@ public class NatureTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug297871() throws Throwable {
 		createInWorkspace(project);
 
 		IFileStore descStore = ((File) project.getFile(IProjectDescription.DESCRIPTION_FILE_NAME)).getStore();
 		java.io.File desc = descStore.toLocalFile(EFS.NONE, createTestMonitor());
 
-		java.io.File descTmp = new java.io.File(desc.getPath() + ".tmp");
+		java.io.File descTmp = new java.io.File(desc.getPath() + ".tmp"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		Files.copy(desc.toPath(), descTmp.toPath());
 
 		setNatures(project, new String[] { NATURE_EARTH }, false);
@@ -318,7 +318,7 @@ public class NatureTest {
 	 *
 	 * See Bug 338055.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug338055() throws Exception {
 		final boolean finished[] = new boolean[1];
 		createInWorkspace(project);
@@ -349,13 +349,13 @@ public class NatureTest {
 		IFileStore descStore = ((File) project.getFile(IProjectDescription.DESCRIPTION_FILE_NAME)).getStore();
 
 		// create a description with many natures, this will make updating description longer
-		StringBuilder description = new StringBuilder();
-		description.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?><projectDescription><name></name><comment></comment><projects></projects><buildSpec></buildSpec><natures>");
-		description.append("<nature>" + NATURE_SIMPLE + "</nature>");
-		for (int i = 0; i < 100; i++) {
-			description.append("<nature>nature" + i + "</nature>");
+		StringBuilder description = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		description.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?><projectDescription><name></name><comment></comment><projects></projects><buildSpec></buildSpec><natures>"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		description.append("<nature>" + NATURE_SIMPLE + "</nature>"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		for (int i = 0; i < 100; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			description.append("<nature>nature" + i + "</nature>"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		description.append("</natures></projectDescription>\n");
+		description.append("</natures></projectDescription>\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 		// write the description
 		try (OutputStream output = descStore.openOutputStream(EFS.NONE, createTestMonitor());) {
@@ -369,7 +369,7 @@ public class NatureTest {
 		assertHasEnabledNature(NATURE_SIMPLE);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMissingNatureAddsMarker() throws Exception {
 		createInWorkspace(project);
 		InstanceScope.INSTANCE.getNode(ResourcesPlugin.PI_RESOURCES).putInt(ResourcesPlugin.PREF_MISSING_NATURE_MARKER_SEVERITY, IMarker.SEVERITY_WARNING);
@@ -392,7 +392,7 @@ public class NatureTest {
 		assertThat(marked).isEqualTo(NATURE_MISSING);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMissingNatureWithWhitespacesSetChars() throws Exception {
 		createInWorkspace(project);
 		InstanceScope.INSTANCE.getNode(ResourcesPlugin.PI_RESOURCES).putInt(ResourcesPlugin.PREF_MISSING_NATURE_MARKER_SEVERITY, IMarker.SEVERITY_WARNING);
@@ -400,7 +400,7 @@ public class NatureTest {
 		IFile dotProjectFile = project.getFile(IProjectDescription.DESCRIPTION_FILE_NAME);
 		dotProjectFile
 				.setContents(
-						("<projectDescription><name>" + project.getName() + "</name><natures><nature> " + NATURE_MISSING
+						("<projectDescription><name>" + project.getName() + "</name><natures><nature> " + NATURE_MISSING //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 								+ "  </nature></natures></projectDescription>").getBytes(),
 						false, false, createTestMonitor());
 		project.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
@@ -433,7 +433,7 @@ public class NatureTest {
 		assertThat(project.findMarkers(CheckMissingNaturesListener.MARKER_TYPE, false, IResource.DEPTH_ONE)).isEmpty();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testListenToPreferenceChange() throws Exception {
 		testMissingNatureAddsMarker();
 		// to INFO

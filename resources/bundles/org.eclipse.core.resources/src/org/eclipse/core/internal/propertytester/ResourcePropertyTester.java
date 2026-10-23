@@ -94,7 +94,7 @@ public class ResourcePropertyTester extends PropertyTester {
 	 */
 	protected static final String SESSION_PROPERTY = "sessionProperty"; //$NON-NLS-1$
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean test(Object receiver, String method, Object[] args, Object expectedValue) {
 		if (!(receiver instanceof IResource res)) {
 			return false;
@@ -149,7 +149,7 @@ public class ResourcePropertyTester extends PropertyTester {
 	 *            used only if args is of length 0 (see Javadoc for args parameter)
 	 * @return whether there is a match
 	 */
-	protected boolean testProperty(IResource resource, boolean persistentFlag, Object[] args, Object expectedValue) {
+	protected boolean testProperty(IResource resource, boolean persistentFlag, Object[] args, Object expectedValue) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//the project of IWorkspaceRoot is null
 		if (resource == null) {
 			return false;

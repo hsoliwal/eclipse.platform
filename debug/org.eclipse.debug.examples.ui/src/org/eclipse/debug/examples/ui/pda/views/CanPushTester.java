@@ -28,7 +28,7 @@ public class CanPushTester extends PropertyTester {
 
 	private static final String CAN_PUSH_PROPERTY = "canPush"; //$NON-NLS-1$
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
 		if (CAN_PUSH_PROPERTY.equals(property)) {
 			if (receiver instanceof IAdaptable) {

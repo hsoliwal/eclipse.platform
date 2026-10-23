@@ -39,12 +39,12 @@ public class ModelMergeActionHandler extends MergeActionHandler {
 	 * Operation to merge model elements. We're using an internal superclass to save on copying
 	 * code.
 	 */
-	private final class ModelSynchronizeOperation extends ResourceModelProviderOperation {
+	private final class ModelSynchronizeOperation extends ResourceModelProviderOperation { //FLLDCIM: MARK — T09  IMPLEMENTS
 		public ModelSynchronizeOperation(ISynchronizePageConfiguration configuration, IStructuredSelection selection) {
 			super(configuration, selection);
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		protected void execute(IProgressMonitor monitor) throws InvocationTargetException {
 			// We need to perform special handling for any MOE file whose parent MOD is not included in the merge
 			try {
@@ -55,7 +55,7 @@ public class ModelMergeActionHandler extends MergeActionHandler {
 				if (!status.isOK())
 					throw new CoreException(status);
 				// For now, just cycle through each lonely MOE and update the parent
-				for (ModelObjectElementFile file : moeMerges) {
+				for (ModelObjectElementFile file : moeMerges) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					ModelObjectDefinitionFile modFile = (ModelObjectDefinitionFile)file.getParent();
 					if (file.getResource().exists() && !modFile.hasMoe((IFile)file.getResource()))
 						modFile.addMoe((IFile)file.getResource());
@@ -68,9 +68,9 @@ public class ModelMergeActionHandler extends MergeActionHandler {
 		}
 
 		private ModelObjectElementFile[] getMoeOnlyMerges() {
-			List<ModelObjectElementFile> result = new ArrayList<>();
+			List<ModelObjectElementFile> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			Object[] elements = getElements();
-			for (Object object : elements) {
+			for (Object object : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (object instanceof ModelObjectElementFile) {
 					ModelObjectElementFile moeFile = (ModelObjectElementFile) object;
 					result.add(moeFile);

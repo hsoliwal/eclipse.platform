@@ -15,7 +15,7 @@ package org.eclipse.compare.internal;
 
 
 public interface ICompareUIConstants {
-	public final String PREFIX = CompareUIPlugin.getPluginId() + "."; //$NON-NLS-1$
+	public final String PREFIX = CompareUIPlugin.getPluginId() + "."; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	public static final String ETOOL_NEXT = "elcl16/next_nav.svg"; //$NON-NLS-1$
 	public static final String CTOOL_NEXT= ETOOL_NEXT;
@@ -36,20 +36,20 @@ public interface ICompareUIConstants {
 
 	public static final String IGNORE_WHITESPACE_ENABLED = "etool16/ignorews_edit.svg"; //$NON-NLS-1$
 
-	public static final String PROP_ANCESTOR_VISIBLE = PREFIX + "AncestorVisible"; //$NON-NLS-1$
-	public static final String PROP_IGNORE_ANCESTOR = PREFIX + "IgnoreAncestor"; //$NON-NLS-1$
-	public static final String PROP_TITLE = PREFIX + "Title"; //$NON-NLS-1$
-	public static final String PROP_TITLE_IMAGE = PREFIX + "TitleImage"; //$NON-NLS-1$
-	public static final String PROP_SELECTED_EDITION = PREFIX + "SelectedEdition"; //$NON-NLS-1$
+	public static final String PROP_ANCESTOR_VISIBLE = PREFIX + "AncestorVisible"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String PROP_IGNORE_ANCESTOR = PREFIX + "IgnoreAncestor"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String PROP_TITLE = PREFIX + "Title"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String PROP_TITLE_IMAGE = PREFIX + "TitleImage"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String PROP_SELECTED_EDITION = PREFIX + "SelectedEdition"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	public static final int COMPARE_IMAGE_WIDTH= 22;
 
-	public static final String PREF_NAVIGATION_END_ACTION= PREFIX + "NavigationEndAction"; //$NON-NLS-1$
-	public static final String PREF_NAVIGATION_END_ACTION_LOCAL= PREFIX + "NavigationEndActionLocal"; //$NON-NLS-1$
+	public static final String PREF_NAVIGATION_END_ACTION= PREFIX + "NavigationEndAction"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String PREF_NAVIGATION_END_ACTION_LOCAL= PREFIX + "NavigationEndActionLocal"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	public static final String PREF_VALUE_PROMPT = "prompt"; //$NON-NLS-1$
 	public static final String PREF_VALUE_LOOP = "loop"; //$NON-NLS-1$
 	public static final String PREF_VALUE_NEXT = "next"; //$NON-NLS-1$
 	public static final String PREF_VALUE_DO_NOTHING = "doNothing"; //$NON-NLS-1$
 
-	public static final String COMMAND_IGNORE_WHITESPACE = PREFIX + "ignoreWhiteSpace"; //$NON-NLS-1$
+	public static final String COMMAND_IGNORE_WHITESPACE = PREFIX + "ignoreWhiteSpace"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 }

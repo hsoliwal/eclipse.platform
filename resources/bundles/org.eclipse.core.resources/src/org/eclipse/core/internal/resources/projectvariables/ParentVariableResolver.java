@@ -33,7 +33,7 @@ public class ParentVariableResolver extends PathVariableResolver {
 		// nothing
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String getValue(String variable, IResource resource) {
 		int index = variable.indexOf('-');
 		if (index == -1 || index == (variable.length() - 1)) {

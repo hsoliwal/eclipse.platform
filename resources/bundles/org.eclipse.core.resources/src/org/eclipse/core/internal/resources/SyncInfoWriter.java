@@ -41,7 +41,7 @@ public class SyncInfoWriter {
 	public void savePartners(DataOutputStream output) throws IOException {
 		Set<QualifiedName> registry = synchronizer.getRegistry();
 		output.writeInt(registry.size());
-		for (QualifiedName qname : registry) {
+		for (QualifiedName qname : registry) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			output.writeUTF(qname.getQualifier());
 			output.writeUTF(qname.getLocalName());
 		}
@@ -61,7 +61,7 @@ public class SyncInfoWriter {
 	 * BYTES -> byte[]
 	 * }</pre>
 	 */
-	public void saveSyncInfo(ResourceInfo info, IPathRequestor requestor, DataOutputStream output, List<QualifiedName> writtenPartners) throws IOException {
+	public void saveSyncInfo(ResourceInfo info, IPathRequestor requestor, DataOutputStream output, List<QualifiedName> writtenPartners) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Map<QualifiedName, Object> table = info.getSyncInfo(false);
 		if (table == null) {
 			return;
@@ -73,7 +73,7 @@ public class SyncInfoWriter {
 		}
 		output.writeUTF(requestor.requestPath().toString());
 		output.writeInt(table.size());
-		for (Map.Entry<QualifiedName, Object> entry : table.entrySet()) {
+		for (Map.Entry<QualifiedName, Object> entry : table.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			QualifiedName name = entry.getKey();
 			// if we have already written the partner name once, then write an integer
 			// constant to represent it instead to remove duplication
@@ -106,7 +106,7 @@ public class SyncInfoWriter {
 	 * BYTES -> byte[]
 	 * }</pre>
 	 */
-	public void snapSyncInfo(ResourceInfo info, IPathRequestor requestor, DataOutputStream output) throws IOException {
+	public void snapSyncInfo(ResourceInfo info, IPathRequestor requestor, DataOutputStream output) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!info.isSet(ICoreConstants.M_SYNCINFO_SNAP_DIRTY)) {
 			return;
 		}
@@ -118,7 +118,7 @@ public class SyncInfoWriter {
 		output.writeInt(SYNCINFO_SNAP_VERSION);
 		output.writeUTF(requestor.requestPath().toString());
 		output.writeInt(table.size());
-		for (Map.Entry<QualifiedName, Object> entry : table.entrySet()) {
+		for (Map.Entry<QualifiedName, Object> entry : table.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			QualifiedName name = entry.getKey();
 			output.writeUTF(name.getQualifier());
 			output.writeUTF(name.getLocalName());

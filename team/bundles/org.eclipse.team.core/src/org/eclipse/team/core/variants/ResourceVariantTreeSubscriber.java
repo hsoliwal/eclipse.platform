@@ -78,13 +78,13 @@ public abstract class ResourceVariantTreeSubscriber extends Subscriber {
 		return info;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IResource[] members(IResource resource) throws TeamException {
 		if(resource.getType() == IResource.FILE) {
 			return new IResource[0];
 		}
 		try {
-			Set<IResource> allMembers = new HashSet<>();
+			Set<IResource> allMembers = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			try {
 				allMembers.addAll(Arrays.asList(((IContainer)resource).members()));
 			} catch (CoreException e) {
@@ -98,7 +98,7 @@ public abstract class ResourceVariantTreeSubscriber extends Subscriber {
 			if (getResourceComparator().isThreeWay()) {
 				allMembers.addAll(Arrays.asList(internalMembers(getBaseTree(), resource)));
 			}
-			for (Iterator iterator = allMembers.iterator(); iterator.hasNext();) {
+			for (Iterator iterator = allMembers.iterator(); iterator.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource member = (IResource) iterator.next();
 				if(!member.exists() && !getRemoteTree().hasResourceVariant(member)) {
 					// Remove deletion conflicts
@@ -114,14 +114,14 @@ public abstract class ResourceVariantTreeSubscriber extends Subscriber {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void refresh(IResource[] resources, int depth, IProgressMonitor monitor) throws TeamException {
 		monitor = Policy.monitorFor(monitor);
-		List<IStatus> errors = new ArrayList<>();
-		List<IStatus> cancels = new ArrayList<>();
+		List<IStatus> errors = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<IStatus> cancels = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		try {
 			monitor.beginTask(null, 1000 * resources.length);
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (resource.getProject().isAccessible()) {
 					IStatus status = refresh(resource, depth, Policy.subMonitorFor(monitor, 1000));
 					if (status.getSeverity() == IStatus.CANCEL) {
@@ -174,11 +174,11 @@ public abstract class ResourceVariantTreeSubscriber extends Subscriber {
 	 */
 	protected abstract IResourceVariantTree getRemoteTree();
 
-	private IStatus refresh(IResource resource, int depth, IProgressMonitor monitor) {
+	private IStatus refresh(IResource resource, int depth, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		monitor = Policy.monitorFor(monitor);
 		try {
 			monitor.beginTask(null, 100);
-			Set<IResource> allChanges = new HashSet<>();
+			Set<IResource> allChanges = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			if (getResourceComparator().isThreeWay()) {
 				IResource[] baseChanges = getBaseTree().refresh(new IResource[] {resource}, depth, Policy.subMonitorFor(monitor, 25));
 				allChanges.addAll(Arrays.asList(baseChanges));

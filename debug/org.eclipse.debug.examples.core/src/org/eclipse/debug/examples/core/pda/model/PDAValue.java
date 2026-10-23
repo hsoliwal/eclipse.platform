@@ -62,7 +62,7 @@ public class PDAValue extends PDADebugElement implements IValue {
 			new PDAChildrenCommand(frame.getThreadIdentifier(), frame.getIdentifier(), fVariable.getName()) );
 
 		IVariable[] children = new IVariable[result.fValues.length];
-		for(int i = 0; i < result.fValues.length; i++) {
+		for(int i = 0; i < result.fValues.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			children[i] = new PDAVariable(frame, result.fValues[i]);
 		}
 		return children;

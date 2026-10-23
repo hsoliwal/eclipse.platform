@@ -42,7 +42,7 @@ public class SampleMemoryBlock extends DebugElement implements IMemoryBlockExten
 	private boolean isEnabled = true;
 	private BigInteger fBaseAddress;
 
-	private final ArrayList<Object> fConnections = new ArrayList<>();
+	private final ArrayList<Object> fConnections = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	/**
 	 * Creates memory block
@@ -76,7 +76,7 @@ public class SampleMemoryBlock extends DebugElement implements IMemoryBlockExten
 		return getBytesFromAddress(address, length);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public MemoryByte[] getBytesFromAddress(BigInteger address, long length) throws DebugException {
 
 		MemoryByte[] bytes = new MemoryByte[(int) length * fDebugTarget.getEngine().getAddressableSize()];
@@ -89,7 +89,7 @@ public class SampleMemoryBlock extends DebugElement implements IMemoryBlockExten
 		System.arraycopy(engineBytes, 0, bytes, i, engineBytes.length);
 
 		// if engine did not return enough memory, pad with dummy memory
-		for (int j = i + engineBytes.length; j < bytes.length; j++) {
+		for (int j = i + engineBytes.length; j < bytes.length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			MemoryByte mb = new MemoryByte((byte) 0);
 			mb.setReadable(false);
 			mb.setWritable(false);

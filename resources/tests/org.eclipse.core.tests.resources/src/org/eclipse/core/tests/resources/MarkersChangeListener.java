@@ -35,7 +35,7 @@ import org.junit.jupiter.api.Assertions;
 /**
  * A support class for the marker tests.
  */
-public class MarkersChangeListener implements IResourceChangeListener {
+public class MarkersChangeListener implements IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 	private final Map<IPath, List<IMarkerDelta>> changes = new ConcurrentHashMap<>();
 
 	public MarkersChangeListener() {
@@ -47,7 +47,7 @@ public class MarkersChangeListener implements IResourceChangeListener {
 	 * workspace) are exactly the added, removed and changed markers given. The
 	 * arrays may be null.
 	 */
-	public void assertChanges(IResource resource, IMarker[] added, IMarker[] removed, IMarker[] changed) {
+	public void assertChanges(IResource resource, IMarker[] added, IMarker[] removed, IMarker[] changed) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath path = resource == null ? IPath.ROOT : resource.getFullPath();
 		Supplier<List<IMarkerDelta>> changesRetriever = () -> changes.getOrDefault(path, Collections.emptyList());
 
@@ -56,7 +56,7 @@ public class MarkersChangeListener implements IResourceChangeListener {
 
 		TestUtil.waitForCondition(() -> changesRetriever.get().size() == expectedTotal, 5000);
 
-		List<IMarkerDelta> deltas = new ArrayList<>(changesRetriever.get());
+		List<IMarkerDelta> deltas = new ArrayList<>(changesRetriever.get()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		List<IMarker> actualAdded = deltas.stream().filter(d -> d.getKind() == IResourceDelta.ADDED)
 				.map(IMarkerDelta::getMarker).toList();
@@ -72,7 +72,7 @@ public class MarkersChangeListener implements IResourceChangeListener {
 		List<IMarkerDelta> unsupported = deltas.stream().filter(d -> d.getKind() != IResourceDelta.ADDED
 				&& d.getKind() != IResourceDelta.REMOVED && d.getKind() != IResourceDelta.CHANGED).toList();
 
-		Assertions.assertAll(String.format("marker delta assertions for resource %s", path),
+		Assertions.assertAll(String.format("marker delta assertions for resource %s", path), //FLLDCIM: MARK — M11 FORMAT_PRECOMPUTE CALL
 				() -> assertThat(deltas).as("number of marker deltas for resource %s", path).hasSize(expectedTotal),
 				() -> assertThat(actualAdded).as("added markers for resource %s", path)
 						.containsExactlyInAnyOrderElementsOf(expectedAdded),
@@ -113,14 +113,14 @@ public class MarkersChangeListener implements IResourceChangeListener {
 		}
 		if ((delta.getFlags() & IResourceDelta.MARKERS) != 0) {
 			IPath path = delta.getFullPath();
-			List<IMarkerDelta> v = changes.computeIfAbsent(path, unused -> Collections.synchronizedList(new ArrayList<>()));
+			List<IMarkerDelta> v = changes.computeIfAbsent(path, unused -> Collections.synchronizedList(new ArrayList<>())); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			IMarkerDelta[] markerDeltas = delta.getMarkerDeltas();
-			for (IMarkerDelta markerDelta : markerDeltas) {
+			for (IMarkerDelta markerDelta : markerDeltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				v.add(markerDelta);
 			}
 		}
 		IResourceDelta[] children = delta.getAffectedChildren();
-		for (IResourceDelta element : children) {
+		for (IResourceDelta element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			resourceChanged(element);
 		}
 	}

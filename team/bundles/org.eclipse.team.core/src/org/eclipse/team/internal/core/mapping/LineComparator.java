@@ -100,15 +100,15 @@ class LineComparator implements IRangeComparator {
 		return outputEncoding;
 	}
 
-	public LineComparator(InputStream is, String encoding) throws IOException {
+	public LineComparator(InputStream is, String encoding) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		TrailingLineFeedDetector trailingLineFeedDetector = new TrailingLineFeedDetector(
 				is);
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(
 				trailingLineFeedDetector, encoding))) {
 			String line;
-			ArrayList<String> ar = new ArrayList<>();
-			while ((line = br.readLine()) != null) {
+			ArrayList<String> ar = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			while ((line = br.readLine()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ar.add(line);
 			}
 			// Add a trailing line if the last character in the file was a line

@@ -36,7 +36,7 @@ public class IncludeResourceHandler extends AbstractHandler {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Shell shell = HandlerUtil.getActiveShell(event);
 		ISelection selection = HandlerUtil.getCurrentSelection(event);

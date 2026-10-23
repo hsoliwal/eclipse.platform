@@ -64,12 +64,12 @@ public class PessimisticRepositoryProvider extends RepositoryProvider {
 	}
 
 	private static class WritabilityEnforcingFileModificationValidator extends FileModificationValidator {
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public IStatus validateEdit(final IFile[] files, FileModificationValidationContext context) {
 			if (markWritableOnEdit) {
 				try {
-					ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) unused -> {
-						for (int i = 0, length = files.length; i < length; i++) {
+					ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
+						for (int i = 0, length = files.length; i < length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							try {
 								setReadOnly(files[i], false);
 							} catch (CoreException e) {

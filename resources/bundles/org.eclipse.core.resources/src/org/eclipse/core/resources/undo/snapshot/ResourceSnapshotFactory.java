@@ -139,7 +139,7 @@ public class ResourceSnapshotFactory {
 	 * the file to be created. Used to mimic file history when a resource is first
 	 * created.
 	 */
-	private static IFileContentSnapshot createFileContentDescription(final IFile file, final InputStream contents) {
+	private static IFileContentSnapshot createFileContentDescription(final IFile file, final InputStream contents) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		return new IFileContentSnapshot() {
 			@Override
 			public InputStream getContents() {

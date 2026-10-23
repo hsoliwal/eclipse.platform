@@ -63,7 +63,7 @@ import org.eclipse.ui.part.IPageBookViewPage;
  *
  * @since 3.3
  */
-public class ParticipantPageCompareEditorInput extends PageCompareEditorInput {
+public class ParticipantPageCompareEditorInput extends PageCompareEditorInput { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	private final ISynchronizeParticipant participant;
 	private final ISynchronizePageConfiguration pageConfiguration;
@@ -125,15 +125,15 @@ public class ParticipantPageCompareEditorInput extends PageCompareEditorInput {
 		super.handleDispose();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected IPage createPage(CompareViewerPane parent,
 			IToolBarManager toolBarManager) {
-		listener = event -> {
+		listener = event -> { //FLLDCIM: MARK — T06  LAMBDA
 			if (event.getProperty().equals(ISynchronizePageConfiguration.P_PAGE_DESCRIPTION)) {
 				updateDescription();
 			}
 		};
-		pageConfiguration.addPropertyChangeListener(listener);
+		pageConfiguration.addPropertyChangeListener(listener); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		updateDescription();
 
 		page = participant.createPage(pageConfiguration);
@@ -182,7 +182,7 @@ public class ParticipantPageCompareEditorInput extends PageCompareEditorInput {
 		return null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void prepareInput(ICompareInput input,
 			CompareConfiguration configuration, IProgressMonitor monitor)
 			throws InvocationTargetException {
@@ -262,7 +262,7 @@ public class ParticipantPageCompareEditorInput extends PageCompareEditorInput {
 		}
 
 		IDiffElement[] children = node.getChildren();
-		for (IDiffElement c : children) {
+		for (IDiffElement c : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			commit(pm, (DiffNode) c);
 		}
 	}

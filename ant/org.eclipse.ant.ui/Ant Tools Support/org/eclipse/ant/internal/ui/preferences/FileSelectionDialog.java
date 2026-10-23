@@ -47,7 +47,7 @@ public class FileSelectionDialog extends ElementTreeSelectionDialog {
 	private final static String DIALOG_SETTING = "AntPropertiesFileSelectionDialog.showAll"; //$NON-NLS-1$
 	private final static String LAST_CONTAINER = "AntPropertiesFileSelectionDialog.lastContainer"; //$NON-NLS-1$
 
-	public FileSelectionDialog(Shell parent, List<IFile> files, String title, String message, String filterExtension, String filterMessage) {
+	public FileSelectionDialog(Shell parent, List<IFile> files, String title, String message, String filterExtension, String filterMessage) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super(parent, new WorkbenchLabelProvider(), new WorkbenchContentProvider());
 
 		setTitle(title);
@@ -61,7 +61,7 @@ public class FileSelectionDialog extends ElementTreeSelectionDialog {
 			if (selection.length == 0) {
 				return new Status(IStatus.ERROR, AntUIPlugin.getUniqueIdentifier(), 0, IAntCoreConstants.EMPTY_STRING, null);
 			}
-			for (int i = 0; i < selection.length; i++) {
+			for (int i = 0; i < selection.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!(selection[i] instanceof IFile)) {
 					return new Status(IStatus.ERROR, AntUIPlugin.getUniqueIdentifier(), 0, IAntCoreConstants.EMPTY_STRING, null);
 				}
@@ -71,7 +71,7 @@ public class FileSelectionDialog extends ElementTreeSelectionDialog {
 		setValidator(validator);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createDialogArea(Composite parent) {
 
 		Composite result = (Composite) super.createDialogArea(parent);
@@ -90,12 +90,12 @@ public class FileSelectionDialog extends ElementTreeSelectionDialog {
 		}
 
 		fFilter.considerExtension(!fShowAll);
-		getTreeViewer().addFilter(fFilter);
+		getTreeViewer().addFilter(fFilter); //FLLDCIM: MARK — T23 FILTER_LANE CALL
 		if (!fShowAll) {
 			button.setSelection(true);
 		}
 
-		button.addSelectionListener(new SelectionAdapter() {
+		button.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				if (button.getSelection()) {
@@ -104,7 +104,7 @@ public class FileSelectionDialog extends ElementTreeSelectionDialog {
 					fShowAll = true;
 				}
 				fFilter.considerExtension(!fShowAll);
-				getTreeViewer().refresh();
+				getTreeViewer().refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 			}
 		});
 		applyDialogFont(result);

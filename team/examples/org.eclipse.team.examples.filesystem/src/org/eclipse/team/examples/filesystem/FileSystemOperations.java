@@ -84,7 +84,7 @@ public class FileSystemOperations {
 			// ensure the progress monitor is not null
 			monitor = Policy.monitorFor(monitor);
 			monitor.beginTask(null, 100* traversals.length);
-			for (ResourceTraversal traversal : traversals) {
+			for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				get(traversal.getResources(), traversal.getDepth(), overrideOutgoing, SubMonitor.convert(monitor, 100));
 			}
 		} finally {
@@ -99,11 +99,11 @@ public class FileSystemOperations {
 	 * @param depth the depth of the checkout
 	 * @param progress a progress monitor
 	 */
-	public void checkout(IResource[] resources, int depth, IProgressMonitor progress) throws TeamException {
+	public void checkout(IResource[] resources, int depth, IProgressMonitor progress) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			progress = Policy.monitorFor(progress);
 			progress.beginTask(Policy.bind("FileSystemSimpleAccessOperations.1"), resources.length); //$NON-NLS-1$
-			for (IResource resource2 : resources) {
+			for (IResource resource2 : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Policy.checkCanceled(progress);
 				resource2.accept((IResourceVisitor) resource -> {
 					if (resource.getType() == IResource.FILE) {
@@ -154,7 +154,7 @@ public class FileSystemOperations {
 			// ensure the progress monitor is not null
 			monitor = Policy.monitorFor(monitor);
 			monitor.beginTask(null, 100* traversals.length);
-			for (ResourceTraversal traversal : traversals) {
+			for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				checkin(traversal.getResources(), traversal.getDepth(), overrideIncoming, SubMonitor.convert(monitor, 100));
 			}
 		} finally {
@@ -184,7 +184,7 @@ public class FileSystemOperations {
 	private void internalGet(IResource[] resources, int depth, boolean overrideOutgoing, IProgressMonitor progress) throws TeamException {
 		// Traverse the resources and get any that are out-of-sync
 		progress.beginTask(Policy.bind("GetAction.working"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Policy.checkCanceled(progress);
 			if (resource.getType() == IResource.FILE) {
 				internalGet((IFile) resource, overrideOutgoing, progress);
@@ -198,11 +198,11 @@ public class FileSystemOperations {
 	/*
 	 * Get the folder and its children to the depth specified.
 	 */
-	private void internalGet(IContainer container, int depth, boolean overrideOutgoing, IProgressMonitor progress) throws TeamException {
+	private void internalGet(IContainer container, int depth, boolean overrideOutgoing, IProgressMonitor progress) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			ThreeWaySynchronizer synchronizer = FileSystemSubscriber.getInstance().getSynchronizer();
 			// Make the local folder state match the remote folder state
-			List<IFolder> toDelete = new ArrayList<>();
+			List<IFolder> toDelete = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			if (container.getType() == IResource.FOLDER) {
 				IFolder folder = (IFolder)container;
 				FileSystemResourceVariant remote = getResourceVariant(container);
@@ -224,7 +224,7 @@ public class FileSystemOperations {
 			}
 
 			// Remove any empty folders
-			for (IFolder folder : toDelete) {
+			for (IFolder folder : toDelete) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (folder.members().length == 0) {
 					folder.delete(false, true, progress);
 					synchronizer.flush(folder, IResource.DEPTH_INFINITE);
@@ -238,7 +238,7 @@ public class FileSystemOperations {
 	/*
 	 * Get the file if it is out-of-sync.
 	 */
-	private void internalGet(IFile localFile, boolean overrideOutgoing, IProgressMonitor progress) throws TeamException {
+	private void internalGet(IFile localFile, boolean overrideOutgoing, IProgressMonitor progress) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ThreeWaySynchronizer synchronizer = FileSystemSubscriber.getInstance().getSynchronizer();
 		IResourceVariantComparator comparator = FileSystemSubscriber.getInstance().getResourceComparator();
 		FileSystemResourceVariant remote = getResourceVariant(localFile);
@@ -290,7 +290,7 @@ public class FileSystemOperations {
 		// ensure the progress monitor is not null
 		progress = Policy.monitorFor(progress);
 		progress.beginTask(Policy.bind("PutAction.working"), IProgressMonitor.UNKNOWN); //$NON-NLS-1$
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Policy.checkCanceled(progress);
 			if (resource.getType() == IResource.FILE) {
 				internalPut((IFile)resource, overrideIncoming, progress);
@@ -309,7 +309,7 @@ public class FileSystemOperations {
 	 * @param progress a progress monitor
 	 * @return whether the put succeeded (i.e. the local matches the remote)
 	 */
-	private boolean internalPut(IFile localFile, boolean overrideIncoming, IProgressMonitor progress) throws TeamException {
+	private boolean internalPut(IFile localFile, boolean overrideIncoming, IProgressMonitor progress) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ThreeWaySynchronizer synchronizer = FileSystemSubscriber.getInstance().getSynchronizer();
 		IResourceVariantComparator comparator = FileSystemSubscriber.getInstance().getResourceComparator();
 		FileSystemResourceVariant remote = getResourceVariant(localFile);
@@ -384,11 +384,11 @@ public class FileSystemOperations {
 	/*
 	 * Get the folder and its children to the depth specified.
 	 */
-	private void internalPut(IContainer container, int depth, boolean overrideIncoming, IProgressMonitor progress) throws TeamException {
+	private void internalPut(IContainer container, int depth, boolean overrideIncoming, IProgressMonitor progress) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			ThreeWaySynchronizer synchronizer = FileSystemSubscriber.getInstance().getSynchronizer();
 			// Make the local folder state match the remote folder state
-			List<File> toDelete = new ArrayList<>();
+			List<File> toDelete = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			if (container.getType() == IResource.FOLDER) {
 				IFolder folder = (IFolder)container;
 				File diskFile = provider.getFile(container);
@@ -411,10 +411,10 @@ public class FileSystemOperations {
 			}
 
 			// Remove any empty folders
-			for (File diskFile : toDelete) {
+			for (File diskFile : toDelete) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				File[] fileList = diskFile.listFiles();
 				if(fileList == null) {
-					throw new TeamException("Content from directory '" + diskFile.getAbsolutePath() + "' can not be listed."); //$NON-NLS-1$ //$NON-NLS-2$
+					throw new TeamException("Content from directory '" + diskFile.getAbsolutePath() + "' can not be listed."); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				if (fileList.length == 0) {
 					diskFile.delete();

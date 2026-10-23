@@ -73,7 +73,7 @@ public class FastSyncInfoFilter extends SyncInfoFilter {
 		}
 		@Override
 		public boolean select(SyncInfo info) {
-			for (FastSyncInfoFilter filter : filters) {
+			for (FastSyncInfoFilter filter : filters) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!filter.select(info)) {
 					return false;
 				}
@@ -115,7 +115,7 @@ public class FastSyncInfoFilter extends SyncInfoFilter {
 		}
 		@Override
 		public boolean select(SyncInfo info) {
-			for (FastSyncInfoFilter filter : filters) {
+			for (FastSyncInfoFilter filter : filters) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (filter.select(info)) {
 					return true;
 				}
@@ -150,7 +150,7 @@ public class FastSyncInfoFilter extends SyncInfoFilter {
 		@Override
 		public boolean select(SyncInfo info) {
 			int syncKind = info.getKind();
-			for (int filter : changeFilters) {
+			for (int filter : changeFilters) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if ((syncKind & SyncInfo.CHANGE_MASK) == filter) {
 					return true;
 				}
@@ -185,7 +185,7 @@ public class FastSyncInfoFilter extends SyncInfoFilter {
 		@Override
 		public boolean select(SyncInfo info) {
 			int syncKind = info.getKind();
-			for (int filter : directionFilters) {
+			for (int filter : directionFilters) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if ((syncKind & SyncInfo.DIRECTION_MASK) == filter) {
 					return true;
 				}

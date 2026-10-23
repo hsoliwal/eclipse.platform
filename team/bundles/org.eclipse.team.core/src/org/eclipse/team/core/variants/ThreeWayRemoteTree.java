@@ -109,7 +109,7 @@ public abstract class ThreeWayRemoteTree extends ResourceVariantTree {
 			throws TeamException {
 		final IResource[][] resources = new IResource[][] { null };
 		getSubscriber().getSynchronizer().run(local,
-				monitor1 -> resources[0] = ThreeWayRemoteTree.super.collectChanges(local, remote, depth, monitor1),
+				monitor1 -> resources[0] = ThreeWayRemoteTree.super.collectChanges(local, remote, depth, monitor1), //FLLDCIM: MARK — T09  LAMBDA
 				monitor);
 		return resources[0];
 	}

@@ -26,48 +26,48 @@ public class Policy {
 	static DebugTrace DEBUG_TRACE;
 
 	public static final DebugOptionsListener RESOURCES_DEBUG_OPTIONS_LISTENER = new DebugOptionsListener() {
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void optionsChanged(DebugOptions options) {
 			DEBUG_TRACE = options.newDebugTrace(ResourcesPlugin.PI_RESOURCES);
-			DEBUG = options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/debug", false); //$NON-NLS-1$
+			DEBUG = options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/debug", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-			DEBUG_AUTO_REFRESH = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/refresh", false); //$NON-NLS-1$
+			DEBUG_AUTO_REFRESH = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/refresh", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-			DEBUG_BUILD_DELTA = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/delta", false); //$NON-NLS-1$
-			DEBUG_BUILD_CYCLE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/cycle", false); //$NON-NLS-1$
-			DEBUG_BUILD_FAILURE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/failure", false); //$NON-NLS-1$
-			DEBUG_BUILD_INTERRUPT = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/interrupt", false); //$NON-NLS-1$
-			DEBUG_BUILD_INVOKING = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/invoking", false); //$NON-NLS-1$
-			DEBUG_BUILD_NEEDED = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/needbuild", false); //$NON-NLS-1$
-			DEBUG_BUILD_NEEDED_DELTA = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/needbuilddelta", false); //$NON-NLS-1$
-			DEBUG_BUILD_NEEDED_STACK = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/needbuildstack", false); //$NON-NLS-1$
-			DEBUG_BUILD_STACK = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/stacktrace", false); //$NON-NLS-1$
+			DEBUG_BUILD_DELTA = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/delta", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_BUILD_CYCLE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/cycle", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_BUILD_FAILURE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/failure", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_BUILD_INTERRUPT = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/interrupt", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_BUILD_INVOKING = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/invoking", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_BUILD_NEEDED = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/needbuild", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_BUILD_NEEDED_DELTA = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/needbuilddelta", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_BUILD_NEEDED_STACK = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/needbuildstack", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_BUILD_STACK = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/build/stacktrace", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-			Policy.DEBUG_TREE_IMMUTABLE = Policy.DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/tree/immutable", false); //$NON-NLS-1$
-			Policy.DEBUG_TREE_IMMUTABLE_STACK = Policy.DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/tree/immutablestack", false); //$NON-NLS-1$
+			Policy.DEBUG_TREE_IMMUTABLE = Policy.DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/tree/immutable", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			Policy.DEBUG_TREE_IMMUTABLE_STACK = Policy.DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/tree/immutablestack", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-			DEBUG_CONTENT_TYPE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/contenttype", false); //$NON-NLS-1$
-			DEBUG_CONTENT_TYPE_CACHE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/contenttype/cache", false); //$NON-NLS-1$
-			DEBUG_HISTORY = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/history", false); //$NON-NLS-1$
-			DEBUG_NATURES = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/natures", false); //$NON-NLS-1$
-			DEBUG_NOTIFICATIONS = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/notifications", false); //$NON-NLS-1$
-			DEBUG_PREFERENCES = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/preferences", false); //$NON-NLS-1$
+			DEBUG_CONTENT_TYPE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/contenttype", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_CONTENT_TYPE_CACHE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/contenttype/cache", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_HISTORY = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/history", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_NATURES = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/natures", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_NOTIFICATIONS = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/notifications", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_PREFERENCES = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/preferences", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-			DEBUG_RESTORE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/restore", false); //$NON-NLS-1$
-			DEBUG_RESTORE_MARKERS = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/restore/markers", false); //$NON-NLS-1$
-			DEBUG_RESTORE_MASTERTABLE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/restore/mastertable", false); //$NON-NLS-1$
-			DEBUG_RESTORE_METAINFO = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/restore/metainfo", false); //$NON-NLS-1$
-			DEBUG_RESTORE_SNAPSHOTS = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/restore/snapshots", false); //$NON-NLS-1$
-			DEBUG_RESTORE_SYNCINFO = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/restore/syncinfo", false); //$NON-NLS-1$
-			DEBUG_RESTORE_TREE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/restore/tree", false); //$NON-NLS-1$
-			DEBUG_SAVE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/save", false); //$NON-NLS-1$
-			DEBUG_SAVE_MARKERS = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/save/markers", false); //$NON-NLS-1$
-			DEBUG_SAVE_MASTERTABLE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/save/mastertable", false); //$NON-NLS-1$
-			DEBUG_SAVE_METAINFO = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/save/metainfo", false); //$NON-NLS-1$
-			DEBUG_SAVE_SYNCINFO = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/save/syncinfo", false); //$NON-NLS-1$
-			DEBUG_SAVE_TREE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/save/tree", false); //$NON-NLS-1$
+			DEBUG_RESTORE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/restore", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_RESTORE_MARKERS = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/restore/markers", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_RESTORE_MASTERTABLE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/restore/mastertable", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_RESTORE_METAINFO = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/restore/metainfo", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_RESTORE_SNAPSHOTS = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/restore/snapshots", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_RESTORE_SYNCINFO = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/restore/syncinfo", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_RESTORE_TREE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/restore/tree", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_SAVE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/save", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_SAVE_MARKERS = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/save/markers", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_SAVE_MASTERTABLE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/save/mastertable", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_SAVE_METAINFO = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/save/metainfo", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_SAVE_SYNCINFO = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/save/syncinfo", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			DEBUG_SAVE_TREE = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/save/tree", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-			DEBUG_STRINGS = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/strings", false); //$NON-NLS-1$
+			DEBUG_STRINGS = DEBUG && options.getBooleanOption(ResourcesPlugin.PI_RESOURCES + "/strings", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 			ResourceStats.optionsChanged();
 		}
@@ -134,15 +134,15 @@ public class Policy {
 	 * Prepend the message with the current date, the name of the current thread and the current job if present.
 	 */
 	public static void debug(String message) {
-		StringBuilder output = new StringBuilder();
+		StringBuilder output = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		Job currentJob = Job.getJobManager().currentJob();
 		if (currentJob != null) {
-			output.append(currentJob.getClass().getName());
-			output.append("("); //$NON-NLS-1$
-			output.append(currentJob.getName());
-			output.append("): "); //$NON-NLS-1$
+			output.append(currentJob.getClass().getName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			output.append("("); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			output.append(currentJob.getName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			output.append("): "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		output.append(message);
+		output.append(message); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		DEBUG_TRACE.trace(null, output.toString());
 	}
 

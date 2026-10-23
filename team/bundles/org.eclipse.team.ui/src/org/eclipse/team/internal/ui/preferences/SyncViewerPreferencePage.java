@@ -44,7 +44,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * This preference page allows to configure various aspects of the Synchronize View.
  */
-public class SyncViewerPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage, IPreferenceIds {
+public class SyncViewerPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage, IPreferenceIds { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	private BooleanFieldEditor showSyncInLabels = null;
 	private RadioGroupFieldEditor synchronizePerspectiveSwitch = null;
@@ -77,7 +77,7 @@ public class SyncViewerPreferencePage extends FieldEditorPreferencePage implemen
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(), IHelpContextIds.SYNC_PREFERENCE_PAGE);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createFieldEditors() {
 		showSyncInLabels = new BooleanFieldEditor(SYNCVIEW_VIEW_SYNCINFO_IN_LABEL, TeamUIMessages.SyncViewerPreferencePage_19, SWT.NONE, getFieldEditorParent());
 		addField(showSyncInLabels);
@@ -232,7 +232,7 @@ public class SyncViewerPreferencePage extends FieldEditorPreferencePage implemen
 		String[][] table = new String[perspectiveDescriptors.length + 1][2];
 		table[0][0] = TeamUIMessages.SynchronizationViewPreference_defaultPerspectiveNone; //;
 		table[0][1] = SYNCVIEW_DEFAULT_PERSPECTIVE_NONE;
-		for (int i = 0; i < perspectiveDescriptors.length; i++) {
+		for (int i = 0; i < perspectiveDescriptors.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			table[i + 1][0] = perspectiveDescriptors[i].getLabel();
 			table[i + 1][1] = perspectiveDescriptors[i].getId();
 		}

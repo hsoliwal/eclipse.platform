@@ -79,7 +79,7 @@ final class ConsoleMock implements IConsole {
 	/**
 	 * Just a page showing the mock console name
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IPageBookViewPage createPage(IConsoleView view) {
 		page = new MessagePage() {
 			@Override
@@ -87,11 +87,11 @@ final class ConsoleMock implements IConsole {
 				super.createControl(parent);
 				// This listener is get called if the page is really shown
 				// in the console view
-				getControl().addListener(SWT.Show, unused -> {
+				getControl().addListener(SWT.Show, unused -> { //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 					int count = showCalled.incrementAndGet();
 					if (count == 1) {
 						count = allShownConsoles.incrementAndGet();
-						System.out.println("Shown: " + ConsoleMock.this + ", overall: " + count); //$NON-NLS-1$ //$NON-NLS-2$
+						System.out.println("Shown: " + ConsoleMock.this + ", overall: " + count); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 				});
 			}
@@ -103,6 +103,6 @@ final class ConsoleMock implements IConsole {
 
 	@Override
 	public String toString() {
-		return "mock #" + number; //$NON-NLS-1$
+		return "mock #" + number; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

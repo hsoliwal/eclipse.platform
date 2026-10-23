@@ -59,9 +59,9 @@ public class RangeDifferencerMonitorTest {
 	}
 
 	private static IRangeComparator comparator(String prefix) {
-		StringBuilder content = new StringBuilder();
-		for (int i = 0; i < 200; i++) {
-			content.append(prefix).append(' ').append(i).append(S);
+		StringBuilder content = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < 200; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			content.append(prefix).append(' ').append(i).append(S); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return new DocLineComparator(new Document(content.toString()), null, false);
 	}

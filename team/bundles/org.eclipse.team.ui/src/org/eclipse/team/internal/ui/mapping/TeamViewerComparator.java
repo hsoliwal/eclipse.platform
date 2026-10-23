@@ -46,7 +46,7 @@ public class TeamViewerComparator extends TreePathViewerComparator {
 		return super.category(element);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public int compare(Viewer viewer, TreePath parentPath, Object e1, Object e2) {
 		if (parentPath == null || parentPath.getSegmentCount() == 0) {
 			// We need to handle the sorting at the top level
@@ -77,12 +77,12 @@ public class TeamViewerComparator extends TreePathViewerComparator {
 
 	private boolean isExtends(ModelProvider mp1, IModelProviderDescriptor desc) {
 		String[] extended = mp1.getDescriptor().getExtendedModels();
-		for (String id : extended) {
+		for (String id : extended) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (id.equals(desc.getId())) {
 				return true;
 			}
 		}
-		for (String id : extended) {
+		for (String id : extended) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IModelProviderDescriptor desc2 = ModelProvider.getModelProviderDescriptor(id);
 			if (isExtends(mp1, desc2)) {
 				return true;

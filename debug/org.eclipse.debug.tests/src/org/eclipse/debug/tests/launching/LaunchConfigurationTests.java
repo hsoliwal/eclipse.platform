@@ -125,9 +125,9 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 
 	static class Listener implements ILaunchConfigurationListener {
 
-		private final List<ILaunchConfiguration> addedList = new ArrayList<>();
-		private final List<ILaunchConfiguration> removedList = new ArrayList<>();
-		private final List<ILaunchConfiguration> changedList = new ArrayList<>();
+		private final List<ILaunchConfiguration> addedList = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		private final List<ILaunchConfiguration> removedList = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		private final List<ILaunchConfiguration> changedList = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		@Override
 		public void launchConfigurationAdded(ILaunchConfiguration configuration) {
@@ -183,13 +183,13 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * @param length the length to read from the stream or -1 for unknown
 	 * @return the given input stream as a byte array
 	 */
-	public static byte[] getInputStreamAsByteArray(InputStream stream, int length) throws IOException {
+	public static byte[] getInputStreamAsByteArray(InputStream stream, int length) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		byte[] contents;
 		if (length == -1) {
 			contents = new byte[0];
 			int contentsLength = 0;
 			int amountRead = -1;
-			do {
+			do { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// read at least 8K
 				int amountRequested = Math.max(stream.available(), 8192);
 				// resize contents if needed
@@ -215,7 +215,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 			contents = new byte[length];
 			int len = 0;
 			int readSize = 0;
-			while ((readSize != -1) && (len != length)) {
+			while ((readSize != -1) && (len != length)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// See PR 1FMS89U
 				// We record first the read size. In this case length is the actual
 				// read size.
@@ -302,7 +302,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * array of handles.
 	 */
 	protected boolean existsIn(ILaunchConfiguration[] configs, ILaunchConfiguration config) {
-		for (ILaunchConfiguration c : configs) {
+		for (ILaunchConfiguration c : configs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (c.equals(config)) {
 				return true;
 			}
@@ -314,7 +314,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * Creates a local working copy configuration, sets some attributes, and
 	 * saves the working copy, and retrieves the attributes.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateLocalConfiguration() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = newConfiguration(null, "config1"); //$NON-NLS-1$
 		IPath location = wc.getLocation();
@@ -374,7 +374,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	/**
 	 * Ensures that a launch configuration returns a complete attribute map
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetAttributes() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = newConfiguration(null, "config1"); //$NON-NLS-1$
 		IPath location = wc.getLocation();
@@ -397,10 +397,10 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	/**
 	 * Ensures that set attributes works
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetAttributes() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = newConfiguration(null, "config1"); //$NON-NLS-1$
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		map.put("ATTR1", "ONE"); //$NON-NLS-1$ //$NON-NLS-2$
 		map.put("ATTR2", "TWO"); //$NON-NLS-1$ //$NON-NLS-2$
 		wc.setAttributes(map);
@@ -444,7 +444,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * saves the working copy, and retrieves the attributes. Copy the
 	 * configuration and ensure the original still exists.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLocalCopy() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = newConfiguration(null, "configToCopy"); //$NON-NLS-1$
 		IPath location = wc.getLocation();
@@ -462,7 +462,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		ILaunchConfiguration[] configs = getLaunchManager().getLaunchConfigurations();
 		assertTrue(existsIn(configs, handle), "Configuration should exist in project index"); //$NON-NLS-1$
 
-		ILaunchConfigurationWorkingCopy softCopy = handle.copy("CopyOf" + handle.getName()); //$NON-NLS-1$
+		ILaunchConfigurationWorkingCopy softCopy = handle.copy("CopyOf" + handle.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNull(softCopy.getOriginal(), "Original in copy should be null"); //$NON-NLS-1$
 		ILaunchConfiguration hardCopy = softCopy.doSave();
 
@@ -485,7 +485,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * Create a config and save it twice, ensuring it only ends up in the index
 	 * once.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDoubleSave() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = newConfiguration(null, "configDoubleSave"); //$NON-NLS-1$
 		IPath location = wc.getLocation();
@@ -523,7 +523,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * saves the working copy, and retrieves the attributes. Deletes the
 	 * configuration and ensures it no longer exists.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteLocalConfiguration() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = newConfiguration(null, "config2delete"); //$NON-NLS-1$
 		ILaunchConfiguration handle = wc.doSave();
@@ -551,7 +551,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * configuration and ensures it's old config no longer exists, and that
 	 * attributes are retrievable from the new (renamed) config.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRenameLocalConfiguration() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = newConfiguration(null, "config2rename"); //$NON-NLS-1$
 		IPath location = wc.getLocation();
@@ -594,7 +594,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	/**
 	 * Moves a local configuration to a shared location
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveLocalToSharedConfiguration() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = newConfiguration(null, "config2share"); //$NON-NLS-1$
 		IPath location = wc.getLocation();
@@ -637,7 +637,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	/**
 	 * Moves a local configuration to a shared location
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveSharedToLocalConfiguration() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = newConfiguration(getProject(), "config2local"); //$NON-NLS-1$
 		IPath location = wc.getLocation();
@@ -681,7 +681,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * Creates a shared working copy configuration, sets some attributes, and
 	 * saves the working copy, and retrieves the attributes.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateSharedConfiguration() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = newConfiguration(getProject(), "config2"); //$NON-NLS-1$
 		ILaunchConfiguration handle = wc.doSave();
@@ -702,7 +702,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		assertTrue(!handle.exists(), "Config should not exist after deletion"); //$NON-NLS-1$
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSharedConfigurationLineDelimiters() throws CoreException {
 		// we must test non-system-default separator
 		final String systemSeparator = System.lineSeparator();
@@ -797,7 +797,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * saves the working copy, and retrieves the attributes. Copies the
 	 * configuration and ensures the original still exists.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSharedCopy() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = newConfiguration(getProject(), "config2Copy"); //$NON-NLS-1$
 		ILaunchConfiguration handle = wc.doSave();
@@ -814,7 +814,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		assertTrue(existsIn(configs, handle), "Configuration should exist in project index");  //$NON-NLS-1$
 
 		// copy
-		ILaunchConfigurationWorkingCopy softCopy = handle.copy("CopyOf" + handle.getName()); //$NON-NLS-1$
+		ILaunchConfigurationWorkingCopy softCopy = handle.copy("CopyOf" + handle.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		ILaunchConfiguration hardCopy = softCopy.doSave();
 
 		// retrieve attributes
@@ -838,7 +838,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * saves the working copy, and retrieves the attributes. Deletes the
 	 * configuration and ensures it no longer exists.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteSharedConfiguration() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = newConfiguration(getProject(), "shared2delete"); //$NON-NLS-1$
 		ILaunchConfiguration handle = wc.doSave();
@@ -865,7 +865,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * configuration and ensures it's old config no longer exists, and that
 	 * attributes are retrievable from the new (renamed) config.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRenameSharedConfiguration() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = newConfiguration(getProject(), "shared2rename"); //$NON-NLS-1$
 		ILaunchConfiguration handle = wc.doSave();
@@ -915,7 +915,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * Creates a few configs, closes the project and re-opens the project to
 	 * ensure the config index is persisted properly
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPersistIndex() throws CoreException {
 		// close all editors before closing project: @see bug 204023
 		closeAllEditors();
@@ -933,7 +933,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		project.close(null);
 		ILaunchConfiguration[] during = getLaunchManager().getLaunchConfigurations();
 		boolean local = true;
-		for (ILaunchConfiguration d : during) {
+		for (ILaunchConfiguration d : during) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// must be local, or not from the closed project
 			local = local && (d.isLocal() || !d.getFile().getProject().equals(project));
 		}
@@ -941,7 +941,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		assertTrue(local, "Should only be local configs when closed"); //$NON-NLS-1$
 		ILaunchConfiguration[] after = getLaunchManager().getLaunchConfigurations();
 		assertThat(after).as("compare number of configs").hasSameSizeAs(before);
-		for (ILaunchConfiguration b : before) {
+		for (ILaunchConfiguration b : before) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertTrue(existsIn(after, b), "Config should exist after openning"); //$NON-NLS-1$
 		}
 
@@ -989,7 +989,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * Ensures that a removal notification is sent for a shared config in a
 	 * project that is deleted.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteProjectWithSharedConfig() throws Exception {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("DeleteSharedConfig"); //$NON-NLS-1$
 		try {
@@ -1023,7 +1023,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	/**
 	 * Tests a nested working copy.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNestedWorkingCopyLocalConfiguration() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = newConfiguration(null, "config123"); //$NON-NLS-1$
 		IPath location = wc.getLocation();
@@ -1078,7 +1078,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * Creates a configuration in an EFS linked folder. Deletes configuration
 	 * directly.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateDeleteEFS() throws CoreException, URISyntaxException {
 		IFileSystem fileSystem = EFS.getFileSystem("debug"); //$NON-NLS-1$
 		assertNotNull(fileSystem, "Missing debug EFS"); //$NON-NLS-1$
@@ -1110,7 +1110,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * Creates a configuration in an EFS linked folder. Deletes the folder to
 	 * ensure the configuration is also deleted.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateDeleteEFSLink() throws CoreException, URISyntaxException {
 		IFileSystem fileSystem = EFS.getFileSystem("debug"); //$NON-NLS-1$
 		assertNotNull(fileSystem, "Missing debug EFS"); //$NON-NLS-1$
@@ -1139,7 +1139,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * Test that renaming a project with a linked EFS folder containing a shared
 	 * launch configuration is properly updated.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testEFSProjectRename() throws Exception {
 		// create test project
 		IProject pro = ResourcesPlugin.getWorkspace().getRoot().getProject("RenameEFS"); //$NON-NLS-1$
@@ -1201,7 +1201,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	/**
 	 * Tests launch configuration import.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testImport() throws Exception {
 		// create a shared configuration "Import4" in the workspace to be overwritten on import
 		ILaunchConfigurationWorkingCopy wc = newConfiguration(getProject(), "Import4"); //$NON-NLS-1$
@@ -1228,8 +1228,8 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 			// should be 5 added
 			List<ILaunchConfiguration> added = listener.getAdded();
 			assertEquals(5, added.size(), "Should be 5 added configs"); //$NON-NLS-1$
-			Set<String> names = new HashSet<>();
-			for (ILaunchConfiguration lc : added) {
+			Set<String> names = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+			for (ILaunchConfiguration lc : added) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				names.add(lc.getName());
 			}
 			assertTrue(names.contains("Import1"), "Missing Name"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1281,11 +1281,11 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * Tests that the framework adds terminate time stamps to launch and process
 	 * objects.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTerminateTimeStamp() throws Exception {
 		ILaunchConfigurationWorkingCopy workingCopy = newConfiguration(null, "test-time-stamp"); //$NON-NLS-1$
-		Set<ILaunch> terminatedLaunches = Collections.synchronizedSet(new HashSet<>());
-		ILaunchesListener2 listener = new ILaunchesListener2() {
+		Set<ILaunch> terminatedLaunches = Collections.synchronizedSet(new HashSet<>()); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		ILaunchesListener2 listener = new ILaunchesListener2() { //FLLDCIM: MARK — T27  ANONYMOUS
 			@Override
 			public void launchesRemoved(ILaunch[] launches) {
 			}
@@ -1308,7 +1308,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		IProcess process = null;
 		try {
 			process = DebugPlugin.newProcess(launch, new MockProcess(0), "test-terminate-timestamp");
-			waitWhile(() -> !terminatedLaunches.contains(launch), () -> "Launch termination event did not occur: " +
+			waitWhile(() -> !terminatedLaunches.contains(launch), () -> "Launch termination event did not occur: " + //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							"launch termination state is \"" + launch.isTerminated() + "\" " +
 							"and " + terminatedLaunches.size() + " launches have terminated");
 			String launchTerminateTimestampUntyped = launch.getAttribute(DebugPlugin.ATTR_TERMINATE_TIMESTAMP);
@@ -1335,7 +1335,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * @see org.eclipse.debug.core.ILaunchConfiguration#launch(String,
 	 *      IProgressMonitor)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCancel() throws CoreException {
 		final ILaunchDelegate launchDelegate = ((LaunchManager) DebugPlugin.getDefault().getLaunchManager()).getLaunchDelegate(LaunchConfigurationTests.ID_TEST_LAUNCH_TYPE);
 		final TestLaunchDelegate testLaunchDelegate = (TestLaunchDelegate) launchDelegate.getDelegate();
@@ -1379,7 +1379,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		try {
 			ILaunchConfigurationWorkingCopy workingCopy = newConfiguration(null, "cancel me"); //$NON-NLS-1$
 			int cancelCount = 0;
-			for (int i = 0; i < 10_000; i++) {
+			for (int i = 0; i < 10_000; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				AtomicInteger checkCount = new AtomicInteger(i);
 				NullProgressMonitor monitor = new NullProgressMonitor() {
 					@Override
@@ -1407,12 +1407,12 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 *
 	 * @see <a href="https://github.com/eclipse-platform/eclipse.platform/issues/598">598</a>
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTerminateLaunchListener_Issue598() throws Exception {
 		final ILaunchConfigurationWorkingCopy workingCopy = newConfiguration(null, "test-launch-listener");
 		final AtomicBoolean processStarted = new AtomicBoolean(false);
 		final AtomicBoolean launchTerminated = new AtomicBoolean(false);
-		ILaunchesListener2 listener = new ILaunchesListener2() {
+		ILaunchesListener2 listener = new ILaunchesListener2() { //FLLDCIM: MARK — T27  ANONYMOUS
 			@Override
 			public void launchesRemoved(ILaunch[] launches) {
 			}
@@ -1439,12 +1439,12 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 				return super.waitFor();
 			}
 		};
-		ILaunch launch = new Launch(workingCopy, ILaunchManager.DEBUG_MODE, null) {
+		ILaunch launch = new Launch(workingCopy, ILaunchManager.DEBUG_MODE, null) { //FLLDCIM: MARK — T27  ANONYMOUS
 			@Override
 			public void addProcess(IProcess process) {
 				long msecToWaitForProcessToStart = 500;
 				long startTimeMsec = System.currentTimeMillis();
-				while (System.currentTimeMillis() - startTimeMsec < msecToWaitForProcessToStart) {
+				while (System.currentTimeMillis() - startTimeMsec < msecToWaitForProcessToStart) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					assertFalse(processStarted.get(), "Process started before registering launch for notifications");
 				}
 				super.addProcess(process);
@@ -1471,10 +1471,10 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * Tests that attributes in a nested map are persisted in alphabetical
 	 * order.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMapAttributePersistence() throws CoreException, IOException {
 		ILaunchConfigurationWorkingCopy c1 = newEmptyConfiguration(getProject(), "testMapAttributes1"); //$NON-NLS-1$
-		HashMap<String, String> map = new HashMap<>();
+		HashMap<String, String> map = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		map.put("Z", "z-value"); //$NON-NLS-1$ //$NON-NLS-2$
 		map.put("Y", "y-value"); //$NON-NLS-1$ //$NON-NLS-2$
 		map.put("X", "x-value"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1505,7 +1505,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		c1.doSave();
 
 		ILaunchConfigurationWorkingCopy c2 = newEmptyConfiguration(getProject(), "testMapAttributes2"); //$NON-NLS-1$
-		map = new HashMap<>();
+		map = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		map.put("A", "a-value"); //$NON-NLS-1$ //$NON-NLS-2$
 		map.put("Z", "z-value"); //$NON-NLS-1$ //$NON-NLS-2$
 		map.put("B", "b-value"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1548,10 +1548,10 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * Tests that attributes in a nested set are persisted in alphabetical
 	 * order.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetAttributePersistence() throws CoreException, IOException {
 		ILaunchConfigurationWorkingCopy c1 = newEmptyConfiguration(getProject(), "testSetAttributes1"); //$NON-NLS-1$
-		Set<String> set = new HashSet<>();
+		Set<String> set = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		set.add("z-value"); //$NON-NLS-1$
 		set.add("y-value"); //$NON-NLS-1$
 		set.add("x-value"); //$NON-NLS-1$
@@ -1582,7 +1582,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		c1.doSave();
 
 		ILaunchConfigurationWorkingCopy c2 = newEmptyConfiguration(getProject(), "testSetAttributes2"); //$NON-NLS-1$
-		set = new HashSet<>();
+		set = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		set.add("a-value"); //$NON-NLS-1$
 		set.add("z-value"); //$NON-NLS-1$
 		set.add("b-value"); //$NON-NLS-1$
@@ -1668,7 +1668,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * Test that moving and renaming a shared configuration at the same time
 	 * works.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRenameAndMoveShared() throws CoreException {
 		IProject project = getProject();
 		IFolder f1 = project.getFolder("f1"); //$NON-NLS-1$
@@ -1761,7 +1761,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	 * @see <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=395441">395441</a>
 	 * @since 3.9.0
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetProjectMappedResource3() throws Exception {
 		ILaunchConfiguration lc = newConfiguration(null, "test.project.resource.mapping"); //$NON-NLS-1$
 		try {
@@ -1835,9 +1835,9 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		List/* <String> */<String> types = null;
 		int size = resources.length;
 		if(resources != null && size > 0) {
-			paths = new ArrayList<>(size);
-			types = new ArrayList<>(size);
-			for(int i = 0; i < size; i++) {
+			paths = new ArrayList<>(size); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			types = new ArrayList<>(size); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for(int i = 0; i < size; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				paths.add(resources[i].path);
 				types.add(resources[i].type.toString());
 			}
@@ -1885,7 +1885,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		ILaunchConfiguration prototype = wc.doSave();
 		assertTrue(prototype.isPrototype(), "Should be a prototype"); //$NON-NLS-1$
 		ILaunchConfiguration[] prototypes = wc.getType().getPrototypes();
-		List<ILaunchConfiguration> list = new ArrayList<>();
+		List<ILaunchConfiguration> list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Collections.addAll(list, prototypes);
 		assertFalse(list.isEmpty(), "Expecting at least prototype"); //$NON-NLS-1$
 		assertTrue(list.contains(prototype), "Missing created prototype"); //$NON-NLS-1$
@@ -1894,7 +1894,7 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 	/**
 	 * Tests finding references to a prototype.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPrototypeChildren() throws CoreException {
 		ILaunchConfigurationWorkingCopy wc = newPrototype(null, "test-references"); //$NON-NLS-1$
 		ILaunchConfiguration prototype = wc.doSave();
@@ -1909,8 +1909,8 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		ILaunchConfiguration s2 = r2.doSave();
 
 		Iterable<ILaunchConfiguration> children = prototype.getPrototypeChildren();
-		List<ILaunchConfiguration> list = new ArrayList<>();
-		for (ILaunchConfiguration child : children) {
+		List<ILaunchConfiguration> list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ILaunchConfiguration child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			list.add(child);
 		}
 		assertEquals(2, list.size(), "Wrong number of prototype children"); //$NON-NLS-1$
@@ -2007,10 +2007,10 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		assertTrue(t2.isPrototype());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNewInstanceNotifiesListener() throws CoreException {
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-		final ArrayList<String> added = new ArrayList<>();
+		final ArrayList<String> added = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		ILaunchConfigurationListener listener = new ILaunchConfigurationListener() {
 
 			@Override
@@ -2039,14 +2039,14 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSharedTerminateTimeStampPersistence() throws Exception {
 		IProject project = getProject();
 		ILaunchConfigurationWorkingCopy workingCopy = newConfiguration(project, "TestSharedTimestamp");
 
-		Set<ILaunch> terminatedLaunches = Collections.synchronizedSet(new HashSet<>());
+		Set<ILaunch> terminatedLaunches = Collections.synchronizedSet(new HashSet<>()); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
-		ILaunchesListener2 listener = new ILaunchesListener2() {
+		ILaunchesListener2 listener = new ILaunchesListener2() { //FLLDCIM: MARK — T27  ANONYMOUS
 			@Override
 			public void launchesRemoved(ILaunch[] launches) {
 			}
@@ -2089,11 +2089,11 @@ public class LaunchConfigurationTests implements ILaunchConfigurationListener {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLocalTerminateTimeStampPersistence() throws Exception {
 		ILaunchConfigurationWorkingCopy workingCopy = newConfiguration(null, "TestLocalTimestamp");
-		Set<ILaunch> terminatedLaunches = Collections.synchronizedSet(new HashSet<>());
-		ILaunchesListener2 listener = new ILaunchesListener2() {
+		Set<ILaunch> terminatedLaunches = Collections.synchronizedSet(new HashSet<>()); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		ILaunchesListener2 listener = new ILaunchesListener2() { //FLLDCIM: MARK — T27  ANONYMOUS
 			@Override
 			public void launchesRemoved(ILaunch[] launches) {
 			}

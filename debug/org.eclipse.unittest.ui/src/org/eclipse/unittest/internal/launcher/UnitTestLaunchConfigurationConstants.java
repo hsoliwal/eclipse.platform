@@ -28,7 +28,7 @@ public class UnitTestLaunchConfigurationConstants {
 	 * An identifier of a property to be set on a {@link ILaunchConfiguration} to
 	 * identify an {@link ITestViewSupport} implementation.
 	 */
-	public static final String ATTR_UNIT_TEST_VIEW_SUPPORT = UnitTestPlugin.PLUGIN_ID + ".TEST_VIEW_SUPPPORT"; //$NON-NLS-1$
+	public static final String ATTR_UNIT_TEST_VIEW_SUPPORT = UnitTestPlugin.PLUGIN_ID + ".TEST_VIEW_SUPPPORT"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	private UnitTestLaunchConfigurationConstants() {
 		// No instance allowed

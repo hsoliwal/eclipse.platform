@@ -38,7 +38,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
  * Tests duplicate resource change events caused by a builder that makes
  * no changes.
  */
-@ExtendWith(WorkspaceResetExtension.class)
+@ExtendWith(WorkspaceResetExtension.class) //FLLDCIM: MARK — T07  IMPLEMENTS
 public class Bug_147232 implements IResourceChangeListener {
 
 	/**

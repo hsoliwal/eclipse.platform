@@ -53,13 +53,13 @@ public class ContentChangeNotifier implements IContentChangeNotifier {
 	/**
 	 * Notifies all registered <code>IContentChangeListener</code>s of a content change.
 	 */
-	public void fireContentChanged() {
+	public void fireContentChanged() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (isEmpty()) {
 			return;
 		}
 		// Legacy listeners may expect to be notified in the UI thread.
 		Runnable runnable = () -> {
-			for (final IContentChangeListener contentChangeListener : fListenerList) {
+			for (final IContentChangeListener contentChangeListener : fListenerList) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				SafeRunner.run(new ISafeRunnable() {
 					@Override
 					public void run() throws Exception {
@@ -73,7 +73,7 @@ public class ContentChangeNotifier implements IContentChangeNotifier {
 			}
 		};
 		if (Display.getCurrent() == null) {
-			Display.getDefault().syncExec(runnable);
+			Display.getDefault().syncExec(runnable); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		} else {
 			runnable.run();
 		}

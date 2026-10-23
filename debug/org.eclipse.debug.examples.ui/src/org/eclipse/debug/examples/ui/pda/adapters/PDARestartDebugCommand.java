@@ -29,7 +29,7 @@ public class PDARestartDebugCommand extends AbstractDebugCommand implements IRes
 
 	@Override
 	protected void doExecute(Object[] targets, IProgressMonitor monitor, IRequest request) throws CoreException {
-		for (int i = 0; i < targets.length; i++) {
+		for (int i = 0; i < targets.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			((PDADebugTarget)targets[i]).restart();
 			monitor.worked(1);
 		}
@@ -48,7 +48,7 @@ public class PDARestartDebugCommand extends AbstractDebugCommand implements IRes
 	protected boolean isExecutable(Object[] targets, IProgressMonitor monitor, IEnabledStateRequest request)
 		throws CoreException
 	{
-		for (int i = 0; i < targets.length; i++) {
+		for (int i = 0; i < targets.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (((PDADebugTarget)targets[i]).isTerminated()) {
 				return false;
 			}

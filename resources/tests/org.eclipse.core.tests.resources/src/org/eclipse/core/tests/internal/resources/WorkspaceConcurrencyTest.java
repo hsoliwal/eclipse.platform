@@ -62,7 +62,7 @@ public class WorkspaceConcurrencyTest {
 	public void testEndRuleInWorkspaceOperation() {
 		final IProject project = getWorkspace().getRoot().getProject("testEndRuleInWorkspaceOperation");
 		assertThrows(RuntimeException.class,
-				() -> getWorkspace().run((IWorkspaceRunnable) unused -> Job.getJobManager().endRule(project), project,
+				() -> getWorkspace().run((IWorkspaceRunnable) unused -> Job.getJobManager().endRule(project), project, //FLLDCIM: MARK — T09  LAMBDA
 						IResource.NONE, createTestMonitor()));
 	}
 
@@ -70,7 +70,7 @@ public class WorkspaceConcurrencyTest {
 	 * Tests that it is possible to cancel a workspace operation when it is blocked
 	 * by activity in another thread. This is a regression test for bug 56118.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCancelOnBlocked() throws Throwable {
 		//create a dummy project
 		createInWorkspace(getWorkspace().getRoot().getProject("P1"));
@@ -78,7 +78,7 @@ public class WorkspaceConcurrencyTest {
 		//simulating a scenario where workspace lock is held indefinitely
 		final AtomicIntegerArray barrier = new AtomicIntegerArray(new int[1]);
 		final AtomicReference<Throwable> errorInListener = new AtomicReference<>();
-		IResourceChangeListener listener = unused -> {
+		IResourceChangeListener listener = unused -> { //FLLDCIM: MARK — T07  LAMBDA
 			//block until we are told to do otherwise
 			barrier.set(0, TestBarrier2.STATUS_START);
 			try {
@@ -105,7 +105,7 @@ public class WorkspaceConcurrencyTest {
 			final AtomicReference<Throwable> errorInThread = new AtomicReference<>();
 			Thread t2 = new Thread(() -> {
 				try {
-					getWorkspace().run((IWorkspaceRunnable) unused -> {
+					getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 						//no-op
 					}, new CancelingProgressMonitor());
 				} catch (CoreException e1) {
@@ -150,7 +150,7 @@ public class WorkspaceConcurrencyTest {
 				return schedulingRule == this;
 			}
 		};
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			// noop
 		}, rule, IResource.NONE, createTestMonitor());
 	}
@@ -166,7 +166,7 @@ public class WorkspaceConcurrencyTest {
 	 * will not be available and it will fail.
 	 * This is a regression test for bug 	62927.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRunWhileBuilding() throws Throwable {
 		final IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		//create a POST_BUILD listener that will touch a project
@@ -177,7 +177,7 @@ public class WorkspaceConcurrencyTest {
 		createInWorkspace(touch);
 		createInWorkspace(ruleFile);
 		AtomicReference<Throwable> failure = new AtomicReference<>();
-		IResourceChangeListener listener = unused -> {
+		IResourceChangeListener listener = unused -> { //FLLDCIM: MARK — T07  LAMBDA
 			try {
 				touch.touch(null);
 			} catch (CoreException | RuntimeException e2) {
@@ -192,7 +192,7 @@ public class WorkspaceConcurrencyTest {
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					try {
-						workspace.run((IWorkspaceRunnable) monitor1 -> {
+						workspace.run((IWorkspaceRunnable) monitor1 -> { //FLLDCIM: MARK — T09  LAMBDA
 							//do a build
 							workspace.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, monitor1);
 							//signal that the job has done the build
@@ -215,7 +215,7 @@ public class WorkspaceConcurrencyTest {
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					try {
-						workspace.run((IWorkspaceRunnable) unused -> {
+						workspace.run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 							//signal that this job has started
 							status.set(1, TestBarrier2.STATUS_RUNNING);
 							//let job one finish
@@ -235,7 +235,7 @@ public class WorkspaceConcurrencyTest {
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					try {
-						workspace.run((IWorkspaceRunnable) unused -> {
+						workspace.run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 							//signal that this job has started
 							status.set(2, TestBarrier2.STATUS_RUNNING);
 							//let job two finish
@@ -286,7 +286,7 @@ public class WorkspaceConcurrencyTest {
 
 	private void waitForCompletion(Job job) {
 		int i = 0;
-		while (job.getState() != Job.NONE) {
+		while (job.getState() != Job.NONE) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			sleep(100);
 			//sanity test to avoid hanging tests
 			assertTrue(i++ < 1000, "Timeout waiting for job to complete");

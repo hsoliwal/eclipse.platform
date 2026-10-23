@@ -83,12 +83,12 @@ class MinimizedFileSystemElement implements IWorkbenchAdapter, IAdaptable {
 	private void addChild(MinimizedFileSystemElement child) {
 		if (child.isDirectory()) {
 			if (folders == null) {
-				folders = new ArrayList<>(1);
+				folders = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			}
 			folders.add(child);
 		} else {
 			if (files == null) {
-				files = new ArrayList<>(1);
+				files = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			}
 			files.add(child);
 		}
@@ -148,14 +148,14 @@ class MinimizedFileSystemElement implements IWorkbenchAdapter, IAdaptable {
 	 * @param provider
 	 *            org.eclipse.ui.wizards.datatransfer.IImportStructureProvider
 	 */
-	private void populate(IImportStructureProvider provider) {
+	private void populate(IImportStructureProvider provider) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		List<Object> children = provider.getChildren(fileSystemObject);
 		if (children == null) {
-			children = new ArrayList<>(1);
+			children = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 		Iterator<Object> childrenEnum = children.iterator();
-		while (childrenEnum.hasNext()) {
+		while (childrenEnum.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object child = childrenEnum.next();
 
 			String elementLabel = provider.getLabel(child);

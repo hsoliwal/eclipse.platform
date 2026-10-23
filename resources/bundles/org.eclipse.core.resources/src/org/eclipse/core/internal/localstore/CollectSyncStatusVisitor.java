@@ -53,7 +53,7 @@ public class CollectSyncStatusVisitor extends RefreshLocalVisitor {
 		String message = NLS.bind(Messages.localstore_resourceIsOutOfSync, target.getFullPath());
 		status.add(new ResourceStatus(IResourceStatus.OUT_OF_SYNC_LOCAL, target.getFullPath(), message));
 		if (affectedResources == null) {
-			affectedResources = new ArrayList<>(20);
+			affectedResources = new ArrayList<>(20); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 		affectedResources.add(target);
 		resourceChanged = true;

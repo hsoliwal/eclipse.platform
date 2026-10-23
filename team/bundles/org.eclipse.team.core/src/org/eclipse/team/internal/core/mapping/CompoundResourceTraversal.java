@@ -30,25 +30,25 @@ import org.eclipse.core.runtime.IPath;
  */
 public class CompoundResourceTraversal {
 
-	private final Set<IResource> deepFolders = new HashSet<>();
-	private final Set<IResource> shallowFolders = new HashSet<>();
-	private final Set<IResource> zeroFolders = new HashSet<>();
-	private final Set<IResource> files = new HashSet<>();
+	private final Set<IResource> deepFolders = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<IResource> shallowFolders = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<IResource> zeroFolders = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<IResource> files = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	public synchronized void addTraversals(ResourceTraversal[] traversals) {
-		for (ResourceTraversal traversal : traversals) {
+		for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			addTraversal(traversal);
 		}
 	}
 
 	public synchronized void addTraversal(ResourceTraversal traversal) {
 		IResource[] resources = traversal.getResources();
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			addResource(resource, traversal.getDepth());
 		}
 	}
 
-	public synchronized void addResource(IResource resource, int depth) {
+	public synchronized void addResource(IResource resource, int depth) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (resource.getType() == IResource.FILE) {
 			if (!isCovered(resource, IResource.DEPTH_ZERO)) {
 				files.add(resource);
@@ -76,10 +76,10 @@ public class CompoundResourceTraversal {
 		}
 	}
 
-	public synchronized boolean isCovered(IResource resource, int depth) {
+	public synchronized boolean isCovered(IResource resource, int depth) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath fullPath = resource.getFullPath();
 		// Regardless of the depth, look for a deep folder that covers the resource
-		for (IResource deepFolder : deepFolders) {
+		for (IResource deepFolder : deepFolders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (deepFolder.getFullPath().isPrefixOf(fullPath)) {
 				return true;
 			}
@@ -114,10 +114,10 @@ public class CompoundResourceTraversal {
 		}
 	}
 
-	private void removeDescendants(IResource resource, int depth) {
+	private void removeDescendants(IResource resource, int depth) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath fullPath = resource.getFullPath();
 		// First, remove any files that are now covered
-		for (Iterator iter = files.iterator(); iter.hasNext();) {
+		for (Iterator iter = files.iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource child = (IResource) iter.next();
 			switch (depth) {
 			case IResource.DEPTH_INFINITE:
@@ -136,7 +136,7 @@ public class CompoundResourceTraversal {
 		}
 		// Now, remove any shallow folders
 		if (depth == IResource.DEPTH_INFINITE) {
-			for (Iterator iter = shallowFolders.iterator(); iter.hasNext();) {
+			for (Iterator iter = shallowFolders.iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource child = (IResource) iter.next();
 				if (fullPath.isPrefixOf(child.getFullPath())) {
 					iter.remove();
@@ -144,7 +144,7 @@ public class CompoundResourceTraversal {
 			}
 		}
 		// Finally, remove any zero folders
-		for (Iterator iter = zeroFolders.iterator(); iter.hasNext();) {
+		for (Iterator iter = zeroFolders.iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource child = (IResource) iter.next();
 			switch (depth) {
 			case IResource.DEPTH_INFINITE:
@@ -183,7 +183,7 @@ public class CompoundResourceTraversal {
 	}
 
 	public synchronized void addResources(IResource[] resources, int depth) {
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			addResource(resource, depth);
 		}
 
@@ -203,24 +203,24 @@ public class CompoundResourceTraversal {
 	/*
 	 * Return any resources in the other traversal that are not covered by this traversal
 	 */
-	private IResource[] getUncoveredResources(CompoundResourceTraversal otherTraversal) {
-		Set<IResource> result = new HashSet<>();
-		for (IResource resource : otherTraversal.files) {
+	private IResource[] getUncoveredResources(CompoundResourceTraversal otherTraversal) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		Set<IResource> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IResource resource : otherTraversal.files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!isCovered(resource, IResource.DEPTH_ZERO)) {
 				result.add(resource);
 			}
 		}
-		for (IResource resource : otherTraversal.zeroFolders) {
+		for (IResource resource : otherTraversal.zeroFolders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!isCovered(resource, IResource.DEPTH_ZERO)) {
 				result.add(resource);
 			}
 		}
-		for (IResource resource : otherTraversal.shallowFolders) {
+		for (IResource resource : otherTraversal.shallowFolders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!isCovered(resource, IResource.DEPTH_ONE)) {
 				result.add(resource);
 			}
 		}
-		for (IResource resource : otherTraversal.deepFolders) {
+		for (IResource resource : otherTraversal.deepFolders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!isCovered(resource, IResource.DEPTH_INFINITE)) {
 				result.add(resource);
 			}
@@ -229,9 +229,9 @@ public class CompoundResourceTraversal {
 	}
 
 	public synchronized ResourceTraversal[] asTraversals() {
-		List<ResourceTraversal> result = new ArrayList<>();
+		List<ResourceTraversal> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (!files.isEmpty() || ! zeroFolders.isEmpty()) {
-			Set<IResource> combined = new HashSet<>();
+			Set<IResource> combined = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			combined.addAll(files);
 			combined.addAll(zeroFolders);
 			result.add(new ResourceTraversal(combined.toArray(new IResource[combined.size()]), IResource.DEPTH_ZERO, IResource.NONE));
@@ -246,7 +246,7 @@ public class CompoundResourceTraversal {
 	}
 
 	public synchronized IResource[] getRoots() {
-		List<IResource> result = new ArrayList<>();
+		List<IResource> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		result.addAll(files);
 		result.addAll(zeroFolders);
 		result.addAll(shallowFolders);
@@ -260,25 +260,25 @@ public class CompoundResourceTraversal {
 		return getUncoveredTraversals(other);
 	}
 
-	public ResourceTraversal[] getUncoveredTraversals(CompoundResourceTraversal otherTraversal) {
+	public ResourceTraversal[] getUncoveredTraversals(CompoundResourceTraversal otherTraversal) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		synchronized (otherTraversal) {
 			CompoundResourceTraversal uncovered = new CompoundResourceTraversal();
-			for (IResource resource : otherTraversal.files) {
+			for (IResource resource : otherTraversal.files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!isCovered(resource, IResource.DEPTH_ZERO)) {
 					uncovered.addResource(resource, IResource.DEPTH_ZERO);
 				}
 			}
-			for (IResource resource : otherTraversal.zeroFolders) {
+			for (IResource resource : otherTraversal.zeroFolders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!isCovered(resource, IResource.DEPTH_ZERO)) {
 					uncovered.addResource(resource, IResource.DEPTH_ZERO);
 				}
 			}
-			for (IResource resource : otherTraversal.shallowFolders) {
+			for (IResource resource : otherTraversal.shallowFolders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!isCovered(resource, IResource.DEPTH_ONE)) {
 					uncovered.addResource(resource, IResource.DEPTH_ONE);
 				}
 			}
-			for (IResource resource : otherTraversal.deepFolders) {
+			for (IResource resource : otherTraversal.deepFolders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!isCovered(resource, IResource.DEPTH_INFINITE)) {
 					uncovered.addResource(resource, IResource.DEPTH_INFINITE);
 				}

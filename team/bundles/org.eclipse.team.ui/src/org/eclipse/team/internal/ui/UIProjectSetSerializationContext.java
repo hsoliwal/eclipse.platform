@@ -83,7 +83,7 @@ public class UIProjectSetSerializationContext extends ProjectSetSerializationCon
 	 *
 	 * @see org.eclipse.team.core.ProjectSetSerializationContext#confirmOverwrite(org.eclipse.core.resources.IProject[])
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IProject[] confirmOverwrite(final IProject[] projects) throws TeamException {
 		IPromptCondition prompt = new IPromptCondition() {
 			List resources = Arrays.asList(projects);

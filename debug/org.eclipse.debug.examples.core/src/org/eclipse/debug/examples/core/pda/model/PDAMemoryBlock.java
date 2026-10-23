@@ -37,7 +37,7 @@ public class PDAMemoryBlock extends PDADebugElement implements IMemoryBlock {
 		fStart = start;
 		fLength = length;
 		byte b = 0;
-		for (int i = 0; i < fBytes.length; i++) {
+		for (int i = 0; i < fBytes.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fBytes[i] = b++;
 		}
 	}
@@ -66,7 +66,7 @@ public class PDAMemoryBlock extends PDADebugElement implements IMemoryBlock {
 	public void setValue(long offset, byte[] bytes) throws DebugException {
 		int i = 0;
 		long off = offset;
-		while (off < fBytes.length && i < bytes.length) {
+		while (off < fBytes.length && i < bytes.length) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fBytes[(int)off++] = bytes[i++];
 		}
 		fireChangeEvent(DebugEvent.CONTENT);

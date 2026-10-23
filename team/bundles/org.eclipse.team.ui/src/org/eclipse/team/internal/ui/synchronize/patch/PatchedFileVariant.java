@@ -51,7 +51,7 @@ public class PatchedFileVariant implements IResourceVariant {
 		return diff.getPath(patcher.isReversed()).lastSegment();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStorage getStorage(IProgressMonitor monitor) throws TeamException {
 		return new IStorage() {
 

@@ -31,7 +31,7 @@ public class EclipsePreferencesView extends ViewPart {
 	private TreeViewer viewer;
 	private IAction collapseAllAction;
 
-	class ViewContentProvider implements ITreeContentProvider {
+	class ViewContentProvider implements ITreeContentProvider { //FLLDCIM: MARK — M22  IMPLEMENTS
 
 		private IEclipsePreferences invisibleRoot;
 
@@ -64,18 +64,18 @@ public class EclipsePreferencesView extends ViewPart {
 			return null;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public Object[] getChildren(Object parent) {
-			ArrayList<Object> result = new ArrayList<>();
+			ArrayList<Object> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			if (parent instanceof IEclipsePreferences node) {
 				try {
 					String[] childrenNames = node.childrenNames();
-					for (int i = 0; childrenNames != null && i < childrenNames.length; i++) {
+					for (int i = 0; childrenNames != null && i < childrenNames.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						result.add(node.node(childrenNames[i]));
 					}
 					String[] keys = node.keys();
-					for (String key : keys) {
-						result.add(key + '=' + node.get(key, "")); //$NON-NLS-1$
+					for (String key : keys) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+						result.add(key + '=' + node.get(key, "")); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 				} catch (BackingStoreException e) {
 					e.printStackTrace();
@@ -130,9 +130,9 @@ public class EclipsePreferencesView extends ViewPart {
 	public void createPartControl(Composite parent) {
 		viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		viewer.setContentProvider(new ViewContentProvider());
-		viewer.setLabelProvider(new ViewLabelProvider());
+		viewer.setLabelProvider(new ViewLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 		viewer.setComparator(new ViewerComparator());
-		viewer.setInput(getViewSite());
+		viewer.setInput(getViewSite()); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		getViewSite().setSelectionProvider(viewer);
 		IActionBars bars = getViewSite().getActionBars();
 		collapseAllAction = new CollapseAllAction(viewer);

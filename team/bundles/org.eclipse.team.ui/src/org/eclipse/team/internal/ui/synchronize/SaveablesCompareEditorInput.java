@@ -89,7 +89,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
  * save lifecycle of the left and right sides of the comparison. The ancestor
  * part of the comparison is not editable.
  */
-public class SaveablesCompareEditorInput extends CompareEditorInput implements
+public class SaveablesCompareEditorInput extends CompareEditorInput implements //FLLDCIM: MARK — T09  IMPLEMENTS
 		ISaveablesSource {
 
 	private IPropertyListener fLeftPropertyListener;
@@ -151,10 +151,10 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 		return listener;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void contentsCreated() {
 		super.contentsCreated();
-		compareInputChangeListener = source -> {
+		compareInputChangeListener = source -> { //FLLDCIM: MARK — T37  LAMBDA
 			if (source == getCompareResult()) {
 				boolean closed = false;
 				if (source.getKind() == Differencer.NO_CHANGE) {
@@ -174,29 +174,29 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 
 		if (getLeftSaveable() instanceof SaveableComparison) {
 			SaveableComparison lscm = (SaveableComparison) fLeftSaveable;
-			fLeftPropertyListener = (unused, propId) -> {
+			fLeftPropertyListener = (unused, propId) -> { //FLLDCIM: MARK — T06  LAMBDA
 				if (propId == SaveableComparison.PROP_DIRTY) {
 					setLeftDirty(fLeftSaveable.isDirty());
 				}
 			};
-			lscm.addPropertyListener(fLeftPropertyListener);
+			lscm.addPropertyListener(fLeftPropertyListener); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		}
 
 		if (getRightSaveable() instanceof SaveableComparison) {
 			SaveableComparison rscm = (SaveableComparison) fRightSaveable;
-			fRightPropertyListener = (unused, propId) -> {
+			fRightPropertyListener = (unused, propId) -> { //FLLDCIM: MARK — T06  LAMBDA
 				if (propId == SaveableComparison.PROP_DIRTY) {
 					setRightDirty(fRightSaveable.isDirty());
 				}
 			};
-			rscm.addPropertyListener(fRightPropertyListener);
+			rscm.addPropertyListener(fRightPropertyListener); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		}
 
 		setLeftDirty(fLeftSaveable.isDirty());
 		setRightDirty(fRightSaveable.isDirty());
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void handleDispose() {
 		super.handleDispose();
 		ICompareInput compareInput = getCompareInput();
@@ -223,7 +223,7 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 		}
 	}
 
-	private String[] getLabels() {
+	private String[] getLabels() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource leftResource = getResource(fLeftElement);
 		IResource rightResource = getResource(fRightElement);
 		if (leftResource != null && rightResource != null) {
@@ -351,7 +351,7 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 			dsp.addPropertyChangeListener(lpcl);
 			dsp.addPropertyChangeListener(rpcl);
 			Control c = newViewer.getControl();
-			c.addDisposeListener(unused -> {
+			c.addDisposeListener(unused -> { //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 				dsp.removePropertyChangeListener(lpcl);
 				dsp.removePropertyChangeListener(rpcl);
 			});
@@ -427,7 +427,7 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 	 * @return <code>true</code> if the editor was closed (note that the close
 	 *         may be asynchronous)
 	 */
-	protected boolean closeEditor(boolean checkForUnsavedChanges) {
+	protected boolean closeEditor(boolean checkForUnsavedChanges) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (isSaveNeeded() && checkForUnsavedChanges) {
 			return false;
 		} else {
@@ -441,7 +441,7 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 			} else {
 				Display display = getPage().getWorkbenchWindow().getShell()
 						.getDisplay();
-				display.asyncExec(runnable);
+				display.asyncExec(runnable); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			}
 			return true;
 		}
@@ -492,7 +492,7 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 		return false;
 	}
 
-	private void initLabels() {
+	private void initLabels() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		CompareConfiguration cc = getCompareConfiguration();
 
 		IResource ancestorResource = getResource(fAncestorElement);
@@ -523,7 +523,7 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 				fRightElement);
 	}
 
-	private final CompareInputChangeNotifier notifier = new CompareInputChangeNotifier() {
+	private final CompareInputChangeNotifier notifier = new CompareInputChangeNotifier() { //FLLDCIM: MARK — T07  ANONYMOUS
 		@Override
 		protected IResource[] getResources(ICompareInput input) {
 			IResource leftResource = getResource(fLeftElement);
@@ -588,13 +588,13 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 		final ITypedElement lLeftElement = getFileElement(getCompareInput()
 				.getLeft(), this);
 		if (lLeftSaveable instanceof LocalResourceSaveableComparison) {
-			pMenuManager.addMenuListener(manager -> handleMenuAboutToShow(manager, getContainer(), lLeftSaveable, lLeftElement, pSelectionProvider));
+			pMenuManager.addMenuListener(manager -> handleMenuAboutToShow(manager, getContainer(), lLeftSaveable, lLeftElement, pSelectionProvider)); //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 		}
 		final Saveable lRightSaveable = getRightSaveable();
 		final ITypedElement lRightElement = getFileElement(getCompareInput()
 				.getRight(), this);
 		if (lRightSaveable instanceof LocalResourceSaveableComparison) {
-			pMenuManager.addMenuListener(manager -> handleMenuAboutToShow(manager, getContainer(), lRightSaveable, lRightElement, pSelectionProvider));
+			pMenuManager.addMenuListener(manager -> handleMenuAboutToShow(manager, getContainer(), lRightSaveable, lRightElement, pSelectionProvider)); //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 		}
 	}
 
@@ -604,7 +604,7 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 		if (input == getCompareResult()) {
 			inputChangeListeners.add(listener);
 		} else {
-			super.addCompareInputChangeListener(input, listener);
+			super.addCompareInputChangeListener(input, listener); //FLLDCIM: MARK — T37 COMPARE_DELTA CALL
 		}
 	}
 
@@ -618,11 +618,11 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 		}
 	}
 
-	private void propogateInputChange() {
+	private void propogateInputChange() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!inputChangeListeners.isEmpty()) {
 			Object[] allListeners = inputChangeListeners.getListeners();
 			final ICompareInput compareResult = (ICompareInput) getCompareResult();
-			for (Object l : allListeners) {
+			for (Object l : allListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				final ICompareInputChangeListener listener = (ICompareInputChangeListener) l;
 				SafeRunner.run(new ISafeRunnable() {
 					@Override
@@ -679,7 +679,7 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 
 	// TODO: add getAdapter for IFile[]
 
-	private class InternalResourceSaveableComparison extends
+	private class InternalResourceSaveableComparison extends //FLLDCIM: MARK — T06  IMPLEMENTS
 			LocalResourceSaveableComparison implements
 			ISharedDocumentAdapterListener {
 		private LocalResourceTypedElement lrte;
@@ -723,7 +723,7 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 			}
 		}
 
-		private void registerSaveable(boolean init) {
+		private void registerSaveable(boolean init) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			ICompareContainer container = getContainer();
 			IWorkbenchPart part = container.getWorkbenchPart();
 			if (part != null) {
@@ -765,7 +765,7 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 			// Ignore
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public boolean equals(Object obj) {
 			if (this == obj) {
 				return true;
@@ -790,7 +790,7 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 		}
 	}
 
-	public static void handleMenuAboutToShow(IMenuManager manager, ICompareContainer container, Saveable saveable, ITypedElement element, ISelectionProvider provider) {
+	public static void handleMenuAboutToShow(IMenuManager manager, ICompareContainer container, Saveable saveable, ITypedElement element, ISelectionProvider provider) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (provider instanceof final ITextViewer v) {
 			IDocument d= v.getDocument();
 			IDocument other= Adapters.adapt(saveable, IDocument.class);
@@ -821,7 +821,7 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 						manager.insertAfter("file", submenu2); //$NON-NLS-1$
 
 						// XXX: Internal reference will get fixed during 3.7, see https://bugs.eclipse.org/bugs/show_bug.cgi?id=307026
-						OpenFileAction openFileAction= new OpenFileAction(ws.getPage()) {
+						OpenFileAction openFileAction= new OpenFileAction(ws.getPage()) { //FLLDCIM: MARK — T04  ANONYMOUS
 							@Override
 							public void run() {
 								super.run();
@@ -846,7 +846,7 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 	 * @param length the length
 	 * @since 3.6
 	 */
-	private static void revealInEditor(IEditorPart editor, final int offset, final int length) {
+	private static void revealInEditor(IEditorPart editor, final int offset, final int length) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (editor instanceof ITextEditor) {
 			((ITextEditor)editor).selectAndReveal(offset, length);
 			return;
@@ -862,7 +862,7 @@ public class SaveablesCompareEditorInput extends CompareEditorInput implements
 		if (gotoMarkerTarget != null) {
 			final IEditorInput input= editor.getEditorInput();
 			if (input instanceof IFileEditorInput) {
-				WorkspaceModifyOperation op= new WorkspaceModifyOperation() {
+				WorkspaceModifyOperation op= new WorkspaceModifyOperation() { //FLLDCIM: MARK — T09  ANONYMOUS
 					@Override
 					protected void execute(IProgressMonitor monitor) throws CoreException {
 						IMarker marker= null;

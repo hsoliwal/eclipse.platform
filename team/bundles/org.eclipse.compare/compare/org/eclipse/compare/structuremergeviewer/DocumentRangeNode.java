@@ -177,7 +177,7 @@ public class DocumentRangeNode
 	 */
 	public void addChild(DocumentRangeNode node) {
 		if (fChildren == null) {
-			fChildren= new ArrayList<>();
+			fChildren= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 		fChildren.add(node);
 	}
@@ -209,7 +209,7 @@ public class DocumentRangeNode
 	 *
 	 * @param pos the character position within the underlying document where text can be legally inserted
 	 */
-	public void setAppendPosition(int pos) {
+	public void setAppendPosition(int pos) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fAppendPosition != null) {
 			try {
 				fBaseDocument.removePosition(RANGE_CATEGORY, fAppendPosition);
@@ -277,7 +277,7 @@ public class DocumentRangeNode
 	/*
 	 * Find corresponding position
 	 */
-	private Position findCorrespondingPosition(DocumentRangeNode otherParent, DocumentRangeNode child) {
+	private Position findCorrespondingPosition(DocumentRangeNode otherParent, DocumentRangeNode child) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// we try to find a predecessor of left Node which exists on the right side
 
@@ -285,7 +285,7 @@ public class DocumentRangeNode
 			int ix= otherParent.fChildren.indexOf(child);
 			if (ix >= 0) {
 
-				for (int i= ix - 1; i >= 0; i--) {
+				for (int i= ix - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					DocumentRangeNode c1= otherParent.fChildren.get(i);
 					int i2= fChildren.indexOf(c1);
 					if (i2 >= 0) {
@@ -303,7 +303,7 @@ public class DocumentRangeNode
 					}
 				}
 
-				for (int i= ix; i < otherParent.fChildren.size(); i++) {
+				for (int i= ix; i < otherParent.fChildren.size(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					DocumentRangeNode c1= otherParent.fChildren.get(i);
 					int i2= fChildren.indexOf(c1);
 					if (i2 >= 0) {
@@ -365,7 +365,7 @@ public class DocumentRangeNode
 		return true;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ITypedElement replace(ITypedElement child, ITypedElement other) {
 		if (fParent == null) {
 			// TODO: I don't believe this code does anything useful but just in case

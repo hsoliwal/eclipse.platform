@@ -41,7 +41,7 @@ public class DiffPresentationReconciler extends PresentationReconciler {
 	private final TextAttribute indexDiffAttribute = new TextAttribute(
 			Display.getCurrent().getSystemColor(SWT.COLOR_DARK_CYAN), null, SWT.BOLD);
 
-	public DiffPresentationReconciler() {
+	public DiffPresentationReconciler() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		RuleBasedScanner hscanner = new RuleBasedScanner();
 		IRule[] headerRules=new IRule[3];

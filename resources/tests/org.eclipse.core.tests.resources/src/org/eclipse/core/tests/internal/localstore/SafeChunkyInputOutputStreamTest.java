@@ -54,7 +54,7 @@ public class SafeChunkyInputOutputStreamTest {
 
 	@BeforeEach
 	public void setUp() throws Exception {
-		streams = new ArrayList<>();
+		streams = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		temp = getRandomLocation().append("temp").toFile();
 		temp.mkdirs();
 		assertTrue(temp.isDirectory(), "could not create temp directory");
@@ -63,7 +63,7 @@ public class SafeChunkyInputOutputStreamTest {
 
 	@AfterEach
 	public void tearDown() throws Exception {
-		for (SafeChunkyOutputStream stream : streams) {
+		for (SafeChunkyOutputStream stream : streams) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				stream.close();
 			} catch (Exception e) {
@@ -73,7 +73,7 @@ public class SafeChunkyInputOutputStreamTest {
 		removeFromFileSystem(temp.getParentFile());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBufferLimit() throws Exception {
 		Workspace.clear(target); // make sure there was nothing here before
 		assertFalse(target.exists());
@@ -99,14 +99,14 @@ public class SafeChunkyInputOutputStreamTest {
 	 * The returned array will have at least the specified size.
 	 */
 	private byte[] getBigContents(int size) {
-		StringBuilder sb = new StringBuilder();
-		while (sb.length() < size) {
-			sb.append(createRandomString());
+		StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		while (sb.length() < size) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			sb.append(createRandomString()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return sb.toString().getBytes();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFailure() throws Exception {
 		Workspace.clear(target); // make sure there was nothing here before
 		assertFalse(target.exists());
@@ -202,7 +202,7 @@ public class SafeChunkyInputOutputStreamTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSimple() throws Exception {
 		Workspace.clear(target); // make sure there was nothing here before
 		assertFalse(target.exists());

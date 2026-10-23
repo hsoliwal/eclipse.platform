@@ -26,7 +26,7 @@ public class XMLChildren extends XMLNode {
 	public XMLChildren(String XMLType, String id, String value, String signature, IDocument doc, int start, int length) {
 		super(XMLType, id, value, signature, doc, start, length);
 		children= 0;
-		childElements = new HashMap<>();
+		childElements = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	}
 }
 

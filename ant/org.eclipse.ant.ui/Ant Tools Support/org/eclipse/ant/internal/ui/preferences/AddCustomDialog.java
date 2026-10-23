@@ -102,7 +102,7 @@ public class AddCustomDialog extends StatusDialog {
 		setShellStyle(getShellStyle() | SWT.RESIZE);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createDialogArea(Composite parent) {
 		Composite topComposite = (Composite) super.createDialogArea(parent);
 		topComposite.setSize(topComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
@@ -138,7 +138,7 @@ public class AddCustomDialog extends StatusDialog {
 		nameField.setLayoutData(data);
 		nameField.setFont(topComposite.getFont());
 		nameField.setText(name);
-		nameField.addModifyListener(unused -> updateStatus());
+		nameField.addModifyListener(unused -> updateStatus()); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public class AddCustomDialog extends StatusDialog {
 	/**
 	 * Create the group for creating the root directory
 	 */
-	private void createRootDirectoryGroup(Composite parent) {
+	private void createRootDirectoryGroup(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Label groupLabel = new Label(parent, SWT.NONE);
 		groupLabel.setText(AntPreferencesMessages.AddCustomDialog__Location);
 		groupLabel.setFont(parent.getFont());
@@ -187,17 +187,17 @@ public class AddCustomDialog extends StatusDialog {
 		sourceNameField.setLayoutData(data);
 		sourceNameField.setFont(parent.getFont());
 
-		sourceNameField.addSelectionListener(new SelectionAdapter() {
+		sourceNameField.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				updateFromSourceField();
 			}
 		});
 
-		for (IAntClasspathEntry entry : libraryEntries) {
+		for (IAntClasspathEntry entry : libraryEntries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			sourceNameField.add(entry.getLabel());
 		}
-		sourceNameField.addKeyListener(new KeyAdapter() {
+		sourceNameField.addKeyListener(new KeyAdapter() { //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// If there has been a key pressed then mark as dirty
@@ -205,7 +205,7 @@ public class AddCustomDialog extends StatusDialog {
 			}
 		});
 
-		sourceNameField.addFocusListener(new FocusAdapter() {
+		sourceNameField.addFocusListener(new FocusAdapter() { //FLLDCIM: MARK — T15 FOCUS CALL
 			@Override
 			public void focusLost(FocusEvent e) {
 				// Clear the flag to prevent constant update
@@ -228,13 +228,13 @@ public class AddCustomDialog extends StatusDialog {
 	/**
 	 * Check the field values and display a message in the status if needed.
 	 */
-	private void updateStatus() {
+	private void updateStatus() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		StatusInfo status = new StatusInfo();
 		String customName = nameField.getText().trim();
 		if (customName.length() == 0) {
 			status.setError(noNameErrorMsg);
 		} else if (!editing) {
-			for (String aName : existingNames) {
+			for (String aName : existingNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (aName.equals(customName)) {
 					status.setError(MessageFormat.format(alreadyExistsErrorMsg, customName));
 					updateStatus(status);
@@ -254,13 +254,13 @@ public class AddCustomDialog extends StatusDialog {
 	 * @param path
 	 *            the path to be added
 	 */
-	private void setSourceName(String path) {
+	private void setSourceName(String path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (path.length() > 0) {
 
 			String[] currentItems = this.sourceNameField.getItems();
 			int selectionIndex = -1;
-			for (int i = 0; i < currentItems.length; i++) {
+			for (int i = 0; i < currentItems.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (currentItems[i].equals(path)) {
 					selectionIndex = i;
 					break;
@@ -288,13 +288,13 @@ public class AddCustomDialog extends StatusDialog {
 		FileSystemElement dummyRoot = new FileSystemElement("Dummy", null, true); //$NON-NLS-1$
 		this.selectionGroup = new TreeAndListGroup(parent, dummyRoot, getFolderProvider(), new WorkbenchLabelProvider(), getFileProvider(), new WorkbenchLabelProvider(), SWT.NONE, 400, 150, false);
 
-		ISelectionChangedListener listener = unused -> updateStatus();
+		ISelectionChangedListener listener = unused -> updateStatus(); //FLLDCIM: MARK — T04  LAMBDA
 
 		WorkbenchViewerComparator comparator = new WorkbenchViewerComparator();
 		this.selectionGroup.setTreeComparator(comparator);
 		this.selectionGroup.setListSorter(comparator);
 		this.selectionGroup.addSelectionChangedListener(listener);
-		selectionGroup.addDoubleClickListener(unused -> {
+		selectionGroup.addDoubleClickListener(unused -> { //FLLDCIM: MARK — T05  LAMBDA
 			if (getButton(IDialogConstants.OK_ID).isEnabled()) {
 				buttonPressed(IDialogConstants.OK_ID);
 			}
@@ -318,7 +318,7 @@ public class AddCustomDialog extends StatusDialog {
 	 * Answer the root FileSystemElement that represents the contents of the currently-specified .zip file. If this FileSystemElement is not currently
 	 * defined then create and return it.
 	 */
-	private MinimizedFileSystemElement getFileSystemTree() {
+	private MinimizedFileSystemElement getFileSystemTree() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IImportStructureProvider provider = null;
 		MinimizedFileSystemElement element = null;
 		ZipFile sourceFile = getSpecifiedSourceFile();
@@ -374,11 +374,11 @@ public class AddCustomDialog extends StatusDialog {
 	 * Answer a handle to the zip file currently specified as being the source. Return <code>null</code> if this file does not exist or is not of
 	 * valid format.
 	 */
-	private ZipFile getSpecifiedSourceFile() {
+	private ZipFile getSpecifiedSourceFile() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			String expanded = sourceNameField.getText();
 			expanded = VariablesPlugin.getDefault().getStringVariableManager().performStringSubstitution(expanded);
-			return new ZipFile(expanded);
+			return new ZipFile(expanded); //FLLDCIM: MARK — M25 M3FILE_ARCHIVE_STREAM NEW
 		}
 		catch (ZipException e) {
 			StatusInfo status = new StatusInfo();
@@ -430,7 +430,7 @@ public class AddCustomDialog extends StatusDialog {
 		}
 	}
 
-	private void selectClass(MinimizedFileSystemElement currentParent, StringTokenizer tokenizer) {
+	private void selectClass(MinimizedFileSystemElement currentParent, StringTokenizer tokenizer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!tokenizer.hasMoreTokens()) {
 			return;
 		}
@@ -446,7 +446,7 @@ public class AddCustomDialog extends StatusDialog {
 		String currentName = tokenizer.nextToken();
 		if (tokenizer.hasMoreTokens()) {
 			Iterator<MinimizedFileSystemElement> allFolders = folders.iterator();
-			while (allFolders.hasNext()) {
+			while (allFolders.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				MinimizedFileSystemElement folder = allFolders.next();
 				if (folder.getLabel(null).equals(currentName)) {
 					selectionGroup.selectAndRevealFolder(folder);
@@ -456,8 +456,8 @@ public class AddCustomDialog extends StatusDialog {
 			}
 		} else {
 			List<MinimizedFileSystemElement> files = currentParent.getFiles(currentProvider);
-			for (MinimizedFileSystemElement file : files) {
-				if (file.getLabel(null).equals(currentName + ".class")) { //$NON-NLS-1$
+			for (MinimizedFileSystemElement file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				if (file.getLabel(null).equals(currentName + ".class")) { //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					selectionGroup.selectAndRevealFile(file);
 					return;
 				}
@@ -469,7 +469,7 @@ public class AddCustomDialog extends StatusDialog {
 	 * Returns a content provider for <code>MinimizedFileSystemElement</code>s that returns only files as children.
 	 */
 	private ITreeContentProvider getFileProvider() {
-		return new WorkbenchContentProvider() {
+		return new WorkbenchContentProvider() { //FLLDCIM: MARK — M22  ANONYMOUS
 			@Override
 			public Object[] getChildren(Object o) {
 				if (o instanceof MinimizedFileSystemElement element) {
@@ -483,8 +483,8 @@ public class AddCustomDialog extends StatusDialog {
 	/**
 	 * Returns a content provider for <code>MinimizedFileSystemElement</code>s that returns only folders as children.
 	 */
-	private ITreeContentProvider getFolderProvider() {
-		return new WorkbenchContentProvider() {
+	private ITreeContentProvider getFolderProvider() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		return new WorkbenchContentProvider() { //FLLDCIM: MARK — M22  ANONYMOUS
 			@Override
 			public Object[] getChildren(Object o) {
 				if (o instanceof MinimizedFileSystemElement element) {
@@ -514,7 +514,7 @@ public class AddCustomDialog extends StatusDialog {
 		super.cancelPressed();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void okPressed() {
 		clearProviderCache();
 		name = nameField.getText().trim();

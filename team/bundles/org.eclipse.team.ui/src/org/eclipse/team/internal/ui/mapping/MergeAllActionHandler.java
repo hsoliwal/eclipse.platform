@@ -152,7 +152,7 @@ public class MergeAllActionHandler extends MergeActionHandler implements IDiffCh
 		return NLS.bind(TeamUIMessages.MergeAllActionHandler_0, Utils.shortenText(SynchronizeView.MAX_NAME_LENGTH, name));
 	}
 
-	protected boolean promptToUpdate() {
+	protected boolean promptToUpdate() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final IResourceDiffTree tree = getContext().getDiffTree();
 		if (tree.isEmpty()) {
 			return false;
@@ -162,7 +162,7 @@ public class MergeAllActionHandler extends MergeActionHandler implements IDiffCh
 			return false;
 		}
 		final boolean[] result = new boolean[] {true};
-		TeamUIPlugin.getStandardDisplay().syncExec(() -> {
+		TeamUIPlugin.getStandardDisplay().syncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			String sizeString = Long.toString(count);
 			String message = tree.size() > 1 ? NLS.bind(TeamUIMessages.MergeAllActionHandler_1, sizeString)
 					: NLS.bind(TeamUIMessages.MergeAllActionHandler_2, sizeString);

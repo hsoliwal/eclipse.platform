@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("restriction")
 public class XmlFormatterTest {
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public final void testFormatUsingPreferenceStore() throws Exception {
 		IEclipsePreferences node = InstanceScope.INSTANCE.getNode(AntUIPlugin.getUniqueIdentifier());
 		if (node != null) {
@@ -40,13 +40,13 @@ public class XmlFormatterTest {
 		String lineSep = System.lineSeparator();
 		String xmlDoc = "<project default=\"go\"><target name=\"go\" description=\"Demonstrate the wrapping of long tags.\"><echo>hi</echo></target></project>"; //$NON-NLS-1$
 		String formattedDoc = XmlFormatter.format(xmlDoc);
-		String expected = "<project default=\"go\">" + lineSep + "\t<target name=\"go\"" + lineSep //$NON-NLS-1$ //$NON-NLS-2$
+		String expected = "<project default=\"go\">" + lineSep + "\t<target name=\"go\"" + lineSep //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ "\t        description=\"Demonstrate the wrapping of long tags.\">" + lineSep + "\t\t<echo>hi</echo>" //$NON-NLS-1$ //$NON-NLS-2$
 				+ lineSep + "\t</target>" + lineSep + "</project>"; //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals(expected, formattedDoc);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public final void testFormatWithPreferenceParameter() {
 		FormattingPreferences prefs = new FormattingPreferences() {
 			@Override
@@ -77,7 +77,7 @@ public class XmlFormatterTest {
 		String lineSep = System.lineSeparator();
 		String xmlDoc = "<project default=\"go\"><target name=\"go\" description=\"Demonstrate the wrapping of long tags.\"><echo>hi</echo></target></project>"; //$NON-NLS-1$
 		String formattedDoc = XmlFormatter.format(xmlDoc, prefs);
-		String expected = "<project default=\"go\">" + lineSep + "      <target name=\"go\"" + lineSep //$NON-NLS-1$ //$NON-NLS-2$
+		String expected = "<project default=\"go\">" + lineSep + "      <target name=\"go\"" + lineSep //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ "              description=\"Demonstrate the wrapping of long tags.\">" + lineSep //$NON-NLS-1$
 				+ "            <echo>hi</echo>" + lineSep + "      </target>" + lineSep + "</project>"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		assertEquals(expected, formattedDoc);
@@ -86,7 +86,7 @@ public class XmlFormatterTest {
 	/**
 	 * Bug 84342
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public final void testFormatMaintainingLineSeparators() {
 		FormattingPreferences prefs = new FormattingPreferences() {
 			@Override
@@ -115,10 +115,10 @@ public class XmlFormatterTest {
 			}
 		};
 		String lineSep = System.lineSeparator();
-		String xmlDoc = "<project default=\"go\"><target name=\"go\" description=\"Demonstrate the wrapping of long tags.\"><echo>hi</echo></target>" //$NON-NLS-1$
+		String xmlDoc = "<project default=\"go\"><target name=\"go\" description=\"Demonstrate the wrapping of long tags.\"><echo>hi</echo></target>" //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ lineSep + lineSep + "</project>"; //$NON-NLS-1$
 		String formattedDoc = XmlFormatter.format(xmlDoc, prefs);
-		String expected = "<project default=\"go\">" + lineSep + "      <target name=\"go\"" + lineSep //$NON-NLS-1$ //$NON-NLS-2$
+		String expected = "<project default=\"go\">" + lineSep + "      <target name=\"go\"" + lineSep //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ "              description=\"Demonstrate the wrapping of long tags.\">" + lineSep //$NON-NLS-1$
 				+ "            <echo>hi</echo>" + lineSep + "      </target>" + lineSep + lineSep + "</project>"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		assertEquals(expected, formattedDoc);

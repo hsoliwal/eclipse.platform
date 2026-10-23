@@ -63,7 +63,7 @@ public class BuildTests {
 		assertEquals(8, ConsoleLineTracker.getNumberOfMessages());
 		String message = ConsoleLineTracker.getMessage(6);
 		assertTrue(message.startsWith("Total time:"), //$NON-NLS-1$
-				"Incorrect last message. Should start with Total time:. Message: " + message); //$NON-NLS-1$
+				"Incorrect last message. Should start with Total time:. Message: " + message); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -79,7 +79,7 @@ public class BuildTests {
 		launch("failingTarget", "-k -verbose"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertEquals("BUILD FAILED", ConsoleLineTracker.getMessage(19)); //$NON-NLS-1$
 		assertTrue(ConsoleLineTracker.getMessage(22).startsWith("\tat org.apache.tools.ant.taskdefs.Zip"), //$NON-NLS-1$
-				"Incorrect message" + ConsoleLineTracker.getMessage(22)); //$NON-NLS-1$
+				"Incorrect message" + ConsoleLineTracker.getMessage(22)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -92,12 +92,12 @@ public class BuildTests {
 		assertEquals(10, ConsoleLineTracker.getNumberOfMessages());
 		String message = ConsoleLineTracker.getMessage(5);
 		assertTrue(message.startsWith("BUILD FAILED"), //$NON-NLS-1$
-				"Incorrect last message. Should start with BUILD FAILED. Message: " + message); //$NON-NLS-1$
+				"Incorrect last message. Should start with BUILD FAILED. Message: " + message); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		int offset = -1;
 		IDocument document = ConsoleLineTracker.getDocument();
 		offset = document.getLineOffset(4) + 30; // link to buildfile that failed
 		IHyperlink link = getHyperlink(offset, document);
-		assertNotNull(link, "No hyperlink found at offset " + offset + "\n" + document); //$NON-NLS-1$ //$NON-NLS-2$
+		assertNotNull(link, "No hyperlink found at offset " + offset + "\n" + document); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -108,12 +108,12 @@ public class BuildTests {
 		launch("build"); //$NON-NLS-1$
 		int offset = 25; // buildfile link
 		IHyperlink link = getHyperlink(offset, ConsoleLineTracker.getDocument());
-		assertNotNull(link, "No hyperlink found at offset " + offset); //$NON-NLS-1$
+		assertNotNull(link, "No hyperlink found at offset " + offset); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		activateLink(link);
 
 		offset = ConsoleLineTracker.getDocument().getLineOffset(4) + 10; // echo link
 		link = getHyperlink(offset, ConsoleLineTracker.getDocument());
-		assertNotNull(link, "No hyperlink found at offset " + offset); //$NON-NLS-1$
+		assertNotNull(link, "No hyperlink found at offset " + offset); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		activateLink(link);
 	}
 
@@ -127,7 +127,7 @@ public class BuildTests {
 		IDocument document = ConsoleLineTracker.getDocument();
 		int offset = document.getLineOffset(9) + 10; // second line of build failed link
 		IHyperlink link = getHyperlink(offset, document);
-		assertNotNull(link, "No hyperlink found at offset " + offset + "\n" + document); //$NON-NLS-1$ //$NON-NLS-2$
+		assertNotNull(link, "No hyperlink found at offset " + offset + "\n" + document); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		activateLink(link);
 	}
 
@@ -140,11 +140,11 @@ public class BuildTests {
 		ConsoleLineTracker.waitForConsole();
 		int offset = 15; // buildfile
 		Color color = getColorAtOffset(offset, ConsoleLineTracker.getDocument());
-		assertNotNull(color, "No color found at " + offset); //$NON-NLS-1$
+		assertNotNull(color, "No color found at " + offset); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertEquals(AntUIPlugin.getPreferenceColor(IAntUIPreferenceConstants.CONSOLE_INFO_COLOR), color);
 		offset = ConsoleLineTracker.getDocument().getLineOffset(4) + 10; // echo
 		color = getColorAtOffset(offset, ConsoleLineTracker.getDocument());
-		assertNotNull(color, "No color found at " + offset); //$NON-NLS-1$
+		assertNotNull(color, "No color found at " + offset); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertEquals(AntUIPlugin.getPreferenceColor(IAntUIPreferenceConstants.CONSOLE_WARNING_COLOR), color);
 	}
 
@@ -157,7 +157,7 @@ public class BuildTests {
 		ILaunchConfiguration config = getLaunchConfiguration("74840"); //$NON-NLS-1$
 		assertNotNull(config, "Could not locate launch configuration for " + "74840"); //$NON-NLS-1$ //$NON-NLS-2$
 		ILaunchConfigurationWorkingCopy copy = config.getWorkingCopy();
-		Map<String, String> properties = new HashMap<>(1);
+		Map<String, String> properties = new HashMap<>(1); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		properties.put("platform.location", "${workspace_loc}"); //$NON-NLS-1$ //$NON-NLS-2$
 		copy.setAttribute(IAntLaunchConstants.ATTR_ANT_PROPERTIES, properties);
 		copy.setAttribute(IAntLaunchConstants.ATTR_ANT_PROPERTIES, properties);
@@ -177,7 +177,7 @@ public class BuildTests {
 		assertEquals(8, ConsoleLineTracker.getNumberOfMessages());
 		String message = ConsoleLineTracker.getMessage(6);
 		assertTrue(message.startsWith("Total time:"), //$NON-NLS-1$
-				"Incorrect last message. Should start with Total time:. Message: " + message); //$NON-NLS-1$
+				"Incorrect last message. Should start with Total time:. Message: " + message); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		// find the log file generated by the xml logger
 		getProject().getFolder("buildfiles").refreshLocal(IResource.DEPTH_INFINITE, null); //$NON-NLS-1$
 		File file = getBuildFile("log.xml"); //$NON-NLS-1$

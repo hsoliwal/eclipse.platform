@@ -44,7 +44,7 @@ public class XmlDocumentFormattingStrategy extends ContextBasedFormattingStrateg
 		this.indent = indent;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void format() {
 
 		super.format();

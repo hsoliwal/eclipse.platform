@@ -37,7 +37,7 @@ import org.eclipse.jface.viewers.Viewer;
  *
  * @see org.eclipse.core.tools.TreeContentProviderNode
  */
-public class MetadataTreeContentProvider extends AbstractTreeContentProvider {
+public class MetadataTreeContentProvider extends AbstractTreeContentProvider { //FLLDCIM: MARK — M22  IMPLEMENTS
 	/**
 	 * The file filter.
 	 *
@@ -112,7 +112,7 @@ public class MetadataTreeContentProvider extends AbstractTreeContentProvider {
 			} finally {
 				final Viewer tmpViewer = viewer;
 				if (!tmpViewer.getControl().isDisposed()) {
-					tmpViewer.getControl().getDisplay().asyncExec(() -> tmpViewer.refresh());
+					tmpViewer.getControl().getDisplay().asyncExec(() -> tmpViewer.refresh()); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				}
 			}
 		}
@@ -122,7 +122,7 @@ public class MetadataTreeContentProvider extends AbstractTreeContentProvider {
 			this.rootNode = pRootNode;
 			this.viewer = pViewer;
 			cancel();
-			setName("Loading metadata tree from " + pRootDir); //$NON-NLS-1$
+			setName("Loading metadata tree from " + pRootDir); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			schedule();
 		}
 	}
@@ -140,7 +140,7 @@ public class MetadataTreeContentProvider extends AbstractTreeContentProvider {
 	 * @return true if the provided dir (or at least one of its sub dirs)
 	 * contains files with one of the registered types, false otherwise
 	 */
-	boolean extractInfo(File dir, TreeContentProviderNode dirNode, IProgressMonitor monitor) {
+	boolean extractInfo(File dir, TreeContentProviderNode dirNode, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (monitor.isCanceled()) {
 			return false;
@@ -148,13 +148,13 @@ public class MetadataTreeContentProvider extends AbstractTreeContentProvider {
 
 		TreeContentProviderNode childNode;
 
-		monitor.beginTask("Scanning dir " + dir, 100); //$NON-NLS-1$
+		monitor.beginTask("Scanning dir " + dir, 100); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		try {
 			// looks for files of registered types in this directory
 			File[] selectedFiles = dir.listFiles(fileFilter);
 			monitor.worked(1);
 			Arrays.sort(selectedFiles);
-			for (File selectedFile : selectedFiles) {
+			for (File selectedFile : selectedFiles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				childNode = makeNode(selectedFile);
 				dirNode.addChild(childNode);
 			}
@@ -163,7 +163,7 @@ public class MetadataTreeContentProvider extends AbstractTreeContentProvider {
 			monitor.worked(1);
 			Arrays.sort(subDirs);
 
-			for (File subDir : subDirs) {
+			for (File subDir : subDirs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// constructs a node for each subdir...
 				childNode = makeNode(subDir);
 				if (extractInfo(subDir, childNode, Policy.subMonitorFor(monitor, 98 / subDirs.length))) {

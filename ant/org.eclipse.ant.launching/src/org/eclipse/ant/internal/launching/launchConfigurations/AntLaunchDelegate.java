@@ -99,7 +99,7 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 	 * Note: this attribute was used with the old 'AntBuildTab' which has been replaced by the 'ExternalToolsBuildTab'. The 'ExternalToolsBuildTab'
 	 * uses a different attribute key, so use the external tools attribute when present: IExternalToolConstants.ATTR_BUILD_SCOPE
 	 */
-	private static final String ATTR_BUILD_SCOPE = AntLaunching.getUniqueIdentifier() + ".ATTR_BUILD_SCOPE"; //$NON-NLS-1$
+	private static final String ATTR_BUILD_SCOPE = AntLaunching.getUniqueIdentifier() + ".ATTR_BUILD_SCOPE"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Attribute identifier specifying whether referenced projects should be considered when computing the projects to build. Default value is
@@ -108,7 +108,7 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 	 * Note: this attribute was used with the old 'AntBuildTab' which has been replaced by the 'ExternalToolsBuildTab'. The 'ExternalToolsBuildTab'
 	 * uses a different attribute key, so use the external tools attribute when present: IExternalToolConstants.ATTR_INCLUDE_REFERENCED_PROJECTS
 	 */
-	private static final String ATTR_INCLUDE_REFERENCED_PROJECTS = AntLaunching.getUniqueIdentifier() + ".ATTR_INCLUDE_REFERENCED_PROJECTS"; //$NON-NLS-1$
+	private static final String ATTR_INCLUDE_REFERENCED_PROJECTS = AntLaunching.getUniqueIdentifier() + ".ATTR_INCLUDE_REFERENCED_PROJECTS"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	private static String fgSWTLibraryLocation;
 
@@ -117,7 +117,7 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 
 	private boolean fUserSpecifiedLogger = false;
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
 		String path = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, new String("")); //$NON-NLS-1$
 		String vmver = null;
@@ -205,7 +205,7 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 		if (userProperties != null) {// create a copy so as to not affect the
 			// configuration with transient
 			// properties
-			userProperties = new HashMap<>(userProperties);
+			userProperties = new HashMap<>(userProperties); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 		String[] propertyFiles = AntLaunchingUtil.getPropertyFiles(configuration);
 		String[] targets = AntLaunchingUtil.getTargetNames(configuration);
@@ -236,7 +236,7 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 		int requestPort = -1;
 		if (isSeparateJRE && captureOutput) {
 			if (userProperties == null) {
-				userProperties = new HashMap<>();
+				userProperties = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			}
 			port = SocketUtil.findFreePort();
 			userProperties.put(AbstractEclipseBuildLogger.ANT_PROCESS_ID, idStamp);
@@ -259,8 +259,8 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 		monitor.done();
 	}
 
-	private void runInSameVM(ILaunchConfiguration configuration, ILaunch launch, IProgressMonitor monitor, IPath location, String idStamp, AntRunner runner, StringBuffer commandLine) throws CoreException {
-		Map<String, String> attributes = new HashMap<>(2);
+	private void runInSameVM(ILaunchConfiguration configuration, ILaunch launch, IProgressMonitor monitor, IPath location, String idStamp, AntRunner runner, StringBuffer commandLine) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		Map<String, String> attributes = new HashMap<>(2); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		attributes.put(IProcess.ATTR_PROCESS_TYPE, IAntLaunchConstants.ID_ANT_PROCESS_TYPE);
 		attributes.put(AbstractEclipseBuildLogger.ANT_PROCESS_ID, idStamp);
 
@@ -306,7 +306,7 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 		}
 	}
 
-	private AntRunner configureAntRunner(ILaunchConfiguration configuration, IPath location, String baseDir, StringBuffer idProperty, String[] arguments, Map<String, String> userProperties, String[] propertyFiles, String[] targets, URL[] customClasspath, String antHome, boolean setInputHandler) throws CoreException {
+	private AntRunner configureAntRunner(ILaunchConfiguration configuration, IPath location, String baseDir, StringBuffer idProperty, String[] arguments, Map<String, String> userProperties, String[] propertyFiles, String[] targets, URL[] customClasspath, String antHome, boolean setInputHandler) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int argLength = 1; // at least one user property - timestamp
 		if (arguments != null) {
 			argLength += arguments.length;
@@ -319,7 +319,7 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 			System.arraycopy(arguments, 0, runnerArgs, 0, arguments.length);
 		}
 		if (baseDir != null && baseDir.length() > 0) {
-			runnerArgs[runnerArgs.length - 2] = BASE_DIR_PREFIX + baseDir;
+			runnerArgs[runnerArgs.length - 2] = BASE_DIR_PREFIX + baseDir; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		runnerArgs[runnerArgs.length - 1] = idProperty.toString();
 
@@ -379,7 +379,7 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 		}
 	}
 
-	private StringBuffer generateCommandLine(IPath location, String[] arguments, Map<String, String> userProperties, String[] propertyFiles, String[] targets, String antHome, String basedir, boolean separateVM, boolean captureOutput, boolean setInputHandler, String vmver) {
+	private StringBuffer generateCommandLine(IPath location, String[] arguments, Map<String, String> userProperties, String[] propertyFiles, String[] targets, String antHome, String basedir, boolean separateVM, boolean captureOutput, boolean setInputHandler, String vmver) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		StringBuffer commandLine = new StringBuffer();
 
 		if (!separateVM) {
@@ -393,13 +393,13 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 
 		AntCorePreferences prefs = AntCorePlugin.getPlugin().getPreferences();
 		if (propertyFiles == null) { // global
-			for (String path : prefs.getCustomPropertyFiles()) {
+			for (String path : prefs.getCustomPropertyFiles()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				commandLine.append(" -propertyfile \""); //$NON-NLS-1$
 				commandLine.append(path);
 				commandLine.append('\"');
 			}
 		} else {// "local" configuration
-			for (String path : propertyFiles) {
+			for (String path : propertyFiles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				commandLine.append(" -propertyfile \""); //$NON-NLS-1$
 				commandLine.append(path);
 				commandLine.append('\"');
@@ -409,7 +409,7 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 		if (userProperties != null) {
 			Iterator<String> keys = userProperties.keySet().iterator();
 			String key;
-			while (keys.hasNext()) {
+			while (keys.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				key = keys.next();
 				appendProperty(commandLine, key, userProperties.get(key));
 			}
@@ -434,7 +434,7 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 		}
 		boolean useGlobalProperties = userProperties == null || (separateVM && userProperties.size() == numberOfEclipseProperties);
 		if (useGlobalProperties) {
-			for (Property property : properties) {
+			for (Property property : properties) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String key = property.getName();
 				String value = property.getValue(false);
 				if (value != null) {
@@ -499,7 +499,7 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 		commandLine.append('\"');
 
 		if (targets != null) {
-			for (String target : targets) {
+			for (String target : targets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				commandLine.append(" \""); //$NON-NLS-1$
 				commandLine.append(target);
 				commandLine.append('\"');
@@ -508,9 +508,9 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 		return commandLine;
 	}
 
-	private void appendTaskAndTypes(AntCorePreferences prefs, StringBuffer commandLine) {
+	private void appendTaskAndTypes(AntCorePreferences prefs, StringBuffer commandLine) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		List<Task> tasks = prefs.getRemoteTasks();
-		for (Task task : tasks) {
+		for (Task task : tasks) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			commandLine.append(" -eclipseTask "); //$NON-NLS-1$
 			String name = ProjectHelper.genComponentName(task.getURI(), task.getTaskName());
 			commandLine.append(name);
@@ -519,7 +519,7 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 		}
 
 		List<Type> types = prefs.getRemoteTypes();
-		for (Type type : types) {
+		for (Type type : types) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			commandLine.append(" -eclipseType "); //$NON-NLS-1$
 			String name = ProjectHelper.genComponentName(type.getURI(), type.getTypeName());
 			commandLine.append(name);
@@ -539,7 +539,7 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 		commandLine.append("\""); //$NON-NLS-1$
 	}
 
-	private void runInSeparateVM(ILaunchConfiguration configuration, ILaunch launch, IProgressMonitor monitor, String idStamp, String antHome, int port, int requestPort, StringBuffer commandLine, boolean captureOutput, boolean setInputHandler) throws CoreException {
+	private void runInSeparateVM(ILaunchConfiguration configuration, ILaunch launch, IProgressMonitor monitor, String idStamp, String antHome, int port, int requestPort, StringBuffer commandLine, boolean captureOutput, boolean setInputHandler) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean debug = fMode.equals(ILaunchManager.DEBUG_MODE);
 		if (captureOutput) {
 			String encoding = DebugPlugin.getDefault().getLaunchManager().getEncoding(configuration);
@@ -575,7 +575,7 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 
 		// set the ANT_HOME environment variable
 		if (antHome != null) {
-			Map<String, String> vars = copy.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, new HashMap<>(1));
+			Map<String, String> vars = copy.getAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, new HashMap<>(1)); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			vars.put("ANT_HOME", antHome); //$NON-NLS-1$
 			copy.setAttribute(ILaunchManager.ATTR_ENVIRONMENT_VARIABLES, vars);
 		}
@@ -586,7 +586,7 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 		delegate.preLaunchCheck(copy, ILaunchManager.RUN_MODE, subMonitor);
 		delegate.launch(copy, ILaunchManager.RUN_MODE, launch, subMonitor);
 		final IProcess[] processes = launch.getProcesses();
-		for (IProcess process : processes) {
+		for (IProcess process : processes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			setProcessAttributes(process, idStamp, null);
 		}
 
@@ -598,9 +598,9 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 			}
 		} else {
 			final CountDownLatch terminated = new CountDownLatch(1);
-			IDebugEventSetListener listener = events -> {
-				for (DebugEvent event : events) {
-					for (IProcess process : processes) {
+			IDebugEventSetListener listener = events -> { //FLLDCIM: MARK — T27  LAMBDA
+				for (DebugEvent event : events) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					for (IProcess process : processes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (event.getSource() == process && event.getKind() == DebugEvent.TERMINATE) {
 							terminated.countDown();
 							return;
@@ -608,12 +608,12 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 					}
 				}
 			};
-			DebugPlugin.getDefault().addDebugEventListener(listener);
+			DebugPlugin.getDefault().addDebugEventListener(listener); //FLLDCIM: MARK — T27 DEBUG_EVENT_ADAPTER CALL
 			if (launch.isTerminated()) {
 				terminated.countDown();
 			}
 			monitor.subTask(AntLaunchConfigurationMessages.AntLaunchDelegate_28);
-			while (!monitor.isCanceled()) {
+			while (!monitor.isCanceled()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					if (terminated.await(50, TimeUnit.MILLISECONDS)) {
 						break;
@@ -649,7 +649,7 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 		}
 	}
 
-	private StringBuffer generateVMArguments(ILaunchConfiguration config, boolean setInputHandler, String antHome) {
+	private StringBuffer generateVMArguments(ILaunchConfiguration config, boolean setInputHandler, String antHome) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		StringBuffer vmArgs = new StringBuffer();
 		try {
 			String configArgs = config.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, (String) null);
@@ -692,24 +692,24 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 	}
 
 	private String stripUnescapedQuotes(String javaLibPath) {
-		StringBuilder buf = new StringBuilder(javaLibPath.length());
-		for (int i = 0; i < javaLibPath.length(); i++) {
+		StringBuilder buf = new StringBuilder(javaLibPath.length()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < javaLibPath.length(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c = javaLibPath.charAt(i);
 			switch (c) {
 				case '"':
 					if (i != 0 && javaLibPath.charAt(i - 1) == '\\') {
-						buf.append(c);
+						buf.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
 					break;
 				default:
-					buf.append(c);
+					buf.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					break;
 			}
 		}
 		return buf.toString();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected IProject[] getBuildOrder(ILaunchConfiguration configuration, String mode) throws CoreException {
 		String scopeKey = ATTR_BUILD_SCOPE;
 		String refKey = ATTR_INCLUDE_REFERENCED_PROJECTS;
@@ -730,7 +730,7 @@ public class AntLaunchDelegate extends LaunchConfigurationDelegate {
 		return computeBuildOrder(projects);
 	}
 
-	private String getSWTLibraryLocation() {
+	private String getSWTLibraryLocation() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fgSWTLibraryLocation == null) {
 			Bundle bundle = Platform.getBundle("org.eclipse.swt"); //$NON-NLS-1$
 			BundleWiring wiring = bundle.adapt(BundleWiring.class);

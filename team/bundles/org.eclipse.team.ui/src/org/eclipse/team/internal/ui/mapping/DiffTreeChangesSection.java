@@ -74,7 +74,7 @@ import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.Hyperlink;
 
-public class DiffTreeChangesSection extends ForwardingChangesSection implements IDiffChangeListener, IPropertyChangeListener, IEmptyTreeListener {
+public class DiffTreeChangesSection extends ForwardingChangesSection implements IDiffChangeListener, IPropertyChangeListener, IEmptyTreeListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	private ISynchronizationContext context;
 	private IStatus[] errors;
@@ -85,11 +85,11 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 		ResourceTraversal[] getTraversals(ISynchronizationScope scope);
 	}
 
-	public DiffTreeChangesSection(Composite parent, AbstractSynchronizePage page, ISynchronizePageConfiguration configuration) {
+	public DiffTreeChangesSection(Composite parent, AbstractSynchronizePage page, ISynchronizePageConfiguration configuration) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super(parent, page, configuration);
 		context = (ISynchronizationContext)configuration.getProperty(ITeamContentProviderManager.P_SYNCHRONIZATION_CONTEXT);
 		context.getDiffTree().addDiffChangeListener(this);
-		getConfiguration().addPropertyChangeListener(this);
+		getConfiguration().addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		jobChangeListener = new JobChangeAdapter() {
 			@Override
 			public void running(IJobChangeEvent event) {
@@ -134,7 +134,7 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 		return context.getDiffTree().size();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected long getChangesInMode(int candidateMode) {
 		long numChanges;
 		long numConflicts = context.getDiffTree().countFor(IThreeWayDiff.CONFLICTING, IThreeWayDiff.DIRECTION_MASK);
@@ -185,7 +185,7 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 		return (context.getDiffTree().hasMatchingDiffs(traversals, FastDiffFilter.getStateFilter(states, mask)));
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected long getVisibleChangesCount() {
 		ISynchronizePageConfiguration configuration = getConfiguration();
 		if (configuration.getComparisonType() == ISynchronizePageConfiguration.TWO_WAY) {
@@ -209,7 +209,7 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 		return getChangesInMode(currentMode);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected int getCandidateMode() {
 		SynchronizePageConfiguration configuration = (SynchronizePageConfiguration)getConfiguration();
 		long outgoingChanges = context.getDiffTree().countFor(IThreeWayDiff.OUTGOING, IThreeWayDiff.DIRECTION_MASK);
@@ -255,7 +255,7 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Composite getEmptyChangesComposite(Composite parent) {
 		if (context.getDiffTree().isEmpty()) {
 			SubscriberDiffTreeEventHandler handler = getHandler();
@@ -283,7 +283,7 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 				// same mode before offering to change modes.
 				ModelProvider[] providers =findModelsWithChangesInMode(getConfiguration().getMode());
 				ModelProvider currentProvider = null;
-				for (ModelProvider provider : providers) {
+				for (ModelProvider provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (isEnabled(provider)) {
 						if (provider.getDescriptor().getId().equals(id)) {
 							currentProvider = provider;
@@ -305,7 +305,7 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 
 	private boolean isAtLeastOneProviderDisabled() {
 		ModelProvider[] providers =findModelsWithChangesInMode(getConfiguration().getMode());
-		for (ModelProvider provider : providers) {
+		for (ModelProvider provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!isEnabled(provider)) {
 				return true;
 			}
@@ -316,8 +316,8 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 	private ModelProvider[] findModelsWithChangesInMode(int mode) {
 		ModelProvider[] providers =context.getScope().getModelProviders();
 		providers = ModelOperation.sortByExtension(providers);
-		List<ModelProvider> result = new ArrayList<>();
-		for (ModelProvider provider : providers) {
+		List<ModelProvider> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ModelProvider provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ISynchronizationCompareAdapter adapter = Utils.getCompareAdapter(provider);
 			if (adapter != null) {
 				boolean hasChanges = hasChangesInMode(provider.getId(), adapter, getConfiguration().getMode());
@@ -334,7 +334,7 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 		return (desc != null && desc.isEnabled());
 	}
 
-	private Composite createEnableParticipantModelProvidersPane(Composite parent) {
+	private Composite createEnableParticipantModelProvidersPane(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setBackground(getListBackgroundColor());
 		GridLayout layout = new GridLayout();
@@ -369,9 +369,9 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 			public void linkActivated(HyperlinkEvent e) {
 				ModelSynchronizeParticipant participant = (ModelSynchronizeParticipant)getConfiguration().getParticipant();
 				ModelProvider[] providers = participant.getEnabledModelProviders();
-				Set<ITeamContentProviderDescriptor> toEnable = new HashSet<>();
+				Set<ITeamContentProviderDescriptor> toEnable = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 				toEnable.addAll(Arrays.asList(descriptors));
-				for (ModelProvider provider : providers) {
+				for (ModelProvider provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					ITeamContentProviderDescriptor desc = TeamUI.getTeamContentProviderManager().getDescriptor(provider.getId());
 					if (desc != null && !desc.isEnabled()) {
 						toEnable.add(desc);
@@ -391,8 +391,8 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 	private ITeamContentProviderDescriptor[] getEnabledContentDescriptors() {
 		ModelSynchronizeParticipant participant = (ModelSynchronizeParticipant)getConfiguration().getParticipant();
 		ModelProvider[] providers = participant.getEnabledModelProviders();
-		Set<ITeamContentProviderDescriptor> result = new HashSet<>();
-		for (ModelProvider provider : providers) {
+		Set<ITeamContentProviderDescriptor> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (ModelProvider provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ITeamContentProviderDescriptor desc = TeamUI.getTeamContentProviderManager().getDescriptor(provider.getId());
 			if (desc != null && desc.isEnabled()) {
 				result.add(desc);
@@ -401,7 +401,7 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 		return result.toArray(new ITeamContentProviderDescriptor[result.size()]);
 	}
 
-	private Composite getInitializationPane(Composite parent) {
+	private Composite getInitializationPane(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setBackground(getListBackgroundColor());
 		GridLayout layout = new GridLayout();
@@ -450,7 +450,7 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 			data.verticalIndent=5;
 			data.widthHint = 100;
 			rememberButton.setLayoutData(data);
-			rememberButton.addSelectionListener(new SelectionListener() {
+			rememberButton.addSelectionListener(new SelectionListener() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					remember[0] = rememberButton.getSelection();
@@ -465,7 +465,7 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 		return composite;
 	}
 
-	private Composite getInitializingMessagePane(Composite parent) {
+	private Composite getInitializingMessagePane(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setBackground(getListBackgroundColor());
 		GridLayout layout = new GridLayout();
@@ -492,7 +492,7 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 		return Adapters.adapt(context, SubscriberDiffTreeEventHandler.class);
 	}
 
-	private Composite getPointerToModel(Composite parent, final ModelProvider provider, String oldId) {
+	private Composite getPointerToModel(Composite parent, final ModelProvider provider, String oldId) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setBackground(getListBackgroundColor());
 		GridLayout layout = new GridLayout();
@@ -545,7 +545,7 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 
 	private void handleEmptyViewer() {
 		// Override stand behavior to do our best to show something
-		TeamUIPlugin.getStandardDisplay().asyncExec(() -> {
+		TeamUIPlugin.getStandardDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			if (!getContainer().isDisposed()) {
 				updatePage(getEmptyChangesComposite(getContainer()));
 			}
@@ -556,7 +556,7 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 	protected void calculateDescription() {
 		if (errors != null && errors.length > 0) {
 			if (!showingError) {
-				TeamUIPlugin.getStandardDisplay().asyncExec(() -> {
+				TeamUIPlugin.getStandardDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 					updatePage(getErrorComposite(getContainer()));
 					showingError = true;
 				});
@@ -584,7 +584,7 @@ public class DiffTreeChangesSection extends ForwardingChangesSection implements 
 		calculateDescription();
 	}
 
-	private Composite getErrorComposite(Composite parent) {
+	private Composite getErrorComposite(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setBackground(getListBackgroundColor());
 		GridLayout layout = new GridLayout();

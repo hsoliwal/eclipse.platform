@@ -100,7 +100,7 @@ public final class ExternalToolTestUtil {
 	 * @return a map of 2.0 arguments for an Ant buildfile.
 	 */
 	public static Map<String, String> get20AntArgumentMap() {
-		HashMap<String, String> arguments = new HashMap<>();
+		HashMap<String, String> arguments = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		arguments.put(ExternalToolMigration.TAG_VERSION, "2.0"); //$NON-NLS-1$
 		arguments.put(ExternalToolMigration.TAG_TOOL_TYPE, "org.eclipse.ui.externaltools.type.ant"); //$NON-NLS-1$
 		arguments.put(ExternalToolMigration.TAG_TOOL_NAME, "ant tool"); //$NON-NLS-1$
@@ -120,7 +120,7 @@ public final class ExternalToolTestUtil {
 	 * @return a map of 2.0 arguments for a program
 	 */
 	public static Map<String, String> get20ProgramArgumentMap() {
-		HashMap<String, String> arguments = new HashMap<>();
+		HashMap<String, String> arguments = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		arguments.put(ExternalToolMigration.TAG_VERSION, "2.0"); //$NON-NLS-1$
 		arguments.put(ExternalToolMigration.TAG_TOOL_TYPE, "org.eclipse.ui.externaltools.type.program"); //$NON-NLS-1$
 		arguments.put(ExternalToolMigration.TAG_TOOL_NAME, "program tool"); //$NON-NLS-1$
@@ -139,8 +139,8 @@ public final class ExternalToolTestUtil {
 	 *
 	 * @return a map of 2.1 arguments for an Ant buildfile
 	 */
-	public static Map<String, String> get21AntArgumentMap() {
-		HashMap<String, String> arguments = new HashMap<>();
+	public static Map<String, String> get21AntArgumentMap() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		HashMap<String, String> arguments = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		arguments.put(ExternalToolMigration.TAG_VERSION, "2.1"); //$NON-NLS-1$
 		arguments.put(ExternalToolMigration.TAG_NAME, "ant config"); //$NON-NLS-1$
 		arguments.put(ExternalToolMigration.TAG_TYPE, ExternalToolMigration.TOOL_TYPE_ANT_BUILD);
@@ -155,7 +155,7 @@ public final class ExternalToolTestUtil {
 		arguments.put(ExternalToolMigration.TAG_REFRESH_RECURSIVE, "true"); //$NON-NLS-1$
 		arguments.put(ExternalToolMigration.TAG_RUN_BUILD_KINDS, "build kinds"); //$NON-NLS-1$
 		arguments.put(ExternalToolMigration.TAG_ARGS, "arg1 arg2"); //$NON-NLS-1$
-		arguments.put(ExternalToolMigration.TAG_EXTRA_ATTR, ExternalToolMigration.RUN_TARGETS_ATTRIBUTE + "=target1,target2"); //$NON-NLS-1$
+		arguments.put(ExternalToolMigration.TAG_EXTRA_ATTR, ExternalToolMigration.RUN_TARGETS_ATTRIBUTE + "=target1,target2"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return arguments;
 	}
 
@@ -164,8 +164,8 @@ public final class ExternalToolTestUtil {
 	 *
 	 * @return a map of 2.1 arguments for a program
 	 */
-	public static Map<String, String> get21ProgramArgumentMap() {
-		HashMap<String, String> arguments = new HashMap<>();
+	public static Map<String, String> get21ProgramArgumentMap() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		HashMap<String, String> arguments = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		arguments.put(ExternalToolMigration.TAG_VERSION, "2.1"); //$NON-NLS-1$
 		arguments.put(ExternalToolMigration.TAG_NAME, "program config"); //$NON-NLS-1$
 		arguments.put(ExternalToolMigration.TAG_TYPE, IExternalToolConstants.TOOL_TYPE_PROGRAM);

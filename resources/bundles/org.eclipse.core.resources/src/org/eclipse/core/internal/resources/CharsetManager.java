@@ -62,7 +62,7 @@ public class CharsetManager implements IManager {
 	 */
 	private class CharsetManagerJob extends Job {
 		private static final int CHARSET_UPDATE_DELAY = 500;
-		private final List<Map.Entry<IProject, Boolean>> asyncChanges = new ArrayList<>();
+		private final List<Map.Entry<IProject, Boolean>> asyncChanges = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		public CharsetManagerJob() {
 			super(Messages.resources_charsetUpdating);
@@ -93,7 +93,7 @@ public class CharsetManager implements IManager {
 			}
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		protected IStatus run(IProgressMonitor monitor) {
 			MultiStatus result = new MultiStatus(ResourcesPlugin.PI_RESOURCES, IResourceStatus.FAILED_SETTING_CHARSET, Messages.resources_updatingEncoding, null);
 			monitor = Policy.monitorFor(monitor);
@@ -104,7 +104,7 @@ public class CharsetManager implements IManager {
 					workspace.prepareOperation(rule, monitor);
 					workspace.beginOperation(true);
 					Map.Entry<IProject, Boolean> next;
-					while (!monitor.isCanceled() && ((next = getNextChange()) != null)) {
+					while (!monitor.isCanceled() && ((next = getNextChange()) != null)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						//just exit if the system is shutting down or has been shut down
 						//it is too late to change the workspace at this point anyway
 						if (systemBundle.getState() != Bundle.ACTIVE) {
@@ -158,17 +158,17 @@ public class CharsetManager implements IManager {
 		}
 	}
 
-	private class ResourceChangeListener implements IResourceChangeListener {
+	private class ResourceChangeListener implements IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 		public ResourceChangeListener() {
 		}
 
-		private boolean moveSettingsIfDerivedChanged(IResourceDelta parent, IProject currentProject, Preferences projectPrefs, String[] affectedResources) {
+		private boolean moveSettingsIfDerivedChanged(IResourceDelta parent, IProject currentProject, Preferences projectPrefs, String[] affectedResources) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			boolean resourceChanges = false;
 
 			if ((parent.getFlags() & IResourceDelta.DERIVED_CHANGED) != 0) {
 				// if derived changed, move encoding to correct preferences
 				IPath parentPath = parent.getResource().getProjectRelativePath();
-				for (String affectedResource : affectedResources) {
+				for (String affectedResource : affectedResources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IPath affectedPath = IPath.fromOSString(affectedResource);
 					// if parentPath is an ancestor of affectedPath
 					if (parentPath.isPrefixOf(affectedPath)) {
@@ -188,19 +188,19 @@ public class CharsetManager implements IManager {
 				}
 			}
 
-			for (IResourceDelta child : parent.getAffectedChildren()) {
+			for (IResourceDelta child : parent.getAffectedChildren()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				resourceChanges = moveSettingsIfDerivedChanged(child, currentProject, projectPrefs, affectedResources) || resourceChanges;
 			}
 			return resourceChanges;
 		}
 
-		private void processEntryChanges(IResourceDelta projectDelta, Map<IProject, Boolean> projectsToSave) {
+		private void processEntryChanges(IResourceDelta projectDelta, Map<IProject, Boolean> projectsToSave) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			// check each resource with user-set encoding to see if it has
 			// been moved/deleted or if derived state has been changed
 			IProject currentProject = (IProject) projectDelta.getResource();
 			Preferences projectRegularPrefs = getPreferences(currentProject, false, false, true);
 			Preferences projectDerivedPrefs = getPreferences(currentProject, false, true, true);
-			Map<Boolean, String[]> affectedResourcesMap = new HashMap<>();
+			Map<Boolean, String[]> affectedResourcesMap = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			try {
 				// no regular preferences for this project
 				if (projectRegularPrefs == null) {
@@ -220,11 +220,11 @@ public class CharsetManager implements IManager {
 				Policy.log(new ResourceStatus(IResourceStatus.FAILED_GETTING_CHARSET, currentProject.getFullPath(), message, e));
 				return;
 			}
-			for (Map.Entry<Boolean, String[]> entry : affectedResourcesMap.entrySet()) {
+			for (Map.Entry<Boolean, String[]> entry : affectedResourcesMap.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Boolean isDerived = entry.getKey();
 				String[] affectedResources = entry.getValue();
 				Preferences projectPrefs = isDerived.booleanValue() ? projectDerivedPrefs : projectRegularPrefs;
-				for (String affectedResource : affectedResources) {
+				for (String affectedResource : affectedResources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IResourceDelta memberDelta = projectDelta.findMember(IPath.fromOSString(affectedResource));
 					// no changes for the given resource
 					if (memberDelta == null) {
@@ -276,8 +276,8 @@ public class CharsetManager implements IManager {
 			}
 			IResourceDelta[] projectDeltas = delta.getAffectedChildren();
 			// process each project in the delta
-			Map<IProject, Boolean> projectsToSave = new HashMap<>();
-			for (IResourceDelta projectDelta : projectDeltas) {
+			Map<IProject, Boolean> projectsToSave = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+			for (IResourceDelta projectDelta : projectDeltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				//nothing to do if a project has been added/removed/moved
 				if (projectDelta.getKind() == IResourceDelta.CHANGED && (projectDelta.getFlags() & IResourceDelta.OPEN) == 0) {
 					processEntryChanges(projectDelta, projectsToSave);
@@ -349,7 +349,7 @@ public class CharsetManager implements IManager {
 		return getPreferences(project, create, isDerived, isDerivedEncodingStoredSeparately(project));
 	}
 
-	Preferences getPreferences(IProject project, boolean create, boolean isDerived, boolean isDerivedEncodingStoredSeparately) {
+	Preferences getPreferences(IProject project, boolean create, boolean isDerived, boolean isDerivedEncodingStoredSeparately) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean localIsDerived = isDerivedEncodingStoredSeparately ? isDerived : false;
 		String qualifier = localIsDerived ? ProjectPreferences.PREFS_DERIVED_QUALIFIER : ProjectPreferences.PREFS_REGULAR_QUALIFIER;
 		if (create) {
@@ -389,7 +389,7 @@ public class CharsetManager implements IManager {
 			return charset;
 		}
 
-		while (charset == null && resourcePath.segmentCount() > 1) {
+		while (charset == null && resourcePath.segmentCount() > 1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			resourcePath = resourcePath.removeLastSegments(1);
 			charset = getCharsetFromPreferences(prefs, derivedPrefs, resourcePath);
 		}
@@ -414,7 +414,7 @@ public class CharsetManager implements IManager {
 		return charset;
 	}
 
-	private boolean isDerivedEncodingStoredSeparately(IProject project) {
+	private boolean isDerivedEncodingStoredSeparately(IProject project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// be careful looking up for our node so not to create any nodes as side effect
 		Preferences node = Platform.getPreferencesService().getRootNode().node(ProjectScope.SCOPE);
 		try {
@@ -439,7 +439,7 @@ public class CharsetManager implements IManager {
 		}
 	}
 
-	protected void mergeEncodingPreferences(IProject project) {
+	protected void mergeEncodingPreferences(IProject project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Preferences projectRegularPrefs = null;
 		Preferences projectDerivedPrefs = getPreferences(project, false, true, true);
 		if (projectDerivedPrefs == null) {
@@ -449,7 +449,7 @@ public class CharsetManager implements IManager {
 			boolean prefsChanged = false;
 			String[] affectedResources;
 			affectedResources = projectDerivedPrefs.keys();
-			for (String path : affectedResources) {
+			for (String path : affectedResources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String value = projectDerivedPrefs.get(path, null);
 				projectDerivedPrefs.remove(path);
 				// lazy creation of non-derived preferences
@@ -460,7 +460,7 @@ public class CharsetManager implements IManager {
 				prefsChanged = true;
 			}
 			if (prefsChanged) {
-				Map<IProject, Boolean> projectsToSave = new HashMap<>();
+				Map<IProject, Boolean> projectsToSave = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 				// this is internal change so do not notify charset delta job
 				projectsToSave.put(project, Boolean.TRUE);
 				job.addChanges(projectsToSave);
@@ -554,7 +554,7 @@ public class CharsetManager implements IManager {
 		}
 	}
 
-	protected void splitEncodingPreferences(IProject project) {
+	protected void splitEncodingPreferences(IProject project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Preferences projectRegularPrefs = getPreferences(project, false, false, false);
 		Preferences projectDerivedPrefs = null;
 		if (projectRegularPrefs == null) {
@@ -564,7 +564,7 @@ public class CharsetManager implements IManager {
 			boolean prefsChanged = false;
 			String[] affectedResources;
 			affectedResources = projectRegularPrefs.keys();
-			for (String path : affectedResources) {
+			for (String path : affectedResources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource resource = project.findMember(path);
 				if (resource != null) {
 					if (resource.isDerived(IResource.CHECK_ANCESTORS)) {
@@ -580,7 +580,7 @@ public class CharsetManager implements IManager {
 				}
 			}
 			if (prefsChanged) {
-				Map<IProject, Boolean> projectsToSave = new HashMap<>();
+				Map<IProject, Boolean> projectsToSave = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 				// this is internal change so do not notify charset delta job
 				projectsToSave.put(project, Boolean.TRUE);
 				job.addChanges(projectsToSave);

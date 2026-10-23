@@ -44,12 +44,12 @@ org.eclipse.core.resources.mapping.ModelProvider {
 		super();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus validateChange(IResourceDelta delta, IProgressMonitor monitor) {
 		// Visit the changes in the delta to look for changes we care about
-		final List<IStatus> problems = new ArrayList<>();
+		final List<IStatus> problems = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		try {
-			delta.accept(delta1 -> {
+			delta.accept(delta1 -> { //FLLDCIM: MARK — T07  LAMBDA
 				IResource resource = delta1.getResource();
 				if (ModelObjectElementFile.isMoeFile(resource)) {
 					// Removal may leave a stale reference in a MOD file

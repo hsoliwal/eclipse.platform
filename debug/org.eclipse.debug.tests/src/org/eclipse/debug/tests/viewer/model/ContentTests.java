@@ -49,7 +49,7 @@ abstract public class ContentTests extends AbstractViewerModelTest implements IT
 		return new TestModelUpdatesListener(viewer, true, true);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSimpleSingleLevel() throws Exception {
 		// Create the model with test data
 		TestModel model = TestModel.simpleSingleLevel();
@@ -101,14 +101,14 @@ abstract public class ContentTests extends AbstractViewerModelTest implements IT
 		boolean fCaptureLabelUpdates = false;
 		boolean fCaptureChildrenUpdates = false;
 
-		List<IViewerUpdate> fCapturedUpdates = Collections.synchronizedList(new ArrayList<>());
+		List<IViewerUpdate> fCapturedUpdates = Collections.synchronizedList(new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		@Override
 		public void update(IChildrenUpdate[] updates) {
-			for (IChildrenUpdate update : updates) {
+			for (IChildrenUpdate update : updates) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				TestElement element = (TestElement)update.getElement();
 				int endOffset = update.getOffset() + update.getLength();
-				for (int j = update.getOffset(); j < endOffset; j++) {
+				for (int j = update.getOffset(); j < endOffset; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (j < element.getChildren().length) {
 						update.setChild(element.getChildren()[j], j);
 					}
@@ -123,7 +123,7 @@ abstract public class ContentTests extends AbstractViewerModelTest implements IT
 
 		@Override
 		public void update(ILabelUpdate[] updates) {
-			for (ILabelUpdate update : updates) {
+			for (ILabelUpdate update : updates) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				TestElement element = (TestElement)update.getElement();
 				update.setLabel(element.getLabel(), 0);
 				if (update instanceof ICheckUpdate &&
@@ -145,7 +145,7 @@ abstract public class ContentTests extends AbstractViewerModelTest implements IT
 	 * use data from stale updates to populate the viewer.<br>
 	 * See bug 210027
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLabelUpdatesCompletedOutOfSequence1(TestInfo testInfo) throws Exception {
 		TestModelWithCapturedUpdates model = new TestModelWithCapturedUpdates();
 		model.fCaptureLabelUpdates = true;
@@ -162,7 +162,7 @@ abstract public class ContentTests extends AbstractViewerModelTest implements IT
 		waitWhile(() -> model.fCapturedUpdates.size() < model.getRootElement().fChildren.length, createModelErrorMessage(model));
 
 		List<IViewerUpdate> firstUpdates = model.fCapturedUpdates;
-		model.fCapturedUpdates = Collections.synchronizedList(new ArrayList<>(2));
+		model.fCapturedUpdates = Collections.synchronizedList(new ArrayList<>(2)); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 //      // Change the model and run another update set.
 		model.getElement(model.findElement("1")).setLabelAppendix(" - changed"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -172,12 +172,12 @@ abstract public class ContentTests extends AbstractViewerModelTest implements IT
 		waitWhile(() -> model.fCapturedUpdates.size() < model.getRootElement().fChildren.length, createModelErrorMessage(model));
 
 		// Complete the second set of children updates
-		for (IViewerUpdate element : model.fCapturedUpdates) {
+		for (IViewerUpdate element : model.fCapturedUpdates) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			element.done();
 		}
 
 		// Then complete the first set.
-		for (IViewerUpdate firstUpdate : firstUpdates) {
+		for (IViewerUpdate firstUpdate : firstUpdates) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ILabelUpdate capturedUpdate = (ILabelUpdate)firstUpdate;
 			assertTrue(capturedUpdate.isCanceled());
 			capturedUpdate.done();
@@ -190,7 +190,7 @@ abstract public class ContentTests extends AbstractViewerModelTest implements IT
 	}
 
 	private Supplier<String> createModelErrorMessage(TestModelWithCapturedUpdates model) {
-		return () -> "Unxexpected model state: captured updates: " + model.fCapturedUpdates + ", root children: " + Arrays.toString(model.getRootElement().fChildren);
+		return () -> "Unxexpected model state: captured updates: " + model.fCapturedUpdates + ", root children: " + Arrays.toString(model.getRootElement().fChildren); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -201,7 +201,7 @@ abstract public class ContentTests extends AbstractViewerModelTest implements IT
 	 * updates.<br>
 	 * See bug 210027
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLabelUpdatesCompletedOutOfSequence2(TestInfo testInfo) throws Exception {
 		TestModelWithCapturedUpdates model = new TestModelWithCapturedUpdates();
 		model.fCaptureLabelUpdates = true;
@@ -217,7 +217,7 @@ abstract public class ContentTests extends AbstractViewerModelTest implements IT
 		TestUtil.waitForJobs(testInfo.getDisplayName(), 300, 5000);
 		waitWhile(() -> model.fCapturedUpdates.size() < model.getRootElement().fChildren.length, createModelErrorMessage(model));
 		List<IViewerUpdate> firstUpdates = model.fCapturedUpdates;
-		model.fCapturedUpdates = Collections.synchronizedList(new ArrayList<>(2));
+		model.fCapturedUpdates = Collections.synchronizedList(new ArrayList<>(2)); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		// Change the model and run another update set.
 		model.setElementChildren(TreePath.EMPTY, new TestElement[] {
@@ -229,12 +229,12 @@ abstract public class ContentTests extends AbstractViewerModelTest implements IT
 		waitWhile(() -> model.fCapturedUpdates.size() < model.getRootElement().fChildren.length, createModelErrorMessage(model));
 
 		// Complete the second set of children updates
-		for (IViewerUpdate element : model.fCapturedUpdates) {
+		for (IViewerUpdate element : model.fCapturedUpdates) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			element.done();
 		}
 
 		// Then complete the first set.
-		for (IViewerUpdate firstUpdate : firstUpdates) {
+		for (IViewerUpdate firstUpdate : firstUpdates) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ILabelUpdate capturedUpdate = (ILabelUpdate)firstUpdate;
 			assertTrue(capturedUpdate.isCanceled());
 			capturedUpdate.done();
@@ -255,7 +255,7 @@ abstract public class ContentTests extends AbstractViewerModelTest implements IT
 	 * point, then this test should be re-enabled.<br>
 	 * See bug 210027
 	 */
-	public void _x_testChildrenUpdatesCompletedOutOfSequence() throws Exception {
+	public void _x_testChildrenUpdatesCompletedOutOfSequence() throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TestModelWithCapturedUpdates model = new TestModelWithCapturedUpdates();
 		model.fCaptureChildrenUpdates = true;
 
@@ -281,12 +281,12 @@ abstract public class ContentTests extends AbstractViewerModelTest implements IT
 		waitWhile(() -> !areCapturedChildrenUpdatesComplete(model.fCapturedUpdates, model.getRootElement().fChildren.length), createModelErrorMessage(model));
 
 		// Complete the second set of children updates
-		for (IViewerUpdate element : model.fCapturedUpdates) {
+		for (IViewerUpdate element : model.fCapturedUpdates) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			element.done();
 		}
 
 		// Then complete the first set.
-		for (IChildrenUpdate firstUpdate : firstUpdates) {
+		for (IChildrenUpdate firstUpdate : firstUpdates) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			firstUpdate.done();
 		}
 
@@ -297,13 +297,13 @@ abstract public class ContentTests extends AbstractViewerModelTest implements IT
 	}
 
 	private boolean areCapturedChildrenUpdatesComplete(List<IViewerUpdate> capturedUpdates, int childCount) {
-		List<Integer> expectedChildren = new ArrayList<>();
-		for (int i = 0; i < childCount; i++) {
+		List<Integer> expectedChildren = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (int i = 0; i < childCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			expectedChildren.add(Integer.valueOf(i));
 		}
 		IChildrenUpdate[] updates = capturedUpdates.toArray(new IChildrenUpdate[0]);
-		for (IChildrenUpdate update : updates) {
-			for (int j = 0; j < update.getLength(); j++) {
+		for (IChildrenUpdate update : updates) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (int j = 0; j < update.getLength(); j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				expectedChildren.remove( Integer.valueOf(update.getOffset() + j) );
 			}
 		}

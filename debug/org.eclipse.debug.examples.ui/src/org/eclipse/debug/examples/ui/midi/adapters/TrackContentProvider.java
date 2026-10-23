@@ -46,7 +46,7 @@ public class TrackContentProvider extends ElementContentProvider {
 		if (IDebugUIConstants.ID_VARIABLE_VIEW.equals(context.getId()) || CheckboxView.ID.equals(context.getId())) {
 			Track track = (Track) parent;
 			MidiEvent[] events= new MidiEvent[length];
-			for (int i = 0; i < length; i++) {
+			for (int i = 0; i < length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				events[i] = track.get(i+index);
 			}
 			return events;

@@ -34,7 +34,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class Bug_231301 {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug() throws CoreException, InterruptedException {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		final IProject project1 = workspace.getRoot().getProject("Project1");
@@ -45,7 +45,7 @@ public class Bug_231301 {
 		project2.create(null);
 		project2.open(null);
 
-		final WorkspaceJob job = new WorkspaceJob("job") {
+		final WorkspaceJob job = new WorkspaceJob("job") { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 				project2.close(null);
@@ -54,7 +54,7 @@ public class Bug_231301 {
 		};
 
 		// the listener will schedule another project close
-		IResourceChangeListener projectClosingChangeListener = event -> {
+		IResourceChangeListener projectClosingChangeListener = event -> { //FLLDCIM: MARK — T07  LAMBDA
 			if (event.getResource() == project1) {
 				// because notification is run in a protected block,
 				// this job will start after the notification

@@ -100,7 +100,7 @@ public abstract class ResourceVariantTree extends AbstractResourceVariantTree {
 			final IResourceVariant remote, final int depth, IProgressMonitor monitor)
 			throws TeamException {
 		final IResource[][] resources = new IResource[][] { null };
-		getByteStore().run(local, monitor1 -> resources[0] = ResourceVariantTree.super.collectChanges(local, remote, depth, monitor1), monitor);
+		getByteStore().run(local, monitor1 -> resources[0] = ResourceVariantTree.super.collectChanges(local, remote, depth, monitor1), monitor); //FLLDCIM: MARK — T09  LAMBDA
 		return resources[0];
 	}
 }

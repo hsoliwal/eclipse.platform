@@ -64,7 +64,7 @@ public class IWorkspaceRootTest {
 	/**
 	 * Tests findFilesForLocation when non-canonical paths are used (bug 155101).
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Deprecated // Explicitly tests deprecated API
 	public void testFindFilesNonCanonicalPath() throws Exception {
 		assumeTrue(OS.isWindows(), "only relevant on Windows");
@@ -120,7 +120,7 @@ public class IWorkspaceRootTest {
 	/**
 	 * Tests the API method findContainersForLocation.
 	 */
-	@Deprecated // Explicitly tests deprecated API
+	@Deprecated // Explicitly tests deprecated API //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	private void testFindContainersForLocation(IProject p1, IProject p2) throws Exception {
 		//should find the workspace root
 		IWorkspaceRoot root = getWorkspace().getRoot();
@@ -197,7 +197,7 @@ public class IWorkspaceRootTest {
 	/**
 	 * Tests the API method findFilesForLocation.
 	 */
-	@Deprecated // Explicitly tests deprecated API
+	@Deprecated // Explicitly tests deprecated API //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	private void testFindFilesForLocation(IProject project) throws CoreException {
 		//should not find the workspace root
 		IWorkspaceRoot root = getWorkspace().getRoot();
@@ -315,16 +315,16 @@ public class IWorkspaceRootTest {
 		final IWorkspaceRoot root = getWorkspace().getRoot();
 		final String value = "this is a test property value";
 		final QualifiedName name = new QualifiedName("test", "testProperty");
-		getWorkspace().run((IWorkspaceRunnable) unused -> root.setPersistentProperty(name, value), createTestMonitor());
+		getWorkspace().run((IWorkspaceRunnable) unused -> root.setPersistentProperty(name, value), createTestMonitor()); //FLLDCIM: MARK — T09  LAMBDA
 
 		final String[] storedValue = new String[1];
-		getWorkspace().run((IWorkspaceRunnable) unused -> storedValue[0] = root.getPersistentProperty(name),
+		getWorkspace().run((IWorkspaceRunnable) unused -> storedValue[0] = root.getPersistentProperty(name), //FLLDCIM: MARK — T09  LAMBDA
 				createTestMonitor());
 		assertEquals(value, storedValue[0]);
 
 		final QualifiedName name2 = new QualifiedName("test", "testNonProperty");
 		final String[] changedStoredValue = new String[1];
-		getWorkspace().run((IWorkspaceRunnable) unused -> changedStoredValue[0] = root.getPersistentProperty(name2),
+		getWorkspace().run((IWorkspaceRunnable) unused -> changedStoredValue[0] = root.getPersistentProperty(name2), //FLLDCIM: MARK — T09  LAMBDA
 				createTestMonitor());
 		assertEquals(null, changedStoredValue[0]);
 	}
@@ -357,7 +357,7 @@ public class IWorkspaceRootTest {
 		assertThat(containers).hasSize(1);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug234343_fileInHiddenProject() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject hiddenProject = root.getProject(createUniqueString());
@@ -384,7 +384,7 @@ public class IWorkspaceRootTest {
 	/**
 	 * Regression test for bug 476585: IWorkspaceRoot#getFileForLocation(IPath) should return IFile in nested project
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug476585() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject project = root.getProject("a");
@@ -484,7 +484,7 @@ public class IWorkspaceRootTest {
 	@Test
 	public void testGetForLocationOfNestedProjectLocation() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
-		for (String[] names : new String[][] { { "a_outer", "z_inner" }, { "z_outer", "a_inner" } }) {
+		for (String[] names : new String[][] { { "a_outer", "z_inner" }, { "z_outer", "a_inner" } }) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProject outer = root.getProject(names[0]);
 			createInWorkspace(outer);
 			IProject inner = createProjectAt(names[1], outer.getLocation().append("nested"));
@@ -500,10 +500,10 @@ public class IWorkspaceRootTest {
 	 * If the resource in the nested project is filtered out, the resource of the
 	 * enclosing project is returned instead.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetForLocationFilteredInNestedProject() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
-		for (String[] names : new String[][] { { "a_outer", "z_inner" }, { "z_outer", "a_inner" } }) {
+		for (String[] names : new String[][] { { "a_outer", "z_inner" }, { "z_outer", "a_inner" } }) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProject outer = root.getProject(names[0]);
 			createInWorkspace(outer);
 			IProject inner = createProjectAt(names[1], outer.getLocation().append("nested"));
@@ -559,7 +559,7 @@ public class IWorkspaceRootTest {
 		checkFindMethods(IResource.TEAM_PRIVATE | IResource.HIDDEN, new int[][] {{IResource.NONE, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {IContainer.INCLUDE_HIDDEN, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}, {IContainer.INCLUDE_HIDDEN | IContainer.INCLUDE_TEAM_PRIVATE_MEMBERS, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}, {IContainer.INCLUDE_TEAM_PRIVATE_MEMBERS, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0}});
 	}
 
-	public void checkFindMethods(int updateFlags, int[][] results) throws Exception {
+	public void checkFindMethods(int updateFlags, int[][] results) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject project = root.getProject(createUniqueString());
 		removeFromWorkspace(project);
@@ -594,7 +594,7 @@ public class IWorkspaceRootTest {
 		IFolder mFolderInFolder = createFolder(folder, updateFlags, false);
 		IFolder mLinkedFolderInFolder = createFolder(folder, updateFlags, true);
 
-		for (int[] result : results) {
+		for (int[] result : results) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			checkFindContainers(hiddenFolder.getLocationURI(), result[0], result[1]);
 			checkFindFiles(mFileInHiddenFolder.getLocationURI(), result[0], result[4]);
 			checkFindFiles(mLinkedFileInHiddenFolder.getLocationURI(), result[0], result[5]);

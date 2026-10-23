@@ -43,7 +43,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class BuilderCycleTest {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIsBeforeThisProject() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject project = root.getProject("Project");
@@ -70,7 +70,7 @@ public class BuilderCycleTest {
 		getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Disabled("test has been skipped for unknown reasons")
 	public void testNeedRebuild() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();

@@ -107,7 +107,7 @@ public class TableRenderingTests {
 	}
 
 	private HexIntegerRendering createHexIntegerRendering(int addressableSize) {
-		return new HexIntegerRendering(null) {
+		return new HexIntegerRendering(null) { //FLLDCIM: MARK — T06  ANONYMOUS
 			@Override
 			public int getAddressableSize() {
 				return addressableSize;
@@ -116,7 +116,7 @@ public class TableRenderingTests {
 	}
 
 	private SignedIntegerRendering createSignedIntegerRendering(int addressableSize, int bytesPerColumn) {
-		return new SignedIntegerRendering(null) {
+		return new SignedIntegerRendering(null) { //FLLDCIM: MARK — T06  ANONYMOUS
 			@Override
 			public int getAddressableSize() {
 				return addressableSize;
@@ -130,7 +130,7 @@ public class TableRenderingTests {
 	}
 
 	private UnsignedIntegerRendering createUnsignedIntegerRendering(int addressableSize, int bytesPerColumn) {
-		return new UnsignedIntegerRendering(null) {
+		return new UnsignedIntegerRendering(null) { //FLLDCIM: MARK — T06  ANONYMOUS
 			@Override
 			public int getAddressableSize() {
 				return addressableSize;

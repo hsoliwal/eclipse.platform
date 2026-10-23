@@ -29,7 +29,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.custom.BusyIndicator;
 
-public class FileFilter extends ViewerFilter {
+public class FileFilter extends ViewerFilter { //FLLDCIM: MARK — T23  IMPLEMENTS
 
 	/**
 	 * Objects to filter
@@ -71,7 +71,7 @@ public class FileFilter extends ViewerFilter {
 	 */
 	private void init() {
 		BusyIndicator.showWhile(AntUIPlugin.getStandardDisplay(), () -> {
-			fFiles = new HashSet<>();
+			fFiles = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			traverse(ResourcesPlugin.getWorkspace().getRoot(), fFiles);
 		});
 	}
@@ -79,10 +79,10 @@ public class FileFilter extends ViewerFilter {
 	/**
 	 * Traverse the given container, adding files to the given set. Returns whether any files were added
 	 */
-	private boolean traverse(IContainer container, Set<IResource> set) {
+	private boolean traverse(IContainer container, Set<IResource> set) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean added = false;
 		try {
-			for (IResource resource : container.members()) {
+			for (IResource resource : container.members()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (resource instanceof IFile file) {
 					String ext = file.getFileExtension();
 					if (!fConsiderExtension || canAccept(ext)) {
@@ -111,7 +111,7 @@ public class FileFilter extends ViewerFilter {
 			}
 			// Accepting multiple extensions
 			// eg: "xml|ant|ent|macrodef"
-			return fExtnPattern.matcher(ext).matches();
+			return fExtnPattern.matcher(ext).matches(); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		}
 		return false;
 	}

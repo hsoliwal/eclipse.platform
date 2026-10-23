@@ -58,7 +58,7 @@ public class TreeFlatteningTest implements IPathConstants {
 		ElementTree newTree = (ElementTree) doFileTest(tempDir, getReader(),
 				getWriter(tree, testTreeRootPath, ElementTreeWriter.D_INFINITE));
 
-		TestUtil.assertEqualTrees(this.getClass() + "test0", tree, newTree);
+		TestUtil.assertEqualTrees(this.getClass() + "test0", tree, newTree); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class TreeFlatteningTest implements IPathConstants {
 		// (Bug 352867): 16->17->18, 17->18, 18, mutable! 19->18
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSortTrees() {
 		ElementTree tree1 = new ElementTree();
 		ElementTree tree11 = tree1.newEmptyDelta();
@@ -103,7 +103,7 @@ public class TreeFlatteningTest implements IPathConstants {
 			assertSame(trees12[oldest12], trees21[oldest21]);
 			assertSame(trees12[oldest12], tree1); // "oldest" is the first created
 
-			System.out.println("oldest=" + trees12[oldest12].toDebugString());
+			System.out.println("oldest=" + trees12[oldest12].toDebugString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			ElementTree[] sorted12 = SaveManager.sortTrees(trees12);
 			ElementTree[] sorted21 = SaveManager.sortTrees(trees21);
 			assertArrayEquals(sorted12, sorted21);
@@ -119,7 +119,7 @@ public class TreeFlatteningTest implements IPathConstants {
 			assertSame(trees12[oldest12], trees21[oldest21]);
 			assertSame(trees12[oldest12], tree1); // "oldest" is the first created
 
-			System.out.println("oldest=" + trees12[oldest12].toDebugString());
+			System.out.println("oldest=" + trees12[oldest12].toDebugString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			ElementTree[] sorted12 = SaveManager.sortTrees(trees12);
 			ElementTree[] sorted21 = SaveManager.sortTrees(trees21);
 			assertArrayEquals(sorted12, sorted21);
@@ -134,7 +134,7 @@ public class TreeFlatteningTest implements IPathConstants {
 			assertSame(trees12[oldest12], trees21[oldest21]);
 			assertSame(trees12[oldest12], tree1); // "oldest" is the first created
 
-			System.out.println("oldest=" + trees12[oldest12].toDebugString());
+			System.out.println("oldest=" + trees12[oldest12].toDebugString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			ElementTree[] sorted12 = SaveManager.sortTrees(trees12);
 			ElementTree[] sorted21 = SaveManager.sortTrees(trees21);
 			assertArrayEquals(sorted12, sorted21);
@@ -149,7 +149,7 @@ public class TreeFlatteningTest implements IPathConstants {
 			assertSame(trees12[oldest12], trees21[oldest21]);
 			assertSame(trees12[oldest12], tree1); // "oldest" is the first created
 
-			System.out.println("oldest=" + trees12[oldest12].toDebugString());
+			System.out.println("oldest=" + trees12[oldest12].toDebugString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			ElementTree[] sorted12 = SaveManager.sortTrees(trees12);
 			ElementTree[] sorted21 = SaveManager.sortTrees(trees21);
 			assertArrayEquals(sorted12, sorted21);
@@ -164,7 +164,7 @@ public class TreeFlatteningTest implements IPathConstants {
 			assertSame(trees12[oldest12], trees21[oldest21]);
 			assertSame(trees12[oldest12], tree11); // "oldest" is the first created
 
-			System.out.println("oldest=" + trees12[oldest12].toDebugString());
+			System.out.println("oldest=" + trees12[oldest12].toDebugString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			ElementTree[] sorted12 = SaveManager.sortTrees(trees12);
 			ElementTree[] sorted21 = SaveManager.sortTrees(trees21);
 			assertArrayEquals(sorted12, sorted21);
@@ -180,7 +180,7 @@ public class TreeFlatteningTest implements IPathConstants {
 			assertSame(trees12[oldest12], trees21[oldest21]);
 			assertSame(trees12[oldest12], tree1); // "oldest" is the first created
 
-			System.out.println("oldest=" + trees12[oldest12].toDebugString());
+			System.out.println("oldest=" + trees12[oldest12].toDebugString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			ElementTree[] sorted12 = SaveManager.sortTrees(trees12);
 			ElementTree[] sorted21 = SaveManager.sortTrees(trees21);
 			assertArrayEquals(sorted12, sorted21);
@@ -190,7 +190,7 @@ public class TreeFlatteningTest implements IPathConstants {
 
 	private ElementTree[] reversed(ElementTree[] trees) {
 		ElementTree[] result = new ElementTree[trees.length];
-		for (int i = 0; i < trees.length; i++) {
+		for (int i = 0; i < trees.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result[i] = trees[trees.length - i - 1];
 		}
 		return result;
@@ -206,7 +206,7 @@ public class TreeFlatteningTest implements IPathConstants {
 		ElementTree newTree = (ElementTree) doPipeTest(getWriter(tree, path, depth),
 				getReader());
 
-		TestUtil.assertEqualTrees(this.getClass() + "test0", tree, newTree, path, depth);
+		TestUtil.assertEqualTrees(this.getClass() + "test0", tree, newTree, path, depth); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Test
@@ -223,7 +223,7 @@ public class TreeFlatteningTest implements IPathConstants {
 		ElementTree newTree = (ElementTree) doPipeTest(getWriter(tree, testTreeRootPath, ElementTreeWriter.D_INFINITE),
 				getReader());
 
-		TestUtil.assertEqualTrees(this.getClass() + "test0", tree, newTree);
+		TestUtil.assertEqualTrees(this.getClass() + "test0", tree, newTree); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Test
@@ -233,6 +233,6 @@ public class TreeFlatteningTest implements IPathConstants {
 		ElementTree newTree = (ElementTree) doPipeTest(getWriter(tree, path, ElementTreeWriter.D_INFINITE),
 				getReader());
 
-		TestUtil.assertEqualTrees(this.getClass() + "test0", tree, newTree, path);
+		TestUtil.assertEqualTrees(this.getClass() + "test0", tree, newTree, path); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

@@ -43,7 +43,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class ResourceContentTests {
 
-	public static class TestableResourceModelContentProvider extends ResourceModelContentProvider {
+	public static class TestableResourceModelContentProvider extends ResourceModelContentProvider { //FLLDCIM: MARK — M22  IMPLEMENTS
 
 		private final ISynchronizationScope scope;
 		private final ISynchronizationContext context;
@@ -100,9 +100,9 @@ public class ResourceContentTests {
 
 	private void assertContentsMatch(IResource[] resources) {
 		Set paths = getPaths(ResourcesPlugin.getWorkspace().getRoot());
-		Set<Object> resourceSet = new HashSet<>();
+		Set<Object> resourceSet = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		Collections.addAll(resourceSet, resources);
-		for (Iterator iterator = paths.iterator(); iterator.hasNext();) {
+		for (Iterator iterator = paths.iterator(); iterator.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			TreePath path = (TreePath) iterator.next();
 			Object o = path.getLastSegment();
 			// Just remove the object, we'll check for any remaining resources below
@@ -110,14 +110,14 @@ public class ResourceContentTests {
 				iterator.remove();
 			}
 		}
-		assertFalse(resourceSet.isEmpty(), "Tree entries were missing for " + toString(resourceSet));
-		assertFalse(paths.isEmpty(), "Tree entries were found for " + toString(paths));
+		assertFalse(resourceSet.isEmpty(), "Tree entries were missing for " + toString(resourceSet)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		assertFalse(paths.isEmpty(), "Tree entries were found for " + toString(paths)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private Set getPaths(Object root) {
-		Set<Object> result = new HashSet<>();
+		Set<Object> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		Object[] elements = provider.getElements(root);
-		for (Object object : elements) {
+		for (Object object : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			TreePath path = new TreePath(new Object[] { object });
 			Set childPaths = getPaths(provider, path);
 			result.addAll(childPaths);
@@ -127,10 +127,10 @@ public class ResourceContentTests {
 
 	private Set getPaths(ResourceModelContentProvider provider, TreePath path) {
 		Object[] children = provider.getChildren(path);
-		Set<TreePath> result = new HashSet<>();
+		Set<TreePath> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		if (children.length == 0)
 			result.add(path);
-		for (Object object : children) {
+		for (Object object : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			TreePath childPath = path.createChildPath(object);
 			Set childPaths = getPaths(provider, childPath);
 			result.addAll(childPaths);
@@ -139,12 +139,12 @@ public class ResourceContentTests {
 	}
 
 	private String toString(Set set) {
-		StringBuilder buffer = new StringBuilder();
+		StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		boolean addComma = false;
-		for (Object resource : set) {
-			buffer.append(toString(resource));
+		for (Object resource : set) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			buffer.append(toString(resource)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			if (addComma)
-				buffer.append(", ");
+				buffer.append(", "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			addComma = true;
 		}
 		return buffer.toString();
@@ -161,8 +161,8 @@ public class ResourceContentTests {
 	}
 
 	private IResource[] asResources(IProject project, String[] resourcePaths) {
-		List<IResource> resources = new ArrayList<>();
-		for (String path : resourcePaths) {
+		List<IResource> resources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (String path : resourcePaths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (path.endsWith("/")) {
 				resources.add(project.getFolder(path));
 			} else {

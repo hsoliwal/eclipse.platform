@@ -69,7 +69,7 @@ public class MetadataTreeView extends SpyView {
 		 *
 		 * @see org.eclipse.jface.action.IAction#run()
 		 */
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void run() {
 			IStructuredSelection sel = MetadataTreeView.this.viewer.getStructuredSelection();
 			if (sel == null || sel.isEmpty()) {
@@ -138,7 +138,7 @@ public class MetadataTreeView extends SpyView {
 	 * @param parent the parent control
 	 * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createPartControl(Composite parent) {
 		viewer = new TreeViewer(parent);
 
@@ -165,7 +165,7 @@ public class MetadataTreeView extends SpyView {
 		viewer.getControl().setMenu(menu);
 
 		// associates double-click to dump file action
-		viewer.addDoubleClickListener(unused -> dumpFileAction.run());
+		viewer.addDoubleClickListener(unused -> dumpFileAction.run()); //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
 	}
 
 	/**
@@ -182,7 +182,7 @@ public class MetadataTreeView extends SpyView {
 			return;
 		}
 		metadataPath = file;
-		viewer.setInput(file);
+		viewer.setInput(file); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 	}
 
 }

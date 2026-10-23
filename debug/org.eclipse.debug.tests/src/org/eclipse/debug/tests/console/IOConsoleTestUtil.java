@@ -101,7 +101,7 @@ public final class IOConsoleTestUtil {
 		assertNotNull(this.doc);
 		final Class<?> expectedInterface = IConsoleDocumentPartitioner.class;
 		assertTrue(expectedInterface.isAssignableFrom(this.doc.getDocumentPartitioner().getClass()), //
-				"Expected partitioner implements " + expectedInterface.getName() + //
+				"Expected partitioner implements " + expectedInterface.getName() + // //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				". Found: " + this.doc.getDocumentPartitioner().getClass());
 		this.partitioner = (IConsoleDocumentPartitioner) this.doc.getDocumentPartitioner();
 		this.validPartionTypes = Arrays.asList(this.partitioner.getLegalContentTypes());
@@ -224,7 +224,7 @@ public final class IOConsoleTestUtil {
 	 * @return this {@link IOConsoleTestUtil} to chain methods
 	 * @see #insertTyping(String)
 	 */
-	public IOConsoleTestUtil insert(String content) {
+	public IOConsoleTestUtil insert(String content) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final int oldCaretOffset = getCaretOffset();
 		final int oldSelectionLength = textPanel.getSelectionCount();
 		final Event e = new Event();
@@ -284,7 +284,7 @@ public final class IOConsoleTestUtil {
 	 * @see #insert(String)
 	 */
 	public IOConsoleTestUtil insertTyping(String content) {
-		for (char c : content.toCharArray()) {
+		for (char c : content.toCharArray()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final Event e = new Event();
 			e.character = c;
 			textPanel.notifyListeners(SWT.KeyDown, e);
@@ -335,8 +335,8 @@ public final class IOConsoleTestUtil {
 	 * @param repeat perform this many backspaces
 	 * @return this {@link IOConsoleTestUtil} to chain methods
 	 */
-	public IOConsoleTestUtil backspace(int repeat) {
-		for (int i = 0; i < repeat; i++) {
+	public IOConsoleTestUtil backspace(int repeat) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		for (int i = 0; i < repeat; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (ignoreFixedConsole) {
 				// Note: this backspace simulation can not handle multibyte line
 				// delimiter. It would only delete one byte with one backspace.
@@ -550,9 +550,9 @@ public final class IOConsoleTestUtil {
 		try {
 			final IRegion line = doc.getLineInformation(l);
 			verifyContentByOffset(expectedContent, line.getOffset());
-			assertEquals(expectedContent.length(), line.getLength(), "Line " + l + " has wrong length.");
+			assertEquals(expectedContent.length(), line.getLength(), "Line " + l + " has wrong length."); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} catch (BadLocationException e) {
-			fail("Expected line " + lineNum + " not found in console document. Bad location!");
+			fail("Expected line " + lineNum + " not found in console document. Bad location!"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return this;
 	}
@@ -571,7 +571,7 @@ public final class IOConsoleTestUtil {
 			final int len = Math.min(doc.getLength() - o, expectedContent.length());
 			assertEquals(expectedContent, doc.get(o, len), "Expected string not found in console document.");
 		} catch (BadLocationException ex) {
-			fail("Expected string '" + expectedContent + "' not found in console document. Bad location!");
+			fail("Expected string '" + expectedContent + "' not found in console document. Bad location!"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return this;
 	}
@@ -634,7 +634,7 @@ public final class IOConsoleTestUtil {
 	 * @see IDocumentPartitioner#computePartitioning(int, int)
 	 * @see IDocumentPartitioner#getPartition(int)
 	 */
-	public IOConsoleTestUtil verifyPartitions(final int offset, final int length, final String expectedType, final boolean allowMixedTypes, final boolean allowGaps, int minPartitionNumber) {
+	public IOConsoleTestUtil verifyPartitions(final int offset, final int length, final String expectedType, final boolean allowMixedTypes, final boolean allowGaps, int minPartitionNumber) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		{
 			final ITypedRegion[] partitions = getPartitioner().computePartitioning(offset, length);
 			assertThat(partitions).as("number of partitions").hasSizeGreaterThanOrEqualTo(minPartitionNumber);
@@ -644,7 +644,7 @@ public final class IOConsoleTestUtil {
 			int lastEnd = -1;
 			ITypedRegion lastPartition = null;
 			String partitionType = expectedType;
-			for (ITypedRegion partition : partitions) {
+			for (ITypedRegion partition : partitions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				assertNotSame(lastPartition, partition, "Got same partition twice.");
 				assertTrue(partition.getOffset() >= lastEnd, "Partition overlapping. (or not sorted as expected)");
 				if (!allowGaps && lastEnd != -1) {
@@ -663,7 +663,7 @@ public final class IOConsoleTestUtil {
 		int end = offset + length;
 		ITypedRegion lastPartition = null;
 		String partitionType = expectedType;
-		while (pos < end) {
+		while (pos < end) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final ITypedRegion partition = getPartitioner().getPartition(pos);
 			if (partition == null) {
 				assertTrue(allowGaps, "Did not expect 'null' partition.");

@@ -69,7 +69,7 @@ import org.eclipse.compare.structuremergeviewer.DiffNode;
  * A Compare result dialog
  */
 public class CompareResultDialog extends TrayDialog {
-	private static final String PREFIX_SUFFIX_PROPERTY = UnitTestPlugin.PLUGIN_ID + ".CompareResultDialog.prefixSuffix"; //$NON-NLS-1$
+	private static final String PREFIX_SUFFIX_PROPERTY = UnitTestPlugin.PLUGIN_ID + ".CompareResultDialog.prefixSuffix"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	private static class CompareResultMergeViewer extends TextMergeViewer {
 		private CompareResultMergeViewer(Composite parent, int style, CompareConfiguration configuration) {
@@ -232,12 +232,12 @@ public class CompareResultDialog extends TrayDialog {
 		return section;
 	}
 
-	private void computePrefixSuffix() {
+	private void computePrefixSuffix() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String expected = trace.getExpected();
 		String actual = trace.getActual();
 		int end = Math.min(expected.length(), actual.length());
 		int i = 0;
-		for (; i < end; i++) {
+		for (; i < end; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (expected.charAt(i) != actual.charAt(i)) {
 				break;
 			}
@@ -247,7 +247,7 @@ public class CompareResultDialog extends TrayDialog {
 		int j = expected.length() - 1;
 		int k = actual.length() - 1;
 		int l = 0;
-		for (; k >= i && j >= i; k--, j--) {
+		for (; k >= i && j >= i; k--, j--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (expected.charAt(j) != actual.charAt(k)) {
 				break;
 			}
@@ -268,7 +268,7 @@ public class CompareResultDialog extends TrayDialog {
 		createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = (Composite) super.createDialogArea(parent);
 		GridLayout layout = new GridLayout();
@@ -302,7 +302,7 @@ public class CompareResultDialog extends TrayDialog {
 		setCompareViewerInput();
 
 		Control control = fViewer.getControl();
-		control.addDisposeListener(unused -> compareConfiguration.dispose());
+		control.addDisposeListener(unused -> compareConfiguration.dispose()); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 		return control;
 	}
 

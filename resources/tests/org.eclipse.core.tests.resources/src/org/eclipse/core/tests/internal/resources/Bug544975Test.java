@@ -38,7 +38,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class Bug544975Test {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug544975ProjectOpenBackgroundRefresh() throws Exception {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IProject project = root.getProject("Bug544975");
@@ -78,7 +78,7 @@ public class Bug544975Test {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug544975ProjectOpenWithoutBackgroundRefresh() throws Exception {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IProject project = root.getProject("Bug544975");

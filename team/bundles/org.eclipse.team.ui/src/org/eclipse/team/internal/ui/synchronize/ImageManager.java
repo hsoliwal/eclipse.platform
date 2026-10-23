@@ -26,7 +26,7 @@ import org.eclipse.team.ui.synchronize.ISynchronizePageConfiguration;
 
 public class ImageManager {
 
-	private static final String PROP_IMAGE_MANAGER = TeamUIPlugin.ID + ".imageManager"; //$NON-NLS-1$
+	private static final String PROP_IMAGE_MANAGER = TeamUIPlugin.ID + ".imageManager"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	private LocalResourceManager imageManager;
 	// Contains direction images
@@ -41,7 +41,7 @@ public class ImageManager {
 			Viewer v = getViewer(configuration);
 			if (v != null) {
 				// It is best to dispose the images when the view is disposed (see bug 198383)
-				v.getControl().addDisposeListener(unused -> newRegistry.dispose());
+				v.getControl().addDisposeListener(unused -> newRegistry.dispose()); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 			} else {
 				// The viewer wasn't available so we'll dispose when the context is disposed
 				context.getCache().addCacheListener(unused -> newRegistry.dispose());

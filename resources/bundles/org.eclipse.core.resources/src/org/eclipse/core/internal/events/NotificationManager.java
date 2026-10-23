@@ -164,7 +164,7 @@ public class NotificationManager implements IManager, ILifecycleListener {
 	/**
 	 * The main broadcast point for notification deltas
 	 */
-	public void broadcastChanges(ElementTree lastState, ResourceChangeEvent event, boolean lockTree) {
+	public void broadcastChanges(ElementTree lastState, ResourceChangeEvent event, boolean lockTree) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final int type = event.getType();
 		try {
 			// Do the notification if there are listeners for events of the given type.
@@ -194,7 +194,7 @@ public class NotificationManager implements IManager, ILifecycleListener {
 	/**
 	 * Performs cleanup at the end of a resource change notification
 	 */
-	private void cleanUp(ElementTree lastState, int type) {
+	private void cleanUp(ElementTree lastState, int type) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Remember the current state as the last notified state if requested.
 		// Be sure to clear out the old delta
 		boolean postChange = type == IResourceChangeEvent.POST_CHANGE;
@@ -248,7 +248,7 @@ public class NotificationManager implements IManager, ILifecycleListener {
 	 * Computes and returns the resource delta for the given event type and the
 	 * given current tree state.
 	 */
-	protected ResourceDelta getDelta(ElementTree tree, int type) {
+	protected ResourceDelta getDelta(ElementTree tree, int type) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		long id = workspace.getMarkerManager().getChangeId();
 		// If we have a delta from last time and no resources have changed
 		// since then, we can reuse the delta structure.
@@ -278,7 +278,7 @@ public class NotificationManager implements IManager, ILifecycleListener {
 		return listeners.getListeners();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void handleEvent(LifecycleEvent event) {
 		switch (event.kind) {
 			case LifecycleEvent.PRE_PROJECT_CLOSE :
@@ -315,14 +315,14 @@ public class NotificationManager implements IManager, ILifecycleListener {
 		}
 	}
 
-	private void notify(ResourceChangeListenerList.ListenerEntry[] resourceListeners, final ResourceChangeEvent event, final boolean lockTree) {
+	private void notify(ResourceChangeListenerList.ListenerEntry[] resourceListeners, final ResourceChangeEvent event, final boolean lockTree) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int type = event.getType();
 		boolean oldLock = workspace.isTreeLocked();
 		if (lockTree) {
 			workspace.setTreeLocked(true);
 		}
 		try {
-			for (ListenerEntry resourceListener : resourceListeners) {
+			for (ListenerEntry resourceListener : resourceListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if ((type & resourceListener.eventMask) != 0) {
 					final IResourceChangeListener listener = resourceListener.listener;
 					ResourceStats.Run run = ResourceStats.isTracingListeners() ? ResourceStats.startNotify(listener) : null;
@@ -335,7 +335,7 @@ public class NotificationManager implements IManager, ILifecycleListener {
 						@Override
 						public void run() throws Exception {
 							if (Policy.DEBUG_NOTIFICATIONS) {
-								Policy.debug("Notifying " + listener.getClass().getName() + " about resource change event" + event.toDebugString()); //$NON-NLS-1$ //$NON-NLS-2$
+								Policy.debug("Notifying " + listener.getClass().getName() + " about resource change event" + event.toDebugString()); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							}
 							listener.resourceChanged(event);
 						}

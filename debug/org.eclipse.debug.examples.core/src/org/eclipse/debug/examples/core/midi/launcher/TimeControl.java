@@ -30,26 +30,26 @@ public abstract class TimeControl extends SequencerControl {
 		super(name, launch);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String getValue() {
 		long position = getTimeValue();
 		int milli = (int) (position & 0x3F);
 		int sec = (int) (position / 1000000);
 		int min = sec / 60;
 		sec = sec % 60;
-		StringBuilder clock = new StringBuilder();
-		clock.append(min);
-		while (clock.length() < 2) {
+		StringBuilder clock = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		clock.append(min); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		while (clock.length() < 2) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			clock.insert(0, 0);
 		}
-		clock.append(':');
-		clock.append(sec);
-		while (clock.length() < 5) {
+		clock.append(':'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		clock.append(sec); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		while (clock.length() < 5) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			clock.insert(3, 0);
 		}
-		clock.append(':');
-		clock.append(milli);
-		while (clock.length() < 8) {
+		clock.append(':'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		clock.append(milli); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		while (clock.length() < 8) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			clock.insert(6, 0);
 		}
 		return clock.toString();

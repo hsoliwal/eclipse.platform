@@ -97,14 +97,14 @@ public class AntProcessDebugBuildLogger extends AntProcessBuildLogger implements
 		fDebugState.taskStarted(event);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public synchronized void waitIfSuspended() {
 		fResumed = false;
 		IBreakpoint breakpoint = breakpointAtLineNumber(fDebugState.getBreakpointLocation());
 		if (breakpoint != null) {
 			fAntDebugTarget.breakpointHit(breakpoint);
 			try {
-				while (!fResumed) {
+				while (!fResumed) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					wait(500);
 					checkCancelled();
 				}
@@ -132,7 +132,7 @@ public class AntProcessDebugBuildLogger extends AntProcessBuildLogger implements
 			if (shouldSuspend) {
 				fAntDebugTarget.suspended(detail);
 				try {
-					while (!fResumed) {
+					while (!fResumed) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						wait(500);
 						checkCancelled();
 					}
@@ -184,7 +184,7 @@ public class AntProcessDebugBuildLogger extends AntProcessBuildLogger implements
 	public void handleBreakpoint(IBreakpoint breakpoint, boolean added) {
 		if (added) {
 			if (fBreakpoints == null) {
-				fBreakpoints = new ArrayList<>();
+				fBreakpoints = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			}
 			if (!fBreakpoints.contains(breakpoint)) {
 				fBreakpoints.add(breakpoint);
@@ -215,13 +215,13 @@ public class AntProcessDebugBuildLogger extends AntProcessBuildLogger implements
 		((AntThread) fAntDebugTarget.getThreads()[0]).buildStack(stackRepresentation.toString());
 	}
 
-	private IBreakpoint breakpointAtLineNumber(Location location) {
+	private IBreakpoint breakpointAtLineNumber(Location location) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fBreakpoints == null || location == null || location == Location.UNKNOWN_LOCATION) {
 			return null;
 		}
 		int lineNumber = location.getLineNumber();
 		File locationFile = new File(location.getFileName());
-		for (IBreakpoint bp : fBreakpoints) {
+		for (IBreakpoint bp : fBreakpoints) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ILineBreakpoint breakpoint = (ILineBreakpoint) bp;
 			int breakpointLineNumber;
 			try {

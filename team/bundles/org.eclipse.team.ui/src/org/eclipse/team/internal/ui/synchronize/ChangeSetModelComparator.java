@@ -71,7 +71,7 @@ public class ChangeSetModelComparator extends ViewerComparator {
 		return d1.compareTo(d2);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public int compare(Viewer viewer, Object o1, Object o2) {
 		//have to deal with non-resources in navigator
 		//if one or both objects are not resources, returned a comparison

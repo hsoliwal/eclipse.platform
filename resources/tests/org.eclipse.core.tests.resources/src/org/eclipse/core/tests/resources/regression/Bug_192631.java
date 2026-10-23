@@ -66,14 +66,14 @@ public class Bug_192631 {
 		MemoryTree.TREE.deleteAll();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCompareHost() throws CoreException, URISyntaxException {
 		URI commonA = new URI(RemoteFileSystem.SCHEME_REMOTE, null, HOST_A, -1, COMMON, null, null);
 		URI commonB = new URI(RemoteFileSystem.SCHEME_REMOTE, null, HOST_B, -1, COMMON, null, null);
 		URI folderA = new URI(RemoteFileSystem.SCHEME_REMOTE, null, HOST_A, -1, FOLDER_A, null, null);
 		URI folderB = new URI(RemoteFileSystem.SCHEME_REMOTE, null, HOST_B, -1, FOLDER_B, null, null);
 
-		final Set<URI> toVisit = new HashSet<>();
+		final Set<URI> toVisit = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		final int toVisitCount[] = new int[] {0};
 		IResourceVisitor visitor = resource -> {
 			toVisit.remove(resource.getLocationURI());
@@ -112,14 +112,14 @@ public class Bug_192631 {
 		projectB.delete(true, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCompareUserInfo() throws CoreException, URISyntaxException {
 		URI commonA = new URI(RemoteFileSystem.SCHEME_REMOTE, USER_A, HOST_A, -1, COMMON, null, null);
 		URI commonB = new URI(RemoteFileSystem.SCHEME_REMOTE, USER_B, HOST_A, -1, COMMON, null, null);
 		URI folderA = new URI(RemoteFileSystem.SCHEME_REMOTE, USER_A, HOST_A, -1, FOLDER_A, null, null);
 		URI folderB = new URI(RemoteFileSystem.SCHEME_REMOTE, USER_B, HOST_A, -1, FOLDER_B, null, null);
 
-		final Set<URI> toVisit = new HashSet<>();
+		final Set<URI> toVisit = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		final int toVisitCount[] = new int[] {0};
 		IResourceVisitor visitor = resource -> {
 			toVisit.remove(resource.getLocationURI());
@@ -158,14 +158,14 @@ public class Bug_192631 {
 		projectB.delete(true, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testComparePort() throws CoreException, URISyntaxException {
 		URI commonA = new URI(RemoteFileSystem.SCHEME_REMOTE, null, HOST_A, PORT_A, COMMON, null, null);
 		URI commonB = new URI(RemoteFileSystem.SCHEME_REMOTE, null, HOST_A, PORT_B, COMMON, null, null);
 		URI folderA = new URI(RemoteFileSystem.SCHEME_REMOTE, null, HOST_A, PORT_A, FOLDER_A, null, null);
 		URI folderB = new URI(RemoteFileSystem.SCHEME_REMOTE, null, HOST_A, PORT_B, FOLDER_B, null, null);
 
-		final Set<URI> toVisit = new HashSet<>();
+		final Set<URI> toVisit = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		final int toVisitCount[] = new int[] {0};
 		IResourceVisitor visitor = resource -> {
 			toVisit.remove(resource.getLocationURI());

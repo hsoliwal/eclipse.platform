@@ -131,27 +131,27 @@ public class AntEditorPreferenceConstants {
 	/**
 	 * String preference identifier constant which specifies the severity level for problems related to classpath in the Ant editor
 	 */
-	public static final String PROBLEM_CLASSPATH = PROBLEM + "_classpath"; //$NON-NLS-1$
+	public static final String PROBLEM_CLASSPATH = PROBLEM + "_classpath"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * String preference identifier constant which specifies the severity level for problems related to properties in the Ant editor
 	 */
-	public static final String PROBLEM_PROPERTIES = PROBLEM + "_properties"; //$NON-NLS-1$
+	public static final String PROBLEM_PROPERTIES = PROBLEM + "_properties"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * String preference identifier constant which specifies the severity level for problems related to imports in the Ant editor
 	 */
-	public static final String PROBLEM_IMPORTS = PROBLEM + "_imports"; //$NON-NLS-1$
+	public static final String PROBLEM_IMPORTS = PROBLEM + "_imports"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * String preference identifier constant which specifies the severity level for problems related to tasks in the Ant editor
 	 */
-	public static final String PROBLEM_TASKS = PROBLEM + "_tasks"; //$NON-NLS-1$
+	public static final String PROBLEM_TASKS = PROBLEM + "_tasks"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * String preference identifier constant which specifies the severity level for problems related to security exceptions in the Ant editor
 	 */
-	public static final String PROBLEM_SECURITY = PROBLEM + "_security"; //$NON-NLS-1$
+	public static final String PROBLEM_SECURITY = PROBLEM + "_security"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * The constants allowable for the severity levels for problem preferences
@@ -270,7 +270,7 @@ public class AntEditorPreferenceConstants {
 	 */
 	public static final String EDITOR_STICKY_OCCURRENCES = "stickyOccurrences"; //$NON-NLS-1$
 
-	public static void initializeDefaultValues(IPreferenceStore store) {
+	public static void initializeDefaultValues(IPreferenceStore store) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		store.setDefault(CODEASSIST_AUTOINSERT, true);
 		store.setDefault(CODEASSIST_USER_DEFINED_TASKS, true);

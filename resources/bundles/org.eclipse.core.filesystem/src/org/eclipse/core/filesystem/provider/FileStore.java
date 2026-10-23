@@ -65,7 +65,7 @@ public abstract class FileStore extends PlatformObject implements IFileStore {
 	public IFileInfo[] childInfos(int options, IProgressMonitor monitor) throws CoreException {
 		IFileStore[] childStores = childStores(options, monitor);
 		IFileInfo[] childInfos = new IFileInfo[childStores.length];
-		for (int i = 0; i < childStores.length; i++) {
+		for (int i = 0; i < childStores.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			childInfos[i] = childStores[i].fetchInfo();
 		}
 		return childInfos;
@@ -82,7 +82,7 @@ public abstract class FileStore extends PlatformObject implements IFileStore {
 	public IFileStore[] childStores(int options, IProgressMonitor monitor) throws CoreException {
 		String[] children = childNames(options, monitor);
 		IFileStore[] wrapped = new IFileStore[children.length];
-		for (int i = 0; i < wrapped.length; i++) {
+		for (int i = 0; i < wrapped.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			wrapped[i] = getChild(children[i]);
 		}
 		return wrapped;
@@ -119,7 +119,7 @@ public abstract class FileStore extends PlatformObject implements IFileStore {
 	 * <li> A file of the same name already exists at the copy destination.</li>
 	 * </ul>
 	 */
-	protected void copyDirectory(IFileInfo sourceInfo, IFileStore destination, int options, IProgressMonitor monitor) throws CoreException {
+	protected void copyDirectory(IFileInfo sourceInfo, IFileStore destination, int options, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IFileStore[] children = null;
 		int opWork = 1;
 		if ((options & EFS.SHALLOW) == 0) {
@@ -137,7 +137,7 @@ public abstract class FileStore extends PlatformObject implements IFileStore {
 			return;
 		}
 		// copy children
-		for (IFileStore c : children) {
+		for (IFileStore c : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			c.copy(destination.getChild(c.getName()), options, subMonitor.newChild(1));
 		}
 	}
@@ -160,7 +160,7 @@ public abstract class FileStore extends PlatformObject implements IFileStore {
 	 * <li> A directory of the same name already exists at the copy destination.</li>
 	 * </ul>
 	 */
-	protected void copyFile(IFileInfo sourceInfo, IFileStore destination, int options, IProgressMonitor monitor) throws CoreException {
+	protected void copyFile(IFileInfo sourceInfo, IFileStore destination, int options, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if ((options & EFS.OVERWRITE) == 0 && destination.exists()) {
 			Policy.error(EFS.ERROR_EXISTS, NLS.bind(Messages.fileExists, destination));
 		}
@@ -250,7 +250,7 @@ public abstract class FileStore extends PlatformObject implements IFileStore {
 	@Override
 	public IFileStore getChild(IPath path) {
 		IFileStore result = this;
-		for (int i = 0, imax = path.segmentCount(); i < imax; i++) {
+		for (int i = 0, imax = path.segmentCount(); i < imax; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result = result.getChild(path.segment(i));
 		}
 		return result;
@@ -266,7 +266,7 @@ public abstract class FileStore extends PlatformObject implements IFileStore {
 	public IFileStore getFileStore(IPath path) {
 		IFileStore result = this;
 		String segment = null;
-		for (int i = 0, imax = path.segmentCount(); i < imax; i++) {
+		for (int i = 0, imax = path.segmentCount(); i < imax; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			segment = path.segment(i);
 			if (segment.equals(".")) { //$NON-NLS-1$
 				continue;
@@ -327,7 +327,7 @@ public abstract class FileStore extends PlatformObject implements IFileStore {
 	 */
 	@Override
 	public boolean isParentOf(IFileStore other) {
-		while (true) {
+		while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			other = other.getParent();
 			if (other == null) {
 				return false;

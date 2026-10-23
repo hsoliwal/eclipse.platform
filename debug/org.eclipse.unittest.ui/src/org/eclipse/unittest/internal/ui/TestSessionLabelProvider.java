@@ -54,7 +54,7 @@ class TestSessionLabelProvider extends LabelProvider implements IStyledLabelProv
 		fShowTime = true;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public StyledString getStyledText(Object element) {
 		if (!(element instanceof ITestElement)) {
 			return new StyledString(element.toString());
@@ -106,7 +106,7 @@ class TestSessionLabelProvider extends LabelProvider implements IStyledLabelProv
 				Double.valueOf(duration.toNanos() / 1.0e9));
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String getText(Object element) {
 		if (!(element instanceof ITestElement)) {
 			return element.toString();
@@ -130,7 +130,7 @@ class TestSessionLabelProvider extends LabelProvider implements IStyledLabelProv
 		return addElapsedTime(label, testElement.getDuration());
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Image getImage(Object element) {
 		if (element instanceof TestElement && ((TestElement) element).isAssumptionFailure()) {
 			return fTestRunnerPart.fTestAssumptionFailureIcon;

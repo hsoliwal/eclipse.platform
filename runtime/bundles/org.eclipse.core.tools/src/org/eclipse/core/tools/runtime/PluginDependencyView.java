@@ -50,7 +50,7 @@ public class PluginDependencyView extends SpyView implements ISelectionListener 
 	/** The id by which this view is known in the plug-in registry */
 	public static final String VIEW_ID = PluginDependencyView.class.getName();
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createPartControl(Composite parent) {
 		viewer = new TextViewer(parent, SWT.V_SCROLL | SWT.H_SCROLL | SWT.WRAP | SWT.READ_ONLY);
 		viewer.setDocument(new Document());
@@ -65,7 +65,7 @@ public class PluginDependencyView extends SpyView implements ISelectionListener 
 
 		// Delete action shortcuts are not captured by the workbench
 		// so we need our key binding service to handle Delete keystrokes for us
-		this.viewer.getControl().addKeyListener(KeyListener.keyPressedAdapter(e -> {
+		this.viewer.getControl().addKeyListener(KeyListener.keyPressedAdapter(e -> { //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 			if (e.character == SWT.DEL) {
 				clearOutputAction.run();
 			}
@@ -100,7 +100,7 @@ public class PluginDependencyView extends SpyView implements ISelectionListener 
 	 * plug-in registry and the cycle through the list of pre-requisites and create the
 	 * parent/child relationships in the nodes.
 	 */
-	private Map<Long, PluginDependencyGraphNode> getDependencyGraph() {
+	private Map<Long, PluginDependencyGraphNode> getDependencyGraph() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (dependencyGraph != null) {
 			return dependencyGraph;
 		}
@@ -109,8 +109,8 @@ public class PluginDependencyView extends SpyView implements ISelectionListener 
 
 		BundleContext bundleContext = FrameworkUtil.getBundle(PluginDependencyView.class).getBundleContext();
 		Bundle[] plugins = bundleContext.getBundles();
-		dependencyGraph = new HashMap<>();
-		for (Bundle bundle : plugins) {
+		dependencyGraph = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (Bundle bundle : plugins) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			PluginDependencyGraphNode node = dependencyGraph.computeIfAbsent(bundle.getBundleId(),
 					unused -> new PluginDependencyGraphNode(bundle));
 
@@ -120,7 +120,7 @@ public class PluginDependencyView extends SpyView implements ISelectionListener 
 				continue;
 			}
 			List<BundleWire> requiredWires = wiring.getRequiredWires(null);
-			for (BundleWire requiredWire : requiredWires) {
+			for (BundleWire requiredWire : requiredWires) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Bundle capabilityProvider = requiredWire.getCapability().getRevision().getBundle();
 				// if the child entry is not in the table yet then add it
 				PluginDependencyGraphNode childNode = dependencyGraph.computeIfAbsent(capabilityProvider.getBundleId(),

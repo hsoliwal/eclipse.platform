@@ -38,7 +38,7 @@ import org.eclipse.team.ui.mapping.ISynchronizationCompareInput;
  * This class is the compare container used by the {@link NonSyncModelMergeOperation}
  * to show a manual merge.
  */
-public class NonSyncMergePart extends PageSaveablePart {
+public class NonSyncMergePart extends PageSaveablePart { //FLLDCIM: MARK — T37  IMPLEMENTS
 
 	private final NonSyncModelMergePage page;
 

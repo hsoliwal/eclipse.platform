@@ -163,10 +163,10 @@ public class PatchUtils {
 	public static InputStream asInputStream(String name) {
 		IPath path = IPath.fromOSString(PATCHDATA).append(name);
 		try {
-			URL url = getBundle().getEntry("/" + path.toString());
+			URL url = getBundle().getEntry("/" + path.toString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			return url.openStream();
 		} catch (IOException e) {
-			throw new IllegalStateException("failed while reading " + name, e);
+			throw new IllegalStateException("failed while reading " + name, e); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 

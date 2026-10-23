@@ -103,7 +103,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 		}
 
 		public String getLabel() {
-			return fID + fLabelAppendix;
+			return fID + fLabelAppendix; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		public TestElement[] getChildren() {
@@ -164,7 +164,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 			} else {
 				TestElement[] children = element.getChildren();
 
-				for (TestElement child : children) {
+				for (TestElement child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					installSubModelProxies(path.createChildPath(child), delta.addNode(child, IModelDelta.NO_CHANGE));
 				}
 			}
@@ -200,7 +200,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 
 	public ModelDelta getBaseDelta(ModelDelta rootDelta) {
 		ModelDelta delta = rootDelta;
-		for (int i = 0; i < fRootPath.getSegmentCount(); i++) {
+		for (int i = 0; i < fRootPath.getSegmentCount(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ModelDelta subDelta = delta.getChildDelta(fRootPath.getSegment(i));
 			if (subDelta == null) {
 				subDelta = delta.addNode(fRootPath.getSegment(i), IModelDelta.NO_CHANGE);
@@ -221,7 +221,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 			return atDepth;
 		}
 		int depth = atDepth + 1;
-		for (TestElement child : children) {
+		for (TestElement child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			depth = Math.max(depth, getDepth(child, atDepth + 1));
 		}
 
@@ -244,9 +244,9 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 	}
 
 	public void processQueuedUpdates() {
-		List<IViewerUpdate> updates = new ArrayList<>(fQueuedUpdates);
+		List<IViewerUpdate> updates = new ArrayList<>(fQueuedUpdates); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		fQueuedUpdates.clear();
-		for (IViewerUpdate update : updates) {
+		for (IViewerUpdate update : updates) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			processUpdate(update);
 		}
 	}
@@ -268,7 +268,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 	}
 
 	private void processUpdates(IViewerUpdate[] updates) {
-		for (IViewerUpdate update : updates) {
+		for (IViewerUpdate update : updates) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			processUpdate(update);
 		}
 	}
@@ -277,7 +277,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 		if (fQueueingUpdates) {
 			fQueuedUpdates.addAll(Arrays.asList(updates));
 		} else if (fDelayUpdates) {
-			Display.getDefault().asyncExec(() -> processUpdates(updates));
+			Display.getDefault().asyncExec(() -> processUpdates(updates)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		} else {
 			processUpdates(updates);
 		}
@@ -314,7 +314,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 	private void doChildrenUpdate(IChildrenUpdate update) {
 		TestElement element = (TestElement)update.getElement();
 		int endOffset = update.getOffset() + update.getLength();
-		for (int j = update.getOffset(); j < endOffset; j++) {
+		for (int j = update.getOffset(); j < endOffset; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (j < element.getChildren().length) {
 				update.setChild(element.getChildren()[j], j);
 			}
@@ -401,7 +401,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 
 	private void doSetExpanded(TestElement element) {
 		element.fExpanded = true;
-		for (TestElement fChild : element.fChildren) {
+		for (TestElement fChild : element.fChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			doSetExpanded(fChild);
 		}
 	}
@@ -412,7 +412,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 
 	private void doSetAllAppendix(TestElement element, String appendix) {
 		element.setLabelAppendix(appendix);
-		for (TestElement fChild : element.fChildren) {
+		for (TestElement fChild : element.fChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			doSetAllAppendix(fChild, appendix);
 		}
 	}
@@ -425,7 +425,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 		validateData(_viewer, path, expandedElementsOnly, TestModelUpdatesListener.EMPTY_FILTER_ARRAY);
 	}
 
-	public void validateData(ITreeModelViewer _viewer, TreePath path, boolean expandedElementsOnly, ViewerFilter[] filters) {
+	public void validateData(ITreeModelViewer _viewer, TreePath path, boolean expandedElementsOnly, ViewerFilter[] filters) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IInternalTreeModelViewer viewer = (IInternalTreeModelViewer)_viewer;
 		TestElement element = getElement(path);
 		if ( Boolean.TRUE.equals(_viewer.getPresentationContext().getProperty(ICheckUpdate.PROP_CHECK)) ) {
@@ -437,7 +437,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 			TestElement[] children = element.getChildren();
 
 			int viewerIndex = 0;
-			for (TestElement child : children) {
+			for (TestElement child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (TestModelUpdatesListener.isFiltered(child, filters)) {
 					continue;
 				}
@@ -467,16 +467,16 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 	/** Create or retrieve delta for given path
 	 * @param combine if then new deltas for the given path are created. If false existing ones are reused.
 	 */
-	public ModelDelta getElementDelta(ModelDelta baseDelta, TreePath path, boolean combine) {
+	public ModelDelta getElementDelta(ModelDelta baseDelta, TreePath path, boolean combine) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TestElement element = getRootElement();
 		ModelDelta delta = baseDelta;
 
-		for (int i = 0; i < path.getSegmentCount(); i++) {
+		for (int i = 0; i < path.getSegmentCount(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			TestElement[] children = element.getChildren();
 			delta.setChildCount(children.length);
 			Object segment = path.getSegment(i);
 			int j;
-			for (j = 0; j < children.length; j++) {
+			for (j = 0; j < children.length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (segment.equals(children[j])) {
 					element = children[j];
 					ModelDelta nextDelta = null;
@@ -500,7 +500,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 
 	private TreePath getRelativePath(TreePath path) {
 		Object[] segments = new Object[path.getSegmentCount() - fRootPath.getSegmentCount()];
-		for (int i = fRootPath.getSegmentCount(), _i = 0; i < path.getSegmentCount(); i++, _i++) {
+		for (int i = fRootPath.getSegmentCount(), _i = 0; i < path.getSegmentCount(); i++, _i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			segments[_i] = path.getSegment(i);
 		}
 		return new TreePath(segments);
@@ -532,7 +532,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 		return rootDelta;
 	}
 
-	public ModelDelta setElementChildren(TreePath path, TestElement[] children) {
+	public ModelDelta setElementChildren(TreePath path, TestElement[] children) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		assertTrue(path.startsWith(fRootPath, null));
 		ModelDelta rootDelta = new ModelDelta(fInput, IModelDelta.NO_CHANGE);
 		ModelDelta baseDelta = getBaseDelta(rootDelta);
@@ -567,7 +567,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 		return rootDelta;
 	}
 
-	public ModelDelta addElementChild(TreePath parentPath, ModelDelta rootDelta, int index, TestElement newChild) {
+	public ModelDelta addElementChild(TreePath parentPath, ModelDelta rootDelta, int index, TestElement newChild) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ModelDelta nonNullRootDelta = rootDelta != null ? rootDelta : new ModelDelta(fInput, IModelDelta.NO_CHANGE);
 
 		ModelDelta baseDelta = getBaseDelta(nonNullRootDelta);
@@ -591,7 +591,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 		return insertElementChild(null, parentPath, index, newChild);
 	}
 
-	public ModelDelta insertElementChild(ModelDelta rootDelta, TreePath parentPath, int index, TestElement newChild) {
+	public ModelDelta insertElementChild(ModelDelta rootDelta, TreePath parentPath, int index, TestElement newChild) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ModelDelta nonNullRootDelta = rootDelta != null ? rootDelta : new ModelDelta(fInput, IModelDelta.NO_CHANGE);
 
 		ModelDelta baseDelta = getBaseDelta(nonNullRootDelta);
@@ -621,7 +621,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 		return newChildren;
 	}
 
-	public ModelDelta removeElementChild(TreePath parentPath, int index) {
+	public ModelDelta removeElementChild(TreePath parentPath, int index) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ModelDelta rootDelta = new ModelDelta(fInput, IModelDelta.NO_CHANGE);
 		ModelDelta baseDelta = getBaseDelta(rootDelta);
 
@@ -661,7 +661,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 
 	public TreePath findElement(TreePath startPath, String label) {
 		TestElement element = getElement(startPath);
-		for (int i = 0; i < element.getChildren().length; i++) {
+		for (int i = 0; i < element.getChildren().length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			TestElement child = element.getChildren()[i];
 			TreePath path = startPath.createChildPath(child);
 			if ( label.equals(child.getLabel()) ) {
@@ -682,13 +682,13 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 	}
 
 	public String getElementString(TestElement element, String indent) {
-		StringBuilder builder = new StringBuilder();
-		builder.append(indent);
-		builder.append(element.toString());
-		builder.append('\n');
+		StringBuilder builder = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		builder.append(indent); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		builder.append(element.toString()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		builder.append('\n'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		TestElement[] children = element.getChildren();
-		for (TestElement child : children) {
-			builder.append(getElementString(child, indent + "  ")); //$NON-NLS-1$
+		for (TestElement child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			builder.append(getElementString(child, indent + "  ")); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return builder.toString();
 	}
@@ -701,8 +701,8 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 
 	public static TestElement[] makeSingleLevelModelElements(TestModel model, int length, String prefix) {
 		TestElement[] elements = new TestElement[length];
-		for (int i = 1; i <= length; i++) {
-			String name = prefix + i;
+		for (int i = 1; i <= length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			String name = prefix + i; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			elements[i - 1] = new TestElement(model, name, new TestElement[0]);
 		}
 		return elements;
@@ -710,9 +710,9 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 
 	public static TestElement[] makeMultiLevelElements(TestModel model, int depth, String prefix) {
 		TestElement[] elements = new TestElement[depth];
-		for (int i = 0; i < depth; i++) {
-			String name = prefix + i;
-			elements[i] = new TestElement(model, name, makeMultiLevelElements(model, i, name + ".")); //$NON-NLS-1$
+		for (int i = 0; i < depth; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			String name = prefix + i; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			elements[i] = new TestElement(model, name, makeMultiLevelElements(model, i, name + ".")); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return elements;
 	}
@@ -726,14 +726,14 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 		int[] newlevelCounts = new int[levelCounts.length - 1];
 		System.arraycopy(oldLevelCounts, 1, newlevelCounts, 0, newlevelCounts.length);
 		TestElement[] elements = new TestElement[count];
-		for (int i = 0; i < count; i++) {
-			String name = prefix + i;
-			elements[i] = new TestElement(model, name, makeMultiLevelElements2(model, newlevelCounts, name + ".")); //$NON-NLS-1$
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			String name = prefix + i; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			elements[i] = new TestElement(model, name, makeMultiLevelElements2(model, newlevelCounts, name + ".")); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return elements;
 	}
 
-	public static TestModel simpleMultiLevel() {
+	public static TestModel simpleMultiLevel() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TestModel model = new TestModel();
 		model.setRoot( new TestElement(model, "root", new TestElement[] { //$NON-NLS-1$
 			new TestElement(model, "1", new TestElement[0]), //$NON-NLS-1$
@@ -763,7 +763,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 		return model;
 	}
 
-	public static TestModel compositeMultiLevel() {
+	public static TestModel compositeMultiLevel() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TestModel m2 = new TestModel();
 		m2.setRoot( new TestElement(m2, "m2.root", new TestElement[] { //$NON-NLS-1$
 			new TestElement(m2, "m2.1", new TestElement[0]), //$NON-NLS-1$
@@ -808,7 +808,7 @@ public class TestModel implements IElementContentProvider, IElementLabelProvider
 		return m1;
 	}
 
-	public static TestModel simpleDeepMultiLevel() {
+	public static TestModel simpleDeepMultiLevel() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TestModel model = new TestModel();
 		model.setRoot( new TestElement(model, "root", new TestElement[] { //$NON-NLS-1$
 			new TestElement(model, "1", new TestElement[0]), //$NON-NLS-1$

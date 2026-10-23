@@ -44,7 +44,7 @@ public class SampleModelPresentation implements IDebugModelPresentation, IColorP
 		if (fPresentation == null) {
 			fPresentation = new SampleModelPresentation();
 
-			UIJob job = new UIJob("get colors") { //$NON-NLS-1$
+			UIJob job = new UIJob("get colors") { //$NON-NLS-1$ //FLLDCIM: MARK — T09  ANONYMOUS
 				@Override
 				public IStatus runInUIThread(IProgressMonitor monitor) {
 					Display display = PlatformUI.getWorkbench().getDisplay();

@@ -184,7 +184,7 @@ public class WorkspaceRoot extends Container implements IWorkspaceRoot {
 		return getProjects(IResource.NONE);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IProject[] getProjects(int memberFlags) {
 		IResource[] roots = getChildren(memberFlags);
 		IProject[] result = new IProject[roots.length];
@@ -192,7 +192,7 @@ public class WorkspaceRoot extends Container implements IWorkspaceRoot {
 			System.arraycopy(roots, 0, result, 0, roots.length);
 		} catch (ArrayStoreException ex) {
 			// Shouldn't happen since only projects should be children of the workspace root
-			for (IResource root2 : roots) {
+			for (IResource root2 : roots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (root2.getType() != IResource.PROJECT) {
 					Policy.log(IStatus.ERROR, NLS.bind("{0} is an invalid child of the workspace root.", //$NON-NLS-1$
 							root2), null);
@@ -221,7 +221,7 @@ public class WorkspaceRoot extends Container implements IWorkspaceRoot {
 		// get the children via the workspace since we know that this
 		// resource exists (it is local).
 		IResource[] children = getChildren(IResource.NONE);
-		for (IResource element : children) {
+		for (IResource element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			((Resource) element).internalSetLocal(flag, depth);
 		}
 	}
@@ -258,7 +258,7 @@ public class WorkspaceRoot extends Container implements IWorkspaceRoot {
 		return isLocal(-1, depth);
 	}
 
-	@Deprecated
+	@Deprecated //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Override
 	public boolean isLocal(int flags, int depth) {
 		// don't check the flags....workspace root is always local
@@ -271,7 +271,7 @@ public class WorkspaceRoot extends Container implements IWorkspaceRoot {
 		// get the children via the workspace since we know that this
 		// resource exists (it is local).
 		IResource[] children = getChildren(IResource.NONE);
-		for (IResource c : children) {
+		for (IResource c : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!c.isLocal(depth)) {
 				return false;
 			}
@@ -292,7 +292,7 @@ public class WorkspaceRoot extends Container implements IWorkspaceRoot {
 	@Override
 	public long setLocalTimeStamp(long value) {
 		if (value < 0) {
-			throw new IllegalArgumentException("Illegal time stamp: " + value); //$NON-NLS-1$
+			throw new IllegalArgumentException("Illegal time stamp: " + value); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		//can't set local time for root
 		return value;

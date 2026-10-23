@@ -87,7 +87,7 @@ public final class SubscriberParticipantPage extends AbstractSynchronizePage {
 	 * <code>OUTGOING_MODE_FILTER</code>, <code>CONFLICTING_MODE_FILTER</code>
 	 * or <code>BOTH_MODE_FILTER</code>)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void updateMode(int mode) {
 		if(collector != null && isThreeWay()) {
 

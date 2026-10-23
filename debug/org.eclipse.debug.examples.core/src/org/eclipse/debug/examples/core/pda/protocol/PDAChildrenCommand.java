@@ -29,7 +29,7 @@ package org.eclipse.debug.examples.core.pda.protocol;
 public class PDAChildrenCommand extends PDACommand {
 
 	public PDAChildrenCommand(int threadId, int frameId, String name  ) {
-		super("children " + threadId + " " + frameId + " " + name); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		super("children " + threadId + " " + frameId + " " + name); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override

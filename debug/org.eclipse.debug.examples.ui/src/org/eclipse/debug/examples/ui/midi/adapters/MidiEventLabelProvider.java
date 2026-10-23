@@ -30,7 +30,7 @@ import org.eclipse.jface.viewers.TreePath;
  */
 public class MidiEventLabelProvider extends ElementLabelProvider {
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected String getLabel(TreePath elementPath, IPresentationContext presentationContext, String columnId) throws CoreException {
 		MidiEvent event = (MidiEvent) elementPath.getLastSegment();
 		MidiMessage message = event.getMessage();
@@ -38,15 +38,15 @@ public class MidiEventLabelProvider extends ElementLabelProvider {
 			return Long.toString(event.getTick());
 		} else if (TrackColumnPresentation.COL_BYTES.equals(columnId)) {
 			byte[] bytes = message.getMessage();
-			StringBuilder buffer = new StringBuilder();
-			for (int i = 0; i < message.getLength(); i++) {
-				buffer.append(' ');
+			StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+			for (int i = 0; i < message.getLength(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				buffer.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				appendByte(buffer, bytes[i]);
 			}
 			return buffer.toString();
 		} else if (TrackColumnPresentation.COL_COMMAND.equals(columnId)) {
 			if (message instanceof ShortMessage sm) {
-				StringBuilder buf = new StringBuilder();
+				StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 				appendByte(buf, (byte)sm.getCommand());
 				return buf.toString();
 			}
@@ -69,10 +69,10 @@ public class MidiEventLabelProvider extends ElementLabelProvider {
 	 */
 	private void appendByte(StringBuilder buffer, byte b) {
 		String hex = Integer.toHexString(b & 0xFF).toUpperCase();
-		for (int i = hex.length(); i < 2; i++) {
-			buffer.append('0');
+		for (int i = hex.length(); i < 2; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			buffer.append('0'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		buffer.append(hex);
+		buffer.append(hex); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
 }

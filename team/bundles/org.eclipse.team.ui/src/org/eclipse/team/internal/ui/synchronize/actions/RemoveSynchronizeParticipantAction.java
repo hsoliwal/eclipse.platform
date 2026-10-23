@@ -64,7 +64,7 @@ public class RemoveSynchronizeParticipantAction extends Action {
 	@Override
 	public void run() {
 		try {
-			PlatformUI.getWorkbench().getProgressService().busyCursorWhile(unused -> {
+			PlatformUI.getWorkbench().getProgressService().busyCursorWhile(unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				if (removeAll) {
 					removeAll();
 				} else {
@@ -78,13 +78,13 @@ public class RemoveSynchronizeParticipantAction extends Action {
 		}
 	}
 
-	private void removeCurrent() {
+	private void removeCurrent() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final ISynchronizeParticipant participant = view.getParticipant();
 		if (participant != null) {
 			final List dirtyModels = getDirtyModels(new ISynchronizeParticipant[] { participant });
 			if (participant.isPinned() || !dirtyModels.isEmpty()) {
 				final boolean[] keepGoing = new boolean[] { false };
-				Display.getDefault().syncExec(() -> {
+				Display.getDefault().syncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 					if (!dirtyModels.isEmpty()) {
 						keepGoing[0] = promptToSave(dirtyModels);
 					} else {
@@ -103,11 +103,11 @@ public class RemoveSynchronizeParticipantAction extends Action {
 		}
 	}
 
-	private void removeAll() {
+	private void removeAll() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ISynchronizeManager manager = TeamUI.getSynchronizeManager();
 		ISynchronizeParticipantReference[] refs = manager.getSynchronizeParticipants();
-		ArrayList<ISynchronizeParticipant> removals = new ArrayList<>();
-		for (ISynchronizeParticipantReference reference : refs) {
+		ArrayList<ISynchronizeParticipant> removals = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ISynchronizeParticipantReference reference : refs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ISynchronizeParticipant p;
 			try {
 				p = reference.getParticipant();
@@ -122,7 +122,7 @@ public class RemoveSynchronizeParticipantAction extends Action {
 		final List dirtyModels = getDirtyModels(toRemove);
 		if (!dirtyModels.isEmpty()) {
 			final boolean[] keepGoing = new boolean[] { false };
-			Display.getDefault().syncExec(() -> {
+			Display.getDefault().syncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				if (!dirtyModels.isEmpty()) {
 					keepGoing[0] = promptToSave(dirtyModels);
 				}
@@ -134,7 +134,7 @@ public class RemoveSynchronizeParticipantAction extends Action {
 		manager.removeSynchronizeParticipants(toRemove);
 	}
 
-	private boolean promptToSave(List dirtyModels) {
+	private boolean promptToSave(List dirtyModels) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (dirtyModels.size() == 1) {
 			Saveable model = (Saveable) dirtyModels.get(0);
 			String message = NLS.bind(TeamUIMessages.RemoveSynchronizeParticipantAction_2, model.getName());
@@ -182,9 +182,9 @@ public class RemoveSynchronizeParticipantAction extends Action {
 
 		// Create save block.
 		final List finalModels = dirtyModels;
-		IRunnableWithProgress progressOp = monitor -> {
+		IRunnableWithProgress progressOp = monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 			monitor.beginTask(null, finalModels.size());
-			for (Object finalModel : finalModels) {
+			for (Object finalModel : finalModels) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Saveable model = (Saveable) finalModel;
 				if (model.isDirty()) {
 					try {
@@ -212,8 +212,8 @@ public class RemoveSynchronizeParticipantAction extends Action {
 	}
 
 	private List<Saveable> getDirtyModels(ISynchronizeParticipant[] participants) {
-		List<Saveable> result = new ArrayList<>();
-		for (ISynchronizeParticipant participant : participants) {
+		List<Saveable> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ISynchronizeParticipant participant : participants) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (participant instanceof ModelSynchronizeParticipant msp) {
 				Saveable s = msp.getActiveSaveable();
 				if (s != null && s.isDirty()) {

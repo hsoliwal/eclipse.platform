@@ -39,7 +39,7 @@ public class MultipleYesNoPrompter {
 	 * Prompt for the given resources using the specific condition. The prompt dialog will
 	 * have the title specified.
 	 */
-	public MultipleYesNoPrompter(IShellProvider provider, String title,
+	public MultipleYesNoPrompter(IShellProvider provider, String title, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			boolean hasMultiple, boolean allOrNothing) {
 		this.title = title;
 		this.shellProvider = provider;
@@ -75,7 +75,7 @@ public class MultipleYesNoPrompter {
 	 * @return whether the resource should be included
 	 * @throws InterruptedException if the user choose to cancel
 	 */
-	public boolean shouldInclude(String message) throws InterruptedException {
+	public boolean shouldInclude(String message) throws InterruptedException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (confirmation == YES_TO_ALL) {
 			return true;
 		} else {
@@ -105,7 +105,7 @@ public class MultipleYesNoPrompter {
 	/**
 	 * Opens the confirmation dialog based on the prompt condition settings.
 	 */
-	private boolean confirmOverwrite(String msg) throws InterruptedException {
+	private boolean confirmOverwrite(String msg) throws InterruptedException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Shell shell = shellProvider.getShell();
 		if (shell == null) {
 			return false;
@@ -115,7 +115,7 @@ public class MultipleYesNoPrompter {
 
 		// run in syncExec because callback is from an operation,
 		// which is probably not running in the UI thread.
-		shell.getDisplay().syncExec(
+		shell.getDisplay().syncExec( //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			() -> dialog.open());
 		if (hasMultiple) {
 			switch (dialog.getReturnCode()) {

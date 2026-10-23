@@ -50,7 +50,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 	 * This test: - creates a simple model - replaces the list of elements with
 	 * a shorter list of elements - refreshes the viewer
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRemoveElements() throws Exception {
 		TestModel model = TestModel.simpleSingleLevel();
 		fViewer.setAutoExpandLevel(-1);
@@ -88,7 +88,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 	 * This test: - creates a simple model - sets a list of children to one of
 	 * the elements - refreshes the viewer
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAddNewChildren() throws Exception {
 		TestModel model = TestModel.simpleSingleLevel();
 		fViewer.setAutoExpandLevel(-1);
@@ -171,7 +171,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRepeatedAddRemoveElement() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 
@@ -202,7 +202,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 	 * viewer updates it initiates the model update sequence before it finishes
 	 * processing the delta.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNotifyUpdatesTartedOnModelChanged() throws Exception {
 		TestModel model = TestModel.simpleSingleLevel();
 		fViewer.setAutoExpandLevel(-1);
@@ -232,7 +232,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 	 * See <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=304066">bug
 	 * 304066</a>
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testContentPlusAddRemoveUpdateRaceConditionsElement() throws Exception {
 		TestModel model = TestModel.simpleSingleLevel();
 		fViewer.setAutoExpandLevel(-1);
@@ -248,8 +248,8 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 		// Create a listener to listen only to a children count update for the root.
 		TestModelUpdatesListener childrenCountUpdateListener = new TestModelUpdatesListener(fViewer, false, false);
 
-		for (int i = 0; i < 10; i++) {
-			String pass = "pass #" + i; //$NON-NLS-1$
+		for (int i = 0; i < 10; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			String pass = "pass #" + i; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 			// Request a content update for view
 			childrenCountUpdateListener.reset();
@@ -269,12 +269,12 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 			// before elements were removed.
 			waitWhile(() -> !childrenCountUpdateListener.isFinished(CHILD_COUNT_UPDATES), createListenerErrorMessage());
 
-			insertElement(model, "1 - " + pass, 0, false); //$NON-NLS-1$
-			insertElement(model, "2 - " + pass, 1, false); //$NON-NLS-1$
-			insertElement(model, "3 - " + pass, 2, false); //$NON-NLS-1$
-			insertElement(model, "4 - " + pass, 3, false); //$NON-NLS-1$
-			insertElement(model, "5 - " + pass, 4, false); //$NON-NLS-1$
-			insertElement(model, "6 - " + pass, 5, false); //$NON-NLS-1$
+			insertElement(model, "1 - " + pass, 0, false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			insertElement(model, "2 - " + pass, 1, false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			insertElement(model, "3 - " + pass, 2, false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			insertElement(model, "4 - " + pass, 3, false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			insertElement(model, "5 - " + pass, 4, false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			insertElement(model, "6 - " + pass, 5, false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 			waitWhile(() -> !fListener.isFinished(MODEL_CHANGED_COMPLETE), createListenerErrorMessage());
 			model.validateData(fViewer, TreePath.EMPTY);
@@ -291,7 +291,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 	 * See <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=304066">bug
 	 * 304066</a>
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInsertAtInvalidIndex() throws Exception {
 		TestModel model = TestModel.simpleSingleLevel();
 		fViewer.setAutoExpandLevel(-1);
@@ -329,7 +329,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 	 * This test forces the viewer to reschedule pending content updates due to
 	 * a remove event from the model.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRescheduleUpdates() throws Exception {
 		TestModel model = TestModel.simpleSingleLevel();
 		fViewer.setAutoExpandLevel(-1);
@@ -342,7 +342,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 		waitWhile(() -> !fListener.isFinished(), createListenerErrorMessage());
 		model.validateData(fViewer, TreePath.EMPTY);
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 5; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// Refresh the viewer so that updates are generated.
 			TestElement rootElement = model.getRootElement();
 			fListener.reset();
@@ -365,7 +365,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 	 * - Process queued updates in order.<br>
 	 * </p>
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCanceledUpdates1() throws Exception {
 		TestModel model = TestModel.simpleSingleLevel();
 		fViewer.setAutoExpandLevel(-1);
@@ -381,7 +381,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 
 		model.setQeueueingUpdate(true);
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 5; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// Refresh the viewer so that updates are generated.
 			fListener.reset();
 			model.postDelta(new ModelDelta(model.getRootElement(), IModelDelta.CONTENT));
@@ -403,7 +403,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 	 * - Process queued updates in REVERSE order.<br>
 	 * </p>
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCanceledUpdates2() throws Exception {
 		TestModel model = TestModel.simpleSingleLevel();
 		fViewer.setAutoExpandLevel(-1);
@@ -419,7 +419,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 
 		model.setQeueueingUpdate(true);
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 5; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// Refresh the viewer so that updates are generated.
 			fListener.reset();
 			model.postDelta(new ModelDelta(model.getRootElement(), IModelDelta.CONTENT));
@@ -429,9 +429,9 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 
 		}
 
-		ArrayList<IViewerUpdate> updates = new ArrayList<>(model.getQueuedUpdates());
+		ArrayList<IViewerUpdate> updates = new ArrayList<>(model.getQueuedUpdates()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		model.getQueuedUpdates().clear();
-		for (int i = updates.size() - 1; i >= 0; i--) {
+		for (int i = updates.size() - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			model.processUpdate(updates.get(i));
 		}
 
@@ -446,7 +446,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 	 * - Process queued updates in order.<br>
 	 * </p>
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCanceledUpdates3() throws Exception {
 		TestModel model = TestModel.simpleSingleLevel();
 		fViewer.setAutoExpandLevel(-1);
@@ -462,14 +462,14 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 
 		model.setQeueueingUpdate(true);
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 5; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// Refresh the viewer so that updates are generated.
 			fListener.reset();
 			model.postDelta(new ModelDelta(model.getRootElement(), IModelDelta.CONTENT));
 
 			long start = System.currentTimeMillis();
 			// Wait for the delta to be processed.
-			while (!fListener.isFinished(MODEL_CHANGED_COMPLETE | CHILDREN_UPDATES_STARTED)
+			while (!fListener.isFinished(MODEL_CHANGED_COMPLETE | CHILDREN_UPDATES_STARTED) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					&& System.currentTimeMillis() - start < TestUtil.DEFAULT_TIMEOUT) {
 				completeQueuedUpdatesOfType(model, IChildrenCountUpdate.class);
 				completeQueuedUpdatesOfType(model, IHasChildrenUpdate.class);
@@ -489,7 +489,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 	 * - Process queued updates in REVERSE order.<br>
 	 * </p>
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCanceledUpdates4() throws Exception {
 		TestModel model = TestModel.simpleSingleLevel();
 		fViewer.setAutoExpandLevel(-1);
@@ -505,14 +505,14 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 
 		model.setQeueueingUpdate(true);
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < 5; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// Refresh the viewer so that updates are generated.
 			fListener.reset();
 			model.postDelta(new ModelDelta(model.getRootElement(), IModelDelta.CONTENT));
 
 			long start = System.currentTimeMillis();
 			// Wait for the delta to be processed.
-			while (!fListener.isFinished(MODEL_CHANGED_COMPLETE | CHILDREN_UPDATES_STARTED)
+			while (!fListener.isFinished(MODEL_CHANGED_COMPLETE | CHILDREN_UPDATES_STARTED) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					&& System.currentTimeMillis() - start < TestUtil.DEFAULT_TIMEOUT) {
 				completeQueuedUpdatesOfType(model, IChildrenCountUpdate.class);
 				completeQueuedUpdatesOfType(model, IHasChildrenUpdate.class);
@@ -521,9 +521,9 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 
 		}
 
-		ArrayList<IViewerUpdate> updates = new ArrayList<>(model.getQueuedUpdates());
+		ArrayList<IViewerUpdate> updates = new ArrayList<>(model.getQueuedUpdates()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		model.getQueuedUpdates().clear();
-		for (int i = updates.size() - 1; i >= 0; i--) {
+		for (int i = updates.size() - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			model.processUpdate(updates.get(i));
 		}
 
@@ -538,7 +538,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 	 * See Bug 373790 - Debug view stays busy after Resume
 	 * </p>
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCancelUpdatesOnRemoveElementWhileUpdatingSubTree() throws Exception {
 		TestModel model = TestModel.simpleMultiLevel();
 		fViewer.setAutoExpandLevel(-1);
@@ -575,7 +575,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 	 * - Process queued updates in order.<br>
 	 * </p>
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCanceledUpdatesOnSetInput() throws Exception {
 		TestModel model = TestModel.simpleSingleLevel();
 		fViewer.setAutoExpandLevel(-1);
@@ -613,7 +613,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 	 * - Process queued updates in order.<br>
 	 * </p>
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCanceledUpdatesOnSetNullInput() throws Exception {
 		TestModel model = TestModel.simpleSingleLevel();
 		fViewer.setAutoExpandLevel(-1);
@@ -645,7 +645,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 	private void completeQueuedUpdatesOfType(TestModel model, Class<?> updateClass) {
 		List<IViewerUpdate> updatesToComplete = new LinkedList<>();
 
-		for (Iterator<IViewerUpdate> itr = model.getQueuedUpdates().iterator(); itr.hasNext();) {
+		for (Iterator<IViewerUpdate> itr = model.getQueuedUpdates().iterator(); itr.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IViewerUpdate update = itr.next();
 			if (updateClass.isInstance(update)) {
 				updatesToComplete.add(update);
@@ -653,7 +653,7 @@ abstract public class UpdateTests extends AbstractViewerModelTest implements ITe
 			}
 		}
 		if (updatesToComplete != null) {
-			for (Iterator<IViewerUpdate> itr = updatesToComplete.iterator(); itr.hasNext();) {
+			for (Iterator<IViewerUpdate> itr = updatesToComplete.iterator(); itr.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				model.processUpdate(itr.next());
 			}
 		}

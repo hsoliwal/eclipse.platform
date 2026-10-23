@@ -29,9 +29,9 @@ public class RangeDifferencerThreeWayDiffTest {
 
 	@Test
 	public void testInsertConflict() {
-		String a = "A" + S + "B" + S + "C" + S + "D"; //$NON-NLS-1$
-		String l = "A" + S + "B" + S + "x" + S + "C" + S + "D"; //$NON-NLS-1$
-		String r = "A" + S + "B" + S + "y" + S + "C" + S + "D"; //$NON-NLS-1$
+		String a = "A" + S + "B" + S + "C" + S + "D"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String l = "A" + S + "B" + S + "x" + S + "C" + S + "D"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String r = "A" + S + "B" + S + "y" + S + "C" + S + "D"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		RangeDifference[] diffs = findRange(a, l, r);
 
@@ -41,9 +41,9 @@ public class RangeDifferencerThreeWayDiffTest {
 
 	@Test
 	public void testChangeConflict() {
-		String a = "A" + S + "B" + S + "C" + S + "D"; //$NON-NLS-1$
-		String l = "A" + S + "b1" + S + "C" + S + "D"; //$NON-NLS-1$
-		String r = "A" + S + "b2" + S + "C" + S + "D"; //$NON-NLS-1$
+		String a = "A" + S + "B" + S + "C" + S + "D"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String l = "A" + S + "b1" + S + "C" + S + "D"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String r = "A" + S + "b2" + S + "C" + S + "D"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		RangeDifference[] diffs = findRange(a, l, r);
 
@@ -53,9 +53,9 @@ public class RangeDifferencerThreeWayDiffTest {
 
 	@Test
 	public void testDeleteAndChangeConflict() {
-		String a = "A" + S + "B" + S + "C"; //$NON-NLS-1$
-		String l = "A" + S + "C"; //$NON-NLS-1$
-		String r = "A" + S + "b1" + S + "C"; //$NON-NLS-1$
+		String a = "A" + S + "B" + S + "C"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String l = "A" + S + "C"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String r = "A" + S + "b1" + S + "C"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		RangeDifference[] diffs = findRange(a, l, r);
 
@@ -65,9 +65,9 @@ public class RangeDifferencerThreeWayDiffTest {
 
 	@Test
 	public void testInsertWithinMultilineChangeConflict() {
-		String a = "A" + S + "B" + S + "C" + S + "D"; //$NON-NLS-1$
-		String l = "A" + S + "B" + S + "x" + S + "C" + S + "D"; //$NON-NLS-1$
-		String r = "A" + S + "x" + S + "y" + S + "D"; //$NON-NLS-1$
+		String a = "A" + S + "B" + S + "C" + S + "D"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String l = "A" + S + "B" + S + "x" + S + "C" + S + "D"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String r = "A" + S + "x" + S + "y" + S + "D"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		RangeDifference[] diffs = findRange(a, l, r);
 
@@ -77,9 +77,9 @@ public class RangeDifferencerThreeWayDiffTest {
 
 	@Test
 	public void testAdjoiningChangesNoConflict() {
-		String a = "A" + S + "B" + S + "C" + S + "D"; //$NON-NLS-1$
-		String l = "A" + S + "b1" + S + "C" + S + "D"; //$NON-NLS-1$
-		String r = "A" + S + "B" + S + "c1" + S + "D"; //$NON-NLS-1$
+		String a = "A" + S + "B" + S + "C" + S + "D"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String l = "A" + S + "b1" + S + "C" + S + "D"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String r = "A" + S + "B" + S + "c1" + S + "D"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		RangeDifference[] diffs = findRange(a, l, r);
 
@@ -89,9 +89,9 @@ public class RangeDifferencerThreeWayDiffTest {
 
 	@Test
 	public void testAdjoiningInsertAndChangeNoConflict() {
-		String a = "A" + S + "B" + S + "C" + S + "D"; //$NON-NLS-1$
-		String l = "A" + S + "B" + S + "x" + S + "C" + S + "D"; //$NON-NLS-1$
-		String r = "A" + S + "B" + S + "c1" + S + "D"; //$NON-NLS-1$
+		String a = "A" + S + "B" + S + "C" + S + "D"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String l = "A" + S + "B" + S + "x" + S + "C" + S + "D"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String r = "A" + S + "B" + S + "c1" + S + "D"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		RangeDifference[] diffs = findRange(a, l, r);
 
@@ -101,9 +101,9 @@ public class RangeDifferencerThreeWayDiffTest {
 
 	@Test
 	public void testAdjoiningMultilineChangeNoConflict() {
-		String a = "A" + S + "B" + S + "C" + S + "D"; //$NON-NLS-1$
-		String l = "A" + S + "x" + S + "y" + S + "D"; //$NON-NLS-1$
-		String r = "A" + S + "B" + S + "C" + S + "d1"; //$NON-NLS-1$
+		String a = "A" + S + "B" + S + "C" + S + "D"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String l = "A" + S + "x" + S + "y" + S + "D"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String r = "A" + S + "B" + S + "C" + S + "d1"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		RangeDifference[] diffs = findRange(a, l, r);
 

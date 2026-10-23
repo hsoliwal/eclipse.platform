@@ -112,7 +112,7 @@ public abstract class SaveableComparison extends Saveable {
 	 */
 	protected void firePropertyChange(final int property) {
 		Object[] allListeners = listeners.getListeners();
-		for (Object object : allListeners) {
+		for (Object object : allListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
 				public void run() throws Exception {

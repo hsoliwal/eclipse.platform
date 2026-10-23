@@ -56,7 +56,7 @@ import org.eclipse.ui.IWorkbenchPart;
  *
  * @since 3.2
  */
-public abstract class ModelMergeOperation extends ModelOperation {
+public abstract class ModelMergeOperation extends ModelOperation { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	/**
 	 * Validate the merge context with the model providers that have mappings in
@@ -71,12 +71,12 @@ public abstract class ModelMergeOperation extends ModelOperation {
 	 * @return a status or multi-status that identify any conditions that should
 	 *         force a preview of the merge
 	 */
-	public static IStatus validateMerge(IMergeContext context, IProgressMonitor monitor) {
+	public static IStatus validateMerge(IMergeContext context, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			ModelProvider[] providers = context.getScope().getModelProviders();
 			monitor.beginTask(null, 100 * providers.length);
-			List<IStatus> notOK = new ArrayList<>();
-			for (ModelProvider provider : providers) {
+			List<IStatus> notOK = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (ModelProvider provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IStatus status = validateMerge(provider, context, Policy.subMonitorFor(monitor, 100));
 				if (!status.isOK()) {
 					notOK.add(status);
@@ -167,7 +167,7 @@ public abstract class ModelMergeOperation extends ModelOperation {
 	 *
 	 * @param monitor a progress monitor
 	 */
-	protected void executeMerge(IProgressMonitor monitor) throws CoreException {
+	protected void executeMerge(IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		monitor.beginTask(null, 100);
 		if (!hasChangesOfInterest()) {
 			handleNoChanges();
@@ -215,7 +215,7 @@ public abstract class ModelMergeOperation extends ModelOperation {
 	 * Subclasses may override.
 	 * @param status the status returned from the mergers that reported the validation failures
 	 */
-	protected void handleValidationFailure(final IStatus status) {
+	protected void handleValidationFailure(final IStatus status) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final boolean[] result = new boolean[] { false };
 		Runnable runnable = () -> {
 			ErrorDialog dialog = new ErrorDialog(getShell(), TeamUIMessages.ModelMergeOperation_0, TeamUIMessages.ModelMergeOperation_1, status, IStatus.ERROR | IStatus.WARNING | IStatus.INFO) {
@@ -241,7 +241,7 @@ public abstract class ModelMergeOperation extends ModelOperation {
 			int code = dialog.open();
 			result[0] = code == 0;
 		};
-		getShell().getDisplay().syncExec(runnable);
+		getShell().getDisplay().syncExec(runnable); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		if (result[0]) {
 			handlePreviewRequest();
 		}
@@ -254,7 +254,7 @@ public abstract class ModelMergeOperation extends ModelOperation {
 	 * @param status the status returned from the merger that reported the conflict
 	 */
 	protected void handleMergeFailure(final IStatus status) {
-		Display.getDefault().syncExec(() -> MessageDialog.openInformation(getShell(), TeamUIMessages.MergeIncomingChangesAction_0, status.getMessage()));
+		Display.getDefault().syncExec(() -> MessageDialog.openInformation(getShell(), TeamUIMessages.MergeIncomingChangesAction_0, status.getMessage())); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		handlePreviewRequest();
 	}
 
@@ -264,7 +264,7 @@ public abstract class ModelMergeOperation extends ModelOperation {
 	 * Subclasses may override.
 	 */
 	protected void handleNoChanges() {
-		Display.getDefault().syncExec(() -> NoChangesDialog.open(getShell(), TeamUIMessages.ResourceMappingMergeOperation_0, TeamUIMessages.ResourceMappingMergeOperation_1, TeamUIMessages.ModelMergeOperation_3, getScope().asInputScope()));
+		Display.getDefault().syncExec(() -> NoChangesDialog.open(getShell(), TeamUIMessages.ResourceMappingMergeOperation_0, TeamUIMessages.ResourceMappingMergeOperation_1, TeamUIMessages.ModelMergeOperation_3, getScope().asInputScope())); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 	}
 
 	/**
@@ -283,16 +283,16 @@ public abstract class ModelMergeOperation extends ModelOperation {
 	 * @throws CoreException
 	 *             if an error occurred
 	 */
-	protected IStatus performMerge(IProgressMonitor monitor) throws CoreException {
+	protected IStatus performMerge(IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ISynchronizationContext sc = getContext();
 		if (sc instanceof IMergeContext context) {
 			final ModelProvider[] providers = sortByExtension(context.getScope().getModelProviders());
 			final IStatus[] result = new IStatus[] { Status.OK_STATUS };
-			context.run(monitor1 -> {
+			context.run(monitor1 -> { //FLLDCIM: MARK — T09  LAMBDA
 				try {
 					int ticks = 100;
 					monitor1.beginTask(null, ticks + ((providers.length - 1) * 10));
-					for (ModelProvider provider : providers) {
+					for (ModelProvider provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						IStatus status = performMerge(provider, Policy.subMonitorFor(monitor1, ticks));
 						ticks = 10;
 						if (!status.isOK()) {

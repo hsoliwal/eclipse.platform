@@ -42,7 +42,7 @@ public class NetTest {
 	private boolean isSetEnabled;
 	private boolean isProxiesDefault;
 	private boolean isSystemProxiesDefault;
-	private final Map<String, IProxyData> dataCache = new HashMap<>();
+	private final Map<String, IProxyData> dataCache = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	@BeforeEach
 	public void setUp() throws Exception {
@@ -60,7 +60,7 @@ public class NetTest {
 		setProxiesEnabled(isProxiesDefault);
 		setSystemProxiesEnabled(isSystemProxiesDefault);
 		IProxyData[] data = getProxyManager().getProxyData();
-		for (IProxyData proxyData : data) {
+		for (IProxyData proxyData : data) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			proxyData.disable();
 		}
 		getProxyManager().setProxyData(data);
@@ -93,34 +93,34 @@ public class NetTest {
 		}
 	}
 
-	private void assertHttpSystemProperties(IProxyData proxyData, String keyPrefix) {
+	private void assertHttpSystemProperties(IProxyData proxyData, String keyPrefix) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Properties sysProps = System.getProperties();
 
 		if (this.getProxyManager().isProxiesEnabled()) {
-			boolean isSet = Boolean.getBoolean(keyPrefix + ".proxySet");
+			boolean isSet = Boolean.getBoolean(keyPrefix + ".proxySet"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			assertEquals(proxyData.getHost() != null, isSet); // $NON-NLS-1$
-			assertEquals(proxyData.getHost(), sysProps.get(keyPrefix + ".proxyHost")); //$NON-NLS-1$
-			String portString = (String) sysProps.get(keyPrefix + ".proxyPort"); //$NON-NLS-1$
+			assertEquals(proxyData.getHost(), sysProps.get(keyPrefix + ".proxyHost")); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			String portString = (String) sysProps.get(keyPrefix + ".proxyPort"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			int port = -1;
 			if (portString != null)
 				port = Integer.parseInt(portString);
 			assertEquals(proxyData.getPort(), port);
 			if (isSet)
 				assertEquals(ProxyType.convertHostsToPropertyString(this.getProxyManager().getNonProxiedHosts()),
-						sysProps.get(keyPrefix + ".nonProxyHosts")); //$NON-NLS-1$
+						sysProps.get(keyPrefix + ".nonProxyHosts")); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			else
-				assertNull(sysProps.get(keyPrefix + ".nonProxyHosts"));
-			assertEquals(proxyData.getUserId(), sysProps.get(keyPrefix + ".proxyUser")); //$NON-NLS-1$
-			assertEquals(proxyData.getUserId(), sysProps.get(keyPrefix + ".proxyUserName")); //$NON-NLS-1$
-			assertEquals(proxyData.getPassword(), sysProps.get(keyPrefix + ".proxyPassword")); //$NON-NLS-1$
+				assertNull(sysProps.get(keyPrefix + ".nonProxyHosts")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertEquals(proxyData.getUserId(), sysProps.get(keyPrefix + ".proxyUser")); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertEquals(proxyData.getUserId(), sysProps.get(keyPrefix + ".proxyUserName")); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertEquals(proxyData.getPassword(), sysProps.get(keyPrefix + ".proxyPassword")); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} else {
-			assertNull(sysProps.get(keyPrefix + ".proxySet"));
-			assertNull(sysProps.get(keyPrefix + ".proxyHost"));
-			assertNull(sysProps.get(keyPrefix + ".proxyPort"));
-			assertNull(sysProps.get(keyPrefix + ".nonProxyHosts"));
-			assertNull(sysProps.get(keyPrefix + ".proxyUser"));
-			assertNull(sysProps.get(keyPrefix + ".proxyUserName"));
-			assertNull(sysProps.get(keyPrefix + ".proxyPassword"));
+			assertNull(sysProps.get(keyPrefix + ".proxySet")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertNull(sysProps.get(keyPrefix + ".proxyHost")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertNull(sysProps.get(keyPrefix + ".proxyPort")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertNull(sysProps.get(keyPrefix + ".nonProxyHosts")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertNull(sysProps.get(keyPrefix + ".proxyUser")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertNull(sysProps.get(keyPrefix + ".proxyUserName")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertNull(sysProps.get(keyPrefix + ".proxyPassword")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -232,7 +232,7 @@ public class NetTest {
 	private void performSettingData() throws CoreException {
 		IProxyData[] data = dataCache.values().toArray(new IProxyData[dataCache.size()]);
 		this.getProxyManager().setProxyData(data);
-		for (IProxyData proxyData : data) {
+		for (IProxyData proxyData : data) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertProxyDataEqual(proxyData);
 		}
 		isSetEnabled = true;
@@ -245,7 +245,7 @@ public class NetTest {
 		setDataTest(IProxyData.HTTPS_PROXY_TYPE);
 		setDataTest(IProxyData.SOCKS_PROXY_TYPE);
 		IProxyData[] data = this.getProxyManager().getProxyData();
-		for (IProxyData proxyData : data) {
+		for (IProxyData proxyData : data) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			disableProxy(proxyData);
 		}
 	}
@@ -260,7 +260,7 @@ public class NetTest {
 
 		delaySettingData();
 		IProxyData[] data = this.getProxyManager().getProxyData();
-		for (IProxyData proxyData : data) {
+		for (IProxyData proxyData : data) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			disableProxy(proxyData);
 		}
 		performSettingData();
@@ -298,7 +298,7 @@ public class NetTest {
 		assertThat(this.getProxyManager().getProxyDataForHost("localhost", IProxyData.HTTP_PROXY_TYPE)).isNull();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@SuppressWarnings("deprecation")
 	public void testHostPattern() throws CoreException {
 		setDataTest(IProxyData.HTTP_PROXY_TYPE);
@@ -319,7 +319,7 @@ public class NetTest {
 		this.getProxyManager().setNonProxiedHosts(oldHosts);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@SuppressWarnings("deprecation")
 	public void testHostPatternBug505906() throws CoreException {
 		setDataTest(IProxyData.HTTP_PROXY_TYPE);
@@ -410,7 +410,7 @@ public class NetTest {
 
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNonProxyHosts() throws CoreException {
 		setDataTest(IProxyData.HTTP_PROXY_TYPE);
 		setDataTest(IProxyData.HTTPS_PROXY_TYPE);
@@ -420,7 +420,7 @@ public class NetTest {
 
 		// add new host to the nonProxiedHosts list
 		String testHost = "bug284540.com";
-		ArrayList<String> hostsList = new ArrayList<>();
+		ArrayList<String> hostsList = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		hostsList.addAll(Arrays.asList(oldHosts));
 		hostsList.add(testHost);
 		String[] newHosts = hostsList.toArray(new String[] {});
@@ -434,7 +434,7 @@ public class NetTest {
 		this.getProxyManager().setNonProxiedHosts(oldHosts);
 	}
 
-	private void validateSystemProperties(boolean present) {
+	private void validateSystemProperties(boolean present) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		validateProperty("http.proxySet", "true", present);
 		validateProperty("http.proxyHost", "www.eclipse.org", present);
 		validateProperty("http.proxyPort", "1024", present);

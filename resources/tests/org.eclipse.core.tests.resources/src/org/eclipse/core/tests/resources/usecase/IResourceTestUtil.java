@@ -38,9 +38,9 @@ final class IResourceTestUtil {
 	 */
 	public static void commonFailureTestsForResource(IResource resource, boolean created) {
 		/* Prefix to assertion messages. */
-		String method = "commonFailureTestsForResource(IResource," + (created ? "CREATED" : "NONEXISTENT") + "): ";
+		String method = "commonFailureTestsForResource(IResource," + (created ? "CREATED" : "NONEXISTENT") + "): "; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		if (!created) {
-			assertNull(getWorkspace().getRoot().findMember(resource.getFullPath()), method + "1");
+			assertNull(getWorkspace().getRoot().findMember(resource.getFullPath()), method + "1"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		/* Session properties */

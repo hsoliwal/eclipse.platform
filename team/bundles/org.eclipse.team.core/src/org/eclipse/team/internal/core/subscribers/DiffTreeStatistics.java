@@ -27,7 +27,7 @@ public class DiffTreeStatistics {
 	/**
 	 * {Integer sync kind -&gt; Long number of infos with that sync kind in this sync set}
 	 */
-	protected Map<Integer, Long> stats = Collections.synchronizedMap(new HashMap<>());
+	protected Map<Integer, Long> stats = Collections.synchronizedMap(new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/**
 	 * Count this sync state.
@@ -73,7 +73,7 @@ public class DiffTreeStatistics {
 	 * @param mask the mask applied to the stored sync kind
 	 * @return the number of sync info types added for the specific kind
 	 */
-	public long countFor(int state, int mask) {
+	public long countFor(int state, int mask) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if(mask == 0) {
 			Long count = stats.get(Integer.valueOf(state));
 			return count == null ? 0 : count.longValue();
@@ -82,7 +82,7 @@ public class DiffTreeStatistics {
 			long count = 0;
 			synchronized (stats) {
 				Iterator it = keySet.iterator();
-				while (it.hasNext()) {
+				while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Integer key = (Integer) it.next();
 					if((key.intValue() & mask) == state) {
 						count += stats.get(key).intValue();
@@ -106,9 +106,9 @@ public class DiffTreeStatistics {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder out = new StringBuilder();
-		for (Integer kind : stats.keySet()) {
-			out.append(SyncInfo.kindToString(kind.intValue()) + ": " + stats.get(kind) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		StringBuilder out = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (Integer kind : stats.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			out.append(SyncInfo.kindToString(kind.intValue()) + ": " + stats.get(kind) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return out.toString();
 	}

@@ -61,9 +61,9 @@ public class DebugFileStore extends FileStore {
 	@Override
 	public String[] childNames(int options, IProgressMonitor monitor) throws CoreException {
 		URI[] uris = DebugFileSystem.getDefault().getFileURIs();
-		List<String> children = new ArrayList<>();
+		List<String> children = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IPath me = getPath();
-		for (URI id : uris) {
+		for (URI id : uris) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IPath path = IPath.fromOSString(id.getPath());
 			if (path.segmentCount() > 0) {
 				if (path.removeLastSegments(1).equals(me)) {
@@ -74,7 +74,7 @@ public class DebugFileStore extends FileStore {
 		return children.toArray(new String[children.size()]);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IFileInfo fetchInfo(int options, IProgressMonitor monitor) throws CoreException {
 		byte[] contents = DebugFileSystem.getDefault().getContents(toURI());
 		FileInfo info = new FileInfo();
@@ -137,7 +137,7 @@ public class DebugFileStore extends FileStore {
 			return new ByteArrayInputStream(contents);
 		}
 		throw new CoreException(new Status(IStatus.ERROR, "org.eclipse.jdt.debug.tests", //$NON-NLS-1$
-		"File does not exist: " + toURI())); //$NON-NLS-1$
+		"File does not exist: " + toURI())); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override
@@ -145,13 +145,13 @@ public class DebugFileStore extends FileStore {
 		return new DebugOutputStream();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IFileStore mkdir(int options, IProgressMonitor monitor) throws CoreException {
 		IFileInfo info = fetchInfo();
 		if (info.exists()) {
 			if (!info.isDirectory()) {
 				throw new CoreException(new Status(IStatus.ERROR, "org.eclipse.jdt.debug.tests", //$NON-NLS-1$
-				"mkdir failed - file already exists with name: " + toURI())); //$NON-NLS-1$
+				"mkdir failed - file already exists with name: " + toURI())); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		} else {
 			IFileStore parent = getParent();
@@ -159,7 +159,7 @@ public class DebugFileStore extends FileStore {
 				DebugFileSystem.getDefault().setContents(toURI(), DebugFileSystem.DIRECTORY_BYTES);
 			} else if ((options & EFS.SHALLOW) > 0) {
 				throw new CoreException(new Status(IStatus.ERROR, "org.eclipse.jdt.debug.tests", //$NON-NLS-1$
-				"mkdir failed - parent does not exist: " + toURI())); //$NON-NLS-1$
+				"mkdir failed - parent does not exist: " + toURI())); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			} else {
 				parent.mkdir(EFS.NONE, null);
 			}

@@ -133,11 +133,11 @@ public class PDAVirtualFindAction extends Action implements IUpdate {
 
 	private static class FindLabelProvider extends LabelProvider {
 		private final VirtualTreeModelViewer fVirtualViewer;
-		private final Map<VirtualItem, String> fTextCache = new HashMap<>();
+		private final Map<VirtualItem, String> fTextCache = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 		public FindLabelProvider(VirtualTreeModelViewer viewer, List<VirtualItem> items) {
 			fVirtualViewer = viewer;
-			for (int i = 0; i < items.size(); i++) {
+			for (int i = 0; i < items.size(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				VirtualItem item = items.get(i);
 				fTextCache.put(item, fVirtualViewer.getText(item, 0));
 			}
@@ -156,13 +156,13 @@ public class PDAVirtualFindAction extends Action implements IUpdate {
 
 	public PDAVirtualFindAction(IPresentationContext context) {
 		setText("Find"); //$NON-NLS-1$
-		setId(DebugUIPlugin.getUniqueIdentifier() + ".FindElementAction"); //$NON-NLS-1$
+		setId(DebugUIPlugin.getUniqueIdentifier() + ".FindElementAction"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(this, IDebugHelpContextIds.FIND_ELEMENT_ACTION);
 		setActionDefinitionId(IWorkbenchCommandConstants.EDIT_FIND_AND_REPLACE);
 		fClientViewer = (TreeModelViewer)((IDebugView)context.getPart()).getViewer();
 	}
 
-	protected VirtualTreeModelViewer initVirtualViewer(TreeModelViewer clientViewer, VirtualViewerListener listener) {
+	protected VirtualTreeModelViewer initVirtualViewer(TreeModelViewer clientViewer, VirtualViewerListener listener) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Object input = clientViewer.getInput();
 		ModelDelta stateDelta = new ModelDelta(input, IModelDelta.NO_CHANGE);
 		clientViewer.saveElementState(TreePath.EMPTY, stateDelta, IModelDelta.EXPAND);
@@ -181,12 +181,12 @@ public class PDAVirtualFindAction extends Action implements IUpdate {
 		return fVirtualViewer;
 	}
 
-	protected IPresentationContext makeVirtualPresentationContext(final IPresentationContext clientViewerContext) {
+	protected IPresentationContext makeVirtualPresentationContext(final IPresentationContext clientViewerContext) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		return new PresentationContext(clientViewerContext.getId()) {
 
 			{
 				String[] clientProperties = clientViewerContext.getProperties();
-				for (int i = 0; i < clientProperties.length; i++) {
+				for (int i = 0; i < clientProperties.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					setProperty(clientProperties[i], clientViewerContext.getProperty(clientProperties[i]));
 				}
 
@@ -202,7 +202,7 @@ public class PDAVirtualFindAction extends Action implements IUpdate {
 				}
 
 				// Try to find the name column.
-				for (int i = 0; i < clientColumns.length; i++) {
+				for (int i = 0; i < clientColumns.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (IDebugUIConstants.COLUMN_ID_VARIABLE_NAME.equals(clientColumns[i])) {
 						return new String[] { IDebugUIConstants.COLUMN_ID_VARIABLE_NAME };
 					}
@@ -213,7 +213,7 @@ public class PDAVirtualFindAction extends Action implements IUpdate {
 		};
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run() {
 		final VirtualViewerListener listener = new VirtualViewerListener();
 		VirtualTreeModelViewer virtualViewer = initVirtualViewer(fClientViewer, listener);
@@ -222,13 +222,13 @@ public class PDAVirtualFindAction extends Action implements IUpdate {
 		dialog.setCancelable(true);
 
 		try {
-			IRunnableWithProgress progressRedirecter = monitor -> {
+			IRunnableWithProgress progressRedirecter = monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 				synchronized (listener) {
 					listener.fProgressMonitor = monitor;
 					listener.fProgressMonitor.beginTask(DebugUIPlugin.removeAccelerators(getText()), listener.fRemainingUpdatesCount);
 				}
 
-				while ((!listener.fLabelUpdatesComplete || !listener.fViewerUpdatesComplete) && !listener.fProgressMonitor.isCanceled()) {
+				while ((!listener.fLabelUpdatesComplete || !listener.fViewerUpdatesComplete) && !listener.fProgressMonitor.isCanceled()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Thread.sleep(1);
 				}
 				synchronized (listener) {
@@ -245,7 +245,7 @@ public class PDAVirtualFindAction extends Action implements IUpdate {
 
 		VirtualItem root = virtualViewer.getTree();
 		if (!dialog.getProgressMonitor().isCanceled()) {
-			List<VirtualItem> list = new ArrayList<>();
+			List<VirtualItem> list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			collectAllChildren(root, list);
 			FindLabelProvider labelProvider = new FindLabelProvider(virtualViewer, list);
 			VirtualItem result = performFind(list, labelProvider);
@@ -277,7 +277,7 @@ public class PDAVirtualFindAction extends Action implements IUpdate {
 	private void collectAllChildren(VirtualItem element, List<VirtualItem> collect) {
 		VirtualItem[] children = element.getItems();
 		if (children != null) {
-			for (int i = 0; i < children.length; i++) {
+			for (int i = 0; i < children.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!children[i].needsLabelUpdate()) {
 					collect.add(children[i]);
 					collectAllChildren(children[i], collect);
@@ -302,7 +302,7 @@ public class PDAVirtualFindAction extends Action implements IUpdate {
 		return null;
 	}
 
-	protected void setSelectionToClient(VirtualTreeModelViewer virtualViewer, ILabelProvider labelProvider, VirtualItem findItem) {
+	protected void setSelectionToClient(VirtualTreeModelViewer virtualViewer, ILabelProvider labelProvider, VirtualItem findItem) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		virtualViewer.getTree().setSelection(new VirtualItem[] { findItem } );
 		ModelDelta stateDelta = new ModelDelta(virtualViewer.getInput(), IModelDelta.NO_CHANGE);
 		virtualViewer.saveElementState(TreePath.EMPTY, stateDelta, IModelDelta.SELECT);
@@ -316,7 +316,7 @@ public class PDAVirtualFindAction extends Action implements IUpdate {
 			DebugUIPlugin.errorDialog(
 				fClientViewer.getControl().getShell(),
  "Error", //$NON-NLS-1$
-					"Could not select item:" + labelProvider.getText(findItem), //$NON-NLS-1$
+					"Could not select item:" + labelProvider.getText(findItem), //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					new Status(IStatus.ERROR, DebugUIPlugin.getUniqueIdentifier(), "Element no longer in viewer.")); //$NON-NLS-1$
 		}
 	}

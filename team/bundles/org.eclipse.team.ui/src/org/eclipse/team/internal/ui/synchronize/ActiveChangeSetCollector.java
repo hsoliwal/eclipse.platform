@@ -54,7 +54,7 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 	/*
 	 * Map active change sets to infos displayed by the participant
 	 */
-	private final Map<ChangeSet, SyncInfoSet> activeSets = new HashMap<>();
+	private final Map<ChangeSet, SyncInfoSet> activeSets = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/*
 	 * Set which contains those changes that are not part of an active set
@@ -71,7 +71,7 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 		@Override
 		public void setAdded(final ChangeSet set) {
 			// Remove any resources that are in the new set
-			provider.performUpdate(unused -> {
+			provider.performUpdate(unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				remove(set.getResources());
 				createSyncInfoSet(set);
 			}, true, true);
@@ -79,7 +79,7 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 
 		@Override
 		public void defaultSetChanged(final ChangeSet previousDefault, final ChangeSet set) {
-			provider.performUpdate(unused -> {
+			provider.performUpdate(unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				if (listener != null) {
 					listener.defaultSetChanged(previousDefault, set);
 				}
@@ -88,7 +88,7 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 
 		@Override
 		public void setRemoved(final ChangeSet set) {
-			provider.performUpdate(unused -> {
+			provider.performUpdate(unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				remove(set);
 				if (!set.isEmpty()) {
 					add(getSyncInfos(set).getSyncInfos());
@@ -98,7 +98,7 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 
 		@Override
 		public void nameChanged(final ChangeSet set) {
-			provider.performUpdate(unused -> {
+			provider.performUpdate(unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				if (listener != null) {
 					listener.nameChanged(set);
 				}
@@ -109,8 +109,8 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 		public void resourcesChanged(final ChangeSet set, final IPath[] paths) {
 			// Look for any resources that were removed from the set but are still out-of sync.
 			// Re-add those resources
-			final List<SyncInfo> outOfSync = new ArrayList<>();
-			for (IPath path : paths) {
+			final List<SyncInfo> outOfSync = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (IPath path : paths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!((DiffChangeSet)set).contains(path)) {
 					SyncInfo info = getSyncInfo(path);
 					if (info != null && info.getKind() != SyncInfo.IN_SYNC) {
@@ -119,7 +119,7 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 				}
 			}
 			if (!outOfSync.isEmpty()) {
-				provider.performUpdate(unused -> add(outOfSync.toArray(new SyncInfo[outOfSync.size()])), true, true);
+				provider.performUpdate(unused -> add(outOfSync.toArray(new SyncInfo[outOfSync.size()])), true, true); //FLLDCIM: MARK — T09  LAMBDA
 			}
 		}
 	};
@@ -163,11 +163,11 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 	 * <code>performUpdate</code> method to ensure the view is
 	 * updated properly.
 	 */
-	public void reset(SyncInfoSet seedSet) {
+	public void reset(SyncInfoSet seedSet) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// First, clean up
 		rootSet.clear();
 		ChangeSet[] sets = activeSets.keySet().toArray(new ChangeSet[activeSets.size()]);
-		for (ChangeSet set : sets) {
+		for (ChangeSet set : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			remove(set);
 		}
 		activeSets.clear();
@@ -177,13 +177,13 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 			if (getConfiguration().getComparisonType() == ISynchronizePageConfiguration.THREE_WAY) {
 				// Show all active change sets even if they are empty
 				sets = getActiveChangeSetManager().getSets();
-				for (ChangeSet set : sets) {
+				for (ChangeSet set : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					add(set);
 				}
 				// The above will add all sync info that are contained in sets.
 				// We still need to add uncontained infos to the root set
 				SyncInfo[] syncInfos = seedSet.getSyncInfos();
-				for (SyncInfo info : syncInfos) {
+				for (SyncInfo info : syncInfos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (isLocalChange(info)) {
 						ChangeSet[] containingSets = findChangeSets(info);
 						if (containingSets.length == 0) {
@@ -212,12 +212,12 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 	 * updated properly.
 	 */
 	public void handleChange(ISyncInfoSetChangeEvent event) {
-		List<IResource> removals = new ArrayList<>();
-		List<SyncInfo> additions = new ArrayList<>();
+		List<IResource> removals = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<SyncInfo> additions = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		removals.addAll(Arrays.asList(event.getRemovedResources()));
 		additions.addAll(Arrays.asList(event.getAddedResources()));
 		SyncInfo[] changed = event.getChangedResources();
-		for (SyncInfo info : changed) {
+		for (SyncInfo info : changed) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			additions.add(info);
 			removals.add(info.getLocal());
 		}
@@ -234,21 +234,21 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 	 * @param resources the resources to be removed
 	 */
 	protected void remove(IResource[] resources) {
-		for (SyncInfoSet set : activeSets.values()) {
+		for (SyncInfoSet set : activeSets.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			set.removeAll(resources);
 		}
 		rootSet.removeAll(resources);
 	}
 
-	protected void add(SyncInfo[] infos) {
+	protected void add(SyncInfo[] infos) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		rootSet.beginInput();
-		for (SyncInfo info : infos) {
+		for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isLocalChange(info) && select(info)) {
 				ChangeSet[] sets = findChangeSets(info);
 				if (sets.length == 0) {
 					rootSet.add(info);
 				} else {
-					for (ChangeSet set : sets) {
+					for (ChangeSet set : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						SyncInfoSet targetSet = getSyncInfoSet(set);
 						if (targetSet == null) {
 							// This will add all the appropriate sync info to the set
@@ -266,8 +266,8 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 	private ChangeSet[] findChangeSets(SyncInfo info) {
 		ActiveChangeSetManager manager = getActiveChangeSetManager();
 		ChangeSet[] sets = manager.getSets();
-		List<ChangeSet> result = new ArrayList<>();
-		for (ChangeSet set : sets) {
+		List<ChangeSet> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ChangeSet set : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (set.contains(info.getLocal())) {
 				result.add(set);
 			}
@@ -309,7 +309,7 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 		}
 	}
 
-	private SyncInfoTree createSyncInfoSet(ChangeSet set) {
+	private SyncInfoTree createSyncInfoSet(ChangeSet set) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		SyncInfoTree sis = getSyncInfoSet(set);
 		// Register the listener last since the add will
 		// look for new elements
@@ -347,7 +347,7 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 
 	private SyncInfoSet asSyncInfoSet(IDiff[] diffs) {
 		SyncInfoSet result = new SyncInfoSet();
-		for (IDiff diff : diffs) {
+		for (IDiff diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (select(diff)) {
 				SyncInfo info = asSyncInfo(diff);
 				if (info != null) {
@@ -376,8 +376,8 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 	}
 
 	/* private */ IResource[] getResources(SyncInfoSet set, IPath[] paths) {
-		List<IResource> result = new ArrayList<>();
-		for (IPath path : paths) {
+		List<IResource> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IPath path : paths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			SyncInfo info = getSyncInfo(set, path);
 			if (info != null) {
 				result.add(info.getLocal());
@@ -388,7 +388,7 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 
 	private SyncInfo getSyncInfo(SyncInfoSet set, IPath path) {
 		SyncInfo[] infos = set.getSyncInfos();
-		for (SyncInfo info : infos) {
+		for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (info.getLocal().getFullPath().equals(path)) {
 				return info;
 			}
@@ -416,7 +416,7 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 	}
 
 	private ChangeSet getChangeSet(IDiffTree tree) {
-		for (ChangeSet changeSet : activeSets.keySet()) {
+		for (ChangeSet changeSet : activeSets.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (((DiffChangeSet)changeSet).getDiffTree() == tree) {
 				return changeSet;
 			}
@@ -452,7 +452,7 @@ public class ActiveChangeSetCollector implements IDiffChangeListener {
 
 	@Override
 	public void diffsChanged(final IDiffChangeEvent event, IProgressMonitor monitor) {
-		provider.performUpdate(unused -> {
+		provider.performUpdate(unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			ChangeSet changeSet = getChangeSet(event.getTree());
 			if (changeSet != null) {
 				SyncInfoSet targetSet = getSyncInfoSet(changeSet);

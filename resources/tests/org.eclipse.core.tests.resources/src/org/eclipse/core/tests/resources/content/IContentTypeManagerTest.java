@@ -72,7 +72,7 @@ public class IContentTypeManagerTest {
 	private static final String TEST_FILES_ROOT = "Plugin_Testing/";
 
 	private static class ContentTypeChangeTracer implements IContentTypeManager.IContentTypeChangeListener {
-		private final Set<IContentType> changed = new HashSet<>();
+		private final Set<IContentType> changed = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 		public ContentTypeChangeTracer() {
 		}
@@ -128,8 +128,8 @@ public class IContentTypeManagerTest {
 	 * Helps to ensure we don't get fooled by case sensitivity in file names/specs.
 	 */
 	private String changeCase(String original) {
-		StringBuilder result = new StringBuilder(original);
-		for (int i = result.length() - 1; i >= 0; i--) {
+		StringBuilder result = new StringBuilder(original); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = result.length() - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char originalChar = original.charAt(i);
 			result.setCharAt(i, i % 2 == 0 ? Character.toLowerCase(originalChar) : Character.toUpperCase(originalChar));
 		}
@@ -145,14 +145,14 @@ public class IContentTypeManagerTest {
 	public InputStream getInputStream(byte[][] contents) {
 		int size = 0;
 		// computes final array size
-		for (byte[] content : contents) {
+		for (byte[] content : contents) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			size += content.length;
 		}
 		byte[] full = new byte[size];
 		int fullIndex = 0;
 		// concatenates all byte arrays
-		for (byte[] content : contents) {
-			for (byte element : content) {
+		for (byte[] content : contents) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (byte element : content) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				full[fullIndex++] = element;
 			}
 		}
@@ -188,12 +188,12 @@ public class IContentTypeManagerTest {
 	/**
 	 * This test shows how we deal with aliases.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAlias() throws Exception {
 		final IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
-		IContentType alias = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".alias");
+		IContentType alias = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".alias"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(alias);
-		IContentType derived = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".derived-from-alias");
+		IContentType derived = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".derived-from-alias"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(derived);
 		IContentType target = contentTypeManager.getContentType("org.eclipse.bundle02.missing-target");
 		assertNull(target);
@@ -207,9 +207,9 @@ public class IContentTypeManagerTest {
 		TestRegistryChangeListener listener = new TestRegistryChangeListener(IContentConstants.CONTENT_NAME,
 				ContentTypeBuilder.PT_CONTENTTYPES, null, null);
 		BundleTestingHelper.runWithBundles(() -> {
-			IContentType alias1 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".alias");
+			IContentType alias1 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".alias"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			assertNull(alias1);
-			IContentType derived1 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".derived-from-alias");
+			IContentType derived1 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".derived-from-alias"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			assertNotNull(derived1);
 			IContentType target1 = contentTypeManager.getContentType("org.eclipse.bundle02.missing-target");
 			assertNotNull(target1);
@@ -220,16 +220,16 @@ public class IContentTypeManagerTest {
 			selected2 = contentTypeManager.findContentTypesFor(createRandomContentsStream(), "foo.missing-target");
 			assertThat(selected2).containsExactly(target1, derived1);
 			return null;
-		}, getContext(), new String[] { TEST_FILES_ROOT + "content/bundle02" }, listener);
+		}, getContext(), new String[] { TEST_FILES_ROOT + "content/bundle02" }, listener); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAssociationInheritance() throws CoreException {
 		IContentTypeManager manager = Platform.getContentTypeManager();
 		IContentTypeMatcher finder = manager.getMatcher(new LocalSelectionPolicy(), null);
-		IContentType text = manager.getContentType(Platform.PI_RUNTIME + ".text");
-		IContentType assoc1 = manager.getContentType(PI_RESOURCES_TESTS + ".assoc1");
-		IContentType assoc2 = manager.getContentType(PI_RESOURCES_TESTS + ".assoc2");
+		IContentType text = manager.getContentType(Platform.PI_RUNTIME + ".text"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType assoc1 = manager.getContentType(PI_RESOURCES_TESTS + ".assoc1"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType assoc2 = manager.getContentType(PI_RESOURCES_TESTS + ".assoc2"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// associate a user-defined file spec
 		text.addFileSpec("txt_useradded", IContentType.FILE_EXTENSION_SPEC);
@@ -279,9 +279,9 @@ public class IContentTypeManagerTest {
 		assertThat(selected).containsExactly(assoc2);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAssociations() throws CoreException {
-		IContentType text = Platform.getContentTypeManager().getContentType(Platform.PI_RUNTIME + ".text");
+		IContentType text = Platform.getContentTypeManager().getContentType(Platform.PI_RUNTIME + ".text"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// associate a user-defined file spec
 		text.addFileSpec("txt_useradded", IContentType.FILE_EXTENSION_SPEC);
@@ -322,11 +322,11 @@ public class IContentTypeManagerTest {
 		assertTrue(text.isAssociatedWith(changeCase("text.txt_pluginadded")));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBinaryTypes() throws IOException {
 		IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
-		IContentType sampleBinary1 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".sample-binary1");
-		IContentType sampleBinary2 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".sample-binary2");
+		IContentType sampleBinary1 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".sample-binary1"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType sampleBinary2 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".sample-binary2"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		InputStream contents;
 
 		contents = getInputStream(
@@ -353,7 +353,7 @@ public class IContentTypeManagerTest {
 		assertNull(description);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testByteOrderMark() throws IOException {
 		IContentType text = Platform.getContentTypeManager().getContentType(IContentTypeManager.CT_TEXT);
 		QualifiedName[] options = new QualifiedName[] { IContentDescription.BYTE_ORDER_MARK };
@@ -361,21 +361,21 @@ public class IContentTypeManagerTest {
 		// tests with UTF-8 BOM
 		String UTF8_BOM = new String(IContentDescription.BOM_UTF_8, StandardCharsets.ISO_8859_1);
 		description = text.getDescriptionFor(
-				new ByteArrayInputStream((UTF8_BOM + MINIMAL_XML).getBytes(StandardCharsets.ISO_8859_1)), options);
+				new ByteArrayInputStream((UTF8_BOM + MINIMAL_XML).getBytes(StandardCharsets.ISO_8859_1)), options); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(description.getProperty(IContentDescription.BYTE_ORDER_MARK));
 		assertEquals(IContentDescription.BOM_UTF_8,
 				description.getProperty(IContentDescription.BYTE_ORDER_MARK));
 		// tests with UTF-16 Little Endian BOM
 		String UTF16_LE_BOM = new String(IContentDescription.BOM_UTF_16LE, StandardCharsets.ISO_8859_1);
 		description = text.getDescriptionFor(
-				new ByteArrayInputStream((UTF16_LE_BOM + MINIMAL_XML).getBytes(StandardCharsets.ISO_8859_1)), options);
+				new ByteArrayInputStream((UTF16_LE_BOM + MINIMAL_XML).getBytes(StandardCharsets.ISO_8859_1)), options); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(description.getProperty(IContentDescription.BYTE_ORDER_MARK));
 		assertEquals(IContentDescription.BOM_UTF_16LE,
 				description.getProperty(IContentDescription.BYTE_ORDER_MARK));
 		// tests with UTF-16 Big Endian BOM
 		String UTF16_BE_BOM = new String(IContentDescription.BOM_UTF_16BE, StandardCharsets.ISO_8859_1);
 		description = text.getDescriptionFor(
-				new ByteArrayInputStream((UTF16_BE_BOM + MINIMAL_XML).getBytes(StandardCharsets.ISO_8859_1)), options);
+				new ByteArrayInputStream((UTF16_BE_BOM + MINIMAL_XML).getBytes(StandardCharsets.ISO_8859_1)), options); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(description.getProperty(IContentDescription.BYTE_ORDER_MARK));
 		assertEquals(IContentDescription.BOM_UTF_16BE,
 				description.getProperty(IContentDescription.BYTE_ORDER_MARK));
@@ -388,7 +388,7 @@ public class IContentTypeManagerTest {
 		// first byte of UTF-16 Big Endian + minimal xml
 		String UTF16_BE_BOM_1byte = new String(new byte[] { (byte) 0xFE }, "ISO-8859-1");
 		description = text.getDescriptionFor(
-				new ByteArrayInputStream((UTF16_BE_BOM_1byte + MINIMAL_XML).getBytes(StandardCharsets.ISO_8859_1)),
+				new ByteArrayInputStream((UTF16_BE_BOM_1byte + MINIMAL_XML).getBytes(StandardCharsets.ISO_8859_1)), //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				options);
 		assertNull(description.getProperty(IContentDescription.BYTE_ORDER_MARK));
 		// first byte of UTF-16 Big Endian only (see
@@ -400,7 +400,7 @@ public class IContentTypeManagerTest {
 		// first byte of UTF-16 Little Endian + minimal xml
 		String UTF16_LE_BOM_1byte = new String(new byte[] { (byte) 0xFF }, StandardCharsets.ISO_8859_1);
 		description = text.getDescriptionFor(
-				new ByteArrayInputStream((UTF16_LE_BOM_1byte + MINIMAL_XML).getBytes(StandardCharsets.ISO_8859_1)),
+				new ByteArrayInputStream((UTF16_LE_BOM_1byte + MINIMAL_XML).getBytes(StandardCharsets.ISO_8859_1)), //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				options);
 		assertNull(description.getProperty(IContentDescription.BYTE_ORDER_MARK));
 		// first byte of UTF-16 Little Endian only
@@ -411,7 +411,7 @@ public class IContentTypeManagerTest {
 		// first byte of UTF-8 + minimal xml
 		String UTF8_BOM_1byte = new String(new byte[] { (byte) 0xEF }, StandardCharsets.ISO_8859_1);
 		description = text.getDescriptionFor(
-				new ByteArrayInputStream((UTF8_BOM_1byte + MINIMAL_XML).getBytes(StandardCharsets.ISO_8859_1)),
+				new ByteArrayInputStream((UTF8_BOM_1byte + MINIMAL_XML).getBytes(StandardCharsets.ISO_8859_1)), //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				options);
 		assertNull(description.getProperty(IContentDescription.BYTE_ORDER_MARK));
 		// first byte of UTF-8 only
@@ -422,7 +422,7 @@ public class IContentTypeManagerTest {
 		// two first bytes of UTF-8 + minimal xml
 		String UTF8_BOM_2bytes = new String(new byte[] { (byte) 0xEF, (byte) 0xBB }, StandardCharsets.ISO_8859_1);
 		description = text.getDescriptionFor(
-				new ByteArrayInputStream((UTF8_BOM_2bytes + MINIMAL_XML).getBytes(StandardCharsets.ISO_8859_1)),
+				new ByteArrayInputStream((UTF8_BOM_2bytes + MINIMAL_XML).getBytes(StandardCharsets.ISO_8859_1)), //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				options);
 		assertNull(description.getProperty(IContentDescription.BYTE_ORDER_MARK));
 		// two first bytes of UTF-8 only
@@ -434,7 +434,7 @@ public class IContentTypeManagerTest {
 	/**
 	 * See bug 90218.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testContentAndNameMatching() throws IOException /* not really */ {
 		IContentTypeManager manager = Platform.getContentTypeManager();
 
@@ -444,13 +444,13 @@ public class IContentTypeManagerTest {
 		byte[][] invalidContents = { { 0, 0, 0, 0 } };
 
 		// base matches *.mybinary files starting with 0x0a 0x0b
-		IContentType base = manager.getContentType(PI_RESOURCES_TESTS + ".binary_base");
+		IContentType base = manager.getContentType(PI_RESOURCES_TESTS + ".binary_base"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		// derived1 matches *.mybinary and specifically foo.mybinary files starting with
 		// 0x0a 0x0b 0xc
-		IContentType derived1 = manager.getContentType(PI_RESOURCES_TESTS + ".binary_derived1");
+		IContentType derived1 = manager.getContentType(PI_RESOURCES_TESTS + ".binary_derived1"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		// derived2 matches *.mybinary (inherits filespec from base) files starting with
 		// 0x0a 0x0b 0xd
-		IContentType derived2 = manager.getContentType(PI_RESOURCES_TESTS + ".binary_derived2");
+		IContentType derived2 = manager.getContentType(PI_RESOURCES_TESTS + ".binary_derived2"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		IContentType[] selected;
 
@@ -495,16 +495,16 @@ public class IContentTypeManagerTest {
 	/*
 	 * Tests both text and byte stream-based getDescriptionFor methods.
 	 */
-	@ParameterizedTest
+	@ParameterizedTest //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@ValueSource(booleans = { true, false })
 	public void testContentDescription(boolean text) throws IOException, CoreException {
 		IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
 		IContentTypeMatcher finder = contentTypeManager.getMatcher(new LocalSelectionPolicy(), null);
 
-		IContentType xmlType = contentTypeManager.getContentType(Platform.PI_RUNTIME + ".xml");
-		IContentType mytext = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "mytext");
-		IContentType mytext1 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "mytext1");
-		IContentType mytext2 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "mytext2");
+		IContentType xmlType = contentTypeManager.getContentType(Platform.PI_RUNTIME + ".xml"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType mytext = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "mytext"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType mytext1 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "mytext1"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType mytext2 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "mytext2"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		IContentDescription description;
 
@@ -607,19 +607,19 @@ public class IContentTypeManagerTest {
 
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testContentDetection() throws IOException {
 		IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
 		IContentTypeMatcher finder;
 
-		IContentType inappropriate = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".sample-binary1");
-		IContentType appropriate = contentTypeManager.getContentType(Platform.PI_RUNTIME + ".xml");
+		IContentType inappropriate = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".sample-binary1"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType appropriate = contentTypeManager.getContentType(Platform.PI_RUNTIME + ".xml"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IContentType appropriateSpecific1 = contentTypeManager
-				.getContentType(PI_RESOURCES_TESTS + ".xml-based-different-extension");
+				.getContentType(PI_RESOURCES_TESTS + ".xml-based-different-extension"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IContentType appropriateSpecific1LowPriority = contentTypeManager
-				.getContentType(PI_RESOURCES_TESTS + ".xml-based-different-extension-low-priority");
+				.getContentType(PI_RESOURCES_TESTS + ".xml-based-different-extension-low-priority"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IContentType appropriateSpecific2 = contentTypeManager
-				.getContentType(PI_RESOURCES_TESTS + ".xml-based-specific-name");
+				.getContentType(PI_RESOURCES_TESTS + ".xml-based-specific-name"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// if only inappropriate is provided, none will be selected
 		finder = contentTypeManager.getMatcher(new SubsetSelectionPolicy(new IContentType[] { inappropriate }), null);
@@ -671,13 +671,13 @@ public class IContentTypeManagerTest {
 		assertEquals(appropriateSpecific1, finder.findContentTypeFor(getInputStream(MINIMAL_XML), null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDefaultProperties() throws IOException /* never actually thrown */ {
 		IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
 
-		IContentType mytext = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "mytext");
-		IContentType mytext1 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "mytext1");
-		IContentType mytext2 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "mytext2");
+		IContentType mytext = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "mytext"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType mytext1 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "mytext1"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType mytext2 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "mytext2"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(mytext);
 		assertNotNull(mytext1);
 		assertNotNull(mytext2);
@@ -730,9 +730,9 @@ public class IContentTypeManagerTest {
 	public void testDoubleAssociation() {
 		IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
 
-		IContentType fooBarType = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "fooBar");
+		IContentType fooBarType = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "fooBar"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(fooBarType);
-		IContentType subFooBarType = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "subFooBar");
+		IContentType subFooBarType = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "subFooBar"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(subFooBarType);
 		// ensure we don't get fooBar twice
 		IContentTypeMatcher finder = contentTypeManager.getMatcher(new LocalSelectionPolicy(), null);
@@ -748,7 +748,7 @@ public class IContentTypeManagerTest {
 	 * same thing (because the content type catalog should be rebuilt whenever
 	 * content types are dynamicaly added/removed).
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDynamicChanges() throws Exception {
 		final IContentType[] text = new IContentType[4];
 		final IContentTypeManager manager = Platform.getContentTypeManager();
@@ -773,7 +773,7 @@ public class IContentTypeManagerTest {
 			assertEquals(text[0], text[2]);
 			assertNotSame(text[0], text[2]);
 			return null;
-		}, getContext(), new String[] { TEST_FILES_ROOT + "content/bundle01" }, listener);
+		}, getContext(), new String[] { TEST_FILES_ROOT + "content/bundle01" }, listener); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNull(manager.getContentType("org.eclipse.bundle01.missing"));
 		// ensure the content type instances are all different
 		text[3] = manager.getContentType(IContentTypeManager.CT_TEXT);
@@ -789,7 +789,7 @@ public class IContentTypeManagerTest {
 	 * Similar to testDynamicChanges, but using the
 	 * org.eclipse.core.contenttype.contentTypes extension point.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDynamicChangesNewExtension() throws Exception {
 		final IContentType[] text = new IContentType[4];
 		final IContentTypeManager manager = Platform.getContentTypeManager();
@@ -817,7 +817,7 @@ public class IContentTypeManagerTest {
 			assertEquals(contentType, manager.findContentTypeFor("file.bug485227_2"),
 					"additional extension not associated");
 			return null;
-		}, getContext(), new String[] { TEST_FILES_ROOT + "content/bug485227" }, listener);
+		}, getContext(), new String[] { TEST_FILES_ROOT + "content/bug485227" }, listener); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNull(manager.getContentType("org.eclipse.bug485227.bug485227_contentType"),
 				"Content type not cleared after bundle uninstall");
 		// ensure the content type instances are all different
@@ -830,10 +830,10 @@ public class IContentTypeManagerTest {
 		assertNotSame(text[2], text[3]);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testEvents() throws CoreException {
 		IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
-		IContentType myType = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".myContent");
+		IContentType myType = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".myContent"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(myType);
 
 		ContentTypeChangeTracer tracer;
@@ -873,20 +873,20 @@ public class IContentTypeManagerTest {
 		myType.setDefaultCharset("ABC");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileSpecConflicts() throws IOException {
 		IContentTypeManager manager = Platform.getContentTypeManager();
 		// when not submitting contents, for related types, most general type prevails
-		IContentType conflict1a = manager.getContentType(PI_RESOURCES_TESTS + ".base_conflict1");
-		IContentType conflict1b = manager.getContentType(PI_RESOURCES_TESTS + ".sub_conflict1");
+		IContentType conflict1a = manager.getContentType(PI_RESOURCES_TESTS + ".base_conflict1"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType conflict1b = manager.getContentType(PI_RESOURCES_TESTS + ".sub_conflict1"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(conflict1a);
 		assertNotNull(conflict1b);
 		IContentType preferredConflict1 = manager.findContentTypeFor("test.conflict1");
 		assertNotNull(preferredConflict1);
 		assertEquals(conflict1a, preferredConflict1);
 
-		IContentType conflict2base = manager.getContentType(PI_RESOURCES_TESTS + ".base_conflict2");
-		IContentType conflict2sub = manager.getContentType(PI_RESOURCES_TESTS + ".sub_conflict2");
+		IContentType conflict2base = manager.getContentType(PI_RESOURCES_TESTS + ".base_conflict2"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType conflict2sub = manager.getContentType(PI_RESOURCES_TESTS + ".sub_conflict2"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(conflict2base);
 		assertNotNull(conflict2sub);
 
@@ -895,8 +895,8 @@ public class IContentTypeManagerTest {
 		IContentType[] selectedConflict2 = manager.findContentTypesFor(createRandomContentsStream(), "test.conflict2");
 		assertThat(selectedConflict2).containsExactly(conflict2base, conflict2sub);
 
-		IContentType conflict2abase = manager.getContentType(PI_RESOURCES_TESTS + ".base_conflict2a");
-		IContentType conflict2asub = manager.getContentType(PI_RESOURCES_TESTS + ".sub_conflict2a");
+		IContentType conflict2abase = manager.getContentType(PI_RESOURCES_TESTS + ".base_conflict2a"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType conflict2asub = manager.getContentType(PI_RESOURCES_TESTS + ".sub_conflict2a"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(conflict2abase);
 		assertNotNull(conflict2asub);
 
@@ -910,9 +910,9 @@ public class IContentTypeManagerTest {
 		selectedConflict2a = manager.findContentTypesFor("test.conflict2a");
 		assertThat(selectedConflict2a).containsExactly(conflict2abase, conflict2asub);
 
-		IContentType conflict3base = manager.getContentType(PI_RESOURCES_TESTS + ".base_conflict3");
-		IContentType conflict3sub = manager.getContentType(PI_RESOURCES_TESTS + ".sub_conflict3");
-		IContentType conflict3unrelated = manager.getContentType(PI_RESOURCES_TESTS + ".unrelated_conflict3");
+		IContentType conflict3base = manager.getContentType(PI_RESOURCES_TESTS + ".base_conflict3"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType conflict3sub = manager.getContentType(PI_RESOURCES_TESTS + ".sub_conflict3"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType conflict3unrelated = manager.getContentType(PI_RESOURCES_TESTS + ".unrelated_conflict3"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(conflict3base);
 		assertNotNull(conflict3sub);
 		assertNotNull(conflict3unrelated);
@@ -923,9 +923,9 @@ public class IContentTypeManagerTest {
 		IContentType[] selectedConflict3 = manager.findContentTypesFor(createRandomContentsStream(), "test.conflict3");
 		assertThat(selectedConflict3).containsExactly(conflict3sub, conflict3unrelated);
 
-		IContentType conflict4base = manager.getContentType(PI_RESOURCES_TESTS + ".base_conflict4");
-		IContentType conflict4sub = manager.getContentType(PI_RESOURCES_TESTS + ".sub_conflict4");
-		IContentType conflict4unrelated_lowPriority = manager.getContentType(PI_RESOURCES_TESTS + ".unrelated_conflict4");
+		IContentType conflict4base = manager.getContentType(PI_RESOURCES_TESTS + ".base_conflict4"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType conflict4sub = manager.getContentType(PI_RESOURCES_TESTS + ".sub_conflict4"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType conflict4unrelated_lowPriority = manager.getContentType(PI_RESOURCES_TESTS + ".unrelated_conflict4"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(conflict4base);
 		assertNotNull(conflict4sub);
 		assertNotNull(conflict4unrelated_lowPriority);
@@ -937,9 +937,9 @@ public class IContentTypeManagerTest {
 		IContentType[] selectedConflict4 = manager.findContentTypesFor(createRandomContentsStream(), "test.conflict4");
 		assertThat(selectedConflict4).containsExactly(conflict4sub, conflict4unrelated_lowPriority);
 
-		IContentType conflict5base = manager.getContentType(PI_RESOURCES_TESTS + ".base_conflict5");
-		IContentType conflict5sub_lowPriority = manager.getContentType(PI_RESOURCES_TESTS + ".sub_conflict5");
-		IContentType conflict5unrelated = manager.getContentType(PI_RESOURCES_TESTS + ".unrelated_conflict5");
+		IContentType conflict5base = manager.getContentType(PI_RESOURCES_TESTS + ".base_conflict5"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType conflict5sub_lowPriority = manager.getContentType(PI_RESOURCES_TESTS + ".sub_conflict5"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType conflict5unrelated = manager.getContentType(PI_RESOURCES_TESTS + ".unrelated_conflict5"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(conflict5base);
 		assertNotNull(conflict5sub_lowPriority);
 		assertNotNull(conflict5unrelated);
@@ -952,13 +952,13 @@ public class IContentTypeManagerTest {
 		assertThat(selectedConflict5).containsExactly(conflict5unrelated, conflict5sub_lowPriority);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFindContentType() throws IOException {
 		IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
 		IContentTypeMatcher finder = contentTypeManager.getMatcher(new LocalSelectionPolicy(), null);
 
-		IContentType textContentType = contentTypeManager.getContentType(Platform.PI_RUNTIME + '.' + "text");
-		IContentType xmlContentType = contentTypeManager.getContentType(Platform.PI_RUNTIME + ".xml");
+		IContentType textContentType = contentTypeManager.getContentType(Platform.PI_RUNTIME + '.' + "text"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType xmlContentType = contentTypeManager.getContentType(Platform.PI_RUNTIME + ".xml"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		IContentType single;
 
@@ -992,12 +992,12 @@ public class IContentTypeManagerTest {
 		assertEquals(targetContentType, single);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFindContentTypeUserRegexp() throws IOException, CoreException {
 		IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
 		IContentTypeMatcher finder = contentTypeManager.getMatcher(new LocalSelectionPolicy(), null);
 
-		IContentType textContentType = contentTypeManager.getContentType(Platform.PI_RUNTIME + '.' + "text");
+		IContentType textContentType = contentTypeManager.getContentType(Platform.PI_RUNTIME + '.' + "text"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		IContentType single = finder.findContentTypeFor(getInputStream("Just a test"), "someText.unknown");
 		assertNull(single, "File pattern unknown at that point");
@@ -1024,13 +1024,13 @@ public class IContentTypeManagerTest {
 		assertNotNull(contentTypeManager.findContentTypeFor("*.bug122217"));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInvalidMarkup() throws Exception {
 		final IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
 		IContentTypeMatcher finder = contentTypeManager.getMatcher(new LocalSelectionPolicy(), null);
 		assertThat(finder.findContentTypesFor("invalid.missing.identifier")).isEmpty();
 		assertThat(finder.findContentTypesFor("invalid.missing.name")).isEmpty();
-		assertNull(contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "invalid-missing-name"));
+		assertNull(contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "invalid-missing-name")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		TestRegistryChangeListener listener = new TestRegistryChangeListener(IContentConstants.CONTENT_NAME,
 				ContentTypeBuilder.PT_CONTENTTYPES, null, null);
 		BundleTestingHelper.runWithBundles(() -> {
@@ -1048,17 +1048,17 @@ public class IContentTypeManagerTest {
 			nullContentType = contentTypeManager.findContentTypeFor(createRandomContentsStream(), "invalid.describer");
 			assertNull(nullContentType);
 			return null;
-		}, getContext(), new String[] { TEST_FILES_ROOT + "content/bundle03" }, listener);
+		}, getContext(), new String[] { TEST_FILES_ROOT + "content/bundle03" }, listener); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
 	 * Bugs 67841 and 62443
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIOException() throws IOException {
 		IContentTypeManager manager = Platform.getContentTypeManager();
-		IContentType xml = manager.getContentType(Platform.PI_RUNTIME + ".xml");
-		IContentType rootElement = manager.getContentType(PI_RESOURCES_TESTS + ".root-element");
+		IContentType xml = manager.getContentType(Platform.PI_RUNTIME + ".xml"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType rootElement = manager.getContentType(PI_RESOURCES_TESTS + ".root-element"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		// a SAXException is usually caught (and silently ignored) in
 		// XMLRootElementDescriber in these cases
 		IContentType[] selected = manager
@@ -1097,16 +1097,16 @@ public class IContentTypeManagerTest {
 		}, "test.xml"));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIsKindOf() {
 		IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
-		IContentType textContentType = contentTypeManager.getContentType(Platform.PI_RUNTIME + '.' + "text");
-		IContentType xmlContentType = contentTypeManager.getContentType(Platform.PI_RUNTIME + ".xml");
+		IContentType textContentType = contentTypeManager.getContentType(Platform.PI_RUNTIME + '.' + "text"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType xmlContentType = contentTypeManager.getContentType(Platform.PI_RUNTIME + ".xml"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IContentType xmlBasedDifferentExtensionContentType = contentTypeManager
-				.getContentType(PI_RESOURCES_TESTS + '.' + "xml-based-different-extension");
+				.getContentType(PI_RESOURCES_TESTS + '.' + "xml-based-different-extension"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IContentType xmlBasedSpecificNameContentType = contentTypeManager
-				.getContentType(PI_RESOURCES_TESTS + '.' + "xml-based-specific-name");
-		IContentType binaryContentType = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "sample-binary1");
+				.getContentType(PI_RESOURCES_TESTS + '.' + "xml-based-specific-name"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType binaryContentType = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "sample-binary1"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertTrue(textContentType.isKindOf(textContentType));
 		assertTrue(xmlContentType.isKindOf(textContentType));
 		assertFalse(textContentType.isKindOf(xmlContentType));
@@ -1117,7 +1117,7 @@ public class IContentTypeManagerTest {
 		assertFalse(binaryContentType.isKindOf(textContentType));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testListParsing() {
 		String[] list;
 		list = Util.parseItems(null);
@@ -1144,10 +1144,10 @@ public class IContentTypeManagerTest {
 		assertThat(list).containsExactly("", "", "", "");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMyContentDescriber() throws IOException {
 		IContentTypeManager manager = Platform.getContentTypeManager();
-		IContentType myContent = manager.getContentType(PI_RESOURCES_TESTS + '.' + "myContent");
+		IContentType myContent = manager.getContentType(PI_RESOURCES_TESTS + '.' + "myContent"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(myContent);
 		assertEquals(myContent, manager.findContentTypeFor("myContent.mc1"));
 		assertEquals(myContent, manager.findContentTypeFor("myContent.mc2"));
@@ -1159,13 +1159,13 @@ public class IContentTypeManagerTest {
 		assertNotNull(description);
 		assertEquals(myContent, description.getContentType());
 		assertNotSame(myContent.getDefaultDescription(), description);
-		for (int i = 0; i < MyContentDescriber.MY_OPTIONS.length; i++) {
+		for (int i = 0; i < MyContentDescriber.MY_OPTIONS.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertEquals(MyContentDescriber.MY_OPTION_VALUES[i],
-					description.getProperty(MyContentDescriber.MY_OPTIONS[i]), i + "");
+					description.getProperty(MyContentDescriber.MY_OPTIONS[i]), i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNoExtensionAssociation() throws Exception {
 		// TODO use a IContentTypeMatcher instead
 		final IContentTypeManager manager = Platform.getContentTypeManager();
@@ -1178,11 +1178,11 @@ public class IContentTypeManagerTest {
 		BundleTestingHelper.runWithBundles(() -> {
 			final String namespace = "org.eclipse.bundle04";
 
-			IContentType empty1 = manager.getContentType(namespace + ".empty_extension1");
-			IContentType empty2 = manager.getContentType(namespace + ".empty_extension2");
-			IContentType empty3 = manager.getContentType(namespace + ".empty_extension3");
-			IContentType empty4 = manager.getContentType(namespace + ".empty_extension4");
-			IContentType nonEmpty = manager.getContentType(namespace + ".non_empty_extension");
+			IContentType empty1 = manager.getContentType(namespace + ".empty_extension1"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			IContentType empty2 = manager.getContentType(namespace + ".empty_extension2"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			IContentType empty3 = manager.getContentType(namespace + ".empty_extension3"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			IContentType empty4 = manager.getContentType(namespace + ".empty_extension4"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			IContentType nonEmpty = manager.getContentType(namespace + ".non_empty_extension"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 			assertNotNull(empty1);
 			assertNotNull(empty2);
@@ -1206,7 +1206,7 @@ public class IContentTypeManagerTest {
 			selected1 = manager.findContentTypesFor("file_with_no_extension");
 			assertThat(selected1).hasSize(4).doesNotContain(nonEmpty);
 			return null;
-		}, getContext(), new String[] { TEST_FILES_ROOT + "content/bundle04" }, listener);
+		}, getContext(), new String[] { TEST_FILES_ROOT + "content/bundle04" }, listener); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Test
@@ -1214,9 +1214,9 @@ public class IContentTypeManagerTest {
 		IContentTypeManager manager = Platform.getContentTypeManager();
 		IContentTypeMatcher finder = manager.getMatcher(new LocalSelectionPolicy(), null);
 
-		IContentType xml = manager.getContentType(Platform.PI_RUNTIME + ".xml");
-		manager.getContentType(PI_RESOURCES_TESTS + ".root-element");
-		manager.getContentType(PI_RESOURCES_TESTS + ".dtd");
+		IContentType xml = manager.getContentType(Platform.PI_RUNTIME + ".xml"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		manager.getContentType(PI_RESOURCES_TESTS + ".root-element"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		manager.getContentType(PI_RESOURCES_TESTS + ".dtd"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		// for an empty file, the most generic content type should be returned
 		IContentType selected = finder.findContentTypeFor(getInputStream(""), "foo.xml");
 		assertEquals(xml, selected);
@@ -1228,10 +1228,10 @@ public class IContentTypeManagerTest {
 	 * This test shows how we deal with orphan file associations (associations whose
 	 * content types are missing).
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testOrphanContentType() throws Exception {
 		final IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
-		IContentType orphan = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".orphan");
+		IContentType orphan = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".orphan"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNull(orphan);
 		IContentType missing = contentTypeManager.getContentType("org.eclipse.bundle01.missing");
 		assertNull(missing);
@@ -1244,7 +1244,7 @@ public class IContentTypeManagerTest {
 				ContentTypeBuilder.PT_CONTENTTYPES, null, null);
 
 		BundleTestingHelper.runWithBundles(() -> {
-			IContentType orphan1 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".orphan");
+			IContentType orphan1 = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".orphan"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			assertNotNull(orphan1);
 			IContentType missing1 = contentTypeManager.getContentType("org.eclipse.bundle01.missing");
 			assertNotNull(missing1);
@@ -1254,13 +1254,13 @@ public class IContentTypeManagerTest {
 			// check whether an orphan association was added to the dynamically added bundle
 			assertThat(contentTypeManager.findContentTypesFor("foo.orphan2")).containsExactly(missing1);
 			return null;
-		}, getContext(), new String[] { TEST_FILES_ROOT + "content/bundle01" }, listener);
+		}, getContext(), new String[] { TEST_FILES_ROOT + "content/bundle01" }, listener); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
 	 * Regression test for bug 68894
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreferences() throws CoreException, BackingStoreException {
 		IContentTypeManager manager = Platform.getContentTypeManager();
 		IContentType text = manager.getContentType(IContentTypeManager.CT_TEXT);
@@ -1323,17 +1323,17 @@ public class IContentTypeManagerTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRegistry() {
 		IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
 		IContentTypeMatcher finder = contentTypeManager.getMatcher(new LocalSelectionPolicy(), null);
 
-		IContentType textContentType = contentTypeManager.getContentType(Platform.PI_RUNTIME + '.' + "text");
+		IContentType textContentType = contentTypeManager.getContentType(Platform.PI_RUNTIME + '.' + "text"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(textContentType);
 		assertTrue(isText(contentTypeManager, textContentType));
 		assertNotNull(((ContentTypeHandler) textContentType).getTarget().getDescriber());
 
-		IContentType xmlContentType = contentTypeManager.getContentType(Platform.PI_RUNTIME + ".xml");
+		IContentType xmlContentType = contentTypeManager.getContentType(Platform.PI_RUNTIME + ".xml"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(xmlContentType);
 		assertTrue(isText(contentTypeManager, xmlContentType));
 		assertEquals(textContentType, xmlContentType.getBaseType());
@@ -1342,13 +1342,13 @@ public class IContentTypeManagerTest {
 		assertThat(xmlDescriber).isInstanceOf(XMLContentDescriber.class);
 
 		IContentType xmlBasedDifferentExtensionContentType = contentTypeManager
-				.getContentType(PI_RESOURCES_TESTS + '.' + "xml-based-different-extension");
+				.getContentType(PI_RESOURCES_TESTS + '.' + "xml-based-different-extension"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(xmlBasedDifferentExtensionContentType);
 		assertTrue(isText(contentTypeManager, xmlBasedDifferentExtensionContentType));
 		assertEquals(xmlContentType, xmlBasedDifferentExtensionContentType.getBaseType());
 
 		IContentType xmlBasedSpecificNameContentType = contentTypeManager
-				.getContentType(PI_RESOURCES_TESTS + '.' + "xml-based-specific-name");
+				.getContentType(PI_RESOURCES_TESTS + '.' + "xml-based-specific-name"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(xmlBasedSpecificNameContentType);
 		assertTrue(isText(contentTypeManager, xmlBasedSpecificNameContentType));
 		assertEquals(xmlContentType, xmlBasedSpecificNameContentType.getBaseType());
@@ -1356,7 +1356,7 @@ public class IContentTypeManagerTest {
 		IContentType[] xmlTypes = finder.findContentTypesFor(changeCase("foo.xml"));
 		assertThat(xmlTypes).contains(xmlContentType);
 
-		IContentType binaryContentType = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "sample-binary1");
+		IContentType binaryContentType = contentTypeManager.getContentType(PI_RESOURCES_TESTS + '.' + "sample-binary1"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(binaryContentType);
 		assertFalse(isText(contentTypeManager, binaryContentType));
 		assertNull(binaryContentType.getBaseType());
@@ -1364,30 +1364,30 @@ public class IContentTypeManagerTest {
 		IContentType[] binaryTypes = finder.findContentTypesFor(changeCase("foo.samplebin1"));
 		assertThat(binaryTypes).containsExactly(binaryContentType);
 
-		IContentType myText = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".mytext");
+		IContentType myText = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".mytext"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(myText);
 		assertEquals("BAR", myText.getDefaultCharset());
 
 		IContentType[] fooBarTypes = finder.findContentTypesFor(changeCase("foo.bar"));
 		assertThat(fooBarTypes).hasSize(2);
 
-		IContentType fooBar = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".fooBar");
+		IContentType fooBar = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".fooBar"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(fooBar);
-		IContentType subFooBar = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".subFooBar");
+		IContentType subFooBar = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".subFooBar"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(subFooBar);
 		assertThat(fooBarTypes).contains(fooBar, subFooBar);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRootElementAndDTDDescriber() throws IOException {
 		IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
-		IContentType rootElement = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".root-element");
-		IContentType dtdElement = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".dtd");
-		IContentType nsRootElement = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".ns-root-element");
-		IContentType nsWildcard = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".ns-wildcard");
+		IContentType rootElement = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".root-element"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType dtdElement = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".dtd"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType nsRootElement = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".ns-root-element"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType nsWildcard = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".ns-wildcard"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IContentType emptyNsRootElement = contentTypeManager
-				.getContentType(PI_RESOURCES_TESTS + ".empty-ns-root-element");
-		IContentType xmlType = contentTypeManager.getContentType(Platform.PI_RUNTIME + ".xml");
+				.getContentType(PI_RESOURCES_TESTS + ".empty-ns-root-element"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType xmlType = contentTypeManager.getContentType(Platform.PI_RUNTIME + ".xml"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		IContentType[] contentTypes = contentTypeManager.findContentTypesFor(
 				getInputStream(XML_ROOT_ELEMENT_ISO_8859_1, StandardCharsets.ISO_8859_1), "fake.xml");
@@ -1478,15 +1478,15 @@ public class IContentTypeManagerTest {
 	public void testSignatureBeyondBufferLimit() throws IOException {
 		int bufferLimit = ContentTypeManager.BLOCK_SIZE * 4;
 		// create a long XML comment as prefix
-		StringBuilder comment = new StringBuilder("<!--");
-		for (int i = 0; i < bufferLimit; i++) {
-			comment.append('*');
+		StringBuilder comment = new StringBuilder("<!--"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < bufferLimit; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			comment.append('*'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		comment.append("-->");
+		comment.append("-->"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		IContentTypeManager manager = Platform.getContentTypeManager();
-		IContentType rootElement = manager.getContentType(PI_RESOURCES_TESTS + ".root-element");
+		IContentType rootElement = manager.getContentType(PI_RESOURCES_TESTS + ".root-element"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IContentType selected = manager.findContentTypeFor(
-				getInputStream(comment + XML_ROOT_ELEMENT_NO_DECL, StandardCharsets.US_ASCII), "fake.xml");
+				getInputStream(comment + XML_ROOT_ELEMENT_NO_DECL, StandardCharsets.US_ASCII), "fake.xml"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNotNull(selected);
 		assertEquals(rootElement, selected);
 	}
@@ -1494,10 +1494,10 @@ public class IContentTypeManagerTest {
 	/**
 	 * See also: bug 72796.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testUserDefinedAssociations() throws CoreException {
 		IContentTypeManager manager = Platform.getContentTypeManager();
-		IContentType text = manager.getContentType((Platform.PI_RUNTIME + ".text"));
+		IContentType text = manager.getContentType((Platform.PI_RUNTIME + ".text")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		assertNull(manager.findContentTypeFor("test.mytext"));
 		// associate a user-defined file spec
@@ -1518,11 +1518,11 @@ public class IContentTypeManagerTest {
 		assertNull(result);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDescriberInvalidation() throws IOException {
 		IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
-		IContentType type_bug182337_A = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".Bug182337_A");
-		IContentType type_bug182337_B = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".Bug182337_B");
+		IContentType type_bug182337_A = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".Bug182337_A"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IContentType type_bug182337_B = contentTypeManager.getContentType(PI_RESOURCES_TESTS + ".Bug182337_B"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		IContentType[] contentTypes = contentTypeManager.findContentTypesFor(
 				getInputStream(XML_ROOT_ELEMENT_NS_MATCH2, StandardCharsets.UTF_8), "Bug182337.Bug182337");

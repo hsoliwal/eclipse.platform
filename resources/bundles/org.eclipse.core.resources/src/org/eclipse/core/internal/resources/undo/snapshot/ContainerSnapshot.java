@@ -52,7 +52,7 @@ public abstract class ContainerSnapshot<T extends IContainer> extends AbstractRe
 
 	String defaultCharSet;
 
-	final List<IResourceSnapshot<? extends IResource>> members = new ArrayList<>();
+	final List<IResourceSnapshot<? extends IResource>> members = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	/**
 	 * Create a container snapshot from the specified container handle that can be
@@ -82,7 +82,7 @@ public abstract class ContainerSnapshot<T extends IContainer> extends AbstractRe
 		return fromContainer(container, true);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public static <R extends IContainer> ContainerSnapshot<? extends R> fromContainer(R container, boolean usingVirtualFolder) {
 		IPath fullPath = container.getFullPath();
 		ContainerSnapshot<? extends IContainer> firstCreatedParent = null;
@@ -99,7 +99,7 @@ public abstract class ContainerSnapshot<T extends IContainer> extends AbstractRe
 		// Create container descriptions for any uncreated parents in the given
 		// path.
 		currentContainer = root;
-		for (int i = 0; i < fullPath.segmentCount(); i++) {
+		for (int i = 0; i < fullPath.segmentCount(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String currentSegment = fullPath.segment(i);
 			IResource resource = currentContainer.findMember(currentSegment);
 			if (resource != null) {
@@ -140,7 +140,7 @@ public abstract class ContainerSnapshot<T extends IContainer> extends AbstractRe
 	 *
 	 * @param container the container to be described
 	 */
-	public ContainerSnapshot(T container) {
+	public ContainerSnapshot(T container) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super(container);
 		this.name = container.getName();
 		if (container.isLinked()) {
@@ -150,7 +150,7 @@ public abstract class ContainerSnapshot<T extends IContainer> extends AbstractRe
 			if (container.isAccessible()) {
 				defaultCharSet = container.getDefaultCharset(false);
 				IResource[] resourceMembers = container.members();
-				for (IResource resourceMember : resourceMembers) {
+				for (IResource resourceMember : resourceMembers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					members.add(ResourceSnapshotFactory.fromResource(resourceMember));
 				}
 			}
@@ -172,7 +172,7 @@ public abstract class ContainerSnapshot<T extends IContainer> extends AbstractRe
 			IProgressMonitor monitor) throws CoreException {
 		// restore any children
 		SubMonitor subMonitor = SubMonitor.convert(monitor, members.size());
-		for (IResourceSnapshot<? extends IResource> member : members) {
+		for (IResourceSnapshot<? extends IResource> member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (member instanceof AbstractResourceSnapshot) {
 				((AbstractResourceSnapshot<? extends IResource>) member).parent = parentHandle;
 			}
@@ -185,7 +185,7 @@ public abstract class ContainerSnapshot<T extends IContainer> extends AbstractRe
 		if (members != null) {
 			SubMonitor subMonitor = SubMonitor.convert(mon, ResourceSnapshotMessages.FolderDescription_SavingUndoInfoProgress,
 					members.size());
-			for (IResourceSnapshot<? extends IResource> member : members) {
+			for (IResourceSnapshot<? extends IResource> member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				SubMonitor iterationMonitor = subMonitor.split(1);
 				if (member instanceof FileSnapshot fileSnapshot) {
 					fileSnapshot.recordStateFromHistory(iterationMonitor);
@@ -259,7 +259,7 @@ public abstract class ContainerSnapshot<T extends IContainer> extends AbstractRe
 		if (existence) {
 			if (checkMembers) {
 				// restore any children
-				for (IResourceSnapshot<? extends IResource> member : members) {
+				for (IResourceSnapshot<? extends IResource> member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (!member.verifyExistence(checkMembers)) {
 						return false;
 					}

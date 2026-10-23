@@ -40,7 +40,7 @@ public class CaseSensitivityTest {
 
 	private final boolean isCaseSensitive = Workspace.caseSensitive;
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateProjects() throws Throwable {
 		String projectName = "testProject31415";
 
@@ -62,7 +62,7 @@ public class CaseSensitivityTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateFolders() throws Throwable {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -86,7 +86,7 @@ public class CaseSensitivityTest {
 		assertThrows(CoreException.class, () -> file.create(createRandomContentsStream(), true, null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateFiles() throws Throwable {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -110,7 +110,7 @@ public class CaseSensitivityTest {
 		assertThrows(CoreException.class, () -> folder.create(true, true, null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRenameProject() throws Throwable {
 		String project1name = "project1test31415";
 		String project2name = "project2test31415";
@@ -134,7 +134,7 @@ public class CaseSensitivityTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRenameFolder() throws Throwable {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -159,7 +159,7 @@ public class CaseSensitivityTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRenameFile() throws Throwable {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -184,7 +184,7 @@ public class CaseSensitivityTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyAndMoveFolder() throws Throwable {
 		IProject sourceProject = getWorkspace().getRoot().getProject("Source");
 		createInWorkspace(sourceProject);
@@ -215,7 +215,7 @@ public class CaseSensitivityTest {
 				() -> folder1.move(destinationProject.getFullPath().append(folder1.getName()), true, null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyAndMoveFile() throws Throwable {
 		IProject sourceProject = getWorkspace().getRoot().getProject("Source");
 		createInWorkspace(sourceProject);
@@ -246,7 +246,7 @@ public class CaseSensitivityTest {
 				() -> file1.move(destinationProject.getFullPath().append(file1.getName()), true, null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyAndMoveFolderOverFile() throws Throwable {
 		IProject sourceProject = getWorkspace().getRoot().getProject("Source");
 		createInWorkspace(sourceProject);
@@ -277,7 +277,7 @@ public class CaseSensitivityTest {
 				() -> folder.move(destinationProject.getFullPath().append(folder.getName()), true, null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyAndMoveFileOverFolder() throws Throwable {
 		IProject sourceProject = getWorkspace().getRoot().getProject("Source");
 		createInWorkspace(sourceProject);
@@ -308,7 +308,7 @@ public class CaseSensitivityTest {
 				() -> file.move(destinationProject.getFullPath().append(file.getName()), true, null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyAndMoveFolderBecomeProject() throws CoreException {
 		IProject sourceProject = getWorkspace().getRoot().getProject("Source");
 		createInWorkspace(sourceProject);
@@ -328,7 +328,7 @@ public class CaseSensitivityTest {
 		assertThrows(CoreException.class, () -> folder.copy(IPath.ROOT.append(folder.getName()), true, null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyAndMoveProjectBecomeFolder() throws CoreException {
 		IProject sourceProject = getWorkspace().getRoot().getProject("Source");
 		createInWorkspace(sourceProject);
@@ -350,7 +350,7 @@ public class CaseSensitivityTest {
 				() -> sourceProject.copy(destinationProject.getFullPath().append(sourceProject.getName()), true, null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshLocalFolder1() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -376,7 +376,7 @@ public class CaseSensitivityTest {
 		assertTrue(herringRouge.exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshLocalFile1() throws Exception {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -401,7 +401,7 @@ public class CaseSensitivityTest {
 		assertTrue(herringRouge.exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshLocalFolder2() throws Exception {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -426,7 +426,7 @@ public class CaseSensitivityTest {
 		assertTrue(herringRouge.exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshLocalFile2() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -455,7 +455,7 @@ public class CaseSensitivityTest {
 		assertTrue(herringRouge.exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteResources() throws CoreException, IOException {
 		String name = "test31415";
 

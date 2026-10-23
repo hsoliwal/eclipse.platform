@@ -70,7 +70,7 @@ public class TestProjectDeletion {
 	}
 
 	private void checkAffectedChildrenStatus(IResourceDelta[] affectedChildren, boolean deleteContents) {
-		for (IResourceDelta iResourceDelta : affectedChildren) {
+		for (IResourceDelta iResourceDelta : affectedChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertEquals(IResourceDelta.REMOVED, iResourceDelta.getKind(),
 					"IResourceDelta.REMOVED kind is expected on project deletion.");
 			if (deleteContents) {

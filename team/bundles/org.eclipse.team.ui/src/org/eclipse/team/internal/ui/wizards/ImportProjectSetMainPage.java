@@ -77,7 +77,7 @@ public class ImportProjectSetMainPage extends TeamWizardPage {
 		setDescription(TeamUIMessages.ImportProjectSetMainPage_description);
 	}
 
-	private void setInputType(int inputTypeSelected) {
+	private void setInputType(int inputTypeSelected) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		this.inputType = inputTypeSelected;
 		// reset the message type and give the user fresh chance to input
 		// correct data
@@ -98,7 +98,7 @@ public class ImportProjectSetMainPage extends TeamWizardPage {
 
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createControl(Composite parent) {
 		Composite composite = createComposite(parent, 1);
 		initializeDialogUnits(composite);
@@ -118,7 +118,7 @@ public class ImportProjectSetMainPage extends TeamWizardPage {
 		fileInputButton
 				.setText(TeamUIMessages.ImportProjectSetMainPage_Project_Set_File);
 		fileInputButton.setEnabled(true);
-		fileInputButton.addSelectionListener(new SelectionAdapter() {
+		fileInputButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				setInputType(InputType_file);
@@ -129,7 +129,7 @@ public class ImportProjectSetMainPage extends TeamWizardPage {
 		file = psfFilenameStore.getSuggestedDefault();
 		fileCombo.setItems(psfFilenameStore.getHistory());
 		fileCombo.setText(file);
-		fileCombo.addListener(SWT.Modify, unused -> {
+		fileCombo.addListener(SWT.Modify, unused -> { //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 			file = fileCombo.getText();
 			updateFileEnablement();
 		});
@@ -140,7 +140,7 @@ public class ImportProjectSetMainPage extends TeamWizardPage {
 		urlInputButton = new Button(inner, SWT.RADIO);
 		urlInputButton
 				.setText(TeamUIMessages.ImportProjectSetMainPage_Project_Set_Url);
-		urlInputButton.addSelectionListener(new SelectionAdapter() {
+		urlInputButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				setInputType(InputType_URL);
@@ -153,7 +153,7 @@ public class ImportProjectSetMainPage extends TeamWizardPage {
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalSpan = 2;
 		urlCombo.setLayoutData(gd);
-		urlCombo.addListener(SWT.Modify, unused -> {
+		urlCombo.addListener(SWT.Modify, unused -> { //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 			urlString = urlCombo.getText();
 			updateUrlEnablement();
 		});
@@ -163,7 +163,7 @@ public class ImportProjectSetMainPage extends TeamWizardPage {
 		int widthHint = convertHorizontalDLUsToPixels(IDialogConstants.BUTTON_WIDTH);
 		data.widthHint = Math.max(widthHint, browseButton.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x);
 		browseButton.setLayoutData(data);
-		browseButton.addListener(SWT.Selection, unused -> {
+		browseButton.addListener(SWT.Selection, unused -> { //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 			FileDialog d = new FileDialog(getShell());
 			d.setFilterExtensions("*.psf", "*"); //$NON-NLS-1$ //$NON-NLS-2$
 			d.setFilterNames(TeamUIMessages.ImportProjectSetMainPage_Project_Set_Files_2, TeamUIMessages.ImportProjectSetMainPage_allFiles); //
@@ -189,7 +189,7 @@ public class ImportProjectSetMainPage extends TeamWizardPage {
 		Button runInBackgroundCheckbox = SWTUtils.createCheckBox(composite, TeamUIMessages.ImportProjectSetMainPage_runInBackground, 3);
 
 		runInBackgroundCheckbox.setSelection(isRunInBackgroundPreferenceOn());
-		runInBackgroundCheckbox.addSelectionListener(new SelectionAdapter() {
+		runInBackgroundCheckbox.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				runInBackground = !runInBackground;
@@ -201,7 +201,7 @@ public class ImportProjectSetMainPage extends TeamWizardPage {
 		Dialog.applyDialogFont(parent);
 	}
 
-	private void setDefaultInputType() {
+	private void setDefaultInputType() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// check for clipboard contents
 		Control c = getControl();
 		if (c != null) {
@@ -232,7 +232,7 @@ public class ImportProjectSetMainPage extends TeamWizardPage {
 						"org.eclipse.jdt.ui.JavaWorkingSetPage" /* JavaWorkingSetUpdater.ID */}); //$NON-NLS-1$
 	}
 
-	private void updateUrlEnablement() {
+	private void updateUrlEnablement() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean complete = false;
 		setMessage(null);
 		setErrorMessage(null);
@@ -263,7 +263,7 @@ public class ImportProjectSetMainPage extends TeamWizardPage {
 		setPageComplete(complete);
 	}
 
-	private void updateFileEnablement() {
+	private void updateFileEnablement() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean complete = false;
 		setMessage(null);
 		setErrorMessage(null);
@@ -341,7 +341,7 @@ public class ImportProjectSetMainPage extends TeamWizardPage {
 		return inputType;
 	}
 
-	public String getURLContents() {
+	public String getURLContents() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			PsfUrlStore.getInstance().remember(urlString);
 			String urlContent = Utilities.getURLContents(new URL(urlString),

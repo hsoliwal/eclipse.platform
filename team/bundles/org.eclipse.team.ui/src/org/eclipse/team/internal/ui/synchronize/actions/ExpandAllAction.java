@@ -23,20 +23,20 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 
 
-public class ExpandAllAction extends Action implements ISelectionChangedListener {
+public class ExpandAllAction extends Action implements ISelectionChangedListener { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 	private final AbstractTreeViewer viewer;
 
 	public ExpandAllAction(AbstractTreeViewer viewer) {
 		this.viewer = viewer;
-		viewer.addSelectionChangedListener(this);
+		viewer.addSelectionChangedListener(this); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 	}
 	@Override
 	public void run() {
 		expandAllFromSelection();
 	}
 
-	protected void expandAllFromSelection() {
+	protected void expandAllFromSelection() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		AbstractTreeViewer tree = viewer;
 		if (tree == null) {
 			return;
@@ -46,7 +46,7 @@ public class ExpandAllAction extends Action implements ISelectionChangedListener
 			Iterator elements = selection.iterator();
 			try {
 				tree.getControl().setRedraw(false);
-				while (elements.hasNext()) {
+				while (elements.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Object next = elements.next();
 					tree.expandToLevel(next, AbstractTreeViewer.ALL_LEVELS);
 				}

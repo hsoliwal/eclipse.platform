@@ -64,7 +64,7 @@ import org.eclipse.swt.widgets.Widget;
  */
 public class DiffTreeViewer extends TreeViewer {
 
-	class DiffViewerContentProvider implements ITreeContentProvider {
+	class DiffViewerContentProvider implements ITreeContentProvider { //FLLDCIM: MARK — M22  IMPLEMENTS
 		@Override
 		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 			// Empty implementation.
@@ -122,7 +122,7 @@ public class DiffTreeViewer extends TreeViewer {
 			return Utilities.getString(fBundle, "defaultLabel"); //$NON-NLS-1$
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		@SuppressWarnings("incomplete-switch")
 		public Image getImage(Object element) {
 			if (element instanceof IDiffElement input) {
@@ -160,7 +160,7 @@ public class DiffTreeViewer extends TreeViewer {
 		}
 	}
 
-	static class FilterSame extends ViewerFilter {
+	static class FilterSame extends ViewerFilter { //FLLDCIM: MARK — T23  IMPLEMENTS
 		@Override
 		public boolean select(Viewer viewer, Object parentElement, Object element) {
 			if (element instanceof IDiffElement) {
@@ -203,7 +203,7 @@ public class DiffTreeViewer extends TreeViewer {
 		initialize(configuration == null ? new CompareConfiguration() : configuration);
 	}
 
-	private void initialize(CompareConfiguration configuration) {
+	private void initialize(CompareConfiguration configuration) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Control tree= getControl();
 
 		INavigatable nav= new INavigatable() {
@@ -243,14 +243,14 @@ public class DiffTreeViewer extends TreeViewer {
 		fCompareConfiguration= configuration;
 		if (fCompareConfiguration != null) {
 			fPropertyChangeListener = this::propertyChange;
-			fCompareConfiguration.addPropertyChangeListener(fPropertyChangeListener);
+			fCompareConfiguration.addPropertyChangeListener(fPropertyChangeListener); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		}
 
 		setContentProvider(new DiffViewerContentProvider());
-		setLabelProvider(diffViewerLabelProvider);
+		setLabelProvider(diffViewerLabelProvider); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 
-		addSelectionChangedListener(unused -> updateActions());
-		addDoubleClickListener(this::expandCollapseAction);
+		addSelectionChangedListener(unused -> updateActions()); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
+		addDoubleClickListener(this::expandCollapseAction); //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
 
 		setComparator(new DiffViewerComparator());
 
@@ -270,7 +270,7 @@ public class DiffTreeViewer extends TreeViewer {
 
 		MenuManager mm= new MenuManager();
 		mm.setRemoveAllWhenShown(true);
-		mm.addMenuListener(
+		mm.addMenuListener( //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 				mm2 -> {
 					fillContextMenu(mm2);
 					if (mm2.isEmpty()) {
@@ -432,7 +432,7 @@ public class DiffTreeViewer extends TreeViewer {
 	 *
 	 * @param manager the menu manager for which to add the actions
 	 */
-	protected void fillContextMenu(IMenuManager manager) {
+	protected void fillContextMenu(IMenuManager manager) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fExpandAllAction == null) {
 			fExpandAllAction= new Action() {
 				@Override
@@ -447,7 +447,7 @@ public class DiffTreeViewer extends TreeViewer {
 		ISelection selection= getSelection();
 		if (selection instanceof IStructuredSelection) {
 			Iterator<?> elements= ((IStructuredSelection) selection).iterator();
-			while (elements.hasNext()) {
+			while (elements.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Object element= elements.next();
 				if (element instanceof IDiffContainer) {
 					if (((IDiffContainer) element).hasChildren()) {
@@ -470,7 +470,7 @@ public class DiffTreeViewer extends TreeViewer {
 		ISelection selection= getSelection();
 		if (selection instanceof IStructuredSelection) {
 			Iterator<?> elements= ((IStructuredSelection) selection).iterator();
-			while (elements.hasNext()) {
+			while (elements.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Object next= elements.next();
 				expandToLevel(next, ALL_LEVELS);
 			}
@@ -489,7 +489,7 @@ public class DiffTreeViewer extends TreeViewer {
 		ISelection selection= getSelection();
 		if (selection instanceof IStructuredSelection) {
 			Iterator<?> e= ((IStructuredSelection) selection).iterator();
-			while (e.hasNext()) {
+			while (e.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Object element= e.next();
 				if (element instanceof ICompareInput) {
 					copyOne((ICompareInput) element, leftToRight);
@@ -551,7 +551,7 @@ public class DiffTreeViewer extends TreeViewer {
 		return item == null;
 	}
 
-	private TreeItem getNextItem(boolean next, boolean expand) {
+	private TreeItem getNextItem(boolean next, boolean expand) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Control c= getControl();
 		if (!(c instanceof Tree tree) || c.isDisposed()) {
 			return null;
@@ -572,7 +572,7 @@ public class DiffTreeViewer extends TreeViewer {
 			}
 		}
 
-		while (true) {
+		while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			item= findNextPrev(item, next, expand);
 			if (item == null) {
 				break;
@@ -584,7 +584,7 @@ public class DiffTreeViewer extends TreeViewer {
 		return item;
 	}
 
-	private TreeItem findNextPrev(TreeItem item, boolean next, boolean expand) {
+	private TreeItem findNextPrev(TreeItem item, boolean next, boolean expand) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (item == null) {
 			return null;
 		}
@@ -602,7 +602,7 @@ public class DiffTreeViewer extends TreeViewer {
 			if (children != null && children.length > 0) {
 				// Go to previous child.
 				int index= 0;
-				for (; index < children.length; index++) {
+				for (; index < children.length; index++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (children[index] == item) {
 						break;
 					}
@@ -611,7 +611,7 @@ public class DiffTreeViewer extends TreeViewer {
 				if (index > 0) {
 					item= children[index-1];
 
-					while (true) {
+					while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						createChildren(item);
 						int n= item.getItemCount();
 						if (n <= 0) {
@@ -643,7 +643,7 @@ public class DiffTreeViewer extends TreeViewer {
 				return children[0];
 			}
 
-			while (item != null) {
+			while (item != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				children= null;
 				TreeItem parent= item.getParentItem();
 				if (parent != null) {
@@ -655,7 +655,7 @@ public class DiffTreeViewer extends TreeViewer {
 				if (children != null && children.length > 0) {
 					// Goto next child.
 					int index= 0;
-					for (; index < children.length; index++) {
+					for (; index < children.length; index++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (children[index] == item) {
 							break;
 						}

@@ -60,7 +60,7 @@ public class TextualTrace {
 	 * @param display        a target display
 	 * @param maxLabelLength a maximum number of characters to be displayed
 	 */
-	public void display(ITraceDisplay display, int maxLabelLength) {
+	public void display(ITraceDisplay display, int maxLabelLength) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		StringReader stringReader = new StringReader(fTrace);
 		BufferedReader bufferedReader = new BufferedReader(stringReader);
 		String line;
@@ -75,7 +75,7 @@ public class TextualTrace {
 			displayWrappedLine(display, maxLabelLength, line, LINE_TYPE_EXCEPTION);
 
 			// the stack frames of the trace
-			while ((line = readLine(bufferedReader)) != null) {
+			while ((line = readLine(bufferedReader)) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int type = isAStackFrame(line) ? LINE_TYPE_STACKFRAME : LINE_TYPE_NORMAL;
 				displayWrappedLine(display, maxLabelLength, line, type);
 			}
@@ -91,7 +91,7 @@ public class TextualTrace {
 		} else {
 			display.addTraceLine(type, line.substring(0, maxLabelLength));
 			int offset = maxLabelLength;
-			while (offset < labelLength) {
+			while (offset < labelLength) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int nextOffset = Math.min(labelLength, offset + maxLabelLength);
 				display.addTraceLine(LINE_TYPE_NORMAL, line.substring(offset, nextOffset));
 				offset = nextOffset;
@@ -100,7 +100,7 @@ public class TextualTrace {
 	}
 
 	private boolean filterLine(Collection<StringMatcher> patterns, String line) {
-		for (StringMatcher pattern : patterns) {
+		for (StringMatcher pattern : patterns) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (pattern.match(line)) {
 				return true;
 			}
@@ -108,7 +108,7 @@ public class TextualTrace {
 		return false;
 	}
 
-	private String filterStack(String stackTrace, Collection<StringMatcher> filterPatterns) {
+	private String filterStack(String stackTrace, Collection<StringMatcher> filterPatterns) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (filterPatterns == null || filterPatterns.isEmpty() || stackTrace == null) {
 			return stackTrace;
 		}
@@ -121,7 +121,7 @@ public class TextualTrace {
 		String line;
 		boolean firstLine = true;
 		try {
-			while ((line = bufferedReader.readLine()) != null) {
+			while ((line = bufferedReader.readLine()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (firstLine || !filterLine(filterPatterns, line)) {
 					printWriter.println(line);
 				}

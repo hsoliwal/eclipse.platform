@@ -24,7 +24,7 @@ public class Policy {
 	public static boolean debugContentMergeViewer = false;
 
 	static final DebugOptionsListener DEBUG_OPTIONS_LISTENER = options -> {
-		boolean DEBUG = options.getBooleanOption(CompareUIPlugin.PLUGIN_ID + "/debug", false); //$NON-NLS-1$
-		debugContentMergeViewer = DEBUG && options.getBooleanOption(CompareUIPlugin.PLUGIN_ID + "/content_merge_viewer", false); //$NON-NLS-1$
+		boolean DEBUG = options.getBooleanOption(CompareUIPlugin.PLUGIN_ID + "/debug", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		debugContentMergeViewer = DEBUG && options.getBooleanOption(CompareUIPlugin.PLUGIN_ID + "/content_merge_viewer", false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	};
 }

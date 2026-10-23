@@ -46,7 +46,7 @@ public class Bug_265810 {
 
 	private @TempDir Path tempDirectory;
 
-	List<IResourceDelta> resourceDeltas = new ArrayList<>();
+	List<IResourceDelta> resourceDeltas = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	public IPath createFolderAtRandomLocation() throws IOException {
 		IPath path = IPath.fromPath(tempDirectory).append(createUniqueString());
@@ -54,7 +54,7 @@ public class Bug_265810 {
 		return path;
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug() throws Throwable {
 		// create a project
 		IProject project = getWorkspace().getRoot().getProject(createUniqueString());
@@ -83,9 +83,9 @@ public class Bug_265810 {
 		final AtomicReference<Executable> listenerInMainThreadCallback = new AtomicReference<>(() -> {
 		});
 
-		IResourceChangeListener listener = event -> {
+		IResourceChangeListener listener = event -> { //FLLDCIM: MARK — T07  LAMBDA
 			try {
-				event.getDelta().accept(delta -> {
+				event.getDelta().accept(delta -> { //FLLDCIM: MARK — T07  LAMBDA
 					IResource resource = delta.getResource();
 					if (resource instanceof IFile && !resource.getName().equals(".project")) {
 						addToResourceDelta(delta);
@@ -103,7 +103,7 @@ public class Bug_265810 {
 		};
 
 		try {
-			resourceDeltas = new ArrayList<>();
+			resourceDeltas = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			getWorkspace().addResourceChangeListener(listener);
 
 			// restore .project [1]
@@ -122,7 +122,7 @@ public class Bug_265810 {
 		newFile.create(createInputStream("content"), IResource.NONE, new NullProgressMonitor());
 
 		try {
-			resourceDeltas = new ArrayList<>();
+			resourceDeltas = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			getWorkspace().addResourceChangeListener(listener);
 
 			// restore .project [2]

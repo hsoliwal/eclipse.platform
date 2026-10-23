@@ -53,7 +53,7 @@ abstract public class StateTests extends AbstractViewerModelTest implements ITes
 		return fViewer;
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testUpdateViewer() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 
@@ -109,11 +109,11 @@ abstract public class StateTests extends AbstractViewerModelTest implements ITes
 		fViewer.saveElementState(path0, savedDelta, IModelDelta.EXPAND | IModelDelta.SELECT);
 
 		if (!deltaMatches(updateDelta, savedDelta) ) {
-			fail("Expected:\n" + updateDelta + "\nGot:\n" + savedDelta); //$NON-NLS-1$ //$NON-NLS-2$
+			fail("Expected:\n" + updateDelta + "\nGot:\n" + savedDelta); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
-	boolean deltaMatches(ModelDelta requested, ModelDelta received) {
+	boolean deltaMatches(ModelDelta requested, ModelDelta received) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if ( requested.getElement().equals(received.getElement()) &&
 			requested.getFlags() == received.getFlags() &&
 			( requested.getChildCount() == -1 || requested.getChildCount() == received.getChildCount() )&&
@@ -122,7 +122,7 @@ abstract public class StateTests extends AbstractViewerModelTest implements ITes
 			  (requested.getReplacementElement() == null && received.getReplacementElement() == null)) &&
 			  requested.getChildDeltas().length == received.getChildDeltas().length)
 		{
-			for (int i = 0; i < requested.getChildDeltas().length; i++) {
+			for (int i = 0; i < requested.getChildDeltas().length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ModelDelta requestedChildDelta = (ModelDelta)requested.getChildDeltas()[i];
 				ModelDelta receivedChildDelta = received.getChildDelta(requestedChildDelta.getElement());
 				if ( receivedChildDelta == null || !deltaMatches(requestedChildDelta, receivedChildDelta) ) {
@@ -156,12 +156,12 @@ abstract public class StateTests extends AbstractViewerModelTest implements ITes
 		TestModel model = new TestModel();
 
 		TestElement[] elements = new TestElement[size];
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String text = Integer.toString(i + 1);
 			elements[i] =
 				new TestElement(model, text, new TestElement[] {
- new TestElement(model, text + ".1", new TestElement[] { //$NON-NLS-1$
-			new TestElement(model, text + ".1.1", new TestElement[0]) //$NON-NLS-1$
+ new TestElement(model, text + ".1", new TestElement[] { //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			new TestElement(model, text + ".1.1", new TestElement[0]) //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					})
 				});
 		}
@@ -204,15 +204,15 @@ abstract public class StateTests extends AbstractViewerModelTest implements ITes
 	 *            be reported when fetched
 	 * @return The model
 	 */
-	static TestModel alternatingSubtreesModelWithChildren(int size, int childrenCount, Supplier<Boolean> shouldReturnChildren) {
+	static TestModel alternatingSubtreesModelWithChildren(int size, int childrenCount, Supplier<Boolean> shouldReturnChildren) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TestModel model = new TestModel();
 		TestElement[] elements = new TestElement[size];
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String text = Integer.toString(i + 1);
 
 			TestElement[] children = new TestElement[childrenCount];
-			for (int x = 0; x < childrenCount; x++) {
-				children[x] = new TestElement(model, text + "." + (x + 1), new TestElement[0]);
+			for (int x = 0; x < childrenCount; x++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				children[x] = new TestElement(model, text + "." + (x + 1), new TestElement[0]); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 
 			elements[i] = new TestElement(model, text, children) {
@@ -233,16 +233,16 @@ abstract public class StateTests extends AbstractViewerModelTest implements ITes
 	}
 
 	static boolean areTreeSelectionsEqual(ITreeSelection sel1, ITreeSelection sel2) {
-		Set<TreePath> sel1Set = new HashSet<>();
+		Set<TreePath> sel1Set = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		sel1Set.addAll( Arrays.asList(sel1.getPaths()) );
 
-		Set<TreePath> sel2Set = new HashSet<>();
+		Set<TreePath> sel2Set = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		sel2Set.addAll( Arrays.asList(sel2.getPaths()) );
 
 		return sel1Set.equals(sel2Set);
 	}
 
-	static void expandAlternateElements(TestModelUpdatesListener listener, TestModel model, boolean waitForAllUpdates) throws Exception {
+	static void expandAlternateElements(TestModelUpdatesListener listener, TestModel model, boolean waitForAllUpdates) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		listener.reset();
 		listener.setFailOnRedundantUpdates(false);
 
@@ -250,7 +250,7 @@ abstract public class StateTests extends AbstractViewerModelTest implements ITes
 		TestElement[] children = rootElement.getChildren();
 		ModelDelta rootDelta = new ModelDelta(rootElement, IModelDelta.NO_CHANGE);
 		ModelDelta expandDelta = model.getBaseDelta(rootDelta);
-		for (int i = 0; i < children.length; i++) {
+		for (int i = 0; i < children.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// Expand only odd children
 			if (i % 2 == 1) {
 				continue;
@@ -260,7 +260,7 @@ abstract public class StateTests extends AbstractViewerModelTest implements ITes
 			TestElement element = children[i];
 			ModelDelta delta = expandDelta;
 			int index = i;
-			while (element.getChildren().length != 0) {
+			while (element.getChildren().length != 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				TreePath elementPath = model.findElement(element.getLabel());
 				listener.addUpdates(
 					elementPath, element, 1,
@@ -272,10 +272,10 @@ abstract public class StateTests extends AbstractViewerModelTest implements ITes
 		}
 		model.postDelta(rootDelta);
 
-		TestUtil.waitWhile(() -> !listener.isFinished(CONTENT_SEQUENCE_COMPLETE | MODEL_CHANGED_COMPLETE), 30000, () -> "Listener not finished: " + listener);
+		TestUtil.waitWhile(() -> !listener.isFinished(CONTENT_SEQUENCE_COMPLETE | MODEL_CHANGED_COMPLETE), 30000, () -> "Listener not finished: " + listener); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreserveExpandedOnRemove() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = alternatingSubsreesModel(6);
@@ -316,7 +316,7 @@ abstract public class StateTests extends AbstractViewerModelTest implements ITes
 		assertTrue(areTreeSelectionsEqual(originalSelection, (ITreeSelection) fViewer.getSelection()));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreserveExpandedOnInsert() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = alternatingSubsreesModel(6);
@@ -362,7 +362,7 @@ abstract public class StateTests extends AbstractViewerModelTest implements ITes
 		assertTrue(areTreeSelectionsEqual(originalSelection, (ITreeSelection) fViewer.getSelection()));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreserveExpandedOnMultLevelContent() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = alternatingSubsreesModel(6);
@@ -418,7 +418,7 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 		assertTrue( fListener.checkCoalesced(TreePath.EMPTY, 0, 5) );
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testKeepCollapsedAfterRemovingAndReaddingChildrenInExpandedTree() throws Exception {
 		boolean showChildren[] = new boolean[] { true };
 		int size = 3;
@@ -445,11 +445,11 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 			TestElement[] children = rootElement.getChildren();
 			ModelDelta rootDelta = new ModelDelta(rootElement, IModelDelta.NO_CHANGE);
 			ModelDelta expandDelta = model.getBaseDelta(rootDelta);
-			for (int i = 0; i < children.length; i++) {
+			for (int i = 0; i < children.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				TestElement element = children[i];
 				ModelDelta delta = expandDelta;
 				int index = i;
-				while (element.getChildren().length != 0) {
+				while (element.getChildren().length != 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					TreePath elementPath = model.findElement(element.getLabel());
 					fListener.addUpdates(elementPath, element, 1, CHILD_COUNT_UPDATES | CHILDREN_UPDATES);
 					delta = delta.addNode(element, index, IModelDelta.EXPAND | IModelDelta.CONTENT, element.getChildren().length);
@@ -460,7 +460,7 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 
 			model.postDelta(rootDelta);
 
-			TestUtil.waitWhile(() -> !fListener.isFinished(ALL_UPDATES_COMPLETE | MODEL_CHANGED_COMPLETE), 300000, () -> "Listener not finished: " + fListener);
+			TestUtil.waitWhile(() -> !fListener.isFinished(ALL_UPDATES_COMPLETE | MODEL_CHANGED_COMPLETE), 300000, () -> "Listener not finished: " + fListener); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		/*
@@ -481,7 +481,7 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 
 			model.postDelta(rootDelta);
 
-			TestUtil.waitWhile(() -> !fListener.isFinished(ALL_UPDATES_COMPLETE | MODEL_CHANGED_COMPLETE), 60000, () -> "Listener not finished: " + fListener);
+			TestUtil.waitWhile(() -> !fListener.isFinished(ALL_UPDATES_COMPLETE | MODEL_CHANGED_COMPLETE), 60000, () -> "Listener not finished: " + fListener); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		/*
@@ -511,7 +511,7 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 
 			model.postDelta(rootDelta);
 
-			TestUtil.waitWhile(() -> !fListener.isFinished(ALL_UPDATES_COMPLETE | MODEL_CHANGED_COMPLETE), 60000, () -> "Listener not finished: " + fListener);
+			TestUtil.waitWhile(() -> !fListener.isFinished(ALL_UPDATES_COMPLETE | MODEL_CHANGED_COMPLETE), 60000, () -> "Listener not finished: " + fListener); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		/*
@@ -533,18 +533,18 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 
 			model.postDelta(rootDelta);
 
-			TestUtil.waitWhile(() -> !fListener.isFinished(ALL_UPDATES_COMPLETE | MODEL_CHANGED_COMPLETE), 6000000, () -> "Listener not finished: " + fListener);
+			TestUtil.waitWhile(() -> !fListener.isFinished(ALL_UPDATES_COMPLETE | MODEL_CHANGED_COMPLETE), 6000000, () -> "Listener not finished: " + fListener); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		/*
 		 * Only first element should be expanded, all other should be collapsed
 		 */
-		for (int i = 1; i <= size; i++) {
+		for (int i = 1; i <= size; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertTrue(getInternalViewer().getExpandedState(model.findElement(Integer.toString(i))) == (i == 1));
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreserveExpandedOnSubTreeContent() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = TestModel.simpleMultiLevel();
@@ -595,7 +595,7 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 		assertTrue(areTreeSelectionsEqual(originalSelection, (ITreeSelection) fViewer.getSelection()));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreserveExpandedOnContentStress() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = alternatingSubsreesModel(6);
@@ -621,7 +621,7 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 
 		// Run this test ten times as we've seen intermittent failures related
 		// to timing in it.
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 10; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// Update the model
 			model.removeElementChild(TreePath.EMPTY, 0);
 
@@ -664,7 +664,7 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreserveLargeModelOnContent(TestInfo testInfo) throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = alternatingSubsreesModel(100);
@@ -728,7 +728,7 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 	 * content refresh, the state restore logic will not override the selection
 	 * requested by the model.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreserveSelectionDeltaAfterContent() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = TestModel.simpleMultiLevel();
@@ -771,7 +771,7 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 		assertEquals(new TreeSelection(model.findElement("2.1")), fViewer.getSelection()); //$NON-NLS-1$
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreserveCollapseDeltaAfterContent() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = TestModel.simpleMultiLevel();
@@ -827,7 +827,7 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 		assertFalse(getInternalViewer().getExpandedState(model.findElement("3.1"))); //$NON-NLS-1$
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreserveExpandDeltaAfterContent() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = TestModel.simpleMultiLevel();
@@ -866,7 +866,7 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 		assertTrue(getInternalViewer().getExpandedState(model.findElement("3.1"))); //$NON-NLS-1$
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSaveAndRestore1() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = alternatingSubsreesModel(6);
@@ -910,11 +910,11 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 		fViewer.saveElementState(TreePath.EMPTY, restoredState, IModelDelta.EXPAND | IModelDelta.SELECT);
 
 		if (!deltaMatches(originalState, restoredState)) {
-			fail("Expected:\n" + originalState + "\nGot:\n" + restoredState); //$NON-NLS-1$ //$NON-NLS-2$
+			fail("Expected:\n" + originalState + "\nGot:\n" + restoredState); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSaveAndRestore2() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = TestModel.simpleMultiLevel();
@@ -961,11 +961,11 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 		fViewer.saveElementState(TreePath.EMPTY, restoredState, IModelDelta.EXPAND | IModelDelta.SELECT);
 
 		if (!deltaMatches(originalState, restoredState)) {
-			fail("Expected:\n" + originalState + "\nGot:\n" + restoredState); //$NON-NLS-1$ //$NON-NLS-2$
+			fail("Expected:\n" + originalState + "\nGot:\n" + restoredState); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSaveAndRestoreInputInstance() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = alternatingSubsreesModel(6);
@@ -1004,11 +1004,11 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 		fViewer.saveElementState(TreePath.EMPTY, restoredState, IModelDelta.EXPAND | IModelDelta.SELECT);
 
 		if (!deltaMatches(originalState, restoredState)) {
-			fail("Expected:\n" + originalState + "\nGot:\n" + restoredState); //$NON-NLS-1$ //$NON-NLS-2$
+			fail("Expected:\n" + originalState + "\nGot:\n" + restoredState); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSaveAndRestoreInputInstanceEquals() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = alternatingSubsreesModel(6);
@@ -1050,11 +1050,11 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 		fViewer.saveElementState(TreePath.EMPTY, restoredState, IModelDelta.EXPAND | IModelDelta.SELECT);
 
 		if (!deltaMatches(originalState, restoredState)) {
-			fail("Expected:\n" + originalState + "\nGot:\n" + restoredState); //$NON-NLS-1$ //$NON-NLS-2$
+			fail("Expected:\n" + originalState + "\nGot:\n" + restoredState); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSaveAndRestoreLarge(TestInfo testInfo) throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = alternatingSubsreesModel(100);
@@ -1114,7 +1114,7 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 	 * contain much fewer elements. The restore logic should discard the rest of
 	 * the saved state delta once all the elements are visible.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSaveAndRestorePartialStateLarge(TestInfo testInfo) throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = alternatingSubsreesModel(100);
@@ -1177,7 +1177,7 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 		assertTrue(areTreeSelectionsEqual(originalSelection, (ITreeSelection) fViewer.getSelection()));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreserveCollapseAndSelectDeltaAfterSaveAndRestore() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = TestModel.simpleMultiLevel();
@@ -1246,7 +1246,7 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 	 * This test verifies that RESTORE state is handled after SAVE previous
 	 * state was completed
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSaveRestoreOrder() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = TestModel.simpleMultiLevel();
@@ -1278,7 +1278,7 @@ new TreePath[] { model.findElement("5"), model.findElement("5.1"), model.findEle
 	 * This test tries to restore a viewer state while input == null. See: Bug
 	 * 380288 - NPE switching to the Breakpoints View
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testUpdateWithNullInput() throws Exception {
 		TestModel model = TestModel.simpleMultiLevel();
 		fViewer.setAutoExpandLevel(-1);

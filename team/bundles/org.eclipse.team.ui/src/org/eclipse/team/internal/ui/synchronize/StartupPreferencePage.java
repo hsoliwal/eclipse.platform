@@ -23,7 +23,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 
-public class StartupPreferencePage extends FieldEditorPreferencePage implements
+public class StartupPreferencePage extends FieldEditorPreferencePage implements //FLLDCIM: MARK — T06  IMPLEMENTS
 		IWorkbenchPreferencePage {
 
 	public static final String PROP_STARTUP_ACTION = "startupAction"; //$NON-NLS-1$

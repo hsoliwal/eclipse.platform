@@ -25,9 +25,9 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.console.IOConsoleOutputStream;
 
-public class AntConsoleColorProvider extends ConsoleColorProvider implements IPropertyChangeListener {
+public class AntConsoleColorProvider extends ConsoleColorProvider implements IPropertyChangeListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Color getColor(String streamIdentifer) {
 		if (streamIdentifer.equals(IDebugUIConstants.ID_STANDARD_OUTPUT_STREAM)) {
 			return AntUIPlugin.getPreferenceColor(IAntUIPreferenceConstants.CONSOLE_INFO_COLOR);
@@ -72,7 +72,7 @@ public class AntConsoleColorProvider extends ConsoleColorProvider implements IPr
 	public void propertyChange(PropertyChangeEvent event) {
 		final String streamId = getStreamId(event.getProperty());
 		if (streamId != null) {
-			AntUIPlugin.getStandardDisplay().asyncExec(() -> {
+			AntUIPlugin.getStandardDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				IConsole console = getConsole();
 				if (console == null) {
 					// disconnected before the runnable ran

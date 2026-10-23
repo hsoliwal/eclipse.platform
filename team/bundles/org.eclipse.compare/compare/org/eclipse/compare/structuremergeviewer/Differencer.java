@@ -131,7 +131,7 @@ public class Differencer {
 
 		void add(Node child) {
 			if (fChildren == null) {
-				fChildren= new ArrayList<>();
+				fChildren= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			}
 			fChildren.add(child);
 		}
@@ -143,7 +143,7 @@ public class Differencer {
 			//dump(level);
 			Object data= d.visit(parent, fCode, fAncestor, fLeft, fRight);
 			if (fChildren != null) {
-				for (Node n : fChildren) {
+				for (Node n : fChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					n.visit(d, data, level + 1);
 				}
 			}
@@ -237,7 +237,7 @@ public class Differencer {
 	/*
 	 * Traverse tree in postorder.
 	 */
-	private int traverse(boolean threeWay, Node parent, IProgressMonitor pm,
+	private int traverse(boolean threeWay, Node parent, IProgressMonitor pm, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			Object ancestor, Object left, Object right) {
 		Object[] ancestorChildren= getChildren(ancestor);
 		Object[] rightChildren= getChildren(right);
@@ -254,36 +254,36 @@ public class Differencer {
 			// we only recurse down if no leg is null
 			// a node
 
-			Set<Object> allSet= new HashSet<>(20);
+			Set<Object> allSet= new HashSet<>(20); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			Map<Object, Object> ancestorSet= null;
 			Map<Object, Object> rightSet= null;
 			Map<Object, Object> leftSet= null;
 
 			if (ancestorChildren != null) {
-				ancestorSet= new HashMap<>(10);
-				for (Object ancestorChild : ancestorChildren) {
+				ancestorSet= new HashMap<>(10); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+				for (Object ancestorChild : ancestorChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					ancestorSet.put(ancestorChild, ancestorChild);
 					allSet.add(ancestorChild);
 				}
 			}
 
 			if (rightChildren != null) {
-				rightSet= new HashMap<>(10);
-				for (Object rightChild : rightChildren) {
+				rightSet= new HashMap<>(10); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+				for (Object rightChild : rightChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					rightSet.put(rightChild, rightChild);
 					allSet.add(rightChild);
 				}
 			}
 
 			if (leftChildren != null) {
-				leftSet= new HashMap<>(10);
-				for (Object leftChild : leftChildren) {
+				leftSet= new HashMap<>(10); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+				for (Object leftChild : leftChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					leftSet.put(leftChild, leftChild);
 					allSet.add(leftChild);
 				}
 			}
 
-			for (Object keyChild : allSet) {
+			for (Object keyChild : allSet) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (pm != null) {
 					if (pm.isCanceled()) {
 						throw new OperationCanceledException();
@@ -341,7 +341,7 @@ public class Differencer {
 	 * Performs a 2-way or 3-way compare of the given leaf elements and returns an integer
 	 * describing the kind of difference.
 	 */
-	private int compare(boolean threeway, Object ancestor, Object left, Object right) {
+	private int compare(boolean threeway, Object ancestor, Object left, Object right) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		int description= NO_CHANGE;
 
@@ -461,7 +461,7 @@ public class Differencer {
 	 * @param input2 second input to contents compare
 	 * @return <code>true</code> if content is equal
 	 */
-	protected boolean contentsEqual(Object input1, Object input2) {
+	protected boolean contentsEqual(Object input1, Object input2) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (input1 == input2) {
 			return true;
@@ -479,7 +479,7 @@ public class Differencer {
 				return false;
 			}
 
-			while (true) {
+			while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int c1= is1.read();
 				int c2= is2.read();
 				if (c1 == -1 && c2 == -1) {

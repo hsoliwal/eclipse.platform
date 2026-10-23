@@ -62,7 +62,7 @@ public class FileDiffResultTest {
 	 * Tests applying a patch which creates a new file in a project. The file
 	 * doesn't exist in the project.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPatchAddsNewFile() throws CoreException, IOException {
 		IProject project = getWorkspace().getRoot().getProject("FileDiffResultTest");
 		createInWorkspace(project);
@@ -89,7 +89,7 @@ public class FileDiffResultTest {
 	 * Tests applying a patch which creates a new file in a project. The file
 	 * already exists in the project.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPatchAddsExistingFileWithSameContents() throws CoreException, IOException {
 		IProject project = getWorkspace().getRoot().getProject("FileDiffResultTest");
 		createInWorkspace(project);
@@ -128,7 +128,7 @@ public class FileDiffResultTest {
 	 * Tests applying a patch which creates a new file in a project. The file
 	 * already exists in the project, but has different contents.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPatchAddsExistingFileWithDifferentContents() throws CoreException, IOException {
 		IProject project = getWorkspace().getRoot().getProject("FileDiffResultTest");
 		createInWorkspace(project);
@@ -169,7 +169,7 @@ public class FileDiffResultTest {
 	public void testFileDiffResultWithNullPath() {
 		MyFileDiff myFileDiff = new MyFileDiff();
 		FileDiffResult fileDiffResult = new FileDiffResult(myFileDiff, patchConfiguration);
-		fileDiffResult.calculateFuzz(new ArrayList<>(), null);
+		fileDiffResult.calculateFuzz(new ArrayList<>(), null); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	}
 
 	// https://bugs.eclipse.org/bugs/show_bug.cgi?id=187365
@@ -189,7 +189,7 @@ public class FileDiffResultTest {
 		protected MyFileDiff() {
 			super(null, 0, null, 0);
 			add(Hunk.createHunk(this, new int[] { 0, 0 }, new int[] { 0, 0 },
-					new ArrayList<>(), false, false, false));
+					new ArrayList<>(), false, false, false)); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 	}
 
@@ -204,24 +204,24 @@ public class FileDiffResultTest {
 	 *            exist.
 	 * @return Content of the patch.
 	 */
-	private String createPatchAddingFile(IProject project, String filename,
+	private String createPatchAddingFile(IProject project, String filename, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			boolean sameContents) throws IOException, CoreException {
-		StringBuilder sb = new StringBuilder();
-		sb.append(WorkspacePatcherUI.getWorkspacePatchHeader() + "\n");
-		sb.append(WorkspacePatcherUI.getWorkspacePatchProjectHeader(project)
+		StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		sb.append(WorkspacePatcherUI.getWorkspacePatchHeader() + "\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(WorkspacePatcherUI.getWorkspacePatchProjectHeader(project) //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				+ "\n");
-		sb.append("Index: " + filename + "\n");
-		sb
+		sb.append("Index: " + filename + "\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				.append("===================================================================\n");
-		sb.append("RCS file: " + filename + "\n");
-		sb.append("diff -N " + filename + "\n");
-		sb.append("--- /dev/null	1 Jan 1970 00:00:00 -0000\n");
-		sb.append("+++ " + filename + "	1 Jan 1970 00:00:00 -0000\n");
-		sb.append("@@ -0,0 +1,1 @@\n");
+		sb.append("RCS file: " + filename + "\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append("diff -N " + filename + "\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append("--- /dev/null	1 Jan 1970 00:00:00 -0000\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append("+++ " + filename + "	1 Jan 1970 00:00:00 -0000\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append("@@ -0,0 +1,1 @@\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		if (sameContents) {
-			sb.append("+" + getStringFromIFile(project.getFile(filename)));
+			sb.append("+" + getStringFromIFile(project.getFile(filename))); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		} else {
-			sb.append("+" + NEW_FILE_CONTENT);
+			sb.append("+" + NEW_FILE_CONTENT); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 
 		return sb.toString();

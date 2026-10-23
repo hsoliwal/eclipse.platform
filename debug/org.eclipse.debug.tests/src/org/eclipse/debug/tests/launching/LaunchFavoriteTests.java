@@ -96,7 +96,7 @@ public class LaunchFavoriteTests {
 		ILaunchConfigurationWorkingCopy wc = getWorkingCopy(config);
 		List<String> list = config.getAttribute(IDebugUIConstants.ATTR_FAVORITE_GROUPS, (List<String>) null);
 		if (list == null) {
-			list = new ArrayList<>();
+			list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 		list.add(groupId);
 		wc.setAttribute(IDebugUIConstants.ATTR_FAVORITE_GROUPS, list);
@@ -151,7 +151,7 @@ public class LaunchFavoriteTests {
 		if (size != -1) {
 			assertThat(favorites).hasSize(size);
 		}
-		for (ILaunchConfiguration favorite : favorites) {
+		for (ILaunchConfiguration favorite : favorites) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (configuration.equals(favorite)) {
 				return true;
 			}
@@ -206,7 +206,7 @@ public class LaunchFavoriteTests {
 		testBecomeFavorite();
 		ILaunchConfiguration original = getLaunchConfiguration();
 		ILaunchConfigurationWorkingCopy copy = original.getWorkingCopy();
-		copy.rename("rename" + original.getName()); //$NON-NLS-1$
+		copy.rename("rename" + original.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		ILaunchConfiguration saved = copy.doSave();
 		assertTrue(containsFavorite(getDebugLaunchHistory(), saved, 1), "Missing from debug favorites"); //$NON-NLS-1$
 		assertTrue(containsFavorite(getRunLaunchHistory(), saved, 1), "Missing from run favorites"); //$NON-NLS-1$
@@ -221,7 +221,7 @@ public class LaunchFavoriteTests {
 	public void testRenameBecomeFavorite() throws CoreException {
 		ILaunchConfiguration original = getLaunchConfiguration();
 		ILaunchConfigurationWorkingCopy copy = original.getWorkingCopy();
-		copy.rename("rename" + original.getName()); //$NON-NLS-1$
+		copy.rename("rename" + original.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		addFavorite(copy, IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP);
 		addFavorite(copy, IDebugUIConstants.ID_RUN_LAUNCH_GROUP);
 		ILaunchConfiguration saved = copy.doSave();
@@ -239,7 +239,7 @@ public class LaunchFavoriteTests {
 		testBecomeFavorite();
 		ILaunchConfiguration original = getLaunchConfiguration();
 		ILaunchConfigurationWorkingCopy copy = original.getWorkingCopy();
-		copy.rename("rename" + original.getName()); //$NON-NLS-1$
+		copy.rename("rename" + original.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		removeFavorite(copy, IDebugUIConstants.ID_DEBUG_LAUNCH_GROUP);
 		removeFavorite(copy, IDebugUIConstants.ID_RUN_LAUNCH_GROUP);
 		ILaunchConfiguration saved = copy.doSave();

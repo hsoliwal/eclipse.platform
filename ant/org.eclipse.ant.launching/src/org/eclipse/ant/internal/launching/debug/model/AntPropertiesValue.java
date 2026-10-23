@@ -23,7 +23,7 @@ import org.eclipse.debug.core.model.IVariable;
 
 public class AntPropertiesValue extends AntDebugElement implements IValue {
 
-	private final List<AntProperty> fProperties = new ArrayList<>();
+	private final List<AntProperty> fProperties = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	public AntPropertiesValue(AntDebugTarget target) {
 		super(target);
@@ -46,7 +46,7 @@ public class AntPropertiesValue extends AntDebugElement implements IValue {
 
 	@Override
 	public IVariable[] getVariables() {
-		Collections.sort(fProperties);
+		Collections.sort(fProperties); //FLLDCIM: MARK — M16 SORT_LANE CALL
 		return fProperties.toArray(new IVariable[fProperties.size()]);
 	}
 

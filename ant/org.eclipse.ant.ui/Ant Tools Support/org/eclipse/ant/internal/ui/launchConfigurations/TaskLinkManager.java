@@ -42,7 +42,7 @@ import org.eclipse.ui.console.IHyperlink;
  */
 public class TaskLinkManager {
 
-	private static Map<String, IFile> fFileNameToIFile = new HashMap<>();
+	private static Map<String, IFile> fFileNameToIFile = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/**
 	 * Not to be called.
@@ -51,7 +51,7 @@ public class TaskLinkManager {
 		super();
 	}
 
-	private static IHyperlink createHyperlink(LinkDescriptor linkDescriptor) {
+	private static IHyperlink createHyperlink(LinkDescriptor linkDescriptor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String fileName = linkDescriptor.getFileName();
 		int lineNumber = linkDescriptor.getLineNumber();
 
@@ -108,7 +108,7 @@ public class TaskLinkManager {
 		if (linkBuildFileMessage(console, newLine)) {
 			return;
 		}
-		for (LinkDescriptor descriptor : links) {
+		for (LinkDescriptor descriptor : links) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (addLink(console, newLine, descriptor)) {
 				launch.removeLinkDescriptor(descriptor);
 				return;
@@ -124,7 +124,7 @@ public class TaskLinkManager {
 		launch.clearLinkDescriptors();
 	}
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	private static boolean linkBuildFileMessage(IConsole console, IRegion region) {
 
 		String message = IAntCoreConstants.EMPTY_STRING;

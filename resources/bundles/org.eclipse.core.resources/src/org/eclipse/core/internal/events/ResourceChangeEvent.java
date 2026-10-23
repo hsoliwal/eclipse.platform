@@ -48,7 +48,7 @@ public class ResourceChangeEvent extends EventObject implements IResourceChangeE
 	/**
 	 * @see IResourceChangeEvent#findMarkerDeltas(String, boolean)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IMarkerDelta[] findMarkerDeltas(String findType, boolean includeSubtypes) {
 		if (delta == null) {
 			return NO_MARKER_DELTAS;
@@ -62,9 +62,9 @@ public class ResourceChangeEvent extends EventObject implements IResourceChangeE
 		if (markerDeltas == null || markerDeltas.isEmpty()) {
 			return NO_MARKER_DELTAS;
 		}
-		ArrayList<IMarkerDelta> matching = new ArrayList<>();
-		for (MarkerSet deltas : markerDeltas.values()) {
-			for (IMarkerSetElement element : deltas.elements()) {
+		ArrayList<IMarkerDelta> matching = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (MarkerSet deltas : markerDeltas.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (IMarkerSetElement element : deltas.elements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				MarkerDelta markerDelta = (MarkerDelta) element;
 				//our inclusion test depends on whether we are considering subtypes
 				if (findType == null || (includeSubtypes ? markerDelta.isSubtypeOf(findType) : markerDelta.getType().equals(findType))) {
@@ -111,50 +111,50 @@ public class ResourceChangeEvent extends EventObject implements IResourceChangeE
 		delta = value;
 	}
 
-	public String toDebugString() {
-		StringBuilder output = new StringBuilder();
-		output.append("\nType: ");//$NON-NLS-1$
+	public String toDebugString() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		StringBuilder output = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		output.append("\nType: ");//$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		switch (type) {
 			case POST_CHANGE :
-				output.append("POST_CHANGE"); //$NON-NLS-1$
+				output.append("POST_CHANGE"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case PRE_CLOSE :
-				output.append("PRE_CLOSE"); //$NON-NLS-1$
+				output.append("PRE_CLOSE"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case PRE_DELETE :
-				output.append("PRE_DELETE"); //$NON-NLS-1$
+				output.append("PRE_DELETE"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case PRE_BUILD :
-				output.append("PRE_BUILD"); //$NON-NLS-1$
+				output.append("PRE_BUILD"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case POST_BUILD :
-				output.append("POST_BUILD"); //$NON-NLS-1$
+				output.append("POST_BUILD"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case PRE_REFRESH :
-				output.append("PRE_REFRESH"); //$NON-NLS-1$
+				output.append("PRE_REFRESH"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			default :
-				output.append("?"); //$NON-NLS-1$
+				output.append("?"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 		}
-		output.append("\nBuild kind: "); //$NON-NLS-1$
+		output.append("\nBuild kind: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		switch (trigger) {
 			case IncrementalProjectBuilder.FULL_BUILD :
-				output.append("FULL_BUILD"); //$NON-NLS-1$
+				output.append("FULL_BUILD"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case IncrementalProjectBuilder.AUTO_BUILD :
 			case IncrementalProjectBuilder.INCREMENTAL_BUILD :
-				output.append("INCREMENTAL_BUILD"); //$NON-NLS-1$
+				output.append("INCREMENTAL_BUILD"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case IncrementalProjectBuilder.CLEAN_BUILD :
-				output.append("CLEAN_BUILD"); //$NON-NLS-1$
+				output.append("CLEAN_BUILD"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			default :
-				output.append(trigger);
+				output.append(trigger); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 		}
-		output.append("\nResource: " + (resource == null ? "null" : resource)); //$NON-NLS-1$ //$NON-NLS-2$
-		output.append("\nDelta:" + (delta == null ? " null" : ((ResourceDelta) delta).toDeepDebugString())); //$NON-NLS-1$ //$NON-NLS-2$
+		output.append("\nResource: " + (resource == null ? "null" : resource)); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		output.append("\nDelta:" + (delta == null ? " null" : ((ResourceDelta) delta).toDeepDebugString())); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return output.toString();
 	}
 }

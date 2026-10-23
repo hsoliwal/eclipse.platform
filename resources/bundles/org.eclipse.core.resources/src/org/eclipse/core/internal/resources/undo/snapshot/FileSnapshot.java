@@ -92,7 +92,7 @@ public class FileSnapshot extends AbstractResourceSnapshot<IFile> {
 		this.fileContentDescription = fileContentDescription;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void recordStateFromHistory(IProgressMonitor monitor) throws CoreException {
 		IFile resource = createResourceHandle();
 		Assert.isLegal(resource.getType() == IResource.FILE);
@@ -129,7 +129,7 @@ public class FileSnapshot extends AbstractResourceSnapshot<IFile> {
 		return workspaceRoot.getFile(fullPath);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createExistentResourceFromHandle(IProgressMonitor mon) throws CoreException {
 		IFile fileHandle = createResourceHandle();
 		if (fileHandle.exists()) {
@@ -184,7 +184,7 @@ public class FileSnapshot extends AbstractResourceSnapshot<IFile> {
 	 * recent copy of the file state is used.
 	 */
 	private IFileState getMatchingFileState(IFileState[] states) {
-		for (IFileState state : states) {
+		for (IFileState state : states) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (localTimeStamp == state.getModificationTime()) {
 				return state;
 			}

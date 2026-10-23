@@ -91,7 +91,7 @@ public class IResourceChangeListenerTest {
 	@RegisterExtension
 	private final FileStoreAutoDeleteExtension fileStoreExtension = new FileStoreAutoDeleteExtension();
 
-	static class SimpleListener implements IResourceChangeListener {
+	static class SimpleListener implements IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 		Object source;
 		int trigger;
 
@@ -120,7 +120,7 @@ public class IResourceChangeListenerTest {
 	IFile project2MetaData;
 	ResourceDeltaVerifier verifier;
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBenchMark_1GBYQEZ() throws Throwable {
 		// start with a clean workspace
 		getWorkspace().removeResourceChangeListener(verifier);
@@ -128,23 +128,23 @@ public class IResourceChangeListenerTest {
 
 		final AtomicReference<CoreException> exceptionInListener = new AtomicReference<>();
 		// create the listener
-		IResourceChangeListener listener = new IResourceChangeListener() {
+		IResourceChangeListener listener = new IResourceChangeListener() { //FLLDCIM: MARK — T07  ANONYMOUS
 			private int fCounter;
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void resourceChanged(IResourceChangeEvent event) {
 				try {
 					System.out.println("Start");
-					for (int i = 0; i < 10; i++) {
+					for (int i = 0; i < 10; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						fCounter = 0;
 						long start = System.currentTimeMillis();
 						IResourceDelta delta = event.getDelta();
-						delta.accept(unused -> {
+						delta.accept(unused -> { //FLLDCIM: MARK — T07  LAMBDA
 							fCounter++;
 							return true;
 						});
 						long end = System.currentTimeMillis();
-						System.out.println("    Number of deltas: " + fCounter + ". Time needed: " + (end - start));
+						System.out.println("    Number of deltas: " + fCounter + ". Time needed: " + (end - start)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 					System.out.println("End");
 				} catch (CoreException e) {
@@ -155,7 +155,7 @@ public class IResourceChangeListenerTest {
 		// add the listener
 		getWorkspace().addResourceChangeListener(listener);
 		// setup the test data
-		IWorkspaceRunnable body = unused -> {
+		IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			IProject project = getWorkspace().getRoot().getProject("Test");
 			IProjectDescription description = getWorkspace().newProjectDescription(project.getName());
 			IPath root = getWorkspace().getRoot().getLocation();
@@ -169,7 +169,7 @@ public class IResourceChangeListenerTest {
 		getWorkspace().run(body, createTestMonitor());
 
 		// touch all resources (so that they appear in the delta)
-		body = unused -> {
+		body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			IResourceVisitor visitor = resource -> {
 				resource.touch(createTestMonitor());
 				return true;
@@ -198,11 +198,11 @@ public class IResourceChangeListenerTest {
 	 */
 	void assertNotDeltaIncludes(IResourceDelta delta, IResource[] resources) {
 		IResource deltaResource = delta.getResource();
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertFalse(deltaResource.equals(resource));
 		}
 		IResourceDelta[] children = delta.getAffectedChildren();
-		for (IResourceDelta element : children) {
+		for (IResourceDelta element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertNotDeltaIncludes(element, resources);
 		}
 	}
@@ -212,9 +212,9 @@ public class IResourceChangeListenerTest {
 	 * resources.
 	 */
 	void assertNotDeltaVisits(IResourceDelta delta, final IResource[] resources) throws CoreException {
-		delta.accept(delta2 -> {
+		delta.accept(delta2 -> { //FLLDCIM: MARK — T07  LAMBDA
 			IResource deltaResource = delta2.getResource();
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				assertFalse(deltaResource.equals(resource));
 			}
 			return true;
@@ -225,23 +225,23 @@ public class IResourceChangeListenerTest {
 	 * Sets up the fixture, for example, open a network connection. This method
 	 * is called before a test is executed.
 	 */
-	@BeforeEach
+	@BeforeEach //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setUp() throws Exception {
 		// Create some resource handles
-		project1 = getWorkspace().getRoot().getProject("Project" + 1);
-		project2 = getWorkspace().getRoot().getProject("Project" + 2);
-		folder1 = project1.getFolder("Folder" + 1);
-		folder2 = folder1.getFolder("Folder" + 2);
-		folder3 = folder1.getFolder("File" + 1);
+		project1 = getWorkspace().getRoot().getProject("Project" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		project2 = getWorkspace().getRoot().getProject("Project" + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		folder1 = project1.getFolder("Folder" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		folder2 = folder1.getFolder("Folder" + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		folder3 = folder1.getFolder("File" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		settings = project1.getFolder(".settings");
 		prefs = settings.getFile("org.eclipse.core.resources.prefs");
-		file1 = folder1.getFile("File" + 1);
-		file2 = folder1.getFile("File" + 2);
-		file3 = folder2.getFile("File" + 1);
+		file1 = folder1.getFile("File" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		file2 = folder1.getFile("File" + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		file3 = folder2.getFile("File" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		project1MetaData = project1.getFile(IProjectDescription.DESCRIPTION_FILE_NAME);
 		project2MetaData = project2.getFile(IProjectDescription.DESCRIPTION_FILE_NAME);
 		// Create and open a project, folder and file
-		IWorkspaceRunnable body = unused -> {
+		IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			project1.create(createTestMonitor());
 			project1.open(createTestMonitor());
 			folder1.create(true, true, createTestMonitor());
@@ -270,15 +270,15 @@ public class IResourceChangeListenerTest {
 	 * Create a resource change listener and register it for POST_BUILD
 	 * events. Ensure that you are able to modify the workspace tree.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_1GDK9OG() throws Throwable {
 		final AtomicReference<Executable> listenerInMainThreadCallback = new AtomicReference<>(NOOP_RUNNABLE);
 		// create the resource change listener
-		IResourceChangeListener listener = event -> {
+		IResourceChangeListener listener = event -> { //FLLDCIM: MARK — T07  LAMBDA
 			try {
-				IWorkspaceRunnable body = unused -> {
+				IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 					// modify the tree.
-					IResourceDeltaVisitor visitor = delta -> {
+					IResourceDeltaVisitor visitor = delta -> { //FLLDCIM: MARK — T07  LAMBDA
 						IResource resource = delta.getResource();
 						try {
 							resource.touch(createTestMonitor());
@@ -300,7 +300,7 @@ public class IResourceChangeListenerTest {
 		// register the listener with the workspace.
 		getWorkspace().addResourceChangeListener(listener, IResourceChangeEvent.POST_BUILD);
 		try {
-			IWorkspaceRunnable body = new IWorkspaceRunnable() {
+			IWorkspaceRunnable body = new IWorkspaceRunnable() { //FLLDCIM: MARK — T09  ANONYMOUS
 				// cause a delta by touching all resources
 				final IResourceVisitor visitor = resource -> {
 					resource.touch(createTestMonitor());
@@ -330,7 +330,7 @@ public class IResourceChangeListenerTest {
 	@Test
 	public void testAddAndRemoveFile() throws CoreException {
 		verifier.reset();
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("Creating and deleting", 100);
 			try {
 				file2.create(createRandomContentsStream(), true, SubMonitor.convert(m, 50));
@@ -346,7 +346,7 @@ public class IResourceChangeListenerTest {
 	@Test
 	public void testAddAndRemoveFolder() throws CoreException {
 		verifier.reset();
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("Creating and deleting", 100);
 			try {
 				folder2.create(true, true, SubMonitor.convert(m, 50));
@@ -370,7 +370,7 @@ public class IResourceChangeListenerTest {
 	public void testAddFileAndFolder() throws CoreException {
 		verifier.addExpectedChange(folder2, IResourceDelta.ADDED, 0);
 		verifier.addExpectedChange(file3, IResourceDelta.ADDED, 0);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("Creating folder and file", 100);
 			try {
 				folder2.create(true, true, SubMonitor.convert(m, 50));
@@ -401,15 +401,15 @@ public class IResourceChangeListenerTest {
 	 * Create a resource change listener and register it for POST_CHANGE events.
 	 * Ensure that you are NOT able to modify the workspace tree.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug45996() throws Throwable {
 		final AtomicReference<Executable> listenerInMainThreadCallback = new AtomicReference<>(NOOP_RUNNABLE);
 		// create the resource change listener
-		IResourceChangeListener listener = event -> {
+		IResourceChangeListener listener = event -> { //FLLDCIM: MARK — T07  LAMBDA
 			try {
-				IWorkspaceRunnable body = unused -> {
+				IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 					// modify the tree.
-					IResourceDeltaVisitor visitor = delta -> {
+					IResourceDeltaVisitor visitor = delta -> { //FLLDCIM: MARK — T07  LAMBDA
 						IResource resource = delta.getResource();
 						try {
 							resource.touch(createTestMonitor());
@@ -430,7 +430,7 @@ public class IResourceChangeListenerTest {
 		// register the listener with the workspace.
 		getWorkspace().addResourceChangeListener(listener, IResourceChangeEvent.POST_CHANGE);
 		try {
-			IWorkspaceRunnable body = new IWorkspaceRunnable() {
+			IWorkspaceRunnable body = new IWorkspaceRunnable() { //FLLDCIM: MARK — T09  ANONYMOUS
 				// cause a delta by touching all resources
 				final IResourceVisitor visitor = resource -> {
 					resource.touch(createTestMonitor());
@@ -450,7 +450,7 @@ public class IResourceChangeListenerTest {
 		listenerInMainThreadCallback.get().execute();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBuildKind() throws CoreException {
 		SimpleListener preBuild = new SimpleListener();
 		SimpleListener postBuild = new SimpleListener();
@@ -463,29 +463,29 @@ public class IResourceChangeListenerTest {
 			workspace.addResourceChangeListener(postChange, IResourceChangeEvent.POST_CHANGE);
 
 			final int[] triggers = new int[] {IncrementalProjectBuilder.INCREMENTAL_BUILD, IncrementalProjectBuilder.FULL_BUILD, IncrementalProjectBuilder.CLEAN_BUILD,};
-			for (int i = 0; i < triggers.length; i++) {
+			for (int i = 0; i < triggers.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				final int trigger = triggers[i];
-				workspace.run((IWorkspaceRunnable) monitor -> {
+				workspace.run((IWorkspaceRunnable) monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 					file1.touch(null);
 					workspace.build(trigger, monitor);
 				}, createTestMonitor());
-				assertEquals(workspace, preBuild.source, i + "");
-				assertEquals(workspace, postBuild.source, i + "");
-				assertEquals(workspace, postChange.source, i + "");
-				assertEquals(trigger, preBuild.trigger, i + "");
-				assertEquals(trigger, postBuild.trigger, i + "");
-				assertEquals(0, postChange.trigger, i + "");
+				assertEquals(workspace, preBuild.source, i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				assertEquals(workspace, postBuild.source, i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				assertEquals(workspace, postChange.source, i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				assertEquals(trigger, preBuild.trigger, i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				assertEquals(trigger, postBuild.trigger, i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				assertEquals(0, postChange.trigger, i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-				workspace.run((IWorkspaceRunnable) unused -> {
+				workspace.run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 					file1.touch(null);
 					project1.build(trigger, createTestMonitor());
 				}, createTestMonitor());
-				assertEquals(project1, preBuild.source, i + "");
-				assertEquals(project1, postBuild.source, i + "");
-				assertEquals(workspace, postChange.source, i + "");
-				assertEquals(trigger, preBuild.trigger, i + "");
-				assertEquals(trigger, postBuild.trigger, i + "");
-				assertEquals(0, postChange.trigger, i + "");
+				assertEquals(project1, preBuild.source, i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				assertEquals(project1, postBuild.source, i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				assertEquals(workspace, postChange.source, i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				assertEquals(trigger, preBuild.trigger, i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				assertEquals(trigger, postBuild.trigger, i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				assertEquals(0, postChange.trigger, i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 			}
 
@@ -521,7 +521,7 @@ public class IResourceChangeListenerTest {
 	 * {@code IResourceChangeEvent.PRE_BUILD} and
 	 * {@code IResourceChangeEvent.POST_BUILD} are fired.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTouchFileWithAutobuildOff() throws Exception {
 		SimpleListener preBuild = new SimpleListener();
 		SimpleListener postBuild = new SimpleListener();
@@ -553,7 +553,7 @@ public class IResourceChangeListenerTest {
 		/* change file1 into a folder */
 		verifier.addExpectedChange(file1, IResourceDelta.CHANGED,
 				IResourceDelta.CONTENT | IResourceDelta.TYPE | IResourceDelta.REPLACED);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("Deleting and Creating", 100);
 			try {
 				file1.delete(true, SubMonitor.convert(m, 50));
@@ -565,18 +565,18 @@ public class IResourceChangeListenerTest {
 		assertDelta();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testChangeFolderToFile() throws CoreException {
 		/* change to a folder */
 		verifier.reset();
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			file1.delete(true, createTestMonitor());
 			folder3.create(true, true, createTestMonitor());
 		}, null);
 		/* now change back to a file and verify */
 		verifier.addExpectedChange(file1, IResourceDelta.CHANGED,
 				IResourceDelta.CONTENT | IResourceDelta.TYPE | IResourceDelta.REPLACED);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("Deleting and Creating", 100);
 			try {
 				folder3.delete(true, SubMonitor.convert(m, 50));
@@ -591,7 +591,7 @@ public class IResourceChangeListenerTest {
 	@Test
 	public void testChangeProject() throws CoreException {
 		verifier.reset();
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			project2.create(createTestMonitor());
 			project2.open(createTestMonitor());
 		}, null);
@@ -607,7 +607,7 @@ public class IResourceChangeListenerTest {
 	public void testCopyChangeFile() throws CoreException {
 		verifier.addExpectedChange(folder2, IResourceDelta.ADDED, 0);
 		verifier.addExpectedChange(file3, IResourceDelta.ADDED, 0, null, null);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("Creating and moving", 150);
 			try {
 				folder2.create(true, true, SubMonitor.convert(m, 50));
@@ -624,7 +624,7 @@ public class IResourceChangeListenerTest {
 	public void testCopyFile() throws CoreException {
 		verifier.addExpectedChange(folder2, IResourceDelta.ADDED, 0);
 		verifier.addExpectedChange(file3, IResourceDelta.ADDED, 0, null, null);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("Creating and moving", 100);
 			try {
 				folder2.create(true, true, SubMonitor.convert(m, 50));
@@ -636,7 +636,7 @@ public class IResourceChangeListenerTest {
 		assertDelta();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCloseOpenReplaceFile() throws CoreException {
 		// FIXME: how to do this?
 		// workspace.save(getMonitor());
@@ -646,7 +646,7 @@ public class IResourceChangeListenerTest {
 		getWorkspace().addResourceChangeListener(verifier);
 		/* change file1's contents */
 		verifier.addExpectedChange(file1, IResourceDelta.CHANGED, IResourceDelta.REPLACED | IResourceDelta.CONTENT);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("Deleting and Creating", 100);
 			try {
 				file1.delete(true, SubMonitor.convert(m, 50));
@@ -658,13 +658,13 @@ public class IResourceChangeListenerTest {
 		assertDelta();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteInPostBuildListener() throws Throwable {
 		final AtomicReference<CoreException> exceptionInListener = new AtomicReference<>();
 		// create the resource change listener
-		IResourceChangeListener listener = event -> {
+		IResourceChangeListener listener = event -> { //FLLDCIM: MARK — T07  LAMBDA
 			try {
-				event.getDelta().accept(delta -> {
+				event.getDelta().accept(delta -> { //FLLDCIM: MARK — T07  LAMBDA
 					IResource resource = delta.getResource();
 					if (resource.getType() == IResource.FILE) {
 						try {
@@ -682,7 +682,7 @@ public class IResourceChangeListenerTest {
 		// register the listener with the workspace.
 		getWorkspace().addResourceChangeListener(listener, IResourceChangeEvent.POST_BUILD);
 		try {
-			getWorkspace().run((IWorkspaceRunnable) unused -> getWorkspace().getRoot().accept(resource -> {
+			getWorkspace().run((IWorkspaceRunnable) unused -> getWorkspace().getRoot().accept(resource -> { //FLLDCIM: MARK — T09  LAMBDA
 				resource.touch(createTestMonitor());
 				return true;
 			}), createTestMonitor());
@@ -699,7 +699,7 @@ public class IResourceChangeListenerTest {
 	 * Tests deleting a file, then moving another file to that deleted location.
 	 * See bug 27527.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteMoveFile() throws CoreException {
 		verifier.reset();
 		file2.create(createRandomContentsStream(), IResource.NONE, createTestMonitor());
@@ -707,7 +707,7 @@ public class IResourceChangeListenerTest {
 		int flags = IResourceDelta.REPLACED | IResourceDelta.MOVED_FROM | IResourceDelta.CONTENT;
 		verifier.addExpectedChange(file1, IResourceDelta.CHANGED, flags, file2.getFullPath(), null);
 		verifier.addExpectedChange(file2, IResourceDelta.REMOVED, IResourceDelta.MOVED_TO, null, file1.getFullPath());
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("deleting and moving", 100);
 			try {
 				file1.delete(IResource.NONE, SubMonitor.convert(m, 50));
@@ -719,13 +719,13 @@ public class IResourceChangeListenerTest {
 		assertDelta();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteProject() throws Throwable {
 		final AtomicReference<Executable> listenerInMainThreadCallback = new AtomicReference<>(NOOP_RUNNABLE);
 		//test that marker deltas are fired when projects are deleted
 		verifier.reset();
 		final IMarker marker = project1.createMarker(IMarker.TASK);
-		class Listener1 implements IResourceChangeListener {
+		class Listener1 implements IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 			public boolean done = false;
 
 			@Override
@@ -749,7 +749,7 @@ public class IResourceChangeListenerTest {
 			project1.delete(true, false, createTestMonitor());
 			synchronized (listener) {
 				int i = 0;
-				while (!listener.done) {
+				while (!listener.done) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					try {
 						listener.wait(1000);
 					} catch (InterruptedException e) {
@@ -763,7 +763,7 @@ public class IResourceChangeListenerTest {
 		listenerInMainThreadCallback.get().execute();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteFolderDuringRefresh() throws Throwable {
 		project1 = getWorkspace().getRoot().getProject(createUniqueString());
 		project1.create(createTestMonitor());
@@ -781,11 +781,11 @@ public class IResourceChangeListenerTest {
 
 		// the listener checks if an attempt to modify the tree succeeds if made in a job
 		// that belongs to FAMILY_MANUAL_REFRESH
-		class Listener1 implements IResourceChangeListener {
+		class Listener1 implements IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 			public volatile boolean deletePerformed = false;
 			public volatile Exception exception;
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void resourceChanged(IResourceChangeEvent event) {
 				new Job("deleteFolder") {
 					@Override
@@ -827,7 +827,7 @@ public class IResourceChangeListenerTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshOtherProjectDuringRefresh() throws Throwable {
 		final IProject p = getWorkspace().getRoot().getProject(createUniqueString());
 		p.create(null);
@@ -842,11 +842,11 @@ public class IResourceChangeListenerTest {
 
 		// the listener checks if an attempt to modify the tree succeeds if made in a job
 		// that belongs to FAMILY_MANUAL_REFRESH
-		class Listener1 implements IResourceChangeListener {
+		class Listener1 implements IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 			public volatile boolean refreshPerformed = false;
 			public volatile Exception exception;
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void resourceChanged(final IResourceChangeEvent event) {
 				new Job("refreshProject") {
 					@Override
@@ -872,7 +872,7 @@ public class IResourceChangeListenerTest {
 		Listener1 listener1 = new Listener1();
 
 		// the listener checks if an attempt to modify the tree in the refresh thread fails
-		class Listener2 implements IResourceChangeListener {
+		class Listener2 implements IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 			public volatile boolean refreshSucceeded = false;
 
 			@Override
@@ -913,7 +913,7 @@ public class IResourceChangeListenerTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreRefreshNotification() throws Exception {
 		final IWorkspaceRoot root = getWorkspace().getRoot();
 
@@ -923,7 +923,7 @@ public class IResourceChangeListenerTest {
 
 		assertTrue(project1.isOpen());
 
-		class Listener1 implements IResourceChangeListener {
+		class Listener1 implements IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 			public volatile boolean wasPerformed = false;
 			public volatile Object eventSource;
 			public volatile Object eventResource;
@@ -966,7 +966,7 @@ public class IResourceChangeListenerTest {
 	 * Tests that phantom members don't show up in resource deltas when standard
 	 * traversal and visitor are used.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testHiddenPhantomChanges() throws Throwable {
 		final AtomicReference<Executable> listenerInMainThreadCallback = new AtomicReference<>(NOOP_RUNNABLE);
 		final IWorkspace workspace = getWorkspace();
@@ -974,7 +974,7 @@ public class IResourceChangeListenerTest {
 		final IFile phantomFile = folder1.getFile("PhantomFile");
 		final IResource[] phantomResources = new IResource[] {phantomFolder, phantomFile};
 		final QualifiedName partner = new QualifiedName("Test", "Infected");
-		IResourceChangeListener listener = event -> {
+		IResourceChangeListener listener = event -> { //FLLDCIM: MARK — T07  LAMBDA
 			Executable oldCallback = listenerInMainThreadCallback.get();
 			listenerInMainThreadCallback.set(() -> {
 				oldCallback.execute();
@@ -989,7 +989,7 @@ public class IResourceChangeListenerTest {
 		removeFromWorkspace(phantomResources);
 		try {
 			//create a phantom folder
-			workspace.run((IWorkspaceRunnable) unused -> workspace.getSynchronizer().setSyncInfo(partner, phantomFolder, new byte[] {1}), createTestMonitor());
+			workspace.run((IWorkspaceRunnable) unused -> workspace.getSynchronizer().setSyncInfo(partner, phantomFolder, new byte[] {1}), createTestMonitor()); //FLLDCIM: MARK — T09  LAMBDA
 			//create children in phantom folder
 			IFile fileInFolder = phantomFolder.getFile("FileInPrivateFolder");
 			workspace.getSynchronizer().setSyncInfo(partner, fileInFolder, new byte[] {1});
@@ -998,12 +998,12 @@ public class IResourceChangeListenerTest {
 			//delete children in phantom folder
 			workspace.getSynchronizer().flushSyncInfo(partner, fileInFolder, IResource.DEPTH_INFINITE);
 			//delete phantom folder and change some other file
-			workspace.run((IWorkspaceRunnable) unused -> {
+			workspace.run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				phantomFolder.delete(IResource.NONE, createTestMonitor());
 				file1.setContents(createRandomContentsStream(), IResource.NONE, createTestMonitor());
 			}, createTestMonitor());
 			//create phantom file
-			workspace.run((IWorkspaceRunnable) unused -> workspace.getSynchronizer().setSyncInfo(partner, phantomFile, new byte[] {2}), createTestMonitor());
+			workspace.run((IWorkspaceRunnable) unused -> workspace.getSynchronizer().setSyncInfo(partner, phantomFile, new byte[] {2}), createTestMonitor()); //FLLDCIM: MARK — T09  LAMBDA
 			//modify phantom file
 			workspace.getSynchronizer().setSyncInfo(partner, phantomFile, new byte[] {3});
 			//delete phantom file
@@ -1018,14 +1018,14 @@ public class IResourceChangeListenerTest {
 	 * Tests that team private members don't show up in resource deltas when
 	 * standard traversal and visitor are used.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testHiddenTeamPrivateChanges() throws Throwable {
 		final AtomicReference<Executable> listenerInMainThreadCallback = new AtomicReference<>(NOOP_RUNNABLE);
 		IWorkspace workspace = getWorkspace();
 		final IFolder teamPrivateFolder = project1.getFolder("TeamPrivateFolder");
 		final IFile teamPrivateFile = folder1.getFile("TeamPrivateFile");
 		final IResource[] privateResources = new IResource[] {teamPrivateFolder, teamPrivateFile};
-		IResourceChangeListener listener = event -> {
+		IResourceChangeListener listener = event -> { //FLLDCIM: MARK — T07  LAMBDA
 			Executable oldCallback = listenerInMainThreadCallback.get();
 			listenerInMainThreadCallback.set(() -> {
 				oldCallback.execute();
@@ -1038,7 +1038,7 @@ public class IResourceChangeListenerTest {
 		workspace.addResourceChangeListener(listener);
 		try {
 			//create a team private folder
-			workspace.run((IWorkspaceRunnable) unused -> {
+			workspace.run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				teamPrivateFolder.create(true, true, createTestMonitor());
 				teamPrivateFolder.setTeamPrivateMember(true);
 			}, createTestMonitor());
@@ -1050,12 +1050,12 @@ public class IResourceChangeListenerTest {
 			//delete children in team private folder
 			fileInFolder.delete(IResource.NONE, createTestMonitor());
 			//delete team private folder and change some other file
-			workspace.run((IWorkspaceRunnable) unused -> {
+			workspace.run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				teamPrivateFolder.delete(IResource.NONE, createTestMonitor());
 				file1.setContents(createRandomContentsStream(), IResource.NONE, createTestMonitor());
 			}, createTestMonitor());
 			//create team private file
-			workspace.run((IWorkspaceRunnable) unused -> {
+			workspace.run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				teamPrivateFile.create(createRandomContentsStream(), true, createTestMonitor());
 				teamPrivateFile.setTeamPrivateMember(true);
 			}, createTestMonitor());
@@ -1075,7 +1075,7 @@ public class IResourceChangeListenerTest {
 		verifier.addExpectedChange(file1, IResourceDelta.REMOVED, IResourceDelta.MOVED_TO, null, file3.getFullPath());
 		verifier.addExpectedChange(file3, IResourceDelta.ADDED, IResourceDelta.MOVED_FROM | IResourceDelta.CONTENT,
 				file1.getFullPath(), null);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("Creating and moving", 100);
 			try {
 				folder2.create(true, true, SubMonitor.convert(m, 50));
@@ -1093,7 +1093,7 @@ public class IResourceChangeListenerTest {
 		verifier.addExpectedChange(folder2, IResourceDelta.ADDED, 0);
 		verifier.addExpectedChange(file1, IResourceDelta.REMOVED, IResourceDelta.MOVED_TO, null, file3.getFullPath());
 		verifier.addExpectedChange(file3, IResourceDelta.ADDED, IResourceDelta.MOVED_FROM, file1.getFullPath(), null);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("Creating and moving", 100);
 			try {
 				folder2.create(true, true, SubMonitor.convert(m, 50));
@@ -1111,7 +1111,7 @@ public class IResourceChangeListenerTest {
 		verifier.addExpectedChange(file1, IResourceDelta.REMOVED, IResourceDelta.MOVED_TO, null, file3.getFullPath());
 		verifier.addExpectedChange(file3, IResourceDelta.ADDED, IResourceDelta.MOVED_FROM | IResourceDelta.MARKERS,
 				file1.getFullPath(), null);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("Creating and moving", 100);
 			try {
 				folder2.create(true, true, SubMonitor.convert(m, 50));
@@ -1127,7 +1127,7 @@ public class IResourceChangeListenerTest {
 	/**
 	 * Regression test for bug 42514
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveFileDeleteFolder() throws CoreException {
 		// file2 moved to file1, and colliding folder3 is deleted
 		file1.delete(IResource.NONE, null);
@@ -1137,7 +1137,7 @@ public class IResourceChangeListenerTest {
 		verifier.addExpectedChange(file2, IResourceDelta.REMOVED, IResourceDelta.MOVED_TO, null, file1.getFullPath());
 		int flags = IResourceDelta.MOVED_FROM | IResourceDelta.REPLACED | IResourceDelta.TYPE | IResourceDelta.CONTENT;
 		verifier.addExpectedChange(file1, IResourceDelta.CHANGED, flags, file2.getFullPath(), null);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("Deleting and moving", 100);
 			try {
 				folder3.delete(IResource.FORCE, SubMonitor.convert(m, 50));
@@ -1149,7 +1149,7 @@ public class IResourceChangeListenerTest {
 		assertDelta();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveFileDeleteSourceParent() throws CoreException {
 		file1.delete(IResource.NONE, null);
 		createInWorkspace(file3);
@@ -1157,7 +1157,7 @@ public class IResourceChangeListenerTest {
 		verifier.addExpectedChange(folder2, IResourceDelta.REMOVED, 0, null, null);
 		verifier.addExpectedChange(file1, IResourceDelta.ADDED, IResourceDelta.MOVED_FROM, file3.getFullPath(), null);
 		verifier.addExpectedChange(file3, IResourceDelta.REMOVED, IResourceDelta.MOVED_TO, null, file1.getFullPath());
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("Creating and moving", 100);
 			try {
 				file3.move(file1.getFullPath(), true, SubMonitor.convert(m, 50));
@@ -1175,7 +1175,7 @@ public class IResourceChangeListenerTest {
 		verifier.addExpectedChange(file1, IResourceDelta.REMOVED, IResourceDelta.MOVED_TO, null, file3.getFullPath());
 		verifier.addExpectedChange(file3, IResourceDelta.ADDED, IResourceDelta.MOVED_FROM | IResourceDelta.CONTENT,
 				file1.getFullPath(), null);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("Creating and moving", 100);
 			try {
 				folder2.create(true, true, SubMonitor.convert(m, 50));
@@ -1194,7 +1194,7 @@ public class IResourceChangeListenerTest {
 		file3 = project1.getFile("File3");
 		verifier.addExpectedChange(file1, IResourceDelta.REMOVED, IResourceDelta.MOVED_TO, null, file3.getFullPath());
 		verifier.addExpectedChange(file3, IResourceDelta.ADDED, IResourceDelta.MOVED_FROM, file1.getFullPath(), null);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("moving and moving file", 100);
 			try {
 				file1.move(file2.getFullPath(), false, null);
@@ -1206,7 +1206,7 @@ public class IResourceChangeListenerTest {
 		assertDelta();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveMoveFolder() throws CoreException {
 		folder2 = project1.getFolder("Folder2");
 		folder3 = project1.getFolder("Folder3");
@@ -1217,7 +1217,7 @@ public class IResourceChangeListenerTest {
 				null);
 		verifier.addExpectedChange(file1, IResourceDelta.REMOVED, IResourceDelta.MOVED_TO, null, file3.getFullPath());
 		verifier.addExpectedChange(file3, IResourceDelta.ADDED, IResourceDelta.MOVED_FROM, file1.getFullPath(), null);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("moving and moving folder", 100);
 			try {
 				folder1.move(folder2.getFullPath(), false, null);
@@ -1233,7 +1233,7 @@ public class IResourceChangeListenerTest {
 	 * Move a project via rename. Note that the DESCRIPTION flag should be set
 	 * in the delta for the destination only.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveProject1() throws CoreException {
 		verifier.reset();
 		verifier.addExpectedChange(project1, IResourceDelta.REMOVED, IResourceDelta.MOVED_TO, null, project2.getFullPath());
@@ -1251,7 +1251,7 @@ public class IResourceChangeListenerTest {
 
 		verifier.addExpectedChange(project2.getFolder(settings.getProjectRelativePath()), IResourceDelta.ADDED, IResourceDelta.MOVED_FROM, settings.getFullPath(), null);
 		verifier.addExpectedChange(project2.getFile(prefs.getProjectRelativePath()), IResourceDelta.ADDED, IResourceDelta.MOVED_FROM, prefs.getFullPath(), null);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("Creating and moving", 100);
 			try {
 				project1.move(project2.getFullPath(), IResource.NONE, SubMonitor.convert(m, 50));
@@ -1271,7 +1271,7 @@ public class IResourceChangeListenerTest {
 		final IPath path = getRandomLocation();
 		fileStoreExtension.deleteOnTearDown(path);
 		verifier.addExpectedChange(project1, IResourceDelta.CHANGED, IResourceDelta.DESCRIPTION);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("Creating and moving", 100);
 			try {
 				IProjectDescription desc = project1.getDescription();
@@ -1284,9 +1284,9 @@ public class IResourceChangeListenerTest {
 		assertDelta();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMulti() throws CoreException {
-		class Listener implements IResourceChangeListener {
+		class Listener implements IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 			public volatile boolean done = false;
 			public volatile int eventType = -1;
 
@@ -1303,7 +1303,7 @@ public class IResourceChangeListenerTest {
 		try {
 			project1.touch(createTestMonitor());
 			int i = 0;
-			while (!(listener1.done && listener2.done)) {
+			while (!(listener1.done && listener2.done)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// timeout if the listeners are never called
 				assertTrue(++i < 600, "Listeners were never called");
 				try {
@@ -1319,7 +1319,7 @@ public class IResourceChangeListenerTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAutoPublishService() throws Throwable {
 		final AtomicReference<Executable> logListenerInMainThreadCallback = new AtomicReference<>(NOOP_RUNNABLE);
 		class Loggy implements LogListener {
@@ -1336,7 +1336,7 @@ public class IResourceChangeListenerTest {
 				}
 			}
 		}
-		class Listener implements IResourceChangeListener {
+		class Listener implements IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 			public volatile boolean done = false;
 			public volatile int eventType = -1;
 
@@ -1397,7 +1397,7 @@ public class IResourceChangeListenerTest {
 
 	public boolean waitUntil(BooleanSupplier condition) {
 		int i = 0;
-		while (!condition.getAsBoolean()) {
+		while (!condition.getAsBoolean()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (i++ > 600) {
 				return false;
 			}
@@ -1478,7 +1478,7 @@ public class IResourceChangeListenerTest {
 	public void testReplaceFile() throws CoreException {
 		/* change file1's contents */
 		verifier.addExpectedChange(file1, IResourceDelta.CHANGED, IResourceDelta.REPLACED | IResourceDelta.CONTENT);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("Deleting and Creating", 100);
 			try {
 				file1.delete(true, SubMonitor.convert(m, 50));
@@ -1490,12 +1490,12 @@ public class IResourceChangeListenerTest {
 		assertDelta();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testReplaceFolderWithFolder() throws CoreException {
 		folder2 = project1.getFolder("Folder2");
 		folder3 = project1.getFolder("Folder3");
 		verifier.reset();
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			file1.delete(false, null);
 			folder2.create(false, true, null);
 		}, null);
@@ -1508,7 +1508,7 @@ public class IResourceChangeListenerTest {
 				folder3.getFullPath());
 		verifier.addExpectedChange(folder3, IResourceDelta.ADDED, IResourceDelta.MOVED_FROM, folder2.getFullPath(),
 				null);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("replace folder with folder", 100);
 			try {
 				folder2.move(folder3.getFullPath(), false, null);
@@ -1533,13 +1533,13 @@ public class IResourceChangeListenerTest {
 		assertFalse(verifier.hasBeenNotified(), "Unexpected notification on no change");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSwapFiles() throws CoreException {
 		file1 = project1.getFile("File1");
 		file2 = project1.getFile("File2");
 		file3 = project1.getFile("File3");
 		verifier.reset();
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			file1.create(new ByteArrayInputStream(new byte[] { 65 }), false, null);
 			file2.create(new ByteArrayInputStream(new byte[] { 67 }), false, null);
 		}, null);
@@ -1548,7 +1548,7 @@ public class IResourceChangeListenerTest {
 				| IResourceDelta.CONTENT;
 		verifier.addExpectedChange(file1, IResourceDelta.CHANGED, flags, file2.getFullPath(), file2.getFullPath());
 		verifier.addExpectedChange(file2, IResourceDelta.CHANGED, flags, file1.getFullPath(), file1.getFullPath());
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("swap files", 100);
 			try {
 				file1.move(file3.getFullPath(), false, null);
@@ -1561,10 +1561,10 @@ public class IResourceChangeListenerTest {
 		assertDelta();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSwapFolders() throws CoreException {
 		verifier.reset();
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			folder2 = project1.getFolder("Folder2");
 			folder3 = project1.getFolder("Folder3");
 			file1.delete(false, null);
@@ -1574,7 +1574,7 @@ public class IResourceChangeListenerTest {
 		final int flags = IResourceDelta.MOVED_FROM | IResourceDelta.MOVED_TO | IResourceDelta.REPLACED | IResourceDelta.CONTENT;
 		verifier.addExpectedChange(folder1, IResourceDelta.CHANGED, flags, folder2.getFullPath(), folder2.getFullPath());
 		verifier.addExpectedChange(folder2, IResourceDelta.CHANGED, flags, folder1.getFullPath(), folder1.getFullPath());
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("swap folders", 100);
 			try {
 				folder1.move(folder3.getFullPath(), false, null);
@@ -1590,7 +1590,7 @@ public class IResourceChangeListenerTest {
 	/**
 	 * Asserts that the delta is correct for changes to team private members.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTeamPrivateChanges() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		final IFolder teamPrivateFolder = project1.getFolder("TeamPrivateFolder");
@@ -1598,7 +1598,7 @@ public class IResourceChangeListenerTest {
 		// create a team private folder
 		verifier.reset();
 		verifier.addExpectedChange(teamPrivateFolder, IResourceDelta.ADDED, 0);
-		workspace.run((IWorkspaceRunnable) unused -> {
+		workspace.run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			teamPrivateFolder.create(true, true, createTestMonitor());
 			teamPrivateFolder.setTeamPrivateMember(true);
 		}, createTestMonitor());
@@ -1623,7 +1623,7 @@ public class IResourceChangeListenerTest {
 		// delete team private folder and change some other file
 		verifier.addExpectedChange(teamPrivateFolder, IResourceDelta.REMOVED, 0);
 		verifier.addExpectedChange(file1, IResourceDelta.CHANGED, IResourceDelta.CONTENT);
-		workspace.run((IWorkspaceRunnable) unused -> {
+		workspace.run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			teamPrivateFolder.delete(IResource.NONE, createTestMonitor());
 			file1.setContents(createRandomContentsStream(), IResource.NONE, createTestMonitor());
 		}, createTestMonitor());
@@ -1631,7 +1631,7 @@ public class IResourceChangeListenerTest {
 		verifier.reset();
 		// create team private file
 		verifier.addExpectedChange(teamPrivateFile, IResourceDelta.ADDED, 0);
-		workspace.run((IWorkspaceRunnable) unused -> {
+		workspace.run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			teamPrivateFile.create(createRandomContentsStream(), true, createTestMonitor());
 			teamPrivateFile.setTeamPrivateMember(true);
 		}, createTestMonitor());
@@ -1653,7 +1653,7 @@ public class IResourceChangeListenerTest {
 	public void testTwoFileChanges() throws CoreException {
 		verifier.addExpectedChange(file1, IResourceDelta.CHANGED, IResourceDelta.CONTENT);
 		verifier.addExpectedChange(file2, IResourceDelta.ADDED, 0);
-		getWorkspace().run((IWorkspaceRunnable) m -> {
+		getWorkspace().run((IWorkspaceRunnable) m -> { //FLLDCIM: MARK — T09  LAMBDA
 			m.beginTask("setting contents and creating", 100);
 			try {
 				file1.setContents(createRandomContentsStream(), true, false, SubMonitor.convert(m, 50));
@@ -1665,7 +1665,7 @@ public class IResourceChangeListenerTest {
 		assertDelta();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRemoveAndCreateUnderlyingFileForLinkedResource() throws CoreException, IOException {
 		IPath path = getTempDir().addTrailingSeparator().append(createUniqueString());
 		fileStoreExtension.deleteOnTearDown(path);
@@ -1688,7 +1688,7 @@ public class IResourceChangeListenerTest {
 		assertDelta();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRemoveAndCreateUnderlyingFolderForLinkedResource() throws CoreException {
 		IPath path = getTempDir().addTrailingSeparator().append(createUniqueString());
 		fileStoreExtension.deleteOnTearDown(path);

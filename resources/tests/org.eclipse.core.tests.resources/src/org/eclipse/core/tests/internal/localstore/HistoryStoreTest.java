@@ -73,22 +73,22 @@ public class HistoryStoreTest {
 	private final FileStoreAutoDeleteExtension fileStoreExtension = new FileStoreAutoDeleteExtension();
 
 	static class LogListenerVerifier implements ILogListener {
-		List<Integer> actual = new ArrayList<>();
-		List<Integer> expected = new ArrayList<>();
+		List<Integer> actual = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<Integer> expected = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		void addExpected(int statusCode) {
 			expected.add(Integer.valueOf(statusCode));
 		}
 
 		String dump() {
-			StringBuilder buffer = new StringBuilder();
-			buffer.append("Expected:\n");
-			for (Integer integer : expected) {
-				buffer.append("\t" + integer + "\n");
+			StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+			buffer.append("Expected:\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			for (Integer integer : expected) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				buffer.append("\t" + integer + "\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append("Actual:\n");
-			for (Integer integer : actual) {
-				buffer.append("\t" + integer + "\n");
+			buffer.append("Actual:\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			for (Integer integer : actual) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				buffer.append("\t" + integer + "\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 			return buffer.toString();
 		}
@@ -99,18 +99,18 @@ public class HistoryStoreTest {
 		}
 
 		void reset() {
-			expected = new ArrayList<>();
-			actual = new ArrayList<>();
+			expected = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			actual = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 
 		void verify() throws VerificationFailedException {
 			String message;
 			if (expected.size() != actual.size()) {
-				message = "Expected size: " + expected.size() + " does not equal actual size: " + actual.size() + "\n";
+				message = "Expected size: " + expected.size() + " does not equal actual size: " + actual.size() + "\n"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				message += dump();
 				throw new VerificationFailedException(message);
 			}
-			for (Integer status : expected) {
+			for (Integer status : expected) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!actual.contains(status)) {
 					message = "Expected and actual results differ.\n";
 					message += dump();
@@ -132,9 +132,9 @@ public class HistoryStoreTest {
 	}
 
 	public static void assertFileStateEquals(String tag, IFileState expected, IFileState actual) {
-		assertEquals(expected.getFullPath(), actual.getFullPath(), tag + " path differs");
-		assertEquals(expected.getModificationTime(), actual.getModificationTime(), tag + " timestamp differs");
-		assertEquals(((FileState) expected).getUUID(), ((FileState) actual).getUUID(), tag + " uuid differs");
+		assertEquals(expected.getFullPath(), actual.getFullPath(), tag + " path differs"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		assertEquals(expected.getModificationTime(), actual.getModificationTime(), tag + " timestamp differs"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		assertEquals(((FileState) expected).getUUID(), ((FileState) actual).getUUID(), tag + " uuid differs"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/*
@@ -157,7 +157,7 @@ public class HistoryStoreTest {
 		int c = -1;
 		try {
 			c = input.read();
-			while (c != -1) {
+			while (c != -1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				i++;
 				c = input.read();
 			}
@@ -218,7 +218,7 @@ public class HistoryStoreTest {
 	 *      encounter granularity issues).
 	 *  15. Check file states.  There should be none left.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAddStateAndPolicies() throws Exception {
 		/* Create common objects. */
 		IProject project = getWorkspace().getRoot().getProject("Project");
@@ -238,7 +238,7 @@ public class HistoryStoreTest {
 		getWorkspace().setDescription(description);
 
 		/* test max file states */
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < 8; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ensureOutOfSync(file);
 			file.refreshLocal(IResource.DEPTH_ZERO, createTestMonitor());
 			file.setContents(createRandomContentsStream(), true, true, createTestMonitor());
@@ -256,14 +256,14 @@ public class HistoryStoreTest {
 
 		// assert that states are in the correct order (newer ones first)
 		long lastModified = states[0].getModificationTime();
-		for (int i = 1; i < states.length; i++) {
-			assertTrue(lastModified >= states[i].getModificationTime(), i + "");
+		for (int i = 1; i < states.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			assertTrue(lastModified >= states[i].getModificationTime(), i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			lastModified = states[i].getModificationTime();
 		}
 
 		// assert that the most recent states were preserved
-		for (int i = 0; i < states.length; i++) {
-			assertFileStateEquals(i + "", oldStates[i], states[i]);
+		for (int i = 0; i < states.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			assertFileStateEquals(i + "", oldStates[i], states[i]); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		/* test max file state size */
@@ -274,15 +274,15 @@ public class HistoryStoreTest {
 		file = project.getFile("file1.txt");
 		file.create(new ByteArrayInputStream(new byte[0]), true, createTestMonitor());
 		// Add 10 bytes to exceed the max file state size.
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 10; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			file.appendContents(createInputStream("a"), true, true, createTestMonitor());
 		}
 		getWorkspace().save(true, null);
 		states = file.getHistory(createTestMonitor());
 		// #states = size + 1 for the 0 byte length file to begin with.
-		for (int i = 0; i < states.length; i++) {
+		for (int i = 0; i < states.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int bytesRead = numBytes(states[i].getContents());
-			assertTrue(bytesRead <= description.getMaxFileStateSize(), i + "");
+			assertTrue(bytesRead <= description.getMaxFileStateSize(), i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		/* test max file longevity */
@@ -315,7 +315,7 @@ public class HistoryStoreTest {
 		assertThat(states).isEmpty();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug28238() throws Exception {
 		// paths to mimic files in the workspace
 		IProject project = getWorkspace().getRoot().getProject("myproject28238");
@@ -345,7 +345,7 @@ public class HistoryStoreTest {
 		assertThat(states).hasSize(1);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug28603() throws CoreException {
 		// paths to mimic files in the workspace
 		IProject project = getWorkspace().getRoot().getProject("myproject28603");
@@ -368,17 +368,17 @@ public class HistoryStoreTest {
 		assertThat(states).hasSize(3);
 		int currentStates = 3;
 		assertThat(file2.getHistory(createTestMonitor())).as("check file2 has no history").isEmpty();
-		for (int i = 0; i < maxStates + 10; i++) {
+		for (int i = 0; i < maxStates + 10; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			states = file1.getHistory(createTestMonitor());
-			assertThat(states).as(i + " file1 states").hasSize(currentStates);
+			assertThat(states).as(i + " file1 states").hasSize(currentStates); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			file1.move(file2.getFullPath(), true, true, createTestMonitor());
 			states = file2.getHistory(createTestMonitor());
 			currentStates = currentStates < maxStates ? currentStates + 1 : maxStates;
-			assertThat(states).as(i + " file2 states").hasSize(currentStates);
+			assertThat(states).as(i + " file2 states").hasSize(currentStates); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			file2.move(file1.getFullPath(), true, true, createTestMonitor());
 			states = file1.getHistory(createTestMonitor());
 			currentStates = currentStates < maxStates ? currentStates + 1 : maxStates;
-			assertThat(states).as(i + " file1 states").hasSize(currentStates);
+			assertThat(states).as(i + " file1 states").hasSize(currentStates); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -391,7 +391,7 @@ public class HistoryStoreTest {
 	 * - consider history store information stale after some specified period
 	 *   of time and discard stale data
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testClean() throws Exception {
 		/* Create common objects. */
 		IProject project = getWorkspace().getRoot().getProject("ProjectClean");
@@ -413,7 +413,7 @@ public class HistoryStoreTest {
 		getWorkspace().setDescription(description);
 
 		// Set up 8 file states for this file when 500 are allowed
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < 8; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ensureOutOfSync(file);
 			file.refreshLocal(IResource.DEPTH_ZERO, createTestMonitor());
 			// try {
@@ -427,7 +427,7 @@ public class HistoryStoreTest {
 		long oldLastModTimes[] = new long[8];
 		IFileState[] states = file.getHistory(createTestMonitor());
 		assertThat(states).hasSize(8);
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < 8; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			oldLastModTimes[i] = states[i].getModificationTime();
 		}
 
@@ -446,13 +446,13 @@ public class HistoryStoreTest {
 		assertThat(states).hasSize(3);
 		// assert that states are in the correct order (newer ones first)
 		long lastModified = states[0].getModificationTime();
-		for (int i = 1; i < states.length; i++) {
-			assertTrue(lastModified >= states[i].getModificationTime(), i + "");
+		for (int i = 1; i < states.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			assertTrue(lastModified >= states[i].getModificationTime(), i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			lastModified = states[i].getModificationTime();
 		}
 		// Make sure we kept the 3 newer states.
-		for (int i = 0; i < states.length; i++) {
-			assertTrue(oldLastModTimes[i] == states[i].getModificationTime(), i + "");
+		for (int i = 0; i < states.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			assertTrue(oldLastModTimes[i] == states[i].getModificationTime(), i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		/* test max file longevity */
@@ -506,7 +506,7 @@ public class HistoryStoreTest {
 	 * But the copied file should have 4 states as it retains the states from
 	 * before the copy took place as well.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyFolder() throws Exception {
 		String[] contents = {"content1", "content2", "content3", "content4", "content5"};
 		// create common objects
@@ -564,7 +564,7 @@ public class HistoryStoreTest {
 	 * - give an invalid source path but a valid destination path
 	 * - give an invalid destination path but a valid source path
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyHistoryFile() throws Exception {
 		// Create a project, folder and file so we have some history store
 		// Should have a project that appears as follows:
@@ -644,7 +644,7 @@ public class HistoryStoreTest {
 				third -> assertThat(third.getContents()).hasContent(contents[0]));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyHistoryFolder() throws Exception {
 		String[] contents = {"content0", "content1", "content2", "content3", "content4"};
 		// create common objects
@@ -684,7 +684,7 @@ public class HistoryStoreTest {
 				third -> assertThat(third.getContents()).hasContent(contents[0]));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyHistoryProject() throws Exception {
 		String[] contents = {"content0", "content1", "content2", "content3", "content4"};
 		// create common objects
@@ -724,7 +724,7 @@ public class HistoryStoreTest {
 				third -> assertThat(third.getContents()).hasContent(contents[0]));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDelete() throws CoreException {
 		// create common objects
 		IProject project = getWorkspace().getRoot().getProject("MyProject");
@@ -782,7 +782,7 @@ public class HistoryStoreTest {
 	/**
 	 * Test for existence of file states in the HistoryStore.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testExists() throws Throwable {
 
 		/* Create common objects. */
@@ -796,7 +796,7 @@ public class HistoryStoreTest {
 		final int ITERATIONS = 20;
 
 		/* Add multiple states for one file location. */
-		for (int i = 0; i < ITERATIONS; i++) {
+		for (int i = 0; i < ITERATIONS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			file.setContents(createRandomContentsStream(), true, true, createTestMonitor());
 		}
 
@@ -805,12 +805,12 @@ public class HistoryStoreTest {
 		// Make sure we have ITERATIONS number of states
 		assertThat(states).hasSize(ITERATIONS);
 		// Make sure that each of these states really exists in the filesystem.
-		for (IFileState state : states) {
+		for (IFileState state : states) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThat(state).matches(IFileState::exists, "exists");
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFindDeleted() throws CoreException {
 		// create common objects
 		IWorkspaceRoot root = getWorkspace().getRoot();
@@ -976,7 +976,7 @@ public class HistoryStoreTest {
 	/**
 	 * Test for retrieving contents of files with states logged in the HistoryStore.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetContents() throws Throwable {
 		final int ITERATIONS = 20;
 
@@ -1000,7 +1000,7 @@ public class HistoryStoreTest {
 		long myLong = 0L;
 
 		/* Add multiple editions for one file location. */
-		for (int i = 0; i < ITERATIONS; i++, myLong++) {
+		for (int i = 0; i < ITERATIONS; i++, myLong++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			FileInfo fileInfo = new FileInfo(file.getName());
 			fileInfo.setLastModified(myLong);
 			historyStore.addState(file.getFullPath(), ((Resource) file).getStore(), fileInfo, true);
@@ -1012,7 +1012,7 @@ public class HistoryStoreTest {
 		}
 
 		/* Add multiple editions for second file location. */
-		for (int i = 0; i < ITERATIONS; i++, myLong++) {
+		for (int i = 0; i < ITERATIONS; i++, myLong++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			FileInfo fileInfo = new FileInfo(file.getName());
 			fileInfo.setLastModified(myLong);
 			historyStore.addState(secondValidFile.getFullPath(), ((Resource) secondValidFile).getStore(), fileInfo, true);
@@ -1026,25 +1026,25 @@ public class HistoryStoreTest {
 		/* Ensure contents of file and retrieved resource are identical.
 		 Does not check timestamps. Timestamp checks are performed in a separate test. */
 		IFileState[] stateArray = historyStore.getStates(file.getFullPath(), createTestMonitor());
-		for (int i = 0; i < stateArray.length; i++, myLong++) {
+		for (int i = 0; i < stateArray.length; i++, myLong++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try (DataInputStream inFile = new DataInputStream(file.getContents(false))) {
 				try (DataInputStream inContents = new DataInputStream(historyStore.getContents(stateArray[i]))) {
-					assertThat(inFile).as("match history state " + i).hasSameContentAs(inContents);
+					assertThat(inFile).as("match history state " + i).hasSameContentAs(inContents); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
 		}
 
 		stateArray = historyStore.getStates(secondValidFile.getFullPath(), createTestMonitor());
-		for (int i = 0; i < stateArray.length; i++, myLong++) {
+		for (int i = 0; i < stateArray.length; i++, myLong++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try (DataInputStream inFile = new DataInputStream(secondValidFile.getContents(false))) {
 				try (DataInputStream inContents = new DataInputStream(historyStore.getContents(stateArray[i]))) {
-					assertThat(inFile).as("match history state " + i).hasSameContentAs(inContents);
+					assertThat(inFile).as("match history state " + i).hasSameContentAs(inContents); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
 		}
 
 		/* Test getting an invalid file state. */
-		for (int i = 0; i < ITERATIONS; i++) {
+		for (int i = 0; i < ITERATIONS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final long immutableValue = myLong;
 			// Create bogus FileState using invalid uuid.
 			assertThrows(CoreException.class, () -> historyStore.getContents(
@@ -1052,12 +1052,12 @@ public class HistoryStoreTest {
 		}
 
 		/* Test verification using null file state. */
-		for (int i = 0; i < ITERATIONS; i++) {
+		for (int i = 0; i < ITERATIONS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThrows(RuntimeException.class, () -> historyStore.getContents(null));
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testModifiedStamp() throws CoreException {
 		/* Initialize common objects. */
 		IProject project = getWorkspace().getRoot().getProject("Project");
@@ -1097,7 +1097,7 @@ public class HistoryStoreTest {
 	 * But the moved file should have 4 states as it retains the states from
 	 * before the move took place as well.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveFolder() throws Exception {
 		String[] contents = {"content1", "content2", "content3", "content4", "content5"};
 		// create common objects
@@ -1163,7 +1163,7 @@ public class HistoryStoreTest {
 	 * But the copied file should have 4 states as it retains the states from
 	 * before the copy took place as well.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveProject() throws Exception {
 		String[] contents = {"content1", "content2", "content3", "content4", "content5"};
 		// create common objects
@@ -1212,7 +1212,7 @@ public class HistoryStoreTest {
 		project.delete(true, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRemoveAll() throws CoreException {
 		/* Create common objects. */
 		IProject project = getWorkspace().getRoot().getProject("Project");
@@ -1224,7 +1224,7 @@ public class HistoryStoreTest {
 		final int ITERATIONS = 20;
 
 		/* test remove in a file */
-		for (int i = 0; i < ITERATIONS; i++) {
+		for (int i = 0; i < ITERATIONS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			file.setContents(createRandomContentsStream(), true, true, createTestMonitor());
 		}
 
@@ -1242,7 +1242,7 @@ public class HistoryStoreTest {
 		IFile anotherOne = folder.getFile("anotherOne");
 		folder.create(true, true, createTestMonitor());
 		anotherOne.create(createRandomContentsStream(), true, createTestMonitor());
-		for (int i = 0; i < ITERATIONS; i++) {
+		for (int i = 0; i < ITERATIONS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			file.setContents(createRandomContentsStream(), true, true, createTestMonitor());
 			anotherOne.setContents(createRandomContentsStream(), true, true, createTestMonitor());
 		}
@@ -1269,7 +1269,7 @@ public class HistoryStoreTest {
 		aaa.create(createRandomContentsStream(), true, createTestMonitor());
 		ccc.create(createRandomContentsStream(), true, createTestMonitor());
 
-		for (int i = 0; i < ITERATIONS; i++) {
+		for (int i = 0; i < ITERATIONS; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			anotherOne.setContents(createRandomContentsStream(), true, true, createTestMonitor());
 			aaa.setContents(createRandomContentsStream(), true, true, createTestMonitor());
 			ccc.setContents(createRandomContentsStream(), true, true, createTestMonitor());
@@ -1308,7 +1308,7 @@ public class HistoryStoreTest {
 	 * But the copied file should have 4 states as it retains the states from
 	 * before the copy took place as well.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSimpleCopy() throws Exception {
 		/* Initialize common objects. */
 		IProject project = getWorkspace().getRoot().getProject("SimpleCopyProject");
@@ -1371,7 +1371,7 @@ public class HistoryStoreTest {
 	 * But the moved file should have 4 states as it retains the states from
 	 * before the move took place as well.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSimpleMove() throws Exception {
 		/* Initialize common objects. */
 		IProject project = getWorkspace().getRoot().getProject("SimpleMoveProject");
@@ -1432,7 +1432,7 @@ public class HistoryStoreTest {
 	 *   6. Set new content				"content 2"			4
 	 *   7. Roll back to third version  "content 3"			5
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSimpleUse() throws Exception {
 		/* Initialize common objects. */
 		IProject project = getWorkspace().getRoot().getProject("Project");
@@ -1446,7 +1446,7 @@ public class HistoryStoreTest {
 		file.create(createInputStream(contents[0]), true, createTestMonitor());
 
 		/* Set new contents on the file. Should add two entries to the store. */
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 2; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			file.setContents(createInputStream(contents[i + 1]), true, true, createTestMonitor());
 		}
 

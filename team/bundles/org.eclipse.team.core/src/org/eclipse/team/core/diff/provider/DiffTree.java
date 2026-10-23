@@ -67,7 +67,7 @@ public class DiffTree implements IDiffTree {
 
 	private  boolean lockedForModification;
 
-	private Map<Integer, Set<IPath>> propertyChanges = new HashMap<>();
+	private Map<Integer, Set<IPath>> propertyChanges = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/**
 	 * Create an empty diff tree.
@@ -94,7 +94,7 @@ public class DiffTree implements IDiffTree {
 				return;
 			}
 			IPath[] children = getChildren(path);
-			for (IPath child : children) {
+			for (IPath child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				accept(child, visitor, depth == IResource.DEPTH_ONE ? IResource.DEPTH_ZERO : IResource.DEPTH_INFINITE);
 			}
 		}
@@ -235,18 +235,18 @@ public class DiffTree implements IDiffTree {
 		}
 	}
 
-	private void fireChanges(final IProgressMonitor monitor) {
+	private void fireChanges(final IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		final DiffChangeEvent event = getChangeEvent();
 		resetChanges();
 		final Map<Integer, Set<IPath>> propertyChanges = this.propertyChanges;
-		this.propertyChanges = new HashMap<>();
+		this.propertyChanges = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 		if(event.isEmpty() && ! event.isReset() && propertyChanges.isEmpty()) {
 			return;
 		}
 		Object[] listeners = this.listeners.getListeners();
-		for (Object l : listeners) {
+		for (Object l : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final IDiffChangeListener listener = (IDiffChangeListener) l;
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
@@ -260,7 +260,7 @@ public class DiffTree implements IDiffTree {
 						if (!event.isEmpty() || event.isReset()) {
 							listener.diffsChanged(event, Policy.subMonitorFor(monitor, 100));
 						}
-						for (Integer key : propertyChanges.keySet()) {
+						for (Integer key : propertyChanges.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							Set<IPath> paths = propertyChanges.get(key);
 							listener.propertyChanged(DiffTree.this, key.intValue(), paths.toArray(new IPath[paths
 									.size()]));
@@ -370,7 +370,7 @@ public class DiffTree implements IDiffTree {
 		Integer key = Integer.valueOf(property);
 		Set<IPath> changes = propertyChanges.get(key);
 		if (changes == null) {
-			changes = new HashSet<>();
+			changes = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			propertyChanges.put(key, changes);
 		}
 		Collections.addAll(changes, paths);
@@ -385,7 +385,7 @@ public class DiffTree implements IDiffTree {
 	public void setBusy(IDiff[] diffs, IProgressMonitor monitor) {
 		try {
 			beginInput();
-			for (IDiff node : diffs) {
+			for (IDiff node : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				setPropertyToRoot(node, P_BUSY_HINT, true);
 			}
 		} finally {
@@ -398,7 +398,7 @@ public class DiffTree implements IDiffTree {
 		try {
 			beginInput();
 			IPath[] paths = pathTree.getPaths();
-			for (IPath path : paths) {
+			for (IPath path : paths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IPath[] changed = pathTree.setPropogatedProperty(path, P_BUSY_HINT, false);
 				accumulatePropertyChanges(P_BUSY_HINT, changed);
 			}

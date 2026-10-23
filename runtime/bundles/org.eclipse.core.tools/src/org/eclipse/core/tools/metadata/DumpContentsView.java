@@ -62,7 +62,7 @@ public class DumpContentsView extends SpyView {
 	 * @param parent the parent control
 	 * @see org.eclipse.ui.IWorkbenchPart#createPartControl(org.eclipse.swt.widgets.Composite)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createPartControl(final Composite parent) {
 		// creates a read-only text viewer
 		viewer = new TextViewer(parent, SWT.V_SCROLL | SWT.H_SCROLL);
@@ -95,7 +95,7 @@ public class DumpContentsView extends SpyView {
 	 *
 	 * @param file the file to be dumped
 	 */
-	public void setFile(File file) {
+	public void setFile(File file) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IDumper dumper = null;
 
 		// tries to get the associated file dumper
@@ -113,7 +113,7 @@ public class DumpContentsView extends SpyView {
 			Status status = new Status(IStatus.ERROR, DumpContentsView.class, 0, "Error during file dump", //$NON-NLS-1$
 					dump.getFailureReason());
 			ILog.of(DumpContentsView.class).log(status);
-			String message = "File dumping did not complete successfully. Reason: " + dump.getFailureReason(); //$NON-NLS-1$
+			String message = "File dumping did not complete successfully. Reason: " + dump.getFailureReason(); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			ErrorUtil.showErrorMessage(message, "Error during file dump"); //$NON-NLS-1$
 		}
 
@@ -126,7 +126,7 @@ public class DumpContentsView extends SpyView {
 	 *
 	 * @param dump a dump object to be shown on this view
 	 */
-	private void load(IDump dump) {
+	private void load(IDump dump) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		this.currentFile = dump.getFile();
 
@@ -137,8 +137,8 @@ public class DumpContentsView extends SpyView {
 		}
 
 		// updates title and title tool tip
-		this.setContentDescription(initialTitle + " : " + this.currentFile.getName()); //$NON-NLS-1$
-		this.setTitleToolTip("Dump contents for " + this.currentFile.getAbsolutePath()); //$NON-NLS-1$
+		this.setContentDescription(initialTitle + " : " + this.currentFile.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		this.setTitleToolTip("Dump contents for " + this.currentFile.getAbsolutePath()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// updates viewer
 		viewer.getDocument().set(dump.getContents().toString());

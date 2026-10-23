@@ -28,12 +28,12 @@ import org.eclipse.jface.text.contentassist.IContextInformationValidator;
 
 public class PDAContentAssistProcessor implements IContentAssistProcessor {
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int offset) {
 		int index = offset - 1;
-		StringBuilder prefix = new StringBuilder();
+		StringBuilder prefix = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		IDocument document = viewer.getDocument();
-		while (index > 0) {
+		while (index > 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				char prev = document.getChar(index);
 				if (Character.isWhitespace(prev)) {
@@ -45,21 +45,21 @@ public class PDAContentAssistProcessor implements IContentAssistProcessor {
 			}
 		}
 
-		List<CompletionProposal> proposals = new ArrayList<>();
+		List<CompletionProposal> proposals = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		String[] keywords = PDAScanner.fgKeywords;
 		if (prefix.length() > 0) {
 			String word = prefix.toString();
-			for (int i = 0; i < keywords.length; i++) {
+			for (int i = 0; i < keywords.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String keyword = keywords[i];
 				if (keyword.startsWith(word) && word.length() < keyword.length()) {
-					proposals.add(new CompletionProposal(keyword + " ", index + 1, offset - (index + 1), keyword.length() + 1)); //$NON-NLS-1$
+					proposals.add(new CompletionProposal(keyword + " ", index + 1, offset - (index + 1), keyword.length() + 1)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
 		} else {
 			// propose all keywords
-			for (int i = 0; i < keywords.length; i++) {
+			for (int i = 0; i < keywords.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String keyword = keywords[i];
-				proposals.add(new CompletionProposal(keyword + " ", offset, 0, keyword.length() + 1)); //$NON-NLS-1$
+				proposals.add(new CompletionProposal(keyword + " ", offset, 0, keyword.length() + 1)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		if (!proposals.isEmpty()) {

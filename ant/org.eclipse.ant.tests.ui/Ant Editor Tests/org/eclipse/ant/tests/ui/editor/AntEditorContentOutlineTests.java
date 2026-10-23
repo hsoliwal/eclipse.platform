@@ -43,7 +43,7 @@ public class AntEditorContentOutlineTests {
 	/**
 	 * Tests the creation of the AntElementNode, that includes parsing a file and determining the correct location of the tags.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreationOfOutlineTree() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("buildtest1.xml"); //$NON-NLS-1$
 
@@ -132,7 +132,7 @@ public class AntEditorContentOutlineTests {
 	/**
 	 * Tests the creation of the AntElementNode, that includes parsing a non-valid file.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testParsingOfNonValidFile() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("buildtest2.xml"); //$NON-NLS-1$
 
@@ -175,7 +175,7 @@ public class AntEditorContentOutlineTests {
 	/**
 	 * Some testing of getting the right location of tags.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAdvancedTaskLocation() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("outline_select_test_build.xml"); //$NON-NLS-1$
 

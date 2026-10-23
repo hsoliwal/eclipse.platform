@@ -24,8 +24,8 @@ import org.eclipse.team.core.synchronize.SyncInfoSet;
 import org.eclipse.team.internal.core.subscribers.SubscriberSyncInfoCollector;
 import org.eclipse.team.internal.ui.synchronize.RefreshParticipantJob.IChangeDescription;
 
-public class RefreshChangeListener implements ISubscriberChangeListener, IChangeDescription {
-	private final List<ISubscriberChangeEvent> changes = new ArrayList<>();
+public class RefreshChangeListener implements ISubscriberChangeListener, IChangeDescription { //FLLDCIM: MARK — T38  IMPLEMENTS
+	private final List<ISubscriberChangeEvent> changes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private final SubscriberSyncInfoCollector collector;
 	private final IResource[] resources;
 
@@ -35,16 +35,16 @@ public class RefreshChangeListener implements ISubscriberChangeListener, IChange
 	}
 	@Override
 	public void subscriberResourceChanged(ISubscriberChangeEvent[] deltas) {
-		for (ISubscriberChangeEvent delta : deltas) {
+		for (ISubscriberChangeEvent delta : deltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (delta.getFlags() == ISubscriberChangeEvent.SYNC_CHANGED) {
 				changes.add(delta);
 			}
 		}
 	}
 	public SyncInfo[] getChanges() {
-		List<SyncInfo> changedSyncInfos = new ArrayList<>();
+		List<SyncInfo> changedSyncInfos = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		SyncInfoSet set = collector.getSyncInfoSet();
-		for (ISubscriberChangeEvent delta : changes) {
+		for (ISubscriberChangeEvent delta : changes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			SyncInfo info = set.getSyncInfo(delta.getResource());
 			if (info != null && interestingChange(info)) {
 				changedSyncInfos.add(info);

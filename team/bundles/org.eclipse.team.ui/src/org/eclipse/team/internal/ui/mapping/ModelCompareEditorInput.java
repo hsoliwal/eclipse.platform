@@ -61,9 +61,9 @@ import org.eclipse.ui.Saveable;
 /**
  * A saveable based compare editor input for compare inputs from a {@link ModelSynchronizeParticipant}.
  */
-public class ModelCompareEditorInput extends SaveableCompareEditorInput implements IPropertyChangeListener {
+public class ModelCompareEditorInput extends SaveableCompareEditorInput implements IPropertyChangeListener { //FLLDCIM: MARK — T09  IMPLEMENTS
 
-	private static final String IGNORE_WHITSPACE_PAGE_PROPERTY = "org.eclipse.compare." + CompareConfiguration.IGNORE_WHITESPACE; //$NON-NLS-1$
+	private static final String IGNORE_WHITSPACE_PAGE_PROPERTY = "org.eclipse.compare." + CompareConfiguration.IGNORE_WHITESPACE; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	private final ModelSynchronizeParticipant participant;
 	private final ICompareInput input;
@@ -78,7 +78,7 @@ public class ModelCompareEditorInput extends SaveableCompareEditorInput implemen
 		this.participant = participant;
 		this.input = input;
 		contextListener = unused -> closeEditor(true);
-		getCompareConfiguration().addPropertyChangeListener(this);
+		getCompareConfiguration().addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		setTitle(NLS.bind(TeamUIMessages.SyncInfoCompareInput_title, input.getName()));
 	}
 
@@ -188,11 +188,11 @@ public class ModelCompareEditorInput extends SaveableCompareEditorInput implemen
 		super.registerContextMenu(menu, provider);
 		Saveable saveable = getSaveable();
 		if (saveable instanceof LocalResourceSaveableComparison) {
-			menu.addMenuListener(this::handleMenuAboutToShow);
+			menu.addMenuListener(this::handleMenuAboutToShow); //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 		}
 	}
 
-	protected void handleMenuAboutToShow(IMenuManager manager) {
+	protected void handleMenuAboutToShow(IMenuManager manager) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		StructuredSelection selection = new StructuredSelection(((IResourceProvider)getCompareInput()).getResource());
 		final ResourceMarkAsMergedHandler markAsMergedHandler = new ResourceMarkAsMergedHandler(getSynchronizeConfiguration());
 		markAsMergedHandler.updateEnablement(selection);

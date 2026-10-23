@@ -48,7 +48,7 @@ public class SynchronizeAndRefreshAction extends Action {
 	/**
 	 * Refreshes the local resources that are selected in the view.
 	 */
-	private void refreshLocal() {
+	private void refreshLocal() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final ISelectionProvider selectionProvider= fView.getSite().getSelectionProvider();
 		if (selectionProvider == null) {
 			return;

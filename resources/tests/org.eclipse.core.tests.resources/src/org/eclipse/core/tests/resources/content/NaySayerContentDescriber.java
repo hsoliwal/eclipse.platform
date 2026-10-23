@@ -28,7 +28,7 @@ public class NaySayerContentDescriber implements ITextContentDescriber {
 
 	@Override
 	public int describe(InputStream contents, IContentDescription description) throws IOException {
-		for (int i = 0; contents.read() != -1 && i < 2048; i++) {
+		for (int i = 0; contents.read() != -1 && i < 2048; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// read some data so performance tests are more reallistic
 		}
 		return INVALID;
@@ -36,7 +36,7 @@ public class NaySayerContentDescriber implements ITextContentDescriber {
 
 	@Override
 	public int describe(Reader contents, IContentDescription description) throws IOException {
-		for (int i = 0; contents.read() != -1 && i < 2048; i++) {
+		for (int i = 0; contents.read() != -1 && i < 2048; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// read some data so performance tests are more reallistic
 		}
 		return INVALID;

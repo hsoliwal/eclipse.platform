@@ -59,12 +59,12 @@ public class XMLContentDescriberTest {
 		checkEncodedContents2(ENCODING_NOTSUPPORTED, ENCODING_NOTSUPPORTED);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testEncodedContents3() throws Exception {
 		boolean[][] flags = { {true, true, false}, {true, false, false}, {false, true, false}, {false, false, false}, {true, true, true}, {true, false, true}, {false, true, true}, {false, false, true}};
 
 		IContentDescription description = null;
-		for (boolean[] flag : flags) {
+		for (boolean[] flag : flags) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			description = Platform.getContentTypeManager().getDescriptionFor(getInputStream(ENCODING_INCORRECT, ENCODING_UTF8, flag[0], flag[1], flag[2]), "fake.xml", new QualifiedName[] {IContentDescription.CHARSET});
 			assertNull(description);
 
@@ -75,7 +75,7 @@ public class XMLContentDescriberTest {
 			assertNull(description);
 		}
 
-		for (boolean[] flag : flags) {
+		for (boolean[] flag : flags) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			description = Platform.getContentTypeManager().getDescriptionFor(getInputStream(ENCODING_EMPTY, ENCODING_UTF8, flag[0], flag[1], flag[2]), "fake.xml", new QualifiedName[] {IContentDescription.CHARSET});
 			assertNull(description);
 
@@ -100,10 +100,10 @@ public class XMLContentDescriberTest {
 		boolean[][] flags = { {true, true, false}, {true, false, false}, {false, true, false}, {false, false, false}, {true, true, true}, {true, false, true}, {false, true, true}, {false, false, true}};
 
 		IContentDescription description = null;
-		for (boolean[] flag : flags) {
+		for (boolean[] flag : flags) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			description = Platform.getContentTypeManager().getDescriptionFor(getInputStream(encodingInContent, encoding, flag[0], flag[1], flag[2]), "fake.xml", new QualifiedName[] {IContentDescription.CHARSET});
 			assertNotNull(description, Arrays.toString(flag));
-			assertEquals(Platform.PI_RUNTIME + ".xml", description.getContentType().getId(), Arrays.toString(flag));
+			assertEquals(Platform.PI_RUNTIME + ".xml", description.getContentType().getId(), Arrays.toString(flag)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			assertEquals(expectedEncoding, description.getProperty(IContentDescription.CHARSET), Arrays.toString(flag));
 		}
 	}
@@ -112,21 +112,21 @@ public class XMLContentDescriberTest {
 		boolean[][] flags = { {true, true, false}, {true, false, false}, {false, true, false}, {false, false, false}, {true, true, true}, {true, false, true}, {false, true, true}, {false, false, true}};
 
 		IContentDescription description = null;
-		for (boolean[] flag : flags) {
+		for (boolean[] flag : flags) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			description = Platform.getContentTypeManager().getDescriptionFor(getReader(encodingInContent, flag[0], flag[1], flag[2]), "fake.xml", new QualifiedName[] {IContentDescription.CHARSET});
 			assertNotNull(description, Arrays.toString(flag));
-			assertEquals(Platform.PI_RUNTIME + ".xml", description.getContentType().getId(), Arrays.toString(flag));
+			assertEquals(Platform.PI_RUNTIME + ".xml", description.getContentType().getId(), Arrays.toString(flag)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			assertEquals(expectedEncoding, description.getProperty(IContentDescription.CHARSET), Arrays.toString(flag));
 		}
 	}
 
 	private InputStream getInputStream(String encodingInContent, String encoding, boolean encInNewLine, boolean encClosed, boolean whitespace) throws UnsupportedEncodingException {
-		String content = "<?xml version=\"1.0\"" + (encInNewLine ? "\n" : "") + "encoding" + (whitespace ? WHITESPACE_CHARACTERS : "") + "=" + (whitespace ? WHITESPACE_CHARACTERS : "") + "\"" + encodingInContent + (encClosed ? "\"" : "") + "?><root attribute=\"" + ENCODED_TEXT + "\">";
+		String content = "<?xml version=\"1.0\"" + (encInNewLine ? "\n" : "") + "encoding" + (whitespace ? WHITESPACE_CHARACTERS : "") + "=" + (whitespace ? WHITESPACE_CHARACTERS : "") + "\"" + encodingInContent + (encClosed ? "\"" : "") + "?><root attribute=\"" + ENCODED_TEXT + "\">"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return new ByteArrayInputStream(content.getBytes(encoding));
 	}
 
 	private Reader getReader(String encodingInContent, boolean encInNewLine, boolean encClosed, boolean whitespace) {
-		String content = "<?xml version=\"1.0\"" + (encInNewLine ? "\n" : "") + "encoding" + (whitespace ? WHITESPACE_CHARACTERS : "") + "=" + (whitespace ? WHITESPACE_CHARACTERS : "") + "\"" + encodingInContent + (encClosed ? "\"" : "") + "?><root attribute=\"" + ENCODED_TEXT + "\">";
+		String content = "<?xml version=\"1.0\"" + (encInNewLine ? "\n" : "") + "encoding" + (whitespace ? WHITESPACE_CHARACTERS : "") + "=" + (whitespace ? WHITESPACE_CHARACTERS : "") + "\"" + encodingInContent + (encClosed ? "\"" : "") + "?><root attribute=\"" + ENCODED_TEXT + "\">"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return new InputStreamReader(new ByteArrayInputStream(content.getBytes()));
 	}
 }

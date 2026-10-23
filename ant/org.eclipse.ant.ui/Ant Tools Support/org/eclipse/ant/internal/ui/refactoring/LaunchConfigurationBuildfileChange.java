@@ -72,7 +72,7 @@ public class LaunchConfigurationBuildfileChange extends Change {
 	/**
 	 * Create a change for each launch configuration which needs to be updated for this buildfile rename.
 	 */
-	public static Change createChangesForBuildfileRename(IFile file, String newBuildfileName) throws CoreException {
+	public static Change createChangesForBuildfileRename(IFile file, String newBuildfileName) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IContentDescription description = null;
 		try {
 			description = file.getContentDescription();
@@ -119,8 +119,8 @@ public class LaunchConfigurationBuildfileChange extends Change {
 	 * Create a change for each launch configuration from the given list which needs to be updated for this IProject rename.
 	 */
 	private static List<Change> createChangesForProjectRename(ILaunchConfiguration[] configs, String projectName, String newProjectName) throws CoreException {
-		List<Change> changes = new ArrayList<>();
-		for (ILaunchConfiguration launchConfiguration : configs) {
+		List<Change> changes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ILaunchConfiguration launchConfiguration : configs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String launchConfigurationProjectName = launchConfiguration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String) null);
 			if (projectName.equals(launchConfigurationProjectName)) {
 				LaunchConfigurationBuildfileChange change = new LaunchConfigurationBuildfileChange(launchConfiguration, null, null, newProjectName, false);
@@ -139,8 +139,8 @@ public class LaunchConfigurationBuildfileChange extends Change {
 	 * Create a change for each launch configuration from the given list which needs to be updated for this buildfile rename.
 	 */
 	private static List<Change> createChangesForBuildfileRename(IFile buildfile, ILaunchConfiguration[] configs, String projectName, String newBuildfileName) throws CoreException {
-		List<Change> changes = new ArrayList<>();
-		for (ILaunchConfiguration launchConfiguration : configs) {
+		List<Change> changes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ILaunchConfiguration launchConfiguration : configs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String launchConfigurationProjectName = launchConfiguration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String) null);
 			if (projectName.equals(launchConfigurationProjectName)) {
 				LaunchConfigurationBuildfileChange change = new LaunchConfigurationBuildfileChange(launchConfiguration, buildfile.getName(), newBuildfileName, null, false);
@@ -207,7 +207,7 @@ public class LaunchConfigurationBuildfileChange extends Change {
 		if (fLaunchConfiguration.exists()) {
 			String buildFileLocation = fLaunchConfiguration.getAttribute(IExternalToolConstants.ATTR_LOCATION, IAntCoreConstants.EMPTY_STRING);
 			if (fOldBuildfileLocation == null
-					|| (buildFileLocation.endsWith(fOldBuildfileLocation + '}') || buildFileLocation.endsWith(fOldBuildfileLocation))) {
+					|| (buildFileLocation.endsWith(fOldBuildfileLocation + '}') || buildFileLocation.endsWith(fOldBuildfileLocation))) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				String projectName = fLaunchConfiguration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String) null);
 				if (fOldProjectName.equals(projectName)) {
 					return new RefactoringStatus();
@@ -219,7 +219,7 @@ public class LaunchConfigurationBuildfileChange extends Change {
 		return RefactoringStatus.createFatalErrorStatus(MessageFormat.format(RefactoringMessages.LaunchConfigurationBuildfileChange_6, fLaunchConfiguration.getName()));
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Change perform(IProgressMonitor pm) throws CoreException {
 		if (fNewConfigContainerName != null) {
 			IWorkspace workspace = ResourcesPlugin.getWorkspace();

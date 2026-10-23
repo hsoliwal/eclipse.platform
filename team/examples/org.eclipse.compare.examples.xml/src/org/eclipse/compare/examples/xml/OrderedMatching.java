@@ -26,19 +26,19 @@ public class OrderedMatching extends AbstractMatching {
 		super();
 	}
 
-	protected int orderedMath(XMLNode x, XMLNode y) {
+	protected int orderedMath(XMLNode x, XMLNode y) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//assumes x and y have children
 		Object[] xc= x.getChildren();
 		Object[] yc= y.getChildren();
 
-		ArrayList<XMLNode> xc_elementsAL= new ArrayList<>();
-		ArrayList<XMLNode> xc_attrsAL= new ArrayList<>();
+		ArrayList<XMLNode> xc_elementsAL= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		ArrayList<XMLNode> xc_attrsAL= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-		ArrayList<XMLNode> yc_elementsAL= new ArrayList<>();
-		ArrayList<XMLNode> yc_attrsAL= new ArrayList<>();
+		ArrayList<XMLNode> yc_elementsAL= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		ArrayList<XMLNode> yc_attrsAL= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		//find attributes and elements and put them in xc_elementsAL and xc_attrsAL, respectively
-		for (Object xc1 : xc) {
+		for (Object xc1 : xc) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			XMLNode x_i = (XMLNode) xc1;
 			if (x_i.getXMLType().equals(XMLStructureCreator.TYPE_ELEMENT)) {
 				xc_elementsAL.add(x_i);
@@ -48,7 +48,7 @@ public class OrderedMatching extends AbstractMatching {
 			}
 		}
 		//do the same for yc
-		for (Object yc1 : yc) {
+		for (Object yc1 : yc) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			XMLNode y_i = (XMLNode) yc1;
 			if (y_i.getXMLType().equals(XMLStructureCreator.TYPE_ELEMENT)) {
 				yc_elementsAL.add(y_i);
@@ -61,7 +61,7 @@ public class OrderedMatching extends AbstractMatching {
 		Object[] xc_elements= xc_elementsAL.toArray();
 		Object[] yc_elements= yc_elementsAL.toArray();
 
-		ArrayList<Match> DTMatching = new ArrayList<>();
+		ArrayList<Match> DTMatching = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		// Matching to be added to Entry in fDT_Matchings
 		int distance= 0; //distance to be added to entry in fDT
 
@@ -115,7 +115,7 @@ public class OrderedMatching extends AbstractMatching {
 	}
 
 	/* matches two trees according to paper "X-Diff", p. 16 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Override
 	public void match(
 		XMLNode LeftTree,
@@ -131,9 +131,9 @@ public class OrderedMatching extends AbstractMatching {
 		numberNodes(RightTree, fNRight);
 		fDT= new int[fNLeft.size()][fNRight.size()];
 		fDT_Matchings = new ArrayList[fNLeft.size()][fNRight.size()];
-		for (int i= 0; i < fDT.length; i++) {
+		for (int i= 0; i < fDT.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fDT[i]= new int[fNRight.size()];
-			for (int j= 0; j < fDT[0].length; j++) {
+			for (int j= 0; j < fDT[0].length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fDT[i][j]= NO_ENTRY;
 			}
 		}
@@ -145,7 +145,7 @@ public class OrderedMatching extends AbstractMatching {
 			//matching is empty
 		} else {
 			fMatches.add(new Match(LeftTree, RightTree));
-			for (int i_M= 0; i_M < fMatches.size(); i_M++) {
+			for (int i_M= 0; i_M < fMatches.size(); i_M++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Match m = fMatches.elementAt(i_M);
 				if (!isLeaf(m.fx) && !isLeaf(m.fy)) {
 					//					if (fDT_Matchings[ indexOfLN(m.fx) ][ indexOfRN(m.fy) ] == null)
@@ -162,14 +162,14 @@ public class OrderedMatching extends AbstractMatching {
 		//end of Step2
 		/* Renumber Id of Nodes to follow Matches. Or for ancestor, copy over Id to ancestor */
 		if (rightTreeIsAncestor) {
-			for (ListIterator<Match> it_M = fMatches.listIterator(); it_M.hasNext();) {
+			for (ListIterator<Match> it_M = fMatches.listIterator(); it_M.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Match m= it_M.next();
 				if (m.fx != null && m.fy != null)
 					m.fy.setId(m.fx.getId());
 			}
 		} else {
 			int newId= 0;
-			for (ListIterator<Match> it_M = fMatches.listIterator(); it_M.hasNext(); newId++) {
+			for (ListIterator<Match> it_M = fMatches.listIterator(); it_M.hasNext(); newId++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Match m= it_M.next();
 				if (m.fx != null)
 					m.fx.setId(Integer.toString(newId));
@@ -181,14 +181,14 @@ public class OrderedMatching extends AbstractMatching {
 		//if (monitor != null) monitor.done();
 	}
 
-	public int handleAttributes(
+	public int handleAttributes( //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ArrayList<XMLNode> xc_attrs,
 		ArrayList<XMLNode> yc_attrs,
 		ArrayList<Match> DTMatching) {
 		int distance= 0;
-		x_for : for (XMLNode x_attr : xc_attrs) {
+		x_for : for (XMLNode x_attr : xc_attrs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String x_attr_name= x_attr.getName();
-			for (XMLNode y_attr : yc_attrs) {
+			for (XMLNode y_attr : yc_attrs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (y_attr.getName().equals(x_attr_name)) {
 					if (!y_attr.getValue().equals(x_attr.getValue()))
 						distance += 1;
@@ -201,7 +201,7 @@ public class OrderedMatching extends AbstractMatching {
 			distance += 1;
 		}
 
-		for (Iterator<XMLNode> iter_yc= yc_attrs.iterator(); iter_yc.hasNext();) {
+		for (Iterator<XMLNode> iter_yc= yc_attrs.iterator(); iter_yc.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			DTMatching.add(new Match(null, iter_yc.next()));
 			distance += 1;
 		}

@@ -78,7 +78,7 @@ public class BuilderNatureTest {
 	 * Get the project in a state where the snow nature is disabled,
 	 * then ensure the snow builder is not run but remains on the build spec
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDisabledNature() throws CoreException {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("P1");
 		createInWorkspace(project);
@@ -113,7 +113,7 @@ public class BuilderNatureTest {
 	 * Get the project in a state where the snow nature is missing,
 	 * then ensure the snow builder is removed from the build spec.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMissingNature() throws CoreException {
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("P1");
 		createInWorkspace(project);
@@ -135,7 +135,7 @@ public class BuilderNatureTest {
 
 		//make sure the build spec doesn't include snow builder
 		ICommand[] commands = project.getDescription().getBuildSpec();
-		for (ICommand command : commands) {
+		for (ICommand command : commands) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThat(command.getBuilderName()).isNotEqualTo(SnowBuilder.BUILDER_NAME);
 		}
 
@@ -162,7 +162,7 @@ public class BuilderNatureTest {
 
 		//make sure the build spec doesn't include snow builder
 		commands = project.getDescription().getBuildSpec();
-		for (ICommand command : commands) {
+		for (ICommand command : commands) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThat(command.getBuilderName()).isNotEqualTo(SnowBuilder.BUILDER_NAME);
 		}
 

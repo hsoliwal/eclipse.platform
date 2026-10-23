@@ -43,12 +43,12 @@ public class TeamDecoratorDescription {
 	/**
 	 * Initialize this descriptor based on the provided extension point.
 	 */
-	protected void readExtension(IExtension extension) throws CoreException {
+	protected void readExtension(IExtension extension) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//read the extension
 		String id = extension.getUniqueIdentifier(); // id not required
 		IConfigurationElement[] elements = extension.getConfigurationElements();
 		int count = elements.length;
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IConfigurationElement element = elements[i];
 			String name = element.getName();
 			if (name.equalsIgnoreCase(TAG_TEAM_DECORATOR)) {

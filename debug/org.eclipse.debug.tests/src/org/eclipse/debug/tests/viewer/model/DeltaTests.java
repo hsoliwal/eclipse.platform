@@ -43,7 +43,7 @@ abstract public class DeltaTests extends AbstractViewerModelTest implements ITes
 		return new TestModelUpdatesListener(viewer, false, false);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testUpdateLabel() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 
@@ -69,7 +69,7 @@ abstract public class DeltaTests extends AbstractViewerModelTest implements ITes
 		model.validateData(fViewer, TreePath.EMPTY);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshStruct() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 
@@ -100,7 +100,7 @@ abstract public class DeltaTests extends AbstractViewerModelTest implements ITes
 		model.validateData(fViewer, TreePath.EMPTY);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshStruct2() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 
@@ -117,27 +117,27 @@ abstract public class DeltaTests extends AbstractViewerModelTest implements ITes
 
 		String prefix = "new - "; //$NON-NLS-1$
 		model.setElementChildren(TreePath.EMPTY, new TestElement[] {
- new TestElement(model, prefix + "1", new TestElement[0]), //$NON-NLS-1$
-		new TestElement(model, prefix + "2", true, false, new TestElement[] { //$NON-NLS-1$
-		new TestElement(model, prefix + "2.1", true, true, new TestElement[0]), //$NON-NLS-1$
-		new TestElement(model, prefix + "2.2", false, true, new TestElement[0]), //$NON-NLS-1$
-		new TestElement(model, prefix + "2.3", true, false, new TestElement[0]), //$NON-NLS-1$
+ new TestElement(model, prefix + "1", new TestElement[0]), //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		new TestElement(model, prefix + "2", true, false, new TestElement[] { //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		new TestElement(model, prefix + "2.1", true, true, new TestElement[0]), //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		new TestElement(model, prefix + "2.2", false, true, new TestElement[0]), //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		new TestElement(model, prefix + "2.3", true, false, new TestElement[0]), //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}),
- new TestElement(model, prefix + "3", new TestElement[] { //$NON-NLS-1$
-		new TestElement(model, prefix + "3.1", new TestElement[] { //$NON-NLS-1$
-		new TestElement(model, prefix + "3.1.1", new TestElement[0]), //$NON-NLS-1$
-		new TestElement(model, prefix + "3.1.2", new TestElement[0]), //$NON-NLS-1$
-		new TestElement(model, prefix + "3.1.3", new TestElement[0]), //$NON-NLS-1$
+ new TestElement(model, prefix + "3", new TestElement[] { //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		new TestElement(model, prefix + "3.1", new TestElement[] { //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		new TestElement(model, prefix + "3.1.1", new TestElement[0]), //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		new TestElement(model, prefix + "3.1.2", new TestElement[0]), //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		new TestElement(model, prefix + "3.1.3", new TestElement[0]), //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}),
- new TestElement(model, prefix + "3.2", new TestElement[] { //$NON-NLS-1$
-		new TestElement(model, prefix + "3.2.1", new TestElement[0]), //$NON-NLS-1$
-		new TestElement(model, prefix + "3.2.2", new TestElement[0]), //$NON-NLS-1$
-		new TestElement(model, prefix + "3.2.3", new TestElement[0]), //$NON-NLS-1$
+ new TestElement(model, prefix + "3.2", new TestElement[] { //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		new TestElement(model, prefix + "3.2.1", new TestElement[0]), //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		new TestElement(model, prefix + "3.2.2", new TestElement[0]), //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		new TestElement(model, prefix + "3.2.3", new TestElement[0]), //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}),
- new TestElement(model, prefix + "3.3", new TestElement[] { //$NON-NLS-1$
-		new TestElement(model, prefix + "3.3.1", new TestElement[0]), //$NON-NLS-1$
-		new TestElement(model, prefix + "3.3.2", new TestElement[0]), //$NON-NLS-1$
-		new TestElement(model, prefix + "3.3.3", new TestElement[0]), //$NON-NLS-1$
+ new TestElement(model, prefix + "3.3", new TestElement[] { //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		new TestElement(model, prefix + "3.3.1", new TestElement[0]), //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		new TestElement(model, prefix + "3.3.2", new TestElement[0]), //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		new TestElement(model, prefix + "3.3.3", new TestElement[0]), //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}),
 			})
 		});
@@ -150,17 +150,17 @@ abstract public class DeltaTests extends AbstractViewerModelTest implements ITes
 		model.validateData(fViewer, TreePath.EMPTY);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshCoalesceStruct() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 
 		// Create a single level model and add a single child to each element.
 		TestModel model = TestModel.simpleSingleLevel();
 		TestElement[] rootChildren = model.getRootElement().getChildren();
-		for (int i = 0; i < rootChildren.length; i++) {
+		for (int i = 0; i < rootChildren.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			model.setElementChildren(
 				new TreePath(new Object[] { rootChildren[i]} ),
- new TestElement[] { new TestElement(model, i + ".1", new TestElement[0]) }); //$NON-NLS-1$
+ new TestElement[] { new TestElement(model, i + ".1", new TestElement[0]) }); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		fViewer.setAutoExpandLevel(-1);
@@ -181,7 +181,7 @@ abstract public class DeltaTests extends AbstractViewerModelTest implements ITes
 		assertTrue( fListener.checkCoalesced(TreePath.EMPTY, 0, 6) );
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInsert() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 
@@ -220,7 +220,7 @@ abstract public class DeltaTests extends AbstractViewerModelTest implements ITes
 	 * This test checks that insert and select delta flags are processed in
 	 * correct order: insert then select.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInsertAndSelect() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 
@@ -269,7 +269,7 @@ abstract public class DeltaTests extends AbstractViewerModelTest implements ITes
 	 * This test checks that insert and remove deltas are processed in correct
 	 * order: remove deltas are processed first then insert deltas.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInsertAndRemove() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 
@@ -310,7 +310,7 @@ abstract public class DeltaTests extends AbstractViewerModelTest implements ITes
 		model.validateData(fViewer, TreePath.EMPTY);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAddElement() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 
@@ -341,7 +341,7 @@ abstract public class DeltaTests extends AbstractViewerModelTest implements ITes
 	}
 
 	// This test currently fails.  When (if) bug 311442 gets address we should re-enable it.
-	public void _x_testAddUnexpandedElement() throws Exception {
+	public void _x_testAddUnexpandedElement() throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 
 		TestModel model = TestModel.simpleMultiLevel();
@@ -389,7 +389,7 @@ abstract public class DeltaTests extends AbstractViewerModelTest implements ITes
 		model.validateData(fViewer, parentPath);
 	}
 
-	public void _x_testRefreshUnexpandedElementsChildren() throws Exception {
+	public void _x_testRefreshUnexpandedElementsChildren() throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 
 		TestModel model = TestModel.simpleMultiLevel();
@@ -434,7 +434,7 @@ abstract public class DeltaTests extends AbstractViewerModelTest implements ITes
 		model.validateData(fViewer, parentPath, true);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRemove() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 
@@ -460,7 +460,7 @@ abstract public class DeltaTests extends AbstractViewerModelTest implements ITes
 		model.validateData(fViewer, TreePath.EMPTY);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testExpandAndSelect() throws Exception {
 		TestModel model = TestModel.simpleMultiLevel();
 
@@ -543,7 +543,7 @@ abstract public class DeltaTests extends AbstractViewerModelTest implements ITes
 	/**
 	 * This test verifies that expand and select updates are being ignored.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testExpandAndSelect_simple() throws Exception {
 		TestModel model = TestModel.simpleMultiLevel();
 
@@ -592,7 +592,7 @@ abstract public class DeltaTests extends AbstractViewerModelTest implements ITes
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCompositeModelRefreshStruct() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 
@@ -626,7 +626,7 @@ abstract public class DeltaTests extends AbstractViewerModelTest implements ITes
 		model.validateData(fViewer, TreePath.EMPTY);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCompositeModelAddElement() throws Exception {
 		TestModel model = TestModel.compositeMultiLevel();
 		fViewer.setAutoExpandLevel(-1);
@@ -657,7 +657,7 @@ abstract public class DeltaTests extends AbstractViewerModelTest implements ITes
 		model.validateData(fViewer, TreePath.EMPTY);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug292322() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = TestModel.simpleMultiLevel();

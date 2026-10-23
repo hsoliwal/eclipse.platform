@@ -82,10 +82,10 @@ public class FileSystemRevisionEditorInput extends PlatformObject implements IWo
 	@Override
 	public String getName() {
 		if (fileRevision != null)
-			return fileRevision.getName() + " " + fileRevision.getContentIdentifier();  //$NON-NLS-1$
+			return fileRevision.getName() + " " + fileRevision.getContentIdentifier();  //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		if (storage != null) {
-			return storage.getName() + " " + DateFormat.getInstance().format(new Date(((IFileState) storage).getModificationTime())); //$NON-NLS-1$
+			return storage.getName() + " " + DateFormat.getInstance().format(new Date(((IFileState) storage).getModificationTime())); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return ""; //$NON-NLS-1$
 	}

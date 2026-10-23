@@ -78,7 +78,7 @@ public class StringMatcher {
 	private int findPosition(String text, int start, int end, String p) {
 		boolean hasWildCard = p.indexOf(SINGLE_WILD_CARD) >= 0;
 		int plen = p.length();
-		for (int i = start, max = end - plen; i <= max; ++i) {
+		for (int i = start, max = end - plen; i <= max; ++i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (hasWildCard) {
 				if (regExpRegionMatches(text, i, p, 0, plen)) {
 					return i;
@@ -98,7 +98,7 @@ public class StringMatcher {
 	 * @return true if the specified portion of the text matches the pattern
 	 * @param text a String object that contains the substring to match
 	 */
-	public boolean match(String text) {
+	public boolean match(String text) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (text == null) {
 			return false;
 		}
@@ -134,7 +134,7 @@ public class StringMatcher {
 			return currentTextPosition == end;
 		}
 		/* process middle segments */
-		while (segmentIndex < segmentCount) {
+		while (segmentIndex < segmentCount) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			current = segments[segmentIndex];
 			int currentMatch = findPosition(text, currentTextPosition, end, current);
 			if (currentMatch < 0) {
@@ -155,7 +155,7 @@ public class StringMatcher {
 	/**
 	 * Parses the pattern into segments separated by wildcard '*' characters.
 	 */
-	private void parseWildCards() {
+	private void parseWildCards() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (pattern.startsWith("*")) { //$NON-NLS-1$
 			hasLeadingStar = true;
 		}
@@ -166,25 +166,25 @@ public class StringMatcher {
 			}
 		}
 
-		ArrayList<String> temp = new ArrayList<>();
+		ArrayList<String> temp = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		int pos = 0;
-		StringBuilder buf = new StringBuilder();
-		while (pos < patternLength) {
+		StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		while (pos < patternLength) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c = pattern.charAt(pos++);
 			switch (c) {
 				case '\\' :
 					if (pos >= patternLength) {
-						buf.append(c);
+						buf.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					} else {
 						char next = pattern.charAt(pos++);
 						/* if it's an escape sequence */
 						if (next == '*' || next == '?' || next == '\\') {
-							buf.append(next);
+							buf.append(next); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 						} else {
 							/* not an escape sequence, just insert literally */
-							buf.append(c);
-							buf.append(next);
+							buf.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+							buf.append(next); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 						}
 					}
 					break;
@@ -198,10 +198,10 @@ public class StringMatcher {
 					break;
 				case '?' :
 					/* append special character representing single match wildcard */
-					buf.append(SINGLE_WILD_CARD);
+					buf.append(SINGLE_WILD_CARD); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					break;
 				default :
-					buf.append(c);
+					buf.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 
@@ -222,8 +222,8 @@ public class StringMatcher {
 	 * @param pStart The start position in the pattern
 	 * @param plen The length of the pattern
 	 */
-	private boolean regExpRegionMatches(String text, int tStart, String p, int pStart, int plen) {
-		while (plen-- > 0) {
+	private boolean regExpRegionMatches(String text, int tStart, String p, int pStart, int plen) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		while (plen-- > 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char tchar = text.charAt(tStart++);
 			char pchar = p.charAt(pStart++);
 

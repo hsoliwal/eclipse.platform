@@ -99,7 +99,7 @@ public final class ResourceTestUtil {
 	 * Return String with some random text to use as contents for a file resource.
 	 */
 	public static String createRandomString() {
-		return RANDOM.nextLong() + " " + RANDOM.nextLong();
+		return RANDOM.nextLong() + " " + RANDOM.nextLong(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -163,9 +163,9 @@ public final class ResourceTestUtil {
 		}
 		IWorkspaceRunnable body;
 		if (resource.exists()) {
-			body = unused -> resource.setContents(contentStream, true, false, null);
+			body = unused -> resource.setContents(contentStream, true, false, null); //FLLDCIM: MARK — T09  LAMBDA
 		} else {
-			body = monitor -> {
+			body = monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 				createInWorkspace(resource.getParent(), monitor);
 				resource.create(contentStream, true, null);
 			};
@@ -178,7 +178,7 @@ public final class ResourceTestUtil {
 	 * tree.
 	 */
 	public static void createInWorkspace(final IResource resource) throws CoreException {
-		IWorkspaceRunnable body = monitor -> createInWorkspace(resource, monitor);
+		IWorkspaceRunnable body = monitor -> createInWorkspace(resource, monitor); //FLLDCIM: MARK — T09  LAMBDA
 		getWorkspace().run(body, createTestMonitor());
 	}
 
@@ -187,16 +187,16 @@ public final class ResourceTestUtil {
 	 * workspace resource info tree.
 	 */
 	public static void createInWorkspace(final IResource[] resources) throws CoreException {
-		IWorkspaceRunnable body = monitor -> {
+		IWorkspaceRunnable body = monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 			SubMonitor subMonitor = SubMonitor.convert(monitor, resources.length);
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				createInWorkspace(resource, subMonitor.split(1));
 			}
 		};
 		getWorkspace().run(body, createTestMonitor());
 	}
 
-	private static void createInWorkspace(final IResource resource, IProgressMonitor monitor) throws CoreException {
+	private static void createInWorkspace(final IResource resource, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (resource == null || resource.exists()) {
 			return;
 		}
@@ -253,8 +253,8 @@ public final class ResourceTestUtil {
 	 * project is currently closed.
 	 */
 	public static void removeFromWorkspace(final IResource[] resources) throws CoreException {
-		IWorkspaceRunnable body = unused -> {
-			for (IResource resource : resources) {
+		IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				removeFromWorkspace(resource);
 			}
 		};
@@ -266,18 +266,18 @@ public final class ResourceTestUtil {
 	 * resource info tree.
 	 */
 	public static void assertExistsInWorkspace(IResource... resources) {
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertTrue(existsInWorkspace(resource),
-					resource.getFullPath() + " unexpectedly does not exist in the workspace");
+					resource.getFullPath() + " unexpectedly does not exist in the workspace"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
-	private static boolean existsInWorkspace(IResource resource) {
+	private static boolean existsInWorkspace(IResource resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		class CheckIfResourceExistsJob extends Job {
 			private final AtomicBoolean resourceExists = new AtomicBoolean(false);
 
 			public CheckIfResourceExistsJob() {
-				super("Checking whether resource exists: " + resource);
+				super("Checking whether resource exists: " + resource); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 
 			@Override
@@ -317,8 +317,8 @@ public final class ResourceTestUtil {
 	 * workspace resource info tree.
 	 */
 	public static void assertDoesNotExistInWorkspace(IResource... resources) {
-		for (IResource resource : resources) {
-			assertFalse(existsInWorkspace(resource), resource.getFullPath() + " unexpectedly exists in the workspace");
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			assertFalse(existsInWorkspace(resource), resource.getFullPath() + " unexpectedly exists in the workspace"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -328,9 +328,9 @@ public final class ResourceTestUtil {
 	 * mapping.
 	 */
 	public static void assertExistsInFileSystem(IResource... resources) {
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertTrue(existsInFileSystem(resource),
-					resource.getFullPath() + " unexpectedly does not exist in the file system");
+					resource.getFullPath() + " unexpectedly does not exist in the file system"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -360,9 +360,9 @@ public final class ResourceTestUtil {
 	 * local store.
 	 */
 	public static void assertDoesNotExistInFileSystem(IResource... resources) {
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertFalse(existsInFileSystem(resource),
-					resource.getFullPath() + " unexpectedly exists in the file system");
+					resource.getFullPath() + " unexpectedly exists in the file system"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -435,9 +435,9 @@ public final class ResourceTestUtil {
 	 * Return a collection of resources for the given hierarchy at
 	 * the given root.
 	 */
-	public static IResource[] buildResources(IContainer root, String... hierarchy) throws CoreException {
+	public static IResource[] buildResources(IContainer root, String... hierarchy) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource[] result = new IResource[hierarchy.length];
-		for (int i = 0; i < hierarchy.length; i++) {
+		for (int i = 0; i < hierarchy.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IPath path = IPath.fromOSString(hierarchy[i]);
 			IPath fullPath = root.getFullPath().append(path);
 			switch (fullPath.segmentCount()) {
@@ -471,7 +471,7 @@ public final class ResourceTestUtil {
 
 	private static void modifyInFileSystem(IFile file) throws FileNotFoundException, IOException {
 		String originalContent = readStringInFileSystem(file);
-		String newContent = originalContent + "f";
+		String newContent = originalContent + "f"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		Files.writeString(file.getLocation().toPath(), newContent, StandardCharsets.UTF_8);
 	}
 
@@ -480,7 +480,7 @@ public final class ResourceTestUtil {
 	 */
 	public static String readStringInFileSystem(IFile file) throws IOException {
 		IPath location = file.getLocation();
-		assertNotNull(location, "location was null for file: " + file);
+		assertNotNull(location, "location was null for file: " + file); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return new String(Files.readAllBytes(location.toPath()), StandardCharsets.UTF_8);
 	}
 
@@ -488,12 +488,12 @@ public final class ResourceTestUtil {
 	 * Touch (but don't modify) the resource in the filesystem so that it's
 	 * modification stamp is newer than the cached value in the Workspace.
 	 */
-	public static void touchInFilesystem(IResource resource) throws CoreException, IOException {
+	public static void touchInFilesystem(IResource resource) throws CoreException, IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath location = resource.getLocation();
 		// Manually check that the core.resource time-stamp is out-of-sync
 		// with the java.io.File last modified. #isSynchronized() will schedule
 		// out-of-sync resources for refresh, so we don't use that here.
-		for (int count = 0; count < 3000 && isInSync(resource); count++) {
+		for (int count = 0; count < 3000 && isInSync(resource); count++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			FileTime now = FileTime.fromMillis(resource.getLocalTimeStamp() + 1000);
 			Files.setLastModifiedTime(location.toFile().toPath(), now);
 			if (count > 1) {
@@ -564,7 +564,7 @@ public final class ResourceTestUtil {
 
 		private IProjectDescription description;
 
-		private List<ICommand> commands = new ArrayList<>();
+		private List<ICommand> commands = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		private ProjectDescriptionUpdater(IProject project) throws CoreException {
 			this.project = project;
@@ -659,13 +659,13 @@ public final class ResourceTestUtil {
 	 * Returns the character sequence used as a line separator within the given
 	 * file.
 	 */
-	public static String getLineSeparatorFromFile(IFile file) {
+	public static String getLineSeparatorFromFile(IFile file) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (file.exists()) {
 			InputStream input = null;
 			try {
 				input = file.getContents();
 				int c = input.read();
-				while (c != -1 && c != '\r' && c != '\n') {
+				while (c != -1 && c != '\r' && c != '\n') { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					c = input.read();
 				}
 				if (c == '\n')
@@ -697,11 +697,11 @@ public final class ResourceTestUtil {
 	 * are fewer devices available, the other array entries will be null. Note that
 	 * this method only works on Windows.
 	 */
-	public static String[] findAvailableDevices() {
+	public static String[] findAvailableDevices() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String[] devices = new String[2];
-		for (int i = 97/*a*/; i < 123/*z*/; i++) {
+		for (int i = 97/*a*/; i < 123/*z*/; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c = (char) i;
-			java.io.File rootFile = new java.io.File(c + ":\\");
+			java.io.File rootFile = new java.io.File(c + ":\\"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			if (rootFile.exists() && rootFile.canWrite()) {
 				//sometimes canWrite can return true but we are still not allowed to create a file - see bug 379284.
 				File probe = new File(rootFile, createUniqueString());
@@ -714,9 +714,9 @@ public final class ResourceTestUtil {
 					probe.delete();
 				}
 				if (devices[0] == null) {
-					devices[0] = c + ":/";
+					devices[0] = c + ":/"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				} else {
-					devices[1] = c + ":/";
+					devices[1] = c + ":/"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					break;
 				}
 			}

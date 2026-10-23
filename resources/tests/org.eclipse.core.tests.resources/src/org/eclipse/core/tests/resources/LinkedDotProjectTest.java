@@ -42,7 +42,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class LinkedDotProjectTest {
 
-	private void linkDotProject(IProject project) throws CoreException {
+	private void linkDotProject(IProject project) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IFile dotProject = project.getFile(IProjectDescription.DESCRIPTION_FILE_NAME);
 		if (dotProject.isLinked()) {
 			return;
@@ -53,7 +53,7 @@ public class LinkedDotProjectTest {
 				targetDiskFile.getParentFile().mkdirs();
 				Files.copy(dotProject.getLocation().toPath(), targetDiskFile.toPath());
 			} catch (Exception ex) {
-				throw new CoreException(Status.error(targetDiskFile + " cannot be created", ex)); //$NON-NLS-1$
+				throw new CoreException(Status.error(targetDiskFile + " cannot be created", ex)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		File sourceDiskFile = dotProject.getLocation().toFile();
@@ -64,7 +64,7 @@ public class LinkedDotProjectTest {
 	/**
 	 * Tests the API method IProject#getNature
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetNature() throws CoreException {
 		IWorkspace ws = ResourcesPlugin.getWorkspace();
 		IProject project = ws.getRoot().getProject("Project");

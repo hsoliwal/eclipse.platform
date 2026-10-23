@@ -89,7 +89,7 @@ public class Project extends Container implements IProject {
 		super(path, container);
 	}
 
-	protected void assertCreateRequirements(IProjectDescription description) throws CoreException {
+	protected void assertCreateRequirements(IProjectDescription description) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		checkDoesNotExist();
 		checkDescription(this, description, false);
 		URI location = description.getLocationURI();
@@ -114,7 +114,7 @@ public class Project extends Container implements IProject {
 	 * Otherwise it is being called via #setDescription. The difference is that we don't allow
 	 * some description fields to change value after project creation. (e.g. project location)
 	 */
-	protected MultiStatus basicSetDescription(ProjectDescription description, int updateFlags) {
+	protected MultiStatus basicSetDescription(ProjectDescription description, int updateFlags) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String message = Messages.resources_projectDesc;
 		MultiStatus result = new MultiStatus(ResourcesPlugin.PI_RESOURCES, IResourceStatus.FAILED_WRITE_METADATA, message, null);
 		ProjectDescription current = internalGetDescription();
@@ -194,7 +194,7 @@ public class Project extends Container implements IProject {
 	/**
 	 * Checks validity of the given project description.
 	 */
-	protected void checkDescription(IProject project, IProjectDescription desc, boolean moving) throws CoreException {
+	protected void checkDescription(IProject project, IProjectDescription desc, boolean moving) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		URI location = desc.getLocationURI();
 		String message = NLS.bind(Messages.resources_invalidProjDesc, project.getName(), String.valueOf(location));
 		MultiStatus status = new MultiStatus(ResourcesPlugin.PI_RESOURCES, IResourceStatus.INVALID_VALUE, message, null);
@@ -218,7 +218,7 @@ public class Project extends Container implements IProject {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void close(IProgressMonitor monitor) throws CoreException {
 		String msg = NLS.bind(Messages.resources_closing_1, getName());
 		SubMonitor subMonitor = SubMonitor.convert(monitor, msg, 100);
@@ -244,7 +244,7 @@ public class Project extends Container implements IProject {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void copy(IPath destination, int updateFlags, IProgressMonitor monitor) throws CoreException {
 		// FIXME - the logic here for copying projects needs to be moved to Resource.copy
 		//   so that IResource.copy(IPath,int,IProgressMonitor) works properly for
@@ -289,7 +289,7 @@ public class Project extends Container implements IProject {
 		create(description, IResource.NONE, monitor);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void create(IProjectDescription description, int updateFlags, IProgressMonitor monitor) throws CoreException {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, Messages.resources_create, 100);
 		checkValidPath(path, PROJECT, false);
@@ -397,7 +397,7 @@ public class Project extends Container implements IProject {
 		ProjectInfo info = (ProjectInfo) getResourceInfo(false, false);
 		checkAccessible(getFlags(info));
 		IBuildConfiguration[] configs = internalGetBuildConfigs(false);
-		for (IBuildConfiguration config : configs) {
+		for (IBuildConfiguration config : configs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (config.getName().equals(configName)) {
 				return config;
 			}
@@ -524,11 +524,11 @@ public class Project extends Container implements IProject {
 		description.clearCachedDynamicReferences(null);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IProject[] getReferencingProjects() {
 		IProject[] projects = workspace.getRoot().getProjects(IContainer.INCLUDE_HIDDEN);
-		List<IProject> result = new ArrayList<>(projects.length);
-		for (IProject p : projects) {
+		List<IProject> result = new ArrayList<>(projects.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IProject p : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Project project = (Project) p;
 			if (!project.isAccessible()) {
 				continue;
@@ -538,7 +538,7 @@ public class Project extends Container implements IProject {
 				continue;
 			}
 			IProject[] references = description.getAllReferences(project, false);
-			for (IProject reference : references) {
+			for (IProject reference : references) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (reference.equals(this)) {
 					result.add(project);
 					break;
@@ -585,9 +585,9 @@ public class Project extends Container implements IProject {
 	/**
 	 * Implements all build methods on IProject.
 	 */
-	protected void internalBuild(final IBuildConfiguration config, final int trigger, final String builderName, final Map<String, String> args, IProgressMonitor monitor) throws CoreException {
+	protected void internalBuild(final IBuildConfiguration config, final int trigger, final String builderName, final Map<String, String> args, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ICoreRunnable buildRunnable = new ICoreRunnable() {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void run(IProgressMonitor innerMonitor) throws CoreException {
 
 				final ISchedulingRule projectBuildRule = workspace.getBuildManager().getRule(config, trigger,
@@ -683,7 +683,7 @@ public class Project extends Container implements IProject {
 	 * to read the project description.  Since it is called during workspace restore,
 	 * it cannot start any operations.
 	 */
-	protected void internalClose(IProgressMonitor monitor) throws CoreException {
+	protected void internalClose(IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 2);
 		workspace.flushBuildOrder();
 		getMarkerManager().removeMarkers(this, IResource.DEPTH_INFINITE);
@@ -692,7 +692,7 @@ public class Project extends Container implements IProject {
 		// DO NOT use resource.delete() as this will delete it from disk as well.
 		IResource[] members = members(IContainer.INCLUDE_PHANTOMS | IContainer.INCLUDE_TEAM_PRIVATE_MEMBERS | IContainer.INCLUDE_HIDDEN);
 		subMonitor.setWorkRemaining(members.length);
-		for (IResource member2 : members) {
+		for (IResource member2 : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Resource member = (Resource) member2;
 			workspace.deleteResource(member);
 			subMonitor.worked(1);
@@ -706,7 +706,7 @@ public class Project extends Container implements IProject {
 		info.setSyncInfo(null);
 	}
 
-	protected void internalCopy(IProjectDescription destDesc, int updateFlags, IProgressMonitor monitor) throws CoreException {
+	protected void internalCopy(IProjectDescription destDesc, int updateFlags, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		monitor = Policy.monitorFor(monitor);
 		try {
 			String message = NLS.bind(Messages.resources_copying, getFullPath());
@@ -750,7 +750,7 @@ public class Project extends Container implements IProject {
 				IResource[] children = members(IContainer.INCLUDE_TEAM_PRIVATE_MEMBERS | IContainer.INCLUDE_HIDDEN);
 				final int childCount = children.length;
 				final int childWork = childCount > 1 ? Policy.opWork * 50 / 100 / (childCount - 1) : 0;
-				for (int i = 0; i < childCount; i++) {
+				for (int i = 0; i < childCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IResource child = children[i];
 					if (!isProjectDescriptionFile(child)) {
 						try {
@@ -794,7 +794,7 @@ public class Project extends Container implements IProject {
 	/*
 	 * Copies just the project and no children. Does NOT copy the meta area.
 	 */
-	protected void internalCopyProjectOnly(IResource destination, IProjectDescription destDesc, IProgressMonitor monitor) throws CoreException {
+	protected void internalCopyProjectOnly(IResource destination, IProjectDescription destDesc, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// close the property store so bogus values aren't copied to the destination
 		getPropertyManager().closePropertyStore(this);
 		getLocalManager().getHistoryStore().closeHistoryStore(this);
@@ -869,14 +869,14 @@ public class Project extends Container implements IProject {
 	 * @param configName to find references for
 	 * @return IBuildConfiguration[] of referenced configurations; never null.
 	 */
-	public IBuildConfiguration[] internalGetReferencedBuildConfigs(String configName, boolean includeMissing) {
+	public IBuildConfiguration[] internalGetReferencedBuildConfigs(String configName, boolean includeMissing) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ProjectDescription description = internalGetDescription();
 		if (description == null) {
 			return new IBuildConfiguration[0];
 		}
 		IBuildConfiguration[] refs = description.getAllBuildConfigReferences(this, configName, false);
 		Collection<IBuildConfiguration> configs = new LinkedHashSet<>(refs.length);
-		for (IBuildConfiguration ref : refs) {
+		for (IBuildConfiguration ref : refs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				configs.add((((BuildConfiguration) ref).getBuildConfig()));
 			} catch (CoreException e) {
@@ -904,7 +904,7 @@ public class Project extends Container implements IProject {
 		internalSetDescription(value, incrementContentId, false);
 	}
 
-	void internalSetDescription(IProjectDescription value, boolean incrementContentId,
+	void internalSetDescription(IProjectDescription value, boolean incrementContentId, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			boolean locationAlreadyNormalized) {
 		// Project has been added / removed. Build order is out-of-step
 		workspace.flushBuildOrder();
@@ -937,7 +937,7 @@ public class Project extends Container implements IProject {
 		// get the children via the workspace since we know that this
 		// resource exists (it is local).
 		IResource[] children = getChildren(IResource.NONE);
-		for (IResource element : children) {
+		for (IResource element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			((Resource) element).internalSetLocal(flag, depth);
 		}
 	}
@@ -975,7 +975,7 @@ public class Project extends Container implements IProject {
 		return isLocal(-1, depth);
 	}
 
-	@Deprecated
+	@Deprecated //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Override
 	public boolean isLocal(int flags, int depth) {
 		// don't check the flags....projects are always local
@@ -988,7 +988,7 @@ public class Project extends Container implements IProject {
 		// get the children via the workspace since we know that this
 		// resource exists (it is local).
 		IResource[] children = getChildren(IResource.NONE);
-		for (IResource element : children) {
+		for (IResource element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!element.isLocal(depth)) {
 				return false;
 			}
@@ -1059,7 +1059,7 @@ public class Project extends Container implements IProject {
 		move(destination, force ? IResource.FORCE : IResource.NONE, monitor);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void move(IProjectDescription description, int updateFlags, IProgressMonitor monitor) throws CoreException {
 		Assert.isNotNull(description);
 		monitor = Policy.monitorFor(monitor);
@@ -1111,7 +1111,7 @@ public class Project extends Container implements IProject {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void open(int updateFlags, IProgressMonitor monitor) throws CoreException {
 		monitor = Policy.monitorFor(monitor);
 		boolean encodingWritten = false;
@@ -1229,7 +1229,7 @@ public class Project extends Container implements IProject {
 	/**
 	 * Try to set encoding if we open the project for the first time. See bug 479450
 	 */
-	private void writeEncodingAfterOpen(IProgressMonitor monitor) throws CoreException {
+	private void writeEncodingAfterOpen(IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath settings = IPath.fromOSString(EclipsePreferences.DEFAULT_PREFERENCES_DIRNAME).append(ResourcesPlugin.PI_RESOURCES)
 				.addFileExtension(EclipsePreferences.PREFS_FILE_EXTENSION);
 		IFile file = getFile(settings);
@@ -1262,7 +1262,7 @@ public class Project extends Container implements IProject {
 	 * @return status ok if everything went well, otherwise an ERROR multi-status
 	 * 	describing the problems encountered.
 	 */
-	public IStatus reconcileLinksAndGroups(ProjectDescription newDescription) {
+	public IStatus reconcileLinksAndGroups(ProjectDescription newDescription) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String msg = Messages.links_errorLinkReconcile;
 		HashMap<IPath, LinkDescription> newLinks = newDescription.getLinks();
 		MultiStatus status = new MultiStatus(ResourcesPlugin.PI_RESOURCES, IResourceStatus.OPERATION_FAILED, msg, null);
@@ -1271,7 +1271,7 @@ public class Project extends Container implements IProject {
 		if (oldDescription != null) {
 			HashMap<IPath, LinkDescription> oldLinks = oldDescription.getLinks();
 			if (oldLinks != null) {
-				for (LinkDescription oldLink : oldLinks.values()) {
+				for (LinkDescription oldLink : oldLinks.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Resource oldLinkResource = (Resource) findMember(oldLink.getProjectRelativePath());
 					if (oldLinkResource == null || !oldLinkResource.isLinked()) {
 						continue;
@@ -1317,7 +1317,7 @@ public class Project extends Container implements IProject {
 			newLinksAndGroups.addAll(newLinks.values());
 		}
 
-		for (LinkDescription newLink : newLinksAndGroups) {
+		for (LinkDescription newLink : newLinksAndGroups) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				Resource toLink = workspace.newResource(getFullPath().append(newLink.getProjectRelativePath()), newLink.getType());
 				IContainer parent = toLink.getParent();
@@ -1338,7 +1338,7 @@ public class Project extends Container implements IProject {
 		return status;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void saveSnapshot(int options, URI snapshotLocation, IProgressMonitor monitor) throws CoreException {
 		monitor = Policy.monitorFor(monitor);
 		try {
@@ -1376,7 +1376,7 @@ public class Project extends Container implements IProject {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setDescription(IProjectDescription description, int updateFlags, IProgressMonitor monitor) throws CoreException {
 		// FIXME - update flags should be honored:
 		//    KEEP_HISTORY means capture .project file in local history
@@ -1464,7 +1464,7 @@ public class Project extends Container implements IProject {
 		workspace.broadcastEvent(LifecycleEvent.newEvent(LifecycleEvent.PRE_PROJECT_OPEN, this));
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void touch(IProgressMonitor monitor) throws CoreException {
 		monitor = Policy.monitorFor(monitor);
 		try {
@@ -1495,7 +1495,7 @@ public class Project extends Container implements IProject {
 	 * Make sure the project description in memory is synchronized with the
 	 * description file contents.
 	 */
-	protected void updateDescription() throws CoreException {
+	protected void updateDescription() throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (ProjectDescription.isWriting) {
 			return;
 		}
@@ -1547,7 +1547,7 @@ public class Project extends Container implements IProject {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String getDefaultLineSeparator() {
 		Preferences rootNode = Platform.getPreferencesService().getRootNode();
 		// if the file does not exist or has no content yet, try with project preference

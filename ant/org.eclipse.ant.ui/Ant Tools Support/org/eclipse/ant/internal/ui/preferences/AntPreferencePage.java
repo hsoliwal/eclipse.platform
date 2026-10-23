@@ -49,7 +49,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 
-public class AntPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class AntPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	/**
 	 * Allows us to override the default behavior of the default {@link IntegerFieldEditor} to work on a core preference context
@@ -122,7 +122,7 @@ public class AntPreferencePage extends FieldEditorPreferencePage implements IWor
 		setPreferenceStore(AntUIPlugin.getDefault().getPreferenceStore());
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void createFieldEditors() {
 		storeAppliedValues();
 
@@ -200,13 +200,13 @@ public class AntPreferencePage extends FieldEditorPreferencePage implements IWor
 	 */
 	private void storeAppliedValues() {
 		IPreferenceStore store = getPreferenceStore();
-		for (int i = 0; i < fAppearanceColorListModel.length; i++) {
+		for (int i = 0; i < fAppearanceColorListModel.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String preference = fAppearanceColorListModel[i][1];
 			fAppearanceColorListModel[i][2] = store.getString(preference);
 		}
 	}
 
-	private void createColorComposite() {
+	private void createColorComposite() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Font font = getFieldEditorParent().getFont();
 		Label label = new Label(getFieldEditorParent(), SWT.LEFT);
 		label.setText(AntPreferencesMessages.AntPreferencePage_Ant_Color_Options__6);
@@ -255,13 +255,13 @@ public class AntPreferencePage extends FieldEditorPreferencePage implements IWor
 		foregroundColorButton.setLayoutData(gd);
 		foregroundColorButton.setFont(font);
 
-		fConsoleColorList.addSelectionListener(new SelectionAdapter() {
+		fConsoleColorList.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				handleAppearanceColorListSelection();
 			}
 		});
-		foregroundColorButton.addSelectionListener(new SelectionAdapter() {
+		foregroundColorButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int i = fConsoleColorList.getSelectionIndex();
@@ -279,7 +279,7 @@ public class AntPreferencePage extends FieldEditorPreferencePage implements IWor
 	 */
 	@Override
 	public boolean performCancel() {
-		for (String[] colorModel : fAppearanceColorListModel) {
+		for (String[] colorModel : fAppearanceColorListModel) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String preference = colorModel[1];
 			PreferenceConverter.setValue(getPreferenceStore(), preference, StringConverter.asRGB(colorModel[2]));
 		}
@@ -319,10 +319,10 @@ public class AntPreferencePage extends FieldEditorPreferencePage implements IWor
 	@Override
 	protected void initialize() {
 		super.initialize();
-		for (String[] colorModel : fAppearanceColorListModel) {
+		for (String[] colorModel : fAppearanceColorListModel) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fConsoleColorList.add(colorModel[0]);
 		}
-		fConsoleColorList.getDisplay().asyncExec(() -> {
+		fConsoleColorList.getDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			if (fConsoleColorList != null && !fConsoleColorList.isDisposed()) {
 				fConsoleColorList.select(0);
 				handleAppearanceColorListSelection();
@@ -332,7 +332,7 @@ public class AntPreferencePage extends FieldEditorPreferencePage implements IWor
 
 	@Override
 	protected void performDefaults() {
-		for (String[] colorModel : fAppearanceColorListModel) {
+		for (String[] colorModel : fAppearanceColorListModel) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String key = colorModel[1];
 			PreferenceConverter.setValue(getPreferenceStore(), key, PreferenceConverter.getDefaultColor(getPreferenceStore(), key));
 		}

@@ -64,7 +64,7 @@ public class FileSystemResourceVariant extends CachedResourceVariant {
 	@Override
 	protected String getCachePath() {
 		// append the timestamp to the file path to give each variant a unique path
-		return getFilePath() + " " + ioFile.lastModified(); //$NON-NLS-1$
+		return getFilePath() + " " + ioFile.lastModified(); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private String getFilePath() {
@@ -73,7 +73,7 @@ public class FileSystemResourceVariant extends CachedResourceVariant {
 		} catch (IOException e) {
 			// Failed for some reason. Try the absolute path.
 			FileSystemPlugin.log(new Status(IStatus.ERROR, FileSystemPlugin.ID, 0,
-					"Failed to obtain canonical path for " + ioFile.getAbsolutePath(), e)); //$NON-NLS-1$
+					"Failed to obtain canonical path for " + ioFile.getAbsolutePath(), e)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			return ioFile.getAbsolutePath();
 		}
 	}
@@ -120,7 +120,7 @@ public class FileSystemResourceVariant extends CachedResourceVariant {
 				members = new java.io.File[0];
 			}
 			FileSystemResourceVariant[] result = new FileSystemResourceVariant[members.length];
-			for (int i = 0; i < members.length; i++) {
+			for (int i = 0; i < members.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				result[i] = new FileSystemResourceVariant(members[i]);
 			}
 			return result;
@@ -132,7 +132,7 @@ public class FileSystemResourceVariant extends CachedResourceVariant {
 		try {
 			return new BufferedInputStream(new FileInputStream(ioFile));
 		} catch (FileNotFoundException e) {
-			throw new TeamException("Failed to fetch contents for " + getFilePath(), e); //$NON-NLS-1$
+			throw new TeamException("Failed to fetch contents for " + getFilePath(), e); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 

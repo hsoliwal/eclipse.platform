@@ -79,10 +79,10 @@ public class AntDebugModelPresentation extends LabelProvider implements IDebugMo
 		return null;
 	}
 
-	private String getThreadText(AntThread thread) {
+	private String getThreadText(AntThread thread) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String name = thread.getName();
 		if (name != null) {
-			StringBuilder text = new StringBuilder(name);
+			StringBuilder text = new StringBuilder(name); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 			if (thread.isSuspended()) {
 				IBreakpoint[] breakpoints = thread.getBreakpoints();
 				if (breakpoints.length > 0) {
@@ -96,9 +96,9 @@ public class AntDebugModelPresentation extends LabelProvider implements IDebugMo
 					} else {
 						breakpointString = MessageFormat.format(DebugModelMessages.AntDebugModelPresentation_2, lineNumber, fileName);
 					}
-					text.append(MessageFormat.format(DebugModelMessages.AntDebugModelPresentation_3, breakpointString));
+					text.append(MessageFormat.format(DebugModelMessages.AntDebugModelPresentation_3, breakpointString)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				} else {
-					text.append(DebugModelMessages.AntDebugModelPresentation_4);
+					text.append(DebugModelMessages.AntDebugModelPresentation_4); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			}
 
@@ -110,7 +110,7 @@ public class AntDebugModelPresentation extends LabelProvider implements IDebugMo
 	private String getStackFrameText(AntStackFrame frame) {
 		String name = frame.getName();
 		if (name != null) {
-			StringBuilder text = new StringBuilder(name);
+			StringBuilder text = new StringBuilder(name); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 			int lineNumber = frame.getLineNumber();
 			String lineNumberString = null;
 			if (lineNumber == 0) {
@@ -118,7 +118,7 @@ public class AntDebugModelPresentation extends LabelProvider implements IDebugMo
 			} else {
 				lineNumberString = Integer.toString(lineNumber);
 			}
-			text.append(MessageFormat.format(DebugModelMessages.AntDebugModelPresentation_1, lineNumberString));
+			text.append(MessageFormat.format(DebugModelMessages.AntDebugModelPresentation_1, lineNumberString)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			return text.toString();
 		}
 		return null;
@@ -136,7 +136,7 @@ public class AntDebugModelPresentation extends LabelProvider implements IDebugMo
 		listener.detailComputed(value, detail);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IEditorInput getEditorInput(Object element) {
 		if (element instanceof IFile) {
 			return new FileEditorInput((IFile) element);

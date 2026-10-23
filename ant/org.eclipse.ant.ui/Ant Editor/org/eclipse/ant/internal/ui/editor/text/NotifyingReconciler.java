@@ -23,7 +23,7 @@ import org.eclipse.jface.text.reconciler.MonoReconciler;
 
 public class NotifyingReconciler extends MonoReconciler {
 
-	private final ArrayList<IReconcilingParticipant> fReconcilingParticipants = new ArrayList<>();
+	private final ArrayList<IReconcilingParticipant> fReconcilingParticipants = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	/**
 	 * Constructor for NotifyingReconciler.
@@ -47,8 +47,8 @@ public class NotifyingReconciler extends MonoReconciler {
 	}
 
 	protected void notifyReconcilingParticipants() {
-		Iterator<IReconcilingParticipant> i = new ArrayList<>(fReconcilingParticipants).iterator();
-		while (i.hasNext()) {
+		Iterator<IReconcilingParticipant> i = new ArrayList<>(fReconcilingParticipants).iterator(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		while (i.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			i.next().reconciled();
 		}
 	}

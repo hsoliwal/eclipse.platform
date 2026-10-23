@@ -59,30 +59,30 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 
 	private boolean fFailOnRedundantUpdates;
 	private boolean fFailOnRedundantLabelUpdates;
-	private final Set<IViewerUpdate> fRedundantUpdates = new HashSet<>();
-	private final Set<ILabelUpdate> fRedundantLabelUpdates = new HashSet<>();
-	private final Set<TreePath> fRedundantHasChildrenUpdateExceptions = new HashSet<>();
-	private final Set<TreePath> fRedundantChildCountUpdateExceptions = new HashSet<>();
-	private final Set<TreePath> fRedundantChildrenUpdateExceptions = new HashSet<>();
-	private final Set<TreePath> fRedundantLabelUpdateExceptions = new HashSet<>();
+	private final Set<IViewerUpdate> fRedundantUpdates = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<ILabelUpdate> fRedundantLabelUpdates = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<TreePath> fRedundantHasChildrenUpdateExceptions = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<TreePath> fRedundantChildCountUpdateExceptions = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<TreePath> fRedundantChildrenUpdateExceptions = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<TreePath> fRedundantLabelUpdateExceptions = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	private boolean fFailOnMultipleModelUpdateSequences;
 	private boolean fFailOnMultipleLabelUpdateSequences;
 
-	private final Set<TreePath> fHasChildrenUpdatesScheduled = new HashSet<>();
-	private final Set<IViewerUpdate> fHasChildrenUpdatesRunning = new HashSet<>();
-	private final Set<IViewerUpdate> fHasChildrenUpdatesCompleted = new HashSet<>();
-	private final Map<TreePath, Set<Integer>> fChildrenUpdatesScheduled = new HashMap<>();
-	private final Set<IViewerUpdate> fChildrenUpdatesRunning = new HashSet<>();
-	private final Set<IViewerUpdate> fChildrenUpdatesCompleted = new HashSet<>();
-	private final Set<TreePath> fChildCountUpdatesScheduled = new HashSet<>();
-	private final Set<IViewerUpdate> fChildCountUpdatesRunning = new HashSet<>();
-	private final Set<IViewerUpdate> fChildCountUpdatesCompleted = new HashSet<>();
-	private final Set<TreePath> fLabelUpdates = new HashSet<>();
-	private final Set<ILabelUpdate> fLabelUpdatesRunning = new HashSet<>();
-	private final Set<ILabelUpdate> fLabelUpdatesCompleted = new HashSet<>();
-	private final Set<TestModel> fProxyModels = new HashSet<>();
-	private final Set<TreePath> fStateUpdates = new HashSet<>();
+	private final Set<TreePath> fHasChildrenUpdatesScheduled = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<IViewerUpdate> fHasChildrenUpdatesRunning = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<IViewerUpdate> fHasChildrenUpdatesCompleted = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Map<TreePath, Set<Integer>> fChildrenUpdatesScheduled = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	private final Set<IViewerUpdate> fChildrenUpdatesRunning = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<IViewerUpdate> fChildrenUpdatesCompleted = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<TreePath> fChildCountUpdatesScheduled = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<IViewerUpdate> fChildCountUpdatesRunning = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<IViewerUpdate> fChildCountUpdatesCompleted = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<TreePath> fLabelUpdates = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<ILabelUpdate> fLabelUpdatesRunning = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<ILabelUpdate> fLabelUpdatesCompleted = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<TestModel> fProxyModels = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<TreePath> fStateUpdates = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 	private int fViewerUpdatesStarted = 0;
 	private int fViewerUpdatesComplete = 0;
 	private int fViewerUpdatesStartedAtReset;
@@ -205,7 +205,7 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 		setFailOnMultipleLabelUpdateSequences(false);
 	}
 
-	public void reset() {
+	public void reset() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fJobError = null;
 		fFailExpectation = null;
 		fRedundantUpdates.clear();
@@ -238,7 +238,7 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 		fStateRestoreComplete = false;
 		fExpectRestoreAfterSaveComplete = false;
 		fTimeoutTime = System.currentTimeMillis() + fTimeoutInterval;
-		ILog.of(TestModelUpdatesListener.class).log(Status.info("fTimeOut Reset: " + fTimeoutTime)); //$NON-NLS-1$
+		ILog.of(TestModelUpdatesListener.class).log(Status.info("fTimeOut Reset: " + fTimeoutTime)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		resetModelChanged();
 	}
 
@@ -307,7 +307,7 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 			addUpdates(viewer, treePath, (TestElement) treePath.getLastSegment(), 0, STATE_UPDATES);
 		}
 		IModelDelta[] childDeltas = pendingDelta.getChildDeltas();
-		for (IModelDelta childDelta : childDeltas) {
+		for (IModelDelta childDelta : childDeltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			addStateUpdates(viewer, childDelta, deltaFlags);
 		}
 	}
@@ -329,7 +329,7 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 	}
 
 	public boolean checkCoalesced(TreePath path, int offset, int length) {
-		for (Iterator<IViewerUpdate> itr = fChildrenUpdatesCompleted.iterator(); itr.hasNext();) {
+		for (Iterator<IViewerUpdate> itr = fChildrenUpdatesCompleted.iterator(); itr.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IChildrenUpdate update = (IChildrenUpdate) itr.next();
 			if (path.equals(update.getElementPath()) && offset == update.getOffset() && length == update.getLength()) {
 				return true;
@@ -357,10 +357,10 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 	 * @return corresponding tree path
 	 */
 	private TreePath getViewerTreePath(IModelDelta node) {
-		ArrayList<Object> list = new ArrayList<>();
+		ArrayList<Object> list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IModelDelta currentDelta = node;
 		IModelDelta parentDelta = currentDelta.getParentDelta();
-		while (parentDelta != null) {
+		while (parentDelta != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			list.add(0, currentDelta.getElement());
 			currentDelta = parentDelta;
 			parentDelta = currentDelta.getParentDelta();
@@ -377,7 +377,7 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 	}
 
 	public static boolean isFiltered(Object element, ViewerFilter[] filters) {
-		for (ViewerFilter filter : filters) {
+		for (ViewerFilter filter : filters) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!filter.select(null, null, element)) {
 				return true;
 			}
@@ -385,7 +385,7 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 		return false;
 	}
 
-	public void addUpdates(IInternalTreeModelViewer viewer, TreePath path, TestElement element, ViewerFilter[] filters, int levels, int flags) {
+	public void addUpdates(IInternalTreeModelViewer viewer, TreePath path, TestElement element, ViewerFilter[] filters, int levels, int flags) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (isFiltered(path.getLastSegment(), filters)) {
 			return;
 		}
@@ -410,8 +410,8 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 					fChildCountUpdatesScheduled.add(path);
 				}
 				if ((flags & CHILDREN_UPDATES) != 0) {
-					Set<Integer> childrenIndexes = new HashSet<>();
-					for (int i = 0; i < children.length; i++) {
+					Set<Integer> childrenIndexes = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+					for (int i = 0; i < children.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (!isFiltered(children[i], filters)) {
 							childrenIndexes.add(Integer.valueOf(i));
 						}
@@ -419,7 +419,7 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 					fChildrenUpdatesScheduled.put(path, childrenIndexes);
 				}
 
-				for (TestElement child : children) {
+				for (TestElement child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					addUpdates(viewer, path.createChildPath(child), child, filters, levels - 1, flags);
 				}
 			}
@@ -433,7 +433,7 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 			fProxyModels.add(element.getModel());
 		}
 		TestElement[] children = element.getChildren();
-		for (TestElement child : children) {
+		for (TestElement child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			addProxies(child);
 		}
 	}
@@ -446,9 +446,9 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 		return fTimeoutInterval > 0 && fTimeoutTime < System.currentTimeMillis();
 	}
 
-	public boolean isFinished(int flags) {
+	public boolean isFinished(int flags) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (isTimedOut()) {
-			throw new RuntimeException("Timed Out: " + toString(flags)); //$NON-NLS-1$
+			throw new RuntimeException("Timed Out: " + toString(flags)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		if (fFailExpectation != null) {
@@ -456,14 +456,14 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 		}
 
 		if (fJobError != null) {
-			throw new RuntimeException("Job Error: " + fJobError); //$NON-NLS-1$
+			throw new RuntimeException("Job Error: " + fJobError); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		if (fFailOnRedundantUpdates && !fRedundantUpdates.isEmpty()) {
-			fail("Redundant Updates: " + fRedundantUpdates); //$NON-NLS-1$
+			fail("Redundant Updates: " + fRedundantUpdates); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		if (fFailOnRedundantLabelUpdates && !fRedundantLabelUpdates.isEmpty()) {
-			fail("Redundant Label Updates: " + fRedundantLabelUpdates); //$NON-NLS-1$
+			fail("Redundant Label Updates: " + fRedundantLabelUpdates); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		if (fFailOnMultipleLabelUpdateSequences && fLabelUpdatesComplete > (fLabelUpdatesCompleteAtReset + 1)) {
 			fail("Multiple label update sequences detected"); //$NON-NLS-1$
@@ -588,28 +588,28 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 	 *
 	 * @see CHILDREN_UPDATES_RUNNING
 	 */
-	private boolean isFinishedChildrenRunning() {
+	private boolean isFinishedChildrenRunning() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// All children updates that have been scheduled are either running or
 		// completed.
 		int scheduledCount = 0;
-		for (Iterator<Set<Integer>> itr = fChildrenUpdatesScheduled.values().iterator(); itr.hasNext();) {
+		for (Iterator<Set<Integer>> itr = fChildrenUpdatesScheduled.values().iterator(); itr.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			scheduledCount += ((Set<?>) itr.next()).size();
 		}
 
 		int runningCount = 0;
-		for (Iterator<IViewerUpdate> itr = fChildrenUpdatesRunning.iterator(); itr.hasNext();) {
+		for (Iterator<IViewerUpdate> itr = fChildrenUpdatesRunning.iterator(); itr.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IChildrenUpdate update = ((IChildrenUpdate) itr.next());
 			Set<?> set = fChildrenUpdatesScheduled.get(update.getElementPath());
-			for (int i = update.getOffset(); set != null && i < update.getOffset() + update.getLength(); i++) {
+			for (int i = update.getOffset(); set != null && i < update.getOffset() + update.getLength(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (set.contains(Integer.valueOf(i))) {
 					runningCount++;
 				}
 			}
 		}
-		for (Iterator<IViewerUpdate> itr = fChildrenUpdatesCompleted.iterator(); itr.hasNext();) {
+		for (Iterator<IViewerUpdate> itr = fChildrenUpdatesCompleted.iterator(); itr.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IChildrenUpdate update = ((IChildrenUpdate) itr.next());
 			Set<?> set = fChildrenUpdatesScheduled.get(update.getElementPath());
-			for (int i = update.getOffset(); set != null && i < update.getOffset() + update.getLength(); i++) {
+			for (int i = update.getOffset(); set != null && i < update.getOffset() + update.getLength(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (set.contains(Integer.valueOf(i))) {
 					runningCount++;
 				}
@@ -633,7 +633,7 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void updateComplete(IViewerUpdate update) {
 		synchronized (this) {
 			fViewerUpdatesCounter--;
@@ -663,7 +663,7 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 
 				Set<?> childrenIndexes = fChildrenUpdatesScheduled.get(updatePath);
 				if (childrenIndexes != null) {
-					for (int i = start; i < end; i++) {
+					for (int i = start; i < end; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						childrenIndexes.remove(Integer.valueOf(i));
 					}
 					if (childrenIndexes.isEmpty()) {
@@ -699,7 +699,7 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 		fLabelUpdatesCounter--;
 		if (!fLabelUpdates.remove(update.getElementPath()) && fFailOnRedundantLabelUpdates && !fRedundantLabelUpdateExceptions.contains(update.getElementPath())) {
 			fRedundantLabelUpdates.add(update);
-			fail("Redundant update: " + update); //$NON-NLS-1$
+			fail("Redundant update: " + update); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -729,7 +729,7 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 	public void modelChanged(IModelDelta delta, IModelProxy proxy) {
 		fModelChangedComplete = true;
 
-		for (Iterator<TestModel> itr = fProxyModels.iterator(); itr.hasNext();) {
+		for (Iterator<TestModel> itr = fProxyModels.iterator(); itr.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			TestModel model = itr.next();
 			if (model.getModelProxy() == proxy) {
 				itr.remove();
@@ -773,128 +773,128 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 	public void stateUpdateStarted(Object input, IViewerUpdate update) {
 	}
 
-	private String toString(int flags) {
-		StringBuilder buf = new StringBuilder("Viewer Update Listener"); //$NON-NLS-1$
+	private String toString(int flags) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		StringBuilder buf = new StringBuilder("Viewer Update Listener"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 		if (fJobError != null) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fJobError = " + fJobError); //$NON-NLS-1$
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fJobError = " + fJobError); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			if (fJobError.getException() != null) {
 				StackTraceElement[] trace = fJobError.getException().getStackTrace();
-				for (StackTraceElement t : trace) {
-					buf.append("\n\t\t"); //$NON-NLS-1$
-					buf.append(t);
+				for (StackTraceElement t : trace) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					buf.append("\n\t\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					buf.append(t); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			}
 		}
 
 		if (fFailOnRedundantUpdates) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fRedundantUpdates = " + fRedundantUpdates); //$NON-NLS-1$
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fRedundantUpdates = " + fRedundantUpdates); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((flags & LABEL_SEQUENCE_COMPLETE) != 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fLabelUpdatesComplete = " + fLabelUpdatesComplete); //$NON-NLS-1$
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fLabelUpdatesCompleteAtReset = "); //$NON-NLS-1$
-			buf.append(fLabelUpdatesCompleteAtReset);
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fLabelUpdatesComplete = " + fLabelUpdatesComplete); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fLabelUpdatesCompleteAtReset = "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(fLabelUpdatesCompleteAtReset); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((flags & LABEL_UPDATES_RUNNING) != 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fLabelUpdatesRunning = " + fLabelUpdatesCounter); //$NON-NLS-1$
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fLabelUpdatesRunning = " + fLabelUpdatesCounter); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((flags & LABEL_SEQUENCE_STARTED) != 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fLabelUpdatesStarted = "); //$NON-NLS-1$
-			buf.append(fLabelUpdatesStarted);
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fLabelUpdatesCompleted = "); //$NON-NLS-1$
-			buf.append(fLabelUpdatesCompleted);
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fLabelUpdatesStarted = "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(fLabelUpdatesStarted); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fLabelUpdatesCompleted = "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(fLabelUpdatesCompleted); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((flags & LABEL_UPDATES) != 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fLabelUpdates = "); //$NON-NLS-1$
-			buf.append(toString(fLabelUpdates));
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fLabelUpdates = "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(toString(fLabelUpdates)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((flags & VIEWER_UPDATES_RUNNING) != 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fViewerUpdatesStarted = " + fViewerUpdatesStarted); //$NON-NLS-1$
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fViewerUpdatesRunning = " + fViewerUpdatesCounter); //$NON-NLS-1$
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fViewerUpdatesStarted = " + fViewerUpdatesStarted); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fViewerUpdatesRunning = " + fViewerUpdatesCounter); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((flags & CONTENT_SEQUENCE_COMPLETE) != 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fViewerUpdatesComplete = " + fViewerUpdatesComplete); //$NON-NLS-1$
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fViewerUpdatesCompleteAtReset = " + fViewerUpdatesCompleteAtReset); //$NON-NLS-1$
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fViewerUpdatesComplete = " + fViewerUpdatesComplete); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fViewerUpdatesCompleteAtReset = " + fViewerUpdatesCompleteAtReset); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((flags & HAS_CHILDREN_UPDATES_STARTED) != 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fHasChildrenUpdatesRunning = "); //$NON-NLS-1$
-			buf.append(fHasChildrenUpdatesRunning);
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fHasChildrenUpdatesCompleted = "); //$NON-NLS-1$
-			buf.append(fHasChildrenUpdatesCompleted);
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fHasChildrenUpdatesRunning = "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(fHasChildrenUpdatesRunning); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fHasChildrenUpdatesCompleted = "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(fHasChildrenUpdatesCompleted); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((flags & HAS_CHILDREN_UPDATES) != 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fHasChildrenUpdates = "); //$NON-NLS-1$
-			buf.append(toString(fHasChildrenUpdatesScheduled));
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fHasChildrenUpdates = "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(toString(fHasChildrenUpdatesScheduled)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((flags & CHILD_COUNT_UPDATES_STARTED) != 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fChildCountUpdatesRunning = "); //$NON-NLS-1$
-			buf.append(fChildCountUpdatesRunning);
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fChildCountUpdatesCompleted = "); //$NON-NLS-1$
-			buf.append(fChildCountUpdatesCompleted);
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fChildCountUpdatesRunning = "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(fChildCountUpdatesRunning); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fChildCountUpdatesCompleted = "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(fChildCountUpdatesCompleted); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((flags & CHILD_COUNT_UPDATES) != 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fChildCountUpdates = "); //$NON-NLS-1$
-			buf.append(toString(fChildCountUpdatesScheduled));
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fChildCountUpdates = "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(toString(fChildCountUpdatesScheduled)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((flags & CHILDREN_UPDATES_STARTED) != 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fChildrenUpdatesRunning = "); //$NON-NLS-1$
-			buf.append(fChildrenUpdatesRunning);
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fChildrenUpdatesCompleted = "); //$NON-NLS-1$
-			buf.append(fChildrenUpdatesCompleted);
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fChildrenUpdatesRunning = "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(fChildrenUpdatesRunning); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fChildrenUpdatesCompleted = "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(fChildrenUpdatesCompleted); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((flags & CHILDREN_UPDATES) != 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fChildrenUpdates = "); //$NON-NLS-1$
-			buf.append(toString(fChildrenUpdatesScheduled));
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fChildrenUpdates = "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(toString(fChildrenUpdatesScheduled)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((flags & MODEL_CHANGED_COMPLETE) != 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fModelChangedComplete = " + fModelChangedComplete); //$NON-NLS-1$
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fModelChangedComplete = " + fModelChangedComplete); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((flags & STATE_SAVE_COMPLETE) != 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fStateSaveComplete = " + fStateSaveComplete); //$NON-NLS-1$
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fStateSaveComplete = " + fStateSaveComplete); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((flags & STATE_RESTORE_COMPLETE) != 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fStateRestoreComplete = " + fStateRestoreComplete); //$NON-NLS-1$
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fStateRestoreComplete = " + fStateRestoreComplete); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((flags & MODEL_PROXIES_INSTALLED) != 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fProxyModels = " + fProxyModels); //$NON-NLS-1$
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fProxyModels = " + fProxyModels); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if ((flags & STATE_UPDATES) != 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fStateUpdates = " + toString(fStateUpdates)); //$NON-NLS-1$
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fStateUpdates = " + toString(fStateUpdates)); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if (fTimeoutInterval > 0) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fTimeoutInterval = " + fTimeoutInterval); //$NON-NLS-1$
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fTimeoutInterval = " + fTimeoutInterval); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if (fTimeoutTime < System.currentTimeMillis()) {
-			buf.append("\n\t"); //$NON-NLS-1$
-			buf.append("fTimeoutTime = " + fTimeoutTime); //$NON-NLS-1$
-			buf.append("Current Time = " + System.currentTimeMillis()); //$NON-NLS-1$
+			buf.append("\n\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("fTimeoutTime = " + fTimeoutTime); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append("Current Time = " + System.currentTimeMillis()); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return buf.toString();
 	}
@@ -903,10 +903,10 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 		if (set.isEmpty()) {
 			return "(EMPTY)"; //$NON-NLS-1$
 		}
-		StringBuilder buf = new StringBuilder();
-		for (Iterator<TreePath> itr = set.iterator(); itr.hasNext();) {
-			buf.append("\n\t\t"); //$NON-NLS-1$
-			buf.append(toString(itr.next()));
+		StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (Iterator<TreePath> itr = set.iterator(); itr.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			buf.append("\n\t\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(toString(itr.next())); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return buf.toString();
 	}
@@ -915,13 +915,13 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 		if (map.isEmpty()) {
 			return "(EMPTY)"; //$NON-NLS-1$
 		}
-		StringBuilder buf = new StringBuilder();
-		for (TreePath path : map.keySet()) {
-			buf.append("\n\t\t"); //$NON-NLS-1$
-			buf.append(toString(path));
+		StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (TreePath path : map.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			buf.append("\n\t\t"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(toString(path)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			Set<?> updates = map.get(path);
-			buf.append(" = "); //$NON-NLS-1$
-			buf.append(updates.toString());
+			buf.append(" = "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(updates.toString()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return buf.toString();
 	}
@@ -930,10 +930,10 @@ public class TestModelUpdatesListener implements IViewerUpdateListener, ILabelUp
 		if (path.getSegmentCount() == 0) {
 			return "/"; //$NON-NLS-1$
 		}
-		StringBuilder buf = new StringBuilder();
-		for (int i = 0; i < path.getSegmentCount(); i++) {
-			buf.append("/"); //$NON-NLS-1$
-			buf.append(path.getSegment(i));
+		StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < path.getSegmentCount(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			buf.append("/"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(path.getSegment(i)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return buf.toString();
 	}

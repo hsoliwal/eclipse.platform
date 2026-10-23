@@ -198,7 +198,7 @@ public abstract class AbstractSynchronizeParticipant extends PlatformObject impl
 		fChangeHandler.firePropertyChange(source, property, oldValue, newValue);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setInitializationData(IConfigurationElement config, String propertyName, Object data) throws CoreException {
 		//	Save config element.
 		configElement = config;

@@ -44,7 +44,7 @@ public class TestTextCompletionProcessor extends AntEditorCompletionProcessor {
 	private ISourceViewer fViewer;
 	private boolean fNeedsToDispose = true;
 
-	public TestTextCompletionProcessor(AntModel model) {
+	public TestTextCompletionProcessor(AntModel model) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super(model);
 		fContentAssistant = new IContentAssistantExtension2() {
 			@Override

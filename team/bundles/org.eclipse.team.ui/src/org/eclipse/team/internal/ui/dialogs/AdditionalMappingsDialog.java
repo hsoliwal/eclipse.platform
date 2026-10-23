@@ -86,7 +86,7 @@ public class AdditionalMappingsDialog extends DetailsDialog {
 		if (previewMessage != null) {
 			final Button forcePreviewButton = SWTUtils.createCheckBox(parent, previewMessage);
 			forcePreviewButton.setSelection(forcePreview);
-			forcePreviewButton.addSelectionListener(new SelectionListener() {
+			forcePreviewButton.addSelectionListener(new SelectionListener() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 				@Override
 				public void widgetDefaultSelected(SelectionEvent e) {
 					// Ignore

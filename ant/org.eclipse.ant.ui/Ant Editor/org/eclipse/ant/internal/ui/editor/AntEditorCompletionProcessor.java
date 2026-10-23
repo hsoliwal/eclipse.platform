@@ -248,7 +248,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ICompletionProposal[] computeCompletionProposals(ITextViewer refViewer, int documentOffset) {
 		this.viewer = refViewer;
 		try {
@@ -272,7 +272,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 		}
 	}
 
-	protected ICompletionProposal[] determineTemplateProposals(ITextViewer refViewer, int documentOffset) {
+	protected ICompletionProposal[] determineTemplateProposals(ITextViewer refViewer, int documentOffset) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		this.viewer = refViewer;
 		String prefix = getCurrentPrefix();
 		ICompletionProposal[] matchingTemplateProposals;
@@ -280,8 +280,8 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 			matchingTemplateProposals = determineTemplateProposalsForContext(documentOffset);
 		} else {
 			ICompletionProposal[] templateProposals = determineTemplateProposalsForContext(documentOffset);
-			List<ICompletionProposal> templateProposalList = new ArrayList<>(templateProposals.length);
-			for (ICompletionProposal templateProposal : templateProposals) {
+			List<ICompletionProposal> templateProposalList = new ArrayList<>(templateProposals.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (ICompletionProposal templateProposal : templateProposals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (templateProposal.getDisplayString().toLowerCase().startsWith(prefix)) {
 					templateProposalList.add(templateProposal);
 				}
@@ -293,7 +293,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 
 	// essentially a copy of super.computeCompletionProposals but we need to have both context types work
 	// for target (task and target) context type in a backwards compatible way
-	private ICompletionProposal[] determineTemplateProposalsForContext(int offset) {
+	private ICompletionProposal[] determineTemplateProposalsForContext(int offset) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ITextSelection selection = (ITextSelection) viewer.getSelectionProvider().getSelection();
 
 		// adjust offset to end of normalized selection
@@ -324,8 +324,8 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 			templates = getTemplates(contextTypeId);
 		}
 
-		List<ICompletionProposal> matches = new ArrayList<>();
-		for (Template template : templates) {
+		List<ICompletionProposal> matches = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Template template : templates) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				context.getContextType().validate(template.getPattern());
 			}
@@ -337,7 +337,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 			}
 		}
 
-		Collections.sort(matches, proposalComparator);
+		Collections.sort(matches, proposalComparator); //FLLDCIM: MARK — M16 SORT_LANE CALL
 
 		return matches.toArray(new ICompletionProposal[matches.size()]);
 	}
@@ -381,7 +381,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 	/**
 	 * Returns the new determined proposals.
 	 */
-	private ICompletionProposal[] determineProposals() {
+	private ICompletionProposal[] determineProposals() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ITextSelection selection = (ITextSelection) viewer.getSelectionProvider().getSelection();
 		cursorPosition = selection.getOffset() + selection.getLength();
 
@@ -407,7 +407,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 	/**
 	 * Returns the proposals for the specified document.
 	 */
-	protected ICompletionProposal[] getProposalsFromDocument(IDocument document, String prefix) {
+	protected ICompletionProposal[] getProposalsFromDocument(IDocument document, String prefix) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ICompletionProposal[] proposals = null;
 		currentProposalMode = determineProposalMode(document, cursorPosition, prefix);
 		switch (currentProposalMode) {
@@ -492,11 +492,11 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 
 	private ICompletionProposal[] getDefaultValueProposals(String prefix) {
 		Map<String, Target> targets = getTargets();
-		List<AntCompletionProposal> defaultProposals = new ArrayList<>(targets.size());
+		List<AntCompletionProposal> defaultProposals = new ArrayList<>(targets.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Iterator<Target> itr = targets.values().iterator();
 		Target target;
 		String targetName;
-		while (itr.hasNext()) {
+		while (itr.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			target = itr.next();
 			targetName = target.getName();
 			if (targetName.toLowerCase().startsWith(prefix) && targetName.length() > 0) {
@@ -508,7 +508,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 		return defaultProposals.toArray(proposals);
 	}
 
-	private ICompletionProposal[] getReferencesValueProposals(String prefix) {
+	private ICompletionProposal[] getReferencesValueProposals(String prefix) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Project project = antModel.getProjectNode().getProject();
 		Map<String, Object> references = project.getReferences();
 		if (references.isEmpty()) {
@@ -519,7 +519,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 		if (node == null) {
 			return NO_PROPOSALS;
 		}
-		while (node.getParentNode() instanceof AntTaskNode) {
+		while (node.getParentNode() instanceof AntTaskNode) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			node = node.getParentNode();
 		}
 		String id = null;
@@ -527,13 +527,13 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 			id = ((AntTaskNode) node).getId();
 		}
 		Set<String> refIds = references.keySet();
-		List<ICompletionProposal> proposals = new ArrayList<>(refIds.size());
+		List<ICompletionProposal> proposals = new ArrayList<>(refIds.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		String refId;
 		ICompletionProposal proposal;
 		int prefixLength = prefix.length();
 		int replacementOffset = cursorPosition - prefixLength;
 		Iterator<String> iter = refIds.iterator();
-		while (iter.hasNext()) {
+		while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			refId = iter.next();
 			if (!refId.equals(id) && (prefixLength == 0 || refId.toLowerCase().startsWith(prefix))) {
 				proposal = new AntCompletionProposal(refId, replacementOffset, prefixLength, refId.length(), null, refId, null, AntCompletionProposal.TASK_PROPOSAL);
@@ -558,10 +558,10 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 	}
 
 	private ICompletionProposal[] getExtensionOfValueProposals(String prefix) {
-		List<ICompletionProposal> extensions = new ArrayList<>();
+		List<ICompletionProposal> extensions = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Map<String, Target> targets = getTargets();
 		Set<String> targetNames = targets.keySet();
-		for (String targetName : targetNames) {
+		for (String targetName : targetNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Target currentTarget = targets.get(targetName);
 			if (currentTarget instanceof ExtensionPoint) {
 				extensions.add(new AntCompletionProposal(targetName, cursorPosition
@@ -580,7 +580,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 		return NO_PROPOSALS;
 	}
 
-	private ICompletionProposal[] getTargetProposals(IDocument document, String prefix) {
+	private ICompletionProposal[] getTargetProposals(IDocument document, String prefix) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String currentTargetName = getEnclosingTargetName(document, lineNumber, columnNumber);
 		if (currentTargetName == null) {
 			return NO_PROPOSALS;
@@ -588,8 +588,8 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 
 		Map<String, Target> targets = getTargets();
 		Set<String> targetNames = targets.keySet();
-		List<ICompletionProposal> proposals = new ArrayList<>(targets.size() - 2); // current target and implicit target
-		for (String targetName : targetNames) {
+		List<ICompletionProposal> proposals = new ArrayList<>(targets.size() - 2); // current target and implicit target //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (String targetName : targetNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (targetName.equals(currentTargetName)) {
 				continue;
 			}
@@ -622,8 +622,8 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 		}
 	}
 
-	private ICompletionProposal[] getDependsValueProposals(IDocument document, String prefix) {
-		List<String> possibleDependencies = new ArrayList<>();
+	private ICompletionProposal[] getDependsValueProposals(IDocument document, String prefix) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<String> possibleDependencies = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		String currentTargetName = getEnclosingTargetName(document, lineNumber, columnNumber);
 		if (currentTargetName == null) {
 			return NO_PROPOSALS;
@@ -632,7 +632,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 		Map<String, Target> targets = getTargets();
 		Set<String> targetNames = targets.keySet();
 		Enumeration<String> dependencies = null;
-		for (String targetName : targetNames) {
+		for (String targetName : targetNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (targetName.equals(currentTargetName)) {
 				Target currentTarget = targets.get(targetName);
 				dependencies = currentTarget.getDependencies();
@@ -643,12 +643,12 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 			}
 		}
 		if (dependencies != null) {
-			while (dependencies.hasMoreElements()) {
+			while (dependencies.hasMoreElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				possibleDependencies.remove(dependencies.nextElement());
 			}
 		}
-		ArrayList<ICompletionProposal> proposals = new ArrayList<>(possibleDependencies.size());
-		for (String targetName : possibleDependencies) {
+		ArrayList<ICompletionProposal> proposals = new ArrayList<>(possibleDependencies.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (String targetName : possibleDependencies) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ICompletionProposal proposal = new AntCompletionProposal(targetName, cursorPosition
 					- prefix.length(), prefix.length(), targetName.length(), getTargetImage(targetName), targetName, targets.get(targetName).getDescription(), AntCompletionProposal.TASK_PROPOSAL);
 			proposals.add(proposal);
@@ -664,21 +664,21 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 	 * @param prefix
 	 *            prefix, that all proposals should start with. The prefix may be an empty string.
 	 */
-	protected ICompletionProposal[] getAttributeProposals(String taskName, String prefix) {
-		List<ICompletionProposal> proposals = new ArrayList<>();
+	protected ICompletionProposal[] getAttributeProposals(String taskName, String prefix) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<ICompletionProposal> proposals = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IElement element = getDtd().getElement(taskName);
 		if (element != null) {
-			for (String attrName : element.getAttributes().keySet()) {
+			for (String attrName : element.getAttributes().keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (prefix.length() == 0 || attrName.toLowerCase().startsWith(prefix)) {
 					IAttribute dtdAttributes = element.getAttributes().get(attrName);
-					String replacementString = attrName + "=\"\""; //$NON-NLS-1$
+					String replacementString = attrName + "=\"\""; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					String displayString = attrName;
 					String[] items = dtdAttributes.getEnum();
 					if (items != null) {
 						if (items.length > 1) {
 							displayString += " - ("; //$NON-NLS-1$
 						}
-						for (int i = 0; i < items.length; i++) {
+						for (int i = 0; i < items.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							displayString += items[i];
 							if (i + 1 < items.length) {
 								displayString += " | "; //$NON-NLS-1$
@@ -717,16 +717,16 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 
 	private void addAttributeProposals(IntrospectionHelper helper, String taskName, String prefix, List<ICompletionProposal> proposals) {
 		Enumeration<String> attributes = helper.getAttributes();
-		while (attributes.hasMoreElements()) {
+		while (attributes.hasMoreElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String attribute = attributes.nextElement();
 			if (prefix.length() == 0 || attribute.toLowerCase().startsWith(prefix)) {
-				String replacementString = attribute + "=\"\""; //$NON-NLS-1$
+				String replacementString = attribute + "=\"\""; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				addAttributeProposal(taskName, prefix, proposals, attribute, replacementString, attribute, false);
 			}
 		}
 	}
 
-	private AntTypeDefinition getNestedType() {
+	private AntTypeDefinition getNestedType() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		AntElementNode currentNode = antModel.getNode(cursorPosition, false);
 		if (currentNode == null) {
 			return null;
@@ -773,7 +773,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 		return null;
 	}
 
-	private void addMacroDefAttributeProposals(String taskName, String prefix, List<ICompletionProposal> proposals) {
+	private void addMacroDefAttributeProposals(String taskName, String prefix, List<ICompletionProposal> proposals) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		currentProposalMode = PROPOSAL_MODE_ATTRIBUTE_PROPOSAL;
 		AntDefiningTaskNode node = antModel.getDefininingTaskNode(taskName);
 		Object task = node.getRealTask();
@@ -781,12 +781,12 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 			return;
 		}
 		List<Attribute> attributes = ((MacroDef) task).getAttributes();
-		for (Attribute attribute : attributes) {
+		for (Attribute attribute : attributes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String attributeName = attribute.getName();
 			if (!(prefix.length() == 0 || attributeName.toLowerCase().startsWith(prefix))) {
 				continue;
 			}
-			String replacementString = attributeName + "=\"\""; //$NON-NLS-1$
+			String replacementString = attributeName + "=\"\""; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			String proposalInfo = null;
 
 			String description = attribute.getDescription();
@@ -806,7 +806,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 		}
 	}
 
-	private void addMacroDefElementProposals(String taskName, String prefix, List<ICompletionProposal> proposals) {
+	private void addMacroDefElementProposals(String taskName, String prefix, List<ICompletionProposal> proposals) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		AntDefiningTaskNode node = antModel.getDefininingTaskNode(taskName);
 		Object task = node.getRealTask();
 		if (!(task instanceof MacroDef)) {
@@ -815,7 +815,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 		Map<String, TemplateElement> elements = ((MacroDef) task).getElements();
 		int prefixLength = prefix.length();
 		int replacementOffset = cursorPosition - prefixLength;
-		for (String elementName : elements.keySet()) {
+		for (String elementName : elements.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!(prefixLength == 0 || elementName.toLowerCase().startsWith(prefix))) {
 				continue;
 			}
@@ -841,13 +841,13 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 		}
 	}
 
-	private void addAttributeProposal(String taskName, String prefix, List<ICompletionProposal> proposals, String attrName, String replacementString, String displayString, boolean lookupDescription) {
+	private void addAttributeProposal(String taskName, String prefix, List<ICompletionProposal> proposals, String attrName, String replacementString, String displayString, boolean lookupDescription) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		String proposalInfo = null;
 		if (lookupDescription) {
 			String required = getDescriptionProvider().getRequiredAttributeForTaskAttribute(taskName, attrName);
 			if (required != null && required.length() > 0) {
-				proposalInfo = AntEditorMessages.getString("AntEditorCompletionProcessor.Required___4") + required; //$NON-NLS-1$
+				proposalInfo = AntEditorMessages.getString("AntEditorCompletionProcessor.Required___4") + required; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				proposalInfo += "<BR><BR>"; //$NON-NLS-1$
 			}
 			String description = getDescriptionProvider().getDescriptionForTaskAttribute(taskName, attrName);
@@ -874,15 +874,15 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 	 * @param prefix
 	 *            the prefix that all proposals should start with. The prefix may be an empty string.
 	 */
-	private ICompletionProposal[] getAttributeValueProposals(String taskName, String attributeName, String prefix) {
-		List<ICompletionProposal> proposals = new ArrayList<>();
+	private ICompletionProposal[] getAttributeValueProposals(String taskName, String attributeName, String prefix) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<ICompletionProposal> proposals = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IElement taskElement = getDtd().getElement(taskName);
 		if (taskElement != null) {
 			IAttribute attribute = taskElement.getAttributes().get(attributeName);
 			if (attribute != null) {
 				String[] items = attribute.getEnum();
 				if (items != null) {
-					for (String item : items) {
+					for (String item : items) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (prefix.length() == 0 || item.toLowerCase().startsWith(prefix)) {
 							proposals.add(new AntCompletionProposal(item, cursorPosition
 									- prefix.length(), prefix.length(), item.length(), null, item, null, AntCompletionProposal.TASK_PROPOSAL));
@@ -912,7 +912,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 
 	private void addAttributeValueProposals(IntrospectionHelper helper, String attributeName, String prefix, List<ICompletionProposal> proposals) {
 		Enumeration<String> attributes = helper.getAttributes();
-		while (attributes.hasMoreElements()) {
+		while (attributes.hasMoreElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String attribute = attributes.nextElement();
 			if (attribute.equals(attributeName)) {
 				Class<?> attributeType = helper.getAttributeType(attribute);
@@ -941,7 +941,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 	private void addEnumeratedAttributeValueProposals(Class<?> type, String prefix, List<ICompletionProposal> proposals) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		EnumeratedAttribute ea = (EnumeratedAttribute) type.getConstructor().newInstance();
 		String enumerated;
-		for (String value : ea.getValues()) {
+		for (String value : ea.getValues()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			enumerated = value.toLowerCase();
 			if (prefix.length() == 0 || enumerated.startsWith(prefix)) {
 				proposals.add(new AntCompletionProposal(enumerated, cursorPosition
@@ -952,7 +952,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 
 	private void addBooleanAttributeValueProposals(String prefix, List<ICompletionProposal> proposals) {
 		String booleanAssist;
-		for (String booleanValue : new String[] { "true", "false", "on", "off", "yes", "no" }) { //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		for (String booleanValue : new String[] { "true", "false", "on", "off", "yes", "no" }) { //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			booleanAssist = booleanValue.toLowerCase();
 			if (prefix.length() == 0 || booleanAssist.startsWith(prefix)) {
 				proposals.add(new AntCompletionProposal(booleanAssist, cursorPosition
@@ -966,9 +966,9 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 	 * <P>
 	 * Note that the completion mode must be property mode, otherwise it is not safe to call this method.
 	 */
-	protected ICompletionProposal[] getPropertyProposals(IDocument document, String prefix, int aCursorPosition) {
-		List<ICompletionProposal> proposals = new ArrayList<>();
-		Map<String, ICompletionProposal> displayStringToProposals = new HashMap<>();
+	protected ICompletionProposal[] getPropertyProposals(IDocument document, String prefix, int aCursorPosition) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<ICompletionProposal> proposals = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		Map<String, ICompletionProposal> displayStringToProposals = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		Map<String, Object> properties = findPropertiesFromDocument();
 
 		Image image = AntUIImages.getImage(IAntUIConstants.IMG_PROPERTY);
@@ -997,18 +997,18 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 			replacementLength += 1;
 		}
 		String propertyName;
-		for (Iterator<String> i = properties.keySet().iterator(); i.hasNext();) {
+		for (Iterator<String> i = properties.keySet().iterator(); i.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			propertyName = i.next();
 			if (prefix.length() == 0 || propertyName.toLowerCase().startsWith(prefix)) {
 				String additionalPropertyInfo = (String) properties.get(propertyName);
 
-				StringBuilder replacementString = new StringBuilder();
+				StringBuilder replacementString = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 				if (appendBraces) {
-					replacementString.append("${"); //$NON-NLS-1$
+					replacementString.append("${"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
-				replacementString.append(propertyName);
+				replacementString.append(propertyName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				if (appendBraces) {
-					replacementString.append('}');
+					replacementString.append('}'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 
 				if (displayStringToProposals.get(propertyName) == null) {
@@ -1033,8 +1033,8 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 	 * @param prefix
 	 *            the prefix that all proposals should start with. The prefix may be an empty string.
 	 */
-	protected ICompletionProposal[] getTaskProposals(IDocument document, String parentName, String prefix) {
-		List<ICompletionProposal> proposals = new ArrayList<>(250);
+	protected ICompletionProposal[] getTaskProposals(IDocument document, String parentName, String prefix) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<ICompletionProposal> proposals = new ArrayList<>(250); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		ICompletionProposal proposal;
 		if (areTasksOrTypesValidChildren(parentName)) {
 			// use the definitions in the project as that includes more than what is defined in the DTD
@@ -1058,7 +1058,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 					currentProposalMode = PROPOSAL_MODE_NONE;
 				}
 				String elementName;
-				for (String accept : accepts) {
+				for (String accept : accepts) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					elementName = accept;
 					if (prefix.length() == 0 || elementName.toLowerCase().startsWith(prefix)) {
 						proposal = newCompletionProposal(document, prefix, elementName);
@@ -1078,7 +1078,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 						if (helper != null) {
 							Enumeration<String> nested = helper.getNestedElements();
 							String nestedElement;
-							while (nested.hasMoreElements()) {
+							while (nested.hasMoreElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 								nestedElement = nested.nextElement();
 								if (prefix.length() == 0 || nestedElement.toLowerCase().startsWith(prefix)) {
 									proposal = newCompletionProposal(document, prefix, nestedElement);
@@ -1131,7 +1131,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 		Iterator<String> keys = tasks.keySet().iterator();
 		ICompletionProposal proposal;
 		String key;
-		while (keys.hasNext()) {
+		while (keys.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			key = antModel.getUserNamespaceCorrectName(keys.next());
 			if (prefix.length() == 0 || key.toLowerCase().startsWith(prefix)) {
 				proposal = newCompletionProposal(document, prefix, key);
@@ -1140,7 +1140,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 		}
 	}
 
-	private ICompletionProposal newCompletionProposal(IDocument document, String aPrefix, String elementName) {
+	private ICompletionProposal newCompletionProposal(IDocument document, String aPrefix, String elementName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		additionalProposalOffset = 0;
 		Image proposalImage = AntUIImages.getImage(IAntUIConstants.IMG_TASK_PROPOSAL);
 		String proposalInfo = getDescriptionProvider().getDescriptionForTask(elementName);
@@ -1175,25 +1175,25 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 	 *            The prefix that the one possible proposal should start with. The prefix may be an empty string.
 	 * @return the proposal or <code>null</code> if no closing proposal available
 	 */
-	private ICompletionProposal getClosingTaskProposal(String openElementName, String prefix, boolean closingMode) {
+	private ICompletionProposal getClosingTaskProposal(String openElementName, String prefix, boolean closingMode) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		char previousChar = getPreviousChar();
 		ICompletionProposal proposal = null;
 		if (openElementName != null) {
 			if (prefix.length() == 0 || openElementName.toLowerCase().startsWith(prefix)) {
-				StringBuilder replaceString = new StringBuilder();
+				StringBuilder replaceString = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 				if (!closingMode) {
 					if (previousChar != '/') {
 						if (previousChar != '<') {
-							replaceString.append('<');
+							replaceString.append('<'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 						}
-						replaceString.append('/');
+						replaceString.append('/'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
 				}
-				replaceString.append(openElementName);
-				replaceString.append('>');
-				StringBuilder displayString = new StringBuilder("</"); //$NON-NLS-1$
-				displayString.append(openElementName);
-				displayString.append('>');
+				replaceString.append(openElementName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				replaceString.append('>'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				StringBuilder displayString = new StringBuilder("</"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+				displayString.append(openElementName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				displayString.append('>'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				proposal = new AntCompletionProposal(replaceString.toString(), cursorPosition
 						- prefix.length(), prefix.length(), replaceString.length(), null, displayString.toString(), AntEditorMessages.getString("AntEditorCompletionProcessor.39"), AntCompletionProposal.TAG_CLOSING_PROPOSAL); //$NON-NLS-1$
 			}
@@ -1235,11 +1235,11 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 		return replacement.toString();
 	}
 
-	private void appendRequiredAttributes(StringBuffer replacement, ProposalNode task) {
+	private void appendRequiredAttributes(StringBuffer replacement, ProposalNode task) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (task.nodes != null) {
 			boolean requiredAdded = false;
 			Entry<String, ProposalNode> entry = null;
-			for (Iterator<Entry<String, ProposalNode>> i = task.nodes.entrySet().iterator(); i.hasNext();) {
+			for (Iterator<Entry<String, ProposalNode>> i = task.nodes.entrySet().iterator(); i.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				entry = i.next();
 				String name = entry.getKey();
 				ProposalNode att = entry.getValue();
@@ -1284,7 +1284,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 	 */
 	protected Element findChildElementNamedOf(Element anElement, String aChildElementName) {
 		NodeList nodeList = anElement.getChildNodes();
-		for (int i = 0; i < nodeList.getLength(); i++) {
+		for (int i = 0; i < nodeList.getLength(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Node childNode = nodeList.item(i);
 			if (childNode.getNodeType() == Node.ELEMENT_NODE) {
 				if (childNode.getNodeName().equals(aChildElementName)) {
@@ -1315,7 +1315,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 	 * @param anOffset
 	 *            the cursor position
 	 */
-	protected String getPrefixFromDocument(String aDocumentText, int anOffset) {
+	protected String getPrefixFromDocument(String aDocumentText, int anOffset) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (currentPrefix != null) {
 			return currentPrefix;
 		}
@@ -1326,7 +1326,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 			token = aDocumentText.charAt(startOfWordToken - 1);
 		}
 
-		while (startOfWordToken > 0 && (Character.isJavaIdentifierPart(token) || '.' == token || '-' == token || ';' == token) && !('$' == token)) {
+		while (startOfWordToken > 0 && (Character.isJavaIdentifierPart(token) || '.' == token || '-' == token || ';' == token) && !('$' == token)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			startOfWordToken--;
 			if (startOfWordToken == 0) {
 				break; // word goes right to the beginning of the doc
@@ -1345,7 +1345,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 	/**
 	 * Returns the current proposal mode.
 	 */
-	protected int determineProposalMode(IDocument document, int aCursorPosition, String aPrefix) {
+	protected int determineProposalMode(IDocument document, int aCursorPosition, String aPrefix) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (currentProposalMode != -1) {
 			return currentProposalMode;
 		}
@@ -1451,7 +1451,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 	 *
 	 * @return the extracted task string or <code>null</code> if no string could be extracted.
 	 */
-	private String getTaskStringFromDocumentStringToPrefix(String aDocumentStringToPrefix) {
+	private String getTaskStringFromDocumentStringToPrefix(String aDocumentStringToPrefix) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		int lessThanIndex = aDocumentStringToPrefix.lastIndexOf('<');
 
@@ -1481,7 +1481,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 	 * <P>
 	 * Calling this method is only safe if the current proposal mode is really <code>PROPOSAL_MODE_ATTRIBUTE_VALUE_PROPOSAL</code>.
 	 */
-	public static String getAttributeStringFromDocumentStringToPrefix(String docStringToPrefix) {
+	public static String getAttributeStringFromDocumentStringToPrefix(String docStringToPrefix) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int index = docStringToPrefix.lastIndexOf('=');
 		if (index == -1) {
 			return null;
@@ -1506,7 +1506,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 
 	private static String trimBeginning(String toBeTrimmed) {
 		int i = 0;
-		while ((i != toBeTrimmed.length()) && Character.isWhitespace(toBeTrimmed.charAt(i))) {
+		while ((i != toBeTrimmed.length()) && Character.isWhitespace(toBeTrimmed.charAt(i))) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			i++;
 		}
 		return toBeTrimmed.substring(i);
@@ -1515,7 +1515,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 	/**
 	 * Returns whether the specified element name is known
 	 */
-	protected boolean isKnownElement(String elementName) {
+	protected boolean isKnownElement(String elementName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (elementName.equals("target") || elementName.equals("project") || elementName.equals("extension-point")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			return true;
 		}
@@ -1561,7 +1561,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 	 *
 	 * @return the parent task element or <code>null</code> if not found.
 	 */
-	protected String getParentName(IDocument document, int aLineNumber, int aColumnNumber) {
+	protected String getParentName(IDocument document, int aLineNumber, int aColumnNumber) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (document.getLength() == 0) {
 			return null;
 		}
@@ -1624,7 +1624,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 		FileEditorInput input = (FileEditorInput) editor.getEditorInput();
 		String projectPath = input.getFile().getProject().getLocation().toFile().getAbsolutePath();
 		String projectRelativeFilePath = input.getFile().getFullPath().removeFirstSegments(1).makeRelative().toString();
-		return new File(projectPath + File.separator + projectRelativeFilePath);
+		return new File(projectPath + File.separator + projectRelativeFilePath); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private String getOpenElementName() {
@@ -1640,7 +1640,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 	 *
 	 * @return the name of the enclosing target or <code>null</code> if not found or the element is not contained in a target.
 	 */
-	private String getEnclosingTargetName(IDocument document, int aLineNumber, int aColumnNumber) {
+	private String getEnclosingTargetName(IDocument document, int aLineNumber, int aColumnNumber) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		AntProjectNode project = antModel.getProjectNode();
 		int offset = getOffset(document, aLineNumber, aColumnNumber);
@@ -1708,7 +1708,7 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 		return AntTemplateAccess.getDefault().getTemplateStore().getTemplates(contextTypeId);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected TemplateContextType getContextType(ITextViewer textViewer, IRegion region) {
 		switch (determineProposalMode(textViewer.getDocument(), cursorPosition, getCurrentPrefix())) {
 			case PROPOSAL_MODE_TASK_PROPOSAL:
@@ -1759,9 +1759,9 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 		return proposal;
 	}
 
-	protected ISchema getDtd() {
+	protected ISchema getDtd() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fgDtd == null) {
-			IRunnableWithProgress runnable = unused -> {
+			IRunnableWithProgress runnable = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				try {
 					fgDtd = parseDtd();
 				}

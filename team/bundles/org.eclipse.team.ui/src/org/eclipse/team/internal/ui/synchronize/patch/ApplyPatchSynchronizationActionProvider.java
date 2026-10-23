@@ -27,19 +27,19 @@ public class ApplyPatchSynchronizationActionProvider extends
 		super();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void initialize() {
 		super.initialize();
 		final ISynchronizePageConfiguration configuration = getSynchronizePageConfiguration();
 		// Use custom handlers, disabled for hunks.
-		registerHandler(MERGE_ACTION_ID, new ResourceMergeHandler(
-				configuration, false) {
+		registerHandler(MERGE_ACTION_ID, new ResourceMergeHandler( //FLLDCIM: MARK — T06  ANONYMOUS
+				configuration, false) { //FLLDCIM: MARK — T06  IMPLEMENTS
 			@Override
 			public void updateEnablement(IStructuredSelection selection) {
 				super.updateEnablement(selection);
 				// disable merge for hunks
 				Object[] elements = getOperation().getElements();
-				for (Object element : elements) {
+				for (Object element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (element instanceof HunkDiffNode) {
 						setEnabled(false);
 						return;
@@ -48,13 +48,13 @@ public class ApplyPatchSynchronizationActionProvider extends
 			}
 		});
 		registerHandler(MARK_AS_MERGE_ACTION_ID,
-				new ResourceMarkAsMergedHandler(configuration) {
+				new ResourceMarkAsMergedHandler(configuration) { //FLLDCIM: MARK — T06  ANONYMOUS
 			@Override
 			public void updateEnablement(IStructuredSelection selection) {
 				super.updateEnablement(selection);
 				// disable mark as merged for hunks
 				Object[] elements = getOperation().getElements();
-				for (Object element : elements) {
+				for (Object element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (element instanceof HunkDiffNode) {
 						setEnabled(false);
 						return;

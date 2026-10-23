@@ -84,7 +84,7 @@ public class AntClasspathBlock {
 	private IClasspathEntry currentParent;
 
 	private final SelectionListener selectionListener = new SelectionAdapter() {
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void widgetSelected(SelectionEvent e) {
 			Object source = e.getSource();
 			if (source == addJARButton) {
@@ -111,29 +111,29 @@ public class AntClasspathBlock {
 		this.container = container;
 	}
 
-	private void addButtonsToButtonGroup(Composite parent) {
+	private void addButtonsToButtonGroup(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		addJARButton = container.createPushButton(parent, AntPreferencesMessages.AntClasspathBlock_addJarButtonTitle);
-		addJARButton.addSelectionListener(selectionListener);
+		addJARButton.addSelectionListener(selectionListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 
 		addExternalJARButton = container.createPushButton(parent, AntPreferencesMessages.AntClasspathBlock_42);
-		addExternalJARButton.addSelectionListener(selectionListener);
+		addExternalJARButton.addSelectionListener(selectionListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 		addFolderButton = container.createPushButton(parent, AntPreferencesMessages.AntClasspathBlock_addFolderButtonTitle);
-		addFolderButton.addSelectionListener(selectionListener);
+		addFolderButton.addSelectionListener(selectionListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 
 		addVariableButton = container.createPushButton(parent, AntPreferencesMessages.AntClasspathBlock_2);
-		addVariableButton.addSelectionListener(selectionListener);
+		addVariableButton.addSelectionListener(selectionListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 
 		antHomeButton = container.createPushButton(parent, AntPreferencesMessages.AntClasspathBlock_30);
-		antHomeButton.addSelectionListener(selectionListener);
+		antHomeButton.addSelectionListener(selectionListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 
 		removeButton = container.createPushButton(parent, AntPreferencesMessages.AntClasspathBlock_removeButtonTitle);
-		removeButton.addSelectionListener(selectionListener);
+		removeButton.addSelectionListener(selectionListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 
 		upButton = container.createPushButton(parent, AntPreferencesMessages.AntClasspathBlock_upButtonTitle);
-		upButton.addSelectionListener(selectionListener);
+		upButton.addSelectionListener(selectionListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 		downButton = container.createPushButton(parent, AntPreferencesMessages.AntClasspathBlock_downButtonTitle);
-		downButton.addSelectionListener(selectionListener);
+		downButton.addSelectionListener(selectionListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 	}
 
 	/**
@@ -142,9 +142,9 @@ public class AntClasspathBlock {
 	 * @return targets for an action
 	 */
 	private List<IAntClasspathEntry> getOrderedSelection(IClasspathEntry parent) {
-		List<IAntClasspathEntry> targets = new ArrayList<>();
+		List<IAntClasspathEntry> targets = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		List<?> selection = ((IStructuredSelection) treeViewer.getSelection()).toList();
-		for (IAntClasspathEntry target : parent.getEntries()) {
+		for (IAntClasspathEntry target : parent.getEntries()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (selection.contains(target)) {
 				targets.add(target);
 			}
@@ -152,12 +152,12 @@ public class AntClasspathBlock {
 		return targets;
 	}
 
-	private void handleMoveDown() {
+	private void handleMoveDown() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		List<IAntClasspathEntry> targets = getOrderedSelection(currentParent);
-		List<IAntClasspathEntry> list = new ArrayList<>(Arrays.asList(currentParent.getEntries()));
+		List<IAntClasspathEntry> list = new ArrayList<>(Arrays.asList(currentParent.getEntries())); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		int bottom = list.size() - 1;
 		int index = 0;
-		for (int i = targets.size() - 1; i >= 0; i--) {
+		for (int i = targets.size() - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IAntClasspathEntry target = targets.get(i);
 			index = list.indexOf(target);
 			if (index < bottom) {
@@ -174,18 +174,18 @@ public class AntClasspathBlock {
 	private void finishMove(List<IAntClasspathEntry> list) {
 		AntClasspathContentProvider viewerContentProvider = (AntClasspathContentProvider) treeViewer.getContentProvider();
 		viewerContentProvider.setEntries(currentParent, list);
-		treeViewer.refresh();
+		treeViewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		treeViewer.setSelection(treeViewer.getSelection());
 		updateContainer();
 	}
 
-	private void handleMoveUp() {
+	private void handleMoveUp() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		List<IAntClasspathEntry> targets = getOrderedSelection(currentParent);
 		int top = 0;
 		int index = 0;
-		List<IAntClasspathEntry> list = new ArrayList<>(Arrays.asList(currentParent.getEntries()));
+		List<IAntClasspathEntry> list = new ArrayList<>(Arrays.asList(currentParent.getEntries())); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Iterator<IAntClasspathEntry> entries = targets.iterator();
-		while (entries.hasNext()) {
+		while (entries.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IAntClasspathEntry target = entries.next();
 			index = list.indexOf(target);
 			if (index > top) {
@@ -210,7 +210,7 @@ public class AntClasspathBlock {
 	/**
 	 * Allows the user to enter a folder as a classpath.
 	 */
-	private void addFolder() {
+	private void addFolder() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String lastUsedPath = dialogSettings.get(IAntUIConstants.DIALOGSTORE_LASTFOLDER);
 		if (lastUsedPath == null) {
 			lastUsedPath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
@@ -221,7 +221,7 @@ public class AntClasspathBlock {
 		String result = dialog.open();
 		if (result != null) {
 			try {
-				URL url = new URL(IAntCoreConstants.FILE_PROTOCOL + result + "/"); //$NON-NLS-1$ ;
+				URL url = new URL(IAntCoreConstants.FILE_PROTOCOL + result + "/"); //$NON-NLS-1$ ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				((AntClasspathContentProvider) treeViewer.getContentProvider()).add(currentParent, url);
 			}
 			catch (MalformedURLException e) {
@@ -233,7 +233,7 @@ public class AntClasspathBlock {
 		updateContainer();
 	}
 
-	private void addExternalJars() {
+	private void addExternalJars() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String lastUsedPath = dialogSettings.get(IAntUIConstants.DIALOGSTORE_LASTEXTJAR);
 		if (lastUsedPath == null) {
 			lastUsedPath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
@@ -249,10 +249,10 @@ public class AntClasspathBlock {
 		IPath filterPath = IPath.fromOSString(dialog.getFilterPath());
 		AntClasspathContentProvider contentProvider = (AntClasspathContentProvider) treeViewer.getContentProvider();
 		contentProvider.setRefreshEnabled(false);
-		for (String jarName : dialog.getFileNames()) {
+		for (String jarName : dialog.getFileNames()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				IPath path = filterPath.append(jarName).makeAbsolute();
-				URL url = new URL(IAntCoreConstants.FILE_PROTOCOL + path.toOSString());
+				URL url = new URL(IAntCoreConstants.FILE_PROTOCOL + path.toOSString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				contentProvider.add(currentParent, url);
 			}
 			catch (MalformedURLException e) {
@@ -266,8 +266,8 @@ public class AntClasspathBlock {
 		updateContainer();
 	}
 
-	private void addJars() {
-		List<IAntClasspathEntry> allEntries = new ArrayList<>();
+	private void addJars() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<IAntClasspathEntry> allEntries = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (currentParent != null) {
 			allEntries.addAll(Arrays.asList(currentParent.getEntries()));
 		} else {
@@ -277,15 +277,15 @@ public class AntClasspathBlock {
 			}
 		}
 
-		List<IPath> selectedPaths = new ArrayList<>(allEntries.size());
+		List<IPath> selectedPaths = new ArrayList<>(allEntries.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Iterator<IAntClasspathEntry> iterator = allEntries.iterator();
-		while (iterator.hasNext()) {
+		while (iterator.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IAntClasspathEntry entry = iterator.next();
 			URL url = entry.getEntryURL();
 			if (url != null) {
 				String fileName = url.getFile();
 				if (fileName != null && fileName.length() > 0) {
-					for (IFile file : ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(IPath.fromOSString(fileName).toFile().toURI())) {
+					for (IFile file : ResourcesPlugin.getWorkspace().getRoot().findFilesForLocationURI(IPath.fromOSString(fileName).toFile().toURI())) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						selectedPaths.add(file.getFullPath());
 					}
 				}
@@ -297,7 +297,7 @@ public class AntClasspathBlock {
 		if (paths != null && paths.length > 0) {
 			AntClasspathContentProvider contentProvider = (AntClasspathContentProvider) treeViewer.getContentProvider();
 			contentProvider.setRefreshEnabled(false);
-			for (IPath path : paths) {
+			for (IPath path : paths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String varExpression = VariablesPlugin.getDefault().getStringVariableManager().generateVariableExpression("workspace_loc", path.toString()); //$NON-NLS-1$
 				contentProvider.add(currentParent, varExpression);
 			}
@@ -326,7 +326,7 @@ public class AntClasspathBlock {
 		addButtonsToButtonGroup(buttonGroup);
 	}
 
-	private void createClasspathTree(Composite parent) {
+	private void createClasspathTree(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Tree tree = new Tree(parent, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER);
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.widthHint = IDialogConstants.ENTRY_FIELD_WIDTH;
@@ -334,7 +334,7 @@ public class AntClasspathBlock {
 		tree.setLayoutData(data);
 		tree.setFont(parent.getFont());
 
-		tree.addKeyListener(new KeyAdapter() {
+		tree.addKeyListener(new KeyAdapter() { //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 			@Override
 			public void keyPressed(KeyEvent event) {
 				if (event.character == SWT.DEL && event.stateMask == 0) {
@@ -346,8 +346,8 @@ public class AntClasspathBlock {
 		antContentProvider = new AntClasspathContentProvider();
 		treeViewer = new TreeViewer(tree);
 		treeViewer.setContentProvider(antContentProvider);
-		treeViewer.setLabelProvider(labelProvider);
-		treeViewer.addSelectionChangedListener(event -> tableSelectionChanged((IStructuredSelection) event.getSelection(), (AntClasspathContentProvider) treeViewer.getContentProvider()));
+		treeViewer.setLabelProvider(labelProvider); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
+		treeViewer.addSelectionChangedListener(event -> tableSelectionChanged((IStructuredSelection) event.getSelection(), (AntClasspathContentProvider) treeViewer.getContentProvider())); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 	}
 
 	public void createContents(Composite parent) {
@@ -357,7 +357,7 @@ public class AntClasspathBlock {
 		tableSelectionChanged((IStructuredSelection) treeViewer.getSelection(), antContentProvider);
 	}
 
-	private void tableSelectionChanged(IStructuredSelection selection, AntClasspathContentProvider contentProvider) {
+	private void tableSelectionChanged(IStructuredSelection selection, AntClasspathContentProvider contentProvider) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		boolean notEmpty = !selection.isEmpty();
 		boolean first = !notEmpty;
@@ -372,7 +372,7 @@ public class AntClasspathBlock {
 			canRemove = false;
 		} else {
 			Iterator<?> selected = selection.iterator();
-			while (selected.hasNext()) {
+			while (selected.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IClasspathEntry element = (IClasspathEntry) selected.next();
 
 				if (element instanceof GlobalClasspathEntries global) {
@@ -407,11 +407,11 @@ public class AntClasspathBlock {
 		downButton.setEnabled(canMove && !last);
 	}
 
-	private boolean resolveCurrentParent(IStructuredSelection selection) {
+	private boolean resolveCurrentParent(IStructuredSelection selection) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		currentParent = null;
 		Iterator<?> selected = selection.iterator();
 
-		while (selected.hasNext()) {
+		while (selected.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object element = selected.next();
 			if (element instanceof ClasspathEntry) {
 				IClasspathEntry parent = ((IClasspathEntry) element).getParent();
@@ -435,7 +435,7 @@ public class AntClasspathBlock {
 		return true;
 	}
 
-	private File validateAntHome(String path) {
+	private File validateAntHome(String path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		File rootDir = null;
 		boolean invalid = true;
 		if (path.length() > 0) {
@@ -459,7 +459,7 @@ public class AntClasspathBlock {
 		return rootDir;
 	}
 
-	private void browseAntHome() {
+	private void browseAntHome() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String lastUsedPath = dialogSettings.get(IAntUIConstants.DIALOGSTORE_LASTANTHOME);
 		if (lastUsedPath == null) {
 			lastUsedPath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
@@ -481,18 +481,18 @@ public class AntClasspathBlock {
 		dialogSettings.put(IAntUIConstants.DIALOGSTORE_LASTANTHOME, path);
 	}
 
-	private void setAntHome(File rootDir) {
+	private void setAntHome(File rootDir) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		AntClasspathContentProvider contentProvider = (AntClasspathContentProvider) treeViewer.getContentProvider();
 		contentProvider.setRefreshEnabled(false);
 		contentProvider.removeAllGlobalAntClasspathEntries();
 		String[] names = rootDir.list();
 		if (names != null) {
 			Arrays.sort(names);
-			for (String name : names) {
+			for (String name : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				File file = new File(rootDir, name);
 				if (file.isFile() && file.getPath().endsWith(".jar")) { //$NON-NLS-1$
 					try {
-						URL url = new URL(IAntCoreConstants.FILE_PROTOCOL + file.getAbsolutePath());
+						URL url = new URL(IAntCoreConstants.FILE_PROTOCOL + file.getAbsolutePath()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						contentProvider.add(ClasspathModel.ANT_HOME, url);
 					}
 					catch (MalformedURLException e) {
@@ -515,7 +515,7 @@ public class AntClasspathBlock {
 	}
 
 	public void setInput(ClasspathModel model) {
-		treeViewer.setInput(model);
+		treeViewer.setInput(model); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		validated = 0;
 	}
 
@@ -528,7 +528,7 @@ public class AntClasspathBlock {
 		return labelProvider.getClasspathImage();
 	}
 
-	public boolean validateToolsJAR() {
+	public boolean validateToolsJAR() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		validated++;
 		boolean check = AntUIPlugin.getDefault().getPreferenceStore().getBoolean(IAntUIPreferenceConstants.ANT_TOOLS_JAR_WARNING);
 		if (check && !AntUIPlugin.isMacOS()) {
@@ -555,19 +555,19 @@ public class AntClasspathBlock {
 		return true;
 	}
 
-	private List<String> JARPresent(Object[] classpathEntries, String[] suffixes) {
+	private List<String> JARPresent(Object[] classpathEntries, String[] suffixes) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (classpathEntries == null) {
 			return Collections.EMPTY_LIST;
 		}
-		List<String> found = new ArrayList<>(2);
-		for (Object entry : classpathEntries) {
+		List<String> found = new ArrayList<>(2); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Object entry : classpathEntries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String file;
 			if (entry instanceof URL) {
 				file = ((URL) entry).getFile();
 			} else {
 				file = entry.toString();
 			}
-			for (String suffix : suffixes) {
+			for (String suffix : suffixes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (file.endsWith(suffix)) {
 					found.add(suffix);
 				}

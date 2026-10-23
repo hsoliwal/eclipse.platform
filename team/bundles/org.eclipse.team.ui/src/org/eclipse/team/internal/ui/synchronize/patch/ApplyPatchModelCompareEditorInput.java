@@ -37,7 +37,7 @@ import org.eclipse.team.ui.synchronize.ModelSynchronizeParticipant;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPage;
 
-public class ApplyPatchModelCompareEditorInput extends ModelCompareEditorInput {
+public class ApplyPatchModelCompareEditorInput extends ModelCompareEditorInput { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	public ApplyPatchModelCompareEditorInput(
 			ModelSynchronizeParticipant participant, ICompareInput input,
@@ -46,7 +46,7 @@ public class ApplyPatchModelCompareEditorInput extends ModelCompareEditorInput {
 		super(participant, input, page, synchronizeConfiguration);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void handleMenuAboutToShow(IMenuManager manager) {
 		StructuredSelection selection = new StructuredSelection(((IResourceProvider)getCompareInput()).getResource());
 		final ResourceMarkAsMergedHandler markAsMergedHandler = new ResourceMarkAsMergedHandler(getSynchronizeConfiguration());
@@ -93,7 +93,7 @@ public class ApplyPatchModelCompareEditorInput extends ModelCompareEditorInput {
 			Object pane = cein.getPanes()[0]; // the structure input pane, top left
 			if (pane instanceof CompareViewerPane cvp) {
 				cvp.setSelection(StructuredSelection.EMPTY);
-				cvp.addSelectionChangedListener(unused -> feed1(cein));
+				cvp.addSelectionChangedListener(unused -> feed1(cein)); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 				feed1(cein);
 			}
 		}

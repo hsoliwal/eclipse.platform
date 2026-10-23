@@ -30,7 +30,7 @@ package org.eclipse.debug.examples.core.pda.protocol;
 public class PDAPushDataCommand extends PDACommand {
 
 	public PDAPushDataCommand(int threadId, String value) {
-		super("pushdata " + threadId + " " + value); //$NON-NLS-1$ //$NON-NLS-2$
+		super("pushdata " + threadId + " " + value); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 

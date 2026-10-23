@@ -75,7 +75,7 @@ public class NfmNode implements FactoryObject {
 	 * Free all NfmNodes in use.
 	 */
 	public static void freeAll() {
-		while (fUsed != null) {
+		while (fUsed != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			FactoryObject nfm = fUsed;
 			fUsed = nfm.next();
 			setFree((NfmNode) nfm);

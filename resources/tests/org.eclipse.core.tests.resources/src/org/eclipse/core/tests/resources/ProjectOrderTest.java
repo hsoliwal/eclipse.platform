@@ -51,7 +51,7 @@ public class ProjectOrderTest {
 	void addProjectReference(IProject source, IProject target) throws CoreException {
 		IProjectDescription pd = source.getDescription();
 		IProject[] a = pd.getReferencedProjects();
-		Set<IProject> x = new HashSet<>();
+		Set<IProject> x = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		x.addAll(Arrays.asList(a));
 		x.add(target);
 		IProject[] r = new IProject[x.size()];
@@ -63,7 +63,7 @@ public class ProjectOrderTest {
 	/**
 	 * P0, P1&lt;-P2&lt;-P3&lt;-P4, P5
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test0() throws CoreException {
 		IWorkspace ws = getWorkspace();
 		IWorkspaceRoot root = ws.getRoot();
@@ -116,7 +116,7 @@ public class ProjectOrderTest {
 		assertThat(x.indexOf(p5)).as("index p5").isGreaterThanOrEqualTo(0);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test1() throws CoreException {
 		IWorkspace ws = getWorkspace();
 		IWorkspaceRoot root = ws.getRoot();
@@ -395,7 +395,7 @@ public class ProjectOrderTest {
 	 * Cormen, Leiserson, Rivest
 	 * Figure 23.9(b)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test2() throws CoreException {
 		IWorkspace ws = getWorkspace();
 		IWorkspaceRoot root = ws.getRoot();

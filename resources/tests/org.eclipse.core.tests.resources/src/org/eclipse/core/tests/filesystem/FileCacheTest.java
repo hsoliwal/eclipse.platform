@@ -46,7 +46,7 @@ public class FileCacheTest {
 		MemoryTree.TREE.deleteAll();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCacheFile() throws Exception {
 		IFileStore store = new MemoryFileStore(IPath.fromOSString("testCacheFile"));
 		byte[] contents = "test".getBytes();

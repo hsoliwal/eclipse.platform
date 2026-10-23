@@ -59,7 +59,7 @@ public class FilePropertyTester extends ResourcePropertyTester {
 	}
 
 	private boolean isArgumentUsed(Object[] args, String value) {
-		for (Object arg : args) {
+		for (Object arg : args) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (value.equals(arg)) {
 				return true;
 			}
@@ -96,7 +96,7 @@ public class FilePropertyTester extends ResourcePropertyTester {
 	 * 		</ul>
 	 * Otherwise it returns <code>false</code>.
 	 */
-	private boolean testContentType(final IFile file, String contentTypeId, boolean isKindOfUsed, boolean useFilenameOnly) {
+	private boolean testContentType(final IFile file, String contentTypeId, boolean isKindOfUsed, boolean useFilenameOnly) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final String expectedValue = contentTypeId.trim();
 		IContentType actualContentType = null;
 		if (!useFilenameOnly) {

@@ -51,7 +51,7 @@ public class WorkspacePatcher extends Patcher {
 	private DiffProject[] fDiffProjects;
 	private boolean fIsWorkspacePatch= false;
 	private boolean fIsGitPatch = false;
-	private final Map<Object, IPath> retargetedDiffs = new HashMap<>();
+	private final Map<Object, IPath> retargetedDiffs = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	public WorkspacePatcher() {
 		// nothing to do
@@ -83,7 +83,7 @@ public class WorkspacePatcher extends Patcher {
 
 	//---- parsing patch files
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void applyAll(IProgressMonitor pm, IFileValidator validator) throws CoreException {
 		if (pm == null) {
 			pm = new NullProgressMonitor();
@@ -94,8 +94,8 @@ public class WorkspacePatcher extends Patcher {
 			final int WORK_UNIT= 10;
 
 			// get all files to be modified in order to call validateEdit
-			List<IFile> list= new ArrayList<>();
-			for (DiffProject diffProject : fDiffProjects) {
+			List<IFile> list= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (DiffProject diffProject : fDiffProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (Utilities.getProject(diffProject).isAccessible()) {
 					list.addAll(Arrays.asList(getTargetFiles(diffProject)));
 				}
@@ -111,7 +111,7 @@ public class WorkspacePatcher extends Patcher {
 				pm.beginTask(message, diffs.length * WORK_UNIT);
 			}
 
-			for (FilePatch2 diff : diffs) {
+			for (FilePatch2 diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int workTicks= WORK_UNIT;
 				if (isAccessible(diff)) {
 					IFile file= getTargetFile(diff);
@@ -121,7 +121,7 @@ public class WorkspacePatcher extends Patcher {
 					}
 					createPath(file.getProject(), path);
 
-					List<Hunk> failed= new ArrayList<>();
+					List<Hunk> failed= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 					int type= diff.getDiffType(isReversed());
 					switch (type) {
@@ -153,9 +153,9 @@ public class WorkspacePatcher extends Patcher {
 						IPath pp= null;
 						if (path.segmentCount() > 1) {
 							pp= path.removeLastSegments(1);
-							pp= pp.append(path.lastSegment() + REJECT_FILE_EXTENSION);
+							pp= pp.append(path.lastSegment() + REJECT_FILE_EXTENSION); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						} else {
-							pp= IPath.fromOSString(path.lastSegment() + REJECT_FILE_EXTENSION);
+							pp= IPath.fromOSString(path.lastSegment() + REJECT_FILE_EXTENSION); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						}
 						file= createPath(file.getProject(), pp);
 						if (file != null) {
@@ -193,9 +193,9 @@ public class WorkspacePatcher extends Patcher {
 	 * @return An array of IFiles that are targeted by the Diffs
 	 */
 	public IFile[] getTargetFiles(DiffProject project) {
-		List<IFile> files= new ArrayList<>();
+		List<IFile> files= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		FilePatch2[] diffs = project.getFileDiffs();
-		for (FilePatch2 diff : diffs) {
+		for (FilePatch2 diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isEnabled(diff)) {
 				files.add(getTargetFile(diff));
 			}
@@ -222,11 +222,11 @@ public class WorkspacePatcher extends Patcher {
 		return getTarget().getFullPath().append(path);
 	}
 
-	public ISchedulingRule[] getTargetProjects() {
-		List<ISchedulingRule> projects= new ArrayList<>();
+	public ISchedulingRule[] getTargetProjects() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<ISchedulingRule> projects= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IResourceRuleFactory ruleFactory= ResourcesPlugin.getWorkspace().getRuleFactory();
 		// Determine the appropriate scheduling rules
-		for (DiffProject diffProject : fDiffProjects) {
+		for (DiffProject diffProject : fDiffProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProject tempProject = Utilities.getProject(diffProject);
 			// The goal here is to lock as little of the workspace as necessary
 			// but still allow the patcher to obtain the locks it needs.
@@ -249,7 +249,7 @@ public class WorkspacePatcher extends Patcher {
 	public void removeProject(DiffProject project) {
 		DiffProject[] temp = new DiffProject[fDiffProjects.length - 1];
 		int counter = 0;
-		for (DiffProject diffProject : fDiffProjects) {
+		for (DiffProject diffProject : fDiffProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (diffProject != project) {
 				temp[counter++] = diffProject;
 			}
@@ -260,7 +260,7 @@ public class WorkspacePatcher extends Patcher {
 	@Override
 	protected Object getElementParent(Object element) {
 		if (element instanceof FilePatch2 diff && fDiffProjects != null) {
-			for (DiffProject project : fDiffProjects) {
+			for (DiffProject project : fDiffProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (project.contains(diff)) {
 					return project;
 				}
@@ -287,20 +287,20 @@ public class WorkspacePatcher extends Patcher {
 		}
 		removeDiff(diff);
 		FilePatch2 newDiff = getDiffForFile(file);
-		for (IHunk h : hunks) {
+		for (IHunk h : hunks) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Hunk hunk = (Hunk) h;
 			newDiff.add(hunk);
 		}
 	}
 
-	private FilePatch2 getDiffForFile(IFile file) {
+	private FilePatch2 getDiffForFile(IFile file) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		DiffProject diffProject = null;
 		FilePatch2[] diffsToCheck;
 		if (isWorkspacePatch()){
 			// Check if the diff project already exists for the file
 			IProject project = file.getProject();
 			DiffProject[] diffProjects = getDiffProjects();
-			for (DiffProject d : diffProjects) {
+			for (DiffProject d : diffProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (Utilities.getProject(d).equals(project)) {
 					diffProject = d;
 					break;
@@ -315,7 +315,7 @@ public class WorkspacePatcher extends Patcher {
 			diffsToCheck = getDiffs();
 		}
 		// Check to see if a diff already exists for the file
-		for (FilePatch2 fileDiff : diffsToCheck) {
+		for (FilePatch2 fileDiff : diffsToCheck) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isDiffForFile(fileDiff, file)) {
 				return fileDiff;
 			}
@@ -366,7 +366,7 @@ public class WorkspacePatcher extends Patcher {
 			selectedProject = addDiffProjectForProject(targetProject);
 		}
 		// Copy over the diffs to the new project
-		for (FilePatch2 diff : diffs) {
+		for (FilePatch2 diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			selectedProject.add(diff);
 		}
 		// Since the project has been retargeted, remove it from the patcher
@@ -386,7 +386,7 @@ public class WorkspacePatcher extends Patcher {
 			return null;
 		}
 		DiffProject[] projects = getDiffProjects();
-		for (DiffProject p : projects) {
+		for (DiffProject p : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (Utilities.getProject(p).equals(project)) {
 				return p;
 			}
@@ -403,13 +403,13 @@ public class WorkspacePatcher extends Patcher {
 		return super.getStripPrefixSegments();
 	}
 
-	int calculateStripGitPrefixSegments() {
+	int calculateStripGitPrefixSegments() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		FilePatch2[] diffs = getDiffs();
 		if (diffs.length == 0) {
 			return -1;
 		}
 		int skip = -1;
-		for (FilePatch2 diff : diffs) {
+		for (FilePatch2 diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IPath oldPath = diff.getPath(false);
 			IPath newPath = diff.getPath(true);
 			if (checkFirstSegments(new IPath[] { oldPath, newPath },
@@ -417,7 +417,7 @@ public class WorkspacePatcher extends Patcher {
 							{ "b", "b" }, // addition //$NON-NLS-1$ //$NON-NLS-2$
 							{ "a", "a" } }) // deletion //$NON-NLS-1$ //$NON-NLS-2$
 					&& oldPath.segmentCount() > 2 && newPath.segmentCount() > 2) {
-				for (int j = 1; j < Math.min(oldPath.segmentCount(),
+				for (int j = 1; j < Math.min(oldPath.segmentCount(), //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						newPath.segmentCount()); j++) {
 					if (projectExists(oldPath.segment(j))
 							|| projectExists(newPath.segment(j))) {
@@ -438,8 +438,8 @@ public class WorkspacePatcher extends Patcher {
 	}
 
 	private boolean checkFirstSegments(IPath[] paths, String[][] segments) {
-		SEGMENTS: for (String[] segment : segments) {
-			for (int j = 0; j < paths.length; j++) {
+		SEGMENTS: for (String[] segment : segments) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (int j = 0; j < paths.length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!paths[j].segment(0).equals(segment[j])) {
 					continue SEGMENTS;
 				}

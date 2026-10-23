@@ -38,7 +38,7 @@ public class FindUnreferencedFilesAction implements IObjectActionDelegate {
 	@Override
 	public void run(IAction action) {
 		try {
-			for (Iterator<?> it = selection.iterator(); it.hasNext();) {
+			for (Iterator<?> it = selection.iterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource resource = (IResource) it.next();
 				findReferences(resource);
 			}
@@ -47,10 +47,10 @@ public class FindUnreferencedFilesAction implements IObjectActionDelegate {
 		}
 	}
 
-	private void findReferences(IResource resource) throws CoreException {
+	private void findReferences(IResource resource) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (resource instanceof IContainer) {
 			IResource[] children = ((IContainer) resource).members();
-			for (IResource element : children) {
+			for (IResource element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				findReferences(element);
 			}
 		} else if (resource instanceof IFile) {
@@ -62,7 +62,7 @@ public class FindUnreferencedFilesAction implements IObjectActionDelegate {
 			if (result instanceof AbstractTextSearchResult) {
 				int matches = ((AbstractTextSearchResult) result).getMatchCount();
 				if (matches == 0) {
-					System.out.println("Orphan file: " + resource.getFullPath());
+					System.out.println("Orphan file: " + resource.getFullPath()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
 		}

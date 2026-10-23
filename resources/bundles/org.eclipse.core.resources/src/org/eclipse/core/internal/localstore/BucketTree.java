@@ -45,7 +45,7 @@ public class BucketTree {
 
 	static {
 		HEX_STRINGS = new char[SEGMENT_QUOTA][];
-		for (int i = 0; i < HEX_STRINGS.length; i++) {
+		for (int i = 0; i < HEX_STRINGS.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			HEX_STRINGS[i] = Integer.toHexString(i).toCharArray();
 		}
 	}
@@ -69,7 +69,7 @@ public class BucketTree {
 	 * @exception CoreException thrown by the visitor or failure to load/save the
 	 *                          bucket
 	 */
-	public void accept(Bucket.Visitor visitor, IPath base, int depth) throws CoreException {
+	public void accept(Bucket.Visitor visitor, IPath base, int depth) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (IPath.ROOT.equals(base)) {
 			current.load(null, locationFor(IPath.ROOT));
 			if (current.accept(visitor, base, DEPTH_ZERO) != Visitor.CONTINUE) {
@@ -81,7 +81,7 @@ public class BucketTree {
 			boolean keepVisiting = true;
 			depth--;
 			IProject[] projects = workspace.getRoot().getProjects(IContainer.INCLUDE_HIDDEN);
-			for (int i = 0; keepVisiting && i < projects.length; i++) {
+			for (int i = 0; keepVisiting && i < projects.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IPath projectPath = projects[i].getFullPath();
 				keepVisiting = internalAccept(visitor, projectPath, locationFor(projectPath), depth, 1);
 			}
@@ -108,7 +108,7 @@ public class BucketTree {
 	 *
 	 * @return whether to continue visiting other branches
 	 */
-	private boolean internalAccept(Bucket.Visitor visitor, IPath base, File bucketDir, int depthRequested, int currentDepth) throws CoreException {
+	private boolean internalAccept(Bucket.Visitor visitor, IPath base, File bucketDir, int depthRequested, int currentDepth) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		current.load(base.segment(0), bucketDir);
 		int outcome = current.accept(visitor, base, depthRequested);
 		if (outcome != Visitor.CONTINUE) {
@@ -121,7 +121,7 @@ public class BucketTree {
 		if (subDirs == null) {
 			return true;
 		}
-		for (File subDir : subDirs) {
+		for (File subDir : subDirs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (subDir.isDirectory()) {
 				if (!internalAccept(visitor, base, subDir, depthRequested, currentDepth + 1)) {
 					return false;
@@ -140,15 +140,15 @@ public class BucketTree {
 		IPath baseLocation = workspace.getMetaArea().locationFor(resourcePath).removeTrailingSeparator();
 		int segmentCount = resourcePath.segmentCount();
 		String locationString = baseLocation.toOSString();
-		StringBuilder locationBuffer = new StringBuilder(locationString.length() + Bucket.INDEXES_DIR_NAME.length() + 16);
-		locationBuffer.append(locationString);
-		locationBuffer.append(File.separatorChar);
-		locationBuffer.append(Bucket.INDEXES_DIR_NAME);
+		StringBuilder locationBuffer = new StringBuilder(locationString.length() + Bucket.INDEXES_DIR_NAME.length() + 16); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		locationBuffer.append(locationString); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		locationBuffer.append(File.separatorChar); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		locationBuffer.append(Bucket.INDEXES_DIR_NAME); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		// the last segment is ignored
-		for (int i = 1; i < segmentCount - 1; i++) {
+		for (int i = 1; i < segmentCount - 1; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// translate all segments except the first one (project name)
-			locationBuffer.append(File.separatorChar);
-			locationBuffer.append(translateSegment(resourcePath.segment(i)));
+			locationBuffer.append(File.separatorChar); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			locationBuffer.append(translateSegment(resourcePath.segment(i))); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return new File(locationBuffer.toString());
 	}

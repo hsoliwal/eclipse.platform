@@ -60,7 +60,7 @@ import org.eclipse.core.runtime.SubMonitor;
  *
  * @since 3.0
  */
-class MonitorManager implements ILifecycleListener, IPathVariableChangeListener, IResourceChangeListener, IResourceDeltaVisitor {
+class MonitorManager implements ILifecycleListener, IPathVariableChangeListener, IResourceChangeListener, IResourceDeltaVisitor { //FLLDCIM: MARK — T07  IMPLEMENTS
 	/**
 	 * The PollingMonitor in charge of doing file-system polls.
 	 */
@@ -86,7 +86,7 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 	public MonitorManager(IWorkspace workspace, RefreshManager refreshManager) {
 		this.workspace = workspace;
 		this.refreshManager = refreshManager;
-		registeredMonitors = Collections.synchronizedMap(new HashMap<>(10));
+		registeredMonitors = Collections.synchronizedMap(new HashMap<>(10)); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		pollMonitor = new PollingMonitor(refreshManager);
 	}
 
@@ -97,7 +97,7 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 	 * @return RefreshProvider[] The array of registered <code>RefreshProvider</code>
 	 *             objects or an empty array.
 	 */
-	private RefreshProvider[] getRefreshProviders() {
+	private RefreshProvider[] getRefreshProviders() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		synchronized (this) {
 			if (providers != null) {
 				return providers;
@@ -105,11 +105,11 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 		}
 		IExtensionPoint extensionPoint = Platform.getExtensionRegistry().getExtensionPoint(ResourcesPlugin.PI_RESOURCES, ResourcesPlugin.PT_REFRESH_PROVIDERS);
 		IConfigurationElement[] infos = extensionPoint.getConfigurationElements();
-		List<RefreshProvider> providerList = new ArrayList<>(infos.length);
+		List<RefreshProvider> providerList = new ArrayList<>(infos.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (Platform.OS.isWindows()) {
 			providerList.add(new Win32RefreshProvider());
 		}
-		for (IConfigurationElement configurationElement : infos) {
+		for (IConfigurationElement configurationElement : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			RefreshProvider provider = null;
 			try {
 				provider = (RefreshProvider) configurationElement.createExecutableExtension("class"); //$NON-NLS-1$
@@ -130,17 +130,17 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 	 * Collects the set of root resources that required monitoring. This
 	 * includes projects and all linked resources.
 	 */
-	private List<IResource> getResourcesToMonitor() {
-		final List<IResource> resourcesToMonitor = new ArrayList<>(10);
+	private List<IResource> getResourcesToMonitor() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		final List<IResource> resourcesToMonitor = new ArrayList<>(10); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IProject[] projects = workspace.getRoot().getProjects(IContainer.INCLUDE_HIDDEN);
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!project.isAccessible()) {
 				continue;
 			}
 			resourcesToMonitor.add(project);
 			try {
 				IResource[] members = project.members();
-				for (IResource member : members) {
+				for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (member.isLinked()) {
 						resourcesToMonitor.add(member);
 					}
@@ -165,7 +165,7 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 
 	private boolean isMonitoring(IResource resource) {
 		synchronized (registeredMonitors) {
-			for (List<IResource> resources : registeredMonitors.values()) {
+			for (List<IResource> resources : registeredMonitors.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if ((resources != null) && (resources.contains(resource))) {
 					return true;
 				}
@@ -178,14 +178,14 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 	 * Installs a monitor on the given resource. Returns true if the polling
 	 * monitor was installed, and false if a refresh provider was installed.
 	 */
-	boolean monitor(IResource resource, IProgressMonitor progressMonitor) {
+	boolean monitor(IResource resource, IProgressMonitor progressMonitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (isMonitoring(resource)) {
 			return false;
 		}
 		boolean pollingMonitorNeeded = true;
 		RefreshProvider[] refreshProviders = getRefreshProviders();
 		SubMonitor subMonitor = SubMonitor.convert(progressMonitor, refreshProviders.length);
-		for (RefreshProvider refreshProvider : refreshProviders) {
+		for (RefreshProvider refreshProvider : refreshProviders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IRefreshMonitor monitor = safeInstallMonitor(refreshProvider, resource, subMonitor.split(1));
 			if (monitor != null) {
 				registerMonitor(monitor, resource);
@@ -202,9 +202,9 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 	/* (non-Javadoc)
 	 * @see IRefreshResult#monitorFailed
 	 */
-	public void monitorFailed(IRefreshMonitor monitor, IResource resource) {
+	public void monitorFailed(IRefreshMonitor monitor, IResource resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (Policy.DEBUG_AUTO_REFRESH) {
-			Policy.debug(RefreshManager.DEBUG_PREFIX + " monitor (" + monitor + ") failed to monitor resource: " + resource); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug(RefreshManager.DEBUG_PREFIX + " monitor (" + monitor + ") failed to monitor resource: " + resource); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		if (registeredMonitors == null || monitor == null) {
 			return;
@@ -217,7 +217,7 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 			}
 			// synchronized: protect the collection during iteration
 			synchronized (registeredMonitors) {
-				for (IResource resource1 : resources) {
+				for (IResource resource1 : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					pollMonitor.monitor(resource1);
 					registerMonitor(pollMonitor, resource1);
 				}
@@ -233,15 +233,15 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 	/**
 	 * @see IPathVariableChangeListener#pathVariableChanged(IPathVariableChangeEvent)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void pathVariableChanged(IPathVariableChangeEvent event) {
 		if (registeredMonitors.isEmpty()) {
 			return;
 		}
 		String variableName = event.getVariableName();
-		final Set<IResource> invalidResources = new HashSet<>();
-		for (List<IResource> resources : registeredMonitors.values()) {
-			for (IResource resource : resources) {
+		final Set<IResource> invalidResources = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (List<IResource> resources : registeredMonitors.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IPath rawLocation = resource.getRawLocation();
 				if (rawLocation != null) {
 					if (rawLocation.segmentCount() > 0 && variableName.equals(rawLocation.segment(0)) && !invalidResources.contains(resource)) {
@@ -251,9 +251,9 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 			}
 		}
 		if (!invalidResources.isEmpty()) {
-			MonitorJob.createSystem(Messages.refresh_restoreOnInvalid, invalidResources, (ICoreRunnable) monitor -> {
+			MonitorJob.createSystem(Messages.refresh_restoreOnInvalid, invalidResources, (ICoreRunnable) monitor -> { //FLLDCIM: MARK — T09 BACKGROUND_MODEL_THREAD CALL
 				SubMonitor subMonitor = SubMonitor.convert(monitor, invalidResources.size() * 2);
-				for (IResource resource : invalidResources) {
+				for (IResource resource : invalidResources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					unmonitor(resource, subMonitor.split(1));
 					monitor(resource, subMonitor.split(1));
 					// Because the monitor is installed asynchronously we
@@ -269,7 +269,7 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 		synchronized (registeredMonitors) {
 			List<IResource> resources = registeredMonitors.get(monitor);
 			if (resources == null) {
-				resources = new ArrayList<>(1);
+				resources = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				registeredMonitors.put(monitor, resources);
 			}
 			if (!resources.contains(resource)) {
@@ -277,7 +277,7 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 			}
 		}
 		if (Policy.DEBUG_AUTO_REFRESH) {
-			Policy.debug(RefreshManager.DEBUG_PREFIX + " added monitor (" + monitor + ") on resource: " + resource); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug(RefreshManager.DEBUG_PREFIX + " added monitor (" + monitor + ") on resource: " + resource); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -292,7 +292,7 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 			}
 		}
 		if (Policy.DEBUG_AUTO_REFRESH) {
-			Policy.debug(RefreshManager.DEBUG_PREFIX + " removing monitor (" + monitor + ") on resource: " + resource); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug(RefreshManager.DEBUG_PREFIX + " removing monitor (" + monitor + ") on resource: " + resource); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -311,11 +311,11 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 	/**
 	 * Start the monitoring of resources by all monitors.
 	 */
-	public void start(IProgressMonitor progressMonitor) {
+	public void start(IProgressMonitor progressMonitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		List<IResource> resourcesToMonitor = getResourcesToMonitor();
 		SubMonitor subMonitor = SubMonitor.convert(progressMonitor, resourcesToMonitor.size() + 1);
 		boolean refreshNeeded = false;
-		for (IResource resource : resourcesToMonitor) {
+		for (IResource resource : resourcesToMonitor) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			refreshNeeded |= !monitor(resource, subMonitor.split(1));
 		}
 		workspace.getPathVariableManager().addChangeListener(this);
@@ -323,7 +323,7 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 		//adding the lifecycle listener twice does no harm
 		((Workspace) workspace).addLifecycleListener(this);
 		if (Policy.DEBUG_AUTO_REFRESH) {
-			Policy.debug(RefreshManager.DEBUG_PREFIX + " starting monitor manager."); //$NON-NLS-1$
+			Policy.debug(RefreshManager.DEBUG_PREFIX + " starting monitor manager."); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		//If not exclusively using polling, create a polling monitor and run it once, to catch
 		//changes that occurred while the native monitor was turned off.
@@ -341,25 +341,25 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 		workspace.getPathVariableManager().removeChangeListener(this);
 		// synchronized: protect the collection during iteration
 		synchronized (registeredMonitors) {
-			for (IRefreshMonitor monitor : registeredMonitors.keySet()) {
+			for (IRefreshMonitor monitor : registeredMonitors.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				monitor.unmonitor(null);
 			}
 		}
 		registeredMonitors.clear();
 		if (Policy.DEBUG_AUTO_REFRESH) {
-			Policy.debug(RefreshManager.DEBUG_PREFIX + " stopping monitor manager."); //$NON-NLS-1$
+			Policy.debug(RefreshManager.DEBUG_PREFIX + " stopping monitor manager."); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		pollMonitor.cancel();
 	}
 
-	void unmonitor(IResource resource, IProgressMonitor progressMonitor) {
+	void unmonitor(IResource resource, IProgressMonitor progressMonitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (resource == null || !isMonitoring(resource)) {
 			return;
 		}
 		SubMonitor subMonitor = SubMonitor.convert(progressMonitor, 100);
 		synchronized (registeredMonitors) {
 			SubMonitor loopMonitor = subMonitor.split(90).setWorkRemaining(registeredMonitors.entrySet().size());
-			for (Map.Entry<IRefreshMonitor, List<IResource>> entry : registeredMonitors.entrySet()) {
+			for (Map.Entry<IRefreshMonitor, List<IResource>> entry : registeredMonitors.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				loopMonitor.worked(1);
 				List<IResource> resources = entry.getValue();
 				if (resources != null && resources.contains(resource)) {
@@ -373,7 +373,7 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 		}
 	}
 
-	private void unmonitorLinkedContents(IProject project, IProgressMonitor progressMonitor) {
+	private void unmonitorLinkedContents(IProject project, IProgressMonitor progressMonitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!project.isAccessible()) {
 			return;
 		}
@@ -385,7 +385,7 @@ class MonitorManager implements ILifecycleListener, IPathVariableChangeListener,
 		}
 		if (children != null && children.length > 0) {
 			SubMonitor subMonitor = SubMonitor.convert(progressMonitor, children.length);
-			for (IResource child : children) {
+			for (IResource child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (child.isLinked()) {
 					unmonitor(child, subMonitor.split(1));
 				}

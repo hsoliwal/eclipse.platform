@@ -37,7 +37,7 @@ public class PropertyManager2 implements IPropertyManager {
 	private static final int MAX_VALUE_SIZE = 2 * 1024;
 
 	class PropertyCopyVisitor extends Bucket.Visitor {
-		private final List<PropertyEntry> changes = new ArrayList<>();
+		private final List<PropertyEntry> changes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		private final IPath destination;
 		private final IPath source;
 
@@ -61,7 +61,7 @@ public class PropertyManager2 implements IPropertyManager {
 			PropertyEntry entry = i.next();
 			tree.loadBucketFor(entry.getPath());
 			bucket.setProperties(entry);
-			while (i.hasNext()) {
+			while (i.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				bucket.setProperties(i.next());
 			}
 			bucket.save();
@@ -129,13 +129,13 @@ public class PropertyManager2 implements IPropertyManager {
 
 	@Override
 	public synchronized Map<QualifiedName, String> getProperties(IResource target) throws CoreException {
-		final Map<QualifiedName, String> result = new HashMap<>();
+		final Map<QualifiedName, String> result = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		tree.accept(new PropertyBucket.Visitor() {
 			@Override
 			public int visit(Entry entry) {
 				PropertyEntry propertyEntry = (PropertyEntry) entry;
 				int propertyCount = propertyEntry.getOccurrences();
-				for (int i = 0; i < propertyCount; i++) {
+				for (int i = 0; i < propertyCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					result.put(propertyEntry.getPropertyName(i), propertyEntry.getPropertyValue(i));
 				}
 				return CONTINUE;
@@ -164,7 +164,7 @@ public class PropertyManager2 implements IPropertyManager {
 		return tree.getVersionFile();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public synchronized void setProperty(IResource target, QualifiedName name, String value) throws CoreException {
 		//resource may have been deleted concurrently
 		//must check for existence within synchronized method

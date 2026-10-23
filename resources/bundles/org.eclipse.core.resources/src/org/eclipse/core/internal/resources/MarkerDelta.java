@@ -112,7 +112,7 @@ public class MarkerDelta implements IMarkerDelta, IMarkerSetElement {
 	 * Merge two Maps of (IPath-&gt;MarkerSet) representing changes. Use the old map
 	 * to store the result so we don't have to build a new map to return.
 	 */
-	public static Map<IPath, MarkerSet> merge(Map<IPath, MarkerSet> oldChanges, Map<IPath, MarkerSet> newChanges) {
+	public static Map<IPath, MarkerSet> merge(Map<IPath, MarkerSet> oldChanges, Map<IPath, MarkerSet> newChanges) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (oldChanges == null) {
 			//don't worry about copying since the new changes are no longer used
 			return newChanges;
@@ -120,7 +120,7 @@ public class MarkerDelta implements IMarkerDelta, IMarkerSetElement {
 		if (newChanges == null) {
 			return oldChanges;
 		}
-		for (Map.Entry<IPath, MarkerSet> newEntry : newChanges.entrySet()) {
+		for (Map.Entry<IPath, MarkerSet> newEntry : newChanges.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IPath key = newEntry.getKey();
 			MarkerSet oldSet = oldChanges.get(key);
 			MarkerSet newSet = newEntry.getValue();
@@ -149,10 +149,10 @@ public class MarkerDelta implements IMarkerDelta, IMarkerSetElement {
 	 * change + remove = remove (note: info held onto by the marker delta should be that of the oldest change, and not replaced when changed to a remove)
 	 * </pre>
 	 */
-	protected static MarkerSet merge(MarkerSet oldChanges, IMarkerSetElement[] newChanges) {
+	protected static MarkerSet merge(MarkerSet oldChanges, IMarkerSetElement[] newChanges) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (oldChanges == null) {
 			MarkerSet result = new MarkerSet(newChanges.length);
-			for (IMarkerSetElement newChange : newChanges) {
+			for (IMarkerSetElement newChange : newChanges) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				result.add(newChange);
 			}
 			return result;
@@ -161,7 +161,7 @@ public class MarkerDelta implements IMarkerDelta, IMarkerSetElement {
 			return oldChanges;
 		}
 
-		for (IMarkerSetElement newChange : newChanges) {
+		for (IMarkerSetElement newChange : newChanges) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			MarkerDelta newDelta = (MarkerDelta) newChange;
 			MarkerDelta oldDelta = (MarkerDelta) oldChanges.get(newDelta.getId());
 			if (oldDelta == null) {
@@ -224,9 +224,9 @@ public class MarkerDelta implements IMarkerDelta, IMarkerSetElement {
 	/** for debugging only **/
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + "[resource=" + getResource() + ", attributes=" //$NON-NLS-1$ //$NON-NLS-2$
+		return getClass().getSimpleName() + "[resource=" + getResource() + ", attributes=" //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ (getAttributes() == null ? null
-						: getAttributes().entrySet().stream().map(e -> e.getKey() + "=" + e.getValue()) //$NON-NLS-1$
+						: getAttributes().entrySet().stream().map(e -> e.getKey() + "=" + e.getValue()) //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 								.collect(Collectors.joining(", ", "{", "}"))) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 				+ "]"; //$NON-NLS-1$
 	}

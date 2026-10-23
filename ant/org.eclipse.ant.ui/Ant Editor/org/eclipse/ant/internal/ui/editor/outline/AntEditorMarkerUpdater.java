@@ -40,7 +40,7 @@ import org.eclipse.ui.texteditor.MarkerUtilities;
 
 public class AntEditorMarkerUpdater {
 
-	class AntEditorMarkerUpdaterJob extends WorkspaceJob {
+	class AntEditorMarkerUpdaterJob extends WorkspaceJob { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 		private final List<IProblem> fProblems;
 
@@ -58,8 +58,8 @@ public class AntEditorMarkerUpdater {
 	}
 
 	private IAntModel fModel = null;
-	private final List<IProblem> fCollectedProblems = new ArrayList<>();
-	public static final String BUILDFILE_PROBLEM_MARKER = AntUIPlugin.PI_ANTUI + ".buildFileProblem"; //$NON-NLS-1$
+	private final List<IProblem> fCollectedProblems = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	public static final String BUILDFILE_PROBLEM_MARKER = AntUIPlugin.PI_ANTUI + ".buildFileProblem"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	private IFile fFile = null;
 
 	public synchronized void acceptProblem(IProblem problem) {
@@ -104,9 +104,9 @@ public class AntEditorMarkerUpdater {
 	public synchronized void updateMarkers() {
 		IFile file = getFile();
 		if (file != null) {
-			List<IProblem> problems = new ArrayList<>(fCollectedProblems.size());
+			List<IProblem> problems = new ArrayList<>(fCollectedProblems.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			Iterator<IProblem> e = fCollectedProblems.iterator();
-			while (e.hasNext()) {
+			while (e.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				problems.add(e.next());
 			}
 			fCollectedProblems.clear();
@@ -124,7 +124,7 @@ public class AntEditorMarkerUpdater {
 
 		if (problems.size() > 0) {
 			Iterator<IProblem> e = problems.iterator();
-			while (e.hasNext()) {
+			while (e.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IProblem problem = e.next();
 				createMarker(problem);
 			}
@@ -145,7 +145,7 @@ public class AntEditorMarkerUpdater {
 	 */
 	private Map<String, Object> getMarkerAttributes(IProblem problem) {
 
-		Map<String, Object> attributes = new HashMap<>(11);
+		Map<String, Object> attributes = new HashMap<>(11); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		int severity = IMarker.SEVERITY_ERROR;
 		if (problem.isWarning()) {
 			severity = IMarker.SEVERITY_WARNING;
@@ -165,7 +165,7 @@ public class AntEditorMarkerUpdater {
 	 *
 	 * @return whether or not to add markers to the file based on the files content type
 	 */
-	private boolean shouldAddMarkers() {
+	private boolean shouldAddMarkers() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IFile file = getFile();
 		if (file == null || !file.exists()) {
 			return false;

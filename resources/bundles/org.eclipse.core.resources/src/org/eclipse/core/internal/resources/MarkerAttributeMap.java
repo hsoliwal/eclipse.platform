@@ -84,7 +84,7 @@ public class MarkerAttributeMap implements IStringPoolParticipant {
 	}
 
 	private Map<String, Object> copy(Map<String, ? extends Object> map, boolean validate) {
-		Map<String, Object> target = new HashMap<>();
+		Map<String, Object> target = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		putAll(target, map, validate);
 		return target;
 	}
@@ -105,7 +105,7 @@ public class MarkerAttributeMap implements IStringPoolParticipant {
 		if (source == null) {
 			return;
 		}
-		for (Entry<String, ? extends Object> e : source.entrySet()) {
+		for (Entry<String, ? extends Object> e : source.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String key = e.getKey();
 			Objects.requireNonNull(key, "insert of null key not allowed"); //$NON-NLS-1$
 			Object value = e.getValue();
@@ -113,13 +113,13 @@ public class MarkerAttributeMap implements IStringPoolParticipant {
 				value = MarkerInfo.checkValidAttribute(value);
 			}
 			if (value != null) { // null values => ignore
-				target.put(e.getKey().intern(), value);
+				target.put(e.getKey().intern(), value); //FLLDCIM: MARK — M13 TOKEN_INTERNER CALL
 			}
 		}
 	}
 
 	private Map<String, Object> copy(Map<String, ? extends Object> map) {
-		return new HashMap<>(map);
+		return new HashMap<>(map); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	}
 
 	private Map<String, Object> getMap() {
@@ -145,7 +145,7 @@ public class MarkerAttributeMap implements IStringPoolParticipant {
 		Objects.requireNonNull(value, "insert of null value not allowed"); //$NON-NLS-1$
 		mapRef.getAndUpdate(map -> {
 			Map<String, Object> m = copy(map);
-			m.put(k.intern(), value);
+			m.put(k.intern(), value); //FLLDCIM: MARK — M13 TOKEN_INTERNER CALL
 			return m;
 		});
 	}
@@ -153,7 +153,7 @@ public class MarkerAttributeMap implements IStringPoolParticipant {
 	@Override
 	public void shareStrings(StringPool set) {
 		// don't share keys because they are already interned
-		for (java.util.Map.Entry<String, Object> e : getMap().entrySet()) {
+		for (java.util.Map.Entry<String, Object> e : getMap().entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object o = e.getValue();
 			if (o instanceof String) {
 				e.setValue(set.add((String) o));

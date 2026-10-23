@@ -40,7 +40,7 @@ public abstract class CompoundFileInfoMatcher extends AbstractFileInfoMatcher {
 	public final void initialize(IProject project, Object arguments) throws CoreException {
 		FileInfoMatcherDescription[] filters = (FileInfoMatcherDescription[]) arguments;
 		matchers = new AbstractFileInfoMatcher[filters != null ? filters.length : 0];
-		for (int i = 0; i < matchers.length; i++) {
+		for (int i = 0; i < matchers.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			matchers[i] = instantiate(project, filters[i]);
 		}
 	}

@@ -90,7 +90,7 @@ public class ExportUtil {
 	 */
 	public static IResource getResource(ISelection selection) {
 		if (selection instanceof IStructuredSelection) {
-			for (Iterator<IAdaptable> iter = ((IStructuredSelection) selection).iterator(); iter.hasNext();) {
+			for (Iterator<IAdaptable> iter = ((IStructuredSelection) selection).iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IAdaptable adaptable = iter.next();
 				return adaptable.getAdapter(IResource.class);
 			}
@@ -139,7 +139,7 @@ public class ExportUtil {
 	 *            Project root optionally followed by resource name. An absolute path is simply converted to a string.
 	 * @return full qualified path
 	 */
-	public static String resolve(IPath file) {
+	public static String resolve(IPath file) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (file == null) {
 			return null;
 		}
@@ -183,8 +183,8 @@ public class ExportUtil {
 	 * Remove project root from given project file.
 	 */
 	public static String removeProjectRoot(String file, IProject project) {
-		String res = removePrefix(file, '/' + project.getName() + '/');
-		if (res.equals('/' + project.getName())) {
+		String res = removePrefix(file, '/' + project.getName() + '/'); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		if (res.equals('/' + project.getName())) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			return "."; //$NON-NLS-1$
 		}
 		return res;
@@ -206,7 +206,7 @@ public class ExportUtil {
 			return res;
 		}
 		if (!res.equals(file)) {
-			return newProjectRoot + '/' + res;
+			return newProjectRoot + '/' + res; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return res;
 	}
@@ -217,14 +217,14 @@ public class ExportUtil {
 	 * @return set of IJavaProject objects
 	 */
 	public static List<IJavaProject> getClasspathProjects(IJavaProject project) throws JavaModelException {
-		List<IJavaProject> projects = new ArrayList<>();
+		List<IJavaProject> projects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IClasspathEntry entries[] = project.getRawClasspath();
 		addClasspathProjects(projects, entries);
 		return sortProjectsUsingBuildOrder(projects);
 	}
 
 	private static void addClasspathProjects(List<IJavaProject> projects, IClasspathEntry[] entries) {
-		for (IClasspathEntry classpathEntry : entries) {
+		for (IClasspathEntry classpathEntry : entries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (classpathEntry.getContentKind() == IPackageFragmentRoot.K_SOURCE && classpathEntry.getEntryKind() == IClasspathEntry.CPE_PROJECT) {
 				// found required project on build path
 				String subProjectRoot = classpathEntry.getPath().toString();
@@ -249,7 +249,7 @@ public class ExportUtil {
 	}
 
 	private static void getClasspathProjectsRecursive(IJavaProject project, LinkedList<IJavaProject> result) throws JavaModelException {
-		for (IJavaProject javaProject : getClasspathProjects(project)) {
+		for (IJavaProject javaProject : getClasspathProjects(project)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!result.contains(javaProject)) {
 				result.addFirst(javaProject);
 				getClasspathProjectsRecursive(javaProject, result); // recursion
@@ -264,31 +264,31 @@ public class ExportUtil {
 	 *            list of IJavaProject objects
 	 * @return list of IJavaProject objects with new order
 	 */
-	private static List<IJavaProject> sortProjectsUsingBuildOrder(List<IJavaProject> javaProjects) {
+	private static List<IJavaProject> sortProjectsUsingBuildOrder(List<IJavaProject> javaProjects) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (javaProjects.isEmpty()) {
 			return javaProjects;
 		}
-		List<IJavaProject> result = new ArrayList<>(javaProjects.size());
+		List<IJavaProject> result = new ArrayList<>(javaProjects.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		String[] buildOrder = workspace.getDescription().getBuildOrder();
 		if (buildOrder == null) {// default build order
 			IProject[] projects = new IProject[javaProjects.size()];
 			int i = 0;
-			for (Iterator<IJavaProject> iter = javaProjects.iterator(); iter.hasNext(); i++) {
+			for (Iterator<IJavaProject> iter = javaProjects.iterator(); iter.hasNext(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IJavaProject javaProject = iter.next();
 				projects[i] = javaProject.getProject();
 			}
 			IWorkspace.ProjectOrder po = ResourcesPlugin.getWorkspace().computeProjectOrder(projects);
 			projects = po.projects;
 			buildOrder = new String[projects.length];
-			for (i = 0; i < projects.length; i++) {
+			for (i = 0; i < projects.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				buildOrder[i] = projects[i].getName();
 			}
 		}
 
-		for (int i = 0; i < buildOrder.length && !javaProjects.isEmpty(); i++) {
+		for (int i = 0; i < buildOrder.length && !javaProjects.isEmpty(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String projectName = buildOrder[i];
-			for (Iterator<IJavaProject> iter = javaProjects.iterator(); iter.hasNext();) {
+			for (Iterator<IJavaProject> iter = javaProjects.iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IJavaProject javaProject = iter.next();
 				if (javaProject.getProject().getName().equals(projectName)) {
 					result.add(javaProject);
@@ -312,7 +312,7 @@ public class ExportUtil {
 	 * @return cyclic dependency marker for a given project or <code>null</code> if there is no such marker
 	 */
 	public static IMarker getCyclicDependencyMarker(IJavaProject javaProject) throws CoreException {
-		for (IMarker marker : javaProject.getProject().findMarkers(IJavaModelMarker.BUILDPATH_PROBLEM_MARKER, false, IResource.DEPTH_ONE)) {
+		for (IMarker marker : javaProject.getProject().findMarkers(IJavaModelMarker.BUILDPATH_PROBLEM_MARKER, false, IResource.DEPTH_ONE)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String cycleAttr = (String) marker.getAttribute(IJavaModelMarker.CYCLE_DETECTED);
 			if (cycleAttr != null && cycleAttr.equals("true")) //$NON-NLS-1$
 			{
@@ -446,7 +446,7 @@ public class ExportUtil {
 	/**
 	 * Convert document to formatted XML string.
 	 */
-	public static String toString(Document doc) throws TransformerConfigurationException, TransformerFactoryConfigurationError, TransformerException {
+	public static String toString(Document doc) throws TransformerConfigurationException, TransformerFactoryConfigurationError, TransformerException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// NOTE: There are different transformer implementations in the wild,
 		// which are configured differently
 		// regarding the indent size:
@@ -491,10 +491,10 @@ public class ExportUtil {
 	 * @return collection items separated with given separator
 	 */
 	public static String toString(Collection<String> c, String separator) {
-		StringBuilder b = new StringBuilder();
-		for (String string : c) {
-			b.append(string);
-			b.append(separator);
+		StringBuilder b = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (String string : c) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			b.append(string); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			b.append(separator); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if (c.size() > 0) {
 			b.delete(b.length() - separator.length(), b.length());
@@ -510,8 +510,8 @@ public class ExportUtil {
 	 * @return new list without duplicates
 	 */
 	public static List<String> removeDuplicates(List<String> l) {
-		List<String> res = new ArrayList<>();
-		for (String element : l) {
+		List<String> res = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (String element : l) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!res.contains(element)) {
 				res.add(element);
 			}
@@ -522,14 +522,14 @@ public class ExportUtil {
 	/**
 	 * Check if given file exists that was not written by this export.
 	 */
-	public static boolean existsUserFile(String filename) {
+	public static boolean existsUserFile(String filename) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		File buildFile = new File(filename);
 		if (buildFile.exists()) {
 			try (BufferedReader in = new BufferedReader(new FileReader(buildFile))) {
 				int i = BuildFileCreator.WARNING.indexOf(NEWLINE);
 				String warning = BuildFileCreator.WARNING.substring(0, i);
 				String line;
-				while ((line = in.readLine()) != null) {
+				while ((line = in.readLine()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (line.contains(warning)) {
 						return false;
 					}
@@ -568,21 +568,21 @@ public class ExportUtil {
 	 * @throws CoreException
 	 *             thrown if project is under version control, but not connected
 	 */
-	public static Set<IFile> validateEdit(Shell shell, List<IFile> files) throws CoreException {
+	public static Set<IFile> validateEdit(Shell shell, List<IFile> files) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Set<IFile> confirmedFiles = new TreeSet<>(getIFileComparator());
 		if (files.isEmpty()) {
 			return confirmedFiles;
 		}
 		IStatus status = files.get(0).getWorkspace().validateEdit(files.toArray(new IFile[files.size()]), shell);
 		if (status.isMultiStatus() && status.getChildren().length > 0) {
-			for (int i = 0; i < status.getChildren().length; i++) {
+			for (int i = 0; i < status.getChildren().length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IStatus statusChild = status.getChildren()[i];
 				if (statusChild.isOK()) {
 					confirmedFiles.add(files.get(i));
 				}
 			}
 		} else if (status.isOK()) {
-			for (IFile file : files) {
+			for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				confirmedFiles.add(file);
 			}
 		}
@@ -590,12 +590,12 @@ public class ExportUtil {
 			// not possible to checkout files: not connected to version
 			// control plugin or hijacked files and made read-only, so
 			// collect error messages provided by validator and re-throw
-			StringBuilder message = new StringBuilder(status.getPlugin() + ": " //$NON-NLS-1$
+			StringBuilder message = new StringBuilder(status.getPlugin() + ": " //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 					+ status.getMessage() + NEWLINE);
 			if (status.isMultiStatus()) {
-				for (int i = 0; i < status.getChildren().length; i++) {
+				for (int i = 0; i < status.getChildren().length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IStatus statusChild = status.getChildren()[i];
-					message.append(statusChild.getMessage() + NEWLINE);
+					message.append(statusChild.getMessage() + NEWLINE); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			}
 			throw new CoreException(new Status(IStatus.ERROR, AntUIPlugin.PI_ANTUI, 0, message.toString(), null));
@@ -607,7 +607,7 @@ public class ExportUtil {
 	/**
 	 * Check if given classpath is a reference to the default classpath of the project. Ideal for testing if runtime classpath was customized.
 	 */
-	public static boolean isDefaultClasspath(IJavaProject project, EclipseClasspath classpath) {
+	public static boolean isDefaultClasspath(IJavaProject project, EclipseClasspath classpath) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// default classpath contains exactly the JRE and the project reference
 		List<String> list = removeDuplicates(classpath.rawClassPathEntries);
 		if (list.size() != 2) {
@@ -639,13 +639,13 @@ public class ExportUtil {
 	 * @param s
 	 *            String which may contain Eclipse variables, e.g. ${project_name}
 	 */
-	public static void addVariable(Map<String, String> variable2valueMap, String s, String projectRoot) {
+	public static void addVariable(Map<String, String> variable2valueMap, String s, String projectRoot) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (s == null || s.equals(IAntCoreConstants.EMPTY_STRING)) {
 			return;
 		}
 		Pattern pattern = Pattern.compile("\\$\\{.*?\\}"); // ${var} //$NON-NLS-1$
-		Matcher matcher = pattern.matcher(s);
-		while (matcher.find()) {
+		Matcher matcher = pattern.matcher(s); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
+		while (matcher.find()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String variable = matcher.group();
 			String value;
 			try {
@@ -660,7 +660,7 @@ public class ExportUtil {
 			// syntax
 			if (variable.startsWith("env_var:")) //$NON-NLS-1$
 			{
-				value = "env." + variable.substring("env_var:".length()); //$NON-NLS-1$ //$NON-NLS-2$
+				value = "env." + variable.substring("env_var:".length()); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			File file = new File(value);
 			if (file.exists()) {
@@ -673,7 +673,7 @@ public class ExportUtil {
 	/**
 	 * Returns a path which is equivalent to the given location relative to the specified base path.
 	 */
-	public static String getRelativePath(String otherLocation, String basePath) {
+	public static String getRelativePath(String otherLocation, String basePath) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		IPath location = IPath.fromOSString(otherLocation);
 		IPath base = IPath.fromOSString(basePath);
@@ -683,7 +683,7 @@ public class ExportUtil {
 		int baseCount = base.segmentCount();
 		int count = base.matchingFirstSegments(location);
 		String temp = IAntCoreConstants.EMPTY_STRING;
-		for (int j = 0; j < baseCount - count; j++) {
+		for (int j = 0; j < baseCount - count; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			temp += "../"; //$NON-NLS-1$
 		}
 		String relative = IPath.fromOSString(temp).append(location.removeFirstSegments(count)).toString();

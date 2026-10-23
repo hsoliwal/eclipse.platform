@@ -73,7 +73,7 @@ public abstract class SynchronizePageActionGroup extends ActionGroup {
 
 	private ISynchronizePageConfiguration configuration;
 
-	private final Map<String, Map<String, List<Object>>> menuContributions = new HashMap<>();
+	private final Map<String, Map<String, List<Object>>> menuContributions = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	private VisibleRootsSelectionProvider visibleRootSelectionProvider;
 
@@ -123,7 +123,7 @@ public abstract class SynchronizePageActionGroup extends ActionGroup {
 
 		private void selectionChanged(final SelectionChangedEvent event) {
 			// pass on the notification to listeners
-			for (final ISelectionChangedListener l: selectionChangedListeners) {
+			for (final ISelectionChangedListener l: selectionChangedListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				SafeRunner.run(new SafeRunnable() {
 					@Override
 					public void run() {
@@ -340,13 +340,13 @@ public abstract class SynchronizePageActionGroup extends ActionGroup {
 		}
 	}
 
-	private void fillMenu(IContributionManager menu, String menuId) {
+	private void fillMenu(IContributionManager menu, String menuId) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Map<String, List<Object>> groups = menuContributions.get(menuId);
 		if (menu != null && groups != null) {
-			for (String groupId : groups.keySet()) {
+			for (String groupId : groups.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				List actions = groups.get(groupId);
 				if (actions != null) {
-					for (Object element : actions) {
+					for (Object element : actions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (element instanceof IAction) {
 							// Call the internal method to avoid registering the action
 							// as a global handler since it would have been registered
@@ -364,12 +364,12 @@ public abstract class SynchronizePageActionGroup extends ActionGroup {
 	private void internalAppendToGroup(String menuId, String groupId, Object action) {
 		Map<String, List<Object>> groups = menuContributions.get(menuId);
 		if (groups == null) {
-			groups = new HashMap<>();
+			groups = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			menuContributions.put(menuId, groups);
 		}
 		List<Object> actions = groups.get(groupId);
 		if (actions == null) {
-			actions = new ArrayList<>();
+			actions = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			groups.put(groupId, actions);
 		}
 		actions.add(action);

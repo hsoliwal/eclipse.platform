@@ -48,10 +48,10 @@ import org.eclipse.team.ui.synchronize.ISynchronizePageConfiguration;
  *
  * @since 3.0
  */
-public class HierarchicalModelProvider extends SynchronizeModelProvider {
+public class HierarchicalModelProvider extends SynchronizeModelProvider { //FLLDCIM: MARK — T38  IMPLEMENTS
 
 	public static class HierarchicalModelProviderDescriptor implements ISynchronizeModelProviderDescriptor {
-		public static final String ID = TeamUIPlugin.ID + ".modelprovider_hierarchical"; //$NON-NLS-1$
+		public static final String ID = TeamUIPlugin.ID + ".modelprovider_hierarchical"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		@Override
 		public String getId() {
 			return ID;
@@ -109,7 +109,7 @@ public class HierarchicalModelProvider extends SynchronizeModelProvider {
 	 * by subclasses but subclasses should inv
 	 * @return the diff elements
 	 */
-	protected IDiffElement[] createModelObjects(ISynchronizeModelElement container) {
+	protected IDiffElement[] createModelObjects(ISynchronizeModelElement container) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource resource = null;
 		if (container == getModelRoot()) {
 			resource = ResourcesPlugin.getWorkspace().getRoot();
@@ -120,7 +120,7 @@ public class HierarchicalModelProvider extends SynchronizeModelProvider {
 			SyncInfoTree infoTree = getSyncInfoTree();
 			IResource[] children = infoTree.members(resource);
 			ISynchronizeModelElement[] nodes = new ISynchronizeModelElement[children.length];
-			for (int i = 0; i < children.length; i++) {
+			for (int i = 0; i < children.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				nodes[i] = createModelObject(container, children[i]);
 			}
 			return nodes;
@@ -148,14 +148,14 @@ public class HierarchicalModelProvider extends SynchronizeModelProvider {
 	 */
 	protected Object[] getModelObjects(IResource[] resources) {
 		Object[] result = new Object[resources.length];
-		for (int i = 0; i < resources.length; i++) {
+		for (int i = 0; i < resources.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result[i] = getModelObject(resources[i]);
 		}
 		return result;
 	}
 
 	protected void addResources(IResource[] added) {
-		for (IResource resource : added) {
+		for (IResource resource : added) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			addResource(resource);
 		}
 	}
@@ -178,7 +178,7 @@ public class HierarchicalModelProvider extends SynchronizeModelProvider {
 	@Override
 	protected IDiffElement[] buildModelObjects(ISynchronizeModelElement node) {
 		IDiffElement[] children = createModelObjects(node);
-		for (IDiffElement element : children) {
+		for (IDiffElement element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element instanceof ISynchronizeModelElement) {
 				buildModelObjects((ISynchronizeModelElement) element);
 			}
@@ -189,11 +189,11 @@ public class HierarchicalModelProvider extends SynchronizeModelProvider {
 	@Override
 	protected void handleResourceAdditions(ISyncInfoTreeChangeEvent event) {
 		SyncInfo[] infos = event.getAddedResources();
-		HashSet<IProject> set = new HashSet<>();
-		for (SyncInfo info : infos) {
+		HashSet<IProject> set = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			set.add(info.getLocal().getProject());
 		}
-		for (IProject element : set) {
+		for (IProject element : set) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			addResource(element);
 		}
 	}
@@ -206,7 +206,7 @@ public class HierarchicalModelProvider extends SynchronizeModelProvider {
 		// We have to look for folders that may no longer be in the set
 		// (i.e. are in-sync) but still have descendants in the set
 		IResource[] removedResources = event.getRemovedResources();
-		for (IResource resource : removedResources) {
+		for (IResource resource : removedResources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() != IResource.FILE) {
 				ISynchronizeModelElement node = getModelObject(resource);
 				if (node != null) {

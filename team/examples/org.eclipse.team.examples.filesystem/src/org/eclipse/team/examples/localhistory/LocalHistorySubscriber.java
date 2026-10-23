@@ -58,7 +58,7 @@ public class LocalHistorySubscriber extends Subscriber {
 			if(resource.getType() == IResource.FILE)
 				return new IResource[0];
 			IContainer container = (IContainer)resource;
-			List<IResource> existingChildren = new ArrayList<>(Arrays.asList(container.members()));
+			List<IResource> existingChildren = new ArrayList<>(Arrays.asList(container.members())); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			existingChildren.addAll(Arrays.asList(container.findDeletedMembersWithHistory(IResource.DEPTH_INFINITE, null)));
 			return existingChildren.toArray(new IResource[existingChildren.size()]);
 		} catch (CoreException e) {
@@ -71,7 +71,7 @@ public class LocalHistorySubscriber extends Subscriber {
 		return ResourcesPlugin.getWorkspace().getRoot().getProjects();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public SyncInfo getSyncInfo(IResource resource) throws TeamException {
 		try {
 			IResourceVariant variant = null;

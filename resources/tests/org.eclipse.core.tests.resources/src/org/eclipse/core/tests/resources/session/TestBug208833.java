@@ -46,7 +46,7 @@ public class TestBug208833 {
 	/**
 	 * Setup.  Creates a project with a file.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(1)
 	public void test1() throws CoreException {
 		IWorkspace workspace = getWorkspace();
@@ -64,13 +64,13 @@ public class TestBug208833 {
 		// move the project to another location, before the workbench is started again
 		// to emulate disconnection of a device (e.g. USB key) or a remote file system
 		assertTrue(project.getLocation().toFile()
-				.renameTo(new File(project.getLocation().toFile().getAbsolutePath() + "_temp")));
+				.renameTo(new File(project.getLocation().toFile().getAbsolutePath() + "_temp"))); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
 	 * Eclipse started again.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(2)
 	public void test2() throws CoreException {
 		IWorkspace workspace = getWorkspace();
@@ -82,7 +82,7 @@ public class TestBug208833 {
 		assertFalse(p1.isOpen());
 
 		// move the project back
-		assertTrue(new File(p1.getLocation().toFile().getAbsolutePath() + "_temp").renameTo(p1.getLocation().toFile()));
+		assertTrue(new File(p1.getLocation().toFile().getAbsolutePath() + "_temp").renameTo(p1.getLocation().toFile())); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// now the project should be opened without any problems
 		p1.open(null);

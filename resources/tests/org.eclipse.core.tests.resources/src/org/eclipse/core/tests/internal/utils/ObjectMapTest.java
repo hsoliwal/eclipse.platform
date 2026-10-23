@@ -29,17 +29,17 @@ import org.junit.jupiter.api.Test;
 public class ObjectMapTest {
 	private static final int MAXIMUM = 100;
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPut() {
 		// create the objects to insert into the map
 		ObjectMap<Integer, Object> map = new ObjectMap<>();
 		Object[] values = new Object[MAXIMUM];
-		for (int i = 0; i < MAXIMUM; i++) {
+		for (int i = 0; i < MAXIMUM; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			values[i] = Long.valueOf(System.currentTimeMillis());
 		}
 
 		// add each object to the map
-		for (int i = 0; i < values.length; i++) {
+		for (int i = 0; i < values.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Integer key = Integer.valueOf(i);
 			map.put(key, values[i]);
 			assertThat(map).containsKey(key);
@@ -49,33 +49,33 @@ public class ObjectMapTest {
 
 		// make sure they are all still there
 		assertThat(map).hasSize(MAXIMUM);
-		for (int i = 0; i < values.length; i++) {
+		for (int i = 0; i < values.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Integer key = Integer.valueOf(i);
 			assertThat(map).containsKey(key);
-			assertNotNull(map.get(key), "" + i);
+			assertNotNull(map.get(key), "" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
 	@Test
 	public void testPutEmptyMap() {
-		ObjectMap<Object, Object> map = new ObjectMap<>(new HashMap<>());
+		ObjectMap<Object, Object> map = new ObjectMap<>(new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		map.put(new Object(), new Object());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRemove() {
 		// populate the map
 		Object[] values = new Object[MAXIMUM];
 		ObjectMap<Integer, Object> map = populateMap(values);
 
 		// remove each element
-		for (int i = MAXIMUM - 1; i >= 0; i--) {
+		for (int i = MAXIMUM - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Integer key = Integer.valueOf(i);
 			map.remove(key);
 			assertThat(map).doesNotContainKey(key);
 			assertThat(map).hasSize(i);
 			// check that the others still exist
-			for (int j = 0; j < i; j++) {
+			for (int j = 0; j < i; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				assertThat(map).containsKey(Integer.valueOf(j));
 			}
 		}
@@ -89,7 +89,7 @@ public class ObjectMapTest {
 		Object[] values = new Object[MAXIMUM];
 		ObjectMap<Integer, Object> map = populateMap(values);
 
-		for (int i = 0; i < MAXIMUM; i++) {
+		for (int i = 0; i < MAXIMUM; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThat(map).containsKey(Integer.valueOf(i));
 			assertThat(map).containsValue(values[i]);
 		}
@@ -106,7 +106,7 @@ public class ObjectMapTest {
 		ObjectMap<Integer, Object> map = populateMap(values);
 
 		Collection<Object> result = map.values();
-		for (int i = 0; i < MAXIMUM; i++) {
+		for (int i = 0; i < MAXIMUM; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThat(result).contains(values[i]);
 		}
 	}
@@ -124,8 +124,8 @@ public class ObjectMapTest {
 		Object[] values = new Object[MAXIMUM];
 		ObjectMap<Integer, Object> map = populateMap(values);
 		Set<Map.Entry<Integer, Object>> entries = map.entrySet();
-		for (int i = 0; i < MAXIMUM; i++) {
-			assertTrue(contains(entries, values[i]), "" + i);
+		for (int i = 0; i < MAXIMUM; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			assertTrue(contains(entries, values[i]), "" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -133,7 +133,7 @@ public class ObjectMapTest {
 	 * The given set is a set of Map.Entry objects.
 	 */
 	private boolean contains(Set<Map.Entry<Integer, Object>> set, Object value) {
-		for (Map.Entry<Integer, Object> entry : set) {
+		for (Map.Entry<Integer, Object> entry : set) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (entry.getValue().equals(value)) {
 				return true;
 			}
@@ -144,7 +144,7 @@ public class ObjectMapTest {
 	private ObjectMap<Integer, Object> populateMap(Object[] values) {
 		// populate the map
 		ObjectMap<Integer, Object> map = new ObjectMap<>();
-		for (int i = 0; i < values.length; i++) {
+		for (int i = 0; i < values.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			values[i] = Long.valueOf(System.currentTimeMillis());
 			map.put(Integer.valueOf(i), values[i]);
 		}

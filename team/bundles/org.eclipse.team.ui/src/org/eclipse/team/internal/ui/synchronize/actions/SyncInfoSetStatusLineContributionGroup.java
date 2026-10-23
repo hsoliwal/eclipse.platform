@@ -23,7 +23,7 @@ import org.eclipse.team.core.synchronize.SyncInfoSet;
 import org.eclipse.team.internal.ui.synchronize.SynchronizePageConfiguration;
 import org.eclipse.team.ui.synchronize.ISynchronizePageConfiguration;
 
-public class SyncInfoSetStatusLineContributionGroup extends
+public class SyncInfoSetStatusLineContributionGroup extends //FLLDCIM: MARK — T38  IMPLEMENTS
 		StatusLineContributionGroup implements ISyncInfoSetChangeListener {
 
 	public SyncInfoSetStatusLineContributionGroup(Shell shell, ISynchronizePageConfiguration configuration) {

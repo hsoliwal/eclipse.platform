@@ -54,7 +54,7 @@ public class UnifiedDiffFoldRegionsTest {
 
 		assertThat(hidden).as("the lines far from the change must be folded away").isNotEmpty();
 		assertVisible(hidden, 20, "the changed line");
-		for (int line = 17; line <= 23; line++) {
+		for (int line = 17; line <= 23; line++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertVisible(hidden, line, "context line");
 		}
 		assertTrue(hidden.contains(Integer.valueOf(5)), "line 5 is far from the change and must be hidden");
@@ -74,7 +74,7 @@ public class UnifiedDiffFoldRegionsTest {
 
 		assertThat(withFive).as("a larger context hides fewer lines").isSubsetOf(withOne);
 		assertThat(withOne).as("a larger context hides fewer lines").isNotEqualTo(withFive);
-		for (int line = 15; line <= 25; line++) {
+		for (int line = 15; line <= 25; line++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertVisible(withFive, line, "context line");
 		}
 	}
@@ -89,9 +89,9 @@ public class UnifiedDiffFoldRegionsTest {
 
 		Set<Integer> hidden = hiddenLines(document, 2, changeOnLine(document, 10), changeOnLine(document, 45));
 
-		for (int changedLine : new int[] { 10, 45 }) {
+		for (int changedLine : new int[] { 10, 45 }) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertVisible(hidden, changedLine, "changed line");
-			for (int line = changedLine - 2; line <= changedLine + 2; line++) {
+			for (int line = changedLine - 2; line <= changedLine + 2; line++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				assertVisible(hidden, line, "context line");
 			}
 		}
@@ -111,7 +111,7 @@ public class UnifiedDiffFoldRegionsTest {
 		Set<Integer> hidden = hiddenLines(document, 3, changeOnLine(document, 0));
 
 		assertVisible(hidden, 0, "the changed first line");
-		for (int line = 1; line <= 3; line++) {
+		for (int line = 1; line <= 3; line++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertVisible(hidden, line, "context line");
 		}
 		assertTrue(hidden.contains(Integer.valueOf(20)), "the unchanged rest of the file must be folded");
@@ -176,15 +176,15 @@ public class UnifiedDiffFoldRegionsTest {
 	public void testFoldsNeverHideAChange() throws Exception {
 		IDocument document = numberedLines(200);
 		int[] changedLines = { 0, 7, 8, 50, 120, 121, 199 };
-		List<UnifiedDiff> diffs = new ArrayList<>();
-		for (int line : changedLines) {
+		List<UnifiedDiff> diffs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (int line : changedLines) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			diffs.add(changeOnLine(document, line));
 		}
 
-		for (int context = 0; context <= 4; context++) {
+		for (int context = 0; context <= 4; context++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Set<Integer> hidden = hiddenLines(document, context, diffs.toArray(new UnifiedDiff[0]));
-			for (int line : changedLines) {
-				assertVisible(hidden, line, "changed line with context " + context + ":");
+			for (int line : changedLines) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				assertVisible(hidden, line, "changed line with context " + context + ":"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 	}
@@ -203,7 +203,7 @@ public class UnifiedDiffFoldRegionsTest {
 		Set<Integer> inReplaceMode = hiddenLines(document, UnifiedDiffMode.REPLACE_MODE, 2, diff);
 		Set<Integer> inOverlayMode = hiddenLines(document, UnifiedDiffMode.OVERLAY_READ_ONLY_MODE, 2, diff);
 
-		for (int line = 20; line <= 24; line++) {
+		for (int line = 20; line <= 24; line++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertVisible(inReplaceMode, line, "the replacement and its context line");
 		}
 		assertTrue(inOverlayMode.contains(Integer.valueOf(24)),
@@ -220,7 +220,7 @@ public class UnifiedDiffFoldRegionsTest {
 		IDocument document = new Document(numberedLines(40).get().stripTrailing());
 		int end = document.getLength();
 		UnifiedDiff addition = new UnifiedDiff(document, end, end, "", document, end, end + 6, "added\n",
-				new ArrayList<>(), UnifiedDiffMode.OVERLAY_READ_ONLY_MODE);
+				new ArrayList<>(), UnifiedDiffMode.OVERLAY_READ_ONLY_MODE); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		Set<Integer> hidden = hiddenLines(document, 3, addition);
 
@@ -293,10 +293,10 @@ public class UnifiedDiffFoldRegionsTest {
 		UnifiedDiff deletedHere = deletionOfLines(document, 10, 1);
 		UnifiedDiff addedThere = additionBeforeLine(document, 40, "line 10\n");
 
-		for (int context = 0; context <= 4; context++) {
+		for (int context = 0; context <= 4; context++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Set<Integer> hidden = hiddenLines(document, context, deletedHere, addedThere);
-			assertVisible(hidden, 10, "the line that was deleted, with context " + context + ":");
-			assertVisible(hidden, 40, "the line the deleted text was added in front of, with context " + context + ":");
+			assertVisible(hidden, 10, "the line that was deleted, with context " + context + ":"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertVisible(hidden, 40, "the line the deleted text was added in front of, with context " + context + ":"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -373,7 +373,7 @@ public class UnifiedDiffFoldRegionsTest {
 		// hiddenLines asserts on its own that no two regions claim the same line
 		Set<Integer> hidden = hiddenLines(document, 2, first, second);
 
-		for (int line = 20; line <= 26; line++) {
+		for (int line = 20; line <= 26; line++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertVisible(hidden, line, "line of an overlapping change");
 		}
 		assertTrue(hidden.contains(Integer.valueOf(5)), "the region before the changes must still be folded");
@@ -392,7 +392,7 @@ public class UnifiedDiffFoldRegionsTest {
 		Set<Integer> hidden = hiddenLines(document, 3, changeCoveringTheRest(document, lastLine));
 
 		assertVisible(hidden, lastLine, "the changed last line");
-		for (int line = lastLine - 3; line < lastLine; line++) {
+		for (int line = lastLine - 3; line < lastLine; line++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertVisible(hidden, line, "context line");
 		}
 		assertTrue(hidden.contains(Integer.valueOf(10)), "the unchanged lines above the change must be folded");
@@ -414,19 +414,19 @@ public class UnifiedDiffFoldRegionsTest {
 		List<Position> regions = UnifiedDiffManager.unchangedFoldRegions(document, Arrays.asList(diffs), mode,
 				contextLines);
 		Set<Integer> hidden = new LinkedHashSet<>();
-		for (Position region : regions) {
+		for (Position region : regions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int firstLine = document.getLineOfOffset(region.getOffset());
 			int lastLine = document.getLineOfOffset(region.getOffset() + region.getLength() - 1);
 			assertTrue(lastLine > firstLine, "a fold that hides nothing must not be created");
-			for (int line = firstLine + 1; line <= lastLine; line++) {
-				assertTrue(hidden.add(Integer.valueOf(line)), "folds must not overlap on line " + line);
+			for (int line = firstLine + 1; line <= lastLine; line++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				assertTrue(hidden.add(Integer.valueOf(line)), "folds must not overlap on line " + line); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		return hidden;
 	}
 
 	private static void assertVisible(Set<Integer> hidden, int line, String what) {
-		assertThat(hidden).as(what + " " + line + " must stay visible").doesNotContain(Integer.valueOf(line));
+		assertThat(hidden).as(what + " " + line + " must stay visible").doesNotContain(Integer.valueOf(line)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/** A one line change of the given document line, as the manager records it. */
@@ -439,7 +439,7 @@ public class UnifiedDiffFoldRegionsTest {
 		int offset = document.getLineOffset(line);
 		int end = document.getLineOffset(line + lines);
 		return new UnifiedDiff(document, offset, end, document.get(offset, end - offset), document, offset, offset, "",
-				new ArrayList<>(), UnifiedDiffMode.OVERLAY_READ_ONLY_MODE);
+				new ArrayList<>(), UnifiedDiffMode.OVERLAY_READ_ONLY_MODE); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	}
 
 	/** An addition: the other side holds a line the document does not. */
@@ -447,7 +447,7 @@ public class UnifiedDiffFoldRegionsTest {
 			throws BadLocationException {
 		int offset = document.getLineOffset(line);
 		return new UnifiedDiff(document, offset, offset, "", document, offset, offset + added.length(), added,
-				new ArrayList<>(), UnifiedDiffMode.OVERLAY_READ_ONLY_MODE);
+				new ArrayList<>(), UnifiedDiffMode.OVERLAY_READ_ONLY_MODE); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	}
 
 	/** A change of the given line and everything after it, for a file without a trailing newline. */
@@ -455,7 +455,7 @@ public class UnifiedDiffFoldRegionsTest {
 		int offset = document.getLineOffset(line);
 		int end = document.getLength();
 		return new UnifiedDiff(document, offset, end, document.get(offset, end - offset), document, offset, end,
-				"changed", new ArrayList<>(), UnifiedDiffMode.OVERLAY_READ_ONLY_MODE);
+				"changed", new ArrayList<>(), UnifiedDiffMode.OVERLAY_READ_ONLY_MODE); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	}
 
 	/** A change of {@code leftLines} shown as {@code rightLines}. */
@@ -465,13 +465,13 @@ public class UnifiedDiffFoldRegionsTest {
 		int leftEnd = document.getLineOffset(line + leftLines);
 		int rightEnd = document.getLineOffset(line + rightLines);
 		return new UnifiedDiff(document, offset, leftEnd, document.get(offset, leftEnd - offset), document, offset,
-				rightEnd, "changed\n", new ArrayList<>(), UnifiedDiffMode.OVERLAY_READ_ONLY_MODE);
+				rightEnd, "changed\n", new ArrayList<>(), UnifiedDiffMode.OVERLAY_READ_ONLY_MODE); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	}
 
 	private static IDocument numberedLines(int count) {
-		StringBuilder content = new StringBuilder();
-		for (int i = 0; i < count; i++) {
-			content.append("line ").append(i).append('\n');
+		StringBuilder content = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			content.append("line ").append(i).append('\n'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return new Document(content.toString());
 	}

@@ -34,7 +34,7 @@ public class AntEditorActionMessages {
 			return fgResourceBundle.getString(key);
 		}
 		catch (MissingResourceException e) {
-			return '!' + key + '!';
+			return '!' + key + '!'; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 }

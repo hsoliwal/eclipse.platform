@@ -74,7 +74,7 @@ public class DefaultUIFileModificationValidator extends DefaultFileModificationV
 			data.grabExcessHorizontalSpace = true;
 			fileList.setLayoutData(data);
 			fileList.setFont(parent.getFont());
-			for (IFile file : files) {
+			for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fileList.add(file.getFullPath().toString());
 			}
 			return composite;
@@ -114,7 +114,7 @@ public class DefaultUIFileModificationValidator extends DefaultFileModificationV
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus validateEdit(final IFile[] allFiles, FileModificationValidationContext context) {
 		final IFile[] readOnlyFiles = getReadOnlyFiles(allFiles);
 		if (readOnlyFiles.length > 0 && context != null) {
@@ -150,7 +150,7 @@ public class DefaultUIFileModificationValidator extends DefaultFileModificationV
 
 	private static void syncExec(Runnable runnable) {
 		Display display = PlatformUI.getWorkbench().getDisplay();
-		display.syncExec(runnable);
+		display.syncExec(runnable); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 	}
 
 	@Override
@@ -169,8 +169,8 @@ public class DefaultUIFileModificationValidator extends DefaultFileModificationV
 	}
 
 	private IFile[] getReadOnlyFiles(IFile[] files) {
-		List<IFile> result = new ArrayList<>();
-		for (IFile file : files) {
+		List<IFile> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (file.isReadOnly()) {
 				result.add(file);
 			}
@@ -179,7 +179,7 @@ public class DefaultUIFileModificationValidator extends DefaultFileModificationV
 	}
 
 	protected IStatus setWritable(final IFile[] files) {
-		for (IFile file : files) {
+		for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceAttributes attributes = file.getResourceAttributes();
 			if (attributes != null) {
 				attributes.setReadOnly(false);

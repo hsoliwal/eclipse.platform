@@ -85,7 +85,7 @@ public class LazyInputStreamTest {
 		stream.close();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testReadBlock() throws IOException {
 		ByteArrayInputStream underlying = new ByteArrayInputStream(DATA.getBytes());
 		OpenLazyInputStream stream = new OpenLazyInputStream(underlying, 7);
@@ -124,7 +124,7 @@ public class LazyInputStreamTest {
 		stream.close();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMarkAndReset() throws IOException {
 		ByteArrayInputStream underlying = new ByteArrayInputStream(DATA.getBytes());
 		OpenLazyInputStream stream = new OpenLazyInputStream(underlying, 7);
@@ -163,18 +163,18 @@ public class LazyInputStreamTest {
 	@Test
 	public void testVariedContent() throws IOException {
 		byte[] contents = new byte[VARIOUS_INTS.length];
-		for (int i = 0; i < contents.length; i++) {
+		for (int i = 0; i < contents.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			contents[i] = (byte) VARIOUS_INTS[i];
 		}
 		ByteArrayInputStream underlying = new ByteArrayInputStream(contents);
 		OpenLazyInputStream stream = new OpenLazyInputStream(underlying, 7);
-		for (int i = 0; i < VARIOUS_INTS.length; i++) {
-			assertEquals(VARIOUS_INTS[i], stream.read(), i + "");
+		for (int i = 0; i < VARIOUS_INTS.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			assertEquals(VARIOUS_INTS[i], stream.read(), i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		stream.close();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testEnsureAvailable_BufferSizeDoesNotOverflow() throws IOException {
 		InputStream infinitelyEmpty = new InputStream() {
 

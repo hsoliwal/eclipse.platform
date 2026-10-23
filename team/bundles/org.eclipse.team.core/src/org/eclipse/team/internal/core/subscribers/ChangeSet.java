@@ -69,7 +69,7 @@ public abstract class ChangeSet {
 	 * @param resources the resources to be removed
 	 */
 	public void remove(IResource[] resources) {
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			remove(resource);
 		}
 	}

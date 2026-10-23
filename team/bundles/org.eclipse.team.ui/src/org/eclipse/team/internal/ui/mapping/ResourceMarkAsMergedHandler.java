@@ -32,7 +32,7 @@ import org.eclipse.team.internal.ui.TeamUIMessages;
 import org.eclipse.team.ui.mapping.SynchronizationOperation;
 import org.eclipse.team.ui.synchronize.ISynchronizePageConfiguration;
 
-public class ResourceMarkAsMergedHandler extends ResourceMergeActionHandler {
+public class ResourceMarkAsMergedHandler extends ResourceMergeActionHandler { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	private ResourceModelProviderOperation operation;
 
@@ -41,11 +41,11 @@ public class ResourceMarkAsMergedHandler extends ResourceMergeActionHandler {
 		super(configuration);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected synchronized SynchronizationOperation getOperation() {
 		if (operation == null) {
-			operation = new ResourceModelProviderOperation(getConfiguration(),
-						getStructuredSelection()) {
+			operation = new ResourceModelProviderOperation(getConfiguration(), //FLLDCIM: MARK — T09  ANONYMOUS
+						getStructuredSelection()) { //FLLDCIM: MARK — T09  IMPLEMENTS
 				@Override
 				public void execute(IProgressMonitor monitor)
 						throws InvocationTargetException, InterruptedException {
@@ -53,7 +53,7 @@ public class ResourceMarkAsMergedHandler extends ResourceMergeActionHandler {
 						final IMergeContext context = (IMergeContext) getContext();
 						final IDiff[] deltas = getTargetDiffs();
 						ISchedulingRule rule = getMergeRule(context, deltas);
-						context.run(monitor1 -> markAsMerged(deltas, context, monitor1), rule, IResource.NONE, monitor);
+						context.run(monitor1 -> markAsMerged(deltas, context, monitor1), rule, IResource.NONE, monitor); //FLLDCIM: MARK — T09  LAMBDA
 
 					} catch (CoreException e) {
 						throw new InvocationTargetException(e);
@@ -63,7 +63,7 @@ public class ResourceMarkAsMergedHandler extends ResourceMergeActionHandler {
 				private ISchedulingRule getMergeRule(IMergeContext context,
 						IDiff[] deltas) {
 					ISchedulingRule result = null;
-					for (IDiff node : deltas) {
+					for (IDiff node : deltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						ISchedulingRule rule = context.getMergeRule(node);
 						if (result == null) {
 							result = rule;

@@ -40,7 +40,7 @@ public class History implements ITestRunSessionListener {
 	}
 
 	private boolean wasRead = false;
-	private final List<HistoryItem> items = new ArrayList<>();
+	private final List<HistoryItem> items = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	/**
 	 * Creates and returns a directory to store the History information
@@ -74,7 +74,7 @@ public class History implements ITestRunSessionListener {
 	 * Clears the history
 	 */
 	public void clear() {
-		for (HistoryItem item : items) {
+		for (HistoryItem item : items) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				item.removeSwapFile();
 			} catch (IOException e) {
@@ -107,7 +107,7 @@ public class History implements ITestRunSessionListener {
 	 * @param testRunSession a test run session object
 	 */
 	public void watch(TestRunSession testRunSession) {
-		for (HistoryItem item : items) {
+		for (HistoryItem item : items) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (testRunSession == null || item.getCurrentTestRunSession().filter(testRunSession::equals).isEmpty()) {
 				try {
 					item.swapOut();

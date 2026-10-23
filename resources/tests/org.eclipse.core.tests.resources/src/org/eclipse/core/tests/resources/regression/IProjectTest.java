@@ -45,7 +45,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class IProjectTest {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_1G0XIMA() throws CoreException {
 		/* common objects */
 		IProject project = getWorkspace().getRoot().getProject("MyProject");
@@ -60,7 +60,7 @@ public class IProjectTest {
 			IPath path = resource.getFullPath();
 			path = path.removeLastSegments(1);
 			long timestamp = System.currentTimeMillis();
-			path = path.append(resource.getName() + " renamed at " + timestamp);
+			path = path.append(resource.getName() + " renamed at " + timestamp); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			resource.move(path, false, null);
 			return true;
 		};
@@ -88,7 +88,7 @@ public class IProjectTest {
 	/**
 	 * 1GC2FKV: ITPCORE:BuildManager triggers incremental build when doing full builds
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAutoBuild_1GC2FKV() throws CoreException {
 		// set auto build OFF
 		IWorkspaceDescription description = getWorkspace().getDescription();
@@ -149,7 +149,7 @@ public class IProjectTest {
 	 * Create a project with resources already existing on disk and ensure
 	 * that the resources are automatically discovered and brought into the workspace.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug78711() throws Exception {
 		String name = createUniqueString();
 		IProject project = getWorkspace().getRoot().getProject(name);

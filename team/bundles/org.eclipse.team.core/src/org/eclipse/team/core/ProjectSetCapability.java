@@ -232,15 +232,15 @@ public abstract class ProjectSetCapability {
 	 * 		or <code>null</code> if the operation is to be canceled.
 	 * @throws TeamException on failure
 	 */
-	protected IProject[] confirmOverwrite(
+	protected IProject[] confirmOverwrite( //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ProjectSetSerializationContext context,
 		IProject[] projects)
 		throws TeamException {
 
 		// Build a collection of existing projects
 
-		final Collection<IProject> existingProjects = new ArrayList<>();
-		for (IProject eachProj : projects) {
+		final Collection<IProject> existingProjects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IProject eachProj : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (eachProj.exists()) {
 				existingProjects.add(eachProj);
 			} else if (new File(eachProj.getParent().getLocation().toFile(), eachProj.getName()).exists()) {
@@ -266,10 +266,10 @@ public abstract class ProjectSetCapability {
 
 		// Return the amended list of projects to be loaded
 
-		Collection<IProject> result = new ArrayList<>(projects.length);
+		Collection<IProject> result = new ArrayList<>(projects.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		result.addAll(Arrays.asList(projects));
 		result.removeAll(existingProjects);
-		for (IProject eachProj : confirmed) {
+		for (IProject eachProj : confirmed) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (existingProjects.contains(eachProj)) {
 				result.add(eachProj);
 			}

@@ -38,7 +38,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class MarkerSetTest {
 
-	private void assertMarkerElementsEqual(IMarkerSetElement[] array1, IMarkerSetElement[] array2) {
+	private void assertMarkerElementsEqual(IMarkerSetElement[] array1, IMarkerSetElement[] array2) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		assertNotNull(array1);
 		assertNotNull(array2);
 		assertThat(array1).hasSameSizeAs(array2);
@@ -56,38 +56,38 @@ public class MarkerSetTest {
 		};
 		Arrays.sort(m1, compare);
 		Arrays.sort(m2, compare);
-		for (int i = 0; i < m1.length; i++) {
+		for (int i = 0; i < m1.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertEquals(m1[i].getId(), m2[i].getId());
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAdd() {
 		// create the objects to insert into the set
 		MarkerSet set = new MarkerSet();
 		int max = 100;
 		MarkerInfo info = null;
 		MarkerInfo[] infos = new MarkerInfo[max];
-		for (int i = 0; i < max; i++) {
+		for (int i = 0; i < max; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			info = new MarkerInfo(IMarker.PROBLEM, i);
 			info.setAttribute(IMarker.MESSAGE, createRandomString(), true);
 			infos[i] = info;
 		}
 
 		// add each info to the set
-		for (int i = 0; i < infos.length; i++) {
+		for (int i = 0; i < infos.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			info = infos[i];
 			set.add(info);
-			assertTrue(set.contains(info.getId()), i + "");
-			assertEquals(set.size(), i + 1, i + "");
+			assertTrue(set.contains(info.getId()), i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertEquals(set.size(), i + 1, i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		// make sure they are all still there
 		assertEquals(max, set.size());
-		for (int i = 0; i < infos.length; i++) {
+		for (int i = 0; i < infos.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			info = infos[i];
-			assertTrue(set.contains(info.getId()), i + "");
-			assertNotNull(set.get(info.getId()), i + "");
+			assertTrue(set.contains(info.getId()), i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertNotNull(set.get(info.getId()), i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -98,7 +98,7 @@ public class MarkerSetTest {
 		int max = 100;
 		MarkerInfo info = null;
 		MarkerInfo[] infos = new MarkerInfo[max];
-		for (int i = 0; i < max; i++) {
+		for (int i = 0; i < max; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			info = new MarkerInfo(IMarker.PROBLEM, i);
 			info.setAttribute(IMarker.MESSAGE, createRandomString(), true);
 			infos[i] = info;
@@ -110,14 +110,14 @@ public class MarkerSetTest {
 		assertMarkerElementsEqual(set.elements(), infos);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRemove() {
 		// populate the set
 		MarkerSet set = new MarkerSet();
 		int max = 100;
 		MarkerInfo info = null;
 		MarkerInfo[] infos = new MarkerInfo[max];
-		for (int i = 0; i < max; i++) {
+		for (int i = 0; i < max; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			info = new MarkerInfo(IMarker.PROBLEM, i);
 			info.setAttribute(IMarker.MESSAGE, createRandomString(), true);
 			infos[i] = info;
@@ -126,14 +126,14 @@ public class MarkerSetTest {
 		assertEquals(max, set.size());
 
 		// remove each element
-		for (int i = max - 1; i >= 0; i--) {
+		for (int i = max - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			info = infos[i];
 			set.remove(info);
-			assertFalse(set.contains(info.getId()), i + "");
-			assertEquals(i, set.size(), i + "");
+			assertFalse(set.contains(info.getId()), i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertEquals(i, set.size(), i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			// check that the others still exist
-			for (int j = 0; j < i; j++) {
-				assertTrue(set.contains(infos[j].getId()), j + "");
+			for (int j = 0; j < i; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				assertTrue(set.contains(infos[j].getId()), j + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 
@@ -141,14 +141,14 @@ public class MarkerSetTest {
 		assertEquals(0, set.size());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMarkerAttributeMap() {
 		MarkerAttributeMap map = new MarkerAttributeMap();
 		String notInternalString = String.valueOf("notIntern".toCharArray());
-		assertNotSame(notInternalString.intern(), notInternalString);
+		assertNotSame(notInternalString.intern(), notInternalString); //FLLDCIM: MARK — M13 TOKEN_INTERNER CALL
 		map.put(notInternalString, notInternalString);
 		String key = map.entrySet().iterator().next().getKey();
-		assertSame(notInternalString.intern(), key);
+		assertSame(notInternalString.intern(), key); //FLLDCIM: MARK — M13 TOKEN_INTERNER CALL
 		try {
 			map.put(null, 1);
 			fail("NPE for nul key expected");

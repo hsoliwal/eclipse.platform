@@ -33,7 +33,7 @@ import org.eclipse.team.core.ITeamStatus;
  * @see ISyncInfoSetChangeEvent
  * @since 3.0
  */
-public interface ISyncInfoSetChangeListener {
+public interface ISyncInfoSetChangeListener { //FLLDCIM: MARK — T38  IMPLEMENTS
 
 	/**
 	 * Sent when the contents of a {@link SyncInfoSet} have been reset or the

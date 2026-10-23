@@ -46,7 +46,7 @@ public class AntProcessBuildLogger extends NullBuildLogger {
 	 */
 	private AntProcess fProcess = null;
 
-	protected void logMessage(String message, BuildEvent event, int overridePriority) {
+	protected void logMessage(String message, BuildEvent event, int overridePriority) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int priority = overridePriority;
 		if (priority == -1) {
 			priority = event.getPriority();
@@ -88,7 +88,7 @@ public class AntProcessBuildLogger extends NullBuildLogger {
 	 * @param fullMessage
 	 *            buffer to place task prefix in
 	 */
-	private void adornMessage(BuildEvent event, StringBuffer fullMessage) {
+	private void adornMessage(BuildEvent event, StringBuffer fullMessage) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String name = event.getTask().getTaskName();
 		if (name == null) {
 			name = "null"; //$NON-NLS-1$
@@ -96,13 +96,13 @@ public class AntProcessBuildLogger extends NullBuildLogger {
 		Location location = event.getTask().getLocation();
 		StringBuffer column = new StringBuffer();
 		int size = AntLaunching.LEFT_COLUMN_SIZE - (name.length() + 3);
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			column.append(' ');
 		}
-		StringBuilder labelBuff = new StringBuilder();
-		labelBuff.append('[');
-		labelBuff.append(name);
-		labelBuff.append("] "); //$NON-NLS-1$
+		StringBuilder labelBuff = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		labelBuff.append('['); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		labelBuff.append(name); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		labelBuff.append("] "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 		int offset = Math.max(size, 0) + 1;
 		String label = labelBuff.toString();
@@ -115,7 +115,7 @@ public class AntProcessBuildLogger extends NullBuildLogger {
 			fullMessage.append(column);
 			appendAndLink(fullMessage, location, label, offset, line);
 			line = r.readLine();
-			while (line != null) {
+			while (line != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fullMessage.append(System.lineSeparator());
 				fullMessage.append(column);
 				appendAndLink(fullMessage, location, label, offset, line);
@@ -133,7 +133,7 @@ public class AntProcessBuildLogger extends NullBuildLogger {
 		fullMessage.append(label);
 		fullMessage.append(line);
 		if (location != null) {
-			String newLine = (label + line).trim();
+			String newLine = (label + line).trim(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			IRegion region = new Region(offset, label.length() - 3); // only
 			// want
 			// the
@@ -146,7 +146,7 @@ public class AntProcessBuildLogger extends NullBuildLogger {
 		}
 	}
 
-	private AntStreamMonitor getMonitor(int priority) {
+	private AntStreamMonitor getMonitor(int priority) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		AntStreamsProxy proxy = (AntStreamsProxy) fProcess.getStreamsProxy();
 		AntStreamMonitor monitor = null;
 		switch (priority) {
@@ -184,7 +184,7 @@ public class AntProcessBuildLogger extends NullBuildLogger {
 	 */
 	protected AntProcess getAntProcess(String processId) {
 		if (fProcess == null && processId != null) {
-			for (IProcess process : DebugPlugin.getDefault().getLaunchManager().getProcesses()) {
+			for (IProcess process : DebugPlugin.getDefault().getLaunchManager().getProcesses()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (process instanceof AntProcess && processId.equals(process.getAttribute(AbstractEclipseBuildLogger.ANT_PROCESS_ID))) {
 					fProcess = (AntProcess) process;
 					break;
@@ -199,7 +199,7 @@ public class AntProcessBuildLogger extends NullBuildLogger {
 		fStartTime = System.currentTimeMillis();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void buildFinished(BuildEvent event) {
 		String message = handleException(event);
 		if (message != null) {
@@ -209,7 +209,7 @@ public class AntProcessBuildLogger extends NullBuildLogger {
 				logMessage(line, event, Project.MSG_ERR);
 				line = r.readLine();
 				AntProcess antProcess = getAntProcess(fProcessId);
-				while (line != null) {
+				while (line != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					logMessage(line, event, Project.MSG_ERR);
 					if (!message.startsWith("Total time:")) { //$NON-NLS-1$
 						AntLaunchingUtil.linkBuildFailedMessage(line, antProcess);
@@ -230,38 +230,38 @@ public class AntProcessBuildLogger extends NullBuildLogger {
 		event.getProject().removeBuildListener(this);
 	}
 
-	private String getTimeString(long milliseconds) {
+	private String getTimeString(long milliseconds) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		long seconds = milliseconds / 1000;
 		long minutes = seconds / 60;
 		seconds = seconds % 60;
 
-		StringBuilder result = new StringBuilder(RuntimeMessages.AntProcessBuildLogger_Total_time);
+		StringBuilder result = new StringBuilder(RuntimeMessages.AntProcessBuildLogger_Total_time); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		if (minutes > 0) {
-			result.append(minutes);
+			result.append(minutes); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			if (minutes > 1) {
-				result.append(RuntimeMessages.AntProcessBuildLogger__minutes_2);
+				result.append(RuntimeMessages.AntProcessBuildLogger__minutes_2); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			} else {
-				result.append(RuntimeMessages.AntProcessBuildLogger__minute_3);
+				result.append(RuntimeMessages.AntProcessBuildLogger__minute_3); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 		if (seconds > 0) {
 			if (minutes > 0) {
-				result.append(' ');
+				result.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			result.append(seconds);
+			result.append(seconds); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 			if (seconds > 1) {
-				result.append(RuntimeMessages.AntProcessBuildLogger__seconds_4);
+				result.append(RuntimeMessages.AntProcessBuildLogger__seconds_4); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			} else {
-				result.append(RuntimeMessages.AntProcessBuildLogger__second_5);
+				result.append(RuntimeMessages.AntProcessBuildLogger__second_5); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 		if (seconds == 0 && minutes == 0) {
-			result.append(milliseconds);
-			result.append(RuntimeMessages.AntProcessBuildLogger__milliseconds_6);
+			result.append(milliseconds); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			result.append(RuntimeMessages.AntProcessBuildLogger__milliseconds_6); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 
-		result.append(System.lineSeparator());
+		result.append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return result.toString();
 	}
 
@@ -275,16 +275,16 @@ public class AntProcessBuildLogger extends NullBuildLogger {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void targetStarted(BuildEvent event) {
 		if (Project.MSG_INFO > getMessageOutputLevel()) {
 			return;
 		}
 		Target target = event.getTarget();
-		StringBuilder msg = new StringBuilder(System.lineSeparator());
+		StringBuilder msg = new StringBuilder(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		String targetName = target.getName();
-		msg.append(targetName);
-		msg.append(':');
+		msg.append(targetName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		msg.append(':'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		String message = msg.toString();
 		Location location = target.getLocation();
 		if (location != null && location != Location.UNKNOWN_LOCATION) {

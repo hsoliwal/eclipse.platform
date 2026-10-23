@@ -41,7 +41,7 @@ public class SnowNature extends TestNature {
 		System.arraycopy(oldSpec, 0, newSpec, 0, oldSpec.length);
 		ICommand newCommand = desc.newCommand();
 		newCommand.setBuilderName(SnowBuilder.BUILDER_NAME);
-		HashMap<String, String> args = new HashMap<>(20);
+		HashMap<String, String> args = new HashMap<>(20); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put(TestBuilder.BUILD_ID, SnowBuilder.SNOW_BUILD_EVENT);
 		newCommand.setArguments(args);
 		newSpec[oldSpec.length] = newCommand;
@@ -57,7 +57,7 @@ public class SnowNature extends TestNature {
 		//remove the snow builder
 		IProjectDescription description = getProject().getDescription();
 		ICommand[] commands = description.getBuildSpec();
-		for (int i = 0; i < commands.length; ++i) {
+		for (int i = 0; i < commands.length; ++i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (commands[i].getBuilderName().equals(SnowBuilder.BUILDER_NAME)) {
 				ICommand[] newCommands = new ICommand[commands.length - 1];
 				System.arraycopy(commands, 0, newCommands, 0, i);

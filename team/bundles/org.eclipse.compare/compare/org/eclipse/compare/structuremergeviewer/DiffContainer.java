@@ -44,7 +44,7 @@ public abstract class DiffContainer extends DiffElement implements IDiffContaine
 	 */
 	public IDiffElement findChild(String name) {
 		Object[] children= getChildren();
-		for (Object c : children) {
+		for (Object c : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IDiffElement child = (IDiffElement) c;
 			if (name.equals(child.getName())) {
 				return child;
@@ -56,7 +56,7 @@ public abstract class DiffContainer extends DiffElement implements IDiffContaine
 	@Override
 	public void add(IDiffElement diff) {
 		if (fChildren == null) {
-			fChildren= new ArrayList<>();
+			fChildren= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 		fChildren.add(diff);
 		diff.setParent(this);

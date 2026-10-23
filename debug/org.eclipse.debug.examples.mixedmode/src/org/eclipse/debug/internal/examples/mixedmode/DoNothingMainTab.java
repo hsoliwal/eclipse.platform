@@ -38,7 +38,7 @@ public class DoNothingMainTab extends AbstractLaunchConfigurationTab implements 
 	public void createControl(Composite parent) {
 		Composite comp = SWTFactory.createComposite(parent, parent.getFont(), 1, 1, GridData.FILL_BOTH);
 		fButton = SWTFactory.createCheckButton(comp, Messages.DoNothingMainTab_0, null, false, 1);
-		fButton.addSelectionListener(new SelectionListener() {
+		fButton.addSelectionListener(new SelectionListener() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 			}
@@ -62,7 +62,7 @@ public class DoNothingMainTab extends AbstractLaunchConfigurationTab implements 
 	 * @return the set of modes this tab works with
 	 */
 	protected Set<String> getModes() {
-		Set<String> set = new HashSet<>();
+		Set<String> set = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		set.add("profile"); //$NON-NLS-1$
 		return set;
 	}
@@ -105,13 +105,13 @@ public class DoNothingMainTab extends AbstractLaunchConfigurationTab implements 
 		return "org.eclipse.debug.examples.mixedmode.main.tab"; //$NON-NLS-1$
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void launchConfigurationChanged(ILaunchConfiguration configuration) {
 		try {
 			Set<String> modes = configuration.getModes();
 			modes.add(getLaunchConfigurationDialog().getMode());
 			if (!fButton.isDisposed()) {
-				fButton.getDisplay().syncExec(() -> {
+				fButton.getDisplay().syncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 					boolean sel = fButton.getSelection();
 					if (!sel && modes.containsAll(getModes())) {
 						fButton.setSelection(true);

@@ -49,22 +49,22 @@ public class SubscriberRefreshSchedule {
 	/**
 	 * Key for settings in memento
 	 */
-	private static final String CTX_REFRESHSCHEDULE_INTERVAL = TeamUIPlugin.ID + ".CTX_REFRESHSCHEDULE_INTERVAL"; //$NON-NLS-1$
+	private static final String CTX_REFRESHSCHEDULE_INTERVAL = TeamUIPlugin.ID + ".CTX_REFRESHSCHEDULE_INTERVAL"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Key for schedule in memento
 	 */
-	private static final String CTX_REFRESHSCHEDULE_ENABLED = TeamUIPlugin.ID + ".CTX_REFRESHSCHEDULE_ENABLED"; //$NON-NLS-1$
+	private static final String CTX_REFRESHSCHEDULE_ENABLED = TeamUIPlugin.ID + ".CTX_REFRESHSCHEDULE_ENABLED"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Key for start date in memento
 	 */
-	private static final String CTX_REFRESHSCHEDULE_START = TeamUIPlugin.ID + ".CTX_REFRESHSCHEDULE_START"; //$NON-NLS-1$
+	private static final String CTX_REFRESHSCHEDULE_START = TeamUIPlugin.ID + ".CTX_REFRESHSCHEDULE_START"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Key for run once in memento
 	 */
-	private static final String CTX_REFRESHSCHEDULE_RUNONCE = TeamUIPlugin.ID + ".CTX_REFRESHSCHEDULE_RUNONCE"; //$NON-NLS-1$
+	private static final String CTX_REFRESHSCHEDULE_RUNONCE = TeamUIPlugin.ID + ".CTX_REFRESHSCHEDULE_RUNONCE"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	private final IRefreshSubscriberListener refreshSubscriberListener = new IRefreshSubscriberListener() {
 		@Override
@@ -168,7 +168,7 @@ public class SubscriberRefreshSchedule {
 		Calendar now = Calendar.getInstance();
 		Calendar start = Calendar.getInstance();
 		start.setTime(refreshStart);
-		while (now.after(start)) {
+		while (now.after(start)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			start.add(Calendar.DATE, 1); // tomorrow
 		}
 		return start.getTimeInMillis() - now.getTimeInMillis();
@@ -197,7 +197,7 @@ public class SubscriberRefreshSchedule {
 		memento.putString(CTX_REFRESHSCHEDULE_RUNONCE, Boolean.toString(runOnce));
 	}
 
-	public static SubscriberRefreshSchedule init(IMemento memento, IRefreshable refreshable) {
+	public static SubscriberRefreshSchedule init(IMemento memento, IRefreshable refreshable) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		SubscriberRefreshSchedule schedule = new SubscriberRefreshSchedule(refreshable);
 		if(memento != null) {
 			String enabled = memento.getString(CTX_REFRESHSCHEDULE_ENABLED);
@@ -216,25 +216,25 @@ public class SubscriberRefreshSchedule {
 		return schedule;
 	}
 
-	public static String refreshEventAsString(IRefreshEvent event) {
+	public static String refreshEventAsString(IRefreshEvent event) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if(event == null) {
 			return TeamUIMessages.SyncViewPreferencePage_lastRefreshRunNever;
 		}
 		long stopMills = event.getStopTime();
-		StringBuilder text = new StringBuilder();
+		StringBuilder text = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		if(stopMills <= 0) {
-			text.append(TeamUIMessages.SyncViewPreferencePage_lastRefreshRunNever);
+			text.append(TeamUIMessages.SyncViewPreferencePage_lastRefreshRunNever); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		} else {
 			Date lastTimeRun = new Date(stopMills);
-			text.append(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(lastTimeRun));
+			text.append(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(lastTimeRun)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		int changeCount = event.getChangeDescription().getChangeCount();
 		if (changeCount == 0) {
-			text.append(TeamUIMessages.RefreshSchedule_7);
+			text.append(TeamUIMessages.RefreshSchedule_7); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		} else if (changeCount == 1) {
-			text.append(NLS.bind(TeamUIMessages.RefreshSchedule_changesSingular, Integer.toString(changeCount)));
+			text.append(NLS.bind(TeamUIMessages.RefreshSchedule_changesSingular, Integer.toString(changeCount))); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		} else {
-			text.append(NLS.bind(TeamUIMessages.RefreshSchedule_changesPlural, Integer.toString(changeCount)));
+			text.append(NLS.bind(TeamUIMessages.RefreshSchedule_changesPlural, Integer.toString(changeCount))); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return text.toString();
 	}
@@ -243,7 +243,7 @@ public class SubscriberRefreshSchedule {
 		return lastRefreshEvent;
 	}
 
-	private String getRefreshIntervalAsString() {
+	private String getRefreshIntervalAsString() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (runOnce) {
 			return TeamUIMessages.RefreshSchedule_16;
 		}

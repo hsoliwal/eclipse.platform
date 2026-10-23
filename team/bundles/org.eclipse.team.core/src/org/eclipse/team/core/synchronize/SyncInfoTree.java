@@ -42,7 +42,7 @@ import org.eclipse.team.internal.core.subscribers.SyncInfoTreeChangeEvent;
  */
 public class SyncInfoTree extends SyncInfoSet {
 
-	protected Map<IPath, Set<IResource>> parents = Collections.synchronizedMap(new HashMap<>());
+	protected Map<IPath, Set<IResource>> parents = Collections.synchronizedMap(new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/**
 	 * Create an empty sync info tree.
@@ -58,7 +58,7 @@ public class SyncInfoTree extends SyncInfoSet {
 	 */
 	public SyncInfoTree(SyncInfo[] infos) {
 		super(infos);
-		for (SyncInfo info : infos) {
+		for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource local = info.getLocal();
 			addToParents(local, local);
 		}
@@ -105,7 +105,7 @@ public class SyncInfoTree extends SyncInfoSet {
 	 * @param depth    the depth of the subtree
 	 * @return the <code>SyncInfo</code> for any out-of-sync resources
 	 */
-	public synchronized SyncInfo[] getSyncInfos(IResource resource, int depth) {
+	public synchronized SyncInfo[] getSyncInfos(IResource resource, int depth) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (depth == IResource.DEPTH_ZERO || resource.getType() == IResource.FILE) {
 			SyncInfo info = getSyncInfo(resource);
 			if (info == null) {
@@ -115,13 +115,13 @@ public class SyncInfoTree extends SyncInfoSet {
 			}
 		}
 		if (depth == IResource.DEPTH_ONE) {
-			List<SyncInfo> result = new ArrayList<>();
+			List<SyncInfo> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			SyncInfo info = getSyncInfo(resource);
 			if (info != null) {
 				result.add(info);
 			}
 			IResource[] members = members(resource);
-			for (IResource member : members) {
+			for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				info = getSyncInfo(member);
 				if (info != null) {
 					result.add(info);
@@ -144,14 +144,14 @@ public class SyncInfoTree extends SyncInfoSet {
 	 * @return the <code>SyncInfo</code> for all out-of-sync resources at or below the given resource
 	 */
 	private synchronized SyncInfo[] internalGetDeepSyncInfo(IContainer resource) {
-		List<SyncInfo> infos = new ArrayList<>();
+		List<SyncInfo> infos = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IResource[] children = internalGetOutOfSyncDescendants(resource);
-		for (IResource child : children) {
+		for (IResource child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			SyncInfo info = getSyncInfo(child);
 			if(info != null) {
 				infos.add(info);
 			} else {
-				TeamPlugin.log(IStatus.INFO, Messages.SyncInfoTree_0 + child.getFullPath(), null);
+				TeamPlugin.log(IStatus.INFO, Messages.SyncInfoTree_0 + child.getFullPath(), null); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		return infos.toArray(new SyncInfo[infos.size()]);
@@ -202,7 +202,7 @@ public class SyncInfoTree extends SyncInfoSet {
 		}
 	}
 
-	private synchronized boolean addToParents(IResource resource, IResource parent) {
+	private synchronized boolean addToParents(IResource resource, IResource parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (parent.getType() == IResource.ROOT) {
 			return false;
 		}
@@ -214,7 +214,7 @@ public class SyncInfoTree extends SyncInfoSet {
 		} else {
 			Set<IResource> children = parents.get(parent.getFullPath());
 			if (children == null) {
-				children = new HashSet<>();
+				children = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 				parents.put(parent.getFullPath(), children);
 				// this is a new folder in the sync set
 				addedParent = true;
@@ -228,7 +228,7 @@ public class SyncInfoTree extends SyncInfoSet {
 		return addedParent;
 	}
 
-	private synchronized boolean removeFromParents(IResource resource, IResource parent) {
+	private synchronized boolean removeFromParents(IResource resource, IResource parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (parent.getType() == IResource.ROOT) {
 			return false;
 		}
@@ -275,7 +275,7 @@ public class SyncInfoTree extends SyncInfoSet {
 	 * @param resource the root of the resource subtree
 	 * @param depth    the depth of the subtree
 	 */
-	public void remove(IResource resource, int depth) {
+	public void remove(IResource resource, int depth) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			beginInput();
 			if (getSyncInfo(resource) != null) {
@@ -286,14 +286,14 @@ public class SyncInfoTree extends SyncInfoSet {
 			}
 			if (depth == IResource.DEPTH_ONE) {
 				IResource[] members = members(resource);
-				for (IResource member : members) {
+				for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (getSyncInfo(member) != null) {
 						remove(member);
 					}
 				}
 			} else if (depth == IResource.DEPTH_INFINITE) {
 				IResource [] toRemove = internalGetOutOfSyncDescendants((IContainer)resource);
-				for (IResource t : toRemove) {
+				for (IResource t : toRemove) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					remove(t);
 				}
 			}
@@ -317,8 +317,8 @@ public class SyncInfoTree extends SyncInfoSet {
 
 	private synchronized IResource[] internalMembers(IWorkspaceRoot root) {
 		Set possibleChildren = parents.keySet();
-		Set<IResource> children = new HashSet<>();
-		for (Object next : possibleChildren) {
+		Set<IResource> children = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (Object next : possibleChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource element = root.findMember((IPath)next);
 			if (element != null) {
 				children.add(element.getProject());
@@ -335,7 +335,7 @@ public class SyncInfoTree extends SyncInfoSet {
 	 * @return the children of the resource that are either out-of-sync or are ancestors of
 	 * out-of-sync resources contained in the set
 	 */
-	public synchronized IResource[] members(IResource resource) {
+	public synchronized IResource[] members(IResource resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (resource.getType() == IResource.FILE) {
 			return new IResource[0];
 		}
@@ -345,11 +345,11 @@ public class SyncInfoTree extends SyncInfoSet {
 		}
 		// OPTIMIZE: could be optimized so that we don't traverse all the deep
 		// children to find the immediate ones.
-		Set<IResource> children = new HashSet<>();
+		Set<IResource> children = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IPath path = parent.getFullPath();
 		Set possibleChildren = parents.get(path);
 		if(possibleChildren != null) {
-			for (Object next : possibleChildren) {
+			for (Object next : possibleChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource element = (IResource)next;
 				IPath childPath = element.getFullPath();
 				IResource modelObject = null;

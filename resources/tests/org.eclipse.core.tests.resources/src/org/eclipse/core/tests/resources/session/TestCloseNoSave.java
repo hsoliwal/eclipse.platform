@@ -58,7 +58,7 @@ public class TestCloseNoSave {
 		file.create(createRandomContentsStream(), true, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(2)
 	public void test2() throws CoreException {
 		// projects should exist immediately due to snapshot - files may or

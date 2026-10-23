@@ -101,7 +101,7 @@ public class PatchTest {
 		patch("context.txt", "patch_context3.txt", "exp_context.txt"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testHunkFilter() throws CoreException, IOException {
 		IStorage patchStorage = new StringStorage("patch_hunkFilter.txt");
 		IStorage expStorage = new StringStorage("context.txt");
@@ -137,7 +137,7 @@ public class PatchTest {
 		LineReader reader = new LineReader(
 				new BufferedReader(new InputStreamReader(new ByteArrayInputStream(header.getBytes()))));
 		List<String> lines = reader.readLines();
-		List<String> expected = new ArrayList<>();
+		List<String> expected = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		expected.add("Index: old.txt\n");
 		expected.add("UID: 42\n");
 		assertEquals(LineReader.createString(false, expected), LineReader.createString(false, lines));
@@ -239,11 +239,11 @@ public class PatchTest {
 	}
 
 	// Keeps track of the failures
-	private final List<AssertionError> failures = new ArrayList<>();
+	private final List<AssertionError> failures = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPatchdataSubfolders() throws IOException, CoreException {
-		URL patchdataUrl = PatchUtils.getBundle().getEntry("/" + IPath.fromOSString(PatchUtils.PATCHDATA).toString());
+		URL patchdataUrl = PatchUtils.getBundle().getEntry("/" + IPath.fromOSString(PatchUtils.PATCHDATA).toString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		patchdataUrl = FileLocator.resolve(patchdataUrl);
 
 		Map<String, PatchTestConfiguration> map = null;
@@ -260,7 +260,7 @@ public class PatchTest {
 		}
 		assertNotNull(map);
 
-		for (Entry<String, PatchTestConfiguration> entry : map.entrySet()) {
+		for (Entry<String, PatchTestConfiguration> entry : map.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String sf = entry.getKey(); // subfolder
 			PatchTestConfiguration ptc = entry.getValue();
 			String[] originalFiles = ptc.originalFileNames;
@@ -270,7 +270,7 @@ public class PatchTest {
 			PatchConfiguration pc = ptc.pc;
 
 			// create a message to distinguish tests from different subfolders
-			String msg = "Test for subfolder [" + PatchUtils.PATCHDATA + "/" + sf + "] failed.";
+			String msg = "Test for subfolder [" + PatchUtils.PATCHDATA + "/" + sf + "] failed."; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 			try {
 				// test with expected result
@@ -288,7 +288,7 @@ public class PatchTest {
 					continue; // continue with a next subfolder
 				}
 				failures.add(new AssertionError(
-						"\npatchWorkspace should fail for folder [" + PatchUtils.PATCHDATA + "/" + sf + "]."));
+						"\npatchWorkspace should fail for folder [" + PatchUtils.PATCHDATA + "/" + sf + "].")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 
@@ -309,17 +309,17 @@ public class PatchTest {
 	 *         The second object is an instance of <code>PatchConfiguration</code>
 	 *         class.
 	 */
-	private Map<String, PatchTestConfiguration> extractNamesForJarProtocol(URL patchdataUrl)
+	private Map<String, PatchTestConfiguration> extractNamesForJarProtocol(URL patchdataUrl) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws IOException, CoreException {
 		JarFile jarFile = ((JarURLConnection) patchdataUrl.openConnection()).getJarFile();
 
 		// look for the patchdata folder entry
 		String patchdataName = null;
 		Enumeration<JarEntry> entries = jarFile.entries();
-		while (entries.hasMoreElements()) {
+		while (entries.hasMoreElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			JarEntry entry = entries.nextElement();
 			String entryName = entry.getName();
-			if (entryName.endsWith("/" + PatchUtils.PATCHDATA + "/")) {
+			if (entryName.endsWith("/" + PatchUtils.PATCHDATA + "/")) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				patchdataName = entryName;
 				break;
 			}
@@ -328,22 +328,22 @@ public class PatchTest {
 		if (patchdataName == null)
 			return null;
 
-		Map<String, PatchTestConfiguration> result = new HashMap<>();
+		Map<String, PatchTestConfiguration> result = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		entries = jarFile.entries();
-		while (entries.hasMoreElements()) {
+		while (entries.hasMoreElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			JarEntry entry = entries.nextElement();
 			String entryName = entry.getName();
 			if (entry.isDirectory()) {
 				if (!entryName.equals(patchdataName) && entryName.startsWith(patchdataName)) {
 					// a subfolder found
-					ZipEntry patchConf = jarFile.getEntry(entryName + "/" + PATCH_CONFIGURATION);
+					ZipEntry patchConf = jarFile.getEntry(entryName + "/" + PATCH_CONFIGURATION); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					if (patchConf != null) {
 						JarEntryStorage jes = new JarEntryStorage(entry, jarFile);
 						Properties properties = new Properties();
 						try {
 							properties.load(jes.getContents());
 						} catch (IOException e) {
-							fail("IOException occurred while loading the Patch Configuration file for "
+							fail("IOException occurred while loading the Patch Configuration file for " //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 									+ entryName.toString());
 						}
 						processProperties(result, properties, entryName);
@@ -356,16 +356,16 @@ public class PatchTest {
 		return result;
 	}
 
-	private Map<String, PatchTestConfiguration> extractNamesForFileProtocol(URL patchdataUrl) throws CoreException {
+	private Map<String, PatchTestConfiguration> extractNamesForFileProtocol(URL patchdataUrl) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
-		Map<String, PatchTestConfiguration> result = new HashMap<>(); // configuration map
+		Map<String, PatchTestConfiguration> result = new HashMap<>(); // configuration map //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 		IPath patchdataFolderPath = IPath.fromOSString(patchdataUrl.getPath());
 		File patchdataFolderFile = patchdataFolderPath.toFile();
 		assertTrue(patchdataFolderFile.isDirectory());
 		File[] listOfSubfolders = patchdataFolderFile.listFiles((FileFilter) File::isDirectory);
-		for (File subfolder : listOfSubfolders) {
-			Path pcPath = IPath.fromOSString(subfolder.getPath() + "/" + PATCH_CONFIGURATION).toPath();
+		for (File subfolder : listOfSubfolders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			Path pcPath = IPath.fromOSString(subfolder.getPath() + "/" + PATCH_CONFIGURATION).toPath(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 			if (subfolder.getName().equals("CVS"))
 				continue;
@@ -374,7 +374,7 @@ public class PatchTest {
 				try {
 					properties.load(Files.newBufferedReader(pcPath));
 				} catch (IOException e) {
-					fail("IOException occurred while loading the Patch Configuration file for " + subfolder.toString());
+					fail("IOException occurred while loading the Patch Configuration file for " + subfolder.toString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				processProperties(result, properties, subfolder.getName());
 			} else {
@@ -384,7 +384,7 @@ public class PatchTest {
 		return result;
 	}
 
-	private void processProperties(Map<String, PatchTestConfiguration> result, Properties p, String subfolderName) {
+	private void processProperties(Map<String, PatchTestConfiguration> result, Properties p, String subfolderName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean skipTest = Boolean.valueOf(p.getProperty("skipTest", "false")).booleanValue();
 		if (skipTest)
 			return;
@@ -408,16 +408,16 @@ public class PatchTest {
 		pc.setReversed(reversed);
 
 		// make the paths relative
-		pf = subfolderName + "/" + pf;
-		for (int i = 0; i < cf.length; i++) {
-			cf[i] = subfolderName + "/" + cf[i];
+		pf = subfolderName + "/" + pf; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		for (int i = 0; i < cf.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			cf[i] = subfolderName + "/" + cf[i]; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
-		for (int i = 0; i < erf.length; i++) {
-			erf[i] = subfolderName + "/" + erf[i];
+		for (int i = 0; i < erf.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			erf[i] = subfolderName + "/" + erf[i]; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		if (arf != null) { // optional
-			for (int i = 0; i < arf.length; i++) {
-				arf[i] = subfolderName + "/" + arf[i];
+			for (int i = 0; i < arf.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				arf[i] = subfolderName + "/" + arf[i]; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 
@@ -454,7 +454,7 @@ public class PatchTest {
 		assertEquals(expected, actual);
 	}
 
-	private void patcherPatch(String old, String patch, String expt) {
+	private void patcherPatch(String old, String patch, String expt) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		LineReader lr = new LineReader(PatchUtils.getReader(old));
 		List<String> inLines = lr.readLines();
 
@@ -493,7 +493,7 @@ public class PatchTest {
 	 *                             <code>-1</code> it means that the fuzz should be
 	 *                             calculated automatically.
 	 */
-	private void patchWorkspace(String msg, String[] originalFiles, String patch, String[] expectedOutcomeFiles,
+	private void patchWorkspace(String msg, String[] originalFiles, String patch, String[] expectedOutcomeFiles, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			PatchConfiguration patchConfiguration) {
 
 		// ensure that we have the same number of input files as we have expected files
@@ -517,7 +517,7 @@ public class PatchTest {
 		// Iterate through all of the original files, apply the diffs that belong to the
 		// file and compare
 		// with the corresponding outcome file
-		for (int i = 0; i < originalFiles.length; i++) {
+		for (int i = 0; i < originalFiles.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			LineReader lr = new LineReader(PatchUtils.getReader(originalFiles[i]));
 			List<String> inLines = lr.readLines();
 

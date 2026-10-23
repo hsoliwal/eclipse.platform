@@ -44,7 +44,7 @@ public class MarkerInfo implements IMarkerSetElement, Cloneable, IStringPoolPart
 	 * Returns whether the given object is a valid attribute value. Returns
 	 * either the attribute or an equal canonical substitute.
 	 */
-	protected static Object checkValidAttribute(Object value) {
+	protected static Object checkValidAttribute(Object value) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (value == null) {
 			return null;
 		}
@@ -56,7 +56,7 @@ public class MarkerInfo implements IMarkerSetElement, Cloneable, IStringPoolPart
 			}
 			byte[] bytes = valueString.getBytes(StandardCharsets.UTF_8);
 			if (bytes.length > 65535) {
-				String msg = "Marker property value is too long: " + valueString.substring(0, 10000); //$NON-NLS-1$
+				String msg = "Marker property value is too long: " + valueString.substring(0, 10000); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				Assert.isTrue(false, msg);
 			}
 			return value;
@@ -129,7 +129,7 @@ public class MarkerInfo implements IMarkerSetElement, Cloneable, IStringPoolPart
 
 	public Object[] getAttributes(String[] attributeNames) {
 		Object[] result = new Object[attributeNames.length];
-		for (int i = 0; i < attributeNames.length; i++) {
+		for (int i = 0; i < attributeNames.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result[i] = getAttribute(attributeNames[i]);
 		}
 		return result;
@@ -167,8 +167,8 @@ public class MarkerInfo implements IMarkerSetElement, Cloneable, IStringPoolPart
 	/** keeps previous Attributes **/
 	public void addAttributes(String[] attributeNames, Object[] values, boolean validate) {
 		Assert.isTrue(attributeNames.length == values.length);
-		Map<String, Object> map = new HashMap<>();
-		for (int i = 0; i < attributeNames.length; i++) {
+		Map<String, Object> map = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (int i = 0; i < attributeNames.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			map.put(attributeNames[i], values[i]);
 		}
 		attributes.putAll(map, validate);

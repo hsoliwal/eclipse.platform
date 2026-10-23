@@ -130,7 +130,7 @@ public class AddFromHistoryDialog extends ResizableDialog {
 		}
 
 		void setSelected(IFileState state) {
-			for (int i= 0; i < fStates.length; i++) {
+			for (int i= 0; i < fStates.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (fStates[i] == state) {
 					fSelected= i;
 					return;
@@ -148,7 +148,7 @@ public class AddFromHistoryDialog extends ResizableDialog {
 	}
 
 	private CompareConfiguration fCompareConfiguration;
-	private final ArrayList<FileHistory> fArrayList= new ArrayList<>();
+	private final ArrayList<FileHistory> fArrayList= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private FileHistory fCurrentFileHistory;
 
 	// SWT controls
@@ -177,7 +177,7 @@ public class AddFromHistoryDialog extends ResizableDialog {
 		}
 	}
 
-	public boolean select(IContainer root, IFile[] inputFiles) {
+	public boolean select(IContainer root, IFile[] inputFiles) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		create();	// create widgets
 
@@ -198,7 +198,7 @@ public class AddFromHistoryDialog extends ResizableDialog {
 		String prefix= root.getFullPath().toString();
 
 		if (fMemberTable != null && !fMemberTable.isDisposed()) {
-			for (IFile file : files) {
+			for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String path = file.getFullPath().toString();
 
 				// ignore a recently deleted file at the same path as the
@@ -225,14 +225,14 @@ public class AddFromHistoryDialog extends ResizableDialog {
 	HistoryInput[] getSelected() {
 		HistoryInput[] selected= new HistoryInput[fArrayList.size()];
 		Iterator<FileHistory> iter= fArrayList.iterator();
-		for (int i= 0; iter.hasNext(); i++) {
+		for (int i= 0; iter.hasNext(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			FileHistory h= iter.next();
 			selected[i]= h.getHistoryInput();
 		}
 		return selected;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected synchronized Control createDialogArea(Composite parent2) {
 
 		Composite parent= (Composite) super.createDialogArea(parent2);
@@ -243,8 +243,8 @@ public class AddFromHistoryDialog extends ResizableDialog {
 		vsplitter.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL
 					| GridData.VERTICAL_ALIGN_FILL | GridData.GRAB_VERTICAL));
 
-		vsplitter.addDisposeListener(
-			unused -> {
+		vsplitter.addDisposeListener( //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
+			unused -> { //FLLDCIM: MARK — T01  LAMBDA
 				if (fDateImage != null) {
 					fDateImage.dispose();
 				}
@@ -271,7 +271,7 @@ public class AddFromHistoryDialog extends ResizableDialog {
 		fMemberPane.setLayoutData(gd);
 
 		fMemberTable= new Table(fMemberPane, SWT.CHECK | SWT.H_SCROLL | SWT.V_SCROLL);
-		fMemberTable.addSelectionListener(
+		fMemberTable.addSelectionListener( //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -310,7 +310,7 @@ public class AddFromHistoryDialog extends ResizableDialog {
 		fEditionPane.setLayoutData(gd);
 
 		fEditionTree= new Tree(fEditionPane, SWT.H_SCROLL | SWT.V_SCROLL);
-		fEditionTree.addSelectionListener(
+		fEditionTree.addSelectionListener( //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -321,7 +321,7 @@ public class AddFromHistoryDialog extends ResizableDialog {
 		fEditionPane.setContent(fEditionTree);
 
 		applyDialogFont(parent); // to avoid applying font to compare viewer
-		fContentPane= new CompareViewerSwitchingPane(vsplitter, SWT.BORDER | SWT.FLAT) {
+		fContentPane= new CompareViewerSwitchingPane(vsplitter, SWT.BORDER | SWT.FLAT) { //FLLDCIM: MARK — T05  ANONYMOUS
 			@Override
 			protected Viewer getViewer(Viewer oldViewer, Object input) {
 				return CompareUI.findContentViewer(oldViewer, input, this, fCompareConfiguration);
@@ -335,7 +335,7 @@ public class AddFromHistoryDialog extends ResizableDialog {
 	/*
 	 * Feeds selection from member viewer to edition viewer.
 	 */
-	private void handleMemberSelect(Widget w) {
+	private void handleMemberSelect(Widget w) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Object data= null;
 		if (w != null) {
 			data= w.getData();
@@ -355,7 +355,7 @@ public class AddFromHistoryDialog extends ResizableDialog {
 			if (fEditionTree != null) {
 				fEditionTree.setRedraw(false);
 				fEditionTree.removeAll();
-				for (int i= 0; i < states.length; i++) {
+				for (int i= 0; i < states.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					addEdition(new HistoryInput(file, states[i]), h.isSelected(i));
 				}
 				fEditionTree.setRedraw(true);
@@ -369,7 +369,7 @@ public class AddFromHistoryDialog extends ResizableDialog {
 	 * Adds the given Pair to the edition tree.
 	 * It takes care of creating tree nodes for different dates.
 	 */
-	private void addEdition(HistoryInput input, boolean isSelected) {
+	private void addEdition(HistoryInput input, boolean isSelected) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fEditionTree == null || fEditionTree.isDisposed()) {
 			return;
 		}
@@ -486,7 +486,7 @@ public class AddFromHistoryDialog extends ResizableDialog {
 		int l2= ss2.length;
 		int n= Math.max(l1, l2);
 
-		for (int i= 0; i < n; i++) {
+		for (int i= 0; i < n; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String s1= i < l1 ? ss1[i] : ""; //$NON-NLS-1$
 			String s2= i < l2 ? ss2[i] : ""; //$NON-NLS-1$
 			int rc= s1.compareToIgnoreCase(s2);
@@ -497,18 +497,18 @@ public class AddFromHistoryDialog extends ResizableDialog {
 		return false;
 	}
 
-	private static void internalSort(IFile[] keys, int left, int right) {
+	private static void internalSort(IFile[] keys, int left, int right) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		int original_left= left;
 		int original_right= right;
 
 		IFile mid= keys[(left + right) / 2];
-		do {
-			while (greaterThan(keys[left], mid)) {
+		do { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			while (greaterThan(keys[left], mid)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				left++;
 			}
 
-			while (greaterThan(mid, keys[right])) {
+			while (greaterThan(mid, keys[right])) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				right--;
 			}
 

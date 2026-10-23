@@ -45,9 +45,9 @@ public class KeepAllRunnable implements Runnable {
 		if (diffs1 == null) {
 			return;
 		}
-		for (UnifiedDiff diff : diffs1) {
+		for (UnifiedDiff diff : diffs1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			List<Annotation> annos = getAllAnnotationsForUnifiedDiff(model, diff);
-			for (var lanno : annos) {
+			for (var lanno : annos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				model.removeAnnotation(lanno);
 			}
 		}

@@ -74,9 +74,9 @@ public class ResourceException extends CoreException {
 			if (status.getException() != null) {
 				String path = "()"; //$NON-NLS-1$
 				if (status instanceof IResourceStatus) {
-					path = "(" + ((IResourceStatus) status).getPath() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+					path = "(" + ((IResourceStatus) status).getPath() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
-				output.print(getClass().getName() + path + "[" + status.getCode() + "]: "); //$NON-NLS-1$ //$NON-NLS-2$
+				output.print(getClass().getName() + path + "[" + status.getCode() + "]: "); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				status.getException().printStackTrace(output);
 			} else {
 				super.printStackTrace(output);
@@ -96,9 +96,9 @@ public class ResourceException extends CoreException {
 			if (status.getException() != null) {
 				String path = "()"; //$NON-NLS-1$
 				if (status instanceof IResourceStatus) {
-					path = "(" + ((IResourceStatus) status).getPath() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+					path = "(" + ((IResourceStatus) status).getPath() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
-				output.print(getClass().getName() + path + "[" + status.getCode() + "]: "); //$NON-NLS-1$ //$NON-NLS-2$
+				output.print(getClass().getName() + path + "[" + status.getCode() + "]: "); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				status.getException().printStackTrace(output);
 			} else {
 				super.printStackTrace(output);

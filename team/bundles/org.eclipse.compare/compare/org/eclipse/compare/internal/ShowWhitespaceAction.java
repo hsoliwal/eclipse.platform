@@ -23,7 +23,7 @@ import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.texteditor.AbstractTextEditor;
 
-public class ShowWhitespaceAction extends TextEditorPropertyAction {
+public class ShowWhitespaceAction extends TextEditorPropertyAction { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	private Map<MergeSourceViewer, WhitespaceCharacterPainter> fPainters;
 	private boolean isWhitespaceShowing;
@@ -61,7 +61,7 @@ public class ShowWhitespaceAction extends TextEditorPropertyAction {
 		synchronizeWithPreference();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void synchronizeWithPreference() {
 		boolean checked = false;
 		if (fStore != null) {
@@ -117,19 +117,19 @@ public class ShowWhitespaceAction extends TextEditorPropertyAction {
 
 	private synchronized Map<MergeSourceViewer, WhitespaceCharacterPainter> getPainters() {
 		if (fPainters == null) {
-			fPainters = new HashMap<>();
+			fPainters = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 		return fPainters;
 	}
 
-	private void showWhitespace() {
+	private void showWhitespace() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (isWhitespaceShowing) {
 			return;
 		}
 		try {
 			Map<MergeSourceViewer, WhitespaceCharacterPainter> painters = getPainters();
 			MergeSourceViewer[] viewers = getViewers();
-			for (int i = 0; i < viewers.length; i++) {
+			for (int i = 0; i < viewers.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (fNeedsPainters[i]) {
 					MergeSourceViewer viewer = viewers[i];
 					if (viewer == null) {
@@ -154,7 +154,7 @@ public class ShowWhitespaceAction extends TextEditorPropertyAction {
 
 	private void hideWhitespace() {
 		Map<MergeSourceViewer, WhitespaceCharacterPainter> painters = getPainters();
-		for (MergeSourceViewer viewer : painters.keySet()) {
+		for (MergeSourceViewer viewer : painters.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			WhitespaceCharacterPainter painter = painters.get(viewer);
 			if (painter != null) {
 				viewer.getSourceViewer().removePainter(painter);

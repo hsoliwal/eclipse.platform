@@ -30,7 +30,7 @@ public class DisconnectAction extends TeamAction {
 	protected void execute(IAction action) {
 		IProject projects[] = getSelectedProjects();
 		try {
-			for (IProject project : projects) {
+			for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				RepositoryProvider.unmap(project);
 			}
 		} catch (TeamException e) {

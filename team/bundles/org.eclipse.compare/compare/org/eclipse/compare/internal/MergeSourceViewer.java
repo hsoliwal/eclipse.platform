@@ -98,7 +98,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
 /**
  * Wraps a JFace SourceViewer and add some convenience methods.
  */
-public class MergeSourceViewer implements ISelectionChangedListener,
+public class MergeSourceViewer implements ISelectionChangedListener, //FLLDCIM: MARK — T04  IMPLEMENTS
 		ITextListener, IMenuListener, IOperationHistoryListener, IAdaptable {
 
 	public static final String UNDO_ID= "undo"; //$NON-NLS-1$
@@ -170,7 +170,7 @@ public class MergeSourceViewer implements ISelectionChangedListener,
 			return null;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public IDocumentProvider getDocumentProvider() {
 			return new IDocumentProvider(){
 
@@ -292,7 +292,7 @@ public class MergeSourceViewer implements ISelectionChangedListener,
 			selectAndReveal(start, length, start, length);
 		}
 
-		private void selectAndReveal(int selectionStart, int selectionLength, int revealStart, int revealLength) {
+		private void selectAndReveal(int selectionStart, int selectionLength, int revealStart, int revealLength) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 			ISelection selection = getSelectionProvider().getSelection();
 			if (selection instanceof ITextSelection textSelection) {
@@ -469,7 +469,7 @@ public class MergeSourceViewer implements ISelectionChangedListener,
 	private final SourceViewer fSourceViewer;
 	private Position fRegion;
 	private boolean fEnabled= true;
-	private final HashMap<String, IAction> fActions= new HashMap<>();
+	private final HashMap<String, IAction> fActions= new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	private IDocument fRememberedDocument;
 
 	private boolean fAddSaveAction= true;
@@ -479,10 +479,10 @@ public class MergeSourceViewer implements ISelectionChangedListener,
 	private final IPropertyChangeListener fPreferenceChangeListener;
 	private boolean fShowLineNumber=false;
 	private LineNumberRulerColumn fLineNumberColumn;
-	private final List<IAction> textActions = new ArrayList<>();
+	private final List<IAction> textActions = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private CommandContributionItem fSaveContributionItem;
 
-	public MergeSourceViewer(SourceViewer sourceViewer,	ResourceBundle bundle, ICompareContainer container) {
+	public MergeSourceViewer(SourceViewer sourceViewer,	ResourceBundle bundle, ICompareContainer container) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isNotNull(sourceViewer);
 		fSourceViewer= sourceViewer;
 		fResourceBundle= bundle;
@@ -490,7 +490,7 @@ public class MergeSourceViewer implements ISelectionChangedListener,
 
 		MenuManager menu= new MenuManager();
 		menu.setRemoveAllWhenShown(true);
-		menu.addMenuListener(this);
+		menu.addMenuListener(this); //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 		StyledText te= getSourceViewer().getTextWidget();
 		te.setMenu(menu.createContextMenu(te));
 		fContainer.registerContextMenu(menu, getSourceViewer());
@@ -615,7 +615,7 @@ public class MergeSourceViewer implements ISelectionChangedListener,
 	/*
 	 * Returns number of lines in document region.
 	 */
-	public int getLineCount() {
+	public int getLineCount() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IRegion region= getSourceViewer().getVisibleRegion();
 
 		int length= region.getLength();
@@ -686,7 +686,7 @@ public class MergeSourceViewer implements ISelectionChangedListener,
 	 * Returns the start line and the number of lines which correspond to the given position.
 	 * Starting line number is 0 based.
 	 */
-	public Point getLineRange(Position p, Point region) {
+	public Point getLineRange(Position p, Point region) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		IDocument doc= getSourceViewer().getDocument();
 
@@ -758,7 +758,7 @@ public class MergeSourceViewer implements ISelectionChangedListener,
 		fActions.put(actionId, action);
 	}
 
-	public IAction getAction(String actionId) {
+	public IAction getAction(String actionId) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IAction action= fActions.get(actionId);
 		if (action == null) {
 			action= createAction(actionId);
@@ -767,13 +767,13 @@ public class MergeSourceViewer implements ISelectionChangedListener,
 			}
 			if (action instanceof MergeViewerAction mva) {
 				if (mva.isContentDependent()) {
-					getSourceViewer().addTextListener(this);
+					getSourceViewer().addTextListener(this); //FLLDCIM: MARK — T28 DOCUMENT_DELTA CALL
 				}
 				if (mva.isSelectionDependent()) {
-					getSourceViewer().addSelectionChangedListener(this);
+					getSourceViewer().addSelectionChangedListener(this); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 				}
 
-				Utilities.initAction(action, fResourceBundle, "action." + actionId + ".");			 //$NON-NLS-1$ //$NON-NLS-2$
+				Utilities.initAction(action, fResourceBundle, "action." + actionId + ".");			 //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			addAction(actionId, action);
 
@@ -786,7 +786,7 @@ public class MergeSourceViewer implements ISelectionChangedListener,
 		return action;
 	}
 
-	protected IAction createAction(String actionId) {
+	protected IAction createAction(String actionId) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (UNDO_ID.equals(actionId)) {
 			return new TextOperationAction(ITextOperationTarget.UNDO, IWorkbenchCommandConstants.EDIT_UNDO, true, false, true);
 		}
@@ -814,7 +814,7 @@ public class MergeSourceViewer implements ISelectionChangedListener,
 	@Override
 	public void selectionChanged(SelectionChangedEvent event) {
 		Iterator<IAction> e= fActions.values().iterator();
-		while (e.hasNext()) {
+		while (e.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IAction next = e.next();
 			if (next instanceof MergeViewerAction action) {
 				if (action.isSelectionDependent()) {
@@ -831,7 +831,7 @@ public class MergeSourceViewer implements ISelectionChangedListener,
 
 	void updateContentDependantActions() {
 		Iterator<IAction> e= fActions.values().iterator();
-		while (e.hasNext()) {
+		while (e.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IAction next = e.next();
 			if (next instanceof MergeViewerAction action) {
 				if (action.isContentDependent()) {
@@ -844,7 +844,7 @@ public class MergeSourceViewer implements ISelectionChangedListener,
 	/*
 	 * Allows the viewer to add menus and/or tools to the context menu.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void menuAboutToShow(IMenuManager menu) {
 
 		menu.add(new Separator("undo")); //$NON-NLS-1$
@@ -871,7 +871,7 @@ public class MergeSourceViewer implements ISelectionChangedListener,
 		menu.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 
 		menu.add(new Separator("text")); //$NON-NLS-1$
-		for (IAction action : textActions) {
+		for (IAction action : textActions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			menu.add(action);
 		}
 
@@ -889,7 +889,7 @@ public class MergeSourceViewer implements ISelectionChangedListener,
 		}
 	}
 
-	private void addSave(IMenuManager menu) {
+	private void addSave(IMenuManager menu) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ICommandService commandService = fContainer.getWorkbenchPart().getSite().getService(ICommandService.class);
 		final Command command= commandService.getCommand(IWorkbenchCommandConstants.FILE_SAVE);
 
@@ -931,7 +931,7 @@ public class MergeSourceViewer implements ISelectionChangedListener,
 	 */
 	public void updateActions() {
 		Iterator<IAction> e= fActions.values().iterator();
-		while (e.hasNext()) {
+		while (e.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IAction next = e.next();
 			if (next instanceof MergeViewerAction action) {
 				action.update();
@@ -1070,7 +1070,7 @@ public class MergeSourceViewer implements ISelectionChangedListener,
 		// when the undo history changes. It could be localized to UNDO and REDO.
 		IUndoContext context = getUndoContext();
 		if (context != null && event.getOperation().hasContext(context)) {
-			Display.getDefault().asyncExec(this::updateContentDependantActions);
+			Display.getDefault().asyncExec(this::updateContentDependantActions); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		}
 	}
 

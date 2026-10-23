@@ -63,7 +63,7 @@ public class PDAModelPresentation extends LabelProvider implements IDebugModelPr
 	 */
 	private String getWatchpointText(PDAWatchpoint watchpoint) {
 		try {
-			String label = watchpoint.getVariableName() + " (" + watchpoint.getFunctionName() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+			String label = watchpoint.getVariableName() + " (" + watchpoint.getFunctionName() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			if (watchpoint.isAccess()) {
 				label += " [read]"; //$NON-NLS-1$
 			}
@@ -90,7 +90,7 @@ public class PDAModelPresentation extends LabelProvider implements IDebugModelPr
 				if (target.isTerminated()) {
 					label = "<terminated>"; //$NON-NLS-1$
 				}
-				return label + "PDA [" + path.lastSegment() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+				return label + "PDA [" + path.lastSegment() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		} catch (CoreException e) {
 		}
@@ -106,7 +106,7 @@ public class PDAModelPresentation extends LabelProvider implements IDebugModelPr
 	 */
 	private String getStackFrameText(PDAStackFrame frame) {
 		try {
-			return frame.getName() + " (line: " + frame.getLineNumber() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+			return frame.getName() + " (line: " + frame.getLineNumber() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} catch (DebugException e) {
 		}
 		return null;
@@ -119,7 +119,7 @@ public class PDAModelPresentation extends LabelProvider implements IDebugModelPr
 	 * @param thread a thread
 	 * @return a label for the given thread
 	 */
-	private String getThreadText(PDAThread thread) {
+	private String getThreadText(PDAThread thread) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String label = thread.getName();
 		if (thread.isStepping()) {
 			label += " (stepping)"; //$NON-NLS-1$
@@ -129,7 +129,7 @@ public class PDAModelPresentation extends LabelProvider implements IDebugModelPr
 				if (thread.getError() == null) {
 					label += " (suspended)"; //$NON-NLS-1$
 				} else {
-					label += " (" + thread.getError() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+					label += " (" + thread.getError() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			} else {
 				IBreakpoint breakpoint = breakpoints[0]; // there can only be one in PDA
@@ -137,7 +137,7 @@ public class PDAModelPresentation extends LabelProvider implements IDebugModelPr
 					if (pdaBreakpoint instanceof PDAWatchpoint) {
 						try {
 							PDAWatchpoint watchpoint = (PDAWatchpoint)pdaBreakpoint;
-							label += " (watchpoint: " + watchpoint.getSuspendType() + " " + watchpoint.getVariableName() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+							label += " (watchpoint: " + watchpoint.getSuspendType() + " " + watchpoint.getVariableName() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						} catch (CoreException e) {
 						}
 					} else if (pdaBreakpoint.isRunToLineBreakpoint()) {
@@ -148,7 +148,7 @@ public class PDAModelPresentation extends LabelProvider implements IDebugModelPr
 				}
 			}
 		} else if (thread.isTerminated()) {
-			label = "<terminated> " + label; //$NON-NLS-1$
+			label = "<terminated> " + label; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return label;
 	}

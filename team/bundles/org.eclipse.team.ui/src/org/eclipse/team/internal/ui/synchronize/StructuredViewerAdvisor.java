@@ -87,12 +87,12 @@ public abstract class StructuredViewerAdvisor extends AbstractViewerAdvisor {
 	// Property change listener which responds to:
 	//    - working set selection by the user
 	//    - decorator format change selected by the user
-	private final IPropertyChangeListener propertyListener = event -> {
+	private final IPropertyChangeListener propertyListener = event -> { //FLLDCIM: MARK — T06  LAMBDA
 		// Change to showing of sync state in text labels preference
 		if(event.getProperty().equals(IPreferenceIds.SYNCVIEW_VIEW_SYNCINFO_IN_LABEL)) {
 			StructuredViewer viewer = getViewer();
 			if(viewer != null && !viewer.getControl().isDisposed()) {
-				viewer.refresh(true /* update labels */);
+				viewer.refresh(true /* update labels */); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 			}
 		}
 	};
@@ -139,8 +139,8 @@ public abstract class StructuredViewerAdvisor extends AbstractViewerAdvisor {
 	 *
 	 * @param viewer the viewer being initialize
 	 */
-	protected void initializeListeners(final StructuredViewer viewer) {
-		viewer.getControl().addDisposeListener(unused -> StructuredViewerAdvisor.this.dispose());
+	protected void initializeListeners(final StructuredViewer viewer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		viewer.getControl().addDisposeListener(unused -> StructuredViewerAdvisor.this.dispose()); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 
 		new OpenAndLinkWithEditorHelper(viewer) {
 
@@ -167,9 +167,9 @@ public abstract class StructuredViewerAdvisor extends AbstractViewerAdvisor {
 
 		};
 
-		viewer.addDoubleClickListener(event -> handleDoubleClick(viewer, event));
+		viewer.addDoubleClickListener(event -> handleDoubleClick(viewer, event)); //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
 
-		viewer.addSelectionChangedListener(unused -> updateActionBars(viewer.getStructuredSelection()));
+		viewer.addSelectionChangedListener(unused -> updateActionBars(viewer.getStructuredSelection())); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 		TeamUIPlugin.getPlugin().getPreferenceStore().addPropertyChangeListener(propertyListener);
 	}
 
@@ -205,7 +205,7 @@ public abstract class StructuredViewerAdvisor extends AbstractViewerAdvisor {
 	 * action groups registered with the configuration to fill the action bars.
 	 * @param actionBars the Action bars for the page
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public final void setActionBars(IActionBars actionBars) {
 		if(actionBars != null) {
 			IToolBarManager manager = actionBars.getToolBarManager();
@@ -216,7 +216,7 @@ public abstract class StructuredViewerAdvisor extends AbstractViewerAdvisor {
 				o = ISynchronizePageConfiguration.DEFAULT_TOOLBAR_MENU;
 			}
 			String[] groups = (String[])o;
-			for (String group : groups) {
+			for (String group : groups) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// The groupIds must be converted to be unique since the toolbar is shared
 				manager.add(new Separator(getGroupId(group)));
 			}
@@ -231,7 +231,7 @@ public abstract class StructuredViewerAdvisor extends AbstractViewerAdvisor {
 				}
 				groups = (String[]) o;
 				initializeStatusLine(actionBars);
-				for (String group : groups) {
+				for (String group : groups) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					// The groupIds must be converted to be unique since the
 					// view menu is shared
 					menu.add(new Separator(getGroupId(group)));
@@ -264,14 +264,14 @@ public abstract class StructuredViewerAdvisor extends AbstractViewerAdvisor {
 	 * @param viewer the viewer being initialized
 	 * @see fillContextMenu(StructuredViewer, IMenuManager)
 	 */
-	private void hookContextMenu(final StructuredViewer viewer) {
+	private void hookContextMenu(final StructuredViewer viewer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String targetID = getContextMenuId(viewer);
 		final MenuManager menuMgr = createContextMenuManager(targetID);
 
 		menuMgr.setRemoveAllWhenShown(true);
-		menuMgr.addMenuListener(manager -> fillContextMenu(viewer, manager));
+		menuMgr.addMenuListener(manager -> fillContextMenu(viewer, manager)); //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 		Menu menu = menuMgr.createContextMenu(viewer.getControl());
-		menu.addMenuListener(new MenuListener() {
+		menu.addMenuListener(new MenuListener() { //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 
 			@Override
 			public void menuHidden(MenuEvent e) {
@@ -285,7 +285,7 @@ public abstract class StructuredViewerAdvisor extends AbstractViewerAdvisor {
 			@Override
 			public void menuShown(MenuEvent e) {
 				IContributionItem[] items = menuMgr.getItems();
-				for (IContributionItem item : items) {
+				for (IContributionItem item : items) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (item instanceof ActionContributionItem) {
 						IAction actionItem = ((ActionContributionItem) item).getAction();
 						if (actionItem instanceof SynchronizeModelAction) {
@@ -371,7 +371,7 @@ public abstract class StructuredViewerAdvisor extends AbstractViewerAdvisor {
 			o = ISynchronizePageConfiguration.DEFAULT_CONTEXT_MENU;
 		}
 		String[] groups = (String[])o;
-		for (String group : groups) {
+		for (String group : groups) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// There is no need to adjust the group ids in a context menu (see setActionBars)
 			manager.add(new Separator(group));
 		}

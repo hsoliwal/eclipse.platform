@@ -87,13 +87,13 @@ public class ProjectSetImporter {
 		return importProjectSet(xmlMemento, filename, shell, monitor);
 	}
 
-	private static IProject[] importProjectSet(XMLMemento xmlMemento,
+	private static IProject[] importProjectSet(XMLMemento xmlMemento, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			String filename, Shell shell, IProgressMonitor monitor)
 			throws InvocationTargetException {
 		try {
 			String version = xmlMemento.getString("version"); //$NON-NLS-1$
 
-			List<IProject> newProjects = new ArrayList<>();
+			List<IProject> newProjects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			if (version.equals("1.0")){ //$NON-NLS-1$
 				IProjectSetSerializer serializer = Team.getProjectSetSerializer("versionOneSerializer"); //$NON-NLS-1$
 				if (serializer != null) {
@@ -104,12 +104,12 @@ public class ProjectSetImporter {
 				}
 			} else {
 				UIProjectSetSerializationContext context = new UIProjectSetSerializationContext(shell, filename);
-				List<TeamException> errors = new ArrayList<>();
+				List<TeamException> errors = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				IMemento[] providers = xmlMemento.getChildren("provider"); //$NON-NLS-1$
-				for (IMemento provider : providers) {
-					ArrayList<String> referenceStrings= new ArrayList<>();
+				for (IMemento provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					ArrayList<String> referenceStrings= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 					IMemento[] projects = provider.getChildren("project"); //$NON-NLS-1$
-					for (IMemento project : projects) {
+					for (IMemento project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						referenceStrings.add(project.getString("reference")); //$NON-NLS-1$
 					}
 					try {
@@ -140,7 +140,7 @@ public class ProjectSetImporter {
 				if (!errors.isEmpty()) {
 					TeamException[] exceptions= errors.toArray(new TeamException[errors.size()]);
 					IStatus[] status= new IStatus[exceptions.length];
-					for (int i= 0; i < exceptions.length; i++) {
+					for (int i= 0; i < exceptions.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						status[i]= exceptions[i].getStatus();
 					}
 					throw new TeamException(new MultiStatus(TeamUIPlugin.ID, 0, status, TeamUIMessages.ProjectSetImportWizard_1, null));
@@ -153,7 +153,7 @@ public class ProjectSetImporter {
 				boolean mergeAll = false;
 				boolean skipAll = false;
 
-				for (IMemento set : sets) {
+				for (IMemento set : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IWorkingSet newWs = wsManager.createWorkingSet(set);
 					if (newWs != null) {
 						IWorkingSet oldWs = wsManager.getWorkingSet(newWs
@@ -180,7 +180,7 @@ public class ProjectSetImporter {
 									shell, title, null, msg,
 									MessageDialog.QUESTION, buttons, 0);
 
-							shell.getDisplay().syncExec(() -> dialog.open());
+							shell.getDisplay().syncExec(() -> dialog.open()); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 
 							switch (dialog.getReturnCode()) {
 							case 0: // overwrite
@@ -263,7 +263,7 @@ public class ProjectSetImporter {
 		IAdaptable[] oldElements = oldWs.getElements();
 		IAdaptable[] newElements = newWs.getElements();
 
-		Set<IAdaptable> combinedElements = new HashSet<>();
+		Set<IAdaptable> combinedElements = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		combinedElements.addAll(Arrays.asList(oldElements));
 		combinedElements.addAll(Arrays.asList(newElements));
 
@@ -286,7 +286,7 @@ public class ProjectSetImporter {
 		protected Control createCustomArea(Composite parent) {
 			final Button checkBox = new Button(parent, SWT.CHECK);
 			checkBox.setText(TeamUIMessages.ImportProjectSetDialog_duplicatedWorkingSet_applyToAll);
-			checkBox.addSelectionListener(new SelectionAdapter() {
+			checkBox.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					applyToAll = checkBox.getSelection();

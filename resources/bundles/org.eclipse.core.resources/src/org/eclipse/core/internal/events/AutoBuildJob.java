@@ -95,12 +95,12 @@ class AutoBuildJob extends Job implements IEclipsePreferences.IPreferenceChangeL
 	 * @param needsBuild Whether a build is required, either due to
 	 * workspace change or other factor that invalidates the built state.
 	 */
-	synchronized void build(boolean needsBuild) {
+	synchronized void build(boolean needsBuild) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		buildNeeded |= needsBuild;
 		long delay = computeScheduleDelay();
 		int state = getState();
 		if (Policy.DEBUG_BUILD_NEEDED) {
-			Policy.debug("build requested, needsBuild: " + needsBuild + " state: " + state + ", delay: " + delay); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Policy.debug("build requested, needsBuild: " + needsBuild + " state: " + state + ", delay: " + delay); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		//don't mess with the interrupt flag if the job is still running
@@ -111,14 +111,14 @@ class AutoBuildJob extends Job implements IEclipsePreferences.IPreferenceChangeL
 		switch (state) {
 			case Job.SLEEPING :
 				if (Policy.DEBUG_BUILD_INVOKING) {
-					traceMessageOrFullStack("wakeup, needsBuild: " + needsBuild + ", delay: " + delay); //$NON-NLS-1$ //$NON-NLS-2$
+					traceMessageOrFullStack("wakeup, needsBuild: " + needsBuild + ", delay: " + delay); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				wakeUp(delay);
 				break;
 			case NONE :
 				if (isAutoBuilding) {
 					if (Policy.DEBUG_BUILD_INVOKING) {
-						traceMessageOrFullStack("scheduled, needsBuild: " + needsBuild + ", delay: " + delay); //$NON-NLS-1$//$NON-NLS-2$
+						traceMessageOrFullStack("scheduled, needsBuild: " + needsBuild + ", delay: " + delay); //$NON-NLS-1$//$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 					schedule(delay);
 				} else {
@@ -139,7 +139,7 @@ class AutoBuildJob extends Job implements IEclipsePreferences.IPreferenceChangeL
 				// the job
 				if (isAutoBuilding && buildNeeded && !avoidBuild && Job.getJobManager().currentJob() != this) {
 					if (Policy.DEBUG_BUILD_INVOKING) {
-						traceMessageOrFullStack("scheduled from other thread with delay: " + delay); //$NON-NLS-1$
+						traceMessageOrFullStack("scheduled from other thread with delay: " + delay); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 					schedule(delay);
 				}
@@ -151,7 +151,7 @@ class AutoBuildJob extends Job implements IEclipsePreferences.IPreferenceChangeL
 	 * Should only be called after check for enabled trace flag
 	 */
 	private static void traceMessageOrFullStack(String message) {
-		message = "AutoBuildJob: " + message; //$NON-NLS-1$
+		message = "AutoBuildJob: " + message; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		if (Policy.DEBUG_BUILD_NEEDED_STACK) {
 			Policy.debug(new RuntimeException(message));
 		} else {
@@ -192,7 +192,7 @@ class AutoBuildJob extends Job implements IEclipsePreferences.IPreferenceChangeL
 		return Status.CANCEL_STATUS;
 	}
 
-	private void doBuild(IProgressMonitor monitor) throws CoreException, OperationCanceledException {
+	private void doBuild(IProgressMonitor monitor) throws CoreException, OperationCanceledException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		SubMonitor subMonitor = SubMonitor.convert(monitor, Policy.opWork + 1);
 		final ISchedulingRule rule = workspace.getRuleFactory().buildRule();
 		SubMonitor split = subMonitor.split(1); // will throw OperationCanceledException if autobuild canceled
@@ -236,7 +236,7 @@ class AutoBuildJob extends Job implements IEclipsePreferences.IPreferenceChangeL
 	 * Another thread is attempting to modify the workspace. Flag the auto-build
 	 * as interrupted so that it will cancel and reschedule itself
 	 */
-	synchronized void interrupt() {
+	synchronized void interrupt() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//if already interrupted, do nothing
 		if (interrupted) {
 			return;
@@ -273,7 +273,7 @@ class AutoBuildJob extends Job implements IEclipsePreferences.IPreferenceChangeL
 		return interrupted;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void preferenceChange(PreferenceChangeEvent event) {
 		if (!ResourcesPlugin.PREF_AUTO_BUILDING.equals(event.getKey())) {
 			return;
@@ -293,7 +293,7 @@ class AutoBuildJob extends Job implements IEclipsePreferences.IPreferenceChangeL
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus run(IProgressMonitor monitor) {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 1);
 		synchronized (this) {
@@ -335,7 +335,7 @@ class AutoBuildJob extends Job implements IEclipsePreferences.IPreferenceChangeL
 	/**
 	 * Returns true if a build is actually needed, and false otherwise.
 	 */
-	private synchronized boolean shouldBuild() {
+	private synchronized boolean shouldBuild() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			//if auto-build is off then we never run
 			if (!workspace.isAutoBuilding()) {
@@ -375,7 +375,7 @@ class AutoBuildJob extends Job implements IEclipsePreferences.IPreferenceChangeL
 			return family == ResourcesPlugin.FAMILY_AUTO_BUILD;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		protected IStatus run(IProgressMonitor monitor) {
 			// if the system is shutting down, don't build
 			if (systemBundle.getState() == Bundle.STOPPING) {

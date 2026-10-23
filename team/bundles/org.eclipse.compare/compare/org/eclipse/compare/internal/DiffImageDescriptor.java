@@ -61,7 +61,7 @@ public class DiffImageDescriptor extends CompositeImageDescriptor {
 
 	private int calculateHash(ImageData baseImageData) {
 		int hash = baseImageData.width + baseImageData.height;
-		for (byte b : baseImageData.data) {
+		for (byte b : baseImageData.data) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			hash >>>= 1;
 			hash ^= b;
 		}
@@ -73,7 +73,7 @@ public class DiffImageDescriptor extends CompositeImageDescriptor {
 		return new Point(fWidth, HEIGHT);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void drawCompositeImage(int width, int height) {
 		if (fLeft) {
 			if (fBaseImageData != null) {
@@ -122,7 +122,7 @@ public class DiffImageDescriptor extends CompositeImageDescriptor {
 		return false;
 	}
 
-	private boolean isEqual(ImageData i1, ImageData i2) {
+	private boolean isEqual(ImageData i1, ImageData i2) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (isEqual((Object) i1, (Object) i2)) {
 			return true;
 		}
@@ -152,7 +152,7 @@ public class DiffImageDescriptor extends CompositeImageDescriptor {
 		if (data.length != data2.length) {
 			return false;
 		}
-		for (int i = 0; i < data2.length; i++) {
+		for (int i = 0; i < data2.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (data[i] != data2[i]) {
 				return false;
 			}

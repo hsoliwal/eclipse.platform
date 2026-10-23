@@ -20,7 +20,7 @@ import org.eclipse.team.internal.core.subscribers.SubscriberDiffTreeEventHandler
 import org.eclipse.team.internal.ui.Utils;
 import org.eclipse.team.ui.synchronize.ISynchronizePageConfiguration;
 
-public class RestoreRemovedItemsAction extends ResourceModelParticipantAction {
+public class RestoreRemovedItemsAction extends ResourceModelParticipantAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 	public RestoreRemovedItemsAction(ISynchronizePageConfiguration configuration) {
 		super(null, configuration);

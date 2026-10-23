@@ -57,7 +57,7 @@ public class Filter {
 		this.project = project;
 	}
 
-	public boolean match(IContainer parent, IFileInfo fileInfo) throws CoreException {
+	public boolean match(IContainer parent, IFileInfo fileInfo) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (provider == null) {
 			IFilterMatcherDescriptor filterDescriptor = project.getWorkspace().getFilterMatcherDescriptor(getId());
 			if (filterDescriptor != null) {
@@ -119,15 +119,15 @@ public class Filter {
 		return filterExcludes(project, excludeFilters, parent, result);
 	}
 
-	public static IFileInfo[] filterIncludes(IProject project, LinkedList<Filter> filters, IContainer parent, IFileInfo[] list) throws CoreException {
+	public static IFileInfo[] filterIncludes(IProject project, LinkedList<Filter> filters, IContainer parent, IFileInfo[] list) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (filters.size() > 0) {
 			IFileInfo[] result = new IFileInfo[list.length];
 			int outputIndex = 0;
 
-			for (IFileInfo info : list) {
+			for (IFileInfo info : list) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Iterator<Filter> objIt = filters.iterator();
 				boolean filtersWereApplicable = false;
-				while (objIt.hasNext()) {
+				while (objIt.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Filter filter = objIt.next();
 					if (filter.appliesTo(info)) {
 						filtersWereApplicable = true;
@@ -151,15 +151,15 @@ public class Filter {
 		return list;
 	}
 
-	public static IFileInfo[] filterExcludes(IProject project, LinkedList<Filter> filters, IContainer parent, IFileInfo[] list) throws CoreException {
+	public static IFileInfo[] filterExcludes(IProject project, LinkedList<Filter> filters, IContainer parent, IFileInfo[] list) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (filters.size() > 0) {
 			IFileInfo[] result = new IFileInfo[list.length];
 			int outputIndex = 0;
 
-			for (IFileInfo info : list) {
+			for (IFileInfo info : list) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Iterator<Filter> objIt = filters.iterator();
 				boolean shouldBeExcluded = false;
-				while (objIt.hasNext()) {
+				while (objIt.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Filter filter = objIt.next();
 					if (filter.appliesTo(info)) {
 						if (filter.match(parent, info)) {

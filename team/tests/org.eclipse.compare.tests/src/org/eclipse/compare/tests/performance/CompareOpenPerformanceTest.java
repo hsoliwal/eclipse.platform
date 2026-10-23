@@ -103,7 +103,7 @@ public class CompareOpenPerformanceTest {
 		final String label;
 		final int lines;
 		final int changes;
-		final List<long[]> samples = new ArrayList<>();
+		final List<long[]> samples = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		Scenario(String label, int lines, int changes) {
 			this.label = label;
@@ -151,7 +151,7 @@ public class CompareOpenPerformanceTest {
 		measureDocumentMerger(Scenario.DOC_MERGER_5K_DENSE, info);
 	}
 
-	private void measureCompareOpen(Scenario scenario, RepetitionInfo info) {
+	private void measureCompareOpen(Scenario scenario, RepetitionInfo info) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		store().setValue(ComparePreferencePage.UNIFIED_DIFF, false);
 		String[] content = generate(scenario.lines, scenario.changes);
 		TextCompareEditorInput input = new TextCompareEditorInput(content[0], content[1]);
@@ -175,7 +175,7 @@ public class CompareOpenPerformanceTest {
 		closeAllEditors();
 	}
 
-	private void measureUnifiedOpen(Scenario scenario, RepetitionInfo info) throws Exception {
+	private void measureUnifiedOpen(Scenario scenario, RepetitionInfo info) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		store().setValue(ComparePreferencePage.UNIFIED_DIFF, true);
 		String[] content = generate(scenario.lines, scenario.changes);
 		IFile file = unifiedFile(content[0]);
@@ -221,13 +221,13 @@ public class CompareOpenPerformanceTest {
 			scenario.samples.add(new long[] { timeToText, timeToDiff });
 		}
 		assertTrue(timeToDiff < SANITY_BOUND_MILLIS,
-				scenario.name() + " time to diff exceeded the sanity bound: " + timeToDiff + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+				scenario.name() + " time to diff exceeded the sanity bound: " + timeToDiff + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	@AfterAll
+	@AfterAll //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public static void reportResults() throws IOException {
-		StringBuilder csv = new StringBuilder("label,lines,changes,timeToTextMedianMs,timeToDiffMedianMs,n\n"); //$NON-NLS-1$
-		for (Scenario scenario : Scenario.values()) {
+		StringBuilder csv = new StringBuilder("label,lines,changes,timeToTextMedianMs,timeToDiffMedianMs,n\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (Scenario scenario : Scenario.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (scenario.samples.isEmpty()) {
 				continue;
 			}
@@ -235,14 +235,14 @@ public class CompareOpenPerformanceTest {
 			long diffMedian = median(scenario.samples, 1);
 			int n = scenario.samples.size();
 			if (scenario.label.equals("document-merger")) { //$NON-NLS-1$
-				System.out.println("PERF document-merger lines=" + scenario.lines + " changes=" + scenario.changes //$NON-NLS-1$ //$NON-NLS-2$
+				System.out.println("PERF document-merger lines=" + scenario.lines + " changes=" + scenario.changes //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						+ " doDiff=" + diffMedian + "ms (median, n=" + n + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 			} else {
-				System.out.println("PERF " + scenario.label + " lines=" + scenario.lines + " changes=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				System.out.println("PERF " + scenario.label + " lines=" + scenario.lines + " changes=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						+ scenario.changes + " timeToText=" + textMedian + "ms timeToDiff=" + diffMedian //$NON-NLS-1$ //$NON-NLS-2$
 						+ "ms (median, n=" + n + ")"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
-			csv.append(scenario.label).append(',').append(scenario.lines).append(',').append(scenario.changes)
+			csv.append(scenario.label).append(',').append(scenario.lines).append(',').append(scenario.changes) //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					.append(',').append(textMedian).append(',').append(diffMedian).append(',').append(n)
 					.append('\n');
 		}
@@ -263,28 +263,28 @@ public class CompareOpenPerformanceTest {
 		}
 		File csvFile = new File(targetDir, "compare-open-performance.csv"); //$NON-NLS-1$
 		Files.writeString(csvFile.toPath(), content);
-		System.out.println("PERF csv written to " + csvFile.getAbsolutePath()); //$NON-NLS-1$
+		System.out.println("PERF csv written to " + csvFile.getAbsolutePath()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	// Synthetic content generator modeled on RangeDifferencerTest.createDocument.
 	// The right side modifies roughly "changes" evenly spaced lines of the left side.
 	private static String[] generate(int lines, int changes) {
 		int interval = changes > 0 ? Math.max(1, lines / changes) : lines + 1;
-		StringBuilder left = new StringBuilder(lines * 10);
-		StringBuilder right = new StringBuilder(lines * 12);
-		for (int i = 0; i < lines; i++) {
-			String base = "line " + i; //$NON-NLS-1$
-			left.append(base).append('\n');
+		StringBuilder left = new StringBuilder(lines * 10); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		StringBuilder right = new StringBuilder(lines * 12); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < lines; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			String base = "line " + i; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			left.append(base).append('\n'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			if (i > 0 && i % interval == 0) {
-				right.append(base).append(" CHANGED").append('\n'); //$NON-NLS-1$
+				right.append(base).append(" CHANGED").append('\n'); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			} else {
-				right.append(base).append('\n');
+				right.append(base).append('\n'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 		return new String[] { left.toString(), right.toString() };
 	}
 
-	private IFile unifiedFile(String content) throws CoreException {
+	private IFile unifiedFile(String content) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (unifiedProject == null) {
 			unifiedProject = ResourcesPlugin.getWorkspace().getRoot().getProject("CompareOpenPerformance"); //$NON-NLS-1$
 		}
@@ -306,7 +306,7 @@ public class CompareOpenPerformanceTest {
 
 	private static boolean hasUnifiedDiffAnnotation(IAnnotationModel model) {
 		Iterator<Annotation> it = model.getAnnotationIterator();
-		while (it.hasNext()) {
+		while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Annotation annotation = it.next();
 			String type = annotation.getType();
 			if (type != null && type.startsWith(UNIFIED_DIFF_ANNOTATION_PREFIX)) {
@@ -316,7 +316,7 @@ public class CompareOpenPerformanceTest {
 		return false;
 	}
 
-	private static IDocumentMergerInput headlessInput(IDocument left, IDocument right) {
+	private static IDocumentMergerInput headlessInput(IDocument left, IDocument right) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		return new IDocumentMergerInput() {
 			@Override
 			public IDocument getDocument(char contributor) {
@@ -381,11 +381,11 @@ public class CompareOpenPerformanceTest {
 	}
 
 	private static long median(List<long[]> samples, int index) {
-		List<Long> values = new ArrayList<>(samples.size());
-		for (long[] sample : samples) {
+		List<Long> values = new ArrayList<>(samples.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (long[] sample : samples) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			values.add(sample[index]);
 		}
-		Collections.sort(values);
+		Collections.sort(values); //FLLDCIM: MARK — M16 SORT_LANE CALL
 		int n = values.size();
 		if (n == 0) {
 			return -1;
@@ -438,7 +438,7 @@ public class CompareOpenPerformanceTest {
 		}
 	}
 
-	private static class TextCompareEditorInput extends CompareEditorInput {
+	private static class TextCompareEditorInput extends CompareEditorInput { //FLLDCIM: MARK — T09  IMPLEMENTS
 		private final ITypedElement left;
 		private final ITypedElement right;
 
@@ -468,23 +468,23 @@ public class CompareOpenPerformanceTest {
 		}
 	}
 
-	private static void pumpUntil(BooleanSupplier condition, String failMessage) {
+	private static void pumpUntil(BooleanSupplier condition, String failMessage) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Display display = Display.getCurrent();
 		long deadline = System.currentTimeMillis() + TIMEOUT_MILLIS;
 		Runnable[] wake = new Runnable[1];
-		wake[0] = () -> display.timerExec(50, wake[0]);
-		display.timerExec(50, wake[0]);
+		wake[0] = () -> display.timerExec(50, wake[0]); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
+		display.timerExec(50, wake[0]); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		try {
-			while (!condition.getAsBoolean()) {
+			while (!condition.getAsBoolean()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (System.currentTimeMillis() > deadline) {
-					fail(failMessage + " within " + TIMEOUT_MILLIS + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+					fail(failMessage + " within " + TIMEOUT_MILLIS + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				if (!display.readAndDispatch()) {
 					display.sleep();
 				}
 			}
 		} finally {
-			display.timerExec(-1, wake[0]);
+			display.timerExec(-1, wake[0]); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		}
 	}
 
@@ -498,7 +498,7 @@ public class CompareOpenPerformanceTest {
 
 	private void processQueuedEvents() {
 		Display display = Display.getCurrent();
-		while (display.readAndDispatch()) {
+		while (display.readAndDispatch()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// drain the event queue
 		}
 	}

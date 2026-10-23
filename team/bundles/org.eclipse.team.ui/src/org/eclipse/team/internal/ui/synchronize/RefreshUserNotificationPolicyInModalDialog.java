@@ -44,7 +44,7 @@ public class RefreshUserNotificationPolicyInModalDialog implements IRefreshSubsc
 	public void refreshStarted(IRefreshEvent event) {
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ActionFactory.IWorkbenchAction refreshDone(final IRefreshEvent event) {
 		//	Ensure that this event was generated for this participant
 		if (event.getParticipant() != participant) {
@@ -78,7 +78,7 @@ public class RefreshUserNotificationPolicyInModalDialog implements IRefreshSubsc
 
 	protected void compareAndOpenDialog(final IRefreshEvent event, final SubscriberParticipant participant) {
 		CompareConfiguration cc = new CompareConfiguration();
-		ParticipantPageSaveablePart input = new ParticipantPageSaveablePart(Utils.getShell(null), cc, configuration, participant) {
+		ParticipantPageSaveablePart input = new ParticipantPageSaveablePart(Utils.getShell(null), cc, configuration, participant) { //FLLDCIM: MARK — T37  ANONYMOUS
 			@Override
 			public String getTitle() {
 				return RefreshUserNotificationPolicyInModalDialog.this.title;

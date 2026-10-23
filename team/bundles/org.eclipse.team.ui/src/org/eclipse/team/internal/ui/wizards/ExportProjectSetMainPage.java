@@ -77,7 +77,7 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 
 	Button exportWorkingSets;
 
-	ArrayList<IProject> passedInSelectedProjects = new ArrayList<>();
+	ArrayList<IProject> passedInSelectedProjects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	class ProjectContentProvider implements ITreePathContentProvider{
 
@@ -93,11 +93,11 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 		@Override
 		public TreePath[] getParents(Object element) {
 			if (element instanceof IProject){
-				ArrayList<IWorkingSet> treePaths = new ArrayList<>();
+				ArrayList<IWorkingSet> treePaths = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				IWorkingSet[] workingSets = PlatformUI.getWorkbench().getWorkingSetManager().getWorkingSets();
-				for (IWorkingSet workingSet : workingSets) {
+				for (IWorkingSet workingSet : workingSets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IAdaptable[] elements = workingSet.getElements();
-					for (IAdaptable d : elements) {
+					for (IAdaptable d : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (d.equals(element)) {
 							treePaths.add(workingSet);
 							break;
@@ -119,12 +119,12 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 			return false;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public Object[] getElements(Object inputElement) {
 			if (inputElement instanceof IWorkspaceRoot root) {
-				List<IProject> projectList = new ArrayList<>();
+				List<IProject> projectList = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				IProject[] workspaceProjects = root.getProjects();
-				for (IProject workspaceProject : workspaceProjects) {
+				for (IProject workspaceProject : workspaceProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (isProjectExportable(workspaceProject)) {
 						projectList.add(workspaceProject);
 					}
@@ -132,8 +132,8 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 				return projectList.toArray(new IProject[projectList.size()]);
 			} else if (inputElement instanceof IWorkingSetManager manager){
 				IWorkingSet[] allSets = manager.getAllWorkingSets();
-				ArrayList<IWorkingSet> resourceSets = new ArrayList<>();
-				for (IWorkingSet set : allSets) {
+				ArrayList<IWorkingSet> resourceSets = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+				for (IWorkingSet set : allSets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (isWorkingSetSupported(set)) {
 						resourceSets.add(set);
 					}
@@ -149,8 +149,8 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 			else if (inputElement instanceof IAdaptable[] tempAdaptable){
 				return getProjectsForAdaptables(tempAdaptable);
 			} else if (inputElement instanceof HashSet inputElementSet){
-				Set<IProject> tempList = new HashSet<>();
-				for (Object element : inputElementSet) {
+				Set<IProject> tempList = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+				for (Object element : inputElementSet) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IProject[] projects = getProjectsForObject(element);
 					if (projects != null) {
 						tempList.addAll(Arrays.asList(projects));
@@ -202,8 +202,8 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 	}
 
 	private IProject[] getProjectsForAdaptables(IAdaptable[] adaptable) {
-		Set<IProject> projectSet = new HashSet<>();
-		for (IAdaptable a : adaptable) {
+		Set<IProject> projectSet = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IAdaptable a : adaptable) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProject[] projects = getProjectsForObject(a);
 			if (projects != null) {
 				projectSet.addAll(Arrays.asList(projects));
@@ -219,7 +219,7 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 	private static boolean isWorkingSetSupported(IWorkingSet workingSet) {
 		if (!workingSet.isEmpty() && !workingSet.isAggregateWorkingSet()) {
 			IAdaptable[] elements = workingSet.getElements();
-			for (IAdaptable element : elements) {
+			for (IAdaptable element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource resource = ResourceUtil.getResource(element);
 				if (resource != null) {
 					// support a working set if it contains at least one resource
@@ -239,7 +239,7 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 		setDescription(TeamUIMessages.ExportProjectSetMainPage_Initial_description);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createControl(Composite parent) {
 		Composite c = SWTUtils.createHVFillComposite(parent, 0);
 
@@ -257,8 +257,8 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 		projectPage = new ProjectPage();
 
 		// filter out unexportable projects
-		List passedInExportableProjects = new ArrayList();
-		for (IProject project : passedInSelectedProjects) {
+		List passedInExportableProjects = new ArrayList(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IProject project : passedInSelectedProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isProjectExportable(project)) {
 				passedInExportableProjects.add(project);
 			}
@@ -277,12 +277,12 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 		Dialog.applyDialogFont(parent);
 	}
 
-	private void exportWorkingSets(Composite composite) {
+	private void exportWorkingSets(Composite composite) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		exportWorkingSets = new Button(composite, SWT.CHECK | SWT.LEFT);
 		exportWorkingSets.setText(TeamUIMessages.ExportProjectSetMainPage_ExportWorkingSets);
 
 		exportWorkingSets.setSelection(false);
-		exportWorkingSets.addSelectionListener(new SelectionAdapter() {
+		exportWorkingSets.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (((Button) e.widget).getSelection()){
@@ -329,9 +329,9 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 		private CheckboxTableViewer tableViewer;
 		private Table table;
 
-		HashSet selectedProjects = new HashSet();
-		ArrayList referenceCountProjects = new ArrayList();
-		ArrayList selectedWorkingSet = new ArrayList();
+		HashSet selectedProjects = new HashSet(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		ArrayList referenceCountProjects = new ArrayList(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		ArrayList selectedWorkingSet = new ArrayList(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		@Override
 		public void createControl(Composite parent) {
@@ -356,7 +356,7 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 			projectComposite.setFocus();
 		}
 
-		private void addProjectSection(Composite composite) {
+		private void addProjectSection(Composite composite) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 			createLabel(composite, TeamUIMessages.ExportProjectSetMainPage_Select_the_projects_to_include_in_the_project_set__2);
 
@@ -367,9 +367,9 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 			data.heightHint = 300;
 			table.setLayoutData(data);
 			tableViewer.setContentProvider(new ProjectContentProvider());
-			tableViewer.setLabelProvider(new WorkbenchLabelProvider());
+			tableViewer.setLabelProvider(new WorkbenchLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 			tableViewer.setComparator(new ResourceComparator(ResourceComparator.NAME));
-			tableViewer.addCheckStateListener(event -> {
+			tableViewer.addCheckStateListener(event -> { //FLLDCIM: MARK — T21 CHECK_STATE_LANE CALL
 				Object temp = event.getElement();
 				if (temp instanceof IProject){
 					IProject project = (IProject) event.getElement();
@@ -386,7 +386,7 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 						Collections.addAll(selectedProjects, elements1);
 					} else {
 						IAdaptable[] elements2 = workingSet.getElements();
-						for (IAdaptable element : elements2) {
+						for (IAdaptable element : elements2) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							selectedProjects.remove(element);
 						}
 					}
@@ -410,7 +410,7 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 			data.widthHint = Math.max(widthHint, selectAll.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x);
 			selectAll.setLayoutData(data);
 			selectAll.setText(TeamUIMessages.ExportProjectSetMainPage_SelectAll);
-			selectAll.addListener(SWT.Selection, unused -> {
+			selectAll.addListener(SWT.Selection, unused -> { //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 				tableViewer.setAllChecked(true);
 				selectedProjects.clear();
 				Object[] checked = tableViewer.getCheckedElements();
@@ -426,7 +426,7 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 			data.widthHint = Math.max(widthHint, deselectAll.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x);
 			deselectAll.setLayoutData(data);
 			deselectAll.setText(TeamUIMessages.ExportProjectSetMainPage_DeselectAll);
-			deselectAll.addListener(SWT.Selection, unused -> {
+			deselectAll.addListener(SWT.Selection, unused -> { //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 				tableViewer.setAllChecked(false);
 				selectedProjects.clear();
 				updateEnablement();
@@ -434,7 +434,7 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 		}
 
 		private void initializeProjects() {
-			tableViewer.setInput(ResourcesPlugin.getWorkspace().getRoot());
+			tableViewer.setInput(ResourcesPlugin.getWorkspace().getRoot()); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 
 			// Check any necessary projects
 			if (selectedProjects != null) {
@@ -481,9 +481,9 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 		private TableViewer tableViewer;
 
 
-		HashSet<IProject> selectedProjects = new HashSet<>();
-		ArrayList<IProject> referenceCountProjects = new ArrayList<>();
-		ArrayList selectedWorkingSet = new ArrayList();
+		HashSet<IProject> selectedProjects = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		ArrayList<IProject> referenceCountProjects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		ArrayList selectedWorkingSet = new ArrayList(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		/**
 		 * Indicates whether the page has been displayed. If this is the first
@@ -491,7 +491,7 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 		 */
 		private boolean pageShown = false;
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void createControl(Composite parent) {
 
 			projectComposite = SWTUtils.createHVFillComposite(parent, 1);
@@ -501,7 +501,7 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 			GridData grid = (GridData) label.getLayoutData();
 			label.setData(grid);
 
-			SashForm form = new SashForm(projectComposite, SWT.HORIZONTAL);
+			SashForm form = new SashForm(projectComposite, SWT.HORIZONTAL); //FLLDCIM: MARK — M26 SPLIT_PANEL NEW
 			form.setLayout(new FillLayout());
 			GridData data = new GridData(GridData.FILL_BOTH);
 			form.setLayoutData(data);
@@ -525,11 +525,11 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 			data.heightHint = 300;
 			table.setLayoutData(data);
 			tableViewer.setContentProvider(new ProjectContentProvider());
-			tableViewer.setLabelProvider(new ExportProjectSetLabelProvider());
+			tableViewer.setLabelProvider(new ExportProjectSetLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 			tableViewer.setComparator(new ResourceComparator(ResourceComparator.NAME));
 		}
 
-		private void addWorkingSetSection(Composite projectComposite) {
+		private void addWorkingSetSection(Composite projectComposite) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 			wsTable = new Table(projectComposite, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 			wsTableViewer = new CheckboxTableViewer(wsTable);
@@ -538,27 +538,27 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 			data.heightHint = 300;
 			wsTable.setLayoutData(data);
 			wsTableViewer.setContentProvider(new ProjectContentProvider());
-			wsTableViewer.setLabelProvider(new WorkbenchLabelProvider());
-			wsTableViewer.addCheckStateListener(event -> {
+			wsTableViewer.setLabelProvider(new WorkbenchLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
+			wsTableViewer.addCheckStateListener(event -> { //FLLDCIM: MARK — T21 CHECK_STATE_LANE CALL
 				Object temp = event.getElement();
 				if (temp instanceof IWorkingSet workingSet){
 					if (event.getChecked()){
 						workingSetAdded(workingSet);
 						//Add the selected project to the table viewer
-						tableViewer.setInput(selectedProjects);
+						tableViewer.setInput(selectedProjects); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 					} else {
 						workingSetRemoved(workingSet);
 						//Add the selected project to the table viewer
-						tableViewer.setInput(selectedProjects);
+						tableViewer.setInput(selectedProjects); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 					}
 				}
 				updateEnablement();
 			});
 
-			wsTableViewer.setInput(PlatformUI.getWorkbench().getWorkingSetManager());
+			wsTableViewer.setInput(PlatformUI.getWorkbench().getWorkingSetManager()); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		}
 
-		private void addButtons(Composite projectComposite){
+		private void addButtons(Composite projectComposite){ //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 			Composite buttonComposite = new Composite(projectComposite, SWT.NONE);
 			GridLayout layout = new GridLayout();
@@ -576,19 +576,19 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 			data.widthHint = Math.max(widthHint, selectAll.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x);
 			selectAll.setLayoutData(data);
 			selectAll.setText(TeamUIMessages.ExportProjectSetMainPage_SelectAll);
-			selectAll.addListener(SWT.Selection, unused -> {
+			selectAll.addListener(SWT.Selection, unused -> { //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 				wsTableViewer.setAllChecked(true);
 
 				selectedProjects.clear();
 				selectedWorkingSet.clear();
 				Object[] checked = wsTableViewer.getCheckedElements();
-				for (Object c : checked) {
+				for (Object c : checked) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					selectedWorkingSet.add(c);
 					if (c instanceof IWorkingSet ws) {
 						IAdaptable[] elements = ws.getElements();
 						addProjects(elements);
 					}
-					tableViewer.setInput(selectedProjects);
+					tableViewer.setInput(selectedProjects); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 				}
 				updateEnablement();
 			});
@@ -601,12 +601,12 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 			data.widthHint = Math.max(widthHint, deselectAll.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x);
 			deselectAll.setLayoutData(data);
 			deselectAll.setText(TeamUIMessages.ExportProjectSetMainPage_DeselectAll);
-			deselectAll.addListener(SWT.Selection, unused -> {
+			deselectAll.addListener(SWT.Selection, unused -> { //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 				wsTableViewer.setAllChecked(false);
 				selectedWorkingSet.clear();
 				selectedProjects.clear();
 				referenceCountProjects.clear();
-				tableViewer.setInput(selectedProjects);
+				tableViewer.setInput(selectedProjects); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 				updateEnablement();
 			});
 
@@ -618,14 +618,14 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 			data.widthHint = Math.max(widthHint, deselectAll.computeSize(SWT.DEFAULT, SWT.DEFAULT, true).x);
 			newWorkingSet.setLayoutData(data);
 			newWorkingSet.setText(TeamUIMessages.ExportProjectSetMainPage_EditButton);
-			newWorkingSet.addListener(SWT.Selection, unused -> {
+			newWorkingSet.addListener(SWT.Selection, unused -> { //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 				final IWorkingSetManager workingSetManager = PlatformUI.getWorkbench().getWorkingSetManager();
 				IWorkingSetSelectionDialog wsWizard = workingSetManager.createWorkingSetSelectionDialog(getShell(), false);
 				if (wsWizard != null) {
 					IPropertyChangeListener propListener = null;
 					try {
 						//add event listener
-						propListener = unused2 -> {
+						propListener = unused2 -> { //FLLDCIM: MARK — T06  LAMBDA
 
 						};
 
@@ -635,9 +635,9 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 						selectedWorkingSet.clear();
 						referenceCountProjects.clear();
 						selectedProjects.clear();
-						wsTableViewer.setInput(workingSetManager);
+						wsTableViewer.setInput(workingSetManager); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 						Object[] checked = wsTableViewer.getCheckedElements();
-						for (Object c : checked) {
+						for (Object c : checked) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							selectedWorkingSet.add(c);
 							if (c instanceof IWorkingSet ws) {
 								IAdaptable[] elements = ws.getElements();
@@ -645,8 +645,8 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 							}
 						}
 
-						wsTableViewer.setInput(workingSetManager);
-						tableViewer.setInput(selectedProjects);
+						wsTableViewer.setInput(workingSetManager); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
+						tableViewer.setInput(selectedProjects); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 					} finally {
 						if (propListener != null) {
 							workingSetManager.removePropertyChangeListener(propListener);
@@ -667,10 +667,10 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 		}
 
 		public void refresh(){
-			wsTableViewer.setInput(PlatformUI.getWorkbench().getWorkingSetManager());
+			wsTableViewer.setInput(PlatformUI.getWorkbench().getWorkingSetManager()); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		}
 
-		private void updateEnablement() {
+		private void updateEnablement() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			boolean complete = selectedProjects.size() > 0
 					&& selectedWorkingSet.size() > 0;
 			boolean allExportable = complete;
@@ -678,7 +678,7 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 			// check if there is at least one exportable project selected
 			if (complete || !pageShown) {
 				complete = false;
-				for (IProject selectedProject : selectedProjects) {
+				for (IProject selectedProject : selectedProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (isProjectExportable(selectedProject)) {
 						complete = true;
 					} else {
@@ -729,12 +729,12 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 			addProjects(elements);
 		}
 
-		private void workingSetRemoved(IWorkingSet workingSet) {
+		private void workingSetRemoved(IWorkingSet workingSet) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IAdaptable[] elements = workingSet.getElements();
 			selectedWorkingSet.remove(workingSet);
 
-			Set<IProject> tempSet = new HashSet<>();
-			for (IAdaptable element : elements) {
+			Set<IProject> tempSet = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+			for (IAdaptable element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IProject[] projects = getProjectsForObject(element);
 				if (projects != null) {
 					tempSet.addAll(Arrays.asList(projects));
@@ -743,7 +743,7 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 
 			if (!tempSet.isEmpty()) {
 				selectedProjects.removeAll(tempSet);
-				for (Object element : tempSet) {
+				for (Object element : tempSet) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					referenceCountProjects.remove(element);
 				}
 				selectedProjects.addAll(referenceCountProjects);
@@ -751,8 +751,8 @@ public class ExportProjectSetMainPage extends TeamWizardPage {
 		}
 
 		private void addProjects(IAdaptable[] elements) {
-			Set<IProject> tempSet = new HashSet<>();
-			for (IAdaptable element : elements) {
+			Set<IProject> tempSet = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+			for (IAdaptable element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IProject[] projects = getProjectsForObject(element);
 				if (projects != null) {
 					tempSet.addAll(Arrays.asList(projects));

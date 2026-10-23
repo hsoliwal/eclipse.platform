@@ -77,7 +77,7 @@ public class RemoveUnusedMessages extends Refactoring {
 		return new RefactoringStatus();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public RefactoringStatus checkFinalConditions(IProgressMonitor monitor) throws CoreException, OperationCanceledException {
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
@@ -90,16 +90,16 @@ public class RemoveUnusedMessages extends Refactoring {
 
 		// Search for references
 		IField[] fields = accessorClass.getFields();
-		ArrayList<String> toDelete = new ArrayList<>();
+		ArrayList<String> toDelete = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		// 10 units of work for modifying the properties file and AST
 		monitor.beginTask("Searching for references.", fields.length + 10);
 		try {
-			for (IField field : fields) {
+			for (IField field : fields) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (monitor.isCanceled()) {
 					throw new OperationCanceledException();
 				}
 				String fieldName = field.getElementName();
-				monitor.subTask("Searching for references to: " + fieldName);
+				monitor.subTask("Searching for references to: " + fieldName); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				int flags = field.getFlags();
 				// only want to look at the public static String fields
 				if (!(Flags.isPublic(flags) && Flags.isStatic(flags))) {
@@ -113,10 +113,10 @@ public class RemoveUnusedMessages extends Refactoring {
 				if (affectedUnits.length > 0) {
 					continue;
 				}
-				System.out.println("Found unused field: " + fieldName);
+				System.out.println("Found unused field: " + fieldName); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				toDelete.add(fieldName);
 			}
-			System.out.println("Analysis of " + fields.length + " messages found " + toDelete.size() + " unused messages");
+			System.out.println("Analysis of " + fields.length + " messages found " + toDelete.size() + " unused messages"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 			// any work to do?
 			if (toDelete.isEmpty()) {
@@ -166,7 +166,7 @@ public class RemoveUnusedMessages extends Refactoring {
 		root.accept(visitor);
 	}
 
-	private void processPropertiesFile(List<String> list) throws CoreException {
+	private void processPropertiesFile(List<String> list) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			ITextFileBufferManager manager = FileBuffers.getTextFileBufferManager();
 			try {

@@ -23,7 +23,7 @@ import org.eclipse.team.internal.ui.Utils;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.actions.OpenFileAction;
 
-public class OpenFileInSystemEditorAction extends OpenFileAction {
+public class OpenFileInSystemEditorAction extends OpenFileAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 	public OpenFileInSystemEditorAction(IWorkbenchPage page) {
 		super(page);

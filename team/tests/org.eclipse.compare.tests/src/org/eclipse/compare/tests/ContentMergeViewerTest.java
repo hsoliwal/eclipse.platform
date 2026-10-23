@@ -95,7 +95,7 @@ public class ContentMergeViewerTest  {
 	public void setUp()  {
 		result = new boolean[] { false, false };
 		myContentMergeViewer = new MyContentMergeViewer();
-		myContentMergeViewer.addPropertyChangeListener(event -> {
+		myContentMergeViewer.addPropertyChangeListener(event -> { //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 			result[0] = true;
 			result[1] = ((Boolean) event.getNewValue()).booleanValue();
 		});

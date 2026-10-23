@@ -31,7 +31,7 @@ import org.eclipse.ui.texteditor.TextEditorAction;
  *
  * @since 3.1
  */
-public class ToggleAutoReconcileAction extends TextEditorAction implements IPropertyChangeListener {
+public class ToggleAutoReconcileAction extends TextEditorAction implements IPropertyChangeListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	private IPreferenceStore fStore;
 

@@ -35,24 +35,24 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class NLTest {
 
-	public void getFileNames(List<String> list, char begin, char end) {
+	public void getFileNames(List<String> list, char begin, char end) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		char current = begin;
 		int index = 0;
-		StringBuilder name = new StringBuilder();
-		name.append(((int) current) + "_");
-		while (current <= end) {
+		StringBuilder name = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		name.append(((int) current) + "_"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		while (current <= end) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!Character.isLetterOrDigit(current)) {
 				current++;
 				continue;
 			}
-			name.append(current);
+			name.append(current); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			index++;
 			current++;
 			if (index == 10) {
 				list.add(name.toString());
 				index = 0;
 				name.setLength(0);
-				name.append(((int) current) + "_");
+				name.append(((int) current) + "_"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 		if (name.length() > 0) {
@@ -60,8 +60,8 @@ public class NLTest {
 		}
 	}
 
-	public String[] getFileNames(String language) {
-		List<String> names = new ArrayList<>(20);
+	public String[] getFileNames(String language) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<String> names = new ArrayList<>(20); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (language.equalsIgnoreCase("en")) { // English
 			getFileNames(names, '\u0041', '\u005A'); // A - Z
 			getFileNames(names, '\u0061', '\u007A'); // a - z
@@ -82,7 +82,7 @@ public class NLTest {
 		return names.toArray(new String[names.size()]);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileNames() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("project");
 		project.create(createTestMonitor());

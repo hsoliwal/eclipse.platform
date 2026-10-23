@@ -43,12 +43,12 @@ public class DateHistoryCategory extends AbstractHistoryCategory {
 		return name;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean collectFileRevisions(IFileRevision[] fileRevisions, boolean shouldRemove) {
-		ArrayList<IFileRevision> pertinentRevisions = new ArrayList<>();
-		ArrayList<IFileRevision> nonPertinentRevisions = new ArrayList<>();
+		ArrayList<IFileRevision> pertinentRevisions = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		ArrayList<IFileRevision> nonPertinentRevisions = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-		for (IFileRevision fileRevision : fileRevisions) {
+		for (IFileRevision fileRevision : fileRevisions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			//get the current file revision's date
 			Calendar fileRevDate = Calendar.getInstance();
 			fileRevDate.setTimeInMillis(fileRevision.getTimestamp());

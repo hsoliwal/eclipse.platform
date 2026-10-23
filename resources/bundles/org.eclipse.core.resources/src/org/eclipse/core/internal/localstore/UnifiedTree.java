@@ -71,7 +71,7 @@ public class UnifiedTree {
 	protected IFileTree fileTree;
 
 	/** Spare node objects available for reuse */
-	protected ArrayList<UnifiedTreeNode> freeNodes = new ArrayList<>();
+	protected ArrayList<UnifiedTreeNode> freeNodes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	/** tree's actual level */
 	protected int level;
 	/** our queue */
@@ -111,11 +111,11 @@ public class UnifiedTree {
 	 * Performs a breadth-first traversal of the unified tree, passing each
 	 * node to the provided visitor.
 	 */
-	public void accept(IUnifiedTreeVisitor visitor, int depth) throws CoreException {
+	public void accept(IUnifiedTreeVisitor visitor, int depth) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isNotNull(root);
 		initializeQueue();
 		setLevel(0, depth);
-		while (!queue.isEmpty()) {
+		while (!queue.isEmpty()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			UnifiedTreeNode node = queue.remove();
 			if (isChildrenMarker(node)) {
 				continue;
@@ -142,7 +142,7 @@ public class UnifiedTree {
 		}
 	}
 
-	protected void addChildren(UnifiedTreeNode node) {
+	protected void addChildren(UnifiedTreeNode node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Resource parent = (Resource) node.getResource();
 
 		// is there a possibility to have children?
@@ -178,7 +178,7 @@ public class UnifiedTree {
 			}
 			int workspaceIndex = 0;
 			//iterate simultaneously over file system and workspace members
-			while (workspaceIndex < members.resources().length) {
+			while (workspaceIndex < members.resources().length) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource target = members.resources()[workspaceIndex];
 				String name = target.getName();
 				IFileInfo localInfo = localIndex < list.size() ? list.get(localIndex) : null;
@@ -245,7 +245,7 @@ public class UnifiedTree {
 		if (childInfos == null) {
 			return;
 		}
-		for (IFileInfo info : childInfos.subList(index, childInfos.size())) {
+		for (IFileInfo info : childInfos.subList(index, childInfos.size())) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			//don't create a node for symbolic links that create a cycle
 			if (!info.getAttribute(EFS.ATTRIBUTE_SYMLINK) || !info.isDirectory() || !isRecursiveLink(node.getStore(), info)) {
 				addChildToTree(node, createChildNodeFromFileSystem(node, info));
@@ -268,7 +268,7 @@ public class UnifiedTree {
 		queue.add(target);
 	}
 
-	protected void addNodeChildrenToQueue(UnifiedTreeNode node) {
+	protected void addNodeChildrenToQueue(UnifiedTreeNode node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/* if the first child is not null we already added the children */
 		/* If the children won't be at a valid level for the refresh depth, don't bother adding them */
 		if (!childLevelValid || node.getFirstChild() != null) {
@@ -342,7 +342,7 @@ public class UnifiedTree {
 		return new UnifiedTreeNode(this, resource, store, info, existsWorkspace);
 	}
 
-	protected Iterator<UnifiedTreeNode> getChildren(UnifiedTreeNode node) {
+	protected Iterator<UnifiedTreeNode> getChildren(UnifiedTreeNode node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/* if first child is null we need to add node's children to queue */
 		if (node.getFirstChild() == null) {
 			addNodeChildrenToQueue(node);
@@ -362,8 +362,8 @@ public class UnifiedTree {
 		}
 
 		/* create an enumeration with node's children */
-		List<UnifiedTreeNode> result = new ArrayList<>(10);
-		while (true) {
+		List<UnifiedTreeNode> result = new ArrayList<>(10); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			UnifiedTreeNode child = queue.get(index);
 			if (isChildrenMarker(child)) {
 				break;
@@ -382,7 +382,7 @@ public class UnifiedTree {
 		return level;
 	}
 
-	protected List<IFileInfo> getLocalList(UnifiedTreeNode node) {
+	protected List<IFileInfo> getLocalList(UnifiedTreeNode node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			final IFileStore store = node.getStore();
 			IFileInfo[] list;
@@ -419,7 +419,7 @@ public class UnifiedTree {
 		}
 		//initialize the free nodes list
 		if (freeNodes == null) {
-			freeNodes = new ArrayList<>(100);
+			freeNodes = new ArrayList<>(100); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		} else {
 			freeNodes.clear();
 		}
@@ -446,7 +446,7 @@ public class UnifiedTree {
 	 * Initialize history stores for symbolic links.
 	 * This may be done when starting a visitor, or later on demand.
 	 */
-	protected void initLinkHistoriesIfNeeded() {
+	protected void initLinkHistoriesIfNeeded() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (pathPrefixHistory == null) {
 			//Bug 232426: Check what life cycle we need for the histories
 			Job job = Job.getJobManager().currentJob();
@@ -470,12 +470,12 @@ public class UnifiedTree {
 					if (rootProjPath != null) {
 						try {
 							java.io.File rootProjFile = new java.io.File(rootProjPath.toOSString());
-							rootPathHistory.insertShorter(rootProjFile.getCanonicalPath() + '/');
+							rootPathHistory.insertShorter(rootProjFile.getCanonicalPath() + '/'); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						} catch (IOException ioe) {
 							/*ignore here*/
 						}
 					}
-					rootPathHistory.insertShorter(rootFile.getCanonicalPath() + '/');
+					rootPathHistory.insertShorter(rootFile.getCanonicalPath() + '/'); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			} catch (CoreException | IOException e) {
 				/*ignore*/
@@ -501,10 +501,10 @@ public class UnifiedTree {
 	 * @return <code>true</code> if the given child represents a
 	 *     recursive symbolic link.
 	 */
-	private boolean isRecursiveLink(IFileStore parentStore, IFileInfo localInfo) {
+	private boolean isRecursiveLink(IFileStore parentStore, IFileInfo localInfo) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//Try trivial pattern first - works also on remote EFS stores
 		String linkTarget = localInfo.getStringAttribute(EFS.ATTRIBUTE_LINK_TARGET);
-		if (linkTarget != null && PatternHolder.TRIVIAL_SYMLINK_PATTERN.matcher(linkTarget).matches()) {
+		if (linkTarget != null && PatternHolder.TRIVIAL_SYMLINK_PATTERN.matcher(linkTarget).matches()) { //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			return true;
 		}
 		//Need canonical paths to check all other possibilities
@@ -533,8 +533,8 @@ public class UnifiedTree {
 			}
 			//get canonical path for both child and parent
 			java.io.File childFile = new java.io.File(parentFile, localInfo.getName());
-			String parentPath = realParentPath.toString() + java.io.File.separatorChar;
-			String childPath = childFile.toPath().toRealPath().toString() + java.io.File.separatorChar;
+			String parentPath = realParentPath.toString() + java.io.File.separatorChar; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			String childPath = childFile.toPath().toRealPath().toString() + java.io.File.separatorChar; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			//get or instantiate the prefix and root path histories.
 			//Might be done earlier - for now, do it on demand.
 			initLinkHistoriesIfNeeded();
@@ -629,7 +629,7 @@ public class UnifiedTree {
 		if (first == null) {
 			return;
 		}
-		while (true) {
+		while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (first.equals(queue.pollLast())) {
 				break;
 			}

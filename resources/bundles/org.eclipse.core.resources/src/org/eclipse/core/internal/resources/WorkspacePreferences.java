@@ -44,10 +44,10 @@ public class WorkspacePreferences extends WorkspaceDescription {
 		if (array == null || array.length == 0) {
 			return ""; //$NON-NLS-1$
 		}
-		StringBuilder sb = new StringBuilder();
-		for (String element : array) {
-			sb.append(element);
-			sb.append(PROJECT_SEPARATOR);
+		StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (String element : array) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			sb.append(element); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(PROJECT_SEPARATOR); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		sb.deleteCharAt(sb.length() - 1);
 		return sb.toString();
@@ -58,8 +58,8 @@ public class WorkspacePreferences extends WorkspaceDescription {
 	 * stringN" to a string array {"string1","string2",..."stringN"}.
 	 */
 	public static String[] convertStringToStringArray(String string, String separator) {
-		List<String> list = new ArrayList<>();
-		for (StringTokenizer tokenizer = new StringTokenizer(string, separator); tokenizer.hasMoreTokens();) {
+		List<String> list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (StringTokenizer tokenizer = new StringTokenizer(string, separator); tokenizer.hasMoreTokens();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			list.add(tokenizer.nextToken());
 		}
 		return list.toArray(new String[list.size()]);
@@ -84,7 +84,7 @@ public class WorkspacePreferences extends WorkspaceDescription {
 		target.setMaxConcurrentBuilds(source.getMaxConcurrentBuilds());
 	}
 
-	public WorkspacePreferences() {
+	public WorkspacePreferences() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super("Workspace"); //$NON-NLS-1$
 		this.preferences = ResourcesPlugin.getPlugin().getPluginPreferences();
 
@@ -108,7 +108,7 @@ public class WorkspacePreferences extends WorkspaceDescription {
 
 		// This property listener ensures we are being updated properly when changes
 		// are done directly to the preference store.
-		preferences.addPropertyChangeListener(event -> synchronizeWithPreferences(event.getProperty()));
+		preferences.addPropertyChangeListener(event -> synchronizeWithPreferences(event.getProperty())); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class WorkspacePreferences extends WorkspaceDescription {
 		// should never be called - throws an exception to avoid using a
 		// WorkspacePreferences when using WorkspaceDescription was the real
 		// intention (this class offers a different protocol for copying state).
-		throw new UnsupportedOperationException("clone() is not supported in " + getClass().getName()); //$NON-NLS-1$
+		throw new UnsupportedOperationException("clone() is not supported in " + getClass().getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	public void copyFrom(WorkspaceDescription source) {
@@ -234,7 +234,7 @@ public class WorkspacePreferences extends WorkspaceDescription {
 		preferences.setValue(ResourcesPlugin.PREF_SNAPSHOT_INTERVAL, delay);
 	}
 
-	protected void synchronizeWithPreferences(String property) {
+	protected void synchronizeWithPreferences(String property) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// do not use the value in the event - may be a string instead
 		// of the expected type. Retrieve it from the preferences store
 		// using the type-specific method

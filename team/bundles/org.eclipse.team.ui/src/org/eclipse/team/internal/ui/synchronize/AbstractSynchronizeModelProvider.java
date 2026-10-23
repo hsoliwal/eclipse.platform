@@ -67,25 +67,25 @@ import org.eclipse.team.ui.synchronize.SynchronizePageActionGroup;
  * {@link SynchronizeModelElement} elements that can be shown in a viewer. The model
  * is based on the synchronization information contained in the provided {@link SyncInfoSet}.
  */
-public abstract class AbstractSynchronizeModelProvider implements ISynchronizeModelProvider, ISyncInfoSetChangeListener, TreeListener {
+public abstract class AbstractSynchronizeModelProvider implements ISynchronizeModelProvider, ISyncInfoSetChangeListener, TreeListener { //FLLDCIM: MARK — T38  IMPLEMENTS
 
 	/**
 	 * Property constant for the expansion state for the elements displayed by the page. The
 	 * expansion state is a List of resource paths.
 	 */
-	public static final String P_VIEWER_EXPANSION_STATE = TeamUIPlugin.ID  + ".P_VIEWER_EXPANSION_STATE"; //$NON-NLS-1$
+	public static final String P_VIEWER_EXPANSION_STATE = TeamUIPlugin.ID  + ".P_VIEWER_EXPANSION_STATE"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant for the selection state for the elements displayed by the page. The
 	 * selection state is a List of resource paths.
 	 */
-	public static final String P_VIEWER_SELECTION_STATE = TeamUIPlugin.ID  + ".P_VIEWER_SELECTION_STATE"; //$NON-NLS-1$
+	public static final String P_VIEWER_SELECTION_STATE = TeamUIPlugin.ID  + ".P_VIEWER_SELECTION_STATE"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant for the checked state for the elements displayed by the page. The
 	 * checked state is a List of resource paths.
 	 */
-	public static final String P_VIEWER_CHECKED_STATE = TeamUIPlugin.ID  + ".P_VIEWER_CHECKED_STATE"; //$NON-NLS-1$
+	public static final String P_VIEWER_CHECKED_STATE = TeamUIPlugin.ID  + ".P_VIEWER_CHECKED_STATE"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	private final ISynchronizeModelElement root;
 
@@ -120,7 +120,7 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 			// The update handler will register for sync change events
 			// with the sync set when the handler is activated
 			updateHandler = new SynchronizeModelUpdateHandler(this);
-			getTree().addTreeListener(this);
+			getTree().addTreeListener(this); //FLLDCIM: MARK — T22 EXPAND_STATE_LANE CALL
 		} else {
 			// We will use the parent's update handler and register for changes with the given set
 			updateHandler = parentProvider.updateHandler;
@@ -258,13 +258,13 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 	 * @return the marker property that should be displayed on the element
 	 * or <code>null</code> if no marker should be displayed
 	 */
-	public String calculateProblemMarker(ISynchronizeModelElement element) {
+	public String calculateProblemMarker(ISynchronizeModelElement element) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource resource = element.getResource();
 		String property = null;
 		if (resource != null && resource.exists()) {
 			try {
 				IMarker[] markers = resource.findMarkers(IMarker.PROBLEM, true, getLogicalModelDepth(resource));
-				for (IMarker marker : markers) {
+				for (IMarker marker : markers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					try {
 						Integer severity = (Integer) marker.getAttribute(IMarker.SEVERITY);
 						if (severity != null) {
@@ -301,7 +301,7 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 		} else if (resource == null) {
 			// For non-resource elements, show the same propogaqted marker as the children
 			IDiffElement[] children = element.getChildren();
-			for (IDiffElement child : children) {
+			for (IDiffElement child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (child instanceof ISynchronizeModelElement childElement) {
 					if (childElement.getProperty(ISynchronizeModelElement.PROPAGATED_ERROR_MARKER_PROPERTY)) {
 						property = ISynchronizeModelElement.PROPAGATED_ERROR_MARKER_PROPERTY;
@@ -340,7 +340,7 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 	 * Throw away any old state associated with this provider and
 	 * rebuild the model from scratch.
 	 */
-	protected void reset() {
+	protected void reset() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// save expansion state
 		if(isRootProvider() && hasViewerState()) {
 			saveViewerState();
@@ -371,14 +371,14 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 		}
 	}
 
-	private void refreshModelRoot() {
+	private void refreshModelRoot() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		StructuredViewer viewer = getViewer();
 		if (viewer != null && !viewer.getControl().isDisposed()) {
 			try {
 				viewer.getControl().setRedraw(false);
 				if (isRootProvider() || getModelRoot().getParent() == null) {
 					// Refresh the entire view
-					viewer.refresh();
+					viewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 				} else {
 					// Only refresh the model root bu also ensure that
 					// the parents of the model root and the model root
@@ -413,7 +413,7 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 	 * after validating that the viewer is still valid.
 	 */
 	protected IResource[] getExpandedResources() {
-		Set<IResource> expanded = new HashSet<>();
+		Set<IResource> expanded = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IResource[] savedExpansionState = getCachedResources(P_VIEWER_EXPANSION_STATE);
 		Collections.addAll(expanded, savedExpansionState);
 		StructuredViewer viewer = getViewer();
@@ -452,16 +452,16 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 	 * This method should only be called in the UI thread
 	 * after validating that the viewer is still valid.
 	 */
-	protected void expandResources(IResource[] resources) {
-		Set<ISynchronizeModelElement> expandedElements = new HashSet<>();
+	protected void expandResources(IResource[] resources) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		Set<ISynchronizeModelElement> expandedElements = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		StructuredViewer viewer = getViewer();
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ISynchronizeModelElement[] elements = getModelObjects(resource);
 			// Only expand when there is one element per resource
 			if (elements.length == 1) {
-				for (ISynchronizeModelElement element : elements) {
+				for (ISynchronizeModelElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					// Add all parents of the element to the expansion set
-					while (element != null) {
+					while (element != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						expandedElements.add(element);
 						element = (ISynchronizeModelElement)element.getParent();
 					}
@@ -474,9 +474,9 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 	}
 
 	protected IResource[] getResources(Object[] objects) {
-		Set<IResource> result = new HashSet<>();
+		Set<IResource> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		if (objects.length > 0) {
-			for (Object object : objects) {
+			for (Object object : objects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (object instanceof ISynchronizeModelElement) {
 					IResource resource = ((ISynchronizeModelElement) object).getResource();
 					if(resource != null) {
@@ -492,11 +492,11 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 		getConfiguration().setProperty(configProperty, null);
 	}
 
-	private void cacheResources(IResource[] resources, String configProperty) {
+	private void cacheResources(IResource[] resources, String configProperty) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (resources.length > 0) {
 			ISynchronizePageConfiguration config = getConfiguration();
-			ArrayList<String> paths = new ArrayList<>();
-			for (IResource resource : resources) {
+			ArrayList<String> paths = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String path = resource.getFullPath().toString();
 				if (resource.getType() != IResource.FILE && path.charAt(path.length() - 1) != IPath.SEPARATOR) {
 					// Include a trailing slash on folders and projects.
@@ -517,8 +517,8 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 			return new IResource[0];
 		}
 		IContainer container = ResourcesPlugin.getWorkspace().getRoot();
-		ArrayList<IResource> resources = new ArrayList<>();
-		for (Object path2 : paths) {
+		ArrayList<IResource> resources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Object path2 : paths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String path = (String) path2;
 			IResource resource = getResourceForPath(container, path);
 			if (resource != null) {
@@ -531,7 +531,7 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 	/**
 	 * Save the viewer state (expansion and selection)
 	 */
-	protected void saveViewerState() {
+	protected void saveViewerState() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//	save visible expanded elements and selection
 		final StructuredViewer viewer = getViewer();
 		if (viewer != null && !viewer.getControl().isDisposed() && viewer instanceof AbstractTreeViewer) {
@@ -541,7 +541,7 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 			final IResource[][] expandedResources = new IResource[1][0];
 			final IResource[][] selectedResources = new IResource[1][0];
 			final IResource[][] checkedResources = new IResource[1][0];
-			viewer.getControl().getDisplay().syncExec(() -> {
+			viewer.getControl().getDisplay().syncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				if (viewer != null && !viewer.getControl().isDisposed()) {
 					expandedResources[0] = getExpandedResources();
 					selectedResources[0] = getSelectedResources();
@@ -585,8 +585,8 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 	 */
 	protected void selectResources(IResource[] resourcesToSelect) {
 		StructuredViewer viewer = getViewer();
-		final ArrayList<ISynchronizeModelElement> selectedElements = new ArrayList<>();
-		for (IResource resource : resourcesToSelect) {
+		final ArrayList<ISynchronizeModelElement> selectedElements = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IResource resource : resourcesToSelect) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ISynchronizeModelElement[] elements = getModelObjects(resource);
 			// Only preserve the selection if there is one element for the resource
 			if (elements.length == 1) {
@@ -602,14 +602,14 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 	 * Check the given resources in the view. This method can
 	 * only be invoked from the UI thread.
 	 */
-	protected void checkResources(IResource[] resourcesToCheck) {
-		Set<ISynchronizeModelElement> checkedElements = new HashSet<>();
+	protected void checkResources(IResource[] resourcesToCheck) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		Set<ISynchronizeModelElement> checkedElements = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		StructuredViewer viewer = getViewer();
 		if (!(viewer instanceof CheckboxTreeViewer)) {
 			return;
 		}
 
-		for (IResource resource : resourcesToCheck) {
+		for (IResource resource : resourcesToCheck) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() != IResource.FILE) {
 				continue;
 			}
@@ -629,7 +629,7 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 	 * tree and, if that fails, by using the path format to create
 	 * a handle.
 	 */
-	private IResource getResourceForPath(IContainer container, String path) {
+	private IResource getResourceForPath(IContainer container, String path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource resource = container.findMember(path, true /* include phantoms */);
 		if (resource == null) {
 			try {
@@ -792,9 +792,9 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 		reset();
 	}
 
-	protected void addToViewer(ISynchronizeModelElement node) {
+	protected void addToViewer(ISynchronizeModelElement node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (DEBUG) {
-			System.out.println("Adding model element " + node.getName()); //$NON-NLS-1$
+			System.out.println("Adding model element " + node.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		propogateConflictState(node, false);
 		// Set the marker property on this node.
@@ -833,16 +833,16 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 	 * the viewer it is associated with.
 	 * @param nodes the model elements to remove
 	 */
-	protected void removeFromViewer(ISynchronizeModelElement[] nodes) {
-		List<ISynchronizeModelElement> rootsToClear = new ArrayList<>();
-		for (ISynchronizeModelElement node : nodes) {
+	protected void removeFromViewer(ISynchronizeModelElement[] nodes) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<ISynchronizeModelElement> rootsToClear = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ISynchronizeModelElement node : nodes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (DEBUG) {
-				System.out.println("Removing model element " + node.getName()); //$NON-NLS-1$
+				System.out.println("Removing model element " + node.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			ISynchronizeModelElement rootToClear= getRootToClear(node);
 			if (DEBUG) {
 				if (rootToClear != node) {
-					System.out.println("Removing parent element " + rootToClear.getName()); //$NON-NLS-1$
+					System.out.println("Removing parent element " + rootToClear.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
 			propogateConflictState(rootToClear, true /* clear the conflict */);
@@ -853,7 +853,7 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 		if (Utils.canUpdateViewer(getViewer())) {
 			doRemove(roots);
 		}
-		for (ISynchronizeModelElement element : roots) {
+		for (ISynchronizeModelElement element : roots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			updateHandler.nodeRemoved(element, this);
 		}
 	}
@@ -865,7 +865,7 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 	 * well.
 	 * @param node the root node
 	 */
-	protected final void clearModelObjects(ISynchronizeModelElement node) {
+	protected final void clearModelObjects(ISynchronizeModelElement node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// When clearing model objects, any parents of the node
 		// That are not out-of-sync, not the model root and that would
 		// be empty as a result of this clear, should also be cleared.
@@ -874,7 +874,7 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 		recursiveClearModelObjects(rootToClear);
 		if (node == getModelRoot()) {
 			IDiffElement[] children = node.getChildren();
-			for (IDiffElement element : children) {
+			for (IDiffElement element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				((SynchronizeModelElement)node).remove(element);
 			}
 		} else {
@@ -889,10 +889,10 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 	 * Method that subclasses can override when clearing model objects.
 	 * @param node the node to be cleared recursively
 	 */
-	protected void recursiveClearModelObjects(ISynchronizeModelElement node) {
+	protected void recursiveClearModelObjects(ISynchronizeModelElement node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Clear all the children of the node
 		IDiffElement[] children = node.getChildren();
-		for (IDiffElement element : children) {
+		for (IDiffElement element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element instanceof ISynchronizeModelElement sme) {
 				ISynchronizeModelProvider provider = getProvider(sme);
 				if (provider != null && provider instanceof AbstractSynchronizeModelProvider) {
@@ -969,8 +969,8 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 			TeamUIPlugin.log(IStatus.ERROR, "An error occurred removing elements from the synchronize view", e); //$NON-NLS-1$
 		}
 		if (DEBUG) {
-			for (ISynchronizeModelElement element : elements) {
-				System.out.println("Removing view item " + element.getName()); //$NON-NLS-1$
+			for (ISynchronizeModelElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				System.out.println("Removing view item " + element.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 	}
@@ -1029,13 +1029,13 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 		}
 	}
 
-	protected void firePropertyChange(String key, Object oldValue, Object newValue) {
+	protected void firePropertyChange(String key, Object oldValue, Object newValue) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Object[] allListeners;
 		synchronized(this) {
 			allListeners = listeners.getListeners();
 		}
 		final PropertyChangeEvent event = new PropertyChangeEvent(this, key, oldValue, newValue);
-		for (Object l : allListeners) {
+		for (Object l : allListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final IPropertyChangeListener listener = (IPropertyChangeListener) l;
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
@@ -1058,7 +1058,7 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 	public void waitUntilDone(IProgressMonitor monitor) {
 		monitor.worked(1);
 		// wait for the event handler to process changes.
-		while(updateHandler.getEventHandlerJob().getState() != Job.NONE) {
+		while(updateHandler.getEventHandlerJob().getState() != Job.NONE) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			monitor.worked(1);
 			try {
 				Thread.sleep(10);
@@ -1081,7 +1081,7 @@ public abstract class AbstractSynchronizeModelProvider implements ISynchronizeMo
 		if (name2.length() == 0) {
 			name2 = "/"; //$NON-NLS-1$
 		}
-		return name + ": " + name2; //$NON-NLS-1$
+		return name + ": " + name2; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**

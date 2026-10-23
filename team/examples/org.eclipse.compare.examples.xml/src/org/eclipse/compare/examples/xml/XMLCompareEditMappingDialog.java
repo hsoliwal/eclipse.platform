@@ -72,7 +72,7 @@ public class XMLCompareEditMappingDialog extends StatusDialog {
 	 * @param ancestor the parent composite to contain the dialog area
 	 * @return the dialog area control
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createDialogArea(Composite ancestor) {
 		Composite composite= (Composite) super.createDialogArea(ancestor);
 
@@ -90,7 +90,7 @@ public class XMLCompareEditMappingDialog extends StatusDialog {
 		fElementText= new Text(inner, SWT.BORDER);
 		fElementText.setText(fMapping.getElement());
 		fElementText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		fElementText.addModifyListener(unused -> doValidation());
+		fElementText.addModifyListener(unused -> doValidation()); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 
 		//Signature
 		label= new Label(inner, SWT.NULL);
@@ -102,7 +102,7 @@ public class XMLCompareEditMappingDialog extends StatusDialog {
 		GridData data= new GridData(GridData.FILL_HORIZONTAL);
 		data.widthHint= convertWidthInCharsToPixels(50);
 		fSignatureText.setLayoutData(data);
-		fSignatureText.addModifyListener(unused -> doValidation());
+		fSignatureText.addModifyListener(unused -> doValidation()); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 
 		//Id Attribute
 		label= new Label(inner, SWT.NULL);
@@ -112,7 +112,7 @@ public class XMLCompareEditMappingDialog extends StatusDialog {
 		fIdAttributeText= new Text(inner, SWT.BORDER);
 
 		fIdAttributeText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		fIdAttributeText.addModifyListener(unused -> doValidation());
+		fIdAttributeText.addModifyListener(unused -> doValidation()); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 
 		//Id Source
 		createIdSourceGroup(inner);
@@ -125,7 +125,7 @@ public class XMLCompareEditMappingDialog extends StatusDialog {
 	/**
 	 * Validate user input
 	 */
-	private void doValidation() {
+	private void doValidation() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		StatusInfo status= new StatusInfo();
 		String text= fElementText.getText();
 		String mappingKey= Mapping.getKey(fSignatureText.getText(), text);
@@ -166,13 +166,13 @@ public class XMLCompareEditMappingDialog extends StatusDialog {
 		fMapping.setSignature(fSignatureText.getText());
 		String idtext= fIdAttributeText.getText();
 		if (fIdTypeChildBodyButton.getSelection()) {
-			idtext= Character.valueOf(XMLStructureCreator.ID_TYPE_BODY) + idtext;
+			idtext= Character.valueOf(XMLStructureCreator.ID_TYPE_BODY) + idtext; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		fMapping.setIdAttribute(idtext);
 		super.okPressed();
 	}
 
-	private void createIdSourceGroup(Composite composite) {
+	private void createIdSourceGroup(Composite composite) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Label titleLabel= new Label(composite, SWT.NONE);
 		titleLabel.setText(XMLCompareMessages.XMLCompareEditMappingDialog_idtype);
 		titleLabel.setToolTipText(XMLCompareMessages.XMLCompareEditMappingDialog_idtype_tooltip);

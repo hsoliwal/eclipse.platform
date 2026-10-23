@@ -105,7 +105,7 @@ public class SubscriberSyncInfoEventHandler extends SubscriberEventHandler {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void collectAll(
 			IResource resource,
 			int depth,
@@ -178,13 +178,13 @@ public class SubscriberSyncInfoEventHandler extends SubscriberEventHandler {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void dispatchEvents(SubscriberEvent[] events, IProgressMonitor monitor) {
 		// this will batch the following set changes until endInput is called.
 		SubscriberSyncInfoSet syncSet = syncSetInput.getSyncSet();
 		try {
 			syncSet.beginInput();
-			for (SubscriberEvent event : events) {
+			for (SubscriberEvent event : events) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				switch (event.getType()) {
 					case SubscriberEvent.CHANGE :
 						if (event instanceof SubscriberSyncInfoEvent se) {
@@ -226,7 +226,7 @@ public class SubscriberSyncInfoEventHandler extends SubscriberEventHandler {
 	@Override
 	protected synchronized void reset(ResourceTraversal[] oldTraversals, ResourceTraversal[] newTraversals) {
 		// First, reset the sync set input to clear the sync set
-		run(monitor -> syncSetInput.reset(monitor), false /* keep ordering the same */);
+		run(monitor -> syncSetInput.reset(monitor), false /* keep ordering the same */); //FLLDCIM: MARK — T09  LAMBDA
 		// Then, prime the set from the subscriber
 		super.reset(oldTraversals, newTraversals);
 	}

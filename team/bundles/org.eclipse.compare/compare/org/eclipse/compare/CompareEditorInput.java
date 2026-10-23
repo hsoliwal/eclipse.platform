@@ -142,7 +142,7 @@ import org.eclipse.ui.texteditor.ITextEditorExtension3;
  * @see CompareUI
  * @see CompareEditorInput
  */
-public abstract class CompareEditorInput extends PlatformObject implements IEditorInput, IPropertyChangeNotifier, IRunnableWithProgress, ICompareContainer {
+public abstract class CompareEditorInput extends PlatformObject implements IEditorInput, IPropertyChangeNotifier, IRunnableWithProgress, ICompareContainer { //FLLDCIM: MARK — T09  IMPLEMENTS
 	private static final boolean DEBUG= false;
 
 	/**
@@ -248,11 +248,11 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 	 *
 	 * @param configuration the compare configuration
 	 */
-	public CompareEditorInput(CompareConfiguration configuration) {
+	public CompareEditorInput(CompareConfiguration configuration) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fCompareConfiguration= configuration;
 		Assert.isNotNull(configuration);
 
-		fDirtyStateListener= e -> {
+		fDirtyStateListener= e -> { //FLLDCIM: MARK — T06  LAMBDA
 			String propertyName= e.getProperty();
 			if (CompareEditorInput.DIRTY_STATE.equals(propertyName)) {
 				boolean changed= false;
@@ -282,7 +282,7 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 		return object instanceof Boolean && ((Boolean)object).booleanValue();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@SuppressWarnings("unchecked")
 	public <T> T getAdapter(Class<T> adapter) {
 		if (ICompareNavigator.class.equals(adapter) || CompareNavigator.class.equals(adapter)) {
@@ -458,9 +458,9 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 	public void contributeToToolBar(ToolBarManager toolBarManager) {
 		ResourceBundle bundle= CompareUI.getResourceBundle();
 		ChangePropertyAction ignoreWhitespace= ChangePropertyAction.createIgnoreWhiteSpaceAction(bundle, getCompareConfiguration());
-		toolBarManager.getControl().addDisposeListener(ignoreWhitespace);
+		toolBarManager.getControl().addDisposeListener(ignoreWhitespace); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 		ChangePropertyAction showPseudoConflicts= ChangePropertyAction.createShowPseudoConflictsAction(bundle, getCompareConfiguration());
-		toolBarManager.getControl().addDisposeListener(showPseudoConflicts);
+		toolBarManager.getControl().addDisposeListener(showPseudoConflicts); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 		toolBarManager.add(new Separator());
 		toolBarManager.add(ignoreWhitespace);
 		toolBarManager.add(showPseudoConflicts);
@@ -531,7 +531,7 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 	 * @param parent the parent control under which the control must be created
 	 * @return the SWT control hierarchy for the compare editor
 	 */
-	public Control createContents(Composite parent) {
+	public Control createContents(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fComposite= new Splitter(parent, SWT.VERTICAL);
 		fComposite.setData(this);
 
@@ -553,7 +553,7 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 
 		feedInput();
 		parent.requestLayout();
-		fComposite.addDisposeListener(e -> {
+		fComposite.addDisposeListener(e -> { //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 			/*
 			 * When the UI associated with this compare editor input is
 			 * disposed each composite being part of the UI releases its
@@ -564,7 +564,7 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 			 */
 			Composite composite = (Composite) e.widget;
 			Control control = composite;
-			while (composite.getChildren().length > 0) {
+			while (composite.getChildren().length > 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				control = composite.getChildren()[composite.getChildren().length - 1];
 				if (control instanceof Composite) {
 					composite = (Composite) control;
@@ -572,7 +572,7 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 					break;
 				}
 			}
-			control.addDisposeListener(unused -> handleDispose());
+			control.addDisposeListener(unused -> handleDispose()); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 		});
 		if (fHelpContextId != null && PlatformUI.isWorkbenchRunning()) {
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(fComposite, fHelpContextId);
@@ -634,7 +634,7 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 	 * @return the SWT control hierarchy for the outline part of the compare editor
 	 * @since 3.0
 	 */
-	public Control createOutlineContents(Composite parent, int direction) {
+	public Control createOutlineContents(Composite parent, int direction) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final Splitter h= new Splitter(parent, direction);
 
 		fStructureInputPane= createStructureInputPane(h);
@@ -649,11 +649,11 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 		h.setVisible(fStructurePane2, false);
 
 		// setup the wiring for top left pane
-		fStructureInputPane.addOpenListener(
-			oe -> feed1(oe.getSelection())
+		fStructureInputPane.addOpenListener( //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
+			oe -> feed1(oe.getSelection()) //FLLDCIM: MARK — T05  LAMBDA
 		);
-		fStructureInputPane.addSelectionChangedListener(
-			new ISelectionChangedListener() {
+		fStructureInputPane.addSelectionChangedListener( //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
+			new ISelectionChangedListener() { //FLLDCIM: MARK — T04  ANONYMOUS
 				@Override
 				public void selectionChanged(SelectionChangedEvent e) {
 					ISelection s= e.getSelection();
@@ -666,16 +666,16 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 				}
 			}
 		);
-		fStructureInputPane.addDoubleClickListener(
-			event -> feedDefault1(event.getSelection())
+		fStructureInputPane.addDoubleClickListener( //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
+			event -> feedDefault1(event.getSelection()) //FLLDCIM: MARK — T05  LAMBDA
 		);
 
-		fStructurePane1.addSelectionChangedListener(
-			e -> feed2(e.getSelection())
+		fStructurePane1.addSelectionChangedListener( //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
+			e -> feed2(e.getSelection()) //FLLDCIM: MARK — T04  LAMBDA
 		);
 
-		fStructurePane2.addSelectionChangedListener(
-			e -> feed3(e.getSelection())
+		fStructurePane2.addSelectionChangedListener( //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
+			e -> feed3(e.getSelection()) //FLLDCIM: MARK — T04  LAMBDA
 		);
 
 		return h;
@@ -690,7 +690,7 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 	 * @since 3.3
 	 */
 	protected CompareViewerPane createStructureInputPane(final Composite parent) {
-		return new CompareStructureViewerSwitchingPane(parent, SWT.BORDER | SWT.FLAT, true, this) {
+		return new CompareStructureViewerSwitchingPane(parent, SWT.BORDER | SWT.FLAT, true, this) { //FLLDCIM: MARK — T05  ANONYMOUS
 			@Override
 			protected Viewer getViewer(Viewer oldViewer, Object input) {
 				if (CompareEditorInput.this.hasChildren(input)) {
@@ -708,7 +708,7 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 		return false;
 	}
 
-	private void feedInput() {
+	private void feedInput() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fStructureInputPane != null
 				&& (fInput instanceof ICompareInput
 						|| isCustomStructureInputPane())) {
@@ -755,7 +755,7 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 		return !(fStructureInputPane instanceof CompareViewerSwitchingPane);
 	}
 
-	private void feed1(final ISelection selection) {
+	private void feed1(final ISelection selection) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		BusyIndicator.showWhile(fComposite.getDisplay(),
 			() -> {
 				if (selection == null || selection.isEmpty()) {
@@ -936,7 +936,7 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 	 * @param parent the SWT parent composite under which the new viewer is created
 	 * @return a compare viewer which is suitable for the given input object or <code>null</code>
 	 */
-	public Viewer findContentViewer(Viewer oldViewer, ICompareInput input, Composite parent) {
+	public Viewer findContentViewer(Viewer oldViewer, ICompareInput input, Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		Viewer newViewer = fContentViewerDescriptor != null ? fContentViewerDescriptor.createViewer(oldViewer, parent,
 				fCompareConfiguration) : CompareUI.findContentViewer(oldViewer,
@@ -944,15 +944,15 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 
 		boolean isNewViewer= newViewer != oldViewer;
 		if (DEBUG) {
-			System.out.println("CompareEditorInput.findContentViewer: " + isNewViewer); //$NON-NLS-1$
+			System.out.println("CompareEditorInput.findContentViewer: " + isNewViewer); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		if (isNewViewer && newViewer instanceof final IPropertyChangeNotifier dsp) {
 			dsp.addPropertyChangeListener(fDirtyStateListener);
 
 			Control c= newViewer.getControl();
-			c.addDisposeListener(
-				unused -> dsp.removePropertyChangeListener(fDirtyStateListener)
+			c.addDisposeListener( //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
+				unused -> dsp.removePropertyChangeListener(fDirtyStateListener) //FLLDCIM: MARK — T01  LAMBDA
 			);
 		}
 
@@ -1134,7 +1134,7 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 	 * @param dirty
 	 *            value that describes if the changes were added or removed
 	 */
-	private void setDirty(Object source, boolean dirty) {
+	private void setDirty(Object source, boolean dirty) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isNotNull(source);
 		boolean oldDirty = isSaveNeeded();
 
@@ -1152,7 +1152,7 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 
 		boolean newDirty = isSaveNeeded();
 		if (DEBUG) {
-			System.out.println("setDirty(" + source + ", " + dirty + "): " + newDirty); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			System.out.println("setDirty(" + source + ", " + dirty + "): " + newDirty); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		if (oldDirty != newDirty) {
 			Utilities.firePropertyChange(fListenerList, this, DIRTY_STATE, Boolean.valueOf(oldDirty), Boolean.valueOf(newDirty));
@@ -1272,7 +1272,7 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 		if (fContainer == null) {
 			input.addCompareInputChangeListener(listener);
 		} else {
-			fContainer.addCompareInputChangeListener(input, listener);
+			fContainer.addCompareInputChangeListener(input, listener); //FLLDCIM: MARK — T37 COMPARE_DELTA CALL
 		}
 	}
 
@@ -1494,9 +1494,9 @@ public abstract class CompareEditorInput extends PlatformObject implements IEdit
 		// Do nothing
 	}
 
-	private boolean saveChanges() {
+	private boolean saveChanges() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
-			Utilities.executeRunnable(monitor -> {
+			Utilities.executeRunnable(monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 				try {
 					saveChanges(monitor);
 				} catch (CoreException e) {

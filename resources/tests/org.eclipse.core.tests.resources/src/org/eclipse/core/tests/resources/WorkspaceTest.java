@@ -160,7 +160,7 @@ public class WorkspaceTest {
 		assertDoesNotExistInWorkspace(before);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFolderMove() throws Throwable {
 		IProject project = getTestProject();
 		IResource[] before = buildResources(project, "b/", "b/b/", "b/x", "b/b/y", "b/b/z");
@@ -215,11 +215,11 @@ public class WorkspaceTest {
 		assertDoesNotExistInWorkspace(source);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultiCreation() throws Throwable {
 		final IProject project = getWorkspace().getRoot().getProject("bar");
 		final IResource[] resources = buildResources(project, "a/", "a/b");
-		IWorkspaceRunnable body = monitor -> {
+		IWorkspaceRunnable body = monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 			if (!project.exists()) {
 				project.create(null);
 			}
@@ -227,7 +227,7 @@ public class WorkspaceTest {
 				project.open(null);
 			}
 			// define an operation which will create a bunch of resources including a project.
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				switch (resource.getType()) {
 					case IResource.FILE :
 					((IFile) resource).create(null, false, monitor);
@@ -277,7 +277,7 @@ public class WorkspaceTest {
 		assertTrue(target.getFolder("testFolder").exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectCreateOpenCloseDelete() throws Throwable {
 		IProject target = getTestProject2();
 		FussyProgressMonitor monitor = new FussyProgressMonitor();
@@ -299,7 +299,7 @@ public class WorkspaceTest {
 		assertTrue(!target.exists());
 	}
 
-	@BeforeEach
+	@BeforeEach //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setUp() throws Exception {
 		IProject target = getTestProject();
 		FussyProgressMonitor monitor = new FussyProgressMonitor();
@@ -340,7 +340,7 @@ public class WorkspaceTest {
 		assertFalse(target.exists(), "Project Deletion failed");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWorkingLocationDeletion_bug433061() throws Throwable {
 		assumeTrue(canCreateSymLinks(), "only relevant for platforms supporting symbolic links");
 
@@ -364,7 +364,7 @@ public class WorkspaceTest {
 		assertTrue(file.exists(), "File inside a symlinked directory got deleted");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectReferences() throws Throwable {
 		IProject target = getTestProject2();
 		FussyProgressMonitor monitor = new FussyProgressMonitor();

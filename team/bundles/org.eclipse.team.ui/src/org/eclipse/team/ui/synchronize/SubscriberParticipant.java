@@ -68,7 +68,7 @@ import org.eclipse.ui.progress.IProgressConstants2;
  * <br><br>
  * @since 3.0
  */
-public abstract class SubscriberParticipant extends AbstractSynchronizeParticipant implements IPropertyChangeListener {
+public abstract class SubscriberParticipant extends AbstractSynchronizeParticipant implements IPropertyChangeListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	/*
 	 * Collects and maintains set of all out-of-sync resources of the subscriber
@@ -88,12 +88,12 @@ public abstract class SubscriberParticipant extends AbstractSynchronizeParticipa
 	/*
 	 * Key for settings in memento
 	 */
-	private static final String CTX_SUBSCRIBER_PARTICIPANT_SETTINGS = TeamUIPlugin.ID + ".TEAMSUBSRCIBERSETTINGS"; //$NON-NLS-1$
+	private static final String CTX_SUBSCRIBER_PARTICIPANT_SETTINGS = TeamUIPlugin.ID + ".TEAMSUBSRCIBERSETTINGS"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/*
 	 * Key for schedule in memento
 	 */
-	private static final String CTX_SUBSCRIBER_SCHEDULE_SETTINGS = TeamUIPlugin.ID + ".TEAMSUBSRCIBER_REFRESHSCHEDULE"; //$NON-NLS-1$
+	private static final String CTX_SUBSCRIBER_SCHEDULE_SETTINGS = TeamUIPlugin.ID + ".TEAMSUBSRCIBER_REFRESHSCHEDULE"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Constructor initializes the schedule. Subclasses must call this method.
@@ -102,7 +102,7 @@ public abstract class SubscriberParticipant extends AbstractSynchronizeParticipa
 		refreshSchedule = new SubscriberRefreshSchedule(createRefreshable());
 	}
 
-	private IRefreshable createRefreshable() {
+	private IRefreshable createRefreshable() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		return new IRefreshable() {
 			@Override
 			public RefreshParticipantJob createJob(String interval) {
@@ -137,7 +137,7 @@ public abstract class SubscriberParticipant extends AbstractSynchronizeParticipa
 	public SubscriberParticipant(ISynchronizeScope scope) {
 		this();
 		this.scope = scope;
-		scope.addPropertyChangeListener(this);
+		scope.addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 	}
 
 	@Override
@@ -276,9 +276,9 @@ public abstract class SubscriberParticipant extends AbstractSynchronizeParticipa
 	 * @param resources the resources to match in the scope
 	 * @return  a participant that matches the given resource scoping
 	 */
-	public static SubscriberParticipant getMatchingParticipant(String ID, IResource[] resources) {
+	public static SubscriberParticipant getMatchingParticipant(String ID, IResource[] resources) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ISynchronizeParticipantReference[] refs = TeamUI.getSynchronizeManager().getSynchronizeParticipants();
-		for (ISynchronizeParticipantReference reference : refs) {
+		for (ISynchronizeParticipantReference reference : refs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if(reference.getId().equals(ID)) {
 				SubscriberParticipant p;
 				try {
@@ -321,7 +321,7 @@ public abstract class SubscriberParticipant extends AbstractSynchronizeParticipa
 				SubscriberRefreshSchedule schedule = SubscriberRefreshSchedule.init(settings.getChild(CTX_SUBSCRIBER_SCHEDULE_SETTINGS), createRefreshable());
 				setRefreshSchedule(schedule);
 				this.scope = AbstractSynchronizeScope.createScope(settings);
-				scope.addPropertyChangeListener(this);
+				scope.addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 			}
 		}
 	}
@@ -420,7 +420,7 @@ public abstract class SubscriberParticipant extends AbstractSynchronizeParticipa
 	 * @return the long task name
 	 * @since 3.1
 	 */
-	protected String getLongTaskName(IResource[] resources) {
+	protected String getLongTaskName(IResource[] resources) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int resourceCount = 0;
 		if (getResources().length == resources.length) {
 			// Assume that the resources are the same as the roots.
@@ -464,14 +464,14 @@ public abstract class SubscriberParticipant extends AbstractSynchronizeParticipa
 	 *
 	 * @param subscriber the subscriber to associate with this participant.
 	 */
-	protected void setSubscriber(Subscriber subscriber) {
+	protected void setSubscriber(Subscriber subscriber) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (scope == null) {
 			scope = new WorkspaceScope();
 		}
 		collector = new SubscriberSyncInfoCollector(subscriber, scope.getRoots());
 
 		// listen for global ignore changes
-		TeamUI.addPropertyChangeListener(this);
+		TeamUI.addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 
 		// Start collecting changes
 		collector.start();

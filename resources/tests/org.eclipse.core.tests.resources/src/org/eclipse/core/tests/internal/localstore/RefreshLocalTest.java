@@ -65,7 +65,7 @@ public class RefreshLocalTest implements ICoreConstants {
 	 * Tests refreshing a folder whose case has changed on disk.
 	 * This is a regression test for bug 79090.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDiscoverCaseChange() throws CoreException {
 		IFolder folder = project.getFolder("A");
 		IFolder folderVariant = project.getFolder("a");
@@ -92,7 +92,7 @@ public class RefreshLocalTest implements ICoreConstants {
 	 * Tests discovering a file via refresh local when neither the file
 	 * nor its parent exists in the workspace.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileDiscovery() throws Throwable {
 		fileStoreExtension.deleteOnTearDown(project.getLocation());
 		IFolder folder = project.getFolder("Folder");
@@ -170,13 +170,13 @@ public class RefreshLocalTest implements ICoreConstants {
 		project.refreshLocal(IResource.DEPTH_ONE, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshFolder() throws Throwable {
 		/* test deletion of a child */
 		IFile file = project.getFile("file");
 		final IFile hackFile = file;
 		final Workspace workspace = (Workspace) getWorkspace();
-		IWorkspaceRunnable operation = unused -> {
+		IWorkspaceRunnable operation = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			workspace.createResource(hackFile, false);
 			((Resource) hackFile).getResourceInfo(false, true).set(M_LOCAL_EXISTS);
 		};
@@ -235,7 +235,7 @@ public class RefreshLocalTest implements ICoreConstants {
 		removeFromFileSystem(file);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSimpleRefresh() throws Throwable {
 		/* test root deletion */
 		IFile file = project.getFile("file");

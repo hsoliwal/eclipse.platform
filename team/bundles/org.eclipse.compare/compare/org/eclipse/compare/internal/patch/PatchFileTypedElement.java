@@ -42,7 +42,7 @@ public class PatchFileTypedElement implements ITypedElement,
 		this.isAfterState = isAfterState;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Image getImage() {
 		IFile file = getPatcher().getTargetFile(result.getDiff());
 		if (file == null) {
@@ -88,7 +88,7 @@ public class PatchFileTypedElement implements ITypedElement,
 		return result.getCharset();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public InputStream getContents() throws CoreException {
 		// If there are cached contents, use them
 		if (isAfterState && getPatcher().hasCachedContents(result.getDiff())) {

@@ -58,7 +58,7 @@ public class XmlTagFormatter {
 
 	protected static class Tag {
 
-		private final List<AttributePair> fAttributes = new ArrayList<>();
+		private final List<AttributePair> fAttributes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		private boolean fClosed;
 
@@ -84,7 +84,7 @@ public class XmlTagFormatter {
 			return fClosed;
 		}
 
-		public int minimumLength() {
+		public int minimumLength() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			int length = 2; // for the < >
 			if (this.isClosed()) {
 				length++; // if we need to add an />
@@ -93,7 +93,7 @@ public class XmlTagFormatter {
 			if (this.attributeCount() > 0 || this.isClosed()) {
 				length++;
 			}
-			for (int i = 0; i < this.attributeCount(); i++) {
+			for (int i = 0; i < this.attributeCount(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				AttributePair attributePair = this.getAttributePair(i);
 				length += attributePair.getAttribute().length();
 				length += attributePair.getValue().length();
@@ -118,30 +118,30 @@ public class XmlTagFormatter {
 			fElementName = elementName;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public String toString() {
-			StringBuilder sb = new StringBuilder(500);
-			sb.append('<');
-			sb.append(this.getElementName());
+			StringBuilder sb = new StringBuilder(500); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+			sb.append('<'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(this.getElementName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			if (this.attributeCount() > 0 || this.isClosed()) {
-				sb.append(' ');
+				sb.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 
-			for (int i = 0; i < this.attributeCount(); i++) {
+			for (int i = 0; i < this.attributeCount(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				AttributePair attributePair = this.getAttributePair(i);
-				sb.append(attributePair.getAttribute());
-				sb.append('=');
-				sb.append(attributePair.getQuote());
-				sb.append(attributePair.getValue());
-				sb.append(attributePair.getQuote());
+				sb.append(attributePair.getAttribute()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				sb.append('='); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				sb.append(attributePair.getQuote()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				sb.append(attributePair.getValue()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				sb.append(attributePair.getQuote()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				if (this.isClosed() || i != this.attributeCount() - 1) {
-					sb.append(' ');
+					sb.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			}
 			if (this.isClosed()) {
-				sb.append('/');
+				sb.append('/'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			sb.append('>');
+			sb.append('>'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			return sb.toString();
 		}
 	}
@@ -154,7 +154,7 @@ public class XmlTagFormatter {
 			if (iter.first() == searchChar) {
 				i++;
 			}
-			while (iter.getIndex() < iter.getEndIndex()) {
+			while (iter.getIndex() < iter.getEndIndex()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (iter.next() == searchChar) {
 					i++;
 				}
@@ -163,7 +163,7 @@ public class XmlTagFormatter {
 		}
 
 		public String format(Tag tag, FormattingPreferences prefs, String indent, String lineDelimiter) {
-			if (prefs.wrapLongTags() && lineRequiresWrap(indent + tag.toString(), prefs.getMaximumLineWidth(), prefs.getTabWidth())) {
+			if (prefs.wrapLongTags() && lineRequiresWrap(indent + tag.toString(), prefs.getMaximumLineWidth(), prefs.getTabWidth())) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				return wrapTag(tag, prefs, indent, lineDelimiter);
 			}
 			return tag.toString();
@@ -185,48 +185,48 @@ public class XmlTagFormatter {
 			return (line.length() - tabCount) + (tabCount * tabWidth);
 		}
 
-		protected String wrapTag(Tag tag, FormattingPreferences prefs, String indent, String lineDelimiter) {
-			StringBuilder sb = new StringBuilder(1024);
-			sb.append('<');
-			sb.append(tag.getElementName());
-			sb.append(' ');
+		protected String wrapTag(Tag tag, FormattingPreferences prefs, String indent, String lineDelimiter) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+			StringBuilder sb = new StringBuilder(1024); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+			sb.append('<'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(tag.getElementName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 			if (tag.attributeCount() > 0) {
 				AttributePair pair = tag.getAttributePair(0);
-				sb.append(pair.getAttribute());
-				sb.append('=');
-				sb.append(pair.getQuote());
-				sb.append(tag.getAttributePair(0).getValue());
-				sb.append(pair.getQuote());
+				sb.append(pair.getAttribute()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				sb.append('='); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				sb.append(pair.getQuote()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				sb.append(tag.getAttributePair(0).getValue()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				sb.append(pair.getQuote()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 
 			if (tag.attributeCount() > 1) {
 				char[] extraIndent = new char[tag.getElementName().length() + 2];
 				Arrays.fill(extraIndent, ' ');
-				for (int i = 1; i < tag.attributeCount(); i++) {
+				for (int i = 1; i < tag.attributeCount(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					AttributePair pair = tag.getAttributePair(i);
-					sb.append(lineDelimiter);
-					sb.append(indent);
-					sb.append(extraIndent);
-					sb.append(pair.getAttribute());
-					sb.append('=');
-					sb.append(pair.getQuote());
-					sb.append(pair.getValue());
-					sb.append(pair.getQuote());
+					sb.append(lineDelimiter); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					sb.append(indent); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					sb.append(extraIndent); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					sb.append(pair.getAttribute()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					sb.append('='); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					sb.append(pair.getQuote()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					sb.append(pair.getValue()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					sb.append(pair.getQuote()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			}
 
 			if (prefs.alignElementCloseChar()) {
-				sb.append(lineDelimiter);
-				sb.append(indent);
+				sb.append(lineDelimiter); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				sb.append(indent); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			} else if (tag.isClosed()) {
-				sb.append(' ');
+				sb.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 
 			if (tag.isClosed()) {
-				sb.append('/');
+				sb.append('/'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			sb.append('>');
+			sb.append('>'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			return sb.toString();
 		}
 	}
@@ -239,7 +239,7 @@ public class XmlTagFormatter {
 
 		private String fParseText;
 
-		protected List<AttributePair> getAttibutes(String elementText) throws ParseException {
+		protected List<AttributePair> getAttibutes(String elementText) throws ParseException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 			class Mode {
 				private int mode;
@@ -285,7 +285,7 @@ public class XmlTagFormatter {
 				}
 			}
 
-			List<AttributePair> attributePairs = new ArrayList<>();
+			List<AttributePair> attributePairs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 			CharacterIterator iter = new StringCharacterIterator(elementText.substring(getElementName(elementText).length() + 2));
 
@@ -297,7 +297,7 @@ public class XmlTagFormatter {
 			StringBuilder currentAttributeValue = null;
 
 			char c = iter.first();
-			while (iter.getIndex() < iter.getEndIndex()) {
+			while (iter.getIndex() < iter.getEndIndex()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 
 				switch (c) {
 
@@ -309,7 +309,7 @@ public class XmlTagFormatter {
 							// start of an attribute value
 							attributeQuote = c;
 							mode.setAttributeValueFound();
-							currentAttributeValue = new StringBuilder(1024);
+							currentAttributeValue = new StringBuilder(1024); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 						} else if (mode.isAttributeValueFound() && attributeQuote == c) {
 
@@ -324,11 +324,11 @@ public class XmlTagFormatter {
 						} else if (mode.isAttributeValueFound() && attributeQuote != c) {
 
 							// this quote character is part of the attribute value
-							currentAttributeValue.append(c);
+							currentAttributeValue.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 						} else {
 							// this is no place for a quote!
-							throw new ParseException("Unexpected '" + c //$NON-NLS-1$
+							throw new ParseException("Unexpected '" + c //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 									+ "' when parsing:\n\t" + elementText); //$NON-NLS-1$
 						}
 						break;
@@ -338,7 +338,7 @@ public class XmlTagFormatter {
 						if (mode.isAttributeValueFound()) {
 
 							// this character is part of the attribute value
-							currentAttributeValue.append(c);
+							currentAttributeValue.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 						} else if (mode.isAttributeNameFound()) {
 
@@ -347,7 +347,7 @@ public class XmlTagFormatter {
 
 						} else {
 							// this is no place for an equals sign!
-							throw new ParseException("Unexpected '" + c //$NON-NLS-1$
+							throw new ParseException("Unexpected '" + c //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 									+ "' when parsing:\n\t" + elementText); //$NON-NLS-1$
 						}
 						break;
@@ -356,14 +356,14 @@ public class XmlTagFormatter {
 					case '>':
 						if (mode.isAttributeValueFound()) {
 							// attribute values are CDATA, add it all
-							currentAttributeValue.append(c);
+							currentAttributeValue.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 						} else if (mode.isAttributeNameSearching()) {
 							mode.setFinished();
 						} else if (mode.isFinished()) {
 							// consume the remaining characters
 						} else {
 							// we aren't ready to be done!
-							throw new ParseException("Unexpected '" + c //$NON-NLS-1$
+							throw new ParseException("Unexpected '" + c //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 									+ "' when parsing:\n\t" + elementText); //$NON-NLS-1$
 						}
 						break;
@@ -372,11 +372,11 @@ public class XmlTagFormatter {
 
 						if (mode.isAttributeValueFound()) {
 							// attribute values are CDATA, add it all
-							currentAttributeValue.append(c);
+							currentAttributeValue.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 						} else if (mode.isFinished()) {
 							if (!Character.isWhitespace(c)) {
-								throw new ParseException("Unexpected '" + c //$NON-NLS-1$
+								throw new ParseException("Unexpected '" + c //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 										+ "' when parsing:\n\t" + elementText); //$NON-NLS-1$
 							}
 						} else {
@@ -384,10 +384,10 @@ public class XmlTagFormatter {
 								if (mode.isAttributeNameSearching()) {
 									// we found the start of an attribute name
 									mode.setAttributeNameFound();
-									currentAttributeName = new StringBuilder(255);
-									currentAttributeName.append(c);
+									currentAttributeName = new StringBuilder(255); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+									currentAttributeName.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 								} else if (mode.isAttributeNameFound()) {
-									currentAttributeName.append(c);
+									currentAttributeName.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 								}
 							}
 						}
@@ -414,7 +414,7 @@ public class XmlTagFormatter {
 					this.fParseText = tagText;
 					this.fElementName = tagText.substring(1, endOfTag);
 				} else {
-					throw new ParseException("No element name for the tag:\n\t" //$NON-NLS-1$
+					throw new ParseException("No element name for the tag:\n\t" //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							+ tagText);
 				}
 			}
@@ -440,7 +440,7 @@ public class XmlTagFormatter {
 			// This is admittedly a little loose, but we don't want the
 			// formatter to be too strict...
 			// http://www.w3.org/TR/2000/REC-xml-20001006#NT-Name
-			for (int i = 1; i < text.length(); i++) {
+			for (int i = 1; i < text.length(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				char c = text.charAt(i);
 				if (!Character.isLetterOrDigit(c) && c != ':' && c != '.' && c != '-' && c != '_') {
 					return i;

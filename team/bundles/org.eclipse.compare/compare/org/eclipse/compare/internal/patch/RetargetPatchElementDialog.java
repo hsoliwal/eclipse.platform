@@ -46,18 +46,18 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
 
 class RetargetPatchElementDialog extends Dialog {
 
-	private static class RetargetPatchContentProvider extends BaseWorkbenchContentProvider {
+	private static class RetargetPatchContentProvider extends BaseWorkbenchContentProvider { //FLLDCIM: MARK — M22  IMPLEMENTS
 		private final PatchDiffNode node;
 		public RetargetPatchContentProvider(PatchDiffNode node) {
 			this.node = node;
 		}
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public Object[] getChildren(Object element) {
 			if (element instanceof IWorkspaceRoot) {
 				// Don't show closed projects
 				IProject[] allProjects= ((IWorkspaceRoot) element).getProjects();
-				ArrayList<IProject> accessibleProjects= new ArrayList<>();
-				for (IProject allProject : allProjects) {
+				ArrayList<IProject> accessibleProjects= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+				for (IProject allProject : allProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (allProject.isOpen()) {
 						accessibleProjects.add(allProject);
 					}
@@ -94,7 +94,7 @@ class RetargetPatchElementDialog extends Dialog {
 		return control;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createDialogArea(Composite parent) {
 		Composite composite= (Composite) super.createDialogArea(parent);
 
@@ -122,9 +122,9 @@ class RetargetPatchElementDialog extends Dialog {
 		gd.heightHint= 0;
 		fViewer.getTree().setLayoutData(gd);
 		fViewer.setContentProvider(new RetargetPatchContentProvider(fSelectedNode));
-		fViewer.setLabelProvider(new WorkbenchLabelProvider());
+		fViewer.setLabelProvider(new WorkbenchLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 		fViewer.setComparator(new ResourceComparator(ResourceComparator.NAME));
-		fViewer.setInput(getViewerInput());
+		fViewer.setInput(getViewerInput()); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		IResource resource = getInitialSelection();
 		if (resource != null) {
 			fViewer.setSelection(new StructuredSelection(resource));
@@ -187,8 +187,8 @@ class RetargetPatchElementDialog extends Dialog {
 		super.okPressed();
 	}
 
-	void setupListeners() {
-		fViewer.addSelectionChangedListener(event -> {
+	void setupListeners() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		fViewer.addSelectionChangedListener(event -> { //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 			IStructuredSelection s= event.getStructuredSelection();
 			Object obj= s.getFirstElement();
 			if (obj instanceof IResource){
@@ -208,7 +208,7 @@ class RetargetPatchElementDialog extends Dialog {
 			}
 		});
 
-		fViewer.addDoubleClickListener(event -> {
+		fViewer.addDoubleClickListener(event -> { //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
 			ISelection s= event.getSelection();
 			if (s instanceof IStructuredSelection) {
 				Object item= ((IStructuredSelection) s).getFirstElement();

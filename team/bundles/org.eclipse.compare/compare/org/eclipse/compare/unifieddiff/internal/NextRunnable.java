@@ -53,7 +53,7 @@ public class NextRunnable implements Runnable {
 		return CompareUIPlugin.getImageDescriptor(ICompareUIConstants.ETOOL_NEXT);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run() {
 		uncheckToolbarActionItems(tm);
 
@@ -67,7 +67,7 @@ public class NextRunnable implements Runnable {
 		}
 		// get next UnifiedDiff for given offset
 		UnifiedDiff nextDiff = null;
-		for (UnifiedDiff diff : diffs1) {
+		for (UnifiedDiff diff : diffs1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int diffStart = getStartOffset(diff, model);
 			if (diffStart > offset) {
 				nextDiff = diff;

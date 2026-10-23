@@ -103,7 +103,7 @@ public class ComputeProjectOrder {
 			 *
 			 * Element type: <code>Vertex</code>
 			 */
-			public List<Vertex<T>> adjacent = new ArrayList<>(3);
+			public List<Vertex<T>> adjacent = new ArrayList<>(3); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 			/**
 			 * Creates a new vertex with the given id.
@@ -140,7 +140,7 @@ public class ComputeProjectOrder {
 
 			@Override
 			public String toString() {
-				return from + " -> " + to; //$NON-NLS-1$
+				return from + " -> " + to; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 
 		}
@@ -150,14 +150,14 @@ public class ComputeProjectOrder {
 		 *
 		 * Element type: <code>Vertex</code>
 		 */
-		public final List<Vertex<T>> vertexList = new ArrayList<>(100);
+		public final List<Vertex<T>> vertexList = new ArrayList<>(100); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		/**
 		 * Map from id to vertex.
 		 *
 		 * Key type: <code>T</code>; value type: <code>Vertex</code>
 		 */
-		public final Map<T, Vertex<T>> vertexMap = new LinkedHashMap<>(100);
+		public final Map<T, Vertex<T>> vertexMap = new LinkedHashMap<>(100); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW
 
 		/**
 		 * DFS visit time. Non-negative.
@@ -268,14 +268,14 @@ public class ComputeProjectOrder {
 		 * (element type: <code>Object</code>)
 		 * @exception IllegalArgumentException if the graph is not frozen
 		 */
-		public List<T> idsByDFSFinishTime(boolean increasing) {
+		public List<T> idsByDFSFinishTime(boolean increasing) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			if (!initialized) {
 				throw new IllegalArgumentException();
 			}
 			int len = vertexList.size();
 			@SuppressWarnings("unchecked")
 			T[] r = (T[]) Array.newInstance(clazz, len);
-			for (Vertex<T> vertex : vertexList) {
+			for (Vertex<T> vertex : vertexList) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int f = vertex.finishTime;
 				// note that finish times start at 1, not 0
 				if (increasing) {
@@ -311,35 +311,35 @@ public class ComputeProjectOrder {
 		 * <code>Object[]</code>)
 		 * @exception IllegalArgumentException if the graph is not frozen
 		 */
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("unchecked") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public List<T[]> nonTrivialComponents() {
 			if (!initialized) {
 				throw new IllegalArgumentException();
 			}
 			// find the roots of each component
 			// Map<Vertex,List<Object>> components
-			Map<Vertex<T>, List<T>> components = new LinkedHashMap<>();
-			for (Vertex<T> vertex : vertexList) {
+			Map<Vertex<T>, List<T>> components = new LinkedHashMap<>(); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW
+			for (Vertex<T> vertex : vertexList) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (vertex.predecessor == null) {
 					// this vertex is the root of a component
 					// if component is non-trivial we will hit a child
 				} else {
 					// find the root ancestor of this vertex
 					Vertex<T> root = vertex;
-					while (root.predecessor != null) {
+					while (root.predecessor != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						root = root.predecessor;
 					}
 					List<T> component = components.get(root);
 					if (component == null) {
-						component = new ArrayList<>(2);
+						component = new ArrayList<>(2); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 						component.add(root.id);
 						components.put(root, component);
 					}
 					component.add(vertex.id);
 				}
 			}
-			List<T[]> result = new ArrayList<>(components.size());
-			for (List<T> component : components.values()) {
+			List<T[]> result = new ArrayList<>(components.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (List<T> component : components.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (component.size() > 1) {
 					result.add(component.toArray((T[]) Array.newInstance(clazz, component.size())));
 				}
@@ -400,7 +400,7 @@ public class ComputeProjectOrder {
 		 * info with each vertex, including DFS finish time. Does not employ
 		 * recursion.
 		 */
-		@SuppressWarnings({"unchecked"})
+		@SuppressWarnings({"unchecked"}) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		private void DFS() {
 			// state machine rendition of the standard recursive DFS algorithm
 			int state;
@@ -416,12 +416,12 @@ public class ComputeProjectOrder {
 			// all vertex.predecessor initially null;
 			time = 0;
 			// for a stack, append to the end of an array-based list
-			List<Object> stack = new ArrayList<>(Math.max(1, vertexList.size()));
+			List<Object> stack = new ArrayList<>(Math.max(1, vertexList.size())); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			Iterator<Vertex<T>> allAdjacent = null;
 			Vertex<T> vertex = null;
 			Iterator<Vertex<T>> allV = vertexList.iterator();
 			state = NEXT_VERTEX;
-			nextStateLoop: while (true) {
+			nextStateLoop: while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				switch (state) {
 					case NEXT_VERTEX :
 						// on entry, "allV" contains vertexes yet to be visited
@@ -487,7 +487,7 @@ public class ComputeProjectOrder {
 
 		public Collection<Edge<T>> getEdges() {
 			int size = 0;
-			for (Vertex<T> vertex : vertexList) {
+			for (Vertex<T> vertex : vertexList) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				size += vertex.adjacent.size();
 			}
 			Collection<Edge<T>> res = new LinkedHashSet<>(size, (float) 1.);
@@ -562,7 +562,7 @@ public class ComputeProjectOrder {
 		return computeVertexOrder(g1, clazz);
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public static <T> VertexOrder<T> computeVertexOrder(final Digraph<T> g1, Class<T> clazz) {
 		Assert.isNotNull(g1);
 		// Create the transposed graph. This time, define the vertexes
@@ -571,11 +571,11 @@ public class ComputeProjectOrder {
 		final Digraph<T> g2 = new Digraph<>(clazz);
 		// add vertexes
 		List<T> resortedVertexes = g1.idsByDFSFinishTime(false);
-		for (T object : resortedVertexes) {
+		for (T object : resortedVertexes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			g2.addVertex(object);
 		}
-		for (Vertex<T> vertex : g1.vertexList) {
-			for (Vertex<T> adjacent : vertex.adjacent) {
+		for (Vertex<T> vertex : g1.vertexList) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (Vertex<T> adjacent : vertex.adjacent) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// N.B. this is the transposed graph
 				g2.addEdge(adjacent.id, vertex.id);
 			}
@@ -603,13 +603,13 @@ public class ComputeProjectOrder {
 	 * Given a VertexOrder and a VertexFilter, remove all vertexes
 	 * matching the filter from the ordering.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	static <T> VertexOrder<T> filterVertexOrder(VertexOrder<T> order, Predicate<T> filter, Class<T> clazz) {
 		// Optimize common case where nothing is to be filtered
 		// and cache the results of applying the filter
 		int filteredCount = 0;
 		boolean[] filterMatches = new boolean[order.vertexes.length];
-		for (int i = 0; i < order.vertexes.length; i++) {
+		for (int i = 0; i < order.vertexes.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			filterMatches[i] = filter.test(order.vertexes[i]);
 			if (filterMatches[i]) {
 				filteredCount++;
@@ -624,7 +624,7 @@ public class ComputeProjectOrder {
 		// Otherwise we need to eliminate mention of vertexes matching the filter
 		// from the list of vertexes
 		T[] reducedVertexes = (T[]) Array.newInstance(clazz, order.vertexes.length - filteredCount);
-		for (int i = 0, j = 0; i < order.vertexes.length; i++) {
+		for (int i = 0, j = 0; i < order.vertexes.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!filterMatches[i]) {
 				reducedVertexes[j] = order.vertexes[i];
 				j++;
@@ -632,10 +632,10 @@ public class ComputeProjectOrder {
 		}
 
 		// and from the knots list
-		List<T[]> reducedKnots = new ArrayList<>(order.knots.length);
-		for (T[] knot : order.knots) {
-			List<T> knotList = new ArrayList<>(knot.length);
-			for (T vertex : knot) {
+		List<T[]> reducedKnots = new ArrayList<>(order.knots.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (T[] knot : order.knots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			List<T> knotList = new ArrayList<>(knot.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (T vertex : knot) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!filter.test(vertex)) {
 					knotList.add(vertex);
 				}
@@ -649,14 +649,14 @@ public class ComputeProjectOrder {
 		return new VertexOrder<>(reducedVertexes, reducedKnots.size() > 0, reducedKnots.toArray((T[][]) Array.newInstance(arrayClass, reducedKnots.size())));
 	}
 
-	public static <T> Digraph<T> computeGraph(Collection<T> vertexes, Collection<T[]> references, Class<T> clazz) {
+	public static <T> Digraph<T> computeGraph(Collection<T> vertexes, Collection<T[]> references, Class<T> clazz) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final Digraph<T> g1 = new Digraph<>(clazz);
 		// add vertexes
-		for (T name : vertexes) {
+		for (T name : vertexes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			g1.addVertex(name);
 		}
 		// add edges
-		for (T[] ref : references) {
+		for (T[] ref : references) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (ref.length != 2) {
 				throw new IllegalArgumentException();
 			}
@@ -684,10 +684,10 @@ public class ComputeProjectOrder {
 	 * @param filterOut a filter to exclude nodes.
 	 * @return the filtered graph.
 	 */
-	public static <T> Digraph<T> buildFilteredDigraph(Digraph<T> initialGraph, Predicate<T> filterOut, Class<T> clazz) {
+	public static <T> Digraph<T> buildFilteredDigraph(Digraph<T> initialGraph, Predicate<T> filterOut, Class<T> clazz) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Digraph<T> filteredGraph = new Digraph<>(clazz);
 		// build vertices
-		for (Vertex<T> vertex : initialGraph.vertexList) {
+		for (Vertex<T> vertex : initialGraph.vertexList) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			T id = vertex.id;
 			if (!filterOut.test(id)) {
 				filteredGraph.addVertex(id);
@@ -697,11 +697,11 @@ public class ComputeProjectOrder {
 		// so that if initial graph has A->B and B->C and B->D and B is removed, this function return C and D
 		// when invoked on A.
 		Function<T, Set<T>> computeAdjacents = new Function<>() {
-			private final Set<T> processing = new HashSet<>();
+			private final Set<T> processing = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			// Store intermediary results to not repeat same computations with the same expected results
-			private final Map<T, Set<T>> adjacentsMap = new HashMap<>(initialGraph.vertexList.size(), 1.f);
+			private final Map<T, Set<T>> adjacentsMap = new HashMap<>(initialGraph.vertexList.size(), 1.f); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public Set<T> apply(T id) {
 				if (adjacentsMap.containsKey(id)) {
 					return adjacentsMap.get(id);
@@ -711,7 +711,7 @@ public class ComputeProjectOrder {
 					return Collections.emptySet();
 				}
 				processing.add(id);
-				Set<T> resolvedAdjacents = new HashSet<>();
+				Set<T> resolvedAdjacents = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 				initialGraph.vertexMap.get(id).adjacent.forEach(adjacent -> {
 					if (filteredGraph.vertexMap.containsKey(adjacent.id)) {
 						// adjacent in target graph, just take it.

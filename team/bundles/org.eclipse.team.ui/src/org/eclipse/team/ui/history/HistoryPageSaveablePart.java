@@ -42,7 +42,7 @@ import org.eclipse.ui.part.Page;
  * @deprecated use {@link HistoryPageCompareEditorInput}
  * @since 3.2
  */
-@Deprecated
+@Deprecated //FLLDCIM: MARK — T37  IMPLEMENTS
 public class HistoryPageSaveablePart extends PageSaveablePart {
 
 	private IHistoryPage historyPage;
@@ -57,7 +57,7 @@ public class HistoryPageSaveablePart extends PageSaveablePart {
 	 * @param object the object
 	 * @return whether the object had an {@link IHistoryPageSource} available or not
 	 */
-	@Deprecated
+	@Deprecated //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public static boolean showHistoryInDialog(Shell shell, Object object) {
 		IHistoryPageSource pageSource = HistoryPageSource.getHistoryPageSource(object);
 		if (pageSource != null && pageSource.canShowHistoryFor(object)) {

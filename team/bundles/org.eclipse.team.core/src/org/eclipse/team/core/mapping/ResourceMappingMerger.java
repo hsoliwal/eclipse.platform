@@ -72,9 +72,9 @@ public abstract class ResourceMappingMerger implements IResourceMappingMerger {
 	public ISchedulingRule getMergeRule(IMergeContext context) {
 		ResourceMapping[] mappings = context.getScope().getMappings(getModelProvider().getId());
 		ISchedulingRule rule = null;
-		for (ResourceMapping mapping : mappings) {
+		for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProject[] mappingProjects = mapping.getProjects();
-			for (IProject project : mappingProjects) {
+			for (IProject project : mappingProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (rule == null) {
 					rule = project;
 				} else {
@@ -103,8 +103,8 @@ public abstract class ResourceMappingMerger implements IResourceMappingMerger {
 
 	private IDiff[] getSetToMerge(IMergeContext mergeContext) {
 		ResourceMapping[] mappings = mergeContext.getScope().getMappings(getModelProvider().getDescriptor().getId());
-		Set<IDiff> result = new HashSet<>();
-		for (ResourceMapping mapping : mappings) {
+		Set<IDiff> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceTraversal[] traversals = mergeContext.getScope().getTraversals(mapping);
 			IDiff[] deltas = mergeContext.getDiffTree().getDiffs(traversals);
 			Collections.addAll(result, deltas);

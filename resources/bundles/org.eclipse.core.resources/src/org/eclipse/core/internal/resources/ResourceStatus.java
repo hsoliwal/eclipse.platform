@@ -68,18 +68,18 @@ public class ResourceStatus extends Status implements IResourceStatus {
 	// for debug only
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[type: "); //$NON-NLS-1$
-		sb.append(getTypeName());
-		sb.append("], [path: "); //$NON-NLS-1$
-		sb.append(getPath());
-		sb.append("], [message: "); //$NON-NLS-1$
-		sb.append(getMessage());
-		sb.append("], [plugin: "); //$NON-NLS-1$
-		sb.append(getPlugin());
-		sb.append("], [exception: "); //$NON-NLS-1$
-		sb.append(getException());
-		sb.append("]\n"); //$NON-NLS-1$
+		StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		sb.append("[type: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(getTypeName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append("], [path: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(getPath()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append("], [message: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(getMessage()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append("], [plugin: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(getPlugin()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append("], [exception: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(getException()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append("]\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return sb.toString();
 	}
 }

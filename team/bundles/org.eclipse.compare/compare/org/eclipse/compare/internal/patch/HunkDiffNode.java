@@ -81,12 +81,12 @@ public class HunkDiffNode extends PatchDiffNode {
 		return result.getFuzz() > 0;
 	}
 
-	public boolean isAllContextIgnored() {
+	public boolean isAllContextIgnored() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int fuzz = result.getFuzz();
 		if (fuzz > 0) {
 			String[] lines = result.getHunk().getLines();
 			int contextLines = 0;
-			for (String line : lines) {
+			for (String line : lines) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				char c = line.charAt(0);
 				if (c == ' ') {
 					contextLines++;

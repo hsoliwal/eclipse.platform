@@ -36,16 +36,16 @@ public class AntSourceContainer extends AbstractSourceContainer {
 		fRoot = ResourcesPlugin.getWorkspace().getRoot();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Object[] findSourceElements(String path) throws CoreException {
-		ArrayList<IStorage> sources = new ArrayList<>();
+		ArrayList<IStorage> sources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		File osFile = new File(path);
 		if (osFile.exists()) {
 			try {
 				IPath canonicalPath = IPath.fromOSString(osFile.getCanonicalPath());
 				IFile[] files = fRoot.findFilesForLocationURI(canonicalPath.makeAbsolute().toFile().toURI());
 				if (files.length > 0) {
-					for (IFile file : files) {
+					for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						sources.add(file);
 					}
 				} else {

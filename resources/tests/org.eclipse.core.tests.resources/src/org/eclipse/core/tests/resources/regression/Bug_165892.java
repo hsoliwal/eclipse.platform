@@ -42,7 +42,7 @@ public class Bug_165892 {
 	/**
 	 * Tests copying a file
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyFile() throws CoreException {
 		IProject source = getWorkspace().getRoot().getProject("project");
 		IFolder sourceFolder = source.getFolder("folder");
@@ -74,7 +74,7 @@ public class Bug_165892 {
 	/**
 	 * Tests that history of source file isn't affected by a copy
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyFileHistory() throws CoreException {
 		IProject source = getWorkspace().getRoot().getProject("project");
 		IFolder sourceFolder = source.getFolder("folder");
@@ -105,7 +105,7 @@ public class Bug_165892 {
 	/**
 	 * Tests copying a folder
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyFolder() throws CoreException {
 		IProject source = getWorkspace().getRoot().getProject("project");
 		IFolder sourceFolder = source.getFolder("source");
@@ -147,7 +147,7 @@ public class Bug_165892 {
 	/**
 	 * Tests copying a project
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyProject() throws CoreException {
 		IProject source = getWorkspace().getRoot().getProject("source");
 		IFolder sourceFolder = source.getFolder("folder");

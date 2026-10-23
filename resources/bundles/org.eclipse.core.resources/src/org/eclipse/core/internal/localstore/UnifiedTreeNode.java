@@ -148,6 +148,6 @@ public class UnifiedTreeNode implements ILocalStoreConstants {
 	@Override
 	public String toString() {
 		String s = resource == null ? "null" : resource.getFullPath().toString(); //$NON-NLS-1$
-		return "Node: " + s; //$NON-NLS-1$
+		return "Node: " + s; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

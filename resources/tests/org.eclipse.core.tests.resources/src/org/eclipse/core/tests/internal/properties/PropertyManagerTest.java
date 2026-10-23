@@ -84,21 +84,21 @@ public class PropertyManagerTest {
 	}
 
 	private void createProperties(IFile target, QualifiedName[] names, String[] values) throws CoreException {
-		for (int i = 0; i < names.length; i++) {
-			names[i] = new QualifiedName("org.eclipse.core.tests", "prop" + i);
-			values[i] = "property value" + i;
+		for (int i = 0; i < names.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			names[i] = new QualifiedName("org.eclipse.core.tests", "prop" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			values[i] = "property value" + i; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		// create properties
-		for (int i = 0; i < names.length; i++) {
+		for (int i = 0; i < names.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			target.setPersistentProperty(names[i], values[i]);
 		}
 	}
 
-	private Thread[] createThreads(final IFile target, final QualifiedName[] names, final String[] values, final CoreException[] errorPointer) {
+	private Thread[] createThreads(final IFile target, final QualifiedName[] names, final String[] values, final CoreException[] errorPointer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final int THREAD_COUNT = 3;
 		Thread[] threads = new Thread[THREAD_COUNT];
-		for (int j = 0; j < THREAD_COUNT; j++) {
-			final String id = "GetSetProperty" + j;
+		for (int j = 0; j < THREAD_COUNT; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			final String id = "GetSetProperty" + j; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			threads[j] = new Thread((Runnable) () -> {
 				try {
 					doGetSetProperties(target, id, names, values);
@@ -118,17 +118,17 @@ public class PropertyManagerTest {
 
 	protected void doGetSetProperties(IFile target, String threadID, QualifiedName[] names, String[] values) throws CoreException {
 		final int N = names.length;
-		for (int j = 0; j < 10; j++) {
-			for (int i = 0; i < N; i++) {
+		for (int j = 0; j < 10; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (int i = 0; i < N; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				target.getPersistentProperty(names[i]);
 			}
 			// change properties
-			for (int i = 0; i < N; i++) {
+			for (int i = 0; i < N; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				//			values[i] = values[i] + " - changed (" + threadID + ")";
 				target.setPersistentProperty(names[i], values[i]);
 			}
 			// verify
-			for (int i = 0; i < N; i++) {
+			for (int i = 0; i < N; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				target.getPersistentProperty(names[i]);
 			}
 		}
@@ -137,7 +137,7 @@ public class PropertyManagerTest {
 	/**
 	 * Tests concurrent acces to the property store.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testConcurrentAccess() throws Exception {
 
 		// create common objects
@@ -152,7 +152,7 @@ public class PropertyManagerTest {
 
 		final CoreException[] errorPointer = new CoreException[1];
 		Thread[] threads = createThreads(target, names, values, errorPointer);
-		for (Thread thread : threads) {
+		for (Thread thread : threads) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			thread.join();
 		}
 		if (errorPointer[0] != null) {
@@ -164,12 +164,12 @@ public class PropertyManagerTest {
 	 * Tests concurrent access to the property store while the project is being
 	 * deleted.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testConcurrentDelete() throws Exception {
 		Thread[] threads;
 		final IFile target = project.getFile("target");
 		final int REPEAT = 8;
-		for (int i = 0; i < REPEAT; i++) {
+		for (int i = 0; i < REPEAT; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// create common objects
 			createInWorkspace(project);
 			createInWorkspace(target);
@@ -186,7 +186,7 @@ public class PropertyManagerTest {
 			Thread.sleep(10);
 			// delete the project while the threads are still running
 			target.getProject().delete(IResource.NONE, createTestMonitor());
-			for (Thread thread : threads) {
+			for (Thread thread : threads) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				thread.join();
 			}
 			if (errorPointer[0] != null) {
@@ -195,7 +195,7 @@ public class PropertyManagerTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCache() throws Throwable {
 		IPropertyManager manager = new PropertyManager2((Workspace) ResourcesPlugin.getWorkspace());
 		IProject source = project;
@@ -222,7 +222,7 @@ public class PropertyManagerTest {
 		assertSame(propValue, manager.getProperty(sourceFile, propName), hint);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testOOME() throws Throwable {
 		IPropertyManager manager = new PropertyManager2((Workspace) ResourcesPlugin.getWorkspace());
 		IProject source = project;
@@ -251,9 +251,9 @@ public class PropertyManagerTest {
 			long maxMemory = Runtime.getRuntime().maxMemory();
 			int quickAllocationSize = Math.max(200_000_000,
 					(int) Math.min((long) Integer.MAX_VALUE - 8, maxMemory / 2));
-			System.out.println("Waste memory to force OOME: " + quickAllocationSize + "/" + maxMemory);
-			while (wastedMemory.add(new byte[quickAllocationSize])) {
-				System.out.println("Waste memory to force OOME: " + quickAllocationSize);
+			System.out.println("Waste memory to force OOME: " + quickAllocationSize + "/" + maxMemory); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			while (wastedMemory.add(new byte[quickAllocationSize])) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				System.out.println("Waste memory to force OOME: " + quickAllocationSize); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				// force OOME
 			}
 		} catch (OutOfMemoryError e1) {
@@ -282,7 +282,7 @@ public class PropertyManagerTest {
 		assertSame(propValue, manager.getProperty(sourceFile, propName));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopy() throws Throwable {
 		IPropertyManager manager = new PropertyManager2((Workspace) ResourcesPlugin.getWorkspace());
 		IProject source = project;
@@ -353,7 +353,7 @@ public class PropertyManagerTest {
 		assertTrue(manager.getProperty(destination, propName).equals(newPropValue));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteProperties() throws Throwable {
 		/* create common objects */
 		IPropertyManager manager = new PropertyManager2((Workspace) ResourcesPlugin.getWorkspace());
@@ -450,9 +450,9 @@ public class PropertyManagerTest {
 
 		QualifiedName name = new QualifiedName("stressTest", "prop");
 		final int SIZE = 10000;
-		StringBuilder valueBuf = new StringBuilder(SIZE);
-		for (int i = 0; i < SIZE; i++) {
-			valueBuf.append("a");
+		StringBuilder valueBuf = new StringBuilder(SIZE); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < SIZE; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			valueBuf.append("a"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		String value = valueBuf.toString();
 		assertThrows(CoreException.class, () -> target.setPersistentProperty(name, value));
@@ -479,7 +479,7 @@ public class PropertyManagerTest {
 		assertEquals("value", value);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProperties() throws Throwable {
 		// create common objects
 		IPropertyManager manager = new PropertyManager2((Workspace) ResourcesPlugin.getWorkspace());
@@ -493,18 +493,18 @@ public class PropertyManagerTest {
 		String propValue1 = "this is the property value1";
 		String propValue2 = "this is the property value2";
 		String propValue3 = "this is the property value3";
-		ArrayList<StoredProperty> props = new ArrayList<>(3);
+		ArrayList<StoredProperty> props = new ArrayList<>(3); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		props.add(new StoredProperty(propName1, propValue1));
 		props.add(new StoredProperty(propName2, propValue2));
 		props.add(new StoredProperty(propName3, propValue3));
 
 		// set the properties individually and retrieve them
-		for (StoredProperty prop : props) {
+		for (StoredProperty prop : props) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			manager.setProperty(target, prop.getName(), prop.getStringValue());
 			assertEquals(prop.getStringValue(), manager.getProperty(target, prop.getName()), prop.getName().toString());
 		}
 		// check properties are be appropriately deleted (when set to null)
-		for (StoredProperty prop : props) {
+		for (StoredProperty prop : props) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			manager.setProperty(target, prop.getName(), null);
 			assertNull(manager.getProperty(target, prop.getName()), prop.getName().toString());
 		}
@@ -512,7 +512,7 @@ public class PropertyManagerTest {
 		manager.deleteProperties(target, IResource.DEPTH_INFINITE);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSimpleUpdate() throws CoreException {
 		// create common objects
 		IFile target = project.getFile("target");
@@ -522,30 +522,30 @@ public class PropertyManagerTest {
 		int N = 3;
 		QualifiedName[] names = new QualifiedName[3];
 		String[] values = new String[N];
-		for (int i = 0; i < N; i++) {
-			names[i] = new QualifiedName("org.eclipse.core.tests", "prop" + i);
-			values[i] = "property value" + i;
+		for (int i = 0; i < N; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			names[i] = new QualifiedName("org.eclipse.core.tests", "prop" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			values[i] = "property value" + i; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		// create properties
-		for (int i = 0; i < N; i++) {
+		for (int i = 0; i < N; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			target.setPersistentProperty(names[i], values[i]);
 		}
 
 		// verify
-		for (int i = 0; i < N; i++) {
+		for (int i = 0; i < N; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertTrue(target.getPersistentProperty(names[i]).equals(values[i]));
 		}
 
-		for (int j = 0; j < 20; j++) {
+		for (int j = 0; j < 20; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// change properties
-			for (int i = 0; i < N; i++) {
-				values[i] = values[i] + " - changed";
+			for (int i = 0; i < N; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				values[i] = values[i] + " - changed"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				target.setPersistentProperty(names[i], values[i]);
 			}
 
 			// verify
-			for (int i = 0; i < N; i++) {
+			for (int i = 0; i < N; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				assertTrue(target.getPersistentProperty(names[i]).equals(values[i]));
 			}
 
@@ -560,7 +560,7 @@ public class PropertyManagerTest {
 	 * under corresponding bucket of the folder same as the IFile and no need to
 	 * traverse to Infinite depth.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileDeleteTraversalDepth() throws CoreException {
 		Workspace ws;
 		PropertyManager2 manager;
@@ -571,7 +571,7 @@ public class PropertyManagerTest {
 		IFolder tempFolder = project.getFolder("temp");
 		tempFolder.create(true, true, new NullProgressMonitor());
 
-		IFile fileToBeDeleted = tempFolder.getFile("testfile" + 0);
+		IFile fileToBeDeleted = tempFolder.getFile("testfile" + 0); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		fileToBeDeleted.create(createRandomContentsStream(), true, createTestMonitor());
 		fileToBeDeleted.setPersistentProperty(new QualifiedName(this.getClass().getName(), fileToBeDeleted.getName()),
 				fileToBeDeleted.getName());

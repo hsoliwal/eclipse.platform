@@ -69,13 +69,13 @@ public class TeamCapabilityHelper {
 	 * for workspace changes and promote activities accordingly.
 	 */
 	private TeamCapabilityHelper() {
-		providerIdToPluginId = new HashMap<>();
+		providerIdToPluginId = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		loadRepositoryProviderIds();
 
 		// crawl the initial projects
 		IProject [] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		IWorkbenchActivitySupport workbenchActivitySupport = PlatformUI.getWorkbench().getActivitySupport();
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				processProject(project, workbenchActivitySupport);
 			} catch (CoreException e) {
@@ -87,14 +87,14 @@ public class TeamCapabilityHelper {
 	/**
 	 * Loads the list of registered provider types
 	 */
-	public void loadRepositoryProviderIds() {
+	public void loadRepositoryProviderIds() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		providerIdToPluginId.clear();
 		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint("org.eclipse.team.core.repository"); //$NON-NLS-1$
 		if (point != null) {
 			IExtension[] extensions = point.getExtensions();
-			for (IExtension extension : extensions) {
+			for (IExtension extension : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IConfigurationElement[] elements = extension.getConfigurationElements();
-				for (IConfigurationElement element : elements) {
+				for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					final String pluginId = extension.getNamespace();
 					if (element.getName().equals(TeamPlugin.REPOSITORY_EXTENSION)) {
 						final String id = element.getAttribute("id"); //$NON-NLS-1$
@@ -138,13 +138,13 @@ public class TeamCapabilityHelper {
 	 * @param id the repository provider id
 	 * @param workbenchActivitySupport the activity support
 	 */
-	public void processRepositoryId(String id, IWorkbenchActivitySupport workbenchActivitySupport) {
+	public void processRepositoryId(String id, IWorkbenchActivitySupport workbenchActivitySupport) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (id == null) {
 			return;
 		}
 		IActivityManager activityManager = workbenchActivitySupport
 		.getActivityManager();
-		Set<String> activities = new HashSet<>(activityManager.getEnabledActivityIds());
+		Set<String> activities = new HashSet<>(activityManager.getEnabledActivityIds()); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		boolean changed = false;
 
 		IPluginContribution contribution = providerIdToPluginId.get(id);

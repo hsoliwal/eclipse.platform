@@ -113,7 +113,7 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 			textTransfer = TextTransfer.getInstance();
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void dragEnter(DropTargetEvent event) {
 
 			if (event.detail == DND.DROP_DEFAULT) {
@@ -124,7 +124,7 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 				}
 			}
 
-			for (TransferData dataType : event.dataTypes) {
+			for (TransferData dataType : event.dataTypes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (resourceTransfer.isSupportedType(dataType)
 						|| textTransfer.isSupportedType(dataType)) {
 					event.currentDataType = dataType;
@@ -272,18 +272,18 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 			mainButton.setVisible(false);
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		protected void createText(Composite parent) {
 
 			super.createText(parent);
 			text.setEditable(true);
 
-			text.addModifyListener(unused -> {
+			text.addModifyListener(unused -> { //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 				section.setResource(text.getText());
 				updateErrorInfo();
 			});
 
-			text.addSelectionListener(new SelectionListener() {
+			text.addSelectionListener(new SelectionListener() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 				@Override
 				public void widgetDefaultSelected(SelectionEvent e) {
 					widgetSelected(e);
@@ -308,14 +308,14 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 		protected void initDrag() {
 			DragSource source = new DragSource(text, DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_DEFAULT);
 			source.setTransfer(TextTransfer.getInstance(), ResourceTransfer.getInstance());
-			source.addDragListener(new FileTextDragListener(this));
+			source.addDragListener(new FileTextDragListener(this)); //FLLDCIM: MARK — T25 DND CALL
 		}
 
 		protected void initDrop() {
 			DropTarget target = new DropTarget(text, DND.DROP_MOVE
 					| DND.DROP_COPY | DND.DROP_DEFAULT);
 			target.setTransfer(TextTransfer.getInstance(), ResourceTransfer.getInstance());
-			target.addDropListener(new FileTextDropListener(this));
+			target.addDropListener(new FileTextDropListener(this)); //FLLDCIM: MARK — T25 DND CALL
 		}
 
 	}
@@ -330,7 +330,7 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 		protected void createMainButton(Composite parent) {
 			super.createMainButton(parent);
 			mainButton.setText(CompareMessages.CompareWithOtherResourceDialog_externalFileMainButton);
-			mainButton.addSelectionListener(new SelectionAdapter() {
+			mainButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					IResource r = tmpProject.getExternalFile();
@@ -360,7 +360,7 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 		protected void createMainButton(Composite parent) {
 			super.createMainButton(parent);
 			mainButton.setText(CompareMessages.CompareWithOtherResourceDialog_externalFolderMainButton);
-			mainButton.addSelectionListener(new SelectionAdapter() {
+			mainButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					IResource r = tmpProject.getExternalFolder();
@@ -414,9 +414,9 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 		private void addListenersToRadioButtons() {
 			final ContentTypeElement[] elements = new ContentTypeElement[] { workspaceContent,
 					externalFileContent, externalFolderContent };
-			for (ContentTypeElement e : elements) {
-				e.getRadioButton().addListener(SWT.Selection, event -> {
-					for (ContentTypeElement element : elements) {
+			for (ContentTypeElement e : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				e.getRadioButton().addListener(SWT.Selection, event -> { //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
+					for (ContentTypeElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (event.widget != element.getRadioButton()) {
 							element.setEnabled(false);
 						} else {
@@ -456,7 +456,7 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 			updateErrorInfo();
 		}
 
-		protected void setContentType(int type) {
+		protected void setContentType(int type) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			switch(type) {
 			case WORKSPACE:
 				workspaceContent.setEnabled(true);
@@ -522,7 +522,7 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 		private void createClearButton(Composite parent) {
 			Button clearButton = new Button(parent, SWT.PUSH);
 			clearButton.setText(CompareMessages.CompareWithOtherResourceDialog_clear);
-			clearButton.addSelectionListener(new SelectionAdapter() {
+			clearButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					clearResource();
@@ -548,7 +548,7 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 
 		private static final String TMP_PROJECT_NAME = ".org.eclipse.compare.tmp"; //$NON-NLS-1$
 
-		private static final String TMP_PROJECT_FILE = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" //$NON-NLS-1$
+		private static final String TMP_PROJECT_FILE = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ "<projectDescription>\n" //$NON-NLS-1$
 				+ "\t<name>" + TMP_PROJECT_NAME + "\t</name>\n" //$NON-NLS-1$ //$NON-NLS-2$
 				+ "\t<comment></comment>\n" //$NON-NLS-1$
@@ -565,7 +565,7 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 			// nothing to do here
 		}
 
-		private IProject createTmpProject() throws CoreException {
+		private IProject createTmpProject() throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IProject project = getTmpProject();
 			if (!project.isAccessible()) {
 				try {
@@ -625,7 +625,7 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 			return null;
 		}
 
-		private IResource linkResource(IPath path) {
+		private IResource linkResource(IPath path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IResource r = null;
 			String resourceName = path.lastSegment();
 			try {
@@ -665,13 +665,13 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 		 */
 		private String getName(String name, String extension) {
 			if (counter != 0) {
-				name = name + "-" + counter; //$NON-NLS-1$
+				name = name + "-" + counter; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			// at most 3 resources at the same time with the same name:
 			// left, right, ancestor
 			counter = (counter + 1) % 3;
 			if (extension != null) {
-				name += "." + extension; //$NON-NLS-1$
+				name += "." + extension; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			// don't change the name if counter equals 0
 			return name;
@@ -702,7 +702,7 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 		this.selection = selection;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createDialogArea(Composite parent) {
 
 		Composite mainPanel = new Composite(parent, SWT.NULL);
@@ -744,7 +744,7 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 		setMessage(CompareMessages.CompareWithOtherResourceDialog_info);
 	}
 
-	private void setSelection(ISelection selection) {
+	private void setSelection(ISelection selection) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource[] selectedResources = Utilities.getResources(selection);
 		switch (selectedResources.length) {
 		case 1:
@@ -826,7 +826,7 @@ public class CompareWithOtherResourceDialog extends TitleAreaDialog {
 
 	@Override
 	protected IDialogSettings getDialogBoundsSettings() {
-		String sectionName = getClass().getName() + "_dialogBounds"; //$NON-NLS-1$
+		String sectionName = getClass().getName() + "_dialogBounds"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IDialogSettings settings = PlatformUI
 				.getDialogSettingsProvider(FrameworkUtil.getBundle(CompareWithOtherResourceDialog.class))
 				.getDialogSettings();

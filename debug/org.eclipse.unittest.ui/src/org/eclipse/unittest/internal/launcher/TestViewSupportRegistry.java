@@ -37,7 +37,7 @@ public class TestViewSupportRegistry {
 	/**
 	 * An identifier of Test View Support extension point
 	 */
-	public static final String ID_EXTENSION_POINT_TEST_VIEW_SUPPORTS = UnitTestPlugin.PLUGIN_ID + "." //$NON-NLS-1$
+	public static final String ID_EXTENSION_POINT_TEST_VIEW_SUPPORTS = UnitTestPlugin.PLUGIN_ID + "." //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			+ "unittestViewSupport"; //$NON-NLS-1$
 
 	/**
@@ -137,8 +137,8 @@ public class TestViewSupportRegistry {
 	}
 
 	private List<IConfigurationElement> getConfigurationElements() {
-		List<IConfigurationElement> items = new ArrayList<>();
-		for (IExtension extension : fPoint.getExtensions()) {
+		List<IConfigurationElement> items = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IExtension extension : fPoint.getExtensions()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Collections.addAll(items, extension.getConfigurationElements());
 		}
 		return items;

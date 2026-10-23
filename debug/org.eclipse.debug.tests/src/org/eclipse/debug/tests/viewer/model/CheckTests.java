@@ -38,7 +38,7 @@ abstract public class CheckTests extends AbstractViewerModelTest {
 		return new TestModelUpdatesListener(viewer, false, false);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSimpleSingleLevel() throws Exception {
 		// Create the model with test data
 		TestModel model = TestModel.simpleSingleLevel();
@@ -77,7 +77,7 @@ abstract public class CheckTests extends AbstractViewerModelTest {
 		model.validateData(fViewer, TreePath.EMPTY);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCheckReceiver() throws Exception {
 		// Initial setup
 		TestModel model = TestModel.simpleSingleLevel();
@@ -103,7 +103,7 @@ abstract public class CheckTests extends AbstractViewerModelTest {
 		assertTrue(element.getChecked() != initialCheckState);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testUpdateCheck() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 

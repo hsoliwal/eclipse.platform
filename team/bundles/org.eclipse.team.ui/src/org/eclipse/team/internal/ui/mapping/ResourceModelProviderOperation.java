@@ -38,7 +38,7 @@ import org.eclipse.team.internal.ui.synchronize.SynchronizePageConfiguration;
 import org.eclipse.team.ui.mapping.SynchronizationOperation;
 import org.eclipse.team.ui.synchronize.ISynchronizePageConfiguration;
 
-public abstract class ResourceModelProviderOperation extends SynchronizationOperation {
+public abstract class ResourceModelProviderOperation extends SynchronizationOperation { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	private final IStructuredSelection selection;
 
@@ -59,8 +59,8 @@ public abstract class ResourceModelProviderOperation extends SynchronizationOper
 	 * @return the file deltas contained in or descended from the selection
 	 */
 	private IDiff[] getFileDeltas(Object[] pathOrElements) {
-		Set<IDiff> result = new HashSet<>();
-		for (Object pathOrElement : pathOrElements) {
+		Set<IDiff> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (Object pathOrElement : pathOrElements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IDiff[] diffs = getFileDeltas(pathOrElement);
 			Collections.addAll(result, diffs);
 		}
@@ -68,14 +68,14 @@ public abstract class ResourceModelProviderOperation extends SynchronizationOper
 	}
 
 	private IDiff[] getFileDeltas(Object pathOrElement) {
-		List<IDiff> result = new ArrayList<>();
+		List<IDiff> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		ResourceTraversal[] traversals = getTraversals(pathOrElement);
 		if (traversals.length > 0) {
 			ISynchronizationContext context = getContext();
 			final IResourceDiffTree diffTree = context.getDiffTree();
 			IDiff[] diffs = diffTree.getDiffs(traversals);
 			// Now filter the by the mode of the configuration
-			for (IDiff node : diffs) {
+			for (IDiff node : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (isVisible(node) && getDiffFilter().select(node)) {
 					result.add(node);
 				}
@@ -94,7 +94,7 @@ public abstract class ResourceModelProviderOperation extends SynchronizationOper
 		return ((SynchronizePageConfiguration)getConfiguration()).isVisible(node);
 	}
 
-	private ResourceTraversal[] getTraversals(Object pathOrElement) {
+	private ResourceTraversal[] getTraversals(Object pathOrElement) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// First check to see if the element is a tree path
 		Object element;
 		if (pathOrElement instanceof TreePath tp) {
@@ -150,7 +150,7 @@ public abstract class ResourceModelProviderOperation extends SynchronizationOper
 	@Override
 	public boolean shouldRun() {
 		Object[] elements = getElements();
-		for (Object object : elements) {
+		for (Object object : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (Utils.getResourceMapping(internalGetElement(object)) != null) {
 				return true;
 			}

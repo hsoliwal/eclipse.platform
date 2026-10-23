@@ -95,7 +95,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 			return file.exists();
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void handleNotification() {
 			if (!isOpen()) {
 				return;
@@ -168,7 +168,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 					}
 				}
 				if (Policy.DEBUG_AUTO_REFRESH) {
-					Policy.debug(DEBUG_PREFIX + "removed handle: " + handleValue); //$NON-NLS-1$
+					Policy.debug(DEBUG_PREFIX + "removed handle: " + handleValue); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				handleValue = Win32Natives.INVALID_HANDLE_VALUE;
 			}
@@ -253,15 +253,15 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 		}
 
 		protected void createFileHandleChain() {
-			fileHandleChain = new ArrayList<>(1);
+			fileHandleChain = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			File file = new File(resource.getLocation().toOSString());
 			file = file.getParentFile();
-			while (file != null) {
+			while (file != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fileHandleChain.add(0, new FileHandle(file));
 				file = file.getParentFile();
 			}
 			int size = fileHandleChain.size();
-			for (int i = 0; i < size; i++) {
+			for (int i = 0; i < size; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ChainedHandle handle = fileHandleChain.get(i);
 				handle.setPrevious((i > 0) ? fileHandleChain.get(i - 1) : null);
 				handle.setNext((i + 1 < size) ? fileHandleChain.get(i + 1) : this);
@@ -272,7 +272,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 		@Override
 		public void destroy() {
 			super.destroy();
-			for (FileHandle fileHandle : fileHandleChain) {
+			for (FileHandle fileHandle : fileHandleChain) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Handle handle = fileHandle;
 				handle.destroy();
 			}
@@ -373,7 +373,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 		this.refreshResult = result;
 		setPriority(Job.DECORATE);
 		setSystem(true);
-		fHandleValueToHandle = new HashMap<>(1);
+		fHandleValueToHandle = new HashMap<>(1); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		setHandleValueArrays();
 	}
 
@@ -396,7 +396,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 	 * <li> If an array of size 18 is split with a max of 5, the resulting
 	 * arrays are of size 5, 5, 4, and 4. </li></ul>
 	 */
-	private long[][] balancedSplit(final long[] array, final int max) {
+	private long[][] balancedSplit(final long[] array, final int max) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int elementCount = array.length;
 		// want to handle [1, max] rather than [0, max)
 		int subArrayCount = ((elementCount - 1) / max) + 1;
@@ -404,10 +404,10 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 		int overflow = elementCount % subArrayCount;
 		long[][] result = new long[subArrayCount][];
 		int count = 0;
-		for (int i = 0; i < subArrayCount; i++) {
+		for (int i = 0; i < subArrayCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int subArrayLength = subArrayBaseLength + (overflow-- > 0 ? 1 : 0);
 			long[] subArray = new long[subArrayLength];
-			for (int j = 0; j < subArrayLength; j++) {
+			for (int j = 0; j < subArrayLength; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				subArray[j] = array[count++];
 			}
 			result[i] = subArray;
@@ -430,7 +430,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 	 * Win32Natives.MAXIMUM_WAIT_OBJECTS. The arrays are balanced so that they
 	 * differ in size by no more than one element.
 	 */
-	private long[][] createHandleArrays() {
+	private long[][] createHandleArrays() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		long[] handles;
 		// synchronized: in order to protect the map during iteration
 		synchronized (fHandleValueToHandle) {
@@ -446,7 +446,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 			}
 			handles = new long[size];
 			int count = 0;
-			for (Long long2 : keys) {
+			for (Long long2 : keys) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				handles[count++] = long2.longValue();
 			}
 		}
@@ -459,7 +459,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 		}
 		// synchronized: in order to protect the map during iteration
 		synchronized (fHandleValueToHandle) {
-			for (Handle handle : fHandleValueToHandle.values()) {
+			for (Handle handle : fHandleValueToHandle.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (handle instanceof ResourceHandle resourceHandle) {
 					if (resourceHandle.getResource().equals(resource)) {
 						return handle;
@@ -482,7 +482,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 	/**
 	 * Adds a resource to be monitored by this native monitor
 	 */
-	public boolean monitor(IResource resource) {
+	public boolean monitor(IResource resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath location = resource.getLocation();
 		if (location == null) {
 			// cannot monitor remotely managed containers
@@ -502,7 +502,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 		//make sure the job is running
 		schedule(RESCHEDULE_DELAY);
 		if (Policy.DEBUG_AUTO_REFRESH) {
-			Policy.debug(DEBUG_PREFIX + " added monitor for: " + resource); //$NON-NLS-1$
+			Policy.debug(DEBUG_PREFIX + " added monitor for: " + resource); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return true;
 	}
@@ -514,7 +514,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 	 *                  a handle, not <code>null</code>
 	 */
 	protected void removeHandle(Handle handle) {
-		List<Handle> handles = new ArrayList<>(1);
+		List<Handle> handles = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		handles.add(handle);
 		removeHandles(handles);
 	}
@@ -531,7 +531,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 	private void removeHandles(Collection<Handle> handles) {
 		// synchronized: protect the array, removal must be atomic
 		synchronized (this) {
-			for (Handle handle : handles) {
+			for (Handle handle : handles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fHandleValueToHandle.remove(handle.getHandleValue());
 				handle.destroy();
 			}
@@ -542,18 +542,18 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 	/*
 	 * @see java.lang.Runnable#run()
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected IStatus run(IProgressMonitor monitor) {
 		long start = -System.currentTimeMillis();
 		if (Policy.DEBUG_AUTO_REFRESH) {
-			Policy.debug(DEBUG_PREFIX + "job started."); //$NON-NLS-1$
+			Policy.debug(DEBUG_PREFIX + "job started."); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		try {
 			long[][] handleArrays = getHandleValueArrays();
 			monitor.beginTask(Messages.WM_beginTask, handleArrays.length);
 			// If changes occur to the list of handles,
 			// ignore them until the next time through the loop.
-			for (long[] handleArray : handleArrays) {
+			for (long[] handleArray : handleArrays) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (monitor.isCanceled()) {
 					return Status.CANCEL_STATUS;
 				}
@@ -564,13 +564,13 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 			monitor.done();
 			start += System.currentTimeMillis();
 			if (Policy.DEBUG_AUTO_REFRESH) {
-				Policy.debug(DEBUG_PREFIX + "job finished in: " + start + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+				Policy.debug(DEBUG_PREFIX + "job finished in: " + start + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		//always reschedule the job - so it will come back after errors or cancelation
 		long delay = Math.max(RESCHEDULE_DELAY, start);
 		if (Policy.DEBUG_AUTO_REFRESH) {
-			Policy.debug(DEBUG_PREFIX + "rescheduling in: " + delay / 1000 + " seconds"); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug(DEBUG_PREFIX + "rescheduling in: " + delay / 1000 + " seconds"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		final Bundle bundle = Platform.getBundle(ResourcesPlugin.PI_RESOURCES);
 		//if the bundle is null then the framework has shutdown - just bail out completely (bug 98219)
@@ -604,7 +604,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 		if (resource == null) {
 			// resource == null means stop monitoring all resources
 			synchronized (fHandleValueToHandle) {
-				removeHandles(new ArrayList<>(fHandleValueToHandle.values()));
+				removeHandles(new ArrayList<>(fHandleValueToHandle.values())); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			}
 		} else {
 			Handle handle = getHandle(resource);
@@ -625,7 +625,7 @@ class Win32Monitor extends Job implements IRefreshMonitor {
 	 * @param handleValues
 	 *                  an array of handles, it must contain no duplicates.
 	 */
-	private void waitForNotification(long[] handleValues) {
+	private void waitForNotification(long[] handleValues) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int handleCount = handleValues.length;
 		if (handleCount == 0) {
 			// According to the documentation of WaitForMultipleObjects,

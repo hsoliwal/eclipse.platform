@@ -260,7 +260,7 @@ public class UnifiedDiffShadowedFoldsTest {
 	}
 
 	private static boolean isInModel(ProjectionAnnotationModel projectionModel, Annotation annotation) {
-		for (Iterator<Annotation> it = projectionModel.getAnnotationIterator(); it.hasNext();) {
+		for (Iterator<Annotation> it = projectionModel.getAnnotationIterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (it.next() == annotation) {
 				return true;
 			}
@@ -270,7 +270,7 @@ public class UnifiedDiffShadowedFoldsTest {
 
 	/** Folds are put back from a runnable posted to the display. */
 	private void waitForPendingWork() {
-		while (display.readAndDispatch()) {
+		while (display.readAndDispatch()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// keep going until the queue is empty
 		}
 	}
@@ -286,7 +286,7 @@ public class UnifiedDiffShadowedFoldsTest {
 		int offset = document.getLineOffset(line);
 		int length = document.getLineLength(line);
 		return new UnifiedDiff(document, offset, offset + length, document.get(offset, length), document, offset,
-				offset + length, "changed\n", new ArrayList<>(), MODE);
+				offset + length, "changed\n", new ArrayList<>(), MODE); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	}
 
 	/** A deletion: the document holds the line, the other side does not. */
@@ -294,7 +294,7 @@ public class UnifiedDiffShadowedFoldsTest {
 		int offset = document.getLineOffset(line);
 		int length = document.getLineLength(line);
 		return new UnifiedDiff(document, offset, offset + length, document.get(offset, length), document, offset,
-				offset, "", new ArrayList<>(), MODE);
+				offset, "", new ArrayList<>(), MODE); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	}
 
 	/** An addition: the other side holds a line the document does not. */
@@ -302,13 +302,13 @@ public class UnifiedDiffShadowedFoldsTest {
 			throws BadLocationException {
 		int offset = document.getLineOffset(line);
 		return new UnifiedDiff(document, offset, offset, "", document, offset, offset + added.length(), added,
-				new ArrayList<>(), MODE);
+				new ArrayList<>(), MODE); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	}
 
 	private static IDocument numberedLines(int count) {
-		StringBuilder content = new StringBuilder();
-		for (int i = 0; i < count; i++) {
-			content.append("line ").append(i).append('\n');
+		StringBuilder content = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			content.append("line ").append(i).append('\n'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return new Document(content.toString());
 	}

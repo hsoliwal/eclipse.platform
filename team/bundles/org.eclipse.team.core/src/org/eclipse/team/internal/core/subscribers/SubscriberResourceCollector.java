@@ -30,7 +30,7 @@ import org.eclipse.team.core.subscribers.Subscriber;
  * subscriber change events in order to determine when the state of resources
  * that are supervised by a subscriber may have changed.
  */
-public abstract class SubscriberResourceCollector implements IResourceChangeListener, ISubscriberChangeListener {
+public abstract class SubscriberResourceCollector implements IResourceChangeListener, ISubscriberChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 
 	Subscriber subscriber;
 
@@ -43,7 +43,7 @@ public abstract class SubscriberResourceCollector implements IResourceChangeList
 		Assert.isNotNull(subscriber);
 		this.subscriber = subscriber;
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(this, IResourceChangeEvent.POST_CHANGE);
-		subscriber.addListener(this);
+		subscriber.addListener(this); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 	}
 
 	/**
@@ -63,12 +63,12 @@ public abstract class SubscriberResourceCollector implements IResourceChangeList
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void subscriberResourceChanged(ISubscriberChangeEvent[] deltas) {
 		try {
 			beginInput();
 			IResource[] roots = getRoots();
-			for (ISubscriberChangeEvent delta : deltas) {
+			for (ISubscriberChangeEvent delta : deltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				switch (delta.getFlags()) {
 					case ISubscriberChangeEvent.SYNC_CHANGED:
 						if (isAllRootsIncluded() || isDescendantOfRoot(delta.getResource(), roots)) {
@@ -128,7 +128,7 @@ public abstract class SubscriberResourceCollector implements IResourceChangeList
 	 *
 	 * @param delta the resource delta to analyze
 	 */
-	protected void processDelta(IResourceDelta delta, IResource[] roots) {
+	protected void processDelta(IResourceDelta delta, IResource[] roots) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource resource = delta.getResource();
 		int kind = delta.getKind();
 
@@ -170,7 +170,7 @@ public abstract class SubscriberResourceCollector implements IResourceChangeList
 		// Handle changed children
 		if (visitChildren || isAncestorOfRoot(resource, roots)) {
 			IResourceDelta[] affectedChildren = delta.getAffectedChildren(IResourceDelta.CHANGED | IResourceDelta.REMOVED | IResourceDelta.ADDED);
-			for (IResourceDelta c : affectedChildren) {
+			for (IResourceDelta c : affectedChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				processDelta(c, roots);
 			}
 		}
@@ -226,7 +226,7 @@ public abstract class SubscriberResourceCollector implements IResourceChangeList
 		if (parent.getType() == IResource.ROOT) {
 			return true;
 		}
-		for (IResource resource : roots) {
+		for (IResource resource : roots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (parent.getFullPath().isPrefixOf(resource.getFullPath())) {
 				return true;
 			}
@@ -235,7 +235,7 @@ public abstract class SubscriberResourceCollector implements IResourceChangeList
 	}
 
 	private boolean isDescendantOfRoot(IResource resource, IResource[] roots) {
-		for (IResource root : roots) {
+		for (IResource root : roots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (root.getFullPath().isPrefixOf(resource.getFullPath())) {
 				return true;
 			}

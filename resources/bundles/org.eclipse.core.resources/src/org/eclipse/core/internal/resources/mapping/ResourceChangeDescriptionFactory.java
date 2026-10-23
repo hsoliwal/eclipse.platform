@@ -34,7 +34,7 @@ public class ResourceChangeDescriptionFactory implements IResourceChangeDescript
 	 * @param deleteContent <code>true</code> if resource should be also deleted
 	 *                        from the disk
 	 */
-	private ProposedResourceDelta buildDeleteDelta(ProposedResourceDelta parentDelta, IResource resource,
+	private ProposedResourceDelta buildDeleteDelta(ProposedResourceDelta parentDelta, IResource resource, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			boolean deleteContent) {
 		//start with the existing delta for this resource, if any, to preserve other flags
 		ProposedResourceDelta delta = parentDelta.getChild(resource.getName());
@@ -55,7 +55,7 @@ public class ResourceChangeDescriptionFactory implements IResourceChangeDescript
 			int childCount = members.length;
 			if (childCount > 0) {
 				ProposedResourceDelta[] childDeltas = new ProposedResourceDelta[childCount];
-				for (int i = 0; i < childCount; i++) {
+				for (int i = 0; i < childCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					childDeltas[i] = buildDeleteDelta(delta, members[i], deleteContent);
 				}
 			}
@@ -99,7 +99,7 @@ public class ResourceChangeDescriptionFactory implements IResourceChangeDescript
 		if (resource.getType() == IResource.ROOT) {
 			//the root itself cannot be deleted, so create deletions for each project
 			IProject[] projects = ((IWorkspaceRoot) resource).getProjects(IContainer.INCLUDE_HIDDEN);
-			for (IProject project : projects) {
+			for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				buildDeleteDelta(root, project, false);
 			}
 		} else if (resource.getType() == IResource.PROJECT) {
@@ -142,7 +142,7 @@ public class ResourceChangeDescriptionFactory implements IResourceChangeDescript
 	 * @param destinationPrefix the path of the destination the root was copied to
 	 * @return the destination resource
 	 */
-	protected IResource getDestinationResource(IResource source, IPath sourcePrefix, IPath destinationPrefix) {
+	protected IResource getDestinationResource(IResource source, IPath sourcePrefix, IPath destinationPrefix) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath relativePath = source.getFullPath().removeFirstSegments(sourcePrefix.segmentCount());
 		IPath destinationPath = destinationPrefix.append(relativePath);
 		IResource destination;
@@ -178,7 +178,7 @@ public class ResourceChangeDescriptionFactory implements IResourceChangeDescript
 	 * @param move <code>true</code> for a move, <code>false</code> for a copy
 	 * @return Whether to move or copy the child
 	 */
-	boolean moveOrCopy(IResource resource, final IPath sourcePrefix, final IPath destinationPrefix, final boolean move) {
+	boolean moveOrCopy(IResource resource, final IPath sourcePrefix, final IPath destinationPrefix, final boolean move) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ProposedResourceDelta sourceDelta = getDelta(resource);
 		if (sourceDelta.getKind() == IResourceDelta.REMOVED) {
 			// There is already a removed delta here so there

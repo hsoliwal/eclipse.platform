@@ -66,7 +66,7 @@ public class SubscriberChangeEvent implements ISubscriberChangeEvent {
 	 */
 	public static SubscriberChangeEvent[] asSyncChangedDeltas(Subscriber subscriber, IResource[] resources) {
 		SubscriberChangeEvent[] deltas = new SubscriberChangeEvent[resources.length];
-		for (int i = 0; i < resources.length; i++) {
+		for (int i = 0; i < resources.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = resources[i];
 			deltas[i] = new SubscriberChangeEvent(subscriber, ISubscriberChangeEvent.SYNC_CHANGED, resource);
 		}

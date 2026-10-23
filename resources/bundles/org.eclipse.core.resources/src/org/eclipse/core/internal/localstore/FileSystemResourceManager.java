@@ -132,17 +132,17 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 		return results;
 	}
 
-	private ArrayList<IPath> allPathsForLocationNonCanonical(URI inputLocation) {
+	private ArrayList<IPath> allPathsForLocationNonCanonical(URI inputLocation) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		URI location = inputLocation;
 		final boolean isFileLocation = EFS.SCHEME_FILE.equals(inputLocation.getScheme());
 		final IWorkspaceRoot root = getWorkspace().getRoot();
-		final ArrayList<IPath> results = new ArrayList<>();
+		final ArrayList<IPath> results = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (URIUtil.equals(location, locationURIFor(root, true))) {
 			//there can only be one resource at the workspace root's location
 			results.add(IPath.ROOT);
 			return results;
 		}
-		for (IProject project : root.getProjects(IContainer.INCLUDE_HIDDEN)) {
+		for (IProject project : root.getProjects(IContainer.INCLUDE_HIDDEN)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!project.exists()) {
 				continue;
 			}
@@ -175,7 +175,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 				if (links == null) {
 					continue;
 				}
-				for (LinkDescription link : links.values()) {
+				for (LinkDescription link : links.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IResource resource = project.findMember(link.getProjectRelativePath());
 					IPathVariableManager pathMan = resource == null ? project.getPathVariableManager() : resource.getPathVariableManager();
 					testLocation = pathMan.resolveURI(link.getLocationURI());
@@ -215,12 +215,12 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 		}
 	}
 
-	private void findLinkedResourcesPaths(URI inputLocation, final ArrayList<IPath> results) throws CoreException {
+	private void findLinkedResourcesPaths(URI inputLocation, final ArrayList<IPath> results) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath suffix = null;
 		IFileStore fileStore = EFS.getStore(inputLocation);
-		while (fileStore != null) {
+		while (fileStore != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource[] resources = workspace.getAliasManager().findResources(fileStore);
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (resource.isLinked()) {
 					IPath path = resource.getFullPath();
 					if (suffix != null) {
@@ -293,11 +293,11 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 	 *        {@link IContainer#INCLUDE_HIDDEN}) indicating which members are of
 	 *        interest
 	 */
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SuppressWarnings({"rawtypes", "unchecked"}) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IResource[] allResourcesFor(URI location, boolean files, int memberFlags) {
 		ArrayList result = allPathsForLocation(location);
 		int count = 0;
-		for (int i = 0, imax = result.size(); i < imax; i++) {
+		for (int i = 0, imax = result.size(); i < imax; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			//replace the path in the list with the appropriate resource type
 			IResource resource = resourceFor((IPath) result.get(i), files);
 
@@ -314,7 +314,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 		//convert to array and remove null elements
 		IResource[] toReturn = files ? (IResource[]) new IFile[count] : (IResource[]) new IContainer[count];
 		count = 0;
-		for (Object element : result) {
+		for (Object element : result) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = (IResource) element;
 			if (resource != null) {
 				toReturn[count++] = resource;
@@ -371,7 +371,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 	 * I.e. a resource in a nested project is preferred over a resource in an enclosing project.
 	 * </p>
 	 */
-	private IResource resourceForLocation(IPath location, boolean files) {
+	private IResource resourceForLocation(IPath location, boolean files) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (workspace.getRoot().getLocation().equals(location)) {
 			if (!files) {
 				return resourceFor(IPath.ROOT, false);
@@ -381,7 +381,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 		int locationSegments = location.segmentCount();
 		int resultProjectPathSegments = 0;
 		IResource result = null;
-		for (IProject project : workspace.getRoot().getProjects(IContainer.INCLUDE_HIDDEN)) {
+		for (IProject project : workspace.getRoot().getProjects(IContainer.INCLUDE_HIDDEN)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IPath projectLocation = project.getLocation();
 			if (projectLocation == null) {
 				continue;
@@ -406,7 +406,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 		return result;
 	}
 
-	public void copy(IResource target, IResource destination, int updateFlags, IProgressMonitor monitor) throws CoreException {
+	public void copy(IResource target, IResource destination, int updateFlags, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String title = NLS.bind(Messages.localstore_copying, target.getFullPath());
 
 		SubMonitor subMonitor = SubMonitor.convert(monitor, title, 100);
@@ -426,7 +426,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 		}
 	}
 
-	public void delete(IResource target, int flags, IProgressMonitor monitor) throws CoreException {
+	public void delete(IResource target, int flags, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		Resource resource = (Resource) target;
 		final int deleteWork = resource.countResources(IResource.DEPTH_INFINITE, false) * 2;
@@ -463,24 +463,24 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 	 * Since org.eclipse.core.resources 3.4.1 differences in line endings (CR, LF, CRLF)
 	 * are not considered.
 	 */
-	private boolean descriptionChanged(IFile descriptionFile, byte[] newContents) {
+	private boolean descriptionChanged(IFile descriptionFile, byte[] newContents) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			InputStream oldStream = new ByteArrayInputStream(descriptionFile.readAllBytes());
 			InputStream newStream = new ByteArrayInputStream(newContents);
 			//compare streams char by char, ignoring line endings
 			int newChar = newStream.read();
 			int oldChar = oldStream.read();
-			while (newChar >= 0 && oldChar >= 0) {
+			while (newChar >= 0 && oldChar >= 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (newChar == oldChar) {
 					//streams are the same
 					newChar = newStream.read();
 					oldChar = oldStream.read();
 				} else if ((newChar == '\r' || newChar == '\n') && (oldChar == '\r' || oldChar == '\n')) {
 					//got a difference, but both sides are newlines: read over newlines
-					while (newChar == '\r' || newChar == '\n') {
+					while (newChar == '\r' || newChar == '\n') { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						newChar = newStream.read();
 					}
-					while (oldChar == '\r' || oldChar == '\n') {
+					while (oldChar == '\r' || oldChar == '\n') { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						oldChar = oldStream.read();
 					}
 				} else {
@@ -503,7 +503,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 	/**
 	 * @deprecated
 	 */
-	@Deprecated
+	@Deprecated //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public int doGetEncoding(IFileStore store) throws CoreException {
 		try (
 			InputStream input = store.openInputStream(EFS.NONE, null);
@@ -645,7 +645,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 	/**
 	 * Returns the file store root for the provided resource. Never returns null.
 	 */
-	private FileStoreRoot getStoreRoot(IResource target) {
+	private FileStoreRoot getStoreRoot(IResource target) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourceInfo info = workspace.getResourceInfo(target.getFullPath(), true, false);
 		FileStoreRoot root;
 		if (info != null) {
@@ -736,7 +736,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 	 * @return true if a new description was written, and false if it wasn't written
 	 * because it was unchanged
 	 */
-	public boolean internalWrite(IProject target, IProjectDescription description, int updateFlags, boolean hasPublicChanges, boolean hasPrivateChanges) throws CoreException {
+	public boolean internalWrite(IProject target, IProjectDescription description, int updateFlags, boolean hasPublicChanges, boolean hasPrivateChanges) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//write the project's private description to the metadata area
 		if (hasPrivateChanges) {
 			getWorkspace().getMetaArea().writePrivateDescription(target);
@@ -826,7 +826,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 	 *
 	 * @see IResource#isSynchronized(int)
 	 */
-	public boolean isSynchronized(IResource target, int depth) {
+	public boolean isSynchronized(IResource target, int depth) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		switch (target.getType()) {
 			case IResource.ROOT :
 				if (depth == IResource.DEPTH_ZERO) {
@@ -835,7 +835,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 				//check sync on child projects.
 				depth = depth == IResource.DEPTH_ONE ? IResource.DEPTH_ZERO : depth;
 				IProject[] projects = ((IWorkspaceRoot) target).getProjects(IContainer.INCLUDE_HIDDEN);
-				for (IProject project : projects) {
+				for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (!isSynchronized(project, depth)) {
 						return false;
 					}
@@ -959,7 +959,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 		}
 	}
 
-	private IFileStore getFileStore(IFile target, boolean force) throws ResourceException, CoreException {
+	private IFileStore getFileStore(IFile target, boolean force) throws ResourceException, CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IFileStore store = getStore(target);
 		if (!force) {
 			final IFileInfo fileInfo = fetchInfoIgnoringNameCase(store);
@@ -1003,7 +1003,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 	 * @exception CoreException if there was any failure to read the project
 	 * description, or if the description was missing.
 	 */
-	public ProjectDescription read(IProject target, boolean creation) throws CoreException {
+	public ProjectDescription read(IProject target, boolean creation) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		//read the project location if this project is being created
 		URI projectLocation = null;
@@ -1089,7 +1089,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 		return description;
 	}
 
-	public boolean refresh(IResource target, int depth, boolean updateAliases, IProgressMonitor monitor) throws CoreException {
+	public boolean refresh(IResource target, int depth, boolean updateAliases, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		switch (target.getType()) {
 			case IResource.ROOT :
 				return refreshRoot((IWorkspaceRoot) target, depth, updateAliases, monitor);
@@ -1103,7 +1103,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 				} finally {
 					long duration = ResourceStats.end(run);
 					if (duration > ResourceStats.TRACE_REFRESH_THRESHOLD) {
-						String message = "Refresh on " + target.getFullPath() + " took " + duration + " ms"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						String message = "Refresh on " + target.getFullPath() + " took " + duration + " ms"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						Policy.log(IStatus.INFO, message, null);
 					}
 				}
@@ -1114,7 +1114,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 		return false;
 	}
 
-	protected boolean refreshResource(IResource target, int depth, boolean updateAliases, IProgressMonitor monitor) throws CoreException {
+	protected boolean refreshResource(IResource target, int depth, boolean updateAliases, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String title = NLS.bind(Messages.localstore_refreshing, target.getFullPath());
 		SubMonitor subMonitor = SubMonitor.convert(monitor, title, 100);
 		IFileTree fileTree = null;
@@ -1157,7 +1157,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 		boolean changed = false;
 		// drop the depth by one level since processing the root counts as one level.
 		depth = depth == IResource.DEPTH_ONE ? IResource.DEPTH_ZERO : depth;
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			changed |= refresh(project, depth, updateAliases, subMonitor.newChild(1));
 		}
 		return changed;
@@ -1309,7 +1309,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 	 * @see IResource#FORCE
 	 * @see IResource#KEEP_HISTORY
 	 */
-	public void write(IFile target, InputStream content, IFileInfo fileInfo, int updateFlags, boolean append, IProgressMonitor monitor) throws CoreException {
+	public void write(IFile target, InputStream content, IFileInfo fileInfo, int updateFlags, boolean append, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 100);
 		try (content) {
 			Resource targetResource = (Resource) target;
@@ -1357,7 +1357,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 		}
 	}
 
-	private void prepareWrite(IFile target, IFileInfo fileInfo, int updateFlags, boolean append,
+	private void prepareWrite(IFile target, IFileInfo fileInfo, int updateFlags, boolean append, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			Resource targetResource, IFileStore store, boolean assumeParentDirectoryExists) throws CoreException {
 		if (fileInfo.getAttribute(EFS.ATTRIBUTE_READ_ONLY)) {
 			String message = NLS.bind(Messages.localstore_couldNotWriteReadOnly, target.getFullPath());
@@ -1437,7 +1437,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 	 * {@link #write(IFile, InputStream, IFileInfo, int, boolean, IProgressMonitor)}
 	 * but with byte array content instead of stream
 	 */
-	public void write(IFile target, byte[] content, IFileInfo fileInfo, int updateFlags, boolean append,
+	public void write(IFile target, byte[] content, IFileInfo fileInfo, int updateFlags, boolean append, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IProgressMonitor monitor) throws CoreException {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 4);
 		Resource targetResource = (Resource) target;
@@ -1513,7 +1513,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 				DISABLE_RESTRICTED_FILE_HISTORY_PREFERENCE, false, null);
 	}
 
-	private boolean disableHistory(IResource resource) {
+	private boolean disableHistory(IResource resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (disableRestrictedFileHistory) {
 			if (resource instanceof IFile file) {
 				try {

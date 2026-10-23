@@ -111,12 +111,12 @@ public class EditionAction extends BaseCompareAction {
 	@Override
 	protected void run(ISelection selection) {
 		IFile[] files= Utilities.getFiles(selection);
-		for (IFile file : files) {
+		for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			doFromHistory(file);
 		}
 	}
 
-	private void doFromHistory(final IFile file) {
+	private void doFromHistory(final IFile file) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		ResourceBundle bundle= ResourceBundle.getBundle(fBundleName);
 		String title= Utilities.getString(bundle, "title"); //$NON-NLS-1$
@@ -147,7 +147,7 @@ public class EditionAction extends BaseCompareAction {
 
 		ITypedElement[] editions= new ITypedElement[states.length+1];
 		editions[0]= base;
-		for (int i= 0; i < states.length; i++) {
+		for (int i= 0; i < states.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			editions[i+1]= new HistoryItem(base, states[i]);
 		}
 
@@ -194,10 +194,10 @@ public class EditionAction extends BaseCompareAction {
 		}
 	}
 
-	private void updateWorkspace(final ResourceBundle bundle, Shell shell,
+	private void updateWorkspace(final ResourceBundle bundle, Shell shell, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 						final IStreamContentAccessor sa, final IFile file)
 									throws InvocationTargetException, InterruptedException {
-		WorkspaceModifyOperation operation= new WorkspaceModifyOperation() {
+		WorkspaceModifyOperation operation= new WorkspaceModifyOperation() { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			public void execute(IProgressMonitor pm) throws InvocationTargetException {
 				try {
@@ -225,7 +225,7 @@ public class EditionAction extends BaseCompareAction {
 		}
 	}
 
-	private IDocument getDocument(IFile file) {
+	private IDocument getDocument(IFile file) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (file == null) {
 			return null;
 		}
@@ -255,10 +255,10 @@ public class EditionAction extends BaseCompareAction {
 
 		FileEditorInput test= new FileEditorInput(file);
 
-		for (IWorkbenchWindow w : ws) {
+		for (IWorkbenchWindow w : ws) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IWorkbenchPage[] wps= w.getPages();
 			if (wps != null) {
-				for (IWorkbenchPage wp : wps) {
+				for (IWorkbenchPage wp : wps) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IEditorPart ep= wp.findEditor(test);
 					if (ep instanceof ITextEditor te) {
 						IDocumentProvider dp= te.getDocumentProvider();

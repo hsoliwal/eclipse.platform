@@ -51,7 +51,7 @@ public class AntLineBreakpoint extends LineBreakpoint {
 	 *             if unable to create the breakpoint
 	 */
 	public AntLineBreakpoint(IResource resource, int lineNumber) throws CoreException {
-		this(resource, lineNumber, new HashMap<>(), true);
+		this(resource, lineNumber, new HashMap<>(), true); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class AntLineBreakpoint extends LineBreakpoint {
 	 *             if unable to create the breakpoint
 	 */
 	public AntLineBreakpoint(final IResource resource, final int lineNumber, final Map<String, Object> attributes, final boolean register) throws CoreException {
-		IWorkspaceRunnable wr = unused -> {
+		IWorkspaceRunnable wr = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			IMarker marker = resource.createMarker(IAntDebugConstants.ID_ANT_LINE_BREAKPOINT_MARKER);
 			setMarker(marker);
 			attributes.put(IBreakpoint.ENABLED, Boolean.TRUE);

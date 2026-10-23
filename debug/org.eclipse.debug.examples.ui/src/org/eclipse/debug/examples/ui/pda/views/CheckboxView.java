@@ -17,7 +17,7 @@ package org.eclipse.debug.examples.ui.pda.views;
 import org.eclipse.debug.internal.ui.views.variables.VariablesView;
 import org.eclipse.swt.SWT;
 
-public class CheckboxView extends VariablesView {
+public class CheckboxView extends VariablesView { //FLLDCIM: MARK — T20  IMPLEMENTS
 	public static String ID = "CHECKBOX_VIEW_ID"; //$NON-NLS-1$
 
 	@Override

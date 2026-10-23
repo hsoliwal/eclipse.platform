@@ -58,7 +58,7 @@ public class PatchInaccessibleProjectsPage extends WizardPage {
 		fPatcher = patcher;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createControl(Composite parent) {
 		initializeDialogUnits(parent);
 
@@ -72,7 +72,7 @@ public class PatchInaccessibleProjectsPage extends WizardPage {
 		checkList = CheckboxTableViewer.newCheckList(composite, SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.BORDER);
 		checkList.setContentProvider(ArrayContentProvider.getInstance());
-		checkList.setLabelProvider(new WorkbenchLabelProvider() {
+		checkList.setLabelProvider(new WorkbenchLabelProvider() { //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 			@Override
 			public Color getForeground(Object element) {
 				if (element instanceof IProject
@@ -87,7 +87,7 @@ public class PatchInaccessibleProjectsPage extends WizardPage {
 			protected String decorateText(String input, Object element) {
 				if (element instanceof IProject
 						&& !((IProject) element).exists()) {
-					return input
+					return input //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							+ NLS.bind(
 									TeamUIMessages.PatchInaccessibleProjectsPage_projectDoesNotExistInWorkspace,
 									""); //$NON-NLS-1$
@@ -95,7 +95,7 @@ public class PatchInaccessibleProjectsPage extends WizardPage {
 				return input;
 			}
 		});
-		checkList.addCheckStateListener(event -> {
+		checkList.addCheckStateListener(event -> { //FLLDCIM: MARK — T21 CHECK_STATE_LANE CALL
 			IProject project = (IProject) event.getElement();
 			if (event.getChecked() && !project.exists()) {
 				checkList.setChecked(project, false);
@@ -115,7 +115,7 @@ public class PatchInaccessibleProjectsPage extends WizardPage {
 		checkAllButton = new Button(composite, SWT.NONE);
 		checkAllButton
 				.setText(TeamUIMessages.PatchInaccessibleProjectsPage_selectExisting);
-		checkAllButton.addSelectionListener(new SelectionAdapter() {
+		checkAllButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				setAllChecked(true);
@@ -127,7 +127,7 @@ public class PatchInaccessibleProjectsPage extends WizardPage {
 		uncheckAllButton = new Button(composite, SWT.NONE);
 		uncheckAllButton
 				.setText(TeamUIMessages.PatchInaccessibleProjectsPage_deselectAll);
-		uncheckAllButton.addSelectionListener(new SelectionAdapter() {
+		uncheckAllButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				setAllChecked(false);
@@ -141,16 +141,16 @@ public class PatchInaccessibleProjectsPage extends WizardPage {
 
 	private void updateControls() {
 		DiffProject[] diffProjects = fPatcher.getDiffProjects();
-		List<IProject> projects = new ArrayList<>();
+		List<IProject> projects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (diffProjects != null) {
-			for (DiffProject diffProject : diffProjects) {
+			for (DiffProject diffProject : diffProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(diffProject.getName());
 				if (!project.isAccessible()) {
 					projects.add(project);
 				}
 			}
 		}
-		checkList.setInput(projects.toArray(new IProject[] {}));
+		checkList.setInput(projects.toArray(new IProject[] {})); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 	}
 
 	@Override
@@ -173,8 +173,8 @@ public class PatchInaccessibleProjectsPage extends WizardPage {
 
 	public IProject[] getSelectedProjects() {
 		Object elements[] = checkList.getCheckedElements();
-		List<IProject> projects = new ArrayList<>();
-		for (Object element : elements) {
+		List<IProject> projects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Object element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			projects.add((IProject) element);
 		}
 		return projects.toArray(new IProject[] {});
@@ -182,7 +182,7 @@ public class PatchInaccessibleProjectsPage extends WizardPage {
 
 	private void setAllChecked(boolean checked) {
 		int count = checkList.getTable().getItemCount();
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProject project = (IProject) checkList.getElementAt(i);
 			if (project.exists()) {
 				checkList.setChecked(project, checked);

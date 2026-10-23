@@ -26,7 +26,7 @@ import org.eclipse.ui.texteditor.ITextEditor;
  * Creates a toggle breakpoint adapter
  */
 public class PDAEditorAdapterFactory implements IAdapterFactory {
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Override
 	public <T> T getAdapter(Object adaptableObject, Class<T> adapterType) {
 		if (adaptableObject instanceof PDAEditor) {

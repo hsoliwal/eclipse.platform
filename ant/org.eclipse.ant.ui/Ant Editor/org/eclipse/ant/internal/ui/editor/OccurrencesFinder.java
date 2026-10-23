@@ -39,7 +39,7 @@ public class OccurrencesFinder {
 		fOffset = offset;
 	}
 
-	public List<Position> perform() {
+	public List<Position> perform() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fOffset == 0 || fAntModel == null) {
 			return null;
 		}
@@ -68,9 +68,9 @@ public class OccurrencesFinder {
 		if (occurrencesIdentifier == null) {
 			return null;
 		}
-		List<IAntElement> nodes = new ArrayList<>(1);
+		List<IAntElement> nodes = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		nodes.add(fAntModel.getProjectNode());
-		List<IAntElement> usages = new ArrayList<>();
+		List<IAntElement> usages = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		usages.add(node);
 		scanNodesForOccurrences(nodes, usages, occurrencesIdentifier);
 		String identifier;
@@ -84,11 +84,11 @@ public class OccurrencesFinder {
 		if (length == 0) {
 			return null;
 		}
-		List<Position> positions = new ArrayList<>(usages.size());
-		for (IAntElement currentNode : usages) {
+		List<Position> positions = new ArrayList<>(usages.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IAntElement currentNode : usages) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			List<Integer> offsets = currentNode.computeIdentifierOffsets(identifier);
 			if (offsets != null) {
-				for (Integer offset : offsets) {
+				for (Integer offset : offsets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					positions.add(new Position(offset.intValue(), length));
 				}
 			}
@@ -97,7 +97,7 @@ public class OccurrencesFinder {
 	}
 
 	private void scanNodesForOccurrences(List<IAntElement> nodes, List<IAntElement> usages, String identifier) {
-		for (IAntElement node : nodes) {
+		for (IAntElement node : nodes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!usages.contains(node) && node.containsOccurrence(identifier)) {
 				usages.add(node);
 			}

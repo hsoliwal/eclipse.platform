@@ -35,7 +35,7 @@ public class RegexFileInfoMatcher extends AbstractFileInfoMatcher {
 	@Override
 	public boolean matches(IContainer parent, IFileInfo fileInfo) {
 		if (pattern != null) {
-			Matcher m = pattern.matcher(fileInfo.getName());
+			Matcher m = pattern.matcher(fileInfo.getName()); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			return m.matches();
 		}
 		return false;

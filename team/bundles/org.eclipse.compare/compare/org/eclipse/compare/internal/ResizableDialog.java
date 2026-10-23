@@ -68,7 +68,7 @@ public abstract class ResizableDialog extends Dialog {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Point getInitialSize() {
 
 		int width= 0;
@@ -76,8 +76,8 @@ public abstract class ResizableDialog extends Dialog {
 
 		final Shell s= getShell();
 		if (s != null) {
-			s.addControlListener(
-				new ControlListener() {
+			s.addControlListener( //FLLDCIM: MARK — T11 VIEWPORT_RESIZE_DELTA CALL
+				new ControlListener() { //FLLDCIM: MARK — T11  ANONYMOUS
 					@Override
 					public void controlMoved(ControlEvent arg0) {
 						fNewBounds= s.getBounds();
@@ -135,7 +135,7 @@ public abstract class ResizableDialog extends Dialog {
 		return new Point(width, height);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Point getInitialLocation(Point initialSize) {
 		Point loc= super.getInitialLocation(initialSize);
 

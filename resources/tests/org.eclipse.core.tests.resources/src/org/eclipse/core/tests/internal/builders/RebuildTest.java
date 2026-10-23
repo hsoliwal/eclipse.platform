@@ -70,7 +70,7 @@ public class RebuildTest {
 	/**
 	 * Tests IncrementProjectBuilder.requestProjectRebuild with a single project
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSingleProjectPropagationAndNoOtherBuilders() throws Exception {
 		// Create some resource handles
 		IProject project = getWorkspace().getRoot().getProject(testName);
@@ -201,7 +201,7 @@ public class RebuildTest {
 	/**
 	 * Tests IncrementProjectBuilder.requestProjectRebuild with a single project
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSingleProjectPropagationAndOtherBuilders() throws Exception {
 		// Create some resource handles
 		IProject project = getWorkspace().getRoot().getProject(testName);
@@ -323,7 +323,7 @@ public class RebuildTest {
 	/**
 	 * Tests IncrementProjectBuilder.requestProjectRebuild with a single project
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSingleProjectNoPropagationAndProcessOtherBuilder() throws Exception {
 		// Create some resource handles
 		IProject project = getWorkspace().getRoot().getProject(testName);
@@ -449,7 +449,7 @@ public class RebuildTest {
 	/**
 	 * Tests IncrementProjectBuilder.requestProjectRebuild with a single project
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSingleProjectNoPropagationNoOtherBuilders() throws Exception {
 		// Create some resource handles
 		IProject project = getWorkspace().getRoot().getProject(testName);
@@ -582,11 +582,11 @@ public class RebuildTest {
 	/**
 	 * Tests IncrementProjectBuilder.requestProjectRebuild with multiple projects
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultipleProjectsPropagationAndNoOtherBuilders() throws Exception {
 		// Create some resource handles
-		IProject project1 = getWorkspace().getRoot().getProject(testName + 1);
-		IProject project2 = getWorkspace().getRoot().getProject(testName + 2);
+		IProject project1 = getWorkspace().getRoot().getProject(testName + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IProject project2 = getWorkspace().getRoot().getProject(testName + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Create and open a project
 		project1.create(createTestMonitor());
@@ -717,11 +717,11 @@ public class RebuildTest {
 	/**
 	 * Tests IncrementProjectBuilder.requestProjectRebuild with multiple projects
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultipleProjectsPropagationAndProcessOtherBuilders() throws Exception {
 		// Create some resource handles
-		IProject project1 = getWorkspace().getRoot().getProject(testName + 1);
-		IProject project2 = getWorkspace().getRoot().getProject(testName + 2);
+		IProject project1 = getWorkspace().getRoot().getProject(testName + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IProject project2 = getWorkspace().getRoot().getProject(testName + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Create and open a project
 		project1.create(createTestMonitor());
@@ -855,14 +855,14 @@ public class RebuildTest {
 	 * Tests IncrementProjectBuilder.requestProjectRebuild with multiple projects
 	 * and early exit enabled
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultipleProjectsPropagationAndNoOtherBuildersWithEarlyExit() throws Exception {
 		// turn rebuild request propagation to other projects in same loop off
 		allowEarlyBuildLoopExit(true);
 
 		// Create some resource handles
-		IProject project1 = getWorkspace().getRoot().getProject(testName + 1);
-		IProject project2 = getWorkspace().getRoot().getProject(testName + 2);
+		IProject project1 = getWorkspace().getRoot().getProject(testName + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IProject project2 = getWorkspace().getRoot().getProject(testName + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Create and open a project
 		project1.create(createTestMonitor());
@@ -1014,11 +1014,11 @@ public class RebuildTest {
 	/**
 	 * Tests IncrementProjectBuilder.requestProjectRebuild with multiple projects
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultipleProjectsNoPropagationNoOtherBuilders() throws Exception {
 		// Create some resource handles
-		IProject project1 = getWorkspace().getRoot().getProject(testName + 1);
-		IProject project2 = getWorkspace().getRoot().getProject(testName + 2);
+		IProject project1 = getWorkspace().getRoot().getProject(testName + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IProject project2 = getWorkspace().getRoot().getProject(testName + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Create and open a project
 		project1.create(createTestMonitor());
@@ -1171,11 +1171,11 @@ public class RebuildTest {
 	/**
 	 * Tests IncrementProjectBuilder.requestProjectRebuild with multiple projects
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultipleProjectsNoPropagationAndOtherBuilders() throws Exception {
 		// Create some resource handles
-		IProject project1 = getWorkspace().getRoot().getProject(testName + 1);
-		IProject project2 = getWorkspace().getRoot().getProject(testName + 2);
+		IProject project1 = getWorkspace().getRoot().getProject(testName + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IProject project2 = getWorkspace().getRoot().getProject(testName + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Create and open a project
 		project1.create(createTestMonitor());
@@ -1327,14 +1327,14 @@ public class RebuildTest {
 	/**
 	 * Tests IncrementProjectBuilder.requestProjectRebuild with multiple projects
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultipleProjectsNoPropagationNoOtherBuildersEarlyExit() throws Exception {
 		// turn rebuild request propagation to other projects in same loop off
 		allowEarlyBuildLoopExit(true);
 
 		// Create some resource handles
-		IProject project1 = getWorkspace().getRoot().getProject(testName + 1);
-		IProject project2 = getWorkspace().getRoot().getProject(testName + 2);
+		IProject project1 = getWorkspace().getRoot().getProject(testName + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IProject project2 = getWorkspace().getRoot().getProject(testName + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Create and open a project
 		project1.create(createTestMonitor());
@@ -1484,12 +1484,12 @@ public class RebuildTest {
 	/**
 	 * Tests IncrementProjectBuilder.requestProjectRebuild with multiple projects
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultipleProjectsPropagationAndNoOtherBuildersExplicitRebuild() throws Exception {
 		// Create some resource handles
-		IProject project1 = getWorkspace().getRoot().getProject(testName + 1);
-		IProject project2 = getWorkspace().getRoot().getProject(testName + 2);
-		IProject project3 = getWorkspace().getRoot().getProject(testName + 3);
+		IProject project1 = getWorkspace().getRoot().getProject(testName + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IProject project2 = getWorkspace().getRoot().getProject(testName + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IProject project3 = getWorkspace().getRoot().getProject(testName + 3); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Create and open a project
 		project1.create(createTestMonitor());
@@ -1687,12 +1687,12 @@ public class RebuildTest {
 	/**
 	 * Tests IncrementProjectBuilder.requestProjectRebuild with multiple projects
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultipleProjectsPropagationAndProcessOtherBuildersExplicitRebuild() throws Exception {
 		// Create some resource handles
-		IProject project1 = getWorkspace().getRoot().getProject(testName + 1);
-		IProject project2 = getWorkspace().getRoot().getProject(testName + 2);
-		IProject project3 = getWorkspace().getRoot().getProject(testName + 3);
+		IProject project1 = getWorkspace().getRoot().getProject(testName + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IProject project2 = getWorkspace().getRoot().getProject(testName + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IProject project3 = getWorkspace().getRoot().getProject(testName + 3); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Create and open a project
 		project1.create(createTestMonitor());

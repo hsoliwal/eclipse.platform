@@ -76,7 +76,7 @@ public abstract class GlobalRefreshElementSelectionPage extends WizardPage {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createControl(Composite parent2) {
 		Composite top = new Composite(parent2, SWT.NULL);
 		top.setLayout(new GridLayout());
@@ -107,7 +107,7 @@ public abstract class GlobalRefreshElementSelectionPage extends WizardPage {
 
 		Button selectAll = new Button(selectGroup, SWT.NULL);
 		selectAll.setText(TeamUIMessages.GlobalRefreshResourceSelectionPage_12);
-		selectAll.addSelectionListener(new SelectionAdapter() {
+		selectAll.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -124,7 +124,7 @@ public abstract class GlobalRefreshElementSelectionPage extends WizardPage {
 
 		Button deSelectAll = new Button(selectGroup, SWT.NULL);
 		deSelectAll.setText(TeamUIMessages.GlobalRefreshResourceSelectionPage_13);
-		deSelectAll.addSelectionListener(new SelectionAdapter() {
+		deSelectAll.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -147,7 +147,7 @@ public abstract class GlobalRefreshElementSelectionPage extends WizardPage {
 
 		participantScope = new Button(scopeGroup, SWT.RADIO);
 		participantScope.setText(TeamUIMessages.GlobalRefreshResourceSelectionPage_7);
-		participantScope.addSelectionListener(new SelectionAdapter() {
+		participantScope.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -157,7 +157,7 @@ public abstract class GlobalRefreshElementSelectionPage extends WizardPage {
 
 		selectedResourcesScope = new Button(scopeGroup, SWT.RADIO);
 		selectedResourcesScope.setText(TeamUIMessages.GlobalRefreshResourceSelectionPage_8);
-		selectedResourcesScope.addSelectionListener(new SelectionAdapter() {
+		selectedResourcesScope.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -170,7 +170,7 @@ public abstract class GlobalRefreshElementSelectionPage extends WizardPage {
 
 		workingSetScope = new Button(scopeGroup, SWT.RADIO);
 		workingSetScope.setText(TeamUIMessages.GlobalRefreshResourceSelectionPage_10);
-		workingSetScope.addSelectionListener(new SelectionAdapter() {
+		workingSetScope.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -187,7 +187,7 @@ public abstract class GlobalRefreshElementSelectionPage extends WizardPage {
 
 		Button selectWorkingSetButton = new Button(scopeGroup, SWT.NULL);
 		selectWorkingSetButton.setText(TeamUIMessages.GlobalRefreshResourceSelectionPage_11);
-		selectWorkingSetButton.addSelectionListener(new SelectionAdapter() {
+		selectWorkingSetButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -228,7 +228,7 @@ public abstract class GlobalRefreshElementSelectionPage extends WizardPage {
 	 */
 	private boolean areAnyElementsChecked() {
 		TreeItem[] item = fViewer.getTree().getItems();
-		for (TreeItem child : item) {
+		for (TreeItem child : item) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if(child.getChecked() || child.getGrayed()) {
 				return true;
 			}
@@ -244,22 +244,22 @@ public abstract class GlobalRefreshElementSelectionPage extends WizardPage {
 	 */
 	public Object[] getRootElement() {
 		TreeItem[] item = fViewer.getTree().getItems();
-		List<Object> checked = new ArrayList<>();
-		for (TreeItem child : item) {
+		List<Object> checked = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (TreeItem child : item) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			collectCheckedItems(child, checked);
 		}
 		return checked.toArray(new Object[checked.size()]);
 	}
 
-	protected void initializeScopingHint() {
+	protected void initializeScopingHint() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String working_sets = settings.get(STORE_WORKING_SETS);
 		if (working_sets == null || working_sets.isEmpty()) {
 			participantScope.setSelection(true);
 			updateParticipantScope();
 		} else {
 			StringTokenizer st = new StringTokenizer(working_sets, " ,"); //$NON-NLS-1$
-			ArrayList<IWorkingSet> ws = new ArrayList<>();
-			while (st.hasMoreTokens()) {
+			ArrayList<IWorkingSet> ws = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			while (st.hasMoreTokens()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String workingSetName = st.nextToken();
 				if (workingSetName != null && !workingSetName.isEmpty()) {
 					IWorkingSetManager workingSetManager = PlatformUI.getWorkbench().getWorkingSetManager();
@@ -305,7 +305,7 @@ public abstract class GlobalRefreshElementSelectionPage extends WizardPage {
 		setPageComplete(getRootElement().length > 0);
 	}
 
-	private void selectWorkingSetAction() {
+	private void selectWorkingSetAction() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IWorkingSetManager manager = PlatformUI.getWorkbench().getWorkingSetManager();
 		IWorkingSetSelectionDialog dialog = manager.createWorkingSetSelectionDialog(getShell(), true);
 		dialog.open();
@@ -345,7 +345,7 @@ public abstract class GlobalRefreshElementSelectionPage extends WizardPage {
 			checked.add(item.getData());
 		} else if(item.getGrayed()) {
 			TreeItem[] children = item.getItems();
-			for (TreeItem child : children) {
+			for (TreeItem child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				collectCheckedItems(child, checked);
 			}
 		}
@@ -360,13 +360,13 @@ public abstract class GlobalRefreshElementSelectionPage extends WizardPage {
 	}
 
 	private String makeWorkingSetLabel() {
-		StringBuilder buffer = new StringBuilder();
-		for (int i = 0; i < workingSets.length; i++) {
+		StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < workingSets.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IWorkingSet set = workingSets[i];
 			if (i != 0) {
-				buffer.append(", "); //$NON-NLS-1$
+				buffer.append(", "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append(set.getLabel());
+			buffer.append(set.getLabel()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return buffer.toString();
 	}

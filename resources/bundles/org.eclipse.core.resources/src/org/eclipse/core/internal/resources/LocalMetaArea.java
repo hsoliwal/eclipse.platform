@@ -127,7 +127,7 @@ public class LocalMetaArea implements ICoreConstants {
 	}
 
 	public IPath getBackupLocationFor(IPath file) {
-		return file.removeLastSegments(1).append(file.lastSegment() + F_BACKUP_FILE_EXTENSION);
+		return file.removeLastSegments(1).append(file.lastSegment() + F_BACKUP_FILE_EXTENSION); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	public IPath getHistoryStoreLocation() {
@@ -193,7 +193,7 @@ public class LocalMetaArea implements ICoreConstants {
 			return prefix.append(pluginId); // master table
 		}
 		int saveNumber = getWorkspace().getSaveManager().getSaveNumber(pluginId);
-		return prefix.append(pluginId + "." + saveNumber); //$NON-NLS-1$
+		return prefix.append(pluginId + "." + saveNumber); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -209,7 +209,7 @@ public class LocalMetaArea implements ICoreConstants {
 		if (sequenceNumber == null) {
 			sequenceNumber = "0"; //$NON-NLS-1$
 		}
-		return metaAreaLocation.append(sequenceNumber + F_SNAP);
+		return metaAreaLocation.append(sequenceNumber + F_SNAP); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -260,7 +260,7 @@ public class LocalMetaArea implements ICoreConstants {
 			sequenceNumber = Integer.toString(n);
 			getWorkspace().getSaveManager().getMasterTable().setProperty(key.toString(), sequenceNumber);
 		}
-		return locationFor(target).append(sequenceNumber + F_TREE);
+		return locationFor(target).append(sequenceNumber + F_TREE); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	public IPath getWorkingLocation(IResource resource, String id) {
@@ -311,7 +311,7 @@ public class LocalMetaArea implements ICoreConstants {
 	 * null if there was no project description file on disk. Throws an
 	 * exception if there was any failure to read the project.
 	 */
-	public ProjectDescription readOldDescription(IProject project) throws CoreException {
+	public ProjectDescription readOldDescription(IProject project) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath path = getOldDescriptionLocationFor(project);
 		if (!path.toFile().exists()) {
 			return null;
@@ -391,7 +391,7 @@ public class LocalMetaArea implements ICoreConstants {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void readFromFile(IProject target, ProjectDescription description, java.io.File file) throws IOException {
 		description.setName(target.getName());
 		try (DataInputStream dataIn = new DataInputStream(new SafeChunkyInputStream(file, 500))) {
@@ -415,14 +415,14 @@ public class LocalMetaArea implements ICoreConstants {
 			int numRefs = dataIn.readInt();
 			IProject[] references = new IProject[numRefs];
 			IWorkspaceRoot root = getWorkspace().getRoot();
-			for (int i = 0; i < numRefs; i++) {
+			for (int i = 0; i < numRefs; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				references[i] = root.getProject(dataIn.readUTF());
 			}
 			description.setDynamicReferences(references);
 
 			// Since 3.7 -  Build Configurations
 			String[] configs = new String[dataIn.readInt()];
-			for (int i = 0; i < configs.length; i++) {
+			for (int i = 0; i < configs.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				configs[i] = dataIn.readUTF();
 			}
 			if (configs.length > 0) {
@@ -434,12 +434,12 @@ public class LocalMetaArea implements ICoreConstants {
 			description.setActiveBuildConfig(dataIn.readUTF());
 			// Build configuration references?
 			int numBuildConifgsWithRefs = dataIn.readInt();
-			HashMap<String, IBuildConfiguration[]> m = new HashMap<>(numBuildConifgsWithRefs);
-			for (int i = 0; i < numBuildConifgsWithRefs; i++) {
+			HashMap<String, IBuildConfiguration[]> m = new HashMap<>(numBuildConifgsWithRefs); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+			for (int i = 0; i < numBuildConifgsWithRefs; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String configName = dataIn.readUTF();
 				numRefs = dataIn.readInt();
 				IBuildConfiguration[] refs = new IBuildConfiguration[numRefs];
-				for (int j = 0; j < numRefs; j++) {
+				for (int j = 0; j < numRefs; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String projName = dataIn.readUTF();
 					if (dataIn.readBoolean()) {
 						refs[j] = new BuildConfiguration(root.getProject(projName), dataIn.readUTF());
@@ -453,21 +453,21 @@ public class LocalMetaArea implements ICoreConstants {
 			// read parts since 3.23
 			int natures = dataIn.readInt();
 			String[] natureIds = new String[natures];
-			for (int i = 0; i < natures; i++) {
+			for (int i = 0; i < natures; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				natureIds[i] = dataIn.readUTF();
 			}
 			description.setNatureIds(natureIds);
 			int buildspecs = dataIn.readInt();
 			ICommand[] buildSpecData = new ICommand[buildspecs];
-			for (int i = 0; i < buildspecs; i++) {
+			for (int i = 0; i < buildspecs; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				BuildCommand command = new BuildCommand();
 				buildSpecData[i] = command;
 				int type = dataIn.read();
 				if (type == 1) {
 					command.setName(dataIn.readUTF());
 					int args = dataIn.readInt();
-					Map<String, String> map = new LinkedHashMap<>();
-					for (int j = 0; j < args; j++) {
+					Map<String, String> map = new LinkedHashMap<>(); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW
+					for (int j = 0; j < args; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						map.put(dataIn.readUTF(), dataIn.readUTF());
 					}
 					command.setArguments(map);
@@ -501,7 +501,7 @@ public class LocalMetaArea implements ICoreConstants {
 		}
 	}
 
-	public void writeToFile(ProjectDescription desc, java.io.File file) throws IOException {
+	public void writeToFile(ProjectDescription desc, java.io.File file) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (desc == null) {
 			return;
 		}
@@ -520,30 +520,30 @@ public class LocalMetaArea implements ICoreConstants {
 			if (projectLocation == null) {
 				dataOut.writeUTF(""); //$NON-NLS-1$
 			} else {
-				dataOut.writeUTF(URI_PREFIX + projectLocation);
+				dataOut.writeUTF(URI_PREFIX + projectLocation); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			dataOut.writeInt(prjRefs.length);
-			for (IProject prjRef : prjRefs) {
+			for (IProject prjRef : prjRefs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				dataOut.writeUTF(prjRef.getName());
 			}
 
 			// Since 3.7 - build configurations + references
 			// Write out the build configurations
 			dataOut.writeInt(buildConfigs.length);
-			for (String buildConfig : buildConfigs) {
+			for (String buildConfig : buildConfigs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				dataOut.writeUTF(buildConfig);
 			}
 			// Write active configuration name
 			dataOut.writeUTF(desc.getActiveBuildConfig());
 			// Write out the configuration level references
 			dataOut.writeInt(configRefs.size());
-			for (Map.Entry<String, IBuildConfiguration[]> e : configRefs.entrySet()) {
+			for (Map.Entry<String, IBuildConfiguration[]> e : configRefs.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String refdName = e.getKey();
 				IBuildConfiguration[] refs = e.getValue();
 
 				dataOut.writeUTF(refdName);
 				dataOut.writeInt(refs.length);
-				for (IBuildConfiguration ref : refs) {
+				for (IBuildConfiguration ref : refs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					dataOut.writeUTF(ref.getProject().getName());
 					if (ref.getName() == null) {
 						dataOut.writeBoolean(false);
@@ -555,17 +555,17 @@ public class LocalMetaArea implements ICoreConstants {
 			}
 			// write parts since 3.23
 			dataOut.writeInt(natureIds.length);
-			for (String id : natureIds) {
+			for (String id : natureIds) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				dataOut.writeUTF(id);
 			}
 			dataOut.writeInt(buildSpec.length);
-			for (ICommand command : buildSpec) {
+			for (ICommand command : buildSpec) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (command instanceof BuildCommand b) {
 					dataOut.write(1);
 					dataOut.writeUTF(b.getName());
 					Map<String, String> arguments = b.getArguments();
 					dataOut.writeInt(arguments.size());
-					for (Entry<String, String> entry : arguments.entrySet()) {
+					for (Entry<String, String> entry : arguments.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						dataOut.writeUTF(entry.getKey());
 						dataOut.writeUTF(entry.getValue());
 					}

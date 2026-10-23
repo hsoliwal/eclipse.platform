@@ -42,7 +42,7 @@ import org.eclipse.core.runtime.IPath;
 public class Snapshot4Test {
 
 	protected static String[] defineHierarchy1() {
-		List<String> result = new ArrayList<>();
+		List<String> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		String[] old = Snapshot3Test.defineHierarchy1();
 		result.addAll(Arrays.asList(old));
 		result.remove(IPath.fromOSString(SnapshotTest.PROJECT_1).append("added file").toString());
@@ -55,7 +55,7 @@ public class Snapshot4Test {
 		return new String[0];
 	}
 
-	public void testChangeMyProject() throws CoreException {
+	public void testChangeMyProject() throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// MyProject
 		IProject project = getWorkspace().getRoot().getProject(SnapshotTest.PROJECT_1);
 		assertTrue(project.exists());
@@ -102,7 +102,7 @@ public class Snapshot4Test {
 		getWorkspace().save(false, null);
 	}
 
-	public void testVerifyPreviousSession() throws CoreException {
+	public void testVerifyPreviousSession() throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// MyProject
 		IProject project = getWorkspace().getRoot().getProject(SnapshotTest.PROJECT_1);
 		assertTrue(project.exists());

@@ -56,7 +56,7 @@ abstract class AbstractResourceSnapshot<T extends IResource> implements IResourc
 	 *
 	 * @param resource the resource to be described
 	 */
-	protected AbstractResourceSnapshot(T resource) {
+	protected AbstractResourceSnapshot(T resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super();
 		parent = resource.getParent();
 		if (resource.isAccessible()) {
@@ -67,7 +67,7 @@ abstract class AbstractResourceSnapshot<T extends IResource> implements IResourc
 				IMarker[] markers = resource.findMarkers(null, true,
 						IResource.DEPTH_INFINITE);
 				markerDescriptions = new MarkerSnapshot[markers.length];
-				for (int i = 0; i < markers.length; i++) {
+				for (int i = 0; i < markers.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					markerDescriptions[i] = new MarkerSnapshot(markers[i]);
 				}
 			} catch (CoreException e) {
@@ -100,7 +100,7 @@ abstract class AbstractResourceSnapshot<T extends IResource> implements IResourc
 	 * @param resource
 	 *            the newly created resource
 	 */
-	protected void restoreResourceAttributes(IResource resource)
+	protected void restoreResourceAttributes(IResource resource) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws CoreException {
 		if (modificationStamp != IResource.NULL_STAMP) {
 			resource.revertModificationStamp(modificationStamp);
@@ -112,7 +112,7 @@ abstract class AbstractResourceSnapshot<T extends IResource> implements IResourc
 			resource.setResourceAttributes(resourceAttributes);
 		}
 		if (markerDescriptions != null) {
-			for (MarkerSnapshot markerDescription : markerDescriptions) {
+			for (MarkerSnapshot markerDescription : markerDescriptions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (markerDescription.resource.exists()) {
 					markerDescription.createMarker();
 				}

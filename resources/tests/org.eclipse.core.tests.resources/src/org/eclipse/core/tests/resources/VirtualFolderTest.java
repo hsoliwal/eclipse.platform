@@ -161,7 +161,7 @@ public class VirtualFolderTest {
 		file.delete(IResource.NONE, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyProjectWithVirtualFolder() throws Exception {
 		IPath fileLocation = getRandomLocation();
 		fileStoreExtension.deleteOnTearDown(fileLocation);
@@ -205,7 +205,7 @@ public class VirtualFolderTest {
 		destinationProject.delete(IResource.NONE, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveProjectWithVirtualFolder() throws Exception {
 		IPath fileLocation = getRandomLocation();
 		fileStoreExtension.deleteOnTearDown(fileLocation);
@@ -268,7 +268,7 @@ public class VirtualFolderTest {
 		assertTrue(virtualFolder.isVirtual());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteProjectWithVirtualFolderAndLink() throws CoreException {
 		IPath folderLocation = getRandomLocation();
 		fileStoreExtension.deleteOnTearDown(folderLocation);
@@ -325,7 +325,7 @@ public class VirtualFolderTest {
 		assertTrue(virtualFolder.isVirtual());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testVirtualFolderInLinkedFolder() throws CoreException {
 		// setup handles
 		IFolder topFolder = existingProject.getFolder("topFolder");

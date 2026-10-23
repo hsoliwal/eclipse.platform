@@ -24,7 +24,7 @@ import org.eclipse.debug.core.IDebugEventSetListener;
  * <p>
  * NOTE: <code>DebugEventWaiter</code> objects are intended for one time use only!
  */
-public class DebugEventWaiter implements IDebugEventSetListener {
+public class DebugEventWaiter implements IDebugEventSetListener { //FLLDCIM: MARK — T27  IMPLEMENTS
 	/**
 	 * The kind of event the waiter is waiting for
 	 */
@@ -64,7 +64,7 @@ public class DebugEventWaiter implements IDebugEventSetListener {
 		fEventType = eventType;
 		fTimeout = DEFAULT_TIMEOUT;
 
-		fDebugPlugin.addDebugEventListener(this);
+		fDebugPlugin.addDebugEventListener(this); //FLLDCIM: MARK — T27 DEBUG_EVENT_ADAPTER CALL
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class DebugEventWaiter implements IDebugEventSetListener {
 	@Override
 	public synchronized void handleDebugEvents(DebugEvent[] events) {
 		// printReceived(events);
-		for (DebugEvent event : events) {
+		for (DebugEvent event : events) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (accept(event)) {
 				fEvent = event;
 				fEventSet = events;
@@ -116,8 +116,8 @@ public class DebugEventWaiter implements IDebugEventSetListener {
 	 * Prints a message indicating which event was received.
 	 */
 	protected void printReceived(DebugEvent[] events) {
-		for (DebugEvent event : events) {
-			System.out.println(this + " got " + event); //$NON-NLS-1$
+		for (DebugEvent event : events) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			System.out.println(this + " got " + event); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 

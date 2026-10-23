@@ -62,7 +62,7 @@ public class WorkspacePreferencesTest {
 	/**
 	 * Tests properties state in a brand new workspace (must match defaults).
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDefaults() throws CoreException {
 		IWorkspaceDescription description = Workspace.defaultWorkspaceDescription();
 
@@ -77,7 +77,7 @@ public class WorkspacePreferencesTest {
 				ResourcesPlugin.PREF_MAX_FILE_STATE_SIZE, ResourcesPlugin.PREF_MAX_FILE_STATES,
 				ResourcesPlugin.PREF_SNAPSHOT_INTERVAL };
 		List<String> defaultPropertiesList = Arrays.asList(preferences.defaultPropertyNames());
-		for (String property : descriptionProperties) {
+		for (String property : descriptionProperties) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThat(defaultPropertiesList).as("check description properties are default").contains(property);
 		}
 	}
@@ -86,7 +86,7 @@ public class WorkspacePreferencesTest {
 	 * Makes changes in the preferences and ensure they are reflected in the
 	 * workspace description.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetPreferences() throws CoreException {
 		preferences.setValue(ResourcesPlugin.PREF_AUTO_BUILDING, true);
 		assertThat(workspace.getDescription()).matches(IWorkspaceDescription::isAutoBuilding, "is auto-building");
@@ -132,7 +132,7 @@ public class WorkspacePreferencesTest {
 	 * Ensures property change events are properly fired when setting workspace
 	 * description.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testEvents() throws CoreException {
 		IWorkspaceDescription original = workspace.getDescription();
 
@@ -159,7 +159,7 @@ public class WorkspacePreferencesTest {
 		final List<String> changedProperties = new LinkedList<>();
 		Preferences.IPropertyChangeListener listener = event -> changedProperties.add(event.getProperty());
 		try {
-			preferences.addPropertyChangeListener(listener);
+			preferences.addPropertyChangeListener(listener); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 			workspace.setDescription(original);
 			assertThat(changedProperties).as("check no events have been fired").isEmpty();
 			workspace.setDescription(modified);
@@ -173,7 +173,7 @@ public class WorkspacePreferencesTest {
 	 * Ensures preferences with both default/non-default values are properly
 	 * exported/imported.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testImportExport() throws CoreException {
 		IPath originalPreferencesFile = getRandomLocation().append("original.epf");
 		IPath modifiedPreferencesFile = getRandomLocation().append("modified.epf");
@@ -228,7 +228,7 @@ public class WorkspacePreferencesTest {
 	 * Makes changes through IWorkspace#setDescription and checks if the changes are
 	 * reflected in the preferences.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetDescription() throws CoreException {
 		IWorkspaceDescription description = workspace.getDescription();
 		description.setAutoBuilding(false);
@@ -259,7 +259,7 @@ public class WorkspacePreferencesTest {
 	 * Compares the values in a workspace description with the corresponding
 	 * properties in a preferences object.
 	 */
-	private void assertMatchesPreferences(Preferences expectedPreferences, IWorkspaceDescription actualDescription) {
+	private void assertMatchesPreferences(Preferences expectedPreferences, IWorkspaceDescription actualDescription) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		assertThat(actualDescription.isAutoBuilding()).as("check auto building")
 				.isEqualTo(expectedPreferences.getBoolean(ResourcesPlugin.PREF_AUTO_BUILDING));
 		assertThat(actualDescription.getBuildOrder() == null).as("check default build order")
@@ -285,7 +285,7 @@ public class WorkspacePreferencesTest {
 	/**
 	 * Compares two workspace description objects..
 	 */
-	private void assertDescriptionEquals(IWorkspaceDescription expectedDescription,
+	private void assertDescriptionEquals(IWorkspaceDescription expectedDescription, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IWorkspaceDescription actualDescription) {
 		assertThat(actualDescription.isAutoBuilding()).as("check auto building")
 				.isEqualTo(expectedDescription.isAutoBuilding());

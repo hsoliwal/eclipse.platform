@@ -208,12 +208,12 @@ public abstract class Bucket {
 	 * @return one of STOP, RETURN or CONTINUE constants
 	 * @exception CoreException thrown by the visitor or from a failed save
 	 */
-	public final int accept(Visitor visitor, IPath filter, int depth) throws CoreException {
+	public final int accept(Visitor visitor, IPath filter, int depth) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (entries.isEmpty()) {
 			return Visitor.CONTINUE;
 		}
 		try {
-			for (Iterator<Map.Entry<String, Object>> i = entries.entrySet().iterator(); i.hasNext();) {
+			for (Iterator<Map.Entry<String, Object>> i = entries.entrySet().iterator(); i.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Map.Entry<String, Object> mapEntry = i.next();
 				IPath path = IPath.fromOSString(mapEntry.getKey());
 				// check whether the filter applies
@@ -322,7 +322,7 @@ public abstract class Bucket {
 	 * <code>false</code>, if this bucket already contains the contents from the current location,
 	 * avoids reloading.
 	 */
-	public void load(String newProjectName, File baseLocation, boolean force) throws CoreException {
+	public void load(String newProjectName, File baseLocation, boolean force) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			// avoid reloading
 			if (!force && this.location != null && baseLocation.equals(this.location.getParentFile()) && (projectName == null ? (newProjectName == null) : projectName.equals(newProjectName))) {
@@ -366,11 +366,11 @@ public abstract class Bucket {
 		return this.location == null ? null : this.location.getAbsolutePath();
 	}
 
-	private Map<String, Object> loadEntries(File indexFile) throws CoreException, IOException {
+	private Map<String, Object> loadEntries(File indexFile) throws CoreException, IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!indexFile.isFile()) {
 			return Collections.EMPTY_MAP; // remember file does not exist
 		}
-		Map<String, Object> resultEntries = new HashMap<>();
+		Map<String, Object> resultEntries = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		try (DataInputStream source = new DataInputStream(
 				new BufferedInputStream(new FileInputStream(indexFile), 8192))) {
 			int version = source.readByte();
@@ -381,7 +381,7 @@ public abstract class Bucket {
 				throw new ResourceException(status);
 			}
 			int entryCount = source.readInt();
-			for (int i = 0; i < entryCount; i++) {
+			for (int i = 0; i < entryCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				resultEntries.put(readEntryKey(source), readEntryValue(source));
 			}
 			return resultEntries;
@@ -395,7 +395,7 @@ public abstract class Bucket {
 		if (projectName == null) {
 			return source.readUTF();
 		}
-		return IPath.SEPARATOR + projectName + source.readUTF();
+		return IPath.SEPARATOR + projectName + source.readUTF(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -406,7 +406,7 @@ public abstract class Bucket {
 	/**
 	 * Saves this bucket's contents back to its location.
 	 */
-	public void save() throws CoreException {
+	public void save() throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// We do need to make a copy of this.entries for caching, because that instance is reused
 		// And we need atomic copy to prevent concurrent modification during save();
 		Map<String, Object> entriesSnapshot = Map.copyOf(this.entries);
@@ -439,7 +439,7 @@ public abstract class Bucket {
 			try (DataOutputStream destination = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(location), 8192))) {
 				destination.write(getVersion());
 				destination.writeInt(entriesSnapshot.size());
-				for (java.util.Map.Entry<String, Object> entry : entriesSnapshot.entrySet()) {
+				for (java.util.Map.Entry<String, Object> entry : entriesSnapshot.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					writeEntryKey(destination, entry.getKey());
 					writeEntryValue(destination, entry.getValue());
 				}

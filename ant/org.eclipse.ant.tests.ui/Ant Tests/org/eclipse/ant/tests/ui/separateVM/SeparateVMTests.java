@@ -84,11 +84,11 @@ public class SeparateVMTests {
 		ConsoleLineTracker.waitForConsole();
 		if (ConsoleLineTracker.getNumberOfMessages() != expectedLines) {
 			List<String> lines = ConsoleLineTracker.getAllMessages();
-			System.out.println("Failed line count from " + testInfo.getDisplayName() + ", tracked lines: "); //$NON-NLS-1$ //$NON-NLS-2$
-			for (String string : lines) {
-				System.out.println('\t' + string);
+			System.out.println("Failed line count from " + testInfo.getDisplayName() + ", tracked lines: "); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			for (String string : lines) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				System.out.println('\t' + string); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
-			throw new TestAgainException("Test again - Incorrect number of messages logged for build - should be " //$NON-NLS-1$
+			throw new TestAgainException("Test again - Incorrect number of messages logged for build - should be " //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					+ expectedLines + " but was " //$NON-NLS-1$
 					+ ConsoleLineTracker.getNumberOfMessages());
 		}
@@ -103,7 +103,7 @@ public class SeparateVMTests {
 		launch("echoingSepVM"); //$NON-NLS-1$
 		assertLines(6);
 		assertTrue(ConsoleLineTracker.getMessage(4).startsWith("Total time:"), //$NON-NLS-1$
-				"Incorrect last message. Should start with Total time:. Message: " + ConsoleLineTracker.getMessage(4)); //$NON-NLS-1$
+				"Incorrect last message. Should start with Total time:. Message: " + ConsoleLineTracker.getMessage(4)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class SeparateVMTests {
 		launch("extensionPointSepVM"); //$NON-NLS-1$
 		assertLines(8);
 		assertTrue(ConsoleLineTracker.getMessage(6).startsWith("Total time:"), //$NON-NLS-1$
-				"Incorrect last message. Should start with Total time:. Message: " + ConsoleLineTracker.getMessage(6)); //$NON-NLS-1$
+				"Incorrect last message. Should start with Total time:. Message: " + ConsoleLineTracker.getMessage(6)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -127,10 +127,10 @@ public class SeparateVMTests {
 		launch("extensionPointSepVM"); //$NON-NLS-1$
 		assertLines(8);
 		assertTrue(ConsoleLineTracker.getMessage(3).trim().startsWith("[echo] ${property.ui.testing"), //$NON-NLS-1$
-				"Incorrect last message. Should start with [echo] ${property.ui.testing. Message: " //$NON-NLS-1$
+				"Incorrect last message. Should start with [echo] ${property.ui.testing. Message: " //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						+ ConsoleLineTracker.getMessage(3));
 		assertTrue(ConsoleLineTracker.getMessage(4).trim().startsWith("[echo] hey"), //$NON-NLS-1$
-				"Incorrect last message. Should start with [echo] hey. Message: " + ConsoleLineTracker.getMessage(4)); //$NON-NLS-1$
+				"Incorrect last message. Should start with [echo] hey. Message: " + ConsoleLineTracker.getMessage(4)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -143,11 +143,11 @@ public class SeparateVMTests {
 		assertLines(7);
 		assertTrue(
 				ConsoleLineTracker.getMessage(2).trim().startsWith("[null] Testing Ant in Eclipse with a custom task2"), //$NON-NLS-1$
-				"Incorrect message. Should start with [null] Testing Ant in Eclipse with a custom task2. Message: " //$NON-NLS-1$
+				"Incorrect message. Should start with [null] Testing Ant in Eclipse with a custom task2. Message: " //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ ConsoleLineTracker.getMessage(2));
 		assertTrue(
 				ConsoleLineTracker.getMessage(3).trim().startsWith("[null] Testing Ant in Eclipse with a custom task2"), //$NON-NLS-1$
-				"Incorrect message. Should start with [null] Testing Ant in Eclipse with a custom task2. Message: " + ConsoleLineTracker.getMessage(3)); //$NON-NLS-1$
+				"Incorrect message. Should start with [null] Testing Ant in Eclipse with a custom task2. Message: " + ConsoleLineTracker.getMessage(3)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -161,7 +161,7 @@ public class SeparateVMTests {
 		assertTrue(
 				ConsoleLineTracker.getMessage(2).trim()
 						.startsWith("[echo] Ensure that an extension point defined type"), //$NON-NLS-1$
-				"Incorrect message. Should start with [echo] Ensure that an extension point defined type. Message: " //$NON-NLS-1$
+				"Incorrect message. Should start with [echo] Ensure that an extension point defined type. Message: " //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						+ ConsoleLineTracker.getMessage(2));
 	}
 
@@ -174,10 +174,10 @@ public class SeparateVMTests {
 		launch("echoingSepVM"); //$NON-NLS-1$
 		int offset = 15; // buildfile link
 		IHyperlink link = getHyperlink(offset, ConsoleLineTracker.getDocument());
-		assertNotNull(link, "No hyperlink found at offset " + offset); //$NON-NLS-1$
+		assertNotNull(link, "No hyperlink found at offset " + offset); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		offset = ConsoleLineTracker.getDocument().getLineOffset(2) + 10; // echo link
 		link = getHyperlink(offset, ConsoleLineTracker.getDocument());
-		assertNotNull(link, "No hyperlink found at offset " + offset); //$NON-NLS-1$
+		assertNotNull(link, "No hyperlink found at offset " + offset); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -189,7 +189,7 @@ public class SeparateVMTests {
 		IDocument document = ConsoleLineTracker.getDocument();
 		int offset = document.getLineOffset(9) + 10; // second line of build failed link
 		IHyperlink link = getHyperlink(offset, document);
-		assertNotNull(link, "No hyperlink found at offset " + offset + "\n" + document); //$NON-NLS-1$ //$NON-NLS-2$
+		assertNotNull(link, "No hyperlink found at offset " + offset + "\n" + document); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		activateLink(link);
 	}
 
@@ -202,11 +202,11 @@ public class SeparateVMTests {
 		launch("echoingSepVM"); //$NON-NLS-1$
 		int offset = 15; // buildfile
 		Color color = getColorAtOffset(offset, ConsoleLineTracker.getDocument());
-		assertNotNull(color, "No color found at " + offset); //$NON-NLS-1$
+		assertNotNull(color, "No color found at " + offset); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertEquals(color, AntUIPlugin.getPreferenceColor(IAntUIPreferenceConstants.CONSOLE_INFO_COLOR));
 		offset = ConsoleLineTracker.getDocument().getLineOffset(2) + 10; // echo link
 		color = getColorAtOffset(offset, ConsoleLineTracker.getDocument());
-		assertNotNull(color, "No color found at " + offset); //$NON-NLS-1$
+		assertNotNull(color, "No color found at " + offset); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertEquals(color, AntUIPlugin.getPreferenceColor(IAntUIPreferenceConstants.CONSOLE_WARNING_COLOR));
 	}
 
@@ -226,7 +226,7 @@ public class SeparateVMTests {
 		ConsoleLineTracker.waitForConsole();
 		assertLines(6);
 		assertTrue(ConsoleLineTracker.getMessage(2).endsWith(ProjectHelper.PROJECT_NAME),
-				"Incorrect last message. Should end with " + ProjectHelper.PROJECT_NAME + ". Message: " //$NON-NLS-1$ //$NON-NLS-2$
+				"Incorrect last message. Should end with " + ProjectHelper.PROJECT_NAME + ". Message: " //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						+ ConsoleLineTracker.getMessage(2));
 	}
 
@@ -239,7 +239,7 @@ public class SeparateVMTests {
 		ILaunchConfiguration config = getLaunchConfiguration("74840SepVM"); //$NON-NLS-1$
 		assertNotNull(config, "Could not locate launch configuration for " + "74840SepVM"); //$NON-NLS-1$ //$NON-NLS-2$
 		ILaunchConfigurationWorkingCopy copy = config.getWorkingCopy();
-		Map<String, String> properties = new HashMap<>(1);
+		Map<String, String> properties = new HashMap<>(1); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		properties.put("platform.location", "${workspace_loc}"); //$NON-NLS-1$ //$NON-NLS-2$
 		copy.setAttribute(IAntLaunchConstants.ATTR_ANT_PROPERTIES, properties);
 		launchAndTerminate(copy, 20000);
@@ -258,7 +258,7 @@ public class SeparateVMTests {
 		launch("echoingSepVM", "-p"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertLines(14);
 		assertTrue(ConsoleLineTracker.getMessage(12).trim().startsWith("echo2"), //$NON-NLS-1$
-				"Incorrect last message. Should start with echo2:. Message: " + ConsoleLineTracker.getMessage(12)); //$NON-NLS-1$
+				"Incorrect last message. Should start with echo2:. Message: " + ConsoleLineTracker.getMessage(12)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -269,7 +269,7 @@ public class SeparateVMTests {
 		launch("echoingSepVM", "-listener org.apache.tools.ant.XmlLogger"); //$NON-NLS-1$ //$NON-NLS-2$
 		assertLines(6);
 		assertTrue(ConsoleLineTracker.getMessage(4).startsWith("Total time:"), //$NON-NLS-1$
-				"Incorrect last message. Should start with Total time:. Message: " + ConsoleLineTracker.getMessage(4)); //$NON-NLS-1$
+				"Incorrect last message. Should start with Total time:. Message: " + ConsoleLineTracker.getMessage(4)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// find the log file generated by the XML logger
 		getProject().refreshLocal(IResource.DEPTH_INFINITE, null);
@@ -290,10 +290,10 @@ public class SeparateVMTests {
 		launch("environmentVar"); //$NON-NLS-1$
 		assertLines(6);
 		String message = ConsoleLineTracker.getMessage(1);
-		assertTrue(checkAntHomeMessage(message), "Incorrect message. Should end with org.apache.ant [" + message + "]"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue(checkAntHomeMessage(message), "Incorrect message. Should end with org.apache.ant [" + message + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		message = ConsoleLineTracker.getMessage(2);
 		assertTrue(checkAntHomeMessage(message),
-				"Incorrect message. Should end with org.apache.ant. Message: " + message); //$NON-NLS-1$
+				"Incorrect message. Should end with org.apache.ant. Message: " + message); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	}
 
@@ -323,6 +323,6 @@ public class SeparateVMTests {
 		launch(copy);
 		String message = ConsoleLineTracker.getMessage(1);
 		assertNotNull(message, "There must be a message"); //$NON-NLS-1$
-		assertTrue(message.startsWith("echo1"), "Incorrect message. Should start with Message:. Message: " + message); //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue(message.startsWith("echo1"), "Incorrect message. Should start with Message:. Message: " + message); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

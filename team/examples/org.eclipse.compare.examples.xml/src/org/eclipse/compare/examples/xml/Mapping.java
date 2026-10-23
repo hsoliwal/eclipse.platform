@@ -84,7 +84,7 @@ public class Mapping {
 
 	public static String getKey(String signature, String element) {
 		if (signature == "") //$NON-NLS-1$
-			return XMLStructureCreator.ROOT_ID + XMLStructureCreator.SIGN_SEPARATOR + element + XMLStructureCreator.SIGN_SEPARATOR;
-		return XMLStructureCreator.ROOT_ID + XMLStructureCreator.SIGN_SEPARATOR + signature + XMLStructureCreator.SIGN_SEPARATOR + element + XMLStructureCreator.SIGN_SEPARATOR;
+			return XMLStructureCreator.ROOT_ID + XMLStructureCreator.SIGN_SEPARATOR + element + XMLStructureCreator.SIGN_SEPARATOR; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		return XMLStructureCreator.ROOT_ID + XMLStructureCreator.SIGN_SEPARATOR + signature + XMLStructureCreator.SIGN_SEPARATOR + element + XMLStructureCreator.SIGN_SEPARATOR; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

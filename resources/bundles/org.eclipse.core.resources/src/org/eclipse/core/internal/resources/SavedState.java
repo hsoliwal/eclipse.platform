@@ -75,7 +75,7 @@ public class SavedState implements ISavedState {
 		return getFileTable().getFiles();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void processResourceChangeEvents(IResourceChangeListener listener) {
 		try {
 			final ISchedulingRule rule = workspace.getRoot();

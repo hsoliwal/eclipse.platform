@@ -101,7 +101,7 @@ public abstract class TeamStateProvider implements ITeamStateProvider {
 	 */
 	protected final void fireStateChangeEvent(final ITeamStateChangeEvent event) {
 		Object[] allListeners = listeners.getListeners();
-		for (Object l : allListeners) {
+		for (Object l : allListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final ITeamStateChangeListener listener = (ITeamStateChangeListener) l;
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
@@ -119,7 +119,7 @@ public abstract class TeamStateProvider implements ITeamStateProvider {
 	private int internalGetDecoratedStateMask(IProject[] projects) {
 		int stateMask = 0;
 		String[] providerIds = getProviderIds(projects);
-		for (String providerId : providerIds) {
+		for (String providerId : providerIds) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			stateMask |= internalGetDecoratedStateMask(providerId);
 		}
 		return stateMask;
@@ -135,8 +135,8 @@ public abstract class TeamStateProvider implements ITeamStateProvider {
 	}
 
 	private String[] getProviderIds(IProject[] projects) {
-		Set<String> providerIds = new HashSet<>();
-		for (IProject project : projects) {
+		Set<String> providerIds = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String id = getProviderId(project);
 			if (id != null) {
 				providerIds.add(id);
@@ -155,7 +155,7 @@ public abstract class TeamStateProvider implements ITeamStateProvider {
 
 	private boolean internalIsDecorationEnabled(IProject[] projects) {
 		String[] providerIds = getProviderIds(projects);
-		for (String providerId : providerIds) {
+		for (String providerId : providerIds) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (internalIsDecorationEnabled(providerId)) {
 				return true;
 			}

@@ -57,7 +57,7 @@ public class FilterDescription implements IResourceFilterDescription, Comparable
 
 	public static LinkedList<FilterDescription> copy(LinkedList<FilterDescription> originalDescriptions, IResource resource) {
 		LinkedList<FilterDescription> copy = new LinkedList<>();
-		for (FilterDescription desc : originalDescriptions) {
+		for (FilterDescription desc : originalDescriptions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			FilterDescription newDesc = new FilterDescription(resource, desc.getType(), desc.getFileInfoMatcherDescription());
 			copy.add(newDesc);
 		}
@@ -134,7 +134,7 @@ public class FilterDescription implements IResourceFilterDescription, Comparable
 		if (compare != 0) {
 			return compare;
 		}
-		for (int i = 0; i < count1; i++) {
+		for (int i = 0; i < count1; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			compare = path1.segment(i).compareTo(path2.segment(i));
 			if (compare != 0) {
 				return compare;

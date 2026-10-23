@@ -39,9 +39,9 @@ class GraphProcessor<T> {
 		this.processor = processor;
 		this.ruleFactory = ruleFactory;
 		this.buildJobGroup = buildJobGroup;
-		toProcess = new HashSet<>(graph.vertexMap.keySet());
-		processing = new HashSet<>();
-		processed = new HashSet<>();
+		toProcess = new HashSet<>(graph.vertexMap.keySet()); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		processing = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		processed = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		sequentialOrder = ComputeProjectOrder.computeVertexOrder(graph, clazz);
 	}
 
@@ -67,17 +67,17 @@ class GraphProcessor<T> {
 		processed.add(item);
 	}
 
-	private Set<T> computeReadyVertexes() {
-		Set<T> res = new HashSet<>(toProcess);
-		for (T item : toProcess) {
-			for (Edge<T> edge : graph.getEdges()) {
+	private Set<T> computeReadyVertexes() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		Set<T> res = new HashSet<>(toProcess); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (T item : toProcess) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (Edge<T> edge : graph.getEdges()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (edge.to == item && !processed.contains(edge.from)) {
 					res.remove(item);
 				}
 			}
 		}
 		if (res.isEmpty() && !isProcessing()) { // nothing ready, nothing running: a cycle!
-			for (T id : sequentialOrder.vertexes) {
+			for (T id : sequentialOrder.vertexes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!isProcessed(id)) {
 					return Collections.singleton(id);
 				}
@@ -107,7 +107,7 @@ class GraphProcessor<T> {
 		}
 	}
 
-	private void triggerJob(T item) {
+	private void triggerJob(T item) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		synchronized (this) {
 			markProcessing(item);
 		}

@@ -37,8 +37,8 @@ public class ProjectSetSerializer implements IProjectSetSerializer {
 	@Override
 	public String[] asReference(IProject[] providerProjects, Object context, IProgressMonitor monitor) {
 		Assert.isTrue(context instanceof Shell);
-		List<String> refs = new ArrayList<>();
-		for (IProject project : providerProjects) {
+		List<String> refs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IProject project : providerProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			FileSystemProvider provider = (FileSystemProvider)RepositoryProvider.getProvider(project, FileSystemPlugin.PROVIDER_ID);
 			if (provider != null) {
 				refs.add(asReference(provider));
@@ -47,11 +47,11 @@ public class ProjectSetSerializer implements IProjectSetSerializer {
 		return refs.toArray(new String[refs.size()]);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IProject[] addToWorkspace(String[] referenceStrings, String filename, Object context, IProgressMonitor monitor) {
 		Assert.isTrue(context instanceof Shell);
-		List<IProject> projects = new ArrayList<>();
-		for (String string : referenceStrings) {
+		List<IProject> projects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (String string : referenceStrings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String projectName = getProjectName(string);
 			String path = getPath(string);
 			if (projectName != null && path != null) {
@@ -74,7 +74,7 @@ public class ProjectSetSerializer implements IProjectSetSerializer {
 	}
 
 	private String asReference(FileSystemProvider provider) {
-		return provider.getProject().getName() + "," + provider.getRoot().toString(); //$NON-NLS-1$
+		return provider.getProject().getName() + "," + provider.getRoot().toString(); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private String getProjectName(String string) {

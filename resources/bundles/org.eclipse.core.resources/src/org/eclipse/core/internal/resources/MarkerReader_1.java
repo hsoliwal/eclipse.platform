@@ -70,15 +70,15 @@ public class MarkerReader_1 extends MarkerReader {
 	 * NULL_VALUE -> int
 	 * }</pre>
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void read(DataInputStream input, boolean generateDeltas) throws IOException, CoreException {
 		try {
-			List<String> readTypes = new ArrayList<>(5);
-			while (true) {
+			List<String> readTypes = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IPath path = IPath.fromOSString(input.readUTF());
 				int markersSize = input.readInt();
 				MarkerSet markers = new MarkerSet(markersSize);
-				for (int i = 0; i < markersSize; i++) {
+				for (int i = 0; i < markersSize; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					markers.add(readMarkerInfo(input, readTypes));
 				}
 				// if the resource doesn't exist then return. ensure we do this after
@@ -94,8 +94,8 @@ public class MarkerReader_1 extends MarkerReader {
 					// Iterate over all elements and add not null ones. This saves us from copying
 					// and shrinking the array.
 					IMarkerSetElement[] infos = markers.elements;
-					ArrayList<MarkerDelta> deltas = new ArrayList<>(infos.length);
-					for (IMarkerSetElement info2 : infos) {
+					ArrayList<MarkerDelta> deltas = new ArrayList<>(infos.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+					for (IMarkerSetElement info2 : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (info2 != null) {
 							deltas.add(new MarkerDelta(IResourceDelta.ADDED, resource, (MarkerInfo) info2));
 						}
@@ -108,13 +108,13 @@ public class MarkerReader_1 extends MarkerReader {
 		}
 	}
 
-	private Map<String, Object> readAttributes(DataInputStream input) throws IOException {
+	private Map<String, Object> readAttributes(DataInputStream input) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int attributesSize = input.readInt();
 		if (attributesSize == 0) {
 			return null;
 		}
-		Map<String, Object> result = new HashMap<>(attributesSize);
-		for (int j = 0; j < attributesSize; j++) {
+		Map<String, Object> result = new HashMap<>(attributesSize); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (int j = 0; j < attributesSize; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String key = input.readUTF();
 			int type = input.readInt();
 			Object value = null;
@@ -139,7 +139,7 @@ public class MarkerReader_1 extends MarkerReader {
 		return result.isEmpty() ? null : result;
 	}
 
-	private MarkerInfo readMarkerInfo(DataInputStream input, List<String> readTypes) throws IOException, CoreException {
+	private MarkerInfo readMarkerInfo(DataInputStream input, List<String> readTypes) throws IOException, CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		long id = input.readLong();
 		int constant = input.readInt();
 		String type = null;

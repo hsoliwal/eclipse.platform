@@ -60,21 +60,21 @@ public class IResourceChangeEventTest {
 	 * Sets up the fixture, for example, open a network connection.
 	 * This method is called before a test is executed.
 	 */
-	@BeforeEach
+	@BeforeEach //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setUp() throws Exception {
 		// Create some resource handles
-		project1 = getWorkspace().getRoot().getProject("Project" + 1);
-		project2 = getWorkspace().getRoot().getProject("Project" + 2);
-		folder1 = project1.getFolder("Folder" + 1);
-		folder2 = folder1.getFolder("Folder" + 2);
-		folder3 = folder1.getFolder("Folder" + 3);
-		file1 = folder1.getFile("File" + 1);
-		file2 = folder1.getFile("File" + 2);
-		file3 = folder2.getFile("File" + 3);
+		project1 = getWorkspace().getRoot().getProject("Project" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		project2 = getWorkspace().getRoot().getProject("Project" + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		folder1 = project1.getFolder("Folder" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		folder2 = folder1.getFolder("Folder" + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		folder3 = folder1.getFolder("Folder" + 3); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		file1 = folder1.getFile("File" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		file2 = folder1.getFile("File" + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		file3 = folder2.getFile("File" + 3); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		allResources = new IResource[] {project1, project2, folder1, folder2, folder3, file1, file2, file3};
 
 		// Create and open the resources
-		IWorkspaceRunnable body = unused -> {
+		IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			createInWorkspace(allResources);
 			marker2 = file2.createMarker(IMarker.BOOKMARK);
 			marker3 = file3.createMarker(IMarker.BOOKMARK);
@@ -85,7 +85,7 @@ public class IResourceChangeEventTest {
 	/**
 	 * Tests the IResourceChangeEvent#findMarkerDeltas method.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFindMarkerDeltas() throws CoreException {
 		/*
 		 * The following changes will occur:
@@ -93,7 +93,7 @@ public class IResourceChangeEventTest {
 		 * - remove marker2
 		 * - change marker3
 		 */
-		IResourceChangeListener listener = event -> {
+		IResourceChangeListener listener = event -> { //FLLDCIM: MARK — T07  LAMBDA
 			//bookmark type, no subtypes
 			IMarkerDelta[] deltas = event.findMarkerDeltas(IMarker.BOOKMARK, false);
 			verifyDeltas(deltas);
@@ -125,7 +125,7 @@ public class IResourceChangeEventTest {
 		getWorkspace().addResourceChangeListener(listener);
 
 		//do the work
-		IWorkspaceRunnable body = unused -> {
+		IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			marker1 = file1.createMarker(IMarker.BOOKMARK);
 			marker2.delete();
 			marker3.setAttribute("Foo", true);
@@ -137,13 +137,13 @@ public class IResourceChangeEventTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFindMarkerDeltasInEmptyDelta() throws CoreException {
 		/*
 		 * The following changes will occur:
 		 * - change file1
 		 */
-		IResourceChangeListener listener = event -> {
+		IResourceChangeListener listener = event -> { //FLLDCIM: MARK — T07  LAMBDA
 			//bookmark type, no subtypes
 			assertThat(event.findMarkerDeltas(IMarker.BOOKMARK, false)).isEmpty();
 

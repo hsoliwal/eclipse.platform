@@ -48,7 +48,7 @@ public class DialogSynchronizePageSite implements ISynchronizePageSite {
 	private final boolean isModal;
 	// Keybindings enabled in the dialog, these should be removed
 	// when the dialog is closed.
-	private final List<IHandlerActivation> actionHandlers = new ArrayList<>(2);
+	private final List<IHandlerActivation> actionHandlers = new ArrayList<>(2); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	/**
 	 * Create a site for use in a dialog
@@ -113,7 +113,7 @@ public class DialogSynchronizePageSite implements ISynchronizePageSite {
 	 * Create the action-bars for this site.
 	 * @param toolbar the toolbar for the action bar
 	 */
-	public void createActionBars(final IToolBarManager toolbar) {
+	public void createActionBars(final IToolBarManager toolbar) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (actionBars == null) {
 			actionBars = new IActionBars() {
 				@Override

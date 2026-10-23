@@ -42,7 +42,7 @@ public class BlobStoreTest {
 	@RegisterExtension
 	private final FileStoreAutoDeleteExtension fileStoreExtension = new FileStoreAutoDeleteExtension();
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testConstructor() throws CoreException {
 		/* build scenario */
 		IFileStore root = createStore();
@@ -74,7 +74,7 @@ public class BlobStoreTest {
 		return root;
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteBlob() throws CoreException, IOException {
 		/* initialize common objects */
 		IFileStore root = createStore();
@@ -95,7 +95,7 @@ public class BlobStoreTest {
 		assertFalse(store.fileFor(uuid).exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetBlob() throws CoreException, IOException {
 		/* initialize common objects */
 		IFileStore root = createStore();

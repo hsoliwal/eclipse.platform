@@ -31,7 +31,7 @@ public class StringPoolJob extends Job {
 	 * Stores all registered string pool participants, along with the scheduling
 	 * rule required when running it.
 	 */
-	private final Map<IStringPoolParticipant, ISchedulingRule> participants = Collections.synchronizedMap(new HashMap<>(10));
+	private final Map<IStringPoolParticipant, ISchedulingRule> participants = Collections.synchronizedMap(new HashMap<>(10)); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	private final Bundle systemBundle = Platform.getBundle("org.eclipse.osgi"); //$NON-NLS-1$
 
@@ -80,7 +80,7 @@ public class StringPoolJob extends Job {
 		participants.remove(participant);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected IStatus run(IProgressMonitor monitor) {
 		//if the system is shutting down, don't build
 		if (systemBundle.getState() == Bundle.STOPPING) {
@@ -91,7 +91,7 @@ public class StringPoolJob extends Job {
 		Map.Entry<IStringPoolParticipant, ISchedulingRule>[] entries = participants.entrySet().toArray(new Map.Entry[participants.size()]);
 		ISchedulingRule[] rules = new ISchedulingRule[entries.length];
 		IStringPoolParticipant[] toRun = new IStringPoolParticipant[entries.length];
-		for (int i = 0; i < toRun.length; i++) {
+		for (int i = 0; i < toRun.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			toRun[i] = entries[i].getKey();
 			rules[i] = entries[i].getValue();
 		}
@@ -109,21 +109,21 @@ public class StringPoolJob extends Job {
 		if (start > 0) {
 			lastDuration = System.currentTimeMillis() - start;
 			if (Policy.DEBUG_STRINGS) {
-				Policy.debug("String sharing saved " + savings + " bytes in: " + lastDuration); //$NON-NLS-1$ //$NON-NLS-2$
+				Policy.debug("String sharing saved " + savings + " bytes in: " + lastDuration); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		//throttle frequency if it takes too long
 		long scheduleDelay = Math.max(RESCHEDULE_DELAY, lastDuration * 100);
 		if (Policy.DEBUG_STRINGS) {
-			Policy.debug("Rescheduling string sharing job in: " + scheduleDelay); //$NON-NLS-1$
+			Policy.debug("Rescheduling string sharing job in: " + scheduleDelay); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		schedule(scheduleDelay);
 		return Status.OK_STATUS;
 	}
 
-	private int shareStrings(IStringPoolParticipant[] toRun, IProgressMonitor monitor) {
+	private int shareStrings(IStringPoolParticipant[] toRun, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final StringPool pool = new StringPool();
-		for (final IStringPoolParticipant current : toRun) {
+		for (final IStringPoolParticipant current : toRun) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (monitor.isCanceled()) {
 				break;
 			}

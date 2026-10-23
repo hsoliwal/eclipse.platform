@@ -47,7 +47,7 @@ public class IFolderTest {
 	 * the immediate parent to see if it is read-only so we can return a better
 	 * error code and message to the user.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug25662() throws CoreException {
 		// We need to know whether or not we can unset the read-only flag
 		// in order to perform this test.
@@ -75,7 +75,7 @@ public class IFolderTest {
 	/**
 	 * Bug 11510 [resources] Non-local folders do not become local when directory is created.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Deprecated // Explicitly tests deprecated API
 	public void testBug11510() throws Exception {
 		IWorkspaceRoot root = getWorkspace().getRoot();

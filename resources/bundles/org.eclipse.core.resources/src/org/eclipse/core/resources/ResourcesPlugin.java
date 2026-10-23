@@ -231,7 +231,7 @@ public final class ResourcesPlugin extends Plugin {
 	 * @see IWorkspaceDescription#setAutoBuilding(boolean)
 	 * @since 2.1
 	 */
-	public static final String PREF_AUTO_BUILDING = PREF_DESCRIPTION_PREFIX + "autobuilding"; //$NON-NLS-1$
+	public static final String PREF_AUTO_BUILDING = PREF_DESCRIPTION_PREFIX + "autobuilding"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Name of a preference for configuring the order projects in the workspace
@@ -241,14 +241,14 @@ public final class ResourcesPlugin extends Plugin {
 	 * @see IWorkspaceDescription#setBuildOrder(String[])
 	 * @since 2.1
 	 */
-	public static final String PREF_BUILD_ORDER = PREF_DESCRIPTION_PREFIX + "buildorder"; //$NON-NLS-1$
+	public static final String PREF_BUILD_ORDER = PREF_DESCRIPTION_PREFIX + "buildorder"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Name of a preference for configuring whether to use the workspace's
 	 * default order for building projects.
 	 * @since 2.1
 	 */
-	public static final String PREF_DEFAULT_BUILD_ORDER = PREF_DESCRIPTION_PREFIX + "defaultbuildorder"; //$NON-NLS-1$
+	public static final String PREF_DEFAULT_BUILD_ORDER = PREF_DESCRIPTION_PREFIX + "defaultbuildorder"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Name of a preference for configuring the maximum number of times that the
@@ -259,7 +259,7 @@ public final class ResourcesPlugin extends Plugin {
 	 * @see IWorkspaceDescription#setMaxBuildIterations(int)
 	 * @since 2.1
 	 */
-	public static final String PREF_MAX_BUILD_ITERATIONS = PREF_DESCRIPTION_PREFIX + "maxbuilditerations"; //$NON-NLS-1$
+	public static final String PREF_MAX_BUILD_ITERATIONS = PREF_DESCRIPTION_PREFIX + "maxbuilditerations"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Name of a preference for configuring whether to apply the specified history size policy.
@@ -268,7 +268,7 @@ public final class ResourcesPlugin extends Plugin {
 	 * @see IWorkspaceDescription#setApplyFileStatePolicy(boolean)
 	 * @since 3.6
 	 */
-	public static final String PREF_APPLY_FILE_STATE_POLICY = PREF_DESCRIPTION_PREFIX + "applyfilestatepolicy"; //$NON-NLS-1$
+	public static final String PREF_APPLY_FILE_STATE_POLICY = PREF_DESCRIPTION_PREFIX + "applyfilestatepolicy"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Name of a preference for configuring the maximum number of milliseconds a
@@ -278,7 +278,7 @@ public final class ResourcesPlugin extends Plugin {
 	 * @see IWorkspaceDescription#setFileStateLongevity(long)
 	 * @since 2.1
 	 */
-	public static final String PREF_FILE_STATE_LONGEVITY = PREF_DESCRIPTION_PREFIX + "filestatelongevity"; //$NON-NLS-1$
+	public static final String PREF_FILE_STATE_LONGEVITY = PREF_DESCRIPTION_PREFIX + "filestatelongevity"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Name of a preference for configuring the maximum permitted size of a file
@@ -288,7 +288,7 @@ public final class ResourcesPlugin extends Plugin {
 	 * @see IWorkspaceDescription#setMaxFileStateSize(long)
 	 * @since 2.1
 	 */
-	public static final String PREF_MAX_FILE_STATE_SIZE = PREF_DESCRIPTION_PREFIX + "maxfilestatesize"; //$NON-NLS-1$
+	public static final String PREF_MAX_FILE_STATE_SIZE = PREF_DESCRIPTION_PREFIX + "maxfilestatesize"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Name of a preference for configuring whether derived files should be stored
@@ -298,7 +298,7 @@ public final class ResourcesPlugin extends Plugin {
 	 * @see IWorkspaceDescription#setKeepDerivedState(boolean)
 	 * @since 3.15
 	 */
-	public static final String PREF_KEEP_DERIVED_STATE = PREF_DESCRIPTION_PREFIX + "keepDerivedState"; //$NON-NLS-1$
+	public static final String PREF_KEEP_DERIVED_STATE = PREF_DESCRIPTION_PREFIX + "keepDerivedState"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Name of a preference for configuring the maximum number of states per
@@ -308,7 +308,7 @@ public final class ResourcesPlugin extends Plugin {
 	 * @see IWorkspaceDescription#setMaxFileStates(int)
 	 * @since 2.1
 	 */
-	public static final String PREF_MAX_FILE_STATES = PREF_DESCRIPTION_PREFIX + "maxfilestates"; //$NON-NLS-1$
+	public static final String PREF_MAX_FILE_STATES = PREF_DESCRIPTION_PREFIX + "maxfilestates"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	/**
 	 * Name of a preference for configuring the amount of time in milliseconds
 	 * between automatic workspace snapshots
@@ -317,14 +317,14 @@ public final class ResourcesPlugin extends Plugin {
 	 * @see IWorkspaceDescription#setSnapshotInterval(long)
 	 * @since 2.1
 	 */
-	public static final String PREF_SNAPSHOT_INTERVAL = PREF_DESCRIPTION_PREFIX + "snapshotinterval"; //$NON-NLS-1$
+	public static final String PREF_SNAPSHOT_INTERVAL = PREF_DESCRIPTION_PREFIX + "snapshotinterval"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Name of a preference for turning off support for linked resources.  When
 	 * this preference is set to "true", attempting to create linked resources will fail.
 	 * @since 2.1
 	 */
-	public static final String PREF_DISABLE_LINKING = PREF_DESCRIPTION_PREFIX + "disableLinking";//$NON-NLS-1$
+	public static final String PREF_DISABLE_LINKING = PREF_DESCRIPTION_PREFIX + "disableLinking";//$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Name of a preference for configuring whether the workspace performs auto-
@@ -438,7 +438,7 @@ public final class ResourcesPlugin extends Plugin {
 	 * @see java.io.UnsupportedEncodingException
 	 * @see #getSystemEncoding()
 	 */
-	public static String getEncoding() {
+	public static String getEncoding() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourcesPlugin resourcesPlugin = plugin;
 		if (resourcesPlugin == null) {
 			return getSystemEncoding();
@@ -468,12 +468,12 @@ public final class ResourcesPlugin extends Plugin {
 	 * @return never null
 	 * @see Platform#getSystemCharset()
 	 */
-	private static String getSystemEncoding() {
+	private static String getSystemEncoding() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (systemEncoding == null) {
 			String encoding = null;
 			// Check if -Dfile.encoding= startup argument was given to Eclipse's JVM
 			List<String> commandLineArgs = ManagementFactory.getRuntimeMXBean().getInputArguments();
-			for (String arg : commandLineArgs) {
+			for (String arg : commandLineArgs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (arg.startsWith("-Dfile.encoding=")) { //$NON-NLS-1$
 					encoding = arg.substring("-Dfile.encoding=".length()); //$NON-NLS-1$
 					// continue, it can be specified multiple times, last one wins.
@@ -557,7 +557,7 @@ public final class ResourcesPlugin extends Plugin {
 		debugRegistration = context.registerService(DebugOptionsListener.class, Policy.RESOURCES_DEBUG_OPTIONS_LISTENER,
 				properties);
 		instanceLocationTracker = new ServiceTracker<>(context,
-				context.createFilter(String.format("(&%s(%s=*))", Location.INSTANCE_FILTER, //$NON-NLS-1$
+				context.createFilter(String.format("(&%s(%s=*))", Location.INSTANCE_FILTER, //$NON-NLS-1$ //FLLDCIM: MARK — M11 FORMAT_PRECOMPUTE CALL
 						Location.SERVICE_PROPERTY_URL)),
 				workspaceInitCustomizer);
 		plugin = this; // must before open the tracker, as this can cause the registration of the
@@ -574,7 +574,7 @@ public final class ResourcesPlugin extends Plugin {
 			this.context = context;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public Workspace addingService(ServiceReference<Location> reference) {
 			if (workspace != null) {
 				return null; // there can only be one workspace right now...

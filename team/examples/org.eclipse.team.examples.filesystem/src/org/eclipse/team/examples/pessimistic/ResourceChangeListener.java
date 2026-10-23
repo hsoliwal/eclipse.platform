@@ -47,7 +47,7 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
  * and (optionally) prompts the user to add the new resources to the
  * control of the repository provider.
  */
-public class ResourceChangeListener implements IResourceDeltaVisitor, IResourceChangeListener {
+public class ResourceChangeListener implements IResourceDeltaVisitor, IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 	/*
 	 * Set of added resources
 	 */
@@ -58,8 +58,8 @@ public class ResourceChangeListener implements IResourceDeltaVisitor, IResourceC
 	private final Set<IResource> fRemoved;
 
 	public ResourceChangeListener() {
-		fAdded = new HashSet<>(1);
-		fRemoved = new HashSet<>(1);
+		fAdded = new HashSet<>(1); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		fRemoved = new HashSet<>(1); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 	}
 
 	/**
@@ -70,7 +70,7 @@ public class ResourceChangeListener implements IResourceDeltaVisitor, IResourceC
 	 * </ul>
 	 * @see org.eclipse.core.resources.IResourceDeltaVisitor#visit(IResourceDelta)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean visit(IResourceDelta delta) {
 		IResource resource= delta.getResource();
 		if (resource != null) {
@@ -120,7 +120,7 @@ public class ResourceChangeListener implements IResourceDeltaVisitor, IResourceC
 		return resources;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void resourceChanged (IResourceChangeEvent event) {
 		try {
 			event.getDelta().accept(this);
@@ -130,7 +130,7 @@ public class ResourceChangeListener implements IResourceDeltaVisitor, IResourceC
 		}
 
 		if (!fRemoved.isEmpty() || !fAdded.isEmpty()) {
-			final IWorkspaceRunnable workspaceRunnable= monitor -> {
+			final IWorkspaceRunnable workspaceRunnable= monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 				if (!fRemoved.isEmpty()) {
 					remove(monitor);
 				}
@@ -171,7 +171,7 @@ public class ResourceChangeListener implements IResourceDeltaVisitor, IResourceC
 	 *  prompt - brings up a prompt which requests that the user
 	 * 				select which resources to add
 	 */
-	private void add(final IProgressMonitor monitor) {
+	private void add(final IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		switch (getAddToControlPreference()) {
 		case IPessimisticFilesystemConstants.OPTION_DO_NOTHING:
 			break;
@@ -181,7 +181,7 @@ public class ResourceChangeListener implements IResourceDeltaVisitor, IResourceC
 		case IPessimisticFilesystemConstants.OPTION_PROMPT:
 			final Shell shell= getShell();
 			if (shell != null && !shell.isDisposed()) {
-				final Set<IResource> resources = new HashSet<>(fAdded);
+				final Set<IResource> resources = new HashSet<>(fAdded); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 				Runnable run= () -> {
 					CheckedTreeSelectionDialog dialog= new CheckedTreeSelectionDialog(shell, new WorkbenchLabelProvider(), new ResourceSetContentProvider(resources));
 					dialog.setMessage("Select the resources to be added to the control of the repository.");
@@ -198,8 +198,8 @@ public class ResourceChangeListener implements IResourceDeltaVisitor, IResourceC
 					if (status == Window.OK) {
 						Object[] results= dialog.getResult();
 						if (results != null) {
-							Set<IResource> resources1 = new HashSet<>(results.length);
-							for (Object result : results) {
+							Set<IResource> resources1 = new HashSet<>(results.length); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+							for (Object result : results) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 								resources1.add((IResource) result);
 							}
 							addToControl(resources1, monitor);
@@ -208,7 +208,7 @@ public class ResourceChangeListener implements IResourceDeltaVisitor, IResourceC
 				};
 
 				Display display= shell.getDisplay();
-				display.asyncExec(run);
+				display.asyncExec(run); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			} else {
 				PessimisticFilesystemProviderPlugin.getInstance().logError(null, "Could not aquire a shell");
 			}
@@ -222,7 +222,7 @@ public class ResourceChangeListener implements IResourceDeltaVisitor, IResourceC
 	 */
 	private void addToControl(Collection<IResource> resources, final IProgressMonitor monitor) {
 		Map<IProject, Set<IResource>> byProject = sortByProject(resources);
-		for (IProject project : byProject.keySet()) {
+		for (IProject project : byProject.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			PessimisticFilesystemProvider provider= (PessimisticFilesystemProvider)RepositoryProvider.getProvider(project, PessimisticFilesystemProviderPlugin.NATURE_ID);
 			if (provider != null) {
 				provider.addToControl(toResourceArray(byProject.get(project)), monitor);
@@ -236,7 +236,7 @@ public class ResourceChangeListener implements IResourceDeltaVisitor, IResourceC
 	 */
 	private void remove(IProgressMonitor monitor) {
 		Map<IProject, Set<IResource>> byProject = sortByProject(fRemoved);
-		for (IProject project : byProject.keySet()) {
+		for (IProject project : byProject.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			PessimisticFilesystemProvider provider= (PessimisticFilesystemProvider)RepositoryProvider.getProvider(project, PessimisticFilesystemProviderPlugin.NATURE_ID);
 			if (provider != null) {
 				provider.removeFromControl(toResourceArray(byProject.get(project)), monitor);
@@ -249,12 +249,12 @@ public class ResourceChangeListener implements IResourceDeltaVisitor, IResourceC
 	 * Convenience method to sort the resources by project
 	 */
 	private Map<IProject, Set<IResource>> sortByProject(Collection<IResource> resources) {
-		Map<IProject, Set<IResource>> byProject = new HashMap<>();
-		for (IResource resource : resources) {
+		Map<IProject, Set<IResource>> byProject = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProject project= resource.getProject();
 			Set<IResource> set = byProject.get(project);
 			if (set == null) {
-				set = new HashSet<>(1);
+				set = new HashSet<>(1); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 				byProject.put(project, set);
 			}
 			set.add(resource);
@@ -265,7 +265,7 @@ public class ResourceChangeListener implements IResourceDeltaVisitor, IResourceC
 	/*
 	 * Convenience method which answers a shell with which to prompt.
 	 */
-	private Shell getShell() {
+	private Shell getShell() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IWorkbench workbench= PlatformUI.getWorkbench();
 		if (workbench != null) {
 			IWorkbenchWindow window= workbench.getActiveWorkbenchWindow();

@@ -33,9 +33,9 @@ public class ConfigurationBuilder extends TestBuilder {
 	public static final String BUILDER_NAME = "org.eclipse.core.tests.resources.configbuilder";
 
 	/** Stores IBuildConfiguration -&gt; ConfigurationBuilder */
-	private static HashMap<IBuildConfiguration, ConfigurationBuilder> builders = new HashMap<>();
+	private static HashMap<IBuildConfiguration, ConfigurationBuilder> builders = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	/** Order in which builders have been run */
-	static List<IBuildConfiguration> buildOrder = new ArrayList<>();
+	static List<IBuildConfiguration> buildOrder = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	// Per builder instance stats
 	int triggerForLastBuild;
@@ -50,11 +50,11 @@ public class ConfigurationBuilder extends TestBuilder {
 	}
 
 	public static void clearBuildOrder() {
-		buildOrder = new ArrayList<>();
+		buildOrder = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	}
 
 	public static void clearStats() {
-		for (ConfigurationBuilder builder : builders.values()) {
+		for (ConfigurationBuilder builder : builders.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			builder.buildCount = 0;
 			builder.triggerForLastBuild = 0;
 			builder.deltaForLastBuild = null;

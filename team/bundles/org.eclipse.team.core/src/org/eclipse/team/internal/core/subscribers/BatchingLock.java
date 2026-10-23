@@ -60,9 +60,9 @@ public class BatchingLock {
 	};
 
 	public static class ThreadInfo {
-		private final Set<IResource> changedResources = new HashSet<>();
+		private final Set<IResource> changedResources = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		private final IFlushOperation operation;
-		private final List<ISchedulingRule> rules = new ArrayList<>();
+		private final List<ISchedulingRule> rules = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		public ThreadInfo(IFlushOperation operation) {
 			this.operation = operation;
 		}
@@ -71,7 +71,7 @@ public class BatchingLock {
 		 * acquire the rule if it is not the workspace root.
 		 * @return the scheduling rule that was obtained
 		 */
-		public ISchedulingRule pushRule(ISchedulingRule resource, IProgressMonitor monitor) {
+		public ISchedulingRule pushRule(ISchedulingRule resource, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			// The scheduling rule is either the project or the resource's parent
 			final ISchedulingRule rule = getRuleForResoure(resource);
 			if (rule != NULL_SCHEDULING_RULE) {
@@ -118,13 +118,13 @@ public class BatchingLock {
 				if (rule == null) {
 					rule = NULL_SCHEDULING_RULE;
 				}
-				Assert.isTrue(stackedRule.equals(rule), "end for resource '" + rule + "' does not match stacked rule '" + stackedRule + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+				Assert.isTrue(stackedRule.equals(rule), "end for resource '" + rule + "' does not match stacked rule '" + stackedRule + "'"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				if (rule != NULL_SCHEDULING_RULE) {
 					Job.getJobManager().endRule(rule);
 				}
 			}
 		}
-		private ISchedulingRule getRuleForResoure(ISchedulingRule resourceRule) {
+		private ISchedulingRule getRuleForResoure(ISchedulingRule resourceRule) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			ISchedulingRule rule;
 			if (resourceRule instanceof IResource resource) {
 				if (resource.getType() == IResource.ROOT) {
@@ -138,8 +138,8 @@ public class BatchingLock {
 			} else if (resourceRule instanceof MultiRule) {
 				// Create a MultiRule for all projects from the given rule
 				ISchedulingRule[] rules = ((MultiRule)resourceRule).getChildren();
-				Set<ISchedulingRule> projects = new HashSet<>();
-				for (ISchedulingRule childRule : rules) {
+				Set<ISchedulingRule> projects = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+				for (ISchedulingRule childRule : rules) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (childRule instanceof IResource) {
 						projects.add(((IResource)childRule).getProject());
 					}
@@ -199,7 +199,7 @@ public class BatchingLock {
 		 * Return true if all but the last rule in the stack is null
 		 */
 		private boolean remainingRulesAreNull() {
-			for (int i = 0; i < rules.size() - 1; i++) {
+			for (int i = 0; i < rules.size() - 1; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ISchedulingRule rule = rules.get(i);
 				if (rule != NULL_SCHEDULING_RULE) {
 					return false;
@@ -217,7 +217,7 @@ public class BatchingLock {
 			return rules.remove(rules.size() - 1);
 		}
 		public boolean ruleContains(IResource resource) {
-			for (ISchedulingRule rule : rules) {
+			for (ISchedulingRule rule : rules) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (rule != NULL_SCHEDULING_RULE && rule.contains(resource)) {
 					return true;
 				}
@@ -230,7 +230,7 @@ public class BatchingLock {
 		public void flush(ThreadInfo info, IProgressMonitor monitor) throws TeamException;
 	}
 
-	private final Map<Thread, ThreadInfo> infos = new HashMap<>();
+	private final Map<Thread, ThreadInfo> infos = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/**
 	 * Return the thread info for the current thread
@@ -246,7 +246,7 @@ public class BatchingLock {
 
 	private ThreadInfo getThreadInfo(IResource resource) {
 		synchronized (infos) {
-			for (ThreadInfo info : infos.values()) {
+			for (ThreadInfo info : infos.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (info.ruleContains(resource)) {
 					return info;
 				}
@@ -255,7 +255,7 @@ public class BatchingLock {
 		}
 	}
 
-	public ISchedulingRule acquire(ISchedulingRule resourceRule, IFlushOperation operation, IProgressMonitor monitor) {
+	public ISchedulingRule acquire(ISchedulingRule resourceRule, IFlushOperation operation, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ThreadInfo info = getThreadInfo();
 		boolean added = false;
 		synchronized (infos) {
@@ -265,7 +265,7 @@ public class BatchingLock {
 				infos.put(thisThread, info);
 				added = true;
 				if(Policy.DEBUG_THREADING) {
-					System.out.println("[" + thisThread.getName() + "] acquired batching lock on " + resourceRule); //$NON-NLS-1$ //$NON-NLS-2$
+					System.out.println("[" + thisThread.getName() + "] acquired batching lock on " + resourceRule); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
 		}
@@ -311,7 +311,7 @@ public class BatchingLock {
 			if (!info.isNested()) {
 				Thread thisThread = Thread.currentThread();
 				if(Policy.DEBUG_THREADING) {
-					System.out.println("[" + thisThread.getName() + "] released batching lock"); //$NON-NLS-1$ //$NON-NLS-2$
+					System.out.println("[" + thisThread.getName() + "] released batching lock"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				infos.remove(thisThread);
 			}

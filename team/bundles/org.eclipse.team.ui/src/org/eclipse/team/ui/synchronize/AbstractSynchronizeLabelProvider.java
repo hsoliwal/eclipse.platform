@@ -190,7 +190,7 @@ public abstract class AbstractSynchronizeLabelProvider implements ILabelProvider
 
 	@Override
 	public void addListener(ILabelProviderListener listener) {
-		getDelegateLabelProvider().addListener(listener);
+		getDelegateLabelProvider().addListener(listener); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 	}
 
 	@Override
@@ -248,7 +248,7 @@ public abstract class AbstractSynchronizeLabelProvider implements ILabelProvider
 		return null;
 	}
 
-	private Image addOverlays(Image base, Object element) {
+	private Image addOverlays(Image base, Object element) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!isIncludeOverlays()) {
 			return base;
 		}
@@ -311,13 +311,13 @@ public abstract class AbstractSynchronizeLabelProvider implements ILabelProvider
 	 *            the element
 	 * @return the marker severity
 	 */
-	protected int getMarkerSeverity(Object element) {
+	protected int getMarkerSeverity(Object element) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourceMapping mapping = Utils.getResourceMapping(internalGetElement(element));
 		int result = -1;
 		if (mapping != null) {
 			try {
 				IMarker[] markers = mapping.findMarkers(IMarker.PROBLEM, true, null);
-				for (IMarker marker : markers) {
+				for (IMarker marker : markers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Integer severity = (Integer) marker.getAttribute(IMarker.SEVERITY);
 					if (severity != null) {
 						if (severity.intValue() == IMarker.SEVERITY_ERROR) {

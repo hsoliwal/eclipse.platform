@@ -45,7 +45,7 @@ public class Bug_097608 {
 		// first try a long value under the limit
 		marker.setAttribute(IMarker.MESSAGE, originalValue);
 		//now create a marker with illegal length attribute
-		String firstChangedValue = originalValue + originalValue;
+		String firstChangedValue = originalValue + originalValue; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertThrows(RuntimeException.class, () -> marker.setAttribute(IMarker.MESSAGE, firstChangedValue));
 		//try a string with less than 65536 characters whose UTF encoding exceeds the limit
 		Arrays.fill(chars, (char) 0x0800);
@@ -56,20 +56,20 @@ public class Bug_097608 {
 	/**
 	 * Tests that creating a marker with very long value causes failure.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug2() throws CoreException {
 		char[] chars = new char[40000];
 		Arrays.fill(chars, 'a');
 		String value = new String(chars);
 
-		Map<String, String> markerAttributes = new HashMap<>();
+		Map<String, String> markerAttributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		markerAttributes.put(IMarker.MESSAGE, value);
 
 		IMarker marker = ResourcesPlugin.getWorkspace().getRoot().createMarker(IMarker.PROBLEM);
 		// first try a long value under the limit
 		marker.setAttributes(markerAttributes);
 		//now create a marker with illegal length attribute
-		value = value + value;
+		value = value + value; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		markerAttributes.put(IMarker.MESSAGE, value);
 		assertThrows(RuntimeException.class, () -> marker.setAttributes(markerAttributes));
 		//try a string with less than 65536 characters whose UTF encoding exceeds the limit

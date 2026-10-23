@@ -115,7 +115,7 @@ public class AntTargetNode extends AntElementNode {
 	 */
 	public String checkDependencies() {
 		Enumeration<String> dependencies = fTarget.getDependencies();
-		while (dependencies.hasMoreElements()) {
+		while (dependencies.hasMoreElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String dependency = dependencies.nextElement();
 			if (fTarget.getProject().getTargets().get(dependency) == null) {
 				return dependency;
@@ -142,13 +142,13 @@ public class AntTargetNode extends AntElementNode {
 		return targetName;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean containsOccurrence(String identifier) {
 		if (getTargetName().equals(identifier)) {
 			return true;
 		}
 		Enumeration<String> dependencies = fTarget.getDependencies();
-		while (dependencies.hasMoreElements()) {
+		while (dependencies.hasMoreElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String dependency = dependencies.nextElement();
 			if (dependency.equals(identifier)) {
 				return true;
@@ -173,13 +173,13 @@ public class AntTargetNode extends AntElementNode {
 		return getTargetName();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public List<Integer> computeIdentifierOffsets(String identifier) {
 		String textToSearch = getAntModel().getText(getOffset(), getLength());
 		if (textToSearch == null || textToSearch.length() == 0 || identifier.length() == 0) {
 			return null;
 		}
-		List<Integer> results = new ArrayList<>();
+		List<Integer> results = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (getTargetName().equals(identifier)) {
 			int nameOffset = textToSearch.indexOf(IAntCoreConstants.NAME);
 			nameOffset = textToSearch.indexOf(identifier, nameOffset);
@@ -198,14 +198,14 @@ public class AntTargetNode extends AntElementNode {
 					results.add(Integer.valueOf(getOffset() + unlessOffset));
 				} else {
 					int dependsOffset = textToSearch.indexOf("depends"); //$NON-NLS-1$
-					while (dependsOffset > 0 && !Character.isWhitespace(textToSearch.charAt(dependsOffset - 1))) {
+					while (dependsOffset > 0 && !Character.isWhitespace(textToSearch.charAt(dependsOffset - 1))) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						dependsOffset = textToSearch.indexOf("depends", dependsOffset + 1); //$NON-NLS-1$
 					}
 					if (dependsOffset != -1) {
 						dependsOffset += 7;
 						int dependsOffsetEnd = textToSearch.indexOf('"', dependsOffset);
 						dependsOffsetEnd = textToSearch.indexOf('"', dependsOffsetEnd + 1);
-						while (dependsOffset < dependsOffsetEnd) {
+						while (dependsOffset < dependsOffsetEnd) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							dependsOffset = textToSearch.indexOf(identifier, dependsOffset);
 							if (dependsOffset == -1 || dependsOffset > dependsOffsetEnd) {
 								break;
@@ -223,7 +223,7 @@ public class AntTargetNode extends AntElementNode {
 		return results;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean isRegionPotentialReference(IRegion region) {
 		boolean superOK = super.isRegionPotentialReference(region);
 		if (!superOK) {

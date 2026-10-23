@@ -95,7 +95,7 @@ public class IFileTest {
 	public static final String LOCAL_ONLY_HIDDEN = ".LocalOnlyFileHidden";
 	public static final String WORKSPACE_ONLY_HIDDEN = ".WorkspaceOnlyFileHidden";
 
-	ArrayList<IFile> allFiles = new ArrayList<>();
+	ArrayList<IFile> allFiles = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	IProject[] projects = null;
 
@@ -113,7 +113,7 @@ public class IFileTest {
 		if (container instanceof IProject project) {
 			return project.isOpen();
 		}
-		throw new IllegalArgumentException("Unhandled container type: " + container);
+		throw new IllegalArgumentException("Unhandled container type: " + container); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class IFileTest {
 	 */
 	protected void generateInterestingFiles() throws CoreException {
 		IProject[] interestingProjects = interestingProjects();
-		for (IProject project : interestingProjects) {
+		for (IProject project : interestingProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			//file in project
 			generateInterestingFiles(project);
 
@@ -145,7 +145,7 @@ public class IFileTest {
 	 * Conditions on these files (out of sync, workspace only, etc)
 	 * will be ensured by refreshFiles
 	 */
-	public void generateInterestingFiles(IContainer container) {
+	public void generateInterestingFiles(IContainer container) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//non-existent file
 		allFiles.add(container.getFile(IPath.fromOSString(DOES_NOT_EXIST)));
 
@@ -182,7 +182,7 @@ public class IFileTest {
 	/**
 	 * Creates and returns some interesting projects
 	 */
-	public IProject[] interestingProjects() throws CoreException {
+	public IProject[] interestingProjects() throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (projects == null) {
 			projects = new IProject[3];
 
@@ -207,8 +207,8 @@ public class IFileTest {
 	/**
 	 * Returns some interesting input streams
 	 */
-	public InputStream[] interestingStreams() {
-		ArrayList<InputStream> streams = new ArrayList<>();
+	public InputStream[] interestingStreams() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		ArrayList<InputStream> streams = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		//empty stream
 		ByteArrayInputStream bis = new ByteArrayInputStream(new byte[0]);
@@ -238,7 +238,7 @@ public class IFileTest {
 	/**
 	 * Makes sure file requirements are met (out of sync, workspace only, etc).
 	 */
-	public void refreshFile(IFile file) throws CoreException, IOException {
+	public void refreshFile(IFile file) throws CoreException, IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (file.getName().equals(LOCAL_ONLY)) {
 			removeFromWorkspace(file);
 			//project must exist to access file system store.
@@ -305,7 +305,7 @@ public class IFileTest {
 	 * Makes sure file requirements are met (out of sync, workspace only, etc).
 	 */
 	public void refreshFiles() throws CoreException, IOException {
-		for (IFile file : allFiles) {
+		for (IFile file : allFiles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			refreshFile(file);
 		}
 	}
@@ -324,7 +324,7 @@ public class IFileTest {
 		assertEquals("abcdef", target.readString());
 	}
 
-	@SuppressWarnings("deprecation") // org.eclipse.core.resources.IResource.isLocal(int)
+	@SuppressWarnings("deprecation") // org.eclipse.core.resources.IResource.isLocal(int) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Test
 	public void testAppendContents2() throws Exception {
 		IFile file = projects[0].getFile("file1");
@@ -408,7 +408,7 @@ public class IFileTest {
 	 * Performs black box testing of the following method:
 	 *     void create(InputStream, boolean, IProgressMonitor)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreate() throws Exception {
 		Object[][] inputs = new Object[][] {interestingFiles(), interestingStreams(), TRUE_AND_FALSE, PROGRESS_MONITORS};
 		new TestPerformer("IFileTest.testCreate") {
@@ -439,7 +439,7 @@ public class IFileTest {
 				return null;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean shouldFail(Object[] args, int count) {
 				IFile file = (IFile) args[0];
 				IPath fileLocation = file.getLocation();
@@ -469,7 +469,7 @@ public class IFileTest {
 		}.performTest(inputs);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateDerived() throws CoreException {
 		IFile derived = projects[0].getFile("derived.txt");
 		createInWorkspace(projects[0]);
@@ -490,7 +490,7 @@ public class IFileTest {
 		assertFalse(derived.isDerived());
 		assertFalse(derived.isTeamPrivateMember());
 	}
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateBytes() throws CoreException {
 		IFile derived = projects[0].getFile("derived.txt");
 		createInWorkspace(projects[0]);
@@ -535,7 +535,7 @@ public class IFileTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWrite() throws CoreException {
 		/* set local history policies */
 		IWorkspaceDescription description = getWorkspace().getDescription();
@@ -545,7 +545,7 @@ public class IFileTest {
 		IFile derived = projects[0].getFile("derived.txt");
 		createInWorkspace(projects[0]);
 		removeFromWorkspace(derived);
-		for (int i = 0; i < 16; i++) {
+		for (int i = 0; i < 16; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			boolean setDerived = i % 2 == 0;
 			boolean deleteBefore = (i >> 1) % 2 == 0;
 			boolean keepHistory = (i >> 2) % 2 == 0;
@@ -558,8 +558,8 @@ public class IFileTest {
 			assertEquals(!deleteBefore, derived.exists());
 			FussyProgressMonitor monitor = new FussyProgressMonitor();
 			AtomicInteger changeCount = new AtomicInteger();
-			ResourcesPlugin.getWorkspace().addResourceChangeListener(unused -> changeCount.incrementAndGet());
-			derived.write(("updateOrCreate" + i).getBytes(), false, setDerived, keepHistory, monitor);
+			ResourcesPlugin.getWorkspace().addResourceChangeListener(unused -> changeCount.incrementAndGet()); //FLLDCIM: MARK — T07  LAMBDA
+			derived.write(("updateOrCreate" + i).getBytes(), false, setDerived, keepHistory, monitor); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			assertEquals(1, changeCount.get(), "not atomic");
 			monitor.assertUsedUp();
 			if (deleteBefore) {
@@ -572,7 +572,7 @@ public class IFileTest {
 
 			IFileState[] history1 = derived.getHistory(null);
 			changeCount.set(0);
-			derived.write(("update" + i).getBytes(), false, false, keepHistory, null);
+			derived.write(("update" + i).getBytes(), false, false, keepHistory, null); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			boolean oldDerived2 = derived.isDerived();
 			assertEquals(oldDerived2, derived.isDerived());
 			assertEquals(1, changeCount.get(), "not atomic");
@@ -582,14 +582,14 @@ public class IFileTest {
 	}
 
 	// @Test // does not test anything but only measures the performance benefit
-	public void _testWritePerformanceBatch_() throws CoreException {
+	public void _testWritePerformanceBatch_() throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		createInWorkspace(projects[0]);
-		Map<IFile, byte[]> fileMap2 = new HashMap<>();
-		Map<IFile, byte[]> fileMap1 = new HashMap<>();
-		for (int i = 0; i < 1000; i++) {
-			IFile file = projects[0].getFile("My" + i + ".class");
+		Map<IFile, byte[]> fileMap2 = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		Map<IFile, byte[]> fileMap1 = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (int i = 0; i < 1000; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			IFile file = projects[0].getFile("My" + i + ".class"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			removeFromWorkspace(file);
-			((i % 2 == 0) ? fileMap1 : fileMap2).put(file, ("smallFileContent" + i).getBytes());
+			((i % 2 == 0) ? fileMap1 : fileMap2).put(file, ("smallFileContent" + i).getBytes()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		{
 			long n0 = System.nanoTime();
@@ -597,19 +597,19 @@ public class IFileTest {
 			ResourcesPlugin.getWorkspace().write(fileMap1, false, true, false, null, executorService);
 			executorService.shutdownNow();
 			long n1 = System.nanoTime();
-			System.out.println("parallel write took:" + (n1 - n0) / 1_000_000 + "ms"); // ~ 250ms with 6 cores
+			System.out.println("parallel write took:" + (n1 - n0) / 1_000_000 + "ms"); // ~ 250ms with 6 cores //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		{
 			long n0 = System.nanoTime();
-			for (Entry<IFile, byte[]> e : fileMap2.entrySet()) {
+			for (Entry<IFile, byte[]> e : fileMap2.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				e.getKey().write(e.getValue(), false, true, false, null);
 			}
 			long n1 = System.nanoTime();
-			System.out.println("sequential write took:" + (n1 - n0) / 1_000_000 + "ms"); // ~ 1500ms
+			System.out.println("sequential write took:" + (n1 - n0) / 1_000_000 + "ms"); // ~ 1500ms //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWrites() throws CoreException {
 		ExecutorService executorService = Executors.newWorkStealingPool();
 		IWorkspaceDescription description = getWorkspace().getDescription();
@@ -621,7 +621,7 @@ public class IFileTest {
 		createInWorkspace(projects[0]);
 		removeFromWorkspace(derived);
 		removeFromWorkspace(anyOther);
-		for (int i = 0; i < 16; i++) {
+		for (int i = 0; i < 16; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			boolean setDerived = i % 2 == 0;
 			boolean deleteBefore = (i >> 1) % 2 == 0;
 			boolean keepHistory = (i >> 2) % 2 == 0;
@@ -635,9 +635,9 @@ public class IFileTest {
 			assertEquals(!deleteBefore, derived.exists());
 			FussyProgressMonitor monitor = new FussyProgressMonitor();
 			AtomicInteger changeCount = new AtomicInteger();
-			ResourcesPlugin.getWorkspace().addResourceChangeListener(unused -> changeCount.incrementAndGet());
-			String derivedContent = "updateOrCreate" + i;
-			String otherContent = "other" + i;
+			ResourcesPlugin.getWorkspace().addResourceChangeListener(unused -> changeCount.incrementAndGet()); //FLLDCIM: MARK — T07  LAMBDA
+			String derivedContent = "updateOrCreate" + i; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			String otherContent = "other" + i; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			ResourcesPlugin.getWorkspace().write(
 					Map.of(derived, derivedContent.getBytes(), anyOther, otherContent.getBytes()), false, setDerived,
 					keepHistory, monitor, executorService);
@@ -654,8 +654,8 @@ public class IFileTest {
 
 			IFileState[] history1 = derived.getHistory(null);
 			changeCount.set(0);
-			derivedContent = "update" + i;
-			otherContent = "dude" + i;
+			derivedContent = "update" + i; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			otherContent = "dude" + i; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			ResourcesPlugin.getWorkspace().write(
 					Map.of(derived, derivedContent.getBytes(), anyOther, otherContent.getBytes()), false, false,
 					keepHistory,
@@ -669,22 +669,22 @@ public class IFileTest {
 		}
 		executorService.shutdown();
 	}
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWriteRule() throws CoreException {
 		IFile resource = projects[0].getFile("derived.txt");
 		createInWorkspace(projects[0]);
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		resource.delete(false, null);
 		AtomicInteger changeCount = new AtomicInteger();
-		ResourcesPlugin.getWorkspace().addResourceChangeListener(unused -> changeCount.incrementAndGet());
-		workspace.run(unused -> {
+		ResourcesPlugin.getWorkspace().addResourceChangeListener(unused -> changeCount.incrementAndGet()); //FLLDCIM: MARK — T07  LAMBDA
+		workspace.run(unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			resource.write(("create").getBytes(), false, false, false, null);
 		}, workspace.getRuleFactory().createRule(resource), IWorkspace.AVOID_UPDATE, null);
 		assertTrue(resource.exists());
 		assertEquals(1, changeCount.get(), "not atomic");
 		// test that modifyRule can be used for IFile.write() if the file already exits:
 		changeCount.set(0);
-		workspace.run(unused -> {
+		workspace.run(unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			resource.write(("replace").getBytes(), false, false, false, null);
 		}, workspace.getRuleFactory().modifyRule(resource), IWorkspace.AVOID_UPDATE, null);
 		assertTrue(resource.exists());
@@ -708,7 +708,7 @@ public class IFileTest {
 		assertTrue(verifier.isDeltaValid());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateDerivedTeamPrivate() throws CoreException {
 		IFile teamPrivate = projects[0].getFile("teamPrivateDerived.txt");
 		createInWorkspace(projects[0]);
@@ -731,7 +731,7 @@ public class IFileTest {
 		assertFalse(teamPrivate.isDerived());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateTeamPrivate() throws CoreException {
 		IFile teamPrivate = projects[0].getFile("teamPrivate.txt");
 		createInWorkspace(projects[0]);
@@ -753,7 +753,7 @@ public class IFileTest {
 		assertFalse(teamPrivate.isDerived());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileCreation() throws Exception {
 		IFile fileWithoutInput = projects[0].getFile("file1");
 		FussyProgressMonitor monitor = new FussyProgressMonitor();
@@ -852,7 +852,7 @@ public class IFileTest {
 		monitor.assertUsedUp();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileCreation_Bug107188() throws CoreException {
 		//create from stream that is canceled
 		IFile target = projects[0].getFile("file1");
@@ -969,7 +969,7 @@ public class IFileTest {
 	 * Performs black box testing of the following method:
 	 *     InputStream getContents()
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetContents() throws Exception {
 		Object[][] inputs = new Object[][] {interestingFiles()};
 		new TestPerformer("IFileTest.testGetContents") {
@@ -1018,7 +1018,7 @@ public class IFileTest {
 		}.performTest(inputs);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetContents2() throws IOException, CoreException {
 		IFile target = projects[0].getFile("file1");
 		String testString = createRandomString();
@@ -1060,14 +1060,14 @@ public class IFileTest {
 	/**
 	 * Tests creation and manipulation of file names that are reserved on some platforms.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInvalidFileNames() throws CoreException {
 		FussyProgressMonitor monitor = new FussyProgressMonitor();
 		IProject project = projects[0];
 
 		//should not be able to create a file with invalid path on any platform
 		String[] names = new String[] {"", "/"};
-		for (String name : names) {
+		for (String name : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThrows(RuntimeException.class, () -> project.getFile(name));
 		}
 
@@ -1080,7 +1080,7 @@ public class IFileTest {
 			//invalid names on non-windows platforms
 			names = new String[] {};
 		}
-		for (String name : names) {
+		for (String name : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			monitor.prepare();
 			IFile file = project.getFile(IPath.fromPortableString(name));
 			assertFalse(file.exists(), name);
@@ -1097,13 +1097,13 @@ public class IFileTest {
 			//these names are valid on non-windows platforms
 			names = new String[] {"  a", "a  ", "foo:bar", "prn", "nul", "con", "aux", "clock$", "com1", "com2", "com3", "com4", "com5", "com6", "com7", "com8", "com9", "lpt1", "lpt2", "lpt3", "lpt4", "lpt5", "lpt6", "lpt7", "lpt8", "lpt9", "con.foo", "LPT4.txt", "*", "?", "\"", "<", ">", "|", "hello.prn.txt", "null", "con3", "foo.aux", "lpt0", "com0", "com10", "lpt10", ",", "'", ";"};
 		}
-		for (String name : names) {
+		for (String name : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IFile file = project.getFile(name);
-			assertFalse(file.exists(), name + " shouldn't exist");
+			assertFalse(file.exists(), name + " shouldn't exist"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			monitor.prepare();
 			file.create(createRandomContentsStream(), true, monitor);
 			monitor.assertUsedUp();
-			assertTrue(file.exists(), name + " should exist");
+			assertTrue(file.exists(), name + " should exist"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -1111,7 +1111,7 @@ public class IFileTest {
 	 * Performs black box testing of the following method:
 	 *     void setContents(InputStream, boolean, IProgressMonitor)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetContents1() throws Exception {
 		Object[][] inputs = new Object[][] {interestingFiles(), interestingStreams(), TRUE_AND_FALSE, PROGRESS_MONITORS};
 		new TestPerformer("IFileTest.testSetContents1") {
@@ -1192,7 +1192,7 @@ public class IFileTest {
 		assertEquals(testString, target.readString());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testReadNBytes() throws IOException, CoreException {
 		IFile file = projects[0].getFile("smallfile");
 		byte[] bytes = "1234".getBytes(StandardCharsets.US_ASCII);
@@ -1220,17 +1220,17 @@ public class IFileTest {
 		assertEquals(1, largeBytes1.length);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testReadAll() throws IOException, CoreException {
 		List<Charset> charsets = List.of(StandardCharsets.ISO_8859_1, StandardCharsets.UTF_8, StandardCharsets.UTF_16BE,
 				StandardCharsets.UTF_16LE);
 		List<String> fileTypes = List.of(".txt", "");
 		String BOM = "\uFEFF";
 		Charset defaultCharset = Charset.forName(projects[0].getDefaultCharset());
-		for (String fileType : fileTypes) {
-			for (Charset charset : charsets) {
-				for (int bomCount = 0; bomCount <= (charset.name().contains("UTF") ? 1 : 0); bomCount++) {
-					IFile target = projects[0].getFile("file1" + charset.name() + "_" + bomCount + fileType);
+		for (String fileType : fileTypes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (Charset charset : charsets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				for (int bomCount = 0; bomCount <= (charset.name().contains("UTF") ? 1 : 0); bomCount++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					IFile target = projects[0].getFile("file1" + charset.name() + "_" + bomCount + fileType); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					target.create(null, false, null);
 					String testString = "hallo";
 					boolean setCharset = bomCount == 0;
@@ -1238,7 +1238,7 @@ public class IFileTest {
 						target.setCharset(charset.name(), null);
 					}
 					FussyProgressMonitor monitor = new FussyProgressMonitor();
-					byte[] content = ((bomCount == 1 ? BOM : "") + testString).getBytes(charset);
+					byte[] content = ((bomCount == 1 ? BOM : "") + testString).getBytes(charset); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					target.setContents(content, true, false, monitor);
 					monitor.assertUsedUp();
 					byte[] allBytes = target.readAllBytes();
@@ -1260,7 +1260,7 @@ public class IFileTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetGetFolderPersistentProperty() throws Throwable {
 		IResource target = getWorkspace().getRoot().getFile(IPath.fromOSString("/Project/File.txt"));
 		String value = "this is a test property value";

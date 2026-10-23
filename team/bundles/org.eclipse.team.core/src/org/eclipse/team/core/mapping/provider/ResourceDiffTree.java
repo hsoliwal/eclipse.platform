@@ -83,9 +83,9 @@ public class ResourceDiffTree extends DiffTree implements IResourceDiffTree {
 
 	@Override
 	public void accept(ResourceTraversal[] traversals, IDiffVisitor visitor) {
-		for (ResourceTraversal traversal : traversals) {
+		for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource[] resources = traversal.getResources();
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				accept(resource.getFullPath(), visitor, traversal.getDepth());
 			}
 		}
@@ -93,10 +93,10 @@ public class ResourceDiffTree extends DiffTree implements IResourceDiffTree {
 
 	@Override
 	public IDiff[] getDiffs(final ResourceTraversal[] traversals) {
-		final Set<IDiff> result = new HashSet<>();
-		for (ResourceTraversal traversal : traversals) {
+		final Set<IDiff> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource[] resources = traversal.getResources();
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				internalGetDiffs(resource, traversal.getDepth(), result);
 			}
 		}
@@ -105,7 +105,7 @@ public class ResourceDiffTree extends DiffTree implements IResourceDiffTree {
 
 	@Override
 	public IDiff[] getDiffs(IResource resource, int depth) {
-		final Set<IDiff> result = new HashSet<>();
+		final Set<IDiff> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		internalGetDiffs(resource, depth, result);
 		return result.toArray(new IDiff[result.size()]);
 	}
@@ -126,9 +126,9 @@ public class ResourceDiffTree extends DiffTree implements IResourceDiffTree {
 
 	@Override
 	public IResource[] members(IResource resource) {
-		List<IResource> result = new ArrayList<>();
+		List<IResource> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IPath[] paths = getChildren(resource.getFullPath());
-		for (IPath path : paths) {
+		for (IPath path : paths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IDiff node = getDiff(path);
 			if (node == null) {
 				result.add(internalGetResource(path, true));
@@ -141,9 +141,9 @@ public class ResourceDiffTree extends DiffTree implements IResourceDiffTree {
 
 	@Override
 	public IResource[] getAffectedResources() {
-		List<IResource> result = new ArrayList<>();
+		List<IResource> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IDiff[] nodes = getDiffs();
-		for (IDiff node : nodes) {
+		for (IDiff node : nodes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result.add(getResource(node));
 		}
 		return result.toArray(new IResource[result.size()]);

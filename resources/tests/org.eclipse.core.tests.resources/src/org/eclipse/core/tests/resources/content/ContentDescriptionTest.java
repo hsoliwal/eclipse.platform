@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.content.IContentDescription;
 import org.junit.jupiter.api.Test;
 
 public class ContentDescriptionTest {
-	private static final String CT_VOID = PI_RESOURCES_TESTS + '.' + "void";
+	private static final String CT_VOID = PI_RESOURCES_TESTS + '.' + "void"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	private static final QualifiedName ZOO_PROPERTY = new QualifiedName(PI_RESOURCES_TESTS, "zoo");
 	private static final QualifiedName BAR_PROPERTY = new QualifiedName(PI_RESOURCES_TESTS, "bar");
 	private static final QualifiedName FOO_PROPERTY = new QualifiedName(PI_RESOURCES_TESTS, "foo");
@@ -85,7 +85,7 @@ public class ContentDescriptionTest {
 		assertThrows(IllegalStateException.class, () -> description.setProperty(FOO_PROPERTY, "value1b"));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultipleProperties() {
 		ContentDescription description = new ContentDescription(new QualifiedName[] {FOO_PROPERTY, BAR_PROPERTY, ZOO_PROPERTY}, getContentType());
 		assertTrue(description.isRequested(FOO_PROPERTY));

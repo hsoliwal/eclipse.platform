@@ -56,7 +56,7 @@ public class PathTree {
 		}
 		public boolean descendantHasFlag(int property) {
 			if (hasDescendants()) {
-				for (IPath path : descendantsWithPayload) {
+				for (IPath path : descendantsWithPayload) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Node child = getNode(path);
 					if (child.hasFlag(property)) {
 						return true;
@@ -67,7 +67,7 @@ public class PathTree {
 		}
 	}
 
-	private final Map<IPath, Node> objects = new HashMap<>();
+	private final Map<IPath, Node> objects = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/**
 	 * Return the object at the given path or <code>null</code>
@@ -149,15 +149,15 @@ public class PathTree {
 	 * @param path the path
 	 * @return the paths for any children of the given path in this set
 	 */
-	public synchronized IPath[] getChildren(IPath path) {
+	public synchronized IPath[] getChildren(IPath path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// OPTIMIZE: could be optimized so that we don't traverse all the deep
 		// children to find the immediate ones.
-		Set<IPath> children = new HashSet<>();
+		Set<IPath> children = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		Node node = getNode(path);
 		if (node != null) {
 			Set possibleChildren = node.descendantsWithPayload;
 			if(possibleChildren != null) {
-				for (Object next : possibleChildren) {
+				for (Object next : possibleChildren) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IPath descendantPath = (IPath)next;
 					IPath childPath = null;
 					if(descendantPath.segmentCount() == (path.segmentCount() +  1)) {
@@ -174,7 +174,7 @@ public class PathTree {
 		return children.toArray(new IPath[children.size()]);
 	}
 
-	private boolean addToParents(IPath path, IPath parent) {
+	private boolean addToParents(IPath path, IPath parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// this flag is used to indicate if the parent was previously in the set
 		boolean addedParent = false;
 		if (path == parent) {
@@ -187,7 +187,7 @@ public class PathTree {
 			}
 			Set<IPath> children = node.descendantsWithPayload;
 			if (children == null) {
-				children = new HashSet<>();
+				children = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 				node.descendantsWithPayload = children;
 				// this is a new folder in the sync set
 				addedParent = true;
@@ -202,7 +202,7 @@ public class PathTree {
 		return addedParent;
 	}
 
-	private boolean removeFromParents(IPath path, IPath parent) {
+	private boolean removeFromParents(IPath path, IPath parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// this flag is used to indicate if the parent was removed from the set
 		boolean removedParent = false;
 		Node node = getNode(parent);
@@ -253,8 +253,8 @@ public class PathTree {
 	 * @return the paths in this tree that contain diffs.
 	 */
 	public synchronized IPath[] getPaths() {
-		List<IPath> result = new ArrayList<>();
-		for (IPath path : objects.keySet()) {
+		List<IPath> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IPath path : objects.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Node node = getNode(path);
 			if (node.getPayload() != null) {
 				result.add(path);
@@ -268,8 +268,8 @@ public class PathTree {
 	 * @return all the values in the tree
 	 */
 	public synchronized Collection<Object> values() {
-		List<Object> result = new ArrayList<>();
-		for (IPath path : objects.keySet()) {
+		List<Object> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IPath path : objects.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Node node = getNode(path);
 			if (node.getPayload() != null) {
 				result.add(node.getPayload());
@@ -311,12 +311,12 @@ public class PathTree {
 	 * @return the paths whose bit changed
 	 */
 	public synchronized IPath[] setPropogatedProperty(IPath path, int property, boolean value) {
-		Set<IPath> changed = new HashSet<>();
+		Set<IPath> changed = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		internalSetPropertyBit(path, property, value, changed);
 		return changed.toArray(new IPath[changed.size()]);
 	}
 
-	private void internalSetPropertyBit(IPath path, int property, boolean value, Set<IPath> changed) {
+	private void internalSetPropertyBit(IPath path, int property, boolean value, Set<IPath> changed) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (path.segmentCount() == 0) {
 			return;
 		}

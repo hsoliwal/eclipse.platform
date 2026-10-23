@@ -93,35 +93,35 @@ public interface IMarker extends IAdaptable {
 	 *
 	 * @see #getType()
 	 */
-	String MARKER = ResourcesPlugin.PI_RESOURCES + ".marker"; //$NON-NLS-1$
+	String MARKER = ResourcesPlugin.PI_RESOURCES + ".marker"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Task marker type.
 	 *
 	 * @see #getType()
 	 */
-	String TASK = ResourcesPlugin.PI_RESOURCES + ".taskmarker"; //$NON-NLS-1$
+	String TASK = ResourcesPlugin.PI_RESOURCES + ".taskmarker"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Problem marker type.
 	 *
 	 * @see #getType()
 	 */
-	String PROBLEM = ResourcesPlugin.PI_RESOURCES + ".problemmarker"; //$NON-NLS-1$
+	String PROBLEM = ResourcesPlugin.PI_RESOURCES + ".problemmarker"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Text marker type.
 	 *
 	 * @see #getType()
 	 */
-	String TEXT = ResourcesPlugin.PI_RESOURCES + ".textmarker"; //$NON-NLS-1$
+	String TEXT = ResourcesPlugin.PI_RESOURCES + ".textmarker"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Bookmark marker type.
 	 *
 	 * @see #getType()
 	 */
-	String BOOKMARK = ResourcesPlugin.PI_RESOURCES + ".bookmark"; //$NON-NLS-1$
+	String BOOKMARK = ResourcesPlugin.PI_RESOURCES + ".bookmark"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/*====================================================================
 	 * Marker attributes:

@@ -29,7 +29,7 @@ import org.eclipse.jface.viewers.Viewer;
  *
  * @since 1.0
  */
-public class SequencerControlsModelProxy extends EventHandlerModelProxy {
+public class SequencerControlsModelProxy extends EventHandlerModelProxy { //FLLDCIM: MARK — T27  IMPLEMENTS
 
 	/**
 	 * Associated launch

@@ -74,7 +74,7 @@ public class ProjectHelper {
 
 	public static void importFilesFromDirectory(File rootDir, IPath destPath, IProgressMonitor monitor) throws InvocationTargetException, IOException {
 		IImportStructureProvider structureProvider = FileSystemStructureProvider.INSTANCE;
-		List<File> files = new ArrayList<>(100);
+		List<File> files = new ArrayList<>(100); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		addFiles(rootDir, files);
 		try {
 			ImportOperation op = new ImportOperation(destPath, rootDir, structureProvider, new ImportOverwriteQuery(), files);
@@ -87,8 +87,8 @@ public class ProjectHelper {
 	}
 
 	private static void addFiles(File dir, List<File> collection) throws IOException {
-		List<File> subDirs = new ArrayList<>(2);
-		for (File file : dir.listFiles()) {
+		List<File> subDirs = new ArrayList<>(2); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (File file : dir.listFiles()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (file.isFile()) {
 				collection.add(file);
 			} else if (file.isDirectory()) {
@@ -96,7 +96,7 @@ public class ProjectHelper {
 			}
 		}
 		Iterator<File> iter = subDirs.iterator();
-		while (iter.hasNext()) {
+		while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			File subDir = iter.next();
 			addFiles(subDir, collection);
 		}

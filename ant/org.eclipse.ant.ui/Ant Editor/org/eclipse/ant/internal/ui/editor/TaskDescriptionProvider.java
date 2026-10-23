@@ -80,7 +80,7 @@ public class TaskDescriptionProvider {
 
 		void addChild(String name, ProposalNode node) {
 			if (nodes == null) {
-				nodes = new HashMap<>(9);
+				nodes = new HashMap<>(9); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			}
 			nodes.put(name, node);
 		}
@@ -108,10 +108,10 @@ public class TaskDescriptionProvider {
 	private TaskDescriptionProvider() {
 	}
 
-	public static TaskDescriptionProvider getDefault() {
+	public static TaskDescriptionProvider getDefault() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fgDefault == null) {
 			fgDefault = new TaskDescriptionProvider();
-			IRunnableWithProgress runnable = unused -> fgDefault.initialize();
+			IRunnableWithProgress runnable = unused -> fgDefault.initialize(); //FLLDCIM: MARK — T09  LAMBDA
 
 			IProgressService service = PlatformUI.getWorkbench().getProgressService();
 			try {
@@ -130,13 +130,13 @@ public class TaskDescriptionProvider {
 	/**
 	 * Parses the task description XML file and stores the information.
 	 */
-	protected void initialize() {
-		taskNodes = new HashMap<>();
+	protected void initialize() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		taskNodes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		Document doc = parseFile(TASKS_DESCRIPTION_XML_FILE_NAME);
 		Node root = doc.getDocumentElement();
 		NodeList tasks = root.getChildNodes();
 		Node node = null;
-		for (int i = 0; i < tasks.getLength(); i++) {
+		for (int i = 0; i < tasks.getLength(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			node = tasks.item(i);
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
 				if (XML_TAG_TASK.equals(node.getNodeName())) {
@@ -147,12 +147,12 @@ public class TaskDescriptionProvider {
 						taskNodes.put(name, tasknode);
 						NodeList nodes = task.getElementsByTagName(XML_TAG_ATTRIBUTE);
 						Element e = null;
-						for (int j = 0; j < nodes.getLength(); j++) {
+						for (int j = 0; j < nodes.getLength(); j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							e = (Element) nodes.item(j);
 							addNode(e, tasknode);
 						}
 						nodes = task.getElementsByTagName(XML_TAG_ELEMENT);
-						for (int j = 0; j < nodes.getLength(); j++) {
+						for (int j = 0; j < nodes.getLength(); j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							e = (Element) nodes.item(j);
 							addNode(e, tasknode);
 						}
@@ -182,7 +182,7 @@ public class TaskDescriptionProvider {
 	 */
 	String getDescription(Element element) {
 		NodeList nodes = element.getChildNodes();
-		for (int i = 0; i < nodes.getLength(); i++) {
+		for (int i = 0; i < nodes.getLength(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Node node = nodes.item(i);
 			if (node.getNodeType() == Node.ELEMENT_NODE && IAntCoreConstants.DESCRIPTION.equals(node.getNodeName())) {
 				node = node.getFirstChild();
@@ -199,7 +199,7 @@ public class TaskDescriptionProvider {
 	 * <P>
 	 * The file will be loaded as resource, thus must begin with '/' and must be relative to the classpath.
 	 */
-	private Document parseFile(String aFileName) {
+	private Document parseFile(String aFileName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Document tempDocument = null;
 
 		@SuppressWarnings("restriction")

@@ -50,7 +50,7 @@ public class PropertyBucket extends Bucket {
 		 * array if the property to be deleted could not be found. Returns <code>null</code> if the property was found
 		 * and the original array had size 1 (instead of a zero-length array).
 		 */
-		static String[][] delete(String[][] existing, QualifiedName propertyName) {
+		static String[][] delete(String[][] existing, QualifiedName propertyName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			// a size-1 array is a special case
 			if (existing.length == 1) {
 				return (existing[0][0].equals(propertyName.getQualifier()) && existing[0][1].equals(propertyName.getLocalName())) ? null : existing;
@@ -73,7 +73,7 @@ public class PropertyBucket extends Bucket {
 			return newValue;
 		}
 
-		static String[][] insert(String[][] existing, QualifiedName propertyName, String propertyValue) {
+		static String[][] insert(String[][] existing, QualifiedName propertyName, String propertyValue) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			// look for the right spot where to insert the new guy
 			int index = search(existing, propertyName);
 			if (index >= 0) {
@@ -97,12 +97,12 @@ public class PropertyBucket extends Bucket {
 		/**
 		 * Merges two entries (are always sorted). Duplicated additions replace existing ones.
 		 */
-		static Object merge(String[][] base, String[][] additions) {
+		static Object merge(String[][] base, String[][] additions) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			int additionPointer = 0;
 			int basePointer = 0;
 			int added = 0;
 			String[][] result = new String[base.length + additions.length][];
-			while (basePointer < base.length && additionPointer < additions.length) {
+			while (basePointer < base.length && additionPointer < additions.length) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int comparison = COMPARATOR.compare(base[basePointer], additions[additionPointer]);
 				if (comparison == 0) {
 					result[added++] = additions[additionPointer++];
@@ -139,7 +139,7 @@ public class PropertyBucket extends Bucket {
 			//copy 2-dimensional array [x][y]
 			int xLen = base.value.length;
 			this.value = new String[xLen][];
-			for (int i = 0; i < xLen; i++) {
+			for (int i = 0; i < xLen; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int yLen = base.value[i].length;
 				this.value[i] = new String[yLen];
 				System.arraycopy(base.value[i], 0, value[i], 0, yLen);
@@ -160,12 +160,12 @@ public class PropertyBucket extends Bucket {
 		 * Compacts the data array removing any null slots. If non-null slots
 		 * are found, the entry is marked for removal.
 		 */
-		private void compact() {
+		private void compact() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			if (!isDirty()) {
 				return;
 			}
 			int occurrences = 0;
-			for (String[] s : value) {
+			for (String[] s : value) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (s != null) {
 					value[occurrences++] = s;
 				}
@@ -237,7 +237,7 @@ public class PropertyBucket extends Bucket {
 	 */
 	private static final byte VERSION = 1;
 
-	private final List<String> qualifierIndex = new ArrayList<>();
+	private final List<String> qualifierIndex = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	public PropertyBucket() {
 		super(!Boolean.getBoolean("org.eclipse.core.PropertyCache.disable")); //$NON-NLS-1$
@@ -286,11 +286,11 @@ public class PropertyBucket extends Bucket {
 		super.load(newProjectName, baseLocation, force);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Object readEntryValue(DataInputStream source) throws IOException, CoreException {
 		int length = source.readUnsignedShort();
 		String[][] properties = new String[length][3];
-		for (String[] propertie : properties) {
+		for (String[] propertie : properties) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// qualifier
 			byte constant = source.readByte();
 			switch (constant) {
@@ -333,7 +333,7 @@ public class PropertyBucket extends Bucket {
 		setEntryValue(pathAsString, PropertyEntry.merge(existing, additions));
 	}
 
-	public void setProperty(IPath path, QualifiedName name, String value) {
+	public void setProperty(IPath path, QualifiedName name, String value) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String pathAsString = path.toString();
 		String[][] existing = (String[][]) getEntryValue(pathAsString);
 		if (existing == null) {
@@ -352,11 +352,11 @@ public class PropertyBucket extends Bucket {
 		setEntryValue(pathAsString, newValue);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void writeEntryValue(DataOutputStream destination, Object entryValue) throws IOException {
 		String[][] properties = (String[][]) entryValue;
 		destination.writeShort(properties.length);
-		for (String[] propertie : properties) {
+		for (String[] propertie : properties) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// writes the property key qualifier
 			int index = qualifierIndex.indexOf(propertie[0]);
 			if (index == -1) {

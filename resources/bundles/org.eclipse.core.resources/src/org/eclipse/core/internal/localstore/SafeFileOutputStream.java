@@ -94,7 +94,7 @@ public class SafeFileOutputStream extends OutputStream {
 
 	protected void createTempFile(String tempPath) {
 		if (tempPath == null) {
-			tempPath = target.getAbsolutePath() + EXTENSION;
+			tempPath = target.getAbsolutePath() + EXTENSION; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		temp = new File(tempPath);
 	}

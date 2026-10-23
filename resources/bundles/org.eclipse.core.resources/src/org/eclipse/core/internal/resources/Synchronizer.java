@@ -32,7 +32,7 @@ public class Synchronizer implements ISynchronizer {
 	protected SyncInfoWriter writer;
 
 	// Registry of sync partners. Set of qualified names.
-	protected Set<QualifiedName> registry = new HashSet<>(5);
+	protected Set<QualifiedName> registry = new HashSet<>(5); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	public Synchronizer(Workspace workspace) {
 		super();
@@ -43,7 +43,7 @@ public class Synchronizer implements ISynchronizer {
 	/**
 	 * @see ISynchronizer#accept(QualifiedName, IResource, IResourceVisitor, int)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void accept(QualifiedName partner, IResource resource, IResourceVisitor visitor, int depth)
 			throws CoreException {
 		Assert.isLegal(partner != null);
@@ -68,7 +68,7 @@ public class Synchronizer implements ISynchronizer {
 
 		// otherwise recurse over the children
 		IResource[] children = ((IContainer) resource).members();
-		for (IResource element : children) {
+		for (IResource element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			accept(partner, element, visitor, depth);
 		}
 	}
@@ -172,14 +172,14 @@ public class Synchronizer implements ISynchronizer {
 		}
 	}
 
-	protected void restoreFromSnap(IResource resource) {
+	protected void restoreFromSnap(IResource resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath sourceLocation = workspace.getMetaArea().getSyncInfoSnapshotLocationFor(resource);
 		if (!sourceLocation.toFile().exists()) {
 			return;
 		}
 		try (DataInputStream input = new DataInputStream(new SafeChunkyInputStream(sourceLocation.toFile()))) {
 			SyncInfoSnapReader reader = new SyncInfoSnapReader(workspace, this);
-			while (true) {
+			while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				reader.readSyncInfo(input);
 			}
 		} catch (EOFException eof) {
@@ -225,7 +225,7 @@ public class Synchronizer implements ISynchronizer {
 	/**
 	 * @see ISynchronizer#setSyncInfo(QualifiedName, IResource, byte[])
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setSyncInfo(QualifiedName partner, IResource resource, byte[] info) throws CoreException {
 		Assert.isLegal(partner != null);
 		Assert.isLegal(resource != null);

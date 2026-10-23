@@ -304,7 +304,7 @@ public class SyncInfo implements IAdaptable {
 		return getLocal().hashCode();
 	}
 
-	private boolean equalNodes(SyncInfo node1, SyncInfo node2) {
+	private boolean equalNodes(SyncInfo node1, SyncInfo node2) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			if(node1 == null || node2 == null) {
 				return false;
 			}
@@ -372,7 +372,7 @@ public class SyncInfo implements IAdaptable {
 
 	@Override
 	public String toString() {
-		return getLocal().getName() + " " + kindToString(getKind()); //$NON-NLS-1$
+		return getLocal().getName() + " " + kindToString(getKind()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -382,7 +382,7 @@ public class SyncInfo implements IAdaptable {
 	 * @param kind the sync kind obtained from a <code>SyncInfo</code>
 	 * @return a displayable string that describes the kind
 	 */
-	@SuppressWarnings("incomplete-switch")
+	@SuppressWarnings("incomplete-switch") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public static String kindToString(int kind) {
 		String label = ""; //$NON-NLS-1$
 		if(kind==IN_SYNC) {
@@ -436,7 +436,7 @@ public class SyncInfo implements IAdaptable {
 	 * @return the sync kind of this <code>SyncInfo</code>
 	 * @throws TeamException if there were problems calculating the sync state.
 	 */
-	protected int calculateKind() throws TeamException {
+	protected int calculateKind() throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int description = IN_SYNC;
 
 		boolean localExists = local.exists();

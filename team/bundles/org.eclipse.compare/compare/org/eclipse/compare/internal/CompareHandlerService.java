@@ -31,14 +31,14 @@ import org.eclipse.ui.services.IServiceLocator;
 
 public class CompareHandlerService {
 
-	private final List<IHandlerActivation> fActivations = new ArrayList<>();
+	private final List<IHandlerActivation> fActivations = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private final Expression fExpression;
 	private final ICompareContainer fContainer;
 	private boolean fDisposed;
-	private final List<IHandlerActivation> fPaneActivations = new ArrayList<>();
+	private final List<IHandlerActivation> fPaneActivations = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private IHandlerService fHandlerService;
 
-	public static CompareHandlerService createFor(ICompareContainer container, Shell shell) {
+	public static CompareHandlerService createFor(ICompareContainer container, Shell shell) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IServiceLocator serviceLocator = container.getServiceLocator();
 		if (serviceLocator != null) {
 			IHandlerService service = serviceLocator.getService(IHandlerService.class);
@@ -92,7 +92,7 @@ public class CompareHandlerService {
 		return fHandlerService;
 	}
 
-	private void initialize() {
+	private void initialize() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fHandlerService == null) {
 			IServiceLocator serviceLocator = fContainer.getServiceLocator();
 			if (serviceLocator != null) {
@@ -111,7 +111,7 @@ public class CompareHandlerService {
 		}
 	}
 
-	public void setGlobalActionHandler(String actionId, IAction actionHandler) {
+	public void setGlobalActionHandler(String actionId, IAction actionHandler) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IActionBars bars = getActionBars();
 		if (bars != null) {
 			bars.setGlobalActionHandler(actionId, actionHandler);

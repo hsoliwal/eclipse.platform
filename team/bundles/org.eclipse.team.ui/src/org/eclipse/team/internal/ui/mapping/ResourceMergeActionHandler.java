@@ -39,12 +39,12 @@ import org.eclipse.team.ui.mapping.MergeActionHandler;
 import org.eclipse.team.ui.synchronize.ISynchronizePageConfiguration;
 import org.eclipse.ui.ide.IDE;
 
-public abstract class ResourceMergeActionHandler extends MergeActionHandler implements IDiffChangeListener, IPropertyChangeListener {
+public abstract class ResourceMergeActionHandler extends MergeActionHandler implements IDiffChangeListener, IPropertyChangeListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	public ResourceMergeActionHandler(ISynchronizePageConfiguration configuration) {
 		super(configuration);
 		getSynchronizationContext().getDiffTree().addDiffChangeListener(this);
-		configuration.addPropertyChangeListener(this);
+		configuration.addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 	}
 
 	/**
@@ -62,16 +62,16 @@ public abstract class ResourceMergeActionHandler extends MergeActionHandler impl
 		return true;
 	}
 
-	private IResource[] getTargetResources() {
+	private IResource[] getTargetResources() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IStructuredSelection selection = getStructuredSelection();
 		Object[] objects = selection.toArray();
-		Set<IResource> roots = new HashSet<>();
-		for (Object object : objects) {
+		Set<IResource> roots = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (Object object : objects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceMapping mapping = Utils.getResourceMapping(object);
 			if (mapping != null) {
 				try {
 					ResourceTraversal[] traversals = mapping.getTraversals(ResourceMappingContext.LOCAL_CONTEXT, null);
-					for (ResourceTraversal traversal : traversals) {
+					for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						IResource[] resources = traversal.getResources();
 						Collections.addAll(roots, resources);
 					}

@@ -38,7 +38,7 @@ import org.eclipse.team.core.mapping.provider.SynchronizationScopeManager;
 public class ResourceMappingScope extends AbstractResourceMappingScope {
 
 	private final ResourceMapping[] inputMappings;
-	private final Map<ResourceMapping, ResourceTraversal[]> mappingsToTraversals = Collections.synchronizedMap(new HashMap<>());
+	private final Map<ResourceMapping, ResourceTraversal[]> mappingsToTraversals = Collections.synchronizedMap(new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	private boolean hasAdditionalMappings;
 	private boolean hasAdditionalResources;
 	private final CompoundResourceTraversal compoundTraversal = new CompoundResourceTraversal();

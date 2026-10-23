@@ -77,7 +77,7 @@ public class ProjectPreferenceSessionTest {
 		saveWorkspace();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(2)
 	public void testDeleteFileBeforeLoad2() throws Exception {
 		IProject project = getProject("testDeleteFileBeforeLoad");

@@ -53,8 +53,8 @@ abstract public class LazyTests extends AbstractViewerModelTest implements ITest
 	private TestModel largeSubtreeModel(int size) {
 		TestModel model = new TestModel();
 		TestElement[] children = new TestElement[size];
-		for (int i = 0; i < size; i++) {
-			children[i] = new TestElement(model, "1." + i, new TestElement[0]); //$NON-NLS-1$
+		for (int i = 0; i < size; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			children[i] = new TestElement(model, "1." + i, new TestElement[0]); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		TestElement element = new TestElement(model, "1", children); //$NON-NLS-1$
 		model.setRoot(new TestElement(model, "root", new TestElement[] { element })); //$NON-NLS-1$
@@ -66,7 +66,7 @@ abstract public class LazyTests extends AbstractViewerModelTest implements ITest
 	 * Test to make sure that if an element is expanded its children are not
 	 * automatically materialized. (bug 305739 and bug 304277)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testExpandLargeSubTree() throws Exception {
 		// Create test model with lots of children.
 		TestModel model = largeSubtreeModel(1000);
@@ -91,7 +91,7 @@ abstract public class LazyTests extends AbstractViewerModelTest implements ITest
 		TreePath expandElementPath = model.findElement("1"); //$NON-NLS-1$
 		fListener.addChildreCountUpdate(expandElementPath);
 		fListener.addLabelUpdate(expandElementPath); // TODO: not sure why label is updated upon expand?
-		for (int i = 0; i < 250; i++) {
+		for (int i = 0; i < 250; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fListener.addChildreUpdate(expandElementPath, i);
 			TreePath childPath = expandElementPath.createChildPath(expandElement.getChildren()[i]);
 			fListener.addLabelUpdate(childPath);
@@ -107,7 +107,7 @@ abstract public class LazyTests extends AbstractViewerModelTest implements ITest
 	 * selected and replaced, that no extra elements are retrieved. (bug 304277
 	 * comment #24, and bug 305739 comment #9).
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testReplaceAndSelectInSubTreeTree() throws Exception {
 		// Create test model with lots of children.
 		TestModel model = largeSubtreeModel(1000);
@@ -155,7 +155,7 @@ abstract public class LazyTests extends AbstractViewerModelTest implements ITest
 		assertEquals(((IStructuredSelection)fViewer.getSelection()).getFirstElement(), _1_0_newElement);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testContentRefresh() throws Exception {
 		// Create test model with lots of children.
 		TestModel model = largeSubtreeModel(1000);
@@ -186,7 +186,7 @@ abstract public class LazyTests extends AbstractViewerModelTest implements ITest
 
 		// Rinse and repeast.  The refresh in bug 335734 is only triggered
 		// only on the second time.
-		for (int repeatCount = 0; repeatCount < 3; repeatCount++) {
+		for (int repeatCount = 0; repeatCount < 3; repeatCount++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// Add first 250 elements (after element 500) as acceptable to materialize
 			fListener.reset();
 			fListener.setFailOnRedundantUpdates(true);
@@ -197,7 +197,7 @@ abstract public class LazyTests extends AbstractViewerModelTest implements ITest
 			fListener.addHasChildrenUpdate(refreshElementPath);
 			fListener.addChildreCountUpdate(refreshElementPath);
 			fListener.addLabelUpdate(refreshElementPath); // TODO: not sure why label is updated upon expand?
-			for (int i = 499; i < 750; i++) {
+			for (int i = 499; i < 750; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fListener.addChildreUpdate(refreshElementPath, i);
 				TreePath childPath = refreshElementPath.createChildPath(expandElement.getChildren()[i]);
 				fListener.addLabelUpdate(childPath);
@@ -205,7 +205,7 @@ abstract public class LazyTests extends AbstractViewerModelTest implements ITest
 			}
 			model.postDelta(rootDelta);
 
-			while (!fListener.isFinished(CONTENT_SEQUENCE_COMPLETE | MODEL_CHANGED_COMPLETE)) {
+			while (!fListener.isFinished(CONTENT_SEQUENCE_COMPLETE | MODEL_CHANGED_COMPLETE)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!fDisplay.readAndDispatch ()) {
 					Thread.sleep(0);
 				}

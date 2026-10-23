@@ -92,9 +92,9 @@ public class AntProperty extends AntDebugElement implements IVariable, Comparabl
 	 */
 	public String getText() {
 		if (fLabel == null) {
-			StringBuilder buffer = new StringBuilder(getName());
-			buffer.append("= "); //$NON-NLS-1$
-			buffer.append(fValue.getValueString());
+			StringBuilder buffer = new StringBuilder(getName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+			buffer.append("= "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append(fValue.getValueString()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			fLabel = buffer.toString();
 		}
 		return fLabel;

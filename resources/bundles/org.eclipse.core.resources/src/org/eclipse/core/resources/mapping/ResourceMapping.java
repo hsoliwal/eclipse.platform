@@ -61,7 +61,7 @@ public abstract class ResourceMapping extends PlatformObject {
 	 */
 	public void accept(ResourceMappingContext context, IResourceVisitor visitor, IProgressMonitor monitor) throws CoreException {
 		ResourceTraversal[] traversals = getTraversals(context, monitor);
-		for (ResourceTraversal traversal : traversals) {
+		for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			traversal.accept(visitor);
 		}
 	}
@@ -115,8 +115,8 @@ public abstract class ResourceMapping extends PlatformObject {
 	 */
 	public IMarker[] findMarkers(String type, boolean includeSubtypes, IProgressMonitor monitor) throws CoreException {
 		final ResourceTraversal[] traversals = getTraversals(ResourceMappingContext.LOCAL_CONTEXT, monitor);
-		ArrayList<IMarker> result = new ArrayList<>();
-		for (ResourceTraversal traversal : traversals) {
+		ArrayList<IMarker> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			traversal.doFindMarkers(result, type, includeSubtypes);
 		}
 		return result.toArray(new IMarker[result.size()]);

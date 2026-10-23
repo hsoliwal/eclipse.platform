@@ -96,7 +96,7 @@ public class RefreshJob extends InternalWorkspaceJob {
 	protected RefreshJob(int fastRefreshThreshold, int slowRefreshThreshold, int baseRefreshDepth,
 			int depthIncreaseStep, int updateDelay, int maxRecursionDeep, Workspace workspace) {
 		super(Messages.refresh_jobName, workspace);
-		this.fRequests = new ArrayList<>(1);
+		this.fRequests = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		this.fastRefreshThreshold = fastRefreshThreshold;
 		this.slowRefreshThreshold = slowRefreshThreshold;
 		this.baseRefreshDepth = baseRefreshDepth;
@@ -112,7 +112,7 @@ public class RefreshJob extends InternalWorkspaceJob {
 	 */
 	private synchronized void addRequest(IResource resource) {
 		IPath toAdd = resource.getFullPath();
-		for (Iterator<IResource> it = fRequests.iterator(); it.hasNext();) {
+		for (Iterator<IResource> it = fRequests.iterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IPath request = it.next().getFullPath();
 			//discard any existing requests the same or below the resource to be added
 			if (toAdd.isPrefixOf(request)) {
@@ -141,7 +141,7 @@ public class RefreshJob extends InternalWorkspaceJob {
 	 * This method adds all members at the specified depth from the resource
 	 * to the provided list.
 	 */
-	protected List<IResource> collectChildrenToDepth(IResource resource, ArrayList<IResource> children, int depth) {
+	protected List<IResource> collectChildrenToDepth(IResource resource, ArrayList<IResource> children, int depth) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (resource.getType() == IResource.FILE) {
 			return children;
 		}
@@ -152,7 +152,7 @@ public class RefreshJob extends InternalWorkspaceJob {
 			//resource is not accessible - just return what we have
 			return children;
 		}
-		for (IResource member : members) {
+		for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (member.getType() == IResource.FILE) {
 				continue;
 			}
@@ -208,7 +208,7 @@ public class RefreshJob extends InternalWorkspaceJob {
 		schedule(updateDelay);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus runInWorkspace(IProgressMonitor monitor) {
 		long start = System.currentTimeMillis();
 		String msg = Messages.refresh_refreshErr;
@@ -217,14 +217,14 @@ public class RefreshJob extends InternalWorkspaceJob {
 		SubMonitor subMonitor = SubMonitor.convert(monitor);
 		try {
 			if (Policy.DEBUG_AUTO_REFRESH) {
-				Policy.debug(RefreshManager.DEBUG_PREFIX + " starting refresh job"); //$NON-NLS-1$
+				Policy.debug(RefreshManager.DEBUG_PREFIX + " starting refresh job"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			int refreshCount = 0;
 			int depth = 2;
 
 			IResourceRuleFactory ruleFactory = workspace.getRuleFactory();
 			IResource toRefresh;
-			while ((toRefresh = nextRequest()) != null) {
+			while ((toRefresh = nextRequest()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ISchedulingRule refreshRule = ruleFactory.refreshRule(toRefresh);
 				try {
 					subMonitor.setWorkRemaining(Math.max(fRequests.size(), 100));
@@ -244,7 +244,7 @@ public class RefreshJob extends InternalWorkspaceJob {
 						if (longestRefresh > slowRefreshThreshold && depth > 1) {
 							depth = 1;
 							if (Policy.DEBUG_AUTO_REFRESH) {
-								Policy.debug(RefreshManager.DEBUG_PREFIX + " decreased refresh depth to: " + depth); //$NON-NLS-1$
+								Policy.debug(RefreshManager.DEBUG_PREFIX + " decreased refresh depth to: " + depth); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							}
 						}
 						if (longestRefresh < fastRefreshThreshold) {
@@ -254,12 +254,12 @@ public class RefreshJob extends InternalWorkspaceJob {
 								depth = maxRecursionDeep;
 							}
 							if (Policy.DEBUG_AUTO_REFRESH) {
-								Policy.debug(RefreshManager.DEBUG_PREFIX + " increased refresh depth to: " + depth); //$NON-NLS-1$
+								Policy.debug(RefreshManager.DEBUG_PREFIX + " increased refresh depth to: " + depth); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							}
 						}
 						longestRefresh = 0;
 					}
-					addRequests(collectChildrenToDepth(toRefresh, new ArrayList<>(), depth));
+					addRequests(collectChildrenToDepth(toRefresh, new ArrayList<>(), depth)); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				} catch (CoreException e) {
 					errors.merge(new Status(IStatus.ERROR, ResourcesPlugin.PI_RESOURCES, 1, errors.getMessage(), e));
 				} finally {
@@ -270,7 +270,7 @@ public class RefreshJob extends InternalWorkspaceJob {
 			pathPrefixHistory = null;
 			rootPathHistory = null;
 			if (Policy.DEBUG_AUTO_REFRESH) {
-				Policy.debug(RefreshManager.DEBUG_PREFIX + " finished refresh job in: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$
+				Policy.debug(RefreshManager.DEBUG_PREFIX + " finished refresh job in: " + (System.currentTimeMillis() - start) + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		if (!errors.isOK()) {
@@ -289,7 +289,7 @@ public class RefreshJob extends InternalWorkspaceJob {
 	 */
 	public void start() {
 		if (Policy.DEBUG_AUTO_REFRESH) {
-			Policy.debug(RefreshManager.DEBUG_PREFIX + " enabling auto-refresh"); //$NON-NLS-1$
+			Policy.debug(RefreshManager.DEBUG_PREFIX + " enabling auto-refresh"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		disabled = false;
 	}
@@ -299,7 +299,7 @@ public class RefreshJob extends InternalWorkspaceJob {
 	 */
 	public void stop() {
 		if (Policy.DEBUG_AUTO_REFRESH) {
-			Policy.debug(RefreshManager.DEBUG_PREFIX + " disabling auto-refresh"); //$NON-NLS-1$
+			Policy.debug(RefreshManager.DEBUG_PREFIX + " disabling auto-refresh"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		disabled = true;
 		cancel();

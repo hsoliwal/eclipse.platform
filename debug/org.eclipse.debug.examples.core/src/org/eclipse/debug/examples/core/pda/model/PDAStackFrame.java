@@ -56,7 +56,7 @@ public class PDAStackFrame extends PDADebugElement implements IStackFrame {
 		fPC = data.fPC + 1;
 		fName = data.fFunction;
 		IVariable[] vars = new IVariable[data.fVariables.length];
-		for (int i = 0; i < data.fVariables.length; i++) {
+		for (int i = 0; i < data.fVariables.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			vars[i] = new PDAVariable(this, data.fVariables[i]);
 		}
 		fThread.setVariables(this, vars);

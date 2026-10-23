@@ -34,7 +34,7 @@ import org.eclipse.team.internal.core.Policy;
  * </p>
  * @since 3.0
  */
-public final class SubscriberSyncInfoCollector extends SubscriberResourceCollector {
+public final class SubscriberSyncInfoCollector extends SubscriberResourceCollector { //FLLDCIM: MARK — T07  IMPLEMENTS
 
 	private final SyncSetInputFromSubscriber subscriberInput;
 	private SyncSetInputFromSyncSet filteredInput;
@@ -83,11 +83,11 @@ public final class SubscriberSyncInfoCollector extends SubscriberResourceCollect
 	 * @param monitor
 	 * 		a progress monitor
 	 */
-	public void waitForCollector(IProgressMonitor monitor) {
+	public void waitForCollector(IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		monitor.worked(1);
 		int i = 0;
 		// wait for the event handler to process changes
-		while (true) {
+		while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				Thread.sleep(5);
 			} catch (InterruptedException e) {

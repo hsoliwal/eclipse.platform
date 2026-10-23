@@ -80,11 +80,11 @@ public final class FileStoreUtil {
 		return compare;
 	}
 
-	static int compareSlashFirst(String value, String other) {
+	static int compareSlashFirst(String value, String other) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int len1 = value.length();
 		int len2 = other.length();
 		int lim = Math.min(len1, len2);
-		for (int k = 0; k < lim; k++) {
+		for (int k = 0; k < lim; k++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c1 = value.charAt(k);
 			char c2 = other.charAt(k);
 			if (c1 != c2) {
@@ -110,7 +110,7 @@ public final class FileStoreUtil {
 
 	static int countCharButNotAtEnd(String str, char c) {
 		int count = 0;
-		for (int i = 0; i < str.length() - 1; i++) {
+		for (int i = 0; i < str.length() - 1; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (str.charAt(i) == c) {
 				count++;
 			}
@@ -141,7 +141,7 @@ public final class FileStoreUtil {
 	 * @param fileStore2 the second fileStore to compare, cannot be null
 	 * @return 0 if the fileStores are equal, 1 if fileStore1 is bigger than fileStore2, -1 otherwise
 	 */
-	public static int compareFileStore(IFileStore fileStore1, IFileStore fileStore2) {
+	public static int compareFileStore(IFileStore fileStore1, IFileStore fileStore2) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			String scheme1 = fileStore1.getFileSystem().getScheme();
 			String scheme2 = fileStore2.getFileSystem().getScheme();
@@ -150,7 +150,7 @@ public final class FileStoreUtil {
 				return compare;
 			}
 		} catch (NullPointerException e) {
-			throw (NullPointerException) new NullPointerException(String.format("(fileStore1: %s %s; fileStore2: %s %s)", fileStore1.getClass().getName(), fileStore1, fileStore2.getClass().getName(), fileStore2)).initCause(e); //$NON-NLS-1$
+			throw (NullPointerException) new NullPointerException(String.format("(fileStore1: %s %s; fileStore2: %s %s)", fileStore1.getClass().getName(), fileStore1, fileStore2.getClass().getName(), fileStore2)).initCause(e); //$NON-NLS-1$ //FLLDCIM: MARK — M11 FORMAT_PRECOMPUTE CALL
 		}
 		// compare based on URI path segment values
 		URI uri1;

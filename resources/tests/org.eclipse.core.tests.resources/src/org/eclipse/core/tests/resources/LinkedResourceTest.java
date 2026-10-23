@@ -156,7 +156,7 @@ public class LinkedResourceTest {
 		return uri;
 	}
 
-	@BeforeEach
+	@BeforeEach //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setUp() throws Exception {
 		existingProject = getWorkspace().getRoot().getProject("ExistingProject");
 		existingProjectInSubDirectory = getWorkspace().getRoot().getProject("ExistingProjectInSubDirectory");
@@ -187,9 +187,9 @@ public class LinkedResourceTest {
 			IProjectDescription desc = getWorkspace().newProjectDescription(existingProjectInSubDirectory.getName());
 			File dir = existingProject.getLocation().toFile();
 			dir = dir.getParentFile();
-			dir = new File(dir + File.separator + "sub");
+			dir = new File(dir + File.separator + "sub"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			fileStoreExtension.deleteOnTearDown(IPath.fromOSString(dir.getAbsolutePath()));
-			dir = new File(dir + File.separator + "dir" + File.separator + "more" + File.separator + "proj");
+			dir = new File(dir + File.separator + "dir" + File.separator + "more" + File.separator + "proj"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			dir.mkdirs();
 			desc.setLocation(IPath.fromOSString(dir.getAbsolutePath()));
 			existingProjectInSubDirectory.create(desc, createTestMonitor());
@@ -204,7 +204,7 @@ public class LinkedResourceTest {
 	 * path does not exist. This should succeed but no operations will be
 	 * available on the resulting resource.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAllowMissingLocal() throws CoreException {
 		//get a non-existing location
 		IPath location = getRandomLocation();
@@ -245,7 +245,7 @@ public class LinkedResourceTest {
 	 * Tests case where a resource in the file system cannot be added to the workspace
 	 * because it is blocked by a linked resource of the same name.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBlockedFolder() throws Exception {
 		//create local folder that will be blocked
 		createInFileSystem(nonExistingFolderInExistingProject);
@@ -293,7 +293,7 @@ public class LinkedResourceTest {
 	 * still exist, should have the correct gender, and still be a linked
 	 * resource.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testChangeLinkGender() throws Exception {
 		IFolder folder = nonExistingFolderInExistingProject;
 		IFile file = folder.getProject().getFile(folder.getProjectRelativePath());
@@ -320,7 +320,7 @@ public class LinkedResourceTest {
 		assertEquals(resolvedLocation, folder.getLocation());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyFile() throws Exception {
 		IResource[] sources = new IResource[] {nonExistingFileInExistingProject, nonExistingFileInExistingFolder};
 		IResource[] destinationResources = new IResource[] {existingProject, closedProject, nonExistingFileInOtherExistingProject, nonExistingFileInExistingFolder};
@@ -336,11 +336,11 @@ public class LinkedResourceTest {
 				try {
 					doCleanup();
 				} catch (Exception e) {
-					throw new IllegalStateException("invocation " + count + " failed to cleanup", e);
+					throw new IllegalStateException("invocation " + count + " failed to cleanup", e); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public Object invokeMethod(Object[] args, int count) throws Exception {
 				IFile source = (IFile) args[0];
 				IResource destination = (IResource) args[1];
@@ -361,7 +361,7 @@ public class LinkedResourceTest {
 				return null;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean shouldFail(Object[] args, int count) {
 				IFile source = (IFile) args[0];
 				IResource destination = (IResource) args[1];
@@ -387,7 +387,7 @@ public class LinkedResourceTest {
 				return false;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean wasSuccess(Object[] args, Object result, Object[] oldState) throws Exception {
 				IFile source = (IFile) args[0];
 				IResource destination = (IResource) args[1];
@@ -429,7 +429,7 @@ public class LinkedResourceTest {
 		}.performTest(inputs);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyFolder() throws Exception {
 		IFolder[] sources = new IFolder[] {nonExistingFolderInExistingProject, nonExistingFolderInExistingFolder};
 		IResource[] destinations = new IResource[] {existingProject, closedProject, nonExistingProject, existingFolderInExistingProject, nonExistingFolderInOtherExistingProject, nonExistingFolderInExistingFolder};
@@ -445,11 +445,11 @@ public class LinkedResourceTest {
 				try {
 					doCleanup();
 				} catch (Exception e) {
-					throw new IllegalStateException("invocation " + count + " failed to cleanup", e);
+					throw new IllegalStateException("invocation " + count + " failed to cleanup", e); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public Object invokeMethod(Object[] args, int count) throws Exception {
 				IFolder source = (IFolder) args[0];
 				IResource destination = (IResource) args[1];
@@ -470,7 +470,7 @@ public class LinkedResourceTest {
 				return null;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean shouldFail(Object[] args, int count) {
 				IFolder source = (IFolder) args[0];
 				IResource destination = (IResource) args[1];
@@ -499,7 +499,7 @@ public class LinkedResourceTest {
 				return false;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean wasSuccess(Object[] args, Object result, Object[] oldState) throws Exception {
 				IFolder source = (IFolder) args[0];
 				IResource destination = (IResource) args[1];
@@ -573,7 +573,7 @@ public class LinkedResourceTest {
 		assertFalse(dest.exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyProjectWithLinks() throws Exception {
 		IPath fileLocation = getRandomLocation();
 		fileStoreExtension.deleteOnTearDown(fileLocation);
@@ -614,9 +614,9 @@ public class LinkedResourceTest {
 		assertTrue(destination.exists());
 		assertFalse(destination.getFile(linkedFile.getName()).exists());
 		IResource[] srcChildren = existingProject.members();
-		for (int i = 0; i < srcChildren.length; i++) {
+		for (int i = 0; i < srcChildren.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!srcChildren[i].equals(linkedFile)) {
-				assertNotNull(destination.findMember(srcChildren[i].getProjectRelativePath()), i + "");
+				assertNotNull(destination.findMember(srcChildren[i].getProjectRelativePath()), i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		// test copy project when linked resources don't exist with force=true
@@ -629,9 +629,9 @@ public class LinkedResourceTest {
 		assertFalse(destination.getFile(linkedFile.getName()).exists());
 		// all members except the missing link should have been copied
 		srcChildren = existingProject.members();
-		for (int i = 0; i < srcChildren.length; i++) {
+		for (int i = 0; i < srcChildren.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!srcChildren[i].equals(linkedFile)) {
-				assertNotNull(destination.findMember(srcChildren[i].getProjectRelativePath()), i + "");
+				assertNotNull(destination.findMember(srcChildren[i].getProjectRelativePath()), i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 	}
@@ -679,7 +679,7 @@ public class LinkedResourceTest {
 	 * Tests creating a linked resource by modifying the .project file directly.
 	 * This is a regression test for bug 63331.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateLinkInDotProject() throws Exception {
 		final IFile dotProject = existingProject.getFile(IProjectDescription.DESCRIPTION_FILE_NAME);
 		IFile link = nonExistingFileInExistingProject;
@@ -694,7 +694,7 @@ public class LinkedResourceTest {
 		final byte[] finalContents = oldContents;
 		// recreate the link in a workspace runnable with create scheduling rule
 		getWorkspace().run(
-				(IWorkspaceRunnable) unused -> dotProject.setContents(finalContents,
+				(IWorkspaceRunnable) unused -> dotProject.setContents(finalContents, //FLLDCIM: MARK — T09  LAMBDA
 						IResource.NONE, createTestMonitor()),
 				getWorkspace().getRuleFactory().modifyRule(dotProject), IResource.NONE, createTestMonitor());
 	}
@@ -734,7 +734,7 @@ public class LinkedResourceTest {
 		assertTrue(file.isHidden());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeepMoveProjectWithLinks() throws Exception {
 		IPath fileLocation = getRandomLocation();
 		fileStoreExtension.deleteOnTearDown(fileLocation);
@@ -774,7 +774,7 @@ public class LinkedResourceTest {
 	/**
 	 * Tests deleting the parent of a linked resource.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteLinkParent() throws CoreException {
 		IFolder link = nonExistingFolderInExistingFolder;
 		IFolder linkParent = existingFolderInExistingProject;
@@ -823,7 +823,7 @@ public class LinkedResourceTest {
 	/**
 	 * Tests deleting a linked resource when .project is read-only
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteLink_Bug351823() throws CoreException {
 		IProject project = existingProject;
 
@@ -862,7 +862,7 @@ public class LinkedResourceTest {
 	/**
 	 * Tests bug 209175.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteFolderWithLinks() throws CoreException {
 		IProject project = existingProject;
 		IFolder folder = existingFolderInExistingProject;
@@ -912,11 +912,11 @@ public class LinkedResourceTest {
 	/**
 	 * Tests the {@link org.eclipse.core.resources.IResource#isLinked(int)} method.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIsLinked() throws CoreException {
 		//initially nothing is linked
 		IResource[] toTest = new IResource[] {closedProject, existingFileInExistingProject, existingFolderInExistingFolder, existingFolderInExistingProject, existingProject, nonExistingFileInExistingFolder, nonExistingFileInExistingProject, nonExistingFileInOtherExistingProject, nonExistingFolderInExistingFolder, nonExistingFolderInExistingProject, nonExistingFolderInNonExistingFolder, nonExistingFolderInNonExistingProject, nonExistingFolderInOtherExistingProject, nonExistingProject, otherExistingProject};
-		for (IResource t : toTest) {
+		for (IResource t : toTest) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertFalse(t.isLinked(), t.toString());
 			assertFalse(t.isLinked(IResource.NONE), t.toString());
 			assertFalse(t.isLinked(IResource.CHECK_ANCESTORS), t.toString());
@@ -935,11 +935,11 @@ public class LinkedResourceTest {
 
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetLinkLocation() throws CoreException {
 		// initially nothing is linked
 		IResource[] toTest = new IResource[] {closedProject, existingFileInExistingProject, existingFolderInExistingFolder, existingFolderInExistingProject, existingProject, nonExistingFileInExistingFolder, nonExistingFileInExistingProject, nonExistingFileInOtherExistingProject, nonExistingFolderInExistingFolder, nonExistingFolderInExistingProject, nonExistingFolderInNonExistingFolder, nonExistingFolderInNonExistingProject, nonExistingFolderInOtherExistingProject, nonExistingProject, otherExistingProject};
-		for (IResource toTest1 : toTest) {
+		for (IResource toTest1 : toTest) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertFalse(toTest1.isLinked(), toTest1.toString());
 			assertFalse(toTest1.isLinked(IResource.NONE), toTest1.toString());
 			assertFalse(toTest1.isLinked(IResource.CHECK_ANCESTORS), toTest1.toString());
@@ -967,7 +967,7 @@ public class LinkedResourceTest {
 	 * Tests swapping the link location.
 	 * This is a regression test for bug 268507
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetLinkLocationSwapLinkedResource() throws CoreException {
 		final IPath parentLoc = existingFolderInExistingProject.getLocation();
 		final IPath childLoc = existingFolderInExistingFolder.getLocation();
@@ -996,11 +996,11 @@ public class LinkedResourceTest {
 		assertThat(nonExistingFolderInExistingProject.getLocation()).isEqualTo(childLoc);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetLinkLocationPath() throws CoreException {
 		//initially nothing is linked
 		IResource[] toTest = new IResource[] {closedProject, existingFileInExistingProject, existingFolderInExistingFolder, existingFolderInExistingProject, existingProject, nonExistingFileInExistingFolder, nonExistingFileInExistingProject, nonExistingFileInOtherExistingProject, nonExistingFolderInExistingFolder, nonExistingFolderInExistingProject, nonExistingFolderInNonExistingFolder, nonExistingFolderInNonExistingProject, nonExistingFolderInOtherExistingProject, nonExistingProject, otherExistingProject};
-		for (IResource toTest1 : toTest) {
+		for (IResource toTest1 : toTest) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertFalse(toTest1.isLinked(), toTest1.toString());
 			assertFalse(toTest1.isLinked(IResource.NONE), toTest1.toString());
 			assertFalse(toTest1.isLinked(IResource.CHECK_ANCESTORS), toTest1.toString());
@@ -1027,7 +1027,7 @@ public class LinkedResourceTest {
 	/**
 	 * Specific testing of links within links.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLinkedFileInLinkedFolder() throws CoreException, IOException {
 		//setup handles
 		IProject project = existingProject;
@@ -1063,7 +1063,7 @@ public class LinkedResourceTest {
 	/**
 	 * Automated test of IFile#createLink
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLinkFile() throws Exception {
 		IResource[] interestingResources = new IResource[] {existingFileInExistingProject, nonExistingFileInExistingProject, nonExistingFileInExistingFolder};
 		IPath[] interestingLocations = new IPath[] {localFile, localFolder, nonExistingLocation};
@@ -1078,7 +1078,7 @@ public class LinkedResourceTest {
 				try {
 					doCleanup();
 				} catch (Exception e) {
-					throw new IllegalStateException("invocation " + count + " failed to cleanup", e);
+					throw new IllegalStateException("invocation " + count + " failed to cleanup", e); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
 
@@ -1101,7 +1101,7 @@ public class LinkedResourceTest {
 				return null;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean shouldFail(Object[] args, int count) {
 				IResource resource = (IResource) args[0];
 				IPath location = (IPath) args[1];
@@ -1138,7 +1138,7 @@ public class LinkedResourceTest {
 				return false;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean wasSuccess(Object[] args, Object result, Object[] oldState) throws Exception {
 				IFile resource = (IFile) args[0];
 				IPath location = (IPath) args[1];
@@ -1164,7 +1164,7 @@ public class LinkedResourceTest {
 	/**
 	 * Automated test of IFolder#createLink
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLinkFolder() throws Exception {
 		IResource[] interestingResources = new IResource[] {existingFolderInExistingProject, existingFolderInExistingFolder, nonExistingFolderInExistingProject, nonExistingFolderInNonExistingProject, nonExistingFolderInNonExistingFolder, nonExistingFolderInExistingFolder};
 		IPath[] interestingLocations = new IPath[] {localFile, localFolder, nonExistingLocation};
@@ -1179,7 +1179,7 @@ public class LinkedResourceTest {
 				try {
 					doCleanup();
 				} catch (Exception e) {
-					throw new IllegalStateException("invocation " + count + " failed to cleanup", e);
+					throw new IllegalStateException("invocation " + count + " failed to cleanup", e); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
 
@@ -1202,7 +1202,7 @@ public class LinkedResourceTest {
 				return null;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean shouldFail(Object[] args, int count) {
 				IResource resource = (IResource) args[0];
 				IPath location = (IPath) args[1];
@@ -1238,7 +1238,7 @@ public class LinkedResourceTest {
 				return false;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean wasSuccess(Object[] args, Object result, Object[] oldState) throws Exception {
 				IFolder resource = (IFolder) args[0];
 				IPath location = (IPath) args[1];
@@ -1315,7 +1315,7 @@ public class LinkedResourceTest {
 		assertEquals(IResource.NULL_STAMP, linkedFile.getModificationStamp());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveFile() throws Exception {
 		IResource[] sources = new IResource[] {nonExistingFileInExistingProject, nonExistingFileInExistingFolder};
 		IResource[] destinations = new IResource[] {existingProject, closedProject, nonExistingFileInOtherExistingProject, nonExistingFileInExistingFolder};
@@ -1331,11 +1331,11 @@ public class LinkedResourceTest {
 				try {
 					doCleanup();
 				} catch (Exception e) {
-					throw new IllegalStateException("invocation " + count + " failed to cleanup", e);
+					throw new IllegalStateException("invocation " + count + " failed to cleanup", e); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public Object invokeMethod(Object[] args, int count) throws Exception {
 				IFile source = (IFile) args[0];
 				IResource destination = (IResource) args[1];
@@ -1356,7 +1356,7 @@ public class LinkedResourceTest {
 				return null;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean shouldFail(Object[] args, int count) {
 				IFile source = (IFile) args[0];
 				IResource destination = (IResource) args[1];
@@ -1385,7 +1385,7 @@ public class LinkedResourceTest {
 				return false;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean wasSuccess(Object[] args, Object result, Object[] oldState) throws Exception {
 				IResource destination = (IResource) args[1];
 				boolean isDeep = ((Boolean) args[2]).booleanValue();
@@ -1425,7 +1425,7 @@ public class LinkedResourceTest {
 		}.performTest(inputs);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveFolder() throws Exception {
 		IResource[] sourceResources = new IResource[] {nonExistingFolderInExistingProject, nonExistingFolderInExistingFolder};
 		IResource[] destinationResources = new IResource[] {existingProject, closedProject, nonExistingProject, existingFolderInExistingProject, nonExistingFolderInOtherExistingProject, nonExistingFolderInExistingFolder};
@@ -1440,11 +1440,11 @@ public class LinkedResourceTest {
 				try {
 					doCleanup();
 				} catch (Exception e) {
-					throw new IllegalStateException("invocation " + count + " failed to cleanup", e);
+					throw new IllegalStateException("invocation " + count + " failed to cleanup", e); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public Object invokeMethod(Object[] args, int count) throws Exception {
 				IFolder source = (IFolder) args[0];
 				IResource destination = (IResource) args[1];
@@ -1464,7 +1464,7 @@ public class LinkedResourceTest {
 				return null;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean shouldFail(Object[] args, int count) {
 				IFolder source = (IFolder) args[0];
 				IResource destination = (IResource) args[1];
@@ -1545,7 +1545,7 @@ public class LinkedResourceTest {
 		assertFalse(dest.exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveProjectWithLinks() throws Exception {
 		IPath fileLocation = getRandomLocation();
 		fileStoreExtension.deleteOnTearDown(fileLocation);
@@ -1614,7 +1614,7 @@ public class LinkedResourceTest {
 	/**
 	 * Tests bug 298849.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveFolderWithLinks() throws Exception {
 		// create a folder
 		IFolder folderWithLinks = existingProject.getFolder(createUniqueString());
@@ -1649,7 +1649,7 @@ public class LinkedResourceTest {
 		assertEquals(-1, string.indexOf(linkedFile.getProjectRelativePath().toString()));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNatureVeto() throws CoreException {
 		//note: simpleNature has the link veto turned on.
 
@@ -1679,7 +1679,7 @@ public class LinkedResourceTest {
 	 * Tests creating a link within a link, and ensuring that both links still
 	 * exist when the project is closed/opened (bug 177367).
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNestedLink() throws CoreException {
 		final IFileStore store1 = fileStoreExtension.getTempStore();
 		final IFileStore store2 = fileStoreExtension.getTempStore();
@@ -1733,7 +1733,7 @@ public class LinkedResourceTest {
 		assertTrue(linkChild.exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLinkedFolderWithOverlappingLocation_Bug293935_() {
 		IWorkspace workspace = getWorkspace();
 
@@ -1764,7 +1764,7 @@ public class LinkedResourceTest {
 				() -> folderByUnixLikeURI.createLink(projectLocationURIWithoutDevice, IResource.NONE, createTestMonitor()));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLinkedFolderWithSymlink_Bug338010() throws Exception {
 		assumeTrue(canCreateSymLinks(), "only relevant for platforms supporting symbolic links");
 
@@ -1778,7 +1778,7 @@ public class LinkedResourceTest {
 		IPath resolvedLinkChildLocation = resolve(linkChildLocation);
 		File linkChild = resolvedLinkChildLocation.toFile();
 		linkChild.mkdir();
-		assertTrue(linkChild.exists(), "Could not create link at location: " + linkChild);
+		assertTrue(linkChild.exists(), "Could not create link at location: " + linkChild); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		IFolder folder = nonExistingFolderInExistingProject;
 		folder.createLink(linkChildLocation, IResource.NONE, createTestMonitor());
@@ -1789,7 +1789,7 @@ public class LinkedResourceTest {
 	/**
 	 * Tests deleting of the target of a linked folder that itself is a symbolic link.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteLinkTarget_Bug507084() throws Exception {
 		assumeTrue(canCreateSymLinks(), "only relevant for platforms supporting symbolic links");
 

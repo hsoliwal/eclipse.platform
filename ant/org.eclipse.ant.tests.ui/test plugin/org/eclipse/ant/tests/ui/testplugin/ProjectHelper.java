@@ -63,7 +63,7 @@ public class ProjectHelper {
 	/**
 	 * Creates a IProject.
 	 */
-	public static IProject createProject(String projectName) throws CoreException {
+	public static IProject createProject(String projectName) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 		IProject project = root.getProject(projectName);
 		if (!project.exists()) {
@@ -109,7 +109,7 @@ public class ProjectHelper {
 
 	public static void importFilesFromDirectory(File rootDir, IPath destPath, IProgressMonitor monitor) throws InvocationTargetException, IOException {
 		IImportStructureProvider structureProvider = FileSystemStructureProvider.INSTANCE;
-		List<File> files = new ArrayList<>(100);
+		List<File> files = new ArrayList<>(100); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		addFiles(rootDir, files);
 		try {
 			ImportOperation op = new ImportOperation(destPath, rootDir, structureProvider, new ImportOverwriteQuery(), files);
@@ -122,15 +122,15 @@ public class ProjectHelper {
 	}
 
 	private static void addFiles(File dir, List<File> collection) throws IOException {
-		List<File> subDirs = new ArrayList<>(2);
-		for (File file : dir.listFiles()) {
+		List<File> subDirs = new ArrayList<>(2); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (File file : dir.listFiles()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (file.isFile()) {
 				collection.add(file);
 			} else if (file.isDirectory()) {
 				subDirs.add(file);
 			}
 		}
-		for (File subDir : subDirs) {
+		for (File subDir : subDirs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			addFiles(subDir, collection);
 		}
 	}
@@ -151,7 +151,7 @@ public class ProjectHelper {
 	 */
 	public static void createLaunchConfigurationForBoth(String launchConfigName) throws Exception {
 		ProjectHelper.createLaunchConfiguration(launchConfigName);
-		ProjectHelper.createLaunchConfigurationForSeparateVM(launchConfigName + "SepVM", launchConfigName); //$NON-NLS-1$
+		ProjectHelper.createLaunchConfigurationForSeparateVM(launchConfigName + "SepVM", launchConfigName); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -159,7 +159,7 @@ public class ProjectHelper {
 	 *
 	 * @since 3.5
 	 */
-	public static void createLaunchConfigurationForSeparateVM(String launchConfigName, String buildFileName) throws Exception {
+	public static void createLaunchConfigurationForSeparateVM(String launchConfigName, String buildFileName) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String bf = buildFileName;
 		ILaunchConfigurationType type = getLaunchManager()
 				.getLaunchConfigurationType(IAntLaunchConstants.ID_ANT_LAUNCH_CONFIGURATION_TYPE);
@@ -172,7 +172,7 @@ public class ProjectHelper {
 		if (bf == null) {
 			bf = launchConfigName;
 		}
-		config.setAttribute(IExternalToolConstants.ATTR_LOCATION, "${workspace_loc:/" + PROJECT_NAME + "/buildfiles/" + bf + ".xml}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		config.setAttribute(IExternalToolConstants.ATTR_LOCATION, "${workspace_loc:/" + PROJECT_NAME + "/buildfiles/" + bf + ".xml}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		config.setAttribute(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND, true);
 		config.setAttribute(DebugPlugin.ATTR_PROCESS_FACTORY_ID, IAntUIConstants.REMOTE_ANT_PROCESS_FACTORY_ID);
@@ -202,7 +202,7 @@ public class ProjectHelper {
 	 * Creates a shared launch configuration for launching Ant in a separate VM with the given name.
 	 */
 	public static void createLaunchConfiguration(String launchConfigName) throws Exception {
-		ProjectHelper.createLaunchConfiguration(launchConfigName, PROJECT_NAME + "/buildfiles/" + launchConfigName + ".xml"); //$NON-NLS-1$ //$NON-NLS-2$
+		ProjectHelper.createLaunchConfiguration(launchConfigName, PROJECT_NAME + "/buildfiles/" + launchConfigName + ".xml"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -217,7 +217,7 @@ public class ProjectHelper {
 				.newInstance(getJavaProject().getProject().getFolder("launchConfigurations"), launchConfigName); //$NON-NLS-1$
 
 		config.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, getJavaProject().getElementName());
-		config.setAttribute(IExternalToolConstants.ATTR_LOCATION, "${workspace_loc:/" + path + "}"); //$NON-NLS-1$ //$NON-NLS-2$
+		config.setAttribute(IExternalToolConstants.ATTR_LOCATION, "${workspace_loc:/" + path + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		config.setAttribute(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND, true);
 
 		config.doSave();

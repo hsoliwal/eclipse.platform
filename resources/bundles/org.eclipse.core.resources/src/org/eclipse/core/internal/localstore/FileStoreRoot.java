@@ -170,7 +170,7 @@ public class FileStoreRoot {
 	 * @param canonical if {@code true}, the prefix of the returned path corresponding
 	 *     to this root will be canonicalized
 	 */
-	IPath localLocation(IPath workspacePath, IResource resource, boolean canonical) {
+	IPath localLocation(IPath workspacePath, IResource resource, boolean canonical) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (localRoot == null) {
 			return null;
 		}

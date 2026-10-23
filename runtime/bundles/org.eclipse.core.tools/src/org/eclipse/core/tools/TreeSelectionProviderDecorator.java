@@ -44,7 +44,7 @@ public class TreeSelectionProviderDecorator implements ISelectionProvider {
 
 	@Override
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
-		selectionProvider.addSelectionChangedListener(listener);
+		selectionProvider.addSelectionChangedListener(listener); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class TreeSelectionProviderDecorator implements ISelectionProvider {
 	 * @return the current selection, ordered in the same sequence they appear in
 	 * the tree
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ISelection getSelection() {
 		// gets the original selection object
 		ISelection selection = selectionProvider.getSelection();
@@ -69,7 +69,7 @@ public class TreeSelectionProviderDecorator implements ISelectionProvider {
 
 		// constructs a list with the selected elements
 		List<Object> list = structuredSelection.toList();
-		final List<Object> selectedElements = new ArrayList<>(list);
+		final List<Object> selectedElements = new ArrayList<>(list); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		// tries to find a TreeContentProviderNode between the selected elements
 		TreeContentProviderNode anyNode = findNodeElement(selectedElements);
@@ -108,7 +108,7 @@ public class TreeSelectionProviderDecorator implements ISelectionProvider {
 	 * @return the first element that is a tree node or null, if none is found.
 	 */
 	private TreeContentProviderNode findNodeElement(List<Object> elements) {
-		for (Iterator<?> iter = elements.iterator(); iter.hasNext();) {
+		for (Iterator<?> iter = elements.iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object element = iter.next();
 			if (element instanceof TreeContentProviderNode) {
 				return (TreeContentProviderNode) element;

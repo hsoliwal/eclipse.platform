@@ -42,7 +42,7 @@ public class CopyTest {
 
 	private static final int NUMBER_OF_PROPERTIES = 5;
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyResource() throws Throwable {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -57,9 +57,9 @@ public class CopyTest {
 		/* add some properties to file (server, local and session) */
 		QualifiedName[] propNames = new QualifiedName[NUMBER_OF_PROPERTIES];
 		String[] propValues = new String[NUMBER_OF_PROPERTIES];
-		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) {
-			propNames[i] = new QualifiedName("test", "prop" + i);
-			propValues[i] = "value" + i;
+		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			propNames[i] = new QualifiedName("test", "prop" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			propValues[i] = "value" + i; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			file.setPersistentProperty(propNames[i], propValues[i]);
 			file.setSessionProperty(propNames[i], propValues[i]);
 		}
@@ -70,7 +70,7 @@ public class CopyTest {
 		file.copy(destination.getFullPath(), true, null);
 		assertTrue(destination.exists());
 		/* assert properties were properly copied */
-		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) {
+		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String persistentValue = destination.getPersistentProperty(propNames[i]);
 			Object sessionValue = destination.getSessionProperty(propNames[i]);
 			assertThat(propValues[i]).isEqualTo(persistentValue).isNotEqualTo(sessionValue);
@@ -85,7 +85,7 @@ public class CopyTest {
 		file.copy(path, true, null);
 		assertTrue(destinationInFolder.exists());
 		/* assert properties were properly copied */
-		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) {
+		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String persistentValue = destinationInFolder.getPersistentProperty(propNames[i]);
 			Object sessionValue = destinationInFolder.getSessionProperty(propNames[i]);
 			assertThat(propValues[i]).isEqualTo(persistentValue).isNotEqualTo(sessionValue);
@@ -113,7 +113,7 @@ public class CopyTest {
 		assertFalse(destinationFolder.getFile(IPath.fromOSString(anotherFile.getName())).exists());
 		/* assert properties were properly copied */
 		IResource target = destinationFolder.getFile(IPath.fromOSString(file.getName()));
-		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) {
+		for (int i = 0; i < NUMBER_OF_PROPERTIES; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String persistentValue = target.getPersistentProperty(propNames[i]);
 			Object sessionValue = target.getSessionProperty(propNames[i]);
 			assertThat(propValues[i]).isEqualTo(persistentValue).isNotEqualTo(sessionValue);

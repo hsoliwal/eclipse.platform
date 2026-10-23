@@ -83,7 +83,7 @@ public class ZipFileStructureCreator implements IStructureCreator {
 
 	static class ZipFolder extends ZipResource {
 
-		private final HashMap<String, ZipResource> fChildren= new HashMap<>(10);
+		private final HashMap<String, ZipResource> fChildren= new HashMap<>(10); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 		ZipFolder(String name) {
 			super(name);
@@ -98,13 +98,13 @@ public class ZipFileStructureCreator implements IStructureCreator {
 		public Object[] getChildren() {
 			Object[] children= new Object[fChildren.size()];
 			Iterator<ZipResource> iter= fChildren.values().iterator();
-			for (int i= 0; iter.hasNext(); i++) {
+			for (int i= 0; iter.hasNext(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				children[i]= iter.next();
 			}
 			return children;
 		}
 
-		ZipFile createContainer(String path) {
+		ZipFile createContainer(String path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			String entry= path;
 			int pos= path.indexOf('/');
 			if (pos < 0) {
@@ -222,7 +222,7 @@ public class ZipFileStructureCreator implements IStructureCreator {
 		return fTitle;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStructureComparator getStructure(Object input) {
 
 		InputStream is= null;
@@ -242,7 +242,7 @@ public class ZipFileStructureCreator implements IStructureCreator {
 		ZipInputStream zip= new ZipInputStream(is);
 		ZipFolder root= new ZipFolder(""); //$NON-NLS-1$
 		try {
-			for (;;) {
+			for (;;) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ZipEntry entry= zip.getNextEntry();
 				if (entry == null) {
 					break;
@@ -255,7 +255,7 @@ public class ZipFileStructureCreator implements IStructureCreator {
 						byte[] buffer= new byte[length];
 						int offset= 0;
 
-						do {
+						do { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							int n= zip.read(buffer, offset, length);
 							offset += n;
 							length -= n;
@@ -265,7 +265,7 @@ public class ZipFileStructureCreator implements IStructureCreator {
 					} else {
 						byte[] buffer= new byte[1024];
 						int n;
-						do {
+						do { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							n= zip.read(buffer, 0, 1024);
 							ze.appendBytes(buffer, n);
 						} while (n >= 0);

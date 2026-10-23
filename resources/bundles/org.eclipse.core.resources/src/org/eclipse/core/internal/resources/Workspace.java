@@ -368,7 +368,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		if (array == null || position >= array.length) {
 			return false;
 		}
-		for (int j = position - 1; j >= 0; j--) {
+		for (int j = position - 1; j >= 0; j--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (array[j].equals(array[position])) {
 				return true;
 			}
@@ -434,7 +434,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		return saveManager.addParticipant(pluginId, participant);
 	}
 
-	public void beginOperation(boolean createNewTree) throws CoreException {
+	public void beginOperation(boolean createNewTree) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		WorkManager workManager = getWorkManager();
 		workManager.incrementNestedOperations();
 		if (!workManager.isBalanced()) {
@@ -463,7 +463,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	 * internal listeners.
 	 */
 	protected void broadcastEvent(LifecycleEvent event) throws CoreException {
-		for (ILifecycleListener listener : lifecycleListeners) {
+		for (ILifecycleListener listener : lifecycleListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			listener.handleEvent(event);
 		}
 	}
@@ -481,7 +481,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	private void recursivelyAddBuildConfigs(Collection/*<IBuildConfiguration>*/<IBuildConfiguration> configs, IBuildConfiguration config) {
 		try {
 			IBuildConfiguration[] referenced = config.getProject().getReferencedBuildConfigs(config.getName(), false);
-			for (IBuildConfiguration element : referenced) {
+			for (IBuildConfiguration element : referenced) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (configs.contains(element)) {
 					continue;
 				}
@@ -513,7 +513,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	 * @param trigger build trigger
 	 * @param buildReferences transitively build referenced build configurations
 	 */
-	private void buildInternal(IBuildConfiguration[] requestedConfigs, int trigger, boolean buildReferences,
+	private void buildInternal(IBuildConfiguration[] requestedConfigs, int trigger, boolean buildReferences, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IProgressMonitor monitor) throws CoreException {
 
 
@@ -562,9 +562,9 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 						}
 					} else {
 						// clean all accessible configurations
-						List<IBuildConfiguration> configArr = new ArrayList<>();
+						List<IBuildConfiguration> configArr = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 						IProject[] prjs = getRoot().getProjects();
-						for (IProject prj : prjs) {
+						for (IProject prj : prjs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							if (prj.isAccessible()) {
 								configArr.addAll(Arrays.asList(prj.getBuildConfigs()));
 							}
@@ -573,8 +573,8 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 					}
 				} else {
 					// Order the passed in build configurations + resolve references if requested
-					Set<IBuildConfiguration> refsList = new HashSet<>();
-					for (IBuildConfiguration config : allConfigs) {
+					Set<IBuildConfiguration> refsList = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+					for (IBuildConfiguration config : allConfigs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						// Check project + build configuration are accessible.
 						if (!config.getProject().isAccessible()
 								|| !config.getProject().hasBuildConfig(config.getName())) {
@@ -594,8 +594,8 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 					buildGraph.freeze();
 					if (Policy.DEBUG_BUILD_CYCLE && buildGraph.containsCycles()) {
 						List<IBuildConfiguration[]> nonTrivialComponents = buildGraph.nonTrivialComponents();
-						for (IBuildConfiguration[] iBuildConfigurations : nonTrivialComponents) {
-							Policy.debug("Cycle: " + Arrays.toString(iBuildConfigurations)); //$NON-NLS-1$
+						for (IBuildConfiguration[] iBuildConfigurations : nonTrivialComponents) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+							Policy.debug("Cycle: " + Arrays.toString(iBuildConfigurations)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						}
 					}
 					allConfigs = ComputeProjectOrder.computeVertexOrder(buildGraph, IBuildConfiguration.class).vertexes;
@@ -706,7 +706,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	 *    reporting and cancellation are not desired
 	 * @exception CoreException if the workspace could not be shutdown.
 	 */
-	public void close(IProgressMonitor monitor) throws CoreException {
+	public void close(IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//nothing to do if the workspace failed to open
 		if (!isOpen()) {
 			return;
@@ -731,7 +731,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 				beginOperation(true);
 				IProject[] projects = getRoot().getProjects(IContainer.INCLUDE_HIDDEN);
 				subMonitor.setWorkRemaining(projects.length + 2);
-				for (IProject project : projects) {
+				for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					//notify managers of closing so they can cleanup
 					broadcastEvent(LifecycleEvent.newEvent(LifecycleEvent.PRE_PROJECT_CLOSE, project));
 					subMonitor.worked(1);
@@ -776,14 +776,14 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	 * @return result describing the global project order
 	 * @since 2.1
 	 */
-	private VertexOrder<IProject> computeFullProjectOrder() {
+	private VertexOrder<IProject> computeFullProjectOrder() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// determine the full set of accessible projects in the workspace
 		// order the set in descending alphabetical order of project name
 		SortedSet<IProject> allAccessibleProjects = new TreeSet<>(Comparator.comparing(IProject::getName).reversed());
 		IProject[] allProjects = getRoot().getProjects(IContainer.INCLUDE_HIDDEN);
 		// List<IProject[]> edges
-		List<IProject[]> edges = new ArrayList<>(allProjects.length);
-		for (IProject p : allProjects) {
+		List<IProject[]> edges = new ArrayList<>(allProjects.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IProject p : allProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Project project = (Project) p;
 			// ignore projects that are not accessible
 			if (!project.isAccessible()) {
@@ -796,7 +796,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 			//obtain both static and dynamic project references
 			IProject[] refs = desc.getAllReferences(project, false);
 			allAccessibleProjects.add(project);
-			for (IProject ref : refs) {
+			for (IProject ref : refs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// ignore self references and references to projects that are not accessible
 				if (ref.isAccessible() && !ref.equals(project)) {
 					edges.add(new IProject[] {project, ref});
@@ -836,7 +836,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		return ComputeProjectOrder.computeVertexOrder(activeBuildConfigurationGraph, IBuildConfiguration.class);
 	}
 
-	private Digraph<IBuildConfiguration> computeActiveBuildConfigGraph() {
+	private Digraph<IBuildConfiguration> computeActiveBuildConfigGraph() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Determine the full set of accessible active project buildConfigs in the workspace,
 		// and all the accessible project buildConfigs that they reference. This forms a set
 		// of all the project buildConfigs that will be returned.
@@ -850,9 +850,9 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		// This generates the required subset of the reference graph that is required to order all
 		// the dependencies of the active project buildConfigs.
 		IProject[] allProjects = getRoot().getProjects(IContainer.INCLUDE_HIDDEN);
-		List<IBuildConfiguration[]> edges = new ArrayList<>(allProjects.length);
+		List<IBuildConfiguration[]> edges = new ArrayList<>(allProjects.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-		for (IProject allProject : allProjects) {
+		for (IProject allProject : allProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Project project = (Project) allProject;
 			// Ignore projects that are not accessible
 			if (!project.isAccessible()) {
@@ -863,17 +863,17 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 			// perform a depth first search rooted at it
 			if (!allAccessibleBuildConfigs.contains(project.internalGetActiveBuildConfig())) {
 				allAccessibleBuildConfigs.add(project.internalGetActiveBuildConfig());
-				Deque<IBuildConfiguration> stack = new ArrayDeque<>();
+				Deque<IBuildConfiguration> stack = new ArrayDeque<>(); //FLLDCIM: MARK — M08 M3_DEQUE_LANES NEW
 				stack.push(project.internalGetActiveBuildConfig());
 
-				while (!stack.isEmpty()) {
+				while (!stack.isEmpty()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IBuildConfiguration buildConfiguration = stack.pop();
 
 					// Add all referenced buildConfigs from the current configuration
 					// (it is guaranteed to be accessible as it was pushed onto the stack)
 					Project subProject = (Project) buildConfiguration.getProject();
 					IBuildConfiguration[] refs = subProject.internalGetReferencedBuildConfigs(buildConfiguration.getName(), false);
-					for (IBuildConfiguration ref : refs) {
+					for (IBuildConfiguration ref : refs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						// Ignore self references and references to projects that are not accessible
 						if (ref.equals(buildConfiguration)) {
 							continue;
@@ -898,14 +898,14 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		return ComputeProjectOrder.computeGraph(allAccessibleBuildConfigs, edges, IBuildConfiguration.class);
 	}
 
-	private Digraph<IBuildConfiguration> computeFullBuildConfigGraph() {
+	private Digraph<IBuildConfiguration> computeFullBuildConfigGraph() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Compute the order for all accessible project buildConfigs
 		SortedSet<IBuildConfiguration> allAccessibleBuildConfigurations = new TreeSet<>(new BuildConfigurationComparator());
 
 		IProject[] allProjects = getRoot().getProjects(IContainer.INCLUDE_HIDDEN);
-		List<IBuildConfiguration[]> edges = new ArrayList<>(allProjects.length);
+		List<IBuildConfiguration[]> edges = new ArrayList<>(allProjects.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-		for (IProject p : allProjects) {
+		for (IProject p : allProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Project project = (Project) p;
 			// Ignore projects that are not accessible
 			if (!project.isAccessible()) {
@@ -913,10 +913,10 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 			}
 
 			IBuildConfiguration[] configs = project.internalGetBuildConfigs(false);
-			for (IBuildConfiguration config : configs) {
+			for (IBuildConfiguration config : configs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				allAccessibleBuildConfigurations.add(config);
 				IBuildConfiguration[] refs = project.internalGetReferencedBuildConfigs(config.getName(), false);
-				for (IBuildConfiguration ref : refs) {
+				for (IBuildConfiguration ref : refs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					// Ignore self references
 					if (ref.equals(config)) {
 						continue;
@@ -935,7 +935,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		IProject[] projects = new IProject[order.vertexes.length];
 		System.arraycopy(order.vertexes, 0, projects, 0, order.vertexes.length);
 		IProject[][] knots = new IProject[order.knots.length][];
-		for (int i = 0; i < order.knots.length; i++) {
+		for (int i = 0; i < order.knots.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			knots[i] = new IProject[order.knots[i].length];
 			System.arraycopy(order.knots[i], 0, knots[i], 0, order.knots[i].length);
 		}
@@ -946,7 +946,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		IBuildConfiguration[] buildConfigs = new IBuildConfiguration[order.vertexes.length];
 		System.arraycopy(order.vertexes, 0, buildConfigs, 0, order.vertexes.length);
 		IBuildConfiguration[][] knots = new IBuildConfiguration[order.knots.length][];
-		for (int i = 0; i < order.knots.length; i++) {
+		for (int i = 0; i < order.knots.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			knots[i] = new IBuildConfiguration[order.knots[i].length];
 			System.arraycopy(order.knots[i], 0, knots[i], 0, order.knots[i].length);
 		}
@@ -966,7 +966,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	 *
 	 * @since 2.1
 	 */
-	private IProject[][] computePrerequisiteOrder1(IProject[] projects) {
+	private IProject[][] computePrerequisiteOrder1(IProject[] projects) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IWorkspace.ProjectOrder r = computeProjectOrder(projects);
 		if (!r.hasCycles) {
 			return new IProject[][] {r.projects, new IProject[0]};
@@ -974,11 +974,11 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		// when there are cycles, we need to remove all knotted projects from
 		// r.projects to form result[0] and merge all knots to form result[1]
 		// Set<IProject> bad
-		Set<IProject> bad = new HashSet<>();
+		Set<IProject> bad = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		// Set<IProject> bad
-		Set<IProject> keepers = new HashSet<>(Arrays.asList(r.projects));
-		for (IProject[] knot : r.knots) {
-			for (IProject project : knot) {
+		Set<IProject> keepers = new HashSet<>(Arrays.asList(r.projects)); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IProject[] knot : r.knots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (IProject project : knot) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// keep only selected projects in knot
 				if (keepers.contains(project)) {
 					bad.add(project);
@@ -990,7 +990,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		// List<IProject> p
 		List<IProject> p = new LinkedList<>();
 		p.addAll(Arrays.asList(r.projects));
-		for (Iterator<IProject> it = p.listIterator(); it.hasNext();) {
+		for (Iterator<IProject> it = p.listIterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProject project = it.next();
 			if (bad.contains(project)) {
 				// remove knotted projects from the main answer
@@ -1008,7 +1008,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		VertexOrder<IProject> fullProjectOrder = computeFullProjectOrder();
 
 		// Create a filter to remove all projects that are not in the list asked for
-		final Set<IProject> projectSet = new HashSet<>(projects.length);
+		final Set<IProject> projectSet = new HashSet<>(projects.length); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		projectSet.addAll(Arrays.asList(projects));
 		Predicate<IProject> filter = vertex -> !projectSet.contains(vertex);
 
@@ -1056,7 +1056,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		VertexOrder<IBuildConfiguration> fullBuildConfigOrder = ComputeProjectOrder.computeVertexOrder(graph, IBuildConfiguration.class);
 
 		// Create a filter to remove all project buildConfigs that are not in the list asked for
-		final Set<IBuildConfiguration> projectConfigSet = new HashSet<>(buildConfigs.length);
+		final Set<IBuildConfiguration> projectConfigSet = new HashSet<>(buildConfigs.length); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		projectConfigSet.addAll(Arrays.asList(buildConfigs));
 		Predicate<IBuildConfiguration> filter = vertex -> !projectConfigSet.contains(vertex);
 
@@ -1068,7 +1068,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		Digraph<IBuildConfiguration> fullBuildConfigOrder = computeFullBuildConfigGraph();
 
 		// Create a filter to remove all project buildConfigs that are not in the list asked for
-		final Set<IBuildConfiguration> projectConfigSet = new HashSet<>(buildConfigs);
+		final Set<IBuildConfiguration> projectConfigSet = new HashSet<>(buildConfigs); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		Predicate<IBuildConfiguration> filter = vertex -> !projectConfigSet.contains(vertex);
 
 		// Filter the order and return it
@@ -1081,7 +1081,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		return copy(resources, destination, updateFlags, monitor);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus copy(IResource[] resources, IPath destination, int updateFlags, IProgressMonitor monitor)
 			throws CoreException {
 		Assert.isLegal(resources != null);
@@ -1098,7 +1098,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		try {
 			prepareOperation(getRoot(), subMonitor);
 			beginOperation(true);
-			for (int i = 0; i < resources.length; i++) {
+			for (int i = 0; i < resources.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource resource = resources[i];
 				if (resource == null || isDuplicate(resources, i)) {
 					subMonitor.split(1);
@@ -1148,7 +1148,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		copyTree(source, destination, depth, updateFlags, keepSyncInfo, false, source.getType() == IResource.PROJECT);
 	}
 
-	private void copyTree(IResource source, IPath destination, int depth, int updateFlags, boolean keepSyncInfo, boolean moveResources, boolean movingProject) throws CoreException {
+	private void copyTree(IResource source, IPath destination, int depth, int updateFlags, boolean keepSyncInfo, boolean moveResources, boolean movingProject) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// retrieve the resource at the destination if there is one (phantoms included).
 		// if there isn't one, then create a new handle based on the type that we are
@@ -1245,7 +1245,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 			}
 		}
 		IResource[] children = ((IContainer) source).members(IContainer.INCLUDE_TEAM_PRIVATE_MEMBERS | IContainer.INCLUDE_HIDDEN);
-		for (IResource element : children) {
+		for (IResource element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String childName = element.getName();
 			if (!projectCopy || !childName.equals(IProjectDescription.DESCRIPTION_FILE_NAME)) {
 				IPath childPath = destination.append(childName);
@@ -1282,7 +1282,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		}
 	}
 
-	String copyVariable(IResource source, IResource dest, String variable) throws CoreException {
+	String copyVariable(IResource source, IResource dest, String variable) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPathVariableManager destPathVariableManager = dest.getPathVariableManager();
 		IPathVariableManager srcPathVariableManager = source.getPathVariableManager();
 
@@ -1304,7 +1304,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		}
 		// look if one variable in the destination project matches
 		String[] variables = destPathVariableManager.getPathVariableNames();
-		for (String other : variables) {
+		for (String other : variables) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!PathVariableUtil.isPreferred(other)) {
 				continue;
 			}
@@ -1334,21 +1334,21 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 
 			if (!shouldConvertToRelative) {
 				String[] segments = PathVariableUtil.splitVariablesAndContent(srcValue.toPortableString());
-				StringBuilder result = new StringBuilder();
-				for (String segment : segments) {
+				StringBuilder result = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+				for (String segment : segments) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String var = PathVariableUtil.extractVariable(segment);
 					if (var.length() > 0) {
 						String copiedVariable = copyVariable(source, dest, var);
 						int index = segment.indexOf(var);
 						if (index != -1) {
-							result.append(segment.substring(0, index));
-							result.append(copiedVariable);
+							result.append(segment.substring(0, index)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+							result.append(copiedVariable); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 							int start = index + var.length();
 							int end = segment.length();
-							result.append(segment.substring(start, end));
+							result.append(segment.substring(start, end)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 						}
 					} else {
-						result.append(segment);
+						result.append(segment); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
 				}
 				srcValue = IPath.fromPortableString(result.toString());
@@ -1371,7 +1371,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	 * @param depth The depth of the subtree to count
 	 * @param phantom If true, phantoms are included, otherwise they are ignored.
 	 */
-	public int countResources(IPath root, int depth, final boolean phantom) {
+	public int countResources(IPath root, int depth, final boolean phantom) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!tree.includes(root)) {
 			return 0;
 		}
@@ -1441,7 +1441,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	 * cleared before being created and thus any sync info already existing at that namespace
 	 * (as indicated by an already existing phantom resource) will be lost.
 	 */
-	public ResourceInfo createResource(IResource resource, ResourceInfo info, boolean phantom, boolean overwrite, boolean keepSyncInfo) throws CoreException {
+	public ResourceInfo createResource(IResource resource, ResourceInfo info, boolean phantom, boolean overwrite, boolean keepSyncInfo) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		info = info == null ? newElement(resource.getType()) : (ResourceInfo) info.clone();
 		ResourceInfo original = getResourceInfo(resource.getFullPath(), true, false);
 		if (phantom) {
@@ -1487,7 +1487,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		return delete(resources, updateFlags, monitor);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus delete(IResource[] resources, int updateFlags, IProgressMonitor monitor) throws CoreException {
 
 		String message = Messages.resources_deleteProblem;
@@ -1501,7 +1501,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		try {
 			prepareOperation(getRoot(), subMonitor);
 			beginOperation(true);
-			for (IResource r : resources) {
+			for (IResource r : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Resource resource = (Resource) r;
 				if (resource == null) {
 					subMonitor.split(1);
@@ -1534,7 +1534,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void deleteMarkers(IMarker[] markers) throws CoreException {
 		Assert.isNotNull(markers);
 		if (markers.length == 0) {
@@ -1545,7 +1545,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		try {
 			prepareOperation(null, null);
 			beginOperation(true);
-			for (IMarker marker : markers) {
+			for (IMarker marker : markers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (marker != null && marker.getResource() != null) {
 					markerManager.removeMarker(marker.getResource(), marker.getId());
 				}
@@ -1566,7 +1566,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		IPath path = resource.getFullPath();
 		if (path.equals(IPath.ROOT)) {
 			IProject[] children = getRoot().getProjects(IContainer.INCLUDE_HIDDEN);
-			for (IProject element : children) {
+			for (IProject element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				tree.deleteElement(element.getFullPath());
 			}
 		} else {
@@ -1580,7 +1580,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	 * registered resource change listeners are notified.  If autobuilding is
 	 * enabled, a build is run.
 	 */
-	public void endOperation(ISchedulingRule rule, boolean build) throws CoreException {
+	public void endOperation(ISchedulingRule rule, boolean build) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		WorkManager workManager = getWorkManager();
 		//don't do any end operation work if we failed to check in
 		if (workManager.checkInFailed(rule)) {
@@ -1689,7 +1689,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	 * @see IWorkspace#build(int, IProgressMonitor)
 	 * @see IWorkspaceDescription#getBuildOrder()
 	 */
-	public IBuildConfiguration[] getBuildOrder() {
+	public IBuildConfiguration[] getBuildOrder() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Return the build order cache.
 		if (buildOrder != null) {
 			return buildOrder;
@@ -1702,7 +1702,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 
 			// convert from project names to active project buildConfigs
 			// and eliminate non-existent and closed projects
-			for (String element : order) {
+			for (String element : order) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IProject project = getRoot().getProject(element);
 				if (project.isAccessible()) {
 					configs.add(((Project) project).internalGetActiveBuildConfig());
@@ -1750,17 +1750,17 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		return contentDescriptionManager;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Map<IProject, IProject[]> getDanglingReferences() {
 		IProject[] projects = getRoot().getProjects(IContainer.INCLUDE_HIDDEN);
-		Map<IProject, IProject[]> result = new HashMap<>(projects.length);
-		for (IProject project : projects) {
+		Map<IProject, IProject[]> result = new HashMap<>(projects.length); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!project.isAccessible()) {
 				continue;
                         }
 			IProject[] refs = ((Project)project).internalGetDescription().getReferencedProjects(false);
-			List<IProject> dangling = new ArrayList<>(refs.length);
-			for (IProject ref : refs) {
+			List<IProject> dangling = new ArrayList<>(refs.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (IProject ref : refs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!ref.exists()) {
 					dangling.add(ref);
 				}
@@ -1863,7 +1863,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	 *
 	 * This method DOES NOT throw an exception if the resource is not found.
 	 */
-	public ResourceInfo getResourceInfo(IPath path, boolean phantom, boolean mutable) {
+	public ResourceInfo getResourceInfo(IPath path, boolean phantom, boolean mutable) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			if (path.segmentCount() == 0) {
 				ResourceInfo info = (ResourceInfo) tree.getTreeData();
@@ -1939,7 +1939,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	 * try to create a new hook if a user has one defined as an extension. Otherwise
 	 * use the Core's implementation as the default.
 	 */
-	protected void initializeMoveDeleteHook() {
+	protected void initializeMoveDeleteHook() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			if (!canCreateExtensions()) {
 				return;
@@ -2000,7 +2000,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	 * try to create a new hook if a user has one defined as an extension.
 	 * Otherwise use the Core's implementation as the default.
 	 */
-	protected void initializeTeamHook() {
+	protected void initializeTeamHook() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			if (!canCreateExtensions()) {
 				return;
@@ -2045,7 +2045,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	 * A file modification validator hasn't been initialized. Check the extension point and
 	 * try to create a new validator if a user has one defined as an extension.
 	 */
-	protected void initializeValidator() {
+	protected void initializeValidator() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		shouldValidate = false;
 		if (!canCreateExtensions()) {
 			return;
@@ -2115,7 +2115,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		return result;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IProjectDescription loadProjectDescription(IPath path) throws CoreException {
 		IProjectDescription result = null;
 		IOException e = null;
@@ -2148,7 +2148,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		return move(resources, destination, updateFlags, monitor);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus move(IResource[] resources, IPath destination, int updateFlags, IProgressMonitor monitor) throws CoreException {
 		Assert.isLegal(resources != null);
 
@@ -2166,7 +2166,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		try {
 			prepareOperation(getRoot(), subMonitor);
 			beginOperation(true);
-			for (int i = 0; i < resources.length; i++) {
+			for (int i = 0; i < resources.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Resource resource = (Resource) resources[i];
 				if (resource == null || isDuplicate(resources, i)) {
 					subMonitor.split(1);
@@ -2233,7 +2233,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	/**
 	 * Create and return a new tree element of the given type.
 	 */
-	protected ResourceInfo newElement(int type) {
+	protected ResourceInfo newElement(int type) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourceInfo result = null;
 		switch (type) {
 			case IResource.FILE :
@@ -2265,18 +2265,18 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		return result;
 	}
 
-	public Resource newResource(IPath path, int type) {
+	public Resource newResource(IPath path, int type) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String message;
 		switch (type) {
 			case IResource.FOLDER :
 				if (path.segmentCount() < ICoreConstants.MINIMUM_FOLDER_SEGMENT_LENGTH) {
-					message = "Path must include project and resource name: " + path.toString(); //$NON-NLS-1$
+					message = "Path must include project and resource name: " + path.toString(); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					Assert.isLegal(false, message);
 				}
 				return new Folder(path.makeAbsolute(), this);
 			case IResource.FILE :
 				if (path.segmentCount() < ICoreConstants.MINIMUM_FILE_SEGMENT_LENGTH) {
-					message = "Path must include project and resource name: " + path.toString(); //$NON-NLS-1$
+					message = "Path must include project and resource name: " + path.toString(); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					Assert.isLegal(false, message);
 				}
 				return new File(path.makeAbsolute(), this);
@@ -2341,7 +2341,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	 * </ul>
 	 * @see ResourcesPlugin#getWorkspace()
 	 */
-	public IStatus open(IProgressMonitor monitor) throws CoreException {
+	public IStatus open(IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!localMetaArea.hasSavedWorkspace()) {
 			localMetaArea.createMetaArea();
 		}
@@ -2394,7 +2394,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	 * With that, if user did not specified any encoding, all projects created in
 	 * this workspace will get explicit UTF-8 encoding set.
 	 */
-	private void setExplicitWorkspaceEncoding() {
+	private void setExplicitWorkspaceEncoding() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// ResourcesPlugin.getEncoding() defaults to JVM "file.encoding" value
 		// which is *always* set in the JVM, so it can't be used.
 		// Therefore check preferences directly (encoding could be set even in a new
@@ -2406,7 +2406,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		if (defaultEncoding == null || defaultEncoding.isBlank()) {
 			// Check if -Dfile.encoding= startup argument was given to Eclipse's JVM
 			List<String> commandLineArgs = ManagementFactory.getRuntimeMXBean().getInputArguments();
-			for (String arg : commandLineArgs) {
+			for (String arg : commandLineArgs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (arg.startsWith("-Dfile.encoding=")) { //$NON-NLS-1$
 					defaultEncoding = arg.substring("-Dfile.encoding=".length()); //$NON-NLS-1$
 					// continue, it can be specified multiple times, last one wins.
@@ -2459,7 +2459,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 
 	protected boolean refreshRequested() {
 		String[] args = Platform.getCommandLineArgs();
-		for (String arg : args) {
+		for (String arg : args) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (arg.equalsIgnoreCase(REFRESH_ON_STARTUP)) {
 				return true;
 			}
@@ -2490,7 +2490,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		run(action, defaultRoot, IWorkspace.AVOID_UPDATE, monitor);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run(ICoreRunnable action, ISchedulingRule rule, int options, IProgressMonitor monitor) throws CoreException {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, Policy.totalWork); // $NON-NLS-1$
 		int depth = -1;
@@ -2538,7 +2538,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		return this.save(full, false, monitor);
 	}
 
-	public IStatus save(boolean full, boolean keepConsistencyWhenCanceled, IProgressMonitor monitor) throws CoreException {
+	public IStatus save(boolean full, boolean keepConsistencyWhenCanceled, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String message;
 		if (full) {
 			//according to spec it is illegal to start a full save inside another operation
@@ -2601,7 +2601,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	/**
 	 * Shuts down the workspace managers.
 	 */
-	protected void shutdown(IProgressMonitor monitor) throws CoreException {
+	protected void shutdown(IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IManager[] managers = { buildManager, propertyManager, pathVariableManager, charsetManager, fileSystemManager,
 				markerManager, _workManager, aliasManager, refreshManager, contentDescriptionManager, natureManager,
 				filterManager };
@@ -2611,7 +2611,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 			MultiStatus status = new MultiStatus(ResourcesPlugin.PI_RESOURCES, IResourceStatus.INTERNAL_ERROR, message,
 					null);
 			// best effort to shutdown every object and free resources
-			for (IManager manager : managers) {
+			for (IManager manager : managers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (manager == null) {
 					subMonitor.worked(1);
 				} else {
@@ -2653,7 +2653,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	/**
 	 * Starts all the workspace manager classes.
 	 */
-	protected void startup(IProgressMonitor monitor) throws CoreException {
+	protected void startup(IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// ensure the tree is locked during the startup notification
 		try {
 			_workManager = new WorkManager(this);
@@ -2701,10 +2701,10 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	 * structure suitable for debug purposes.
 	 */
 	public String toDebugString() {
-		final StringBuilder buffer = new StringBuilder("\nDump of " + this + ":\n"); //$NON-NLS-1$ //$NON-NLS-2$
-		buffer.append("  parent: " + tree.getParent()); //$NON-NLS-1$
+		final StringBuilder buffer = new StringBuilder("\nDump of " + this + ":\n"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		buffer.append("  parent: " + tree.getParent()); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		IElementContentVisitor visitor = (unused, requestor, elementContents) -> {
-			buffer.append("\n  " + requestor.requestPath() + ": " + elementContents); //$NON-NLS-1$ //$NON-NLS-2$
+			buffer.append("\n  " + requestor.requestPath() + ": " + elementContents); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			return true;
 		};
 		new ElementTreeIterator(tree, IPath.ROOT).iterate(visitor);
@@ -2714,20 +2714,20 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	/** for debugging only **/
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + "[localMetaArea=" + localMetaArea.getLocation() + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+		return getClass().getSimpleName() + "[localMetaArea=" + localMetaArea.getLocation() + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	public void updateModificationStamp(ResourceInfo info) {
 		info.incrementModificationStamp();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus validateEdit(final IFile[] files, final Object context) {
 		// if validation is turned off then just return
 		if (!shouldValidate) {
 			String message = Messages.resources_readOnly2;
 			MultiStatus result = new MultiStatus(ResourcesPlugin.PI_RESOURCES, IResourceStatus.READ_ONLY_LOCAL, message, null);
-			for (IFile file : files) {
+			for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (file.isReadOnly()) {
 					IPath filePath = file.getFullPath();
 					message = NLS.bind(Messages.resources_readOnly, filePath);
@@ -2814,7 +2814,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	 *
 	 * @see IFileModificationValidator#validateSave(IFile)
 	 */
-	protected void validateSave(final IFile file) throws CoreException {
+	protected void validateSave(final IFile file) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// if validation is turned off then just return
 		if (!shouldValidate) {
 			return;
@@ -2859,7 +2859,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 		return Status.OK_STATUS;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void write(Map<IFile, byte[]> contentMap, boolean force, boolean derived, boolean keepHistory,
 			IProgressMonitor monitor, ExecutorService executorService) throws CoreException {
 		Objects.requireNonNull(contentMap);
@@ -2869,7 +2869,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 				| (keepHistory ? IResource.KEEP_HISTORY : IResource.NONE);
 		int createFlags = (force ? IResource.FORCE : IResource.NONE) | (derived ? IResource.DERIVED : IResource.NONE);
 		SubMonitor subMon = SubMonitor.convert(monitor, contentMap.size());
-		for (Entry<IFile, byte[]> e : contentMap.entrySet()) {
+		for (Entry<IFile, byte[]> e : contentMap.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IFile file = Objects.requireNonNull(e.getKey());
 			byte[] content = Objects.requireNonNull(e.getValue());
 			if (file.exists()) {
@@ -2886,7 +2886,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 				}
 			}
 		}
-		for (Entry<File, byte[]> e : filesToReplace.entrySet()) {
+		for (Entry<File, byte[]> e : filesToReplace.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			File file = e.getKey();
 			byte[] content = e.getValue();
 			file.setContents(content, updateFlags, subMon.split(1));
@@ -2897,10 +2897,10 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 	}
 
 	/** @see File#create(byte[], int, IProgressMonitor) **/
-	private void createMultiple(ConcurrentMap<File, byte[]> filesToCreate, int updateFlags, IProgressMonitor monitor,
+	private void createMultiple(ConcurrentMap<File, byte[]> filesToCreate, int updateFlags, IProgressMonitor monitor, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			ExecutorService executorService) throws CoreException {
 		Set<File> files = filesToCreate.keySet();
-		for (File file : files) {
+		for (File file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			file.checkValidPath(file.path, IResource.FILE, true);
 		}
 
@@ -2912,7 +2912,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 			NullProgressMonitor npm = new NullProgressMonitor();
 			try {
 				prepareOperation(rule, npm);
-				for (File file : files) {
+				for (File file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					file.checkCreatable();
 				}
 				beginOperation(true);
@@ -2924,7 +2924,7 @@ public class Workspace extends PlatformObject implements IWorkspace, ICoreConsta
 					// OperationCanceledException when the operation of setting contents has been
 					// canceled
 					// In either case delete from the workspace and disk
-					for (File file : files) {
+					for (File file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						try {
 							deleteResource(file);
 							IFileStore store = file.getStore();

@@ -62,17 +62,17 @@ public class BreakpointTests {
 		deferredBreakpoints(true);
 	}
 
-	private void deferredBreakpoints(boolean sepVM) throws Exception, CoreException, DebugException {
+	private void deferredBreakpoints(boolean sepVM) throws Exception, CoreException, DebugException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String fileName = "breakpoints"; //$NON-NLS-1$
-		IFile file = getIFile(fileName + ".xml"); //$NON-NLS-1$
-		List<AntLineBreakpoint> bps = new ArrayList<>();
+		IFile file = getIFile(fileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		List<AntLineBreakpoint> bps = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		bps.add(createLineBreakpoint(5, file));
 		bps.add(createLineBreakpoint(14, file));
 		AntThread thread = null;
 		try {
 			thread = launchToBreakpoint(fileName, true, sepVM);
 			assertNotNull(thread, "Breakpoint not hit within timeout period"); //$NON-NLS-1$
-			while (!bps.isEmpty()) {
+			while (!bps.isEmpty()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IBreakpoint hit = getBreakpoint(thread);
 				assertNotNull(hit, "suspended, but not by breakpoint"); //$NON-NLS-1$
 				assertTrue(bps.contains(hit), "hit un-registered breakpoint"); //$NON-NLS-1$
@@ -109,7 +109,7 @@ public class BreakpointTests {
 
 	private void disabledBreakpoint(boolean separateVM) throws Exception, CoreException {
 		String fileName = "breakpoints"; //$NON-NLS-1$
-		ILineBreakpoint bp = createLineBreakpoint(5, fileName + ".xml"); //$NON-NLS-1$
+		ILineBreakpoint bp = createLineBreakpoint(5, fileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		bp.setEnabled(false);
 		AntDebugTarget debugTarget = null;
 		try {
@@ -131,10 +131,10 @@ public class BreakpointTests {
 		enableDisableBreapoint(true);
 	}
 
-	private void enableDisableBreapoint(boolean sepVM) throws Exception, CoreException {
+	private void enableDisableBreapoint(boolean sepVM) throws Exception, CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		String fileName = "breakpoints"; //$NON-NLS-1$
-		ILineBreakpoint bp = createLineBreakpoint(5, fileName + ".xml"); //$NON-NLS-1$
+		ILineBreakpoint bp = createLineBreakpoint(5, fileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		bp.setEnabled(true);
 		AntThread thread = null;
 		try {
@@ -172,9 +172,9 @@ public class BreakpointTests {
 		skipLineBreakpoint(true);
 	}
 
-	private void skipLineBreakpoint(boolean sepVM) throws Exception {
+	private void skipLineBreakpoint(boolean sepVM) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String fileName = "breakpoints"; //$NON-NLS-1$
-		IFile file = getIFile(fileName + ".xml"); //$NON-NLS-1$
+		IFile file = getIFile(fileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		ILineBreakpoint bp = createLineBreakpoint(5, file);
 		createLineBreakpoint(15, file);
 		AntThread thread = null;
@@ -223,9 +223,9 @@ public class BreakpointTests {
 		breakpoints(true, "entry2", 4, 24); //$NON-NLS-1$
 	}
 
-	private void breakpoints(boolean sepVM, String defaultTargetName, int firstLineNumber, int secondLineNumber) throws CoreException, InterruptedException {
+	private void breakpoints(boolean sepVM, String defaultTargetName, int firstLineNumber, int secondLineNumber) throws CoreException, InterruptedException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String fileName = "breakpoints"; //$NON-NLS-1$
-		IFile file = getIFile(fileName + ".xml"); //$NON-NLS-1$
+		IFile file = getIFile(fileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		ILineBreakpoint bp = createLineBreakpoint(firstLineNumber, file);
 		AntThread thread = null;
 		try {

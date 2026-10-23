@@ -32,7 +32,7 @@ import org.eclipse.core.runtime.CoreException;
  * Only verifies previous session.
  */
 public class Snapshot5Test {
-	public void testVerifyPreviousSession() throws CoreException {
+	public void testVerifyPreviousSession() throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// MyProject
 		IProject project = getWorkspace().getRoot().getProject(SnapshotTest.PROJECT_1);
 		assertTrue(project.exists());

@@ -58,7 +58,7 @@ import org.eclipse.swt.graphics.Point;
  */
 public class DocumentMerger {
 
-	private static final String DIFF_RANGE_CATEGORY = CompareUIPlugin.PLUGIN_ID + ".DIFF_RANGE_CATEGORY"; //$NON-NLS-1$
+	private static final String DIFF_RANGE_CATEGORY = CompareUIPlugin.PLUGIN_ID + ".DIFF_RANGE_CATEGORY"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/** Selects between smartTokenDiff and mergingTokenDiff */
 	private static final boolean USE_MERGING_TOKEN_DIFF= false;
@@ -154,7 +154,7 @@ public class DocumentMerger {
 			return (pos >= p.offset) && (pos < (p.offset+p.length));
 		}
 
-		public String changeType() {
+		public String changeType() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			boolean leftEmpty= fLeftPos.length == 0;
 			boolean rightEmpty= fRightPos.length == 0;
 
@@ -186,7 +186,7 @@ public class DocumentMerger {
 			return getCompareConfiguration().getImage(code);
 		}
 
-		Position createPosition(IDocument doc, Position range, int start, int end) {
+		Position createPosition(IDocument doc, Position range, int start, int end) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			try {
 				int l= end-start;
 				if (range != null) {
@@ -222,7 +222,7 @@ public class DocumentMerger {
 
 		void add(Diff d) {
 			if (fDiffs == null) {
-				fDiffs= new ArrayList<>();
+				fDiffs= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			}
 			fDiffs.add(d);
 		}
@@ -243,7 +243,7 @@ public class DocumentMerger {
 
 		public boolean isResolved() {
 			if (!fResolved && fDiffs != null) {
-				for (Diff d : fDiffs) {
+				for (Diff d : fDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (!d.isResolved()) {
 						return false;
 					}
@@ -310,8 +310,8 @@ public class DocumentMerger {
 
 		public Diff[] getChangeDiffs(int contributor, IRegion region) {
 			if (fDiffs != null && intersectsRegion(contributor, region)) {
-				List<Diff> result = new ArrayList<>();
-				for (Diff diff : fDiffs) {
+				List<Diff> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+				for (Diff diff : fDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (diff.intersectsRegion(contributor, region)) {
 						result.add(diff);
 					}
@@ -347,7 +347,7 @@ public class DocumentMerger {
 
 		public Iterator<Diff> childIterator() {
 			if (fDiffs == null) {
-				return new ArrayList<Diff>().iterator();
+				return new ArrayList<Diff>().iterator(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			}
 			return fDiffs.iterator();
 		}
@@ -361,9 +361,9 @@ public class DocumentMerger {
 	 * Perform a two level 2- or 3-way diff.
 	 * The first level is based on line comparison, the second level on token comparison.
 	 */
-	public void doDiff() throws CoreException {
+	public void doDiff() throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
-		fChangeDiffs= new ArrayList<>();
+		fChangeDiffs= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IDocument lDoc = getDocument(MergeViewerContentProvider.LEFT_CONTRIBUTOR);
 		IDocument rDoc = getDocument(MergeViewerContentProvider.RIGHT_CONTRIBUTOR);
 
@@ -410,7 +410,7 @@ public class DocumentMerger {
 
 		final Object[] result= new Object[1];
 		final DocLineComparator sa= sancestor, sl= sleft, sr= sright;
-		IRunnableWithProgress runnable= monitor -> {
+		IRunnableWithProgress runnable= monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 			try {
 				result[0]= RangeDifferencer.findRanges(monitor, sa, sl, sr);
 			} catch (OutOfMemoryError ex) {
@@ -433,7 +433,7 @@ public class DocumentMerger {
 				lDoc, lRegion, 0, lDoc.getLength(),
 				rDoc, rRegion, 0, rDoc.getLength());
 
-			fAllDiffs = new ArrayList<>();
+			fAllDiffs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			fAllDiffs.add(diff);
 			throw new CoreException(new Status(IStatus.ERROR, CompareUIPlugin.PLUGIN_ID, 0, CompareMessages.DocumentMerger_1, ex.getTargetException()));
 		} catch (InterruptedException ex) {
@@ -443,7 +443,7 @@ public class DocumentMerger {
 				lDoc, lRegion, 0, lDoc.getLength(),
 				rDoc, rRegion, 0, rDoc.getLength());
 
-			fAllDiffs = new ArrayList<>();
+			fAllDiffs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			fAllDiffs.add(diff);
 			return;
 		}
@@ -464,8 +464,8 @@ public class DocumentMerger {
 		Optional<IIgnoreWhitespaceContributor> rDocIgnonerWhitespaceContributor = fInput
 				.createIgnoreWhitespaceContributor(rDoc);
 
-		ArrayList<Diff> newAllDiffs = new ArrayList<>();
-		for (RangeDifference es : e) {
+		ArrayList<Diff> newAllDiffs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (RangeDifference es : e) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int ancestorStart= 0;
 			int ancestorEnd= 0;
 			if (sancestor != null) {
@@ -565,7 +565,7 @@ public class DocumentMerger {
 		return false;
 	}
 
-	public Diff findDiff(char type, int pos) throws CoreException {
+	public Diff findDiff(char type, int pos) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		IDocument aDoc= null;
 		IDocument lDoc= getDocument(MergeViewerContentProvider.LEFT_CONTRIBUTOR);
@@ -599,7 +599,7 @@ public class DocumentMerger {
 
 		final Object[] result= new Object[1];
 		final DocLineComparator sa= sancestor, sl= sleft, sr= sright;
-		IRunnableWithProgress runnable= monitor -> {
+		IRunnableWithProgress runnable= monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 			try {
 				result[0]= RangeDifferencer.findRanges(monitor, sa, sl, sr);
 			} catch (OutOfMemoryError ex) {
@@ -622,7 +622,7 @@ public class DocumentMerger {
 		}
 
 		if (e != null) {
-			for (RangeDifference es : e) {
+			for (RangeDifference es : e) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int kind= es.kind();
 
 				int ancestorStart= 0;
@@ -746,7 +746,7 @@ public class DocumentMerger {
 	 * @param length number of lines
 	 * @return the contents of the specified line range as a String
 	 */
-	private String extract2(IDocument doc, ITokenComparator tc, int start, int length) {
+	private String extract2(IDocument doc, ITokenComparator tc, int start, int length) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int count= tc.getRangeCount();
 		if (length > 0 && count > 0) {
 
@@ -789,7 +789,7 @@ public class DocumentMerger {
 	 * Performs a "smart" token based 3-way diff on the character range specified by the given baseDiff.
 	 * It is "smart" because it tries to minimize the number of token diffs by merging them.
 	 */
-	private void mergingTokenDiff(Diff baseDiff,
+	private void mergingTokenDiff(Diff baseDiff, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 				IDocument ancestorDoc, String a,
 				IDocument rightDoc, String d,
 				IDocument leftDoc, String s) {
@@ -807,7 +807,7 @@ public class DocumentMerger {
 		ITokenComparator sy= createTokenComparator(s);
 
 		RangeDifference[] r= RangeDifferencer.findRanges(sa, sy, sm);
-		for (int i= 0; i < r.length; i++) {
+		for (int i= 0; i < r.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			RangeDifference  es= r[i];
 			// determine range of diffs in one line
 			int start= i;
@@ -820,7 +820,7 @@ public class DocumentMerger {
 				// silently ignored
 			}
 			i++;
-			for (; i < r.length; i++) {
+			for (; i < r.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				es= r[i];
 				try {
 					if ((leftLine != leftDoc.getLineOfOffset(leftStart+sy.getTokenStart(es.leftStart()))) || (rightLine != rightDoc.getLineOfOffset(rightStart+sm.getTokenStart(es.rightStart())))) {
@@ -834,7 +834,7 @@ public class DocumentMerger {
 
 			// find first diff from left
 			RangeDifference first= null;
-			for (int ii= start; ii < end; ii++) {
+			for (int ii= start; ii < end; ii++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				es= r[ii];
 				if (useChange(es.kind())) {
 					first= es;
@@ -844,7 +844,7 @@ public class DocumentMerger {
 
 			// find first diff from mine
 			RangeDifference last= null;
-			for (int ii= end-1; ii >= start; ii--) {
+			for (int ii= end-1; ii >= start; ii--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				es= r[ii];
 				if (useChange(es.kind())) {
 					last= es;
@@ -879,7 +879,7 @@ public class DocumentMerger {
 	/*
 	 * Performs a token based 3-way diff on the character range specified by the given baseDiff.
 	 */
-	private void simpleTokenDiff(final Diff baseDiff,
+	private void simpleTokenDiff(final Diff baseDiff, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 				IDocument ancestorDoc, String a,
 				IDocument rightDoc, String d,
 				IDocument leftDoc, String s) {
@@ -898,7 +898,7 @@ public class DocumentMerger {
 		ITokenComparator sy= createTokenComparator(s);
 
 		RangeDifference[] e= RangeDifferencer.findRanges(sa, sy, sm);
-		for (RangeDifference es : e) {
+		for (RangeDifference es : e) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int kind= es.kind();
 			if (kind != RangeDifference.NOCHANGE) {
 
@@ -959,7 +959,7 @@ public class DocumentMerger {
 	 * Returns the start line and the number of lines which correspond to the given position.
 	 * Starting line number is 0 based.
 	 */
-	protected Point getLineRange(IDocument doc, Position p, Point region) {
+	protected Point getLineRange(IDocument doc, Position p, Point region) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (p == null || doc == null) {
 			region.x= 0;
@@ -1005,7 +1005,7 @@ public class DocumentMerger {
 	}
 
 	public Diff findDiff(Position p, boolean left) {
-		for (Diff diff : fAllDiffs) {
+		for (Diff diff : fAllDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Position diffPos;
 			if (left) {
 				diffPos = diff.fLeftPos;
@@ -1030,7 +1030,7 @@ public class DocumentMerger {
 	 * Returns the virtual position for the given view position.
 	 * @return the virtual position for the given view position
 	 */
-	public int realToVirtualPosition(char contributor, int vpos) {
+	public int realToVirtualPosition(char contributor, int vpos) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (fAllDiffs == null) {
 			return vpos;
@@ -1040,7 +1040,7 @@ public class DocumentMerger {
 		int virtualPos= 0;	// virtual position
 		Point region= new Point(0, 0);
 
-		for (Diff diff : fAllDiffs) {
+		for (Diff diff : fAllDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Position pos= diff.getPosition(contributor);
 			getLineRange(getDocument(contributor),pos, region);
 			int realHeight= region.y;
@@ -1065,7 +1065,7 @@ public class DocumentMerger {
 	 * maps given virtual position into a real view position of this view.
 	 * @return the real view position
 	 */
-	public int virtualToRealPosition(char contributor, int v) {
+	public int virtualToRealPosition(char contributor, int v) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (fAllDiffs == null) {
 			return v;
@@ -1075,7 +1075,7 @@ public class DocumentMerger {
 		int viewPos= 0;
 		Point region= new Point(0, 0);
 
-		for (Diff diff : fAllDiffs) {
+		for (Diff diff : fAllDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Position pos= diff.getPosition(contributor);
 			int viewHeight= getLineRange(getDocument(contributor), pos, region).y;
 			int virtualHeight= diff.getMaxDiffHeight();
@@ -1100,7 +1100,7 @@ public class DocumentMerger {
 	public int getVirtualHeight() {
 		int h= 1;
 		if (fAllDiffs != null) {
-			for (Diff diff : fAllDiffs) {
+			for (Diff diff : fAllDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				h+= diff.getMaxDiffHeight();
 			}
 		}
@@ -1113,14 +1113,14 @@ public class DocumentMerger {
 	public int getRightHeight() {
 		int h= 1;
 		if (fAllDiffs != null) {
-			for (Diff diff : fAllDiffs) {
+			for (Diff diff : fAllDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				h+= diff.getRightHeight();
 			}
 		}
 		return h;
 	}
 
-	public int findInsertionPoint(Diff diff, char type) {
+	public int findInsertionPoint(Diff diff, char type) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (diff != null) {
 			switch (type) {
 			case MergeViewerContentProvider.ANCESTOR_CONTRIBUTOR:
@@ -1149,15 +1149,15 @@ public class DocumentMerger {
 		if (fChangeDiffs == null) {
 			return new Diff[0];
 		}
-		List<Diff> intersectingDiffs = new ArrayList<>();
-		for (Diff diff : fChangeDiffs) {
+		List<Diff> intersectingDiffs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Diff diff : fChangeDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Diff[] changeDiffs = diff.getChangeDiffs(contributor, region);
 			Collections.addAll(intersectingDiffs, changeDiffs);
 		}
 		return intersectingDiffs.toArray(new Diff[intersectingDiffs.size()]);
 	}
 
-	public Diff findDiff(int viewportHeight, boolean synchronizedScrolling, Point size, int my) {
+	public Diff findDiff(int viewportHeight, boolean synchronizedScrolling, Point size, int my) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int virtualHeight= synchronizedScrolling ? getVirtualHeight() : getRightHeight();
 		if (virtualHeight < viewportHeight) {
 			return null;
@@ -1166,7 +1166,7 @@ public class DocumentMerger {
 		int yy, hh;
 		int y= 0;
 		if (fAllDiffs != null) {
-			for (Diff diff : fAllDiffs) {
+			for (Diff diff : fAllDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int h= synchronizedScrolling ? diff.getMaxDiffHeight()
 											: diff.getRightHeight();
 				if (useChange(diff.getKind()) && !diff.fIsWhitespace) {
@@ -1193,14 +1193,14 @@ public class DocumentMerger {
 
 	public Iterator<Diff> changesIterator() {
 		if (fChangeDiffs == null) {
-			return new ArrayList<Diff>().iterator();
+			return new ArrayList<Diff>().iterator(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 		return fChangeDiffs.iterator();
 	}
 
 	public Iterator<Diff> rangesIterator() {
 		if (fAllDiffs == null) {
-			return new ArrayList<Diff>().iterator();
+			return new ArrayList<Diff>().iterator(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 		return fAllDiffs.iterator();
 	}
@@ -1229,7 +1229,7 @@ public class DocumentMerger {
 	 * doesn't reveal anything.
 	 * Returns true if copy was successful.
 	 */
-	public boolean copy(Diff diff, boolean leftToRight) {
+	public boolean copy(Diff diff, boolean leftToRight) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (diff != null) {
 			Position fromPos= null;
@@ -1309,7 +1309,7 @@ public class DocumentMerger {
 
 	public Diff findDiff(char contributor, int rangeStart, int rangeEnd) {
 		if (hasChanges()) {
-			for (Iterator<Diff> iterator = changesIterator(); iterator.hasNext();) {
+			for (Iterator<Diff> iterator = changesIterator(); iterator.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Diff diff = iterator.next();
 				if (diff.isDeleted() || diff.getKind() == RangeDifference.NOCHANGE) {
 					continue;
@@ -1332,11 +1332,11 @@ public class DocumentMerger {
 		return findNext(contributor, fChangeDiffs, start, end, deep);
 	}
 
-	private Diff findNext(char contributor, List<Diff> v, int start, int end, boolean deep) {
+	private Diff findNext(char contributor, List<Diff> v, int start, int end, boolean deep) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (v == null) {
 			return null;
 		}
-		for (Diff diff : v) {
+		for (Diff diff : v) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Position p= diff.getPosition(contributor);
 			if (p != null) {
 				int startOffset= p.getOffset();
@@ -1364,11 +1364,11 @@ public class DocumentMerger {
 		return findPrev(contributor, fChangeDiffs, start, end, deep);
 	}
 
-	private Diff findPrev(char contributor, List<Diff> v, int start, int end, boolean deep) {
+	private Diff findPrev(char contributor, List<Diff> v, int start, int end, boolean deep) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (v == null) {
 			return null;
 		}
-		for (int i= v.size()-1; i >= 0; i--) {
+		for (int i= v.size()-1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Diff diff= v.get(i);
 			Position p= diff.getPosition(contributor);
 			if (p != null) {

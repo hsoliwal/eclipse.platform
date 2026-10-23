@@ -101,14 +101,14 @@ public class PreviewPatchPage2 extends WizardPage {
 		Assert.isNotNull(configuration);
 		this.fPatcher = patcher;
 		this.fConfiguration = configuration;
-		this.fConfiguration.addPropertyChangeListener(event -> {
+		this.fConfiguration.addPropertyChangeListener(event -> { //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 			if (event.getProperty().equals(CompareConfiguration.IGNORE_WHITESPACE)){
 				rebuildTree();
 			}
 		});
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createControl(Composite parent) {
 		fToolkit = new FormToolkit(parent.getDisplay());
 		fToolkit.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
@@ -119,7 +119,7 @@ public class PreviewPatchPage2 extends WizardPage {
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		initializeDialogUnits(parent);
 
-		fInput = new PatchCompareEditorInput(getPatcher(), getCompareConfiguration()) {
+		fInput = new PatchCompareEditorInput(getPatcher(), getCompareConfiguration()) { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			protected void fillContextMenu(IMenuManager manager) {
 				if (isShowAll()) {
@@ -144,7 +144,7 @@ public class PreviewPatchPage2 extends WizardPage {
 		Control c = fInput.createContents(composite);
 		initializeActions();
 		fInput.contributeDiffViewerToolbarItems(getContributedActions(), getPatcher().isWorkspacePatch());
-		fInput.getViewer().addSelectionChangedListener(event -> {
+		fInput.getViewer().addSelectionChangedListener(event -> { //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 			ISelection s = event.getSelection();
 			if (s != null && !s.isEmpty()) {
 				if (s instanceof IStructuredSelection ss) {
@@ -169,7 +169,7 @@ public class PreviewPatchPage2 extends WizardPage {
 	private void updateActions(IStructuredSelection ss) {
 		fExcludeAction.setEnabled(false);
 		fIncludeAction.setEnabled(false);
-		for (Object element : ss) {
+		for (Object element : ss) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element instanceof PatchDiffNode) {
 				if (((PatchDiffNode) element).isEnabled()) {
 					fExcludeAction.setEnabled(true);
@@ -196,10 +196,10 @@ public class PreviewPatchPage2 extends WizardPage {
 		return new Action[]{ fIgnoreWhiteSpace };
 	}
 
-	private void initializeActions() {
+	private void initializeActions() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		fMoveAction = new Action(PatchMessages.PreviewPatchPage2_RetargetAction, null) {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void run() {
 				Shell shell = getShell();
 				ISelection selection = fInput.getViewer().getSelection();
@@ -222,7 +222,7 @@ public class PreviewPatchPage2 extends WizardPage {
 		};
 		fMoveAction .setToolTipText(PatchMessages.PreviewPatchPage2_RetargetTooltip);
 		fMoveAction.setEnabled(true);
-		fInput.getViewer().addSelectionChangedListener(event -> {
+		fInput.getViewer().addSelectionChangedListener(event -> { //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 			IStructuredSelection sel= event.getStructuredSelection();
 			Object obj= sel.getFirstElement();
 			boolean enable = false;
@@ -242,7 +242,7 @@ public class PreviewPatchPage2 extends WizardPage {
 				ISelection selection = fInput.getViewer().getSelection();
 				if (selection instanceof TreeSelection treeSelection){
 					Iterator<?> iter = treeSelection.iterator();
-					while (iter.hasNext()){
+					while (iter.hasNext()){ //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						Object obj = iter.next();
 						if (obj instanceof PatchDiffNode node){
 							node.setEnabled(false);
@@ -251,7 +251,7 @@ public class PreviewPatchPage2 extends WizardPage {
 					}
 					updateActions(treeSelection);
 				}
-				fInput.getViewer().refresh();
+				fInput.getViewer().refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 			}
 		};
 		fExcludeAction.setEnabled(true);
@@ -262,7 +262,7 @@ public class PreviewPatchPage2 extends WizardPage {
 				ISelection selection = fInput.getViewer().getSelection();
 				if (selection instanceof TreeSelection treeSelection){
 					Iterator<?> iter = treeSelection.iterator();
-					while (iter.hasNext()){
+					while (iter.hasNext()){ //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						Object obj = iter.next();
 						if (obj instanceof PatchDiffNode node){
 							node.setEnabled(true);
@@ -271,16 +271,16 @@ public class PreviewPatchPage2 extends WizardPage {
 					}
 					updateActions(treeSelection);
 				}
-				fInput.getViewer().refresh();
+				fInput.getViewer().refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 			}
 		};
 		fIncludeAction.setEnabled(true);
 
 		fIgnoreWhiteSpace = new Action(PatchMessages.PreviewPatchPage2_IgnoreWSAction, CompareUIPlugin.getImageDescriptor(ICompareUIConstants.IGNORE_WHITESPACE_ENABLED)){
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void run(){
 				try {
-					getContainer().run(false, true, monitor -> {
+					getContainer().run(false, true, monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 						monitor.beginTask(PatchMessages.PreviewPatchPage2_IgnoreWhitespace, IProgressMonitor.UNKNOWN);
 						if (isChecked() != getPatcher().isIgnoreWhitespace()) {
 							if (promptToRebuild(PatchMessages.PreviewPatchPage2_2)) {
@@ -301,10 +301,10 @@ public class PreviewPatchPage2 extends WizardPage {
 		fIgnoreWhiteSpace.setToolTipText(PatchMessages.PreviewPatchPage2_IgnoreWSTooltip);
 
 		fReversePatch = new Action(PatchMessages.PreviewPatchPage_ReversePatch_text){
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void run(){
 				try {
-					getContainer().run(true, true, monitor -> {
+					getContainer().run(true, true, monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 						monitor.beginTask(PatchMessages.PreviewPatchPage2_CalculateReverse, IProgressMonitor.UNKNOWN);
 						if (isChecked() != getPatcher().isReversed()) {
 							if (promptToRebuild(PatchMessages.PreviewPatchPage2_3)) {
@@ -327,7 +327,7 @@ public class PreviewPatchPage2 extends WizardPage {
 		fReversePatch.setToolTipText(PatchMessages.PreviewPatchPage_ReversePatch_text);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
 		//Need to handle input and rebuild tree only when becoming visible
@@ -349,7 +349,7 @@ public class PreviewPatchPage2 extends WizardPage {
 		}
 	}
 
-	private boolean promptToRebuild(final String promptToConfirm){
+	private boolean promptToRebuild(final String promptToConfirm){ //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final Control ctrl = getControl();
 		final boolean[] result = new boolean[] { false };
 		if (ctrl != null && !ctrl.isDisposed()){
@@ -365,7 +365,7 @@ public class PreviewPatchPage2 extends WizardPage {
 				}
 			};
 			if (Display.getCurrent() == null) {
-				ctrl.getDisplay().syncExec(runnable);
+				ctrl.getDisplay().syncExec(runnable); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			} else {
 				runnable.run();
 			}
@@ -383,14 +383,14 @@ public class PreviewPatchPage2 extends WizardPage {
 				}
 			};
 			if (Display.getCurrent() == null) {
-				ctrl.getDisplay().syncExec(runnable);
+				ctrl.getDisplay().syncExec(runnable); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			} else {
 				runnable.run();
 			}
 		}
 	}
 
-	private void fillSegmentCombo() {
+	private void fillSegmentCombo() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (getPatcher().isWorkspacePatch()) {
 			fStripPrefixSegments.setEnabled(false);
 		} else {
@@ -403,7 +403,7 @@ public class PreviewPatchPage2 extends WizardPage {
 				}
 				length = getPatcher().calculatePrefixSegmentCount();
 				if (length != 99) {
-					for (int k = 1; k < length; k++) {
+					for (int k = 1; k < length; k++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						fStripPrefixSegments.add(Integer.toString(k));
 					}
 					fStripPrefixSegments.select(0);
@@ -417,7 +417,7 @@ public class PreviewPatchPage2 extends WizardPage {
 	/*
 	 *	Create the group for setting various patch options
 	 */
-	private void buildPatchOptionsGroup(final Form form) {
+	private void buildPatchOptionsGroup(final Form form) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Composite parent = form.getBody();
 
 		patchOptions = fToolkit.createExpandableComposite(parent, ExpandableComposite.TWISTIE | ExpandableComposite.CLIENT_INDENT);
@@ -451,7 +451,7 @@ public class PreviewPatchPage2 extends WizardPage {
 		// register listeners
 		final WorkspacePatcher patcher= getPatcher();
 		if (fStripPrefixSegments!=null) {
-			fStripPrefixSegments.addSelectionListener(
+			fStripPrefixSegments.addSelectionListener( //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 				new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -468,8 +468,8 @@ public class PreviewPatchPage2 extends WizardPage {
 		}
 
 
-		fFuzzField.addModifyListener(
-			unused -> {
+		fFuzzField.addModifyListener( //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
+			unused -> { //FLLDCIM: MARK — T02  LAMBDA
 				if (patcher.getFuzz() != getFuzzFactor()) {
 					if (promptToRebuild(PatchMessages.PreviewPatchPage2_5)) {
 						if (patcher.setFuzz(getFuzzFactor())) {
@@ -482,7 +482,7 @@ public class PreviewPatchPage2 extends WizardPage {
 			});
 	}
 
-	private void createFuzzFactorChooser(Composite parent) {
+	private void createFuzzFactorChooser(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final WorkspacePatcher patcher= getPatcher();
 		Composite pair= new Composite(parent, SWT.NONE);
 		GridLayout gl= new GridLayout(); gl.numColumns= 3; gl.marginHeight= gl.marginWidth= 0;
@@ -504,7 +504,7 @@ public class PreviewPatchPage2 extends WizardPage {
 
 		Button b= new Button(pair, SWT.PUSH);
 		b.setText(PatchMessages.PreviewPatchPage_GuessFuzz_text);
-			b.addSelectionListener(new SelectionAdapter() {
+			b.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						if (promptToRebuild(PatchMessages.PreviewPatchPage2_6)) {
@@ -533,7 +533,7 @@ public class PreviewPatchPage2 extends WizardPage {
 		GridData gd = new GridData(GridData.VERTICAL_ALIGN_CENTER
 				| GridData.HORIZONTAL_ALIGN_BEGINNING
 				| GridData.GRAB_HORIZONTAL);
-		generateRejects.addSelectionListener(new SelectionAdapter() {
+		generateRejects.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				getPatcher().setGenerateRejectFile(
@@ -550,7 +550,7 @@ public class PreviewPatchPage2 extends WizardPage {
 		GridData gd = new GridData(GridData.VERTICAL_ALIGN_CENTER
 				| GridData.HORIZONTAL_ALIGN_BEGINNING
 				| GridData.GRAB_HORIZONTAL);
-		showRemoved.addSelectionListener(new SelectionAdapter() {
+		showRemoved.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				fInput.setShowAll(showRemoved.getSelection());
@@ -561,13 +561,13 @@ public class PreviewPatchPage2 extends WizardPage {
 		showRemoved.setLayoutData(gd);
 	}
 
-	private void createReversePatchToggle(Composite pair) {
+	private void createReversePatchToggle(Composite pair) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final Button reversePatch = new Button(pair, SWT.CHECK);
 		reversePatch.setText(PatchMessages.PreviewPatchPage_ReversePatch_text);
 		GridData gd = new GridData(GridData.VERTICAL_ALIGN_CENTER
 				| GridData.HORIZONTAL_ALIGN_BEGINNING
 				| GridData.GRAB_HORIZONTAL);
-		reversePatch.addSelectionListener(new SelectionAdapter() {
+		reversePatch.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (fReversePatch != null) {
@@ -583,7 +583,7 @@ public class PreviewPatchPage2 extends WizardPage {
 		reversePatch.setLayoutData(gd);
 	}
 
-	private void createStripSegmentCombo(Composite parent) {
+	private void createStripSegmentCombo(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final WorkspacePatcher patcher= getPatcher();
 
 		Composite pair= new Composite(parent, SWT.NONE);
@@ -612,7 +612,7 @@ public class PreviewPatchPage2 extends WizardPage {
 		GridData gd = new GridData(GridData.VERTICAL_ALIGN_CENTER
 				| GridData.HORIZONTAL_ALIGN_BEGINNING
 				| GridData.GRAB_HORIZONTAL);
-		showMatched.addSelectionListener(new SelectionAdapter() {
+		showMatched.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				fInput.setShowMatched(showMatched.getSelection());
@@ -653,7 +653,7 @@ public class PreviewPatchPage2 extends WizardPage {
 		final int[] result= new int[] { -1 };
 		try {
 			org.eclipse.compare.internal.Utilities
-					.executeRunnable(monitor -> result[0] = patcher.guessFuzzFactor(monitor));
+					.executeRunnable(monitor -> result[0] = patcher.guessFuzzFactor(monitor)); //FLLDCIM: MARK — T09  LAMBDA
 		} catch (InvocationTargetException | InterruptedException ex) {
 			// NeedWork
 		}
@@ -699,7 +699,7 @@ public class PreviewPatchPage2 extends WizardPage {
 		settings.put(GENERATE_REJECTS, generateRejects.getSelection());
 	}
 
-	private String countLines() {
+	private String countLines() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int added = 0, removed = 0;
 
 		IPreferenceStore store = CompareUIPlugin.getDefault().getPreferenceStore();
@@ -711,7 +711,7 @@ public class PreviewPatchPage2 extends WizardPage {
 
 			fPatcher.countLines();
 			FilePatch2[] fileDiffs = fPatcher.getDiffs();
-			for (FilePatch2 fileDiff : fileDiffs) {
+			for (FilePatch2 fileDiff : fileDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				added += fileDiff.getAddedLines();
 				removed += fileDiff.getRemovedLines();
 			}
@@ -721,13 +721,13 @@ public class PreviewPatchPage2 extends WizardPage {
 			Pattern addedPattern = Pattern.compile(addedLinesRegex);
 			Pattern removedPattern = Pattern.compile(removedLinesRegex);
 
-			for (FilePatch2 fileDiff : fPatcher.getDiffs()) {
-				for (IHunk hunk : fileDiff.getHunks()) {
-					for (String line : ((Hunk) hunk).getLines()) {
-						if (addedPattern.matcher(line).find()) {
+			for (FilePatch2 fileDiff : fPatcher.getDiffs()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				for (IHunk hunk : fileDiff.getHunks()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					for (String line : ((Hunk) hunk).getLines()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+						if (addedPattern.matcher(line).find()) { //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 							added++;
 						}
-						if (removedPattern.matcher(line).find()) {
+						if (removedPattern.matcher(line).find()) { //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 							removed++;
 						}
 					}
@@ -736,7 +736,7 @@ public class PreviewPatchPage2 extends WizardPage {
 		}
 
 		return NLS.bind(PatchMessages.PreviewPatchPage2_AddedRemovedLines,
-				added + "", removed + ""); //$NON-NLS-1$ //$NON-NLS-2$
+				added + "", removed + ""); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override

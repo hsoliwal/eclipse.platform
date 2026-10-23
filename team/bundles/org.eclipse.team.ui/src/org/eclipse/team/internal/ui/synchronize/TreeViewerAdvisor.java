@@ -134,7 +134,7 @@ public class TreeViewerAdvisor extends AbstractTreeViewerAdvisor {
 	 * advisor will provide a presentation model based on the given sync info set. Note that it's important
 	 * to call {@link #dispose()} when finished with an advisor.
 	 */
-	public TreeViewerAdvisor(Composite parent, ISynchronizePageConfiguration configuration) {
+	public TreeViewerAdvisor(Composite parent, ISynchronizePageConfiguration configuration) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super(configuration);
 
 		// Allow the configuration to provide it's own model manager but if one isn't initialized, then
@@ -190,7 +190,7 @@ public class TreeViewerAdvisor extends AbstractTreeViewerAdvisor {
 	@Override
 	protected void initializeListeners(final StructuredViewer viewer) {
 		super.initializeListeners(viewer);
-		viewer.addSelectionChangedListener(event -> updateStatusLine(event.getStructuredSelection()));
+		viewer.addSelectionChangedListener(event -> updateStatusLine(event.getStructuredSelection())); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 	}
 
 	/* private */ void updateStatusLine(IStructuredSelection selection) {
@@ -214,7 +214,7 @@ public class TreeViewerAdvisor extends AbstractTreeViewerAdvisor {
 			}
 		}
 		if (selection.size() > 1) {
-			return selection.size() + TeamUIMessages.SynchronizeView_13;
+			return selection.size() + TeamUIMessages.SynchronizeView_13; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return ""; //$NON-NLS-1$
 	}
@@ -223,23 +223,23 @@ public class TreeViewerAdvisor extends AbstractTreeViewerAdvisor {
 	 * Called to set the input to a viewer. The input to a viewer is always the model created
 	 * by the model provider.
 	 */
-	public final void setInput(final ISynchronizeModelProvider modelProvider) {
+	public final void setInput(final ISynchronizeModelProvider modelProvider) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final ISynchronizeModelElement modelRoot = modelProvider.getModelRoot();
 		getActionGroup().modelChanged(modelRoot);
-		modelRoot.addCompareInputChangeListener(unused -> getActionGroup().modelChanged(modelRoot));
+		modelRoot.addCompareInputChangeListener(unused -> getActionGroup().modelChanged(modelRoot)); //FLLDCIM: MARK — T37  LAMBDA
 		final StructuredViewer viewer = getViewer();
 		if (viewer != null) {
 			viewer.setComparator(modelProvider.getViewerComparator());
-			viewer.setInput(modelRoot);
-			modelProvider.addPropertyChangeListener(event -> {
+			viewer.setInput(modelRoot); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
+			modelProvider.addPropertyChangeListener(event -> { //FLLDCIM: MARK — T06  LAMBDA
 				if (event.getProperty() == ISynchronizeModelProvider.P_VIEWER_SORTER) {
 					if (viewer != null && !viewer.getControl().isDisposed()) {
-						viewer.getControl().getDisplay().syncExec(() -> {
+						viewer.getControl().getDisplay().syncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 							if (viewer != null && !viewer.getControl().isDisposed()) {
 								ViewerComparator newSorter = modelProvider.getViewerComparator();
 								ViewerComparator oldSorter = viewer.getComparator();
 								if (newSorter == oldSorter) {
-									viewer.refresh();
+									viewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 								} else {
 									viewer.setComparator(newSorter);
 								}
@@ -257,7 +257,7 @@ public class TreeViewerAdvisor extends AbstractTreeViewerAdvisor {
 	 * can be shown to the user.
 	 * @param viewer the viewer being installed
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public final void initializeViewer(final StructuredViewer viewer) {
 		super.initializeViewer(viewer);
 
@@ -287,7 +287,7 @@ public class TreeViewerAdvisor extends AbstractTreeViewerAdvisor {
 		final int ops = DND.DROP_COPY | DND.DROP_LINK;
 		viewer.addDragSupport(ops, new Transfer[] { ResourceTransfer.getInstance() }, listener);
 
-		viewer.setLabelProvider(getLabelProvider());
+		viewer.setLabelProvider(getLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 		viewer.setContentProvider(getContentProvider());
 	}
 

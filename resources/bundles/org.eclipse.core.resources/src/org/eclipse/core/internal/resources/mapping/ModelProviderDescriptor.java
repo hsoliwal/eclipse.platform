@@ -70,8 +70,8 @@ public class ModelProviderDescriptor implements IModelProviderDescriptor {
 
 	@Override
 	public IResource[] getMatchingResources(IResource[] resources) throws CoreException {
-		Set<IResource> result = new HashSet<>();
-		for (IResource resource : resources) {
+		Set<IResource> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			EvaluationContext evalContext = createEvaluationContext(resource);
 			if (matches(evalContext)) {
 				result.add(resource);
@@ -80,12 +80,12 @@ public class ModelProviderDescriptor implements IModelProviderDescriptor {
 		return result.toArray(new IResource[result.size()]);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public synchronized ModelProvider getModelProvider() throws CoreException {
 		if (provider == null) {
 			IExtension extension = Platform.getExtensionRegistry().getExtension(ResourcesPlugin.PI_RESOURCES, ResourcesPlugin.PT_MODEL_PROVIDERS, id);
 			IConfigurationElement[] elements = extension.getConfigurationElements();
-			for (IConfigurationElement element : elements) {
+			for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (element.getName().equalsIgnoreCase("modelProvider")) { //$NON-NLS-1$
 					try {
 						provider = (ModelProvider) element.createExecutableExtension("class"); //$NON-NLS-1$
@@ -110,7 +110,7 @@ public class ModelProviderDescriptor implements IModelProviderDescriptor {
 	/**
 	 * Initialize this descriptor based on the provided extension point.
 	 */
-	protected void readExtension(IExtension extension) throws CoreException {
+	protected void readExtension(IExtension extension) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//read the extension
 		id = extension.getUniqueIdentifier();
 		if (id == null) {
@@ -119,8 +119,8 @@ public class ModelProviderDescriptor implements IModelProviderDescriptor {
 		label = extension.getLabel();
 		IConfigurationElement[] elements = extension.getConfigurationElements();
 		int count = elements.length;
-		ArrayList<String> extendsList = new ArrayList<>(count);
-		for (int i = 0; i < count; i++) {
+		ArrayList<String> extendsList = new ArrayList<>(count); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IConfigurationElement element = elements[i];
 			String name = element.getName();
 			if (name.equalsIgnoreCase("extends-model")) { //$NON-NLS-1$
@@ -138,8 +138,8 @@ public class ModelProviderDescriptor implements IModelProviderDescriptor {
 
 	@Override
 	public ResourceTraversal[] getMatchingTraversals(ResourceTraversal[] traversals) throws CoreException {
-		List<ResourceTraversal> result = new ArrayList<>();
-		for (ResourceTraversal traversal : traversals) {
+		List<ResourceTraversal> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (getMatchingResources(traversal.getResources()).length > 0) {
 				result.add(traversal);
 			}

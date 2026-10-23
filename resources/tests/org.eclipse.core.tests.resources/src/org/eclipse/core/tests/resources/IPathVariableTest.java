@@ -75,7 +75,7 @@ public class IPathVariableTest {
 	@AfterEach
 	public void tearDown() throws Exception {
 		String[] names = manager.getPathVariableNames();
-		for (String name : names) {
+		for (String name : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			manager.setValue(name, (IPath) null);
 		}
 	}
@@ -116,15 +116,15 @@ public class IPathVariableTest {
 
 			@Override
 			public String toString() {
-				StringBuilder buffer = new StringBuilder();
-				buffer.append("Event(");
-				buffer.append("type: ");
-				buffer.append(stringForType(type));
-				buffer.append(" name: ");
-				buffer.append(name);
-				buffer.append(" value: ");
-				buffer.append(value);
-				buffer.append(")");
+				StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+				buffer.append("Event("); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				buffer.append("type: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				buffer.append(stringForType(type)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				buffer.append(" name: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				buffer.append(name); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				buffer.append(" value: "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				buffer.append(value); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				buffer.append(")"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				return buffer.toString();
 			}
 
@@ -142,8 +142,8 @@ public class IPathVariableTest {
 			}
 		}
 
-		List<Event> expected = new ArrayList<>();
-		List<Event> actual = new ArrayList<>();
+		List<Event> expected = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<Event> actual = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		void addExpectedEvent(int type, String name, IPath value) {
 			expected.add(new Event(type, name, value));
@@ -152,11 +152,11 @@ public class IPathVariableTest {
 		void verify() throws VerificationFailedException {
 			String message;
 			if (expected.size() != actual.size()) {
-				message = "Expected size: " + expected.size() + " does not equal actual size: " + actual.size() + "\n";
+				message = "Expected size: " + expected.size() + " does not equal actual size: " + actual.size() + "\n"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				message += dump();
 				throw new VerificationFailedException(message);
 			}
-			for (Event event : expected) {
+			for (Event event : expected) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!actual.contains(event)) {
 					message = "Expected and actual results differ.\n";
 					message += dump();
@@ -166,8 +166,8 @@ public class IPathVariableTest {
 		}
 
 		void reset() {
-			expected = new ArrayList<>();
-			actual = new ArrayList<>();
+			expected = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			actual = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 
 		@Override
@@ -176,14 +176,14 @@ public class IPathVariableTest {
 		}
 
 		String dump() {
-			StringBuilder buffer = new StringBuilder();
-			buffer.append("Expected:\n");
-			for (Event event : expected) {
-				buffer.append("\t" + event + "\n");
+			StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+			buffer.append("Expected:\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			for (Event event : expected) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				buffer.append("\t" + event + "\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append("Actual:\n");
-			for (Event event : actual) {
-				buffer.append("\t" + event + "\n");
+			buffer.append("Actual:\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			for (Event event : actual) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				buffer.append("\t" + event + "\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 			return buffer.toString();
 		}
@@ -192,7 +192,7 @@ public class IPathVariableTest {
 	/**
 	 * Test IPathVariableManager#getPathVariableNames
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetPathVariableNames() throws CoreException {
 		String[] names = null;
 
@@ -227,7 +227,7 @@ public class IPathVariableTest {
 	/**
 	 * Test IPathVariableManager#getValue and IPathVariableManager#setValue
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Deprecated // Explicitly tests deprecated API
 	public void testGetSetValue() throws CoreException {
 		boolean WINDOWS = java.io.File.separatorChar == '\\';
@@ -344,7 +344,7 @@ public class IPathVariableTest {
 	/**
 	 * Test IgetVariableRelativePathLocation(project, IPath)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetVariableRelativePathLocation() {
 		IPath path = project.getWorkspace().getRoot().getLocation().append("bar");
 		IPath actual;
@@ -379,7 +379,7 @@ public class IPathVariableTest {
 	/**
 	 * Test IPathVariableManager#resolvePath
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Deprecated // Explicitly tests deprecated API
 	public void testResolvePath() throws CoreException {
 		final boolean WINDOWS = java.io.File.separatorChar == '\\';
@@ -455,7 +455,7 @@ public class IPathVariableTest {
 	/**
 	 * Test IPathVariableManager#convertToRelative()
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testConvertToRelative() throws CoreException {
 		final boolean WINDOWS = java.io.File.separatorChar == '\\';
 		IPath pathOne = WINDOWS ? IPath.fromOSString("c:/foo/bar") : IPath.fromOSString("/foo/bar");
@@ -547,7 +547,7 @@ public class IPathVariableTest {
 	/**
 	 * Test IPathVariableManager#addChangeListener and IPathVariableManager#removeChangeListener
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testListeners() throws Exception {
 		PathVariableChangeVerifier listener = new PathVariableChangeVerifier();
 		manager.addChangeListener(listener);
@@ -579,7 +579,7 @@ public class IPathVariableTest {
 	}
 
 	boolean contains(Object[] array, Object obj) {
-		for (Object element : array) {
+		for (Object element : array) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element.equals(obj)) {
 				return true;
 			}
@@ -590,7 +590,7 @@ public class IPathVariableTest {
 	/**
 	 * Regression for Bug 308975 - Can't recover from 'invalid' path variable
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLinkExistInProjectDescriptionButNotInWorkspace() throws Exception {
 		String dorProjectContent = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" + //
 				"<projectDescription>" + //
@@ -627,7 +627,7 @@ public class IPathVariableTest {
 		IPathVariableManager pathVariableManager = existingProject.getPathVariableManager();
 		String[] varNames = pathVariableManager.getPathVariableNames();
 
-		for (String varName : varNames) {
+		for (String varName : varNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			pathVariableManager.getURIValue(varName);
 		}
 	}

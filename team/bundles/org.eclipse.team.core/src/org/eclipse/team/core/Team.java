@@ -165,7 +165,7 @@ public final class Team {
 
 	private static boolean matchesEnabledIgnore(IResource resource) {
 		WildcardStringMatcher[] matchers = getStringMatchers();
-		for (WildcardStringMatcher matcher : matchers) {
+		for (WildcardStringMatcher matcher : matchers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String resourceName = resource.getName();
 			if (matcher.isPathPattern()) {
 				resourceName = resource.getFullPath().toString();
@@ -200,7 +200,7 @@ public final class Team {
 	public static IFileTypeInfo[] getAllTypes() {
 		final IStringMapping [] mappings= fFileContentManager.getExtensionMappings();
 		final IFileTypeInfo [] infos= new IFileTypeInfo[mappings.length];
-		for (int i = 0; i < infos.length; i++) {
+		for (int i = 0; i < infos.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			infos[i]= new StringMappingWrapper(mappings[i]);
 		}
 		return infos;
@@ -221,8 +221,8 @@ public final class Team {
 
 	private static void initializeIgnores() {
 		if (globalIgnore == null) {
-			globalIgnore = new TreeMap<>();
-			pluginIgnore = new TreeMap<>();
+			globalIgnore = new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW
+			pluginIgnore = new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW
 			ignoreMatchers = null;
 			try {
 				readIgnoreState();
@@ -233,11 +233,11 @@ public final class Team {
 		}
 	}
 
-	private static IIgnoreInfo[] getIgnoreInfo(Map gIgnore) {
+	private static IIgnoreInfo[] getIgnoreInfo(Map gIgnore) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IIgnoreInfo[] result = new IIgnoreInfo[gIgnore.size()];
 		Iterator e = gIgnore.entrySet().iterator();
 		int i = 0;
-		while (e.hasNext() ) {
+		while (e.hasNext() ) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Map.Entry entry = (Entry) e.next();
 			final String pattern = (String) entry.getKey();
 			final boolean enabled = ((Boolean)entry.getValue()).booleanValue();
@@ -260,8 +260,8 @@ public final class Team {
 	private synchronized static WildcardStringMatcher[] getStringMatchers() {
 		if (ignoreMatchers==null) {
 			IIgnoreInfo[] ignorePatterns = getAllIgnores();
-			ArrayList<WildcardStringMatcher> matchers = new ArrayList<>(ignorePatterns.length);
-			for (IIgnoreInfo ignorePattern : ignorePatterns) {
+			ArrayList<WildcardStringMatcher> matchers = new ArrayList<>(ignorePatterns.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (IIgnoreInfo ignorePattern : ignorePatterns) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (ignorePattern.getEnabled()) {
 					matchers.add(new WildcardStringMatcher(ignorePattern.getPattern()));
 				}
@@ -298,26 +298,26 @@ public final class Team {
 	 * @param patterns Array of patterns to set
 	 * @param enabled Array of booleans indicating if given pattern is enabled
 	 */
-	public static void setAllIgnores(String[] patterns, boolean[] enabled) {
+	public static void setAllIgnores(String[] patterns, boolean[] enabled) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		initializeIgnores();
-		globalIgnore = new TreeMap<>();
+		globalIgnore = new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW
 		ignoreMatchers = null;
-		for (int i = 0; i < patterns.length; i++) {
+		for (int i = 0; i < patterns.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			globalIgnore.put(patterns[i], Boolean.valueOf(enabled[i]));
 		}
 		// Now set into preferences
-		StringBuilder buf = new StringBuilder();
-		for (Map.Entry entry : globalIgnore.entrySet()) {
+		StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (Map.Entry entry : globalIgnore.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String pattern = (String) entry.getKey();
 			Boolean value = (Boolean) entry.getValue();
 			boolean isCustom = (!pluginIgnore.containsKey(pattern)) ||
 					!pluginIgnore.get(pattern).equals(value);
 			if (isCustom) {
-				buf.append(pattern);
-				buf.append(PREF_TEAM_SEPARATOR);
+				buf.append(pattern); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				buf.append(PREF_TEAM_SEPARATOR); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				boolean en = value.booleanValue();
-				buf.append(en);
-				buf.append(PREF_TEAM_SEPARATOR);
+				buf.append(en); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				buf.append(PREF_TEAM_SEPARATOR); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 		TeamPlugin.getPlugin().getPluginPreferences().setValue(PREF_TEAM_IGNORES, buf.toString());
@@ -331,15 +331,15 @@ public final class Team {
 	 *
 	 * Reads the ignores currently defined by extensions.
 	 */
-	private static void initializePluginIgnores(SortedMap<String, Boolean> pIgnore, SortedMap<String, Boolean> gIgnore) {
+	private static void initializePluginIgnores(SortedMap<String, Boolean> pIgnore, SortedMap<String, Boolean> gIgnore) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TeamPlugin plugin = TeamPlugin.getPlugin();
 		if (plugin != null) {
 			IExtensionPoint extension = Platform.getExtensionRegistry().getExtensionPoint(TeamPlugin.ID, TeamPlugin.IGNORE_EXTENSION);
 			if (extension != null) {
 				IExtension[] extensions =  extension.getExtensions();
-				for (IExtension ext : extensions) {
+				for (IExtension ext : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IConfigurationElement[] configElements = ext.getConfigurationElements();
-					for (IConfigurationElement configElement : configElements) {
+					for (IConfigurationElement configElement : configElements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						String pattern = configElement.getAttribute("pattern"); //$NON-NLS-1$
 						if (pattern != null) {
 							String selected = configElement.getAttribute("enabled"); //$NON-NLS-1$
@@ -376,7 +376,7 @@ public final class Team {
 					}
 				}
 
-				for (String pattern : pIgnore.keySet()) {
+				for (String pattern : pIgnore.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (!gIgnore.containsKey(pattern)) {
 						gIgnore.put(pattern, pIgnore.get(pattern));
 					}
@@ -387,17 +387,17 @@ public final class Team {
 
 	private static String collectContributingExtentionsToDisplay(
 			String patternToFind, IExtension[] extensions) {
-		StringBuilder sb = new StringBuilder();
+		StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		boolean isFirst = true;
-		for (IExtension extension : extensions) {
+		for (IExtension extension : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IConfigurationElement[] configElements = extension.getConfigurationElements();
-			for (IConfigurationElement configElement : configElements) {
+			for (IConfigurationElement configElement : configElements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (patternToFind.equals(configElement.getAttribute("pattern"))) { //$NON-NLS-1$
 					if (!isFirst) {
-						sb.append(", "); //$NON-NLS-1$
+						sb.append(", "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
 					isFirst = false;
-					sb.append(extension.getContributor().getName());
+					sb.append(extension.getContributor().getName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			}
 		}
@@ -409,7 +409,7 @@ public final class Team {
 	 *
 	 * Reads global ignore preferences and populates globalIgnore
 	 */
-	private static void readIgnoreState() throws TeamException {
+	private static void readIgnoreState() throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (readBackwardCompatibleIgnoreState()) {
 			return;
 		}
@@ -417,7 +417,7 @@ public final class Team {
 		if (!pref.contains(PREF_TEAM_IGNORES)) {
 			return;
 		}
-		pref.addPropertyChangeListener(event -> {
+		pref.addPropertyChangeListener(event -> { //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 			// when a property is changed, invalidate our cache so that
 			// properties will be recalculated.
 			if(event.getProperty().equals(PREF_TEAM_IGNORES)) {
@@ -428,7 +428,7 @@ public final class Team {
 		StringTokenizer tok = new StringTokenizer(prefIgnores, PREF_TEAM_SEPARATOR);
 		String pattern, enabled;
 		try {
-			while (true) {
+			while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				pattern = tok.nextToken();
 				if (pattern.length()==0) {
 					return;
@@ -444,7 +444,7 @@ public final class Team {
 	/*
 	 * For backward compatibility, we still look at if we have .globalIgnores
 	 */
-	private static boolean readBackwardCompatibleIgnoreState() throws TeamException {
+	private static boolean readBackwardCompatibleIgnoreState() throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String GLOBALIGNORE_FILE = ".globalIgnores"; //$NON-NLS-1$
 		IPath pluginStateLocation = TeamPlugin.getPlugin().getStateLocation().append(GLOBALIGNORE_FILE);
 		File f = pluginStateLocation.toFile();
@@ -461,7 +461,7 @@ public final class Team {
 					// patterns stored in the provider state file.
 					return false;
 				}
-				for (int i = 0; i < ignoreCount; i++) {
+				for (int i = 0; i < ignoreCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String pattern = dis.readUTF();
 					boolean enabled = dis.readBoolean();
 					globalIgnore.put(pattern, Boolean.valueOf(enabled));
@@ -498,16 +498,16 @@ public final class Team {
 	 * 		Use {@link org.eclipse.team.core.RepositoryProviderType#getProjectSetCapability()}
 	 * 		to obtain an instance of {@link ProjectSetCapability} instead.
 	 */
-	@Deprecated
+	@Deprecated //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public static IProjectSetSerializer getProjectSetSerializer(String id) {
 		TeamPlugin plugin = TeamPlugin.getPlugin();
 		if (plugin != null) {
 			IExtensionPoint extension = RegistryFactory.getRegistry().getExtensionPoint(TeamPlugin.ID, TeamPlugin.PROJECT_SET_EXTENSION);
 			if (extension != null) {
 				IExtension[] extensions =  extension.getExtensions();
-				for (IExtension ext : extensions) {
+				for (IExtension ext : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IConfigurationElement[] configElements = ext.getConfigurationElements();
-					for (IConfigurationElement configElement : configElements) {
+					for (IConfigurationElement configElement : configElements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						String extensionId = configElement.getAttribute("id"); //$NON-NLS-1$
 						if (extensionId != null && extensionId.equals(id)) {
 							try {
@@ -533,8 +533,8 @@ public final class Team {
 	 * @since 3.0
 	 */
 	public static IIgnoreInfo[] getDefaultIgnores() {
-		SortedMap<String, Boolean> gIgnore = new TreeMap<>();
-		SortedMap<String, Boolean> pIgnore = new TreeMap<>();
+		SortedMap<String, Boolean> gIgnore = new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW
+		SortedMap<String, Boolean> pIgnore = new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW
 		initializePluginIgnores(pIgnore, gIgnore);
 		return getIgnoreInfo(gIgnore);
 	}
@@ -557,7 +557,7 @@ public final class Team {
 	@SuppressWarnings("removal")
 	private static IFileTypeInfo [] asFileTypeInfo(IStringMapping [] mappings) {
 		final IFileTypeInfo [] infos= new IFileTypeInfo[mappings.length];
-		for (int i = 0; i < infos.length; i++) {
+		for (int i = 0; i < infos.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			infos[i]= new StringMappingWrapper(mappings[i]);
 		}
 		return infos;
@@ -651,11 +651,11 @@ public final class Team {
 	 */
 	public synchronized static IBundleImporter[] getBundleImporters() {
 		if (fBundleImporters == null) {
-			fBundleImporters = new ArrayList<>();
+			fBundleImporters = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(TeamPlugin.EXTENSION_POINT_BUNDLE_IMPORTERS);
 			if (point != null) {
 				IConfigurationElement[] infos = point.getConfigurationElements();
-				for (IConfigurationElement info : infos) {
+				for (IConfigurationElement info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					fBundleImporters.add(new BundleImporterExtension(info));
 				}
 			}

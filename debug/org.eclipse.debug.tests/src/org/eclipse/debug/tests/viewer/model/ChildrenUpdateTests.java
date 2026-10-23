@@ -51,7 +51,7 @@ public class ChildrenUpdateTests {
 
 	class BogusModelContentProvider extends TreeModelContentProvider {
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		protected IInternalTreeModelViewer getViewer() {
 			return new IInternalTreeModelViewer(){
 
@@ -243,7 +243,7 @@ public class ChildrenUpdateTests {
 	/**
 	 * Tests coalescing of requests
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCoalesce () {
 		Object element = new Object();
 		TreeModelContentProvider cp = getContentProvider();

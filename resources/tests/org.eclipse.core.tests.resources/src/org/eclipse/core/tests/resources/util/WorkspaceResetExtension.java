@@ -64,11 +64,11 @@ public class WorkspaceResetExtension implements AfterEachCallback, BeforeEachCal
 		if (!displayName.contains(methodName)) {
 			methodName += displayName;
 		}
-		return className + "." + methodName;
+		return className + "." + methodName; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	private void restoreCleanWorkspace() {
-		List<CoreException> exceptions = new ArrayList<>();
+	private void restoreCleanWorkspace() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<CoreException> exceptions = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		try {
 			restoreWorkspaceDescription();
 		} catch (CoreException e) {
@@ -77,7 +77,7 @@ public class WorkspaceResetExtension implements AfterEachCallback, BeforeEachCal
 		// Wait for any build job that may still be executed
 		waitForBuild();
 		try {
-			getWorkspace().run((IWorkspaceRunnable) unused -> {
+			getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				getWorkspace().getRoot().delete(true, true, createTestMonitor());
 			}, null);
 		} catch (CoreException e) {

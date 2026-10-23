@@ -56,11 +56,11 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
-@Component(service = IResourceChangeListener.class, property = IResourceChangeListener.PROPERTY_EVENT_MASK + ":Integer="
+@Component(service = IResourceChangeListener.class, property = IResourceChangeListener.PROPERTY_EVENT_MASK + ":Integer=" //FLLDCIM: MARK — T07  IMPLEMENTS
 		+ IResourceChangeEvent.POST_CHANGE)
 public class CheckMissingNaturesListener implements IResourceChangeListener, IPreferenceChangeListener {
 
-	public static final String MARKER_TYPE = ResourcesPlugin.getPlugin().getBundle().getSymbolicName() + ".unknownNature"; //$NON-NLS-1$
+	public static final String MARKER_TYPE = ResourcesPlugin.getPlugin().getBundle().getSymbolicName() + ".unknownNature"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	public static final String NATURE_ID_ATTRIBUTE = "natureId"; //$NON-NLS-1$
 	@Reference
 	private IWorkspace workspace;
@@ -85,14 +85,14 @@ public class CheckMissingNaturesListener implements IResourceChangeListener, IPr
 		eclipsePreferences.removePreferenceChangeListener(this);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void resourceChanged(IResourceChangeEvent event) {
 		if (event.getDelta() == null) {
 			return;
 		}
 		try {
-			final Set<IProject> modifiedProjects = new HashSet<>();
-			event.getDelta().accept(delta -> {
+			final Set<IProject> modifiedProjects = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+			event.getDelta().accept(delta -> { //FLLDCIM: MARK — T07  LAMBDA
 				if (delta.getResource() != null && delta.getResource().getType() == IResource.PROJECT && (delta.getKind() == IResourceDelta.ADDED || delta.getKind() == IResourceDelta.CHANGED)) {
 					modifiedProjects.add((IProject) delta.getResource());
 				}
@@ -129,15 +129,15 @@ public class CheckMissingNaturesListener implements IResourceChangeListener, IPr
 		}
 	}
 
-	private void removeAllMarkers(IContainer workspaceRootOrProject) {
+	private void removeAllMarkers(IContainer workspaceRootOrProject) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final Collection<IMarker> markers = getRelatedMarkers(workspaceRootOrProject);
 		if (markers.isEmpty()) {
 			return;
 		}
-		WorkspaceJob job = new WorkspaceJob(Messages.updateUnknownNatureMarkers) {
+		WorkspaceJob job = new WorkspaceJob(Messages.updateUnknownNatureMarkers) { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-				for (IMarker marker : markers) {
+				for (IMarker marker : markers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (marker.exists() && marker.getResource().isAccessible()) {
 						marker.delete();
 					}
@@ -157,15 +157,15 @@ public class CheckMissingNaturesListener implements IResourceChangeListener, IPr
 		job.schedule();
 	}
 
-	private void updateExistingMarkersSeverity(IContainer workspaceRootOrProject, int newSeverity) {
+	private void updateExistingMarkersSeverity(IContainer workspaceRootOrProject, int newSeverity) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final Collection<IMarker> markers = getRelatedMarkers(workspaceRootOrProject);
 		if (markers.isEmpty()) {
 			return;
 		}
-		WorkspaceJob job = new WorkspaceJob(Messages.updateUnknownNatureMarkers) {
+		WorkspaceJob job = new WorkspaceJob(Messages.updateUnknownNatureMarkers) { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-				for (IMarker marker : markers) {
+				for (IMarker marker : markers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (marker.exists() && marker.getResource().isAccessible()) {
 						marker.setAttribute(IMarker.SEVERITY, newSeverity);
 					}
@@ -185,8 +185,8 @@ public class CheckMissingNaturesListener implements IResourceChangeListener, IPr
 		job.schedule();
 	}
 
-	private void updateMarkers(Collection<IProject> projects) {
-		for (IProject project : projects) {
+	private void updateMarkers(Collection<IProject> projects) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!project.isAccessible()) {
 				continue;
 			}
@@ -197,15 +197,15 @@ public class CheckMissingNaturesListener implements IResourceChangeListener, IPr
 					continue;
 				}
 
-				final Set<String> missingNatures = new HashSet<>();
-				for (String natureId : project.getDescription().getNatureIds()) {
+				final Set<String> missingNatures = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+				for (String natureId : project.getDescription().getNatureIds()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (project.getWorkspace().getNatureDescriptor(natureId) == null) {
 						missingNatures.add(natureId);
 					}
 				}
 
-				final Set<IMarker> toRemove = new HashSet<>();
-				for (IMarker existingMarker : getRelatedProjectMarkers(project)) {
+				final Set<IMarker> toRemove = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+				for (IMarker existingMarker : getRelatedProjectMarkers(project)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String markerNature = existingMarker.getAttribute(NATURE_ID_ATTRIBUTE, ""); //$NON-NLS-1$
 					if (!missingNatures.contains(markerNature)) {
 						toRemove.add(existingMarker);
@@ -216,19 +216,19 @@ public class CheckMissingNaturesListener implements IResourceChangeListener, IPr
 				}
 
 				if (!toRemove.isEmpty() || !missingNatures.isEmpty()) {
-					WorkspaceJob workspaceJob = new WorkspaceJob(Messages.updateUnknownNatureMarkers) {
-						@Override
+					WorkspaceJob workspaceJob = new WorkspaceJob(Messages.updateUnknownNatureMarkers) { //FLLDCIM: MARK — T09  ANONYMOUS
+						@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 						public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-							for (IMarker marker : toRemove) {
+							for (IMarker marker : toRemove) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 								marker.delete();
 							}
 							IResource targetResource = project.getFile(IProjectDescription.DESCRIPTION_FILE_NAME);
 							if (!targetResource.isAccessible()) {
 								targetResource = project;
 							}
-							for (String natureId : missingNatures) {
+							for (String natureId : missingNatures) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 
-								Map<String, Object> attributes = new HashMap<>();
+								Map<String, Object> attributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 								attributes.put(IMarker.SEVERITY, getMissingNatureSeverity(project));
 								attributes.put(IMarker.MESSAGE, NLS.bind(Messages.natures_missingNature, natureId));
 								attributes.put(NATURE_ID_ATTRIBUTE, natureId);
@@ -261,11 +261,11 @@ public class CheckMissingNaturesListener implements IResourceChangeListener, IPr
 		if (!file.isAccessible()) {
 			return;
 		}
-		Pattern pattern = Pattern.compile(".*<" + IModelObjectConstants.NATURE + ">\\s*(" + natureId.replace(".", "\\.") + ")\\s*</" + IModelObjectConstants.NATURE + ">.*", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
+		Pattern pattern = Pattern.compile(".*<" + IModelObjectConstants.NATURE + ">\\s*(" + natureId.replace(".", "\\.") + ")\\s*</" + IModelObjectConstants.NATURE + ">.*", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				Pattern.DOTALL);
 		try {
 			String content = file.readString();
-			Matcher matcher = pattern.matcher(content);
+			Matcher matcher = pattern.matcher(content); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			if (matcher.matches() && matcher.groupCount() > 0) {
 				marker.setAttribute(IMarker.CHAR_START, matcher.start(1));
 				marker.setAttribute(IMarker.CHAR_END, matcher.end(1));
@@ -289,8 +289,8 @@ public class CheckMissingNaturesListener implements IResourceChangeListener, IPr
 		if (!root.isAccessible()) {
 			return Collections.emptyList();
 		}
-		Set<IMarker> res = new HashSet<>();
-		for (IProject project : root.getProjects()) {
+		Set<IMarker> res = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IProject project : root.getProjects()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			res.addAll(getRelatedProjectMarkers(project));
 		}
 		return res;

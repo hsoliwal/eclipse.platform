@@ -59,7 +59,7 @@ public abstract class OutlineViewerCreator {
 
 	public void fireInputChange(Object oldInput, Object newInput) {
 		final PropertyChangeEvent event = new PropertyChangeEvent(this, PROP_INPUT, oldInput, newInput);
-		for (final IPropertyChangeListener listener : listeners) {
+		for (final IPropertyChangeListener listener : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
 				public void run() throws Exception {

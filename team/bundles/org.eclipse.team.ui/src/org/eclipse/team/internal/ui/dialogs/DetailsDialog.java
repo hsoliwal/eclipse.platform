@@ -140,7 +140,7 @@ abstract public class DetailsDialog extends TrayDialog {
 	 * Creates and returns the contents of the upper part
 	 * of the dialog (above the button bar).
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	final protected Control createDialogArea(Composite parent) {
 
 		applyDialogFont(parent);
@@ -249,7 +249,7 @@ abstract public class DetailsDialog extends TrayDialog {
 	 * Toggles the unfolding of the details area.  This is triggered by
 	 * the user pressing the details button.
 	 */
-	private void toggleDetailsArea() {
+	private void toggleDetailsArea() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Point windowSize = getShell().getSize();
 		Point oldSize = getContents().computeSize(SWT.DEFAULT, SWT.DEFAULT);
 

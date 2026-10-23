@@ -26,10 +26,10 @@ public class DocTypeRule extends MultiLineRule {
 		super("<!DOCTYPE", ">", token); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected boolean endSequenceDetected(ICharacterScanner scanner) {
 		int c;
-		while ((c = scanner.read()) != ICharacterScanner.EOF) {
+		while ((c = scanner.read()) != ICharacterScanner.EOF) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (c == fEscapeCharacter) {
 				// Skip the escaped character.
 				scanner.read();

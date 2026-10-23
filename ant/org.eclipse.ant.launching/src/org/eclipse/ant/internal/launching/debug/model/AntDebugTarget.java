@@ -40,7 +40,7 @@ import org.eclipse.debug.core.model.IThread;
 /**
  * Ant Debug Target
  */
-public class AntDebugTarget extends AntDebugElement implements IDebugTarget, IDebugEventSetListener, IBreakpointManagerListener {
+public class AntDebugTarget extends AntDebugElement implements IDebugTarget, IDebugEventSetListener, IBreakpointManagerListener { //FLLDCIM: MARK — T27  IMPLEMENTS
 
 	// associated system process (Ant Build)
 	private final IProcess fProcess;
@@ -87,7 +87,7 @@ public class AntDebugTarget extends AntDebugElement implements IDebugTarget, IDe
 
 		DebugPlugin.getDefault().getBreakpointManager().addBreakpointManagerListener(this);
 		DebugPlugin.getDefault().getBreakpointManager().addBreakpointListener(this);
-		DebugPlugin.getDefault().addDebugEventListener(this);
+		DebugPlugin.getDefault().addDebugEventListener(this); //FLLDCIM: MARK — T27 DEBUG_EVENT_ADAPTER CALL
 	}
 
 	@Override
@@ -203,7 +203,7 @@ public class AntDebugTarget extends AntDebugElement implements IDebugTarget, IDe
 			if (breakpoint instanceof AntLineBreakpoint) {
 				if (((AntLineBreakpoint) breakpoint).isRunToLine()) {
 					if (fRunToLineBreakpoints == null) {
-						fRunToLineBreakpoints = new ArrayList<>();
+						fRunToLineBreakpoints = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 					}
 					fRunToLineBreakpoints.add(breakpoint);
 				}
@@ -286,7 +286,7 @@ public class AntDebugTarget extends AntDebugElement implements IDebugTarget, IDe
 		if (!manager.isEnabled()) {
 			return;
 		}
-		for (IBreakpoint breakpoint : manager.getBreakpoints(IAntDebugConstants.ID_ANT_DEBUG_MODEL)) {
+		for (IBreakpoint breakpoint : manager.getBreakpoints(IAntDebugConstants.ID_ANT_DEBUG_MODEL)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				if (breakpoint.isEnabled()) {
 					breakpointAdded(breakpoint);
@@ -301,7 +301,7 @@ public class AntDebugTarget extends AntDebugElement implements IDebugTarget, IDe
 	/**
 	 * Called when this debug target terminates.
 	 */
-	public synchronized void terminated() {
+	public synchronized void terminated() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!fTerminated) {
 			fThreads = new IThread[0];
 			fTerminated = true;
@@ -350,13 +350,13 @@ public class AntDebugTarget extends AntDebugElement implements IDebugTarget, IDe
 	 * @param event
 	 *            debug event
 	 */
-	public void breakpointHit(String event) {
+	public void breakpointHit(String event) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// determine which breakpoint was hit, and set the thread's breakpoint
 		String[] datum = event.split(DebugMessageIds.MESSAGE_DELIMITER);
 		String fileName = datum[1];
 		int lineNumber = Integer.parseInt(datum[2]);
 		boolean found = false;
-		for (IBreakpoint breakpoint : DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(IAntDebugConstants.ID_ANT_DEBUG_MODEL)) {
+		for (IBreakpoint breakpoint : DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(IAntDebugConstants.ID_ANT_DEBUG_MODEL)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ILineBreakpoint lineBreakpoint = (ILineBreakpoint) breakpoint;
 			if (setThreadBreakpoint(lineBreakpoint, lineNumber, fileName)) {
 				found = true;
@@ -365,7 +365,7 @@ public class AntDebugTarget extends AntDebugElement implements IDebugTarget, IDe
 		}
 		if (!found && fRunToLineBreakpoints != null) {
 			Iterator<IBreakpoint> iter = fRunToLineBreakpoints.iterator();
-			while (iter.hasNext()) {
+			while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ILineBreakpoint lineBreakpoint = (ILineBreakpoint) iter.next();
 				if (setThreadBreakpoint(lineBreakpoint, lineNumber, fileName)) {
 					break;
@@ -408,7 +408,7 @@ public class AntDebugTarget extends AntDebugElement implements IDebugTarget, IDe
 
 	@Override
 	public void handleDebugEvents(DebugEvent[] events) {
-		for (DebugEvent event : events) {
+		for (DebugEvent event : events) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (event.getKind() == DebugEvent.TERMINATE && event.getSource().equals(fProcess)) {
 				terminated();
 			}
@@ -422,7 +422,7 @@ public class AntDebugTarget extends AntDebugElement implements IDebugTarget, IDe
 	 */
 	@Override
 	public void breakpointManagerEnablementChanged(boolean enabled) {
-		for (IBreakpoint breakpoint : DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(IAntDebugConstants.ID_ANT_DEBUG_MODEL)) {
+		for (IBreakpoint breakpoint : DebugPlugin.getDefault().getBreakpointManager().getBreakpoints(IAntDebugConstants.ID_ANT_DEBUG_MODEL)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (enabled) {
 				breakpointAdded(breakpoint);
 			} else {

@@ -31,7 +31,7 @@ import org.eclipse.ui.part.IPageSite;
 import org.eclipse.ui.part.Page;
 import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
 
-public class CompareOutlinePage extends Page implements IContentOutlinePage, IPropertyChangeListener {
+public class CompareOutlinePage extends Page implements IContentOutlinePage, IPropertyChangeListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 	private final CompareEditor fCompareEditor;
 	private Control fControl;
 	private CompareViewerSwitchingPane fStructurePane;
@@ -41,10 +41,10 @@ public class CompareOutlinePage extends Page implements IContentOutlinePage, IPr
 		fCompareEditor= editor;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createControl(Composite parent) {
 		final Splitter h= new Splitter(parent, SWT.HORIZONTAL);
-		fStructurePane= new CompareViewerSwitchingPane(h, SWT.BORDER | SWT.FLAT, true) {
+		fStructurePane= new CompareViewerSwitchingPane(h, SWT.BORDER | SWT.FLAT, true) { //FLLDCIM: MARK — T05  ANONYMOUS
 			@Override
 			protected Viewer getViewer(Viewer oldViewer, Object input) {
 				if (input instanceof ICompareInput) {
@@ -88,7 +88,7 @@ public class CompareOutlinePage extends Page implements IContentOutlinePage, IPr
 	@Override
 	public void addSelectionChangedListener(ISelectionChangedListener listener) {
 		if (fStructurePane != null) {
-			fStructurePane.addSelectionChangedListener(listener);
+			fStructurePane.addSelectionChangedListener(listener); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 		}
 	}
 

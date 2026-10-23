@@ -104,7 +104,7 @@ public class Utilities {
 	private static final IPath ICONS_PATH= IPath.fromOSString("$nl$/icons/full/"); //$NON-NLS-1$
 
 	public static IWorkbenchPartSite findSite(Control c) {
-		while (c != null && !c.isDisposed()) {
+		while (c != null && !c.isDisposed()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object data= c.getData();
 			if (data instanceof IWorkbenchPart) {
 				return ((IWorkbenchPart) data).getSite();
@@ -115,7 +115,7 @@ public class Utilities {
 	}
 
 	public static IActionBars findActionBars(Control c) {
-		while (c != null && !c.isDisposed()) {
+		while (c != null && !c.isDisposed()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object data= c.getData();
 			if (data instanceof CompareEditor) {
 				return ((CompareEditor) data).getActionBars();
@@ -134,7 +134,7 @@ public class Utilities {
 
 	public static void setEnableComposite(Composite composite, boolean enable) {
 		Control[] children= composite.getChildren();
-		for (Control c : children) {
+		for (Control c : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			c.setEnabled(enable);
 		}
 	}
@@ -177,12 +177,12 @@ public class Utilities {
 		}
 		// Legacy listeners may expect to get notified in the UI thread
 		Runnable runnable = () -> {
-			for (IPropertyChangeListener listener : listenerList) {
+			for (IPropertyChangeListener listener : listenerList) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				SafeRunner.run(() -> listener.propertyChange(event));
 			}
 		};
 		if (Display.getCurrent() == null) {
-			Display.getDefault().syncExec(runnable);
+			Display.getDefault().syncExec(runnable); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		} else {
 			runnable.run();
 		}
@@ -192,12 +192,12 @@ public class Utilities {
 		return widget != null && !widget.isDisposed();
 	}
 
-	private static ArrayList<IResource> internalGetResources(ISelection selection, Class<? extends IResource> type) {
-		ArrayList<IResource> tmp= new ArrayList<>();
+	private static ArrayList<IResource> internalGetResources(ISelection selection, Class<? extends IResource> type) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		ArrayList<IResource> tmp= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (selection instanceof IStructuredSelection) {
 			Object[] s= ((IStructuredSelection) selection).toArray();
 
-			for (Object o : s) {
+			for (Object o : s) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource resource= null;
 				if (type.isInstance(o)) {
 					resource= (IResource) o;
@@ -205,9 +205,9 @@ public class Utilities {
 					try {
 						ResourceTraversal[] travs= ((ResourceMapping)o).getTraversals(ResourceMappingContext.LOCAL_CONTEXT, null);
 						if (travs != null) {
-							for (ResourceTraversal trav : travs) {
+							for (ResourceTraversal trav : travs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 								IResource[] resources = trav.getResources();
-								for (IResource r : resources) {
+								for (IResource r : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 									if (type.isInstance(r) && r.isAccessible()) {
 										tmp.add(r);
 									}
@@ -257,17 +257,17 @@ public class Utilities {
 	/*
 	 * Initializes the given Action from a ResourceBundle.
 	 */
-	public static void initAction(IAction a, ResourceBundle bundle, String prefix) {
+	public static void initAction(IAction a, ResourceBundle bundle, String prefix) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String labelKey= "label"; //$NON-NLS-1$
 		String tooltipKey= "tooltip"; //$NON-NLS-1$
 		String imageKey= "image"; //$NON-NLS-1$
 		String descriptionKey= "description"; //$NON-NLS-1$
 
 		if (prefix != null && prefix.length() > 0) {
-			labelKey= prefix + labelKey;
-			tooltipKey= prefix + tooltipKey;
-			imageKey= prefix + imageKey;
-			descriptionKey= prefix + descriptionKey;
+			labelKey= prefix + labelKey; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			tooltipKey= prefix + tooltipKey; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			imageKey= prefix + imageKey; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			descriptionKey= prefix + descriptionKey; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		a.setText(getString(bundle, labelKey, labelKey));
@@ -280,9 +280,9 @@ public class Utilities {
 
 			if (relPath.contains("/")) { //$NON-NLS-1$
 				String path= relPath.substring(1);
-				ePath= 'e' + path;
+				ePath= 'e' + path; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			} else {
-				ePath= "elcl16/" + relPath; //$NON-NLS-1$
+				ePath= "elcl16/" + relPath; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 
 			ImageDescriptor id = CompareUIPlugin.getImageDescriptor(ePath);
@@ -292,15 +292,15 @@ public class Utilities {
 		}
 	}
 
-	public static void initToggleAction(IAction a, ResourceBundle bundle, String prefix, boolean checked) {
+	public static void initToggleAction(IAction a, ResourceBundle bundle, String prefix, boolean checked) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String tooltip= null;
 		if (checked) {
-			tooltip= getString(bundle, prefix + "tooltip.checked", null);	//$NON-NLS-1$
+			tooltip= getString(bundle, prefix + "tooltip.checked", null);	//$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} else {
-			tooltip= getString(bundle, prefix + "tooltip.unchecked", null);	//$NON-NLS-1$
+			tooltip= getString(bundle, prefix + "tooltip.unchecked", null);	//$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		if (tooltip == null) {
-			tooltip= getString(bundle, prefix + "tooltip", null);	//$NON-NLS-1$
+			tooltip= getString(bundle, prefix + "tooltip", null);	//$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		if (tooltip != null) {
@@ -309,12 +309,12 @@ public class Utilities {
 
 		String description= null;
 		if (checked) {
-			description= getString(bundle, prefix + "description.checked", null);	//$NON-NLS-1$
+			description= getString(bundle, prefix + "description.checked", null);	//$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} else {
-			description= getString(bundle, prefix + "description.unchecked", null);	//$NON-NLS-1$
+			description= getString(bundle, prefix + "description.unchecked", null);	//$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		if (description == null) {
-			description= getString(bundle, prefix + "description", null);	//$NON-NLS-1$
+			description= getString(bundle, prefix + "description", null);	//$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		if (description != null) {
@@ -341,14 +341,14 @@ public class Utilities {
 				CompareUIPlugin.log(x);
 			}
 		}
-		return "!" + key + "!";	//$NON-NLS-2$ //$NON-NLS-1$
+		return "!" + key + "!";	//$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	public static String getString(String key) {
 		try {
 			return CompareUI.getResourceBundle().getString(key);
 		} catch (MissingResourceException e) {
-			return "!" + key + "!";	//$NON-NLS-2$ //$NON-NLS-1$
+			return "!" + key + "!";	//$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -356,7 +356,7 @@ public class Utilities {
 		try {
 			return MessageFormat.format(CompareUI.getResourceBundle().getString(key), arg);
 		} catch (MissingResourceException e) {
-			return "!" + key + "!";	//$NON-NLS-2$ //$NON-NLS-1$
+			return "!" + key + "!";	//$NON-NLS-2$ //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -489,7 +489,7 @@ public class Utilities {
 	 *
 	 * @see org.eclipse.core.resources.IWorkspace#validateEdit(org.eclipse.core.resources.IFile[], java.lang.Object)
 	 */
-	public static boolean validateResources(IResource[] resources, Shell shell, String title) {
+	public static boolean validateResources(IResource[] resources, Shell shell, String title) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// get all readonly files
 		List<IResource> readOnlyFiles= getReadonlyFiles(resources);
 		if (readOnlyFiles.isEmpty()) {
@@ -509,7 +509,7 @@ public class Utilities {
 
 		IStatus modified= null;
 		Map<IFile, Long> newTimeStamps= createModificationStampMap(readOnlyFiles);
-		for (Map.Entry<IFile, Long> entry : newTimeStamps.entrySet()) {
+		for (Map.Entry<IFile, Long> entry : newTimeStamps.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IFile file = entry.getKey();
 			Long newTimeStamp = entry.getValue();
 			if (file.isReadOnly()) {
@@ -540,13 +540,13 @@ public class Utilities {
 		if (Display.getCurrent() != null) {
 			ErrorDialog.openError(shell, title, message, status);
 		} else {
-			Display.getDefault().syncExec(() -> ErrorDialog.openError(shell, title, message, status));
+			Display.getDefault().syncExec(() -> ErrorDialog.openError(shell, title, message, status)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		}
 	}
 
 	private static List<IResource> getReadonlyFiles(IResource[] resources) {
-		List<IResource> readOnlyFiles= new ArrayList<>();
-		for (IResource resource : resources) {
+		List<IResource> readOnlyFiles= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceAttributes resourceAttributes= resource.getResourceAttributes();
 			if (resource.getType() == IResource.FILE && resourceAttributes != null && resourceAttributes.isReadOnly()) {
 				readOnlyFiles.add(resource);
@@ -556,8 +556,8 @@ public class Utilities {
 	}
 
 	private static Map<IFile, Long> createModificationStampMap(List<IResource> files) {
-		Map<IFile, Long> map= new HashMap<>();
-		for (IResource file : files) {
+		Map<IFile, Long> map= new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (IResource file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			map.put((IFile) file, file.getModificationStamp());
 		}
 		return map;
@@ -620,18 +620,18 @@ public class Utilities {
 		return readString(is, encoding, -1, null);
 	}
 
-	public static String readString(InputStream is, String encoding, int length, IProgressMonitor monitor) throws IOException {
+	public static String readString(InputStream is, String encoding, int length, IProgressMonitor monitor) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		SubMonitor progress = SubMonitor.convert(monitor);
 		progress.setWorkRemaining(length);
 		if (is == null) {
 			return null;
 		}
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(is, encoding))) {
-			StringBuilder buffer= new StringBuilder();
+			StringBuilder buffer= new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 			char[] part= new char[2048];
 			int read= 0;
-			while ((read= reader.read(part)) != -1) {
-				buffer.append(part, 0, read);
+			while ((read= reader.read(part)) != -1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				buffer.append(part, 0, read); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				progress.worked(2048);
 				if (progress.isCanceled()) {
 					throw new OperationCanceledException();
@@ -687,7 +687,7 @@ public class Utilities {
 		return null;
 	}
 
-	public static IDocument getDocument(char type, Object element, boolean isUsingDefaultContentProvider, boolean canHaveSharedDocument) {
+	public static IDocument getDocument(char type, Object element, boolean isUsingDefaultContentProvider, boolean canHaveSharedDocument) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ITypedElement te= getLeg(type, element);
 		if (te == null) {
 			return null;
@@ -770,7 +770,7 @@ public class Utilities {
 		if (Display.getCurrent() != null) {
 			BusyIndicator.showWhile(Display.getCurrent(), runnable);
 		} else {
-			Display.getDefault().syncExec(() -> BusyIndicator.showWhile(Display.getCurrent(), runnable));
+			Display.getDefault().syncExec(() -> BusyIndicator.showWhile(Display.getCurrent(), runnable)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		}
 	}
 
@@ -781,7 +781,7 @@ public class Utilities {
 	 */
 	public static boolean setReadTimeout(URLConnection connection, int timeout) {
 		Method[] methods = connection.getClass().getMethods();
-		for (Method method : methods) {
+		for (Method method : methods) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (method.getName().equals("setReadTimeout")) { //$NON-NLS-1$
 				try {
 					method.invoke(connection, Integer.valueOf(timeout));
@@ -803,11 +803,11 @@ public class Utilities {
 	 * @throws InvocationTargetException
 	 *             thrown on errors while URL loading
 	 */
-	public static String getURLContents(final URL url, IRunnableContext context)
+	public static String getURLContents(final URL url, IRunnableContext context) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws InvocationTargetException, OperationCanceledException,
 			InterruptedException {
 		final String[] result = new String[1];
-		context.run(true, true, monitor -> {
+		context.run(true, true, monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 			SubMonitor progress = SubMonitor.convert(monitor,
 					PatchMessages.InputPatchPage_URLConnecting, 100);
 			try {
@@ -842,36 +842,36 @@ public class Utilities {
 	 * @return returns the result of applying the filters to the line from the
 	 *         contributor
 	 */
-	public static String applyCompareFilters(String thisLine,
+	public static String applyCompareFilters(String thisLine, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			char thisContributor, String otherLine, char otherContributor,
 			ICompareFilter[] filters) {
 		IRegion[][] ignoredRegions = new IRegion[filters.length][];
 
-		HashMap<String, Comparable<?>> input = new HashMap<>(4);
+		HashMap<String, Comparable<?>> input = new HashMap<>(4); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		input.put(ICompareFilter.THIS_LINE, thisLine);
 		input.put(ICompareFilter.THIS_CONTRIBUTOR, thisContributor);
 		input.put(ICompareFilter.OTHER_LINE, otherLine);
 		input.put(ICompareFilter.OTHER_CONTRIBUTOR, otherContributor);
-		for (int i = 0; i < filters.length; i++) {
+		for (int i = 0; i < filters.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ignoredRegions[i] = filters[i].getFilteredRegions(input);
 		}
 
 		boolean[] ignored = new boolean[thisLine.length()];
-		for (IRegion[] regions : ignoredRegions) {
+		for (IRegion[] regions : ignoredRegions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (regions != null) {
-				for (IRegion region : regions) {
+				for (IRegion region : regions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (region != null) {
-						for (int l = 0; l < region.getLength(); l++) {
+						for (int l = 0; l < region.getLength(); l++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							ignored[region.getOffset() + l] = true;
 						}
 					}
 				}
 			}
 		}
-		StringBuilder buffer = new StringBuilder(thisLine.length());
-		for (int i = 0; i < ignored.length; i++) {
+		StringBuilder buffer = new StringBuilder(thisLine.length()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < ignored.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!ignored[i]) {
-				buffer.append(thisLine.charAt(i));
+				buffer.append(thisLine.charAt(i)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 		return buffer.toString();
@@ -921,7 +921,7 @@ public class Utilities {
 			/* IWorkbenchGraphicConstants */"IMG_LCL_VIEW_MENU"); //$NON-NLS-1$
 		} else {
 			image = CompareUIPlugin.getImageDescriptor("elcl16/view_menu.svg").createImage(); //$NON-NLS-1$
-			item.addDisposeListener(unused -> {
+			item.addDisposeListener(unused -> { //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 				Image img = item.getImage();
 				if ((img != null) && (!img.isDisposed())) {
 					img.dispose();

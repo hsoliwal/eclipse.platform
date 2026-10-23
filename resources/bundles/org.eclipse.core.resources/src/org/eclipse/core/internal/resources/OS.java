@@ -59,7 +59,7 @@ public abstract class OS {
 	 * Returns true if the given name is a valid resource name on this operating system,
 	 * and false otherwise.
 	 */
-	public static boolean isNameValid(String name) {
+	public static boolean isNameValid(String name) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//. and .. have special meaning on all platforms
 		if (name.equals(".") || name.equals("..")) { //$NON-NLS-1$ //$NON-NLS-2$
 			return false;

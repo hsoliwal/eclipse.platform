@@ -66,7 +66,7 @@ public class ProjectSnapshotPerfManualTest {
 			return 0;
 		}
 		int result = 0;
-		for (String element : children) {
+		for (String element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			File child = new File(root, element);
 			if (child.isDirectory()) {
 				result += countChildren(child);
@@ -81,7 +81,7 @@ public class ProjectSnapshotPerfManualTest {
 	 * the snapshot and compare the times for opening with and without the
 	 * snapshot.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSnapshotImportPerformance() throws Exception {
 		// test if the test can be done in this machine
 		assumeTrue(bigSiteLocation.toFile().isDirectory());
@@ -93,7 +93,7 @@ public class ProjectSnapshotPerfManualTest {
 
 		// report the number of files to be refreshed
 		int numberOfFiles = countChildren(bigSiteLocation.toFile());
-		System.out.println("Number of local resources: " + numberOfFiles);
+		System.out.println("Number of local resources: " + numberOfFiles); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// create the project from the location
 		project.create(description, null);

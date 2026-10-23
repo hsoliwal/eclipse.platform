@@ -46,7 +46,7 @@ public class ResourceMappingInputScope extends AbstractResourceMappingScope {
 	public ResourceTraversal[] getTraversals() {
 		CompoundResourceTraversal result = new CompoundResourceTraversal();
 		ResourceMapping[] mappings = getMappings();
-		for (ResourceMapping mapping : mappings) {
+		for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceTraversal[] traversals = getTraversals(mapping);
 			result.addTraversals(traversals);
 		}
@@ -63,7 +63,7 @@ public class ResourceMappingInputScope extends AbstractResourceMappingScope {
 
 	private boolean contains(ResourceMapping mapping) {
 		ResourceMapping[] mappings = getMappings();
-		for (ResourceMapping child : mappings) {
+		for (ResourceMapping child : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (child.equals(mapping)) {
 				return true;
 			}

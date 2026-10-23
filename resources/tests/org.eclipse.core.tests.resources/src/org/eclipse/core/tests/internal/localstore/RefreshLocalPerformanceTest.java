@@ -45,7 +45,7 @@ public class RefreshLocalPerformanceTest {
 			return 0;
 		}
 		int result = 0;
-		for (String element : children) {
+		for (String element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			File child = new File(root, element);
 			if (child.isDirectory()) {
 				result += countChildren(child);
@@ -71,7 +71,7 @@ public class RefreshLocalPerformanceTest {
 	/**
 	 * Defines only a default mapping to a project and refreshes locally.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLocalRefreshPerformance() throws Exception {
 		// test if the test can be done in this machine
 		assumeTrue(bigSiteLocation.toFile().isDirectory());
@@ -90,10 +90,10 @@ public class RefreshLocalPerformanceTest {
 
 		// report the number of files to be refreshed
 		int numberOfFiles = countChildren(bigSiteLocation.toFile());
-		System.out.println("Number of local resources: " + numberOfFiles);
+		System.out.println("Number of local resources: " + numberOfFiles); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// test each project
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < n; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			project.create(description, null);
 			project.open(null);
 
@@ -119,8 +119,8 @@ public class RefreshLocalPerformanceTest {
 		}
 		averageWithoutTree /= n;
 		averageWithTree /= n;
-		System.out.println("Average without tree: " + averageWithoutTree);
-		System.out.println("Average with tree: " + averageWithTree);
+		System.out.println("Average without tree: " + averageWithoutTree); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		System.out.println("Average with tree: " + averageWithTree); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 }

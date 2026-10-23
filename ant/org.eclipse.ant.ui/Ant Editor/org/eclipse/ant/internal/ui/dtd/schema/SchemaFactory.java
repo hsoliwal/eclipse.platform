@@ -38,7 +38,7 @@ public class SchemaFactory implements DeclHandler {
 	private Element fElement;
 
 	private final Schema fSchema;
-	private static HashSet<String> fTypes = new HashSet<>();
+	private static HashSet<String> fTypes = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 	private Exception fErrorException;
 	static {
 		fTypes.add("CDATA"); //$NON-NLS-1$
@@ -67,7 +67,7 @@ public class SchemaFactory implements DeclHandler {
 		return fSchema;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void attributeDecl(String eName, String aName, String type, String valueDefault, String value) {
 		Element element = getElement(eName);
 		Attribute attr = (Attribute) element.getAttributes().get(aName);
@@ -124,7 +124,7 @@ public class SchemaFactory implements DeclHandler {
 	private String[] parseValues(String type, char separator) {
 		int start = 0, pos, len = type.length();
 		LinkedList<String> values = new LinkedList<>();
-		while (start < len) {
+		while (start < len) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			pos = type.indexOf(separator, start);
 			if (pos < 0) {
 				pos = len;
@@ -136,7 +136,7 @@ public class SchemaFactory implements DeclHandler {
 		return values.toArray(new String[values.size()]);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void elementDecl(String name, String model) throws SAXException {
 		Element element = getElement(name);
 		if (!element.isUndefined()) {
@@ -204,7 +204,7 @@ public class SchemaFactory implements DeclHandler {
 	 * @throws SAXException
 	 *             if errors are detected in the model.
 	 */
-	private IModel scanExpr(IModel term) throws SAXException {
+	private IModel scanExpr(IModel term) throws SAXException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		checkLen();
 		if (fBuf[fPos] != ')') {
 			char op = fBuf[fPos];
@@ -215,7 +215,7 @@ public class SchemaFactory implements DeclHandler {
 			model.addModel(term);
 			term = model;
 
-			while (fBuf[fPos] == op) {
+			while (fBuf[fPos] == op) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fPos++;
 				IModel next = scanElement();
 				model.addModel(next);
@@ -238,9 +238,9 @@ public class SchemaFactory implements DeclHandler {
 		if (fBuf[fPos] == '(') {
 			return scanExpr();
 		}
-		StringBuilder sb = new StringBuilder();
-		while (fBuf[fPos] != '|' && fBuf[fPos] != ',' && fBuf[fPos] != ')' && fBuf[fPos] != '*' && fBuf[fPos] != '+' && fBuf[fPos] != '?') {
-			sb.append(fBuf[fPos++]);
+		StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		while (fBuf[fPos] != '|' && fBuf[fPos] != ',' && fBuf[fPos] != ')' && fBuf[fPos] != '*' && fBuf[fPos] != '+' && fBuf[fPos] != '?') { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			sb.append(fBuf[fPos++]); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			checkLen();
 		}
 		String name = sb.toString();

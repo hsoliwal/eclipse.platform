@@ -31,7 +31,7 @@ public class PDAEvent {
 		return message.substring(0, nameEnd);
 	}
 
-	public static PDAEvent parseEvent(String message) {
+	public static PDAEvent parseEvent(String message) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (PDAEvalResultEvent.isEventMessage(message)) {
 			return new PDAEvalResultEvent(message);
 		}

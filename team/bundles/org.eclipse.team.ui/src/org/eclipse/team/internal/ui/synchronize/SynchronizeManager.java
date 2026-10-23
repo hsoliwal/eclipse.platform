@@ -125,7 +125,7 @@ public class SynchronizeManager implements ISynchronizeManager {
 	 * Contains a table of the state saved between sessions for a participant. The set is keyed
 	 * as such {String key -&gt; ISynchronizeParticipantReference}.
 	 */
-	private Map<String, ISynchronizeParticipantReference> participantReferences = Collections.synchronizedMap(new HashMap<>(10));
+	private Map<String, ISynchronizeParticipantReference> participantReferences = Collections.synchronizedMap(new HashMap<>(10)); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	// change notification constants
 	private final static int ADDED = 1;
@@ -180,7 +180,7 @@ public class SynchronizeManager implements ISynchronizeManager {
 			fChanged = participants;
 			fType = update;
 			Object[] copiedListeners = fListeners.getListeners();
-			for (Object copiedListener : copiedListeners) {
+			for (Object copiedListener : copiedListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fListener = (ISynchronizeParticipantListener) copiedListener;
 				SafeRunner.run(this);
 			}
@@ -202,7 +202,7 @@ public class SynchronizeManager implements ISynchronizeManager {
 		private boolean dead;
 
 		public ParticipantInstance(SynchronizeParticipantDescriptor descriptor, String secondaryId, String displayName, IMemento savedState) {
-			this.participants = new HashMap<>();
+			this.participants = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			this.secondaryId = secondaryId;
 			this.savedState = savedState;
 			this.descriptor = descriptor;
@@ -260,7 +260,7 @@ public class SynchronizeManager implements ISynchronizeManager {
 			return participants.get(key) != null;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public ISynchronizeParticipant getParticipant() throws TeamException {
 			if (dead) {
 				return null;
@@ -357,7 +357,7 @@ public class SynchronizeManager implements ISynchronizeManager {
 	 * @param secondaryId a unique id for multiple instance support
 	 * @return a reference to a participant
 	 */
-	private ParticipantInstance createParticipantReference(String type, String secondaryId, String displayName) throws PartInitException {
+	private ParticipantInstance createParticipantReference(String type, String secondaryId, String displayName) throws PartInitException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		SynchronizeParticipantDescriptor desc = participantRegistry.find(type);
 		// ensure that the view id is valid
 		if (desc == null) {
@@ -377,11 +377,11 @@ public class SynchronizeManager implements ISynchronizeManager {
 		return ref;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public synchronized void addSynchronizeParticipants(ISynchronizeParticipant[] participants) {
 		// renamed to createSynchronizeParticipant(id)
-		List<ISynchronizeParticipant> added = new ArrayList<>(participants.length);
-		for (ISynchronizeParticipant participant : participants) {
+		List<ISynchronizeParticipant> added = new ArrayList<>(participants.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ISynchronizeParticipant participant : participants) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String key = Utils.getKey(participant.getId(), participant.getSecondaryId());
 			if(! participantReferences.containsKey(key)) {
 				try {
@@ -402,11 +402,11 @@ public class SynchronizeManager implements ISynchronizeManager {
 		}
 	}
 
-	private void removeMatchingParticipant(String id) {
+	private void removeMatchingParticipant(String id) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ISynchronizeParticipantReference[] refs = get(id);
 		if (refs.length > 0) {
 			// Find an un-pinned participant and replace it
-			for (ISynchronizeParticipantReference reference : refs) {
+			for (ISynchronizeParticipantReference reference : refs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ISynchronizeParticipant p;
 				try {
 					p = reference.getParticipant();
@@ -433,8 +433,8 @@ public class SynchronizeManager implements ISynchronizeManager {
 
 	@Override
 	public synchronized void removeSynchronizeParticipants(ISynchronizeParticipant[] participants) {
-		List<ISynchronizeParticipant> removed = new ArrayList<>(participants.length);
-		for (ISynchronizeParticipant participant : participants) {
+		List<ISynchronizeParticipant> removed = new ArrayList<>(participants.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ISynchronizeParticipant participant : participants) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String key = Utils.getKey(participant.getId(), participant.getSecondaryId());
 			if(participantReferences.containsKey(key)) {
 				ParticipantInstance ref = (ParticipantInstance)participantReferences.remove(key);
@@ -459,8 +459,8 @@ public class SynchronizeManager implements ISynchronizeManager {
 	@Override
 	public ISynchronizeParticipantReference[] get(String id) {
 		ISynchronizeParticipantReference[] refs = getSynchronizeParticipants();
-		ArrayList<ISynchronizeParticipantReference> refsForId = new ArrayList<>();
-		for (ISynchronizeParticipantReference reference : refs) {
+		ArrayList<ISynchronizeParticipantReference> refsForId = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ISynchronizeParticipantReference reference : refs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if(reference.getId().equals(id)) {
 				refsForId.add(reference);
 			}
@@ -473,7 +473,7 @@ public class SynchronizeManager implements ISynchronizeManager {
 		return participantReferences.values().toArray(new ISynchronizeParticipantReference[participantReferences.size()]);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ISynchronizeView showSynchronizeViewInActivePage() {
 		IWorkbench workbench = PlatformUI.getWorkbench();
 		IWorkbenchWindow window = workbench.getActiveWorkbenchWindow();
@@ -515,7 +515,7 @@ public class SynchronizeManager implements ISynchronizeManager {
 	 * Decides what action to take when switching perspectives and showing the synchronize view. Basically there are a
 	 * set of user preferences that control how perspective switching.
 	 */
-	private boolean promptForPerspectiveSwitch() {
+	private boolean promptForPerspectiveSwitch() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Decide if a prompt is even required
 		IPreferenceStore store = TeamUIPlugin.getPlugin().getPreferenceStore();
 		String option = store.getString(IPreferenceIds.SYNCHRONIZING_COMPLETE_PERSPECTIVE);
@@ -585,7 +585,7 @@ public class SynchronizeManager implements ISynchronizeManager {
 	public void dispose() {
 		// save state and settings for existing participants.
 		saveState();
-		for (ISynchronizeParticipantReference element : participantReferences.values()) {
+		for (ISynchronizeParticipantReference element : participantReferences.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ParticipantInstance ref = (ParticipantInstance) element;
 			if((ref).isInstantiated()) {
 				try {
@@ -601,7 +601,7 @@ public class SynchronizeManager implements ISynchronizeManager {
 	/**
 	 * Restores participants that have been saved between sessions.
 	 */
-	private void restoreSavedParticipants() throws CoreException {
+	private void restoreSavedParticipants() throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		File file = getStateFile();
 		Reader reader;
 		try {
@@ -611,7 +611,7 @@ public class SynchronizeManager implements ISynchronizeManager {
 		}
 		IMemento memento = XMLMemento.createReadRoot(reader);
 		IMemento[] participantNodes = memento.getChildren(CTX_PARTICIPANT);
-		for (IMemento memento2 : participantNodes) {
+		for (IMemento memento2 : participantNodes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String id = memento2.getString(CTX_ID);
 			String secondayId = memento2.getString(CTX_SECONDARY_ID);
 			if (secondayId != null) {
@@ -633,9 +633,9 @@ public class SynchronizeManager implements ISynchronizeManager {
 	 * with this manager. Each initialized participant is also given the chance to save
 	 * it's state.
 	 */
-	private void saveState() {
+	private void saveState() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		XMLMemento xmlMemento = XMLMemento.createWriteRoot(CTX_PARTICIPANTS);
-		for (ISynchronizeParticipantReference element : participantReferences.values()) {
+		for (ISynchronizeParticipantReference element : participantReferences.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ParticipantInstance ref = (ParticipantInstance) element;
 			// Participants can opt out of being saved between sessions
 			if(! ref.getDescriptor().isPersistent()) {

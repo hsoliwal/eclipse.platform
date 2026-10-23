@@ -57,7 +57,7 @@ public class ResourceVariantCacheEntry {
 		registerHit();
 	}
 
-	public InputStream getContents() throws TeamException {
+	public InputStream getContents() throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (state != READY) {
 			return null;
 		}
@@ -111,7 +111,7 @@ public class ResourceVariantCacheEntry {
 		lock.acquire();
 	}
 
-	private void internalSetContents(InputStream stream, IProgressMonitor monitor) throws TeamException {
+	private void internalSetContents(InputStream stream, IProgressMonitor monitor) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// if the state is DISPOSED then there is a problem
 		if (state == DISPOSED) {
 			throw new TeamException(NLS.bind(Messages.RemoteContentsCacheEntry_3, cache.getName(), id));
@@ -130,7 +130,7 @@ public class ResourceVariantCacheEntry {
 				// Transfer the contents
 				byte[] buffer = new byte[1024];
 				int read;
-				while ((read = stream.read(buffer)) >= 0) {
+				while ((read = stream.read(buffer)) >= 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Policy.checkCanceled(monitor);
 					out.write(buffer, 0, read);
 				}

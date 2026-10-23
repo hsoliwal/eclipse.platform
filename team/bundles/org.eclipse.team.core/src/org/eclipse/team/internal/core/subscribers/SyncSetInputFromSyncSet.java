@@ -25,7 +25,7 @@ import org.eclipse.team.internal.core.Policy;
 /**
  * This class uses the contents of one sync set as the input of another.
  */
-public class SyncSetInputFromSyncSet extends SyncSetInput implements ISyncInfoSetChangeListener {
+public class SyncSetInputFromSyncSet extends SyncSetInput implements ISyncInfoSetChangeListener { //FLLDCIM: MARK — T38  IMPLEMENTS
 
 	SubscriberSyncInfoSet inputSyncSet;
 
@@ -50,7 +50,7 @@ public class SyncSetInputFromSyncSet extends SyncSetInput implements ISyncInfoSe
 			return;
 		}
 		SyncInfo[] infos = inputSyncSet.getSyncInfos();
-		for (SyncInfo info : infos) {
+		for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			collect(info, monitor);
 		}
 	}
@@ -70,13 +70,13 @@ public class SyncSetInputFromSyncSet extends SyncSetInput implements ISyncInfoSe
 	}
 
 	private void syncSetChanged(SyncInfo[] infos, IProgressMonitor monitor) {
-		for (SyncInfo info : infos) {
+		for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			collect(info, monitor);
 		}
 	}
 
 	private void remove(IResource[] resources) {
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			remove(resource);
 		}
 	}
@@ -108,7 +108,7 @@ public class SyncSetInputFromSyncSet extends SyncSetInput implements ISyncInfoSe
 		SubscriberSyncInfoSet syncSet = getSyncSet();
 		try {
 			syncSet.beginInput();
-			for (ITeamStatus status : errors) {
+			for (ITeamStatus status : errors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				syncSet.addError(status);
 			}
 		} finally {

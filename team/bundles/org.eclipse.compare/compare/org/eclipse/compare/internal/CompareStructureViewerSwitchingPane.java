@@ -45,7 +45,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
-public class CompareStructureViewerSwitchingPane extends
+public class CompareStructureViewerSwitchingPane extends //FLLDCIM: MARK — T05  IMPLEMENTS
 		CompareViewerSwitchingPane {
 
 	private final CompareEditorInput fCompareEditorInput;
@@ -64,7 +64,7 @@ public class CompareStructureViewerSwitchingPane extends
 		return fCompareEditorInput.getCompareConfiguration();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Viewer getViewer(Viewer oldViewer, Object input) {
 		if (input instanceof ICompareInput) {
 			if (fSelectedViewerDescriptor != null) {
@@ -92,7 +92,7 @@ public class CompareStructureViewerSwitchingPane extends
 		return null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createTopLeft(Composite p) {
 		final Composite composite = new Composite(p, SWT.NONE) {
 			@Override
@@ -114,13 +114,13 @@ public class CompareStructureViewerSwitchingPane extends
 		Utilities.setMenuImage(toolItem);
 		toolItem
 				.setToolTipText(CompareMessages.CompareStructureViewerSwitchingPane_switchButtonTooltip);
-		toolItem.addSelectionListener(new SelectionAdapter() {
+		toolItem.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				showMenu();
 			}
 		});
-		toolBar.addMouseListener(new MouseAdapter() {
+		toolBar.addMouseListener(new MouseAdapter() { //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 			@Override
 			public void mouseDown(MouseEvent e) {
 				showMenu();
@@ -150,7 +150,7 @@ public class CompareStructureViewerSwitchingPane extends
 		toolBar.setVisible(vd != null && vd.length > 1);
 	}
 
-	private void showMenu() {
+	private void showMenu() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!(getInput() instanceof ICompareInput)) {
 			return;
 		}
@@ -166,13 +166,13 @@ public class CompareStructureViewerSwitchingPane extends
 		String label = CompareMessages.CompareStructureViewerSwitchingPane_defaultViewer;
 		MenuItem defaultItem = new MenuItem(menu, SWT.RADIO);
 		defaultItem.setText(label);
-		defaultItem.addSelectionListener(createSelectionListener(null));
+		defaultItem.addSelectionListener(createSelectionListener(null)); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 		defaultItem.setSelection(fSelectedViewerDescriptor == null);
 
 		new MenuItem(menu, SWT.SEPARATOR);
 
 		// add others
-		for (ViewerDescriptor vdi : vd) {
+		for (ViewerDescriptor vdi : vd) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			label = vdi.getLabel();
 			if (label == null || label.isEmpty()) {
 				String l = CompareUIPlugin.getDefault().findStructureTypeNameOrType((ICompareInput) getInput(), vdi, getCompareConfiguration());
@@ -184,7 +184,7 @@ public class CompareStructureViewerSwitchingPane extends
 			}
 			MenuItem item = new MenuItem(menu, SWT.RADIO);
 			item.setText(label);
-			item.addSelectionListener(createSelectionListener(vdi));
+			item.addSelectionListener(createSelectionListener(vdi)); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			item.setSelection(vdi == fSelectedViewerDescriptor);
 		}
 
@@ -196,15 +196,15 @@ public class CompareStructureViewerSwitchingPane extends
 		menu.setVisible(true);
 
 		// 3. dispose on close
-		menu.addMenuListener(new MenuAdapter() {
+		menu.addMenuListener(new MenuAdapter() { //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 			@Override
 			public void menuHidden(MenuEvent e) {
-				e.display.asyncExec(() -> menu.dispose());
+				e.display.asyncExec(() -> menu.dispose()); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			}
 		});
 	}
 
-	private SelectionListener createSelectionListener(final ViewerDescriptor vd) {
+	private SelectionListener createSelectionListener(final ViewerDescriptor vd) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		return new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -228,7 +228,7 @@ public class CompareStructureViewerSwitchingPane extends
 	public void setText(String label) {
 		Composite c = (Composite) getTopLeft();
 		Control[] children = c.getChildren();
-		for (Control child : children) {
+		for (Control child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (child instanceof CLabel cl) {
 				if (cl != null && !cl.isDisposed()) {
 					cl.setText(label);
@@ -243,7 +243,7 @@ public class CompareStructureViewerSwitchingPane extends
 	public void setImage(Image image) {
 		Composite c = (Composite) getTopLeft();
 		Control[] children = c.getChildren();
-		for (Control child : children) {
+		for (Control child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (child instanceof CLabel cl) {
 				if (cl != null && !cl.isDisposed()) {
 					cl.setImage(image);
@@ -257,9 +257,9 @@ public class CompareStructureViewerSwitchingPane extends
 	public void addMouseListener(MouseListener listener) {
 		Composite c = (Composite) getTopLeft();
 		Control[] children = c.getChildren();
-		for (Control child : children) {
+		for (Control child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (child instanceof CLabel cl) {
-				cl.addMouseListener(listener);
+				cl.addMouseListener(listener); //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 			}
 		}
 	}

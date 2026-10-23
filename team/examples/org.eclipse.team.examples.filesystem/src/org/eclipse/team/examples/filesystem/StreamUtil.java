@@ -23,7 +23,7 @@ public class StreamUtil {
 
 	protected final static byte[] COPY_BUFFER = new byte[4096];
 
-	public static void pipe(
+	public static void pipe( //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		InputStream in,
 		OutputStream out,
 		long sizeEstimate,
@@ -40,7 +40,7 @@ public class StreamUtil {
 			// Read the initial chunk.
 			int read = in.read(COPY_BUFFER, 0, COPY_BUFFER.length);
 
-			while (read != -1) {
+			while (read != -1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				out.write(COPY_BUFFER, 0, read);
 
 				// Report progress

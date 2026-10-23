@@ -55,17 +55,17 @@ public abstract class ForwardingChangesSection extends ChangesSection {
 			return;
 		}
 		if(getVisibleChangesCount() == 0) {
-			TeamUIPlugin.getStandardDisplay().asyncExec(() -> {
+			TeamUIPlugin.getStandardDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				if (!getContainer().isDisposed()) {
 					updatePage(getEmptyChangesComposite(getContainer()));
 				}
 			});
 		} else {
-			TeamUIPlugin.getStandardDisplay().asyncExec(() -> updatePage(null));
+			TeamUIPlugin.getStandardDisplay().asyncExec(() -> updatePage(null)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		}
 	}
 
-	protected void updatePage(Composite message) {
+	protected void updatePage(Composite message) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (getContainer().isDisposed()) {
 			return;
 		}
@@ -84,7 +84,7 @@ public abstract class ForwardingChangesSection extends ChangesSection {
 		}
 	}
 
-	protected Composite getEmptyChangesComposite(Composite parent) {
+	protected Composite getEmptyChangesComposite(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setBackground(getListBackgroundColor());
 		GridLayout layout = new GridLayout();

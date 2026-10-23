@@ -38,7 +38,7 @@ public class DiffViewerComparator extends ViewerComparator {
 		return 0;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Comparator<? super String> getComparator() {
 		return (arg0, arg1) -> {
 			String label0 = arg0 == null ? "" : arg0.toString(); //$NON-NLS-1$
@@ -47,8 +47,8 @@ public class DiffViewerComparator extends ViewerComparator {
 			// see org.eclipse.compare.internal.patch.Hunk.getDescription()
 			String pattern = "\\d+,\\d+ -> \\d+,\\d+.*"; //$NON-NLS-1$
 
-			if (Pattern.matches(pattern, label0)
-					&& Pattern.matches(pattern, label1)) {
+			if (Pattern.matches(pattern, label0) //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
+					&& Pattern.matches(pattern, label1)) { //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 				int oldStart0 = Integer.parseInt(label0.split(",")[0]); //$NON-NLS-1$
 				int oldStart1 = Integer.parseInt(label1.split(",")[0]); //$NON-NLS-1$
 

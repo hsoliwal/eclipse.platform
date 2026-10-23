@@ -35,7 +35,7 @@ import org.eclipse.team.ui.synchronize.SynchronizeModelAction;
 import org.eclipse.team.ui.synchronize.SynchronizeModelOperation;
 import org.eclipse.team.ui.synchronize.SynchronizePageActionGroup;
 
-public class LocalHistoryParticipant extends SubscriberParticipant {
+public class LocalHistoryParticipant extends SubscriberParticipant { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	public static final String ID = "org.eclipse.team.synchronize.example"; //$NON-NLS-1$
 	public static final String CONTEXT_MENU_CONTRIBUTION_GROUP = "context_group_1"; //$NON-NLS-1$
@@ -46,7 +46,7 @@ public class LocalHistoryParticipant extends SubscriberParticipant {
 			super.initialize(configuration);
 			appendToGroup(
 					ISynchronizePageConfiguration.P_CONTEXT_MENU, CONTEXT_MENU_CONTRIBUTION_GROUP,
-					new SynchronizeModelAction("Revert to latest in local history", configuration) { //$NON-NLS-1$
+					new SynchronizeModelAction("Revert to latest in local history", configuration) { //$NON-NLS-1$ //FLLDCIM: MARK — T04  ANONYMOUS
 						@Override
 						protected SynchronizeModelOperation getSubscriberOperation(ISynchronizePageConfiguration configuration, IDiffElement[] elements) {
 							return new RevertAllOperation(configuration, elements);
@@ -64,7 +64,7 @@ public class LocalHistoryParticipant extends SubscriberParticipant {
 					SyncInfo info = ((IAdaptable)node).getAdapter(SyncInfo.class);
 					if(info != null) {
 						LocalHistoryVariant state = (LocalHistoryVariant)info.getRemote();
-						return text+ " ("+ state.getContentIdentifier() + ")";
+						return text+ " ("+ state.getContentIdentifier() + ")"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 				}
 			}

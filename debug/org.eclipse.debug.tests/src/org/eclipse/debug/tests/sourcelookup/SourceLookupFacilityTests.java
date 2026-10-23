@@ -290,7 +290,7 @@ public class SourceLookupFacilityTests {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLRU() throws Exception {
 		try {
 			final int MAX_LRU_SIZE = 10;
@@ -299,11 +299,11 @@ public class SourceLookupFacilityTests {
 			Field field = SourceLookupFacility.class.getDeclaredField("fLookupResults"); //$NON-NLS-1$
 			field.setAccessible(true);
 			Map<?, ?> map = (Map<?, ?>) field.get(SourceLookupFacility.getDefault());
-			LinkedHashMap<String, ISourceLookupResult> cached = new LinkedHashMap<>();
+			LinkedHashMap<String, ISourceLookupResult> cached = new LinkedHashMap<>(); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW
 
 			// fill the LRU with one element overflow
-			for (int i = 0; i < MAX_LRU_SIZE + 1; i++) {
-				String artifact = "" + i; //$NON-NLS-1$
+			for (int i = 0; i < MAX_LRU_SIZE + 1; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				String artifact = "" + i; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				ISourceLookupResult result = SourceLookupFacility.getDefault().lookup(artifact, fTestLocator, false);
 				assertNotNull(result, "There should be a result"); //$NON-NLS-1$
 				assertFalse(cached.containsValue(result));
@@ -321,10 +321,10 @@ public class SourceLookupFacilityTests {
 			assertFalse(map.containsValue(cached.values().iterator().next()));
 
 			// If we lookup for the first element again, we should get new one
-			String artifact = "" + 0; //$NON-NLS-1$
+			String artifact = "" + 0; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			SourceLookupResult result = SourceLookupFacility.getDefault().lookup(artifact, fTestLocator, false);
 			assertNotNull(result, "There should be a result"); //$NON-NLS-1$
-			assertFalse(new IdentityHashMap<>(cached).containsValue(result));
+			assertFalse(new IdentityHashMap<>(cached).containsValue(result)); //FLLDCIM: MARK — M06 M3_IDENTITY_WEAK_LANES NEW
 
 			// Check: the LRU map size should not grow
 			assertEquals(MAX_LRU_SIZE, map.size());

@@ -57,13 +57,13 @@ public class SourceAnalyzer {
 	 */
 	public static void checkCycles(IJavaProject currentProject, EclipseClasspath classpath, Shell shell) {
 		StringBuffer message = new StringBuffer();
-		Map<String, String> src2dir = new TreeMap<>(); // map string to string
-		Map<String, Set<String>> srcdir2classes = new TreeMap<>(); // map string to Set of strings
+		Map<String, String> src2dir = new TreeMap<>(); // map string to string //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW
+		Map<String, Set<String>> srcdir2classes = new TreeMap<>(); // map string to Set of strings //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW
 		determineSources(currentProject, classpath, src2dir, srcdir2classes);
 		Map<String, Set<String>> srcdir2sourcedirs = determineRequiredSrcDirs(src2dir, srcdir2classes);
 		String projectName = currentProject.getProject().getName();
 
-		List<String> cycle = new ArrayList<>();
+		List<String> cycle = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (isCyclic(srcdir2sourcedirs, cycle)) {
 			showCycleWarning(projectName, shell, cycle, message);
 			return;
@@ -75,8 +75,8 @@ public class SourceAnalyzer {
 	/**
 	 * Determine all sources belonging to a source directory.
 	 */
-	private static void determineSources(IJavaProject currentProject, EclipseClasspath classpath, Map<String, String> src2dir, Map<String, Set<String>> srcdir2classes) {
-		for (int i = 0; i < classpath.srcDirs.size(); i++) {
+	private static void determineSources(IJavaProject currentProject, EclipseClasspath classpath, Map<String, String> src2dir, Map<String, Set<String>> srcdir2classes) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		for (int i = 0; i < classpath.srcDirs.size(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String srcDir = classpath.srcDirs.get(i);
 			String classDir = classpath.classDirs.get(i);
 			if (EclipseClasspath.isReference(srcDir)) {
@@ -98,9 +98,9 @@ public class SourceAnalyzer {
 				}
 			}
 			// find all required classfiles for each source directory
-			for (String srcFile : findFiles(dir, ".java")) { //$NON-NLS-1$
+			for (String srcFile : findFiles(dir, ".java")) { //$NON-NLS-1$ //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				src2dir.put(srcFile, srcDir);
-				IFile classFile = currentProject.getProject().getFile(classDir + '/' + srcFile + ".class"); //$NON-NLS-1$
+				IFile classFile = currentProject.getProject().getFile(classDir + '/' + srcFile + ".class"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				if (!classFile.exists()) {
 					// project was not compiled, check not possible
 					continue;
@@ -120,10 +120,10 @@ public class SourceAnalyzer {
 	 *
 	 * @return Map string to Set of strings. (Maps source dir to Set of required source dirs.)
 	 */
-	private static Map<String, Set<String>> determineRequiredSrcDirs(Map<String, String> src2dir, Map<String, Set<String>> srcdir2classes) {
-		Map<String, Set<String>> srcdir2sourcedirs = new TreeMap<>(); // map string to Set of strings
-		for (String srcDir : srcdir2classes.keySet()) {
-			for (String classname : srcdir2classes.get(srcDir)) {
+	private static Map<String, Set<String>> determineRequiredSrcDirs(Map<String, String> src2dir, Map<String, Set<String>> srcdir2classes) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		Map<String, Set<String>> srcdir2sourcedirs = new TreeMap<>(); // map string to Set of strings //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW
+		for (String srcDir : srcdir2classes.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (String classname : srcdir2classes.get(srcDir)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String classsrc = src2dir.get(classname);
 				// don't add reference to itself
 				if (classsrc != null && !classsrc.equals(srcDir)) {
@@ -146,7 +146,7 @@ public class SourceAnalyzer {
 		message.append(ExportUtil.NEWLINE);
 
 		// print cycle path
-		for (String s : cycle) {
+		for (String s : cycle) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			s = EclipseClasspath.getLinkedResourceName(s);
 			message.append(s);
 			message.append(" -> "); //$NON-NLS-1$
@@ -159,13 +159,13 @@ public class SourceAnalyzer {
 	 * Check if build order is correct.
 	 */
 	private static void checkBuildOrder(EclipseClasspath classpath, String projectName, Shell shell, Map<String, Set<String>> srcdir2sourcedirs) {
-		for (String srcdir : srcdir2sourcedirs.keySet()) {
+		for (String srcdir : srcdir2sourcedirs.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int classpathIndex = classpath.srcDirs.indexOf(srcdir);
-			for (String requiredSrc : srcdir2sourcedirs.get(srcdir)) {
+			for (String requiredSrc : srcdir2sourcedirs.get(srcdir)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int i = classpath.srcDirs.indexOf(requiredSrc);
 				if (i > classpathIndex) {
 					String s = MessageFormat.format(DataTransferMessages.SourceAnalyzer_3, projectName);
-					MessageDialog.openWarning(shell, DataTransferMessages.SourceAnalyzer_2, s + ExportUtil.NEWLINE + requiredSrc + " <-> " + srcdir //$NON-NLS-1$
+					MessageDialog.openWarning(shell, DataTransferMessages.SourceAnalyzer_2, s + ExportUtil.NEWLINE + requiredSrc + " <-> " + srcdir //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							+ ExportUtil.NEWLINE);
 					break;
 				}
@@ -180,7 +180,7 @@ public class SourceAnalyzer {
 	 *            a ".class" file
 	 * @return set of strings, each contains a full qualified class name (forward slash as package separator)
 	 */
-	public static Set<String> getRequiredClasses(IFile file) {
+	public static Set<String> getRequiredClasses(IFile file) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Set<String> classes = new TreeSet<>();
 		IClassFile classFile = JavaCore.createClassFileFrom(file);
 		IClassFileReader reader = ToolFactory.createDefaultClassFileReader(classFile, IClassFileReader.CONSTANT_POOL);
@@ -189,7 +189,7 @@ public class SourceAnalyzer {
 			return classes;
 		}
 		IConstantPool pool = reader.getConstantPool();
-		for (int i = 0; i < pool.getConstantPoolCount(); i++) {
+		for (int i = 0; i < pool.getConstantPoolCount(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (pool.getEntryKind(i) == IConstantPoolConstant.CONSTANT_Class) {
 				IConstantPoolEntry entry = pool.decodeEntry(i);
 				String classname = new String(entry.getClassInfoName());
@@ -221,12 +221,12 @@ public class SourceAnalyzer {
 
 	private static void findFiles(File base, File dir, String extension, Set<String> visited) {
 		if (dir.isDirectory()) {
-			for (File element : dir.listFiles()) {
+			for (File element : dir.listFiles()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				findFiles(base, element, extension, visited);
 			}
 		} else if (dir.getAbsolutePath().endsWith(extension)) {
 			// remove base directory
-			String filename = ExportUtil.removePrefixAndSuffix(dir.getAbsolutePath(), base.getAbsolutePath() + File.separator, extension);
+			String filename = ExportUtil.removePrefixAndSuffix(dir.getAbsolutePath(), base.getAbsolutePath() + File.separator, extension); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			visited.add(filename.replace('\\', '/'));
 		}
 	}
@@ -245,10 +245,10 @@ public class SourceAnalyzer {
 
 	private static boolean isAcyclic(Map<String, Set<String>> srcdir2sourcedirs, List<String> cycle) {
 		// standard graph theory
-		List<String> visited = new ArrayList<>();
-		List<String> exited = new ArrayList<>();
+		List<String> visited = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<String> exited = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-		for (String srcdir : srcdir2sourcedirs.keySet()) {
+		for (String srcdir : srcdir2sourcedirs.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!visited.contains(srcdir)) {
 				if (circleSearch(srcdir, srcdir2sourcedirs, visited, exited, cycle)) {
 					return false;
@@ -258,13 +258,13 @@ public class SourceAnalyzer {
 		return true;
 	}
 
-	private static boolean circleSearch(String srcdir, Map<String, Set<String>> srcdir2sourcedirs, List<String> visited, List<String> exited, List<String> cycle) {
+	private static boolean circleSearch(String srcdir, Map<String, Set<String>> srcdir2sourcedirs, List<String> visited, List<String> exited, List<String> cycle) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean res = false;
 		visited.add(srcdir);
 		cycle.add(srcdir);
 		Set<String> sourcedirs = srcdir2sourcedirs.get(srcdir);
 		if (sourcedirs != null) {
-			for (String src : sourcedirs) {
+			for (String src : sourcedirs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!visited.contains(src)) {
 					res = circleSearch(src, srcdir2sourcedirs, visited, exited, cycle);
 				} else if (!exited.contains(src)) {

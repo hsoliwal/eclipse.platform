@@ -40,8 +40,8 @@ public abstract class AbstractJavacPatternMatcher implements IPatternMatchListen
 
 	protected TextConsole fConsole;
 	private static Pattern fgLineNumberPattern = Pattern.compile("\\d+"); //$NON-NLS-1$
-	private static List<AbstractJavacPatternMatcher> fgPatternMatchers = new ArrayList<>();
-	private final Map<String, IFile> fFileNameToIFile = new HashMap<>();
+	private static List<AbstractJavacPatternMatcher> fgPatternMatchers = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+	private final Map<String, IFile> fFileNameToIFile = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	private JavacMarkerCreator fMarkerCreator;
 	protected static final Integer fgWarningType = Integer.valueOf(IMarker.SEVERITY_WARNING);
@@ -92,7 +92,7 @@ public abstract class AbstractJavacPatternMatcher implements IPatternMatchListen
 		return matchedText;
 	}
 
-	protected int getLineNumber(int eventOffset, boolean sameLine) {
+	protected int getLineNumber(int eventOffset, boolean sameLine) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IDocument document = fConsole.getDocument();
 		try {
 			int fileLine = document.getLineOfOffset(eventOffset);
@@ -108,7 +108,7 @@ public abstract class AbstractJavacPatternMatcher implements IPatternMatchListen
 			String lineLine = document.get(eventOffset, regionLength);
 			Matcher matcher = null;
 			synchronized (fgLineNumberPattern) {
-				matcher = fgLineNumberPattern.matcher(lineLine);
+				matcher = fgLineNumberPattern.matcher(lineLine); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			}
 			if (matcher.find()) {
 				String lineString = matcher.group();
@@ -125,7 +125,7 @@ public abstract class AbstractJavacPatternMatcher implements IPatternMatchListen
 		return -1;
 	}
 
-	protected void addLink(String filePath, int lineNumber, int offset, int length, Integer type) {
+	protected void addLink(String filePath, int lineNumber, int offset, int length, Integer type) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IFile file = getIFile(filePath);
 		if (file == null) {
 			return;
@@ -149,7 +149,7 @@ public abstract class AbstractJavacPatternMatcher implements IPatternMatchListen
 	}
 
 	public static void consoleClosed(IProcess process) {
-		for (AbstractJavacPatternMatcher matcher : fgPatternMatchers) {
+		for (AbstractJavacPatternMatcher matcher : fgPatternMatchers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			matcher.finished(process);
 		}
 	}

@@ -82,7 +82,7 @@ public class ClasspathEntry extends AbstractClasspathEntry {
 		return fEntry.getLabel();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public URL getEntryURL() {
 		if (fEntry != null) {
 			return fEntry.getEntryURL();
@@ -93,7 +93,7 @@ public class ClasspathEntry extends AbstractClasspathEntry {
 
 		try {
 			String expanded = VariablesPlugin.getDefault().getStringVariableManager().performStringSubstitution(fVariableString);
-			return new URL(IAntCoreConstants.FILE_PROTOCOL + expanded);
+			return new URL(IAntCoreConstants.FILE_PROTOCOL + expanded); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		catch (CoreException e) {
 			AntUIPlugin.log(e);

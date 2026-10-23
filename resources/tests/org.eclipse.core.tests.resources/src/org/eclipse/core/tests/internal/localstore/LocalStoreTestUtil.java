@@ -27,7 +27,7 @@ public final class LocalStoreTestUtil {
 	}
 
 	public static void createTree(IFileStore[] tree, int fileSize) throws CoreException, IOException {
-		for (IFileStore element : tree) {
+		for (IFileStore element : tree) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			createNode(element, fileSize);
 		}
 	}
@@ -47,7 +47,7 @@ public final class LocalStoreTestUtil {
 
 	private static IFileStore[] getTree(IFileStore root, String[] elements) {
 		IFileStore[] tree = new IFileStore[elements.length];
-		for (int i = 0; i < elements.length; i++) {
+		for (int i = 0; i < elements.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			tree[i] = root.getChild(elements[i]);
 		}
 		return tree;
@@ -56,10 +56,10 @@ public final class LocalStoreTestUtil {
 	private static String[] getTreeElements() {
 		String[] tree = new String[10];
 		tree[0] = "d-folder";
-		tree[1] = tree[0] + File.separator + "d-subfolder";
-		tree[2] = tree[0] + File.separator + "f-file";
-		tree[3] = tree[1] + File.separator + "f-anotherFile";
-		tree[4] = tree[1] + File.separator + "d-subfolder";
+		tree[1] = tree[0] + File.separator + "d-subfolder"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		tree[2] = tree[0] + File.separator + "f-file"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		tree[3] = tree[1] + File.separator + "f-anotherFile"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		tree[4] = tree[1] + File.separator + "d-subfolder"; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		tree[5] = "d-1";
 		tree[6] = "d-2";
 		tree[7] = "f-3";

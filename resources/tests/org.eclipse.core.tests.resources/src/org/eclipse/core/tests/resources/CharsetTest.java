@@ -118,7 +118,7 @@ public class CharsetTest {
 		}
 	}
 
-	public class CharsetVerifier extends ResourceDeltaVerifier {
+	public class CharsetVerifier extends ResourceDeltaVerifier { //FLLDCIM: MARK — T07  IMPLEMENTS
 		static final int IGNORE_BACKGROUND_THREAD = 0x02;
 		static final int IGNORE_CREATION_THREAD = 0x01;
 		private final Thread creationThread = Thread.currentThread();
@@ -159,7 +159,7 @@ public class CharsetTest {
 
 		public synchronized boolean waitForEvent(long limit) {
 			Job.getJobManager().wakeUp(CharsetManager.class);
-			for (int i = 1; i < limit; i++) {
+			for (int i = 1; i < limit; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (hasBeenNotified()) {
 					return true;
 				}
@@ -178,23 +178,23 @@ public class CharsetTest {
 	static final String SAMPLE_XML_ISO_8859_1_ENCODING = "<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?><org.eclipse.core.resources.tests.root/>";
 	static final String SAMPLE_XML_US_ASCII_ENCODING = "<?xml version=\"1.0\" encoding=\"US-ASCII\"?><org.eclipse.core.resources.tests.root/>";
 
-	static final String SAMPLE_DERIVED_ENCODING_TO_FALSE_REGULAR_PREFS = "#Mon Nov 15 17:54:11 CET 2010\n"
+	static final String SAMPLE_DERIVED_ENCODING_TO_FALSE_REGULAR_PREFS = "#Mon Nov 15 17:54:11 CET 2010\n" //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			+ ResourcesPlugin.PREF_SEPARATE_DERIVED_ENCODINGS + "=false\neclipse.preferences.version=1";
 	static final String[] SAMPLE_DERIVED_ENCODING_AFTER_FALSE_REGULAR_PREFS = {
-			ResourcesPlugin.PREF_SEPARATE_DERIVED_ENCODINGS + "=false", "encoding//b1/a.txt=UTF-8",
+			ResourcesPlugin.PREF_SEPARATE_DERIVED_ENCODINGS + "=false", "encoding//b1/a.txt=UTF-8", //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			"eclipse.preferences.version=1" };
 
-	static final String SAMPLE_DERIVED_ENCODING_TO_TRUE_REGULAR_PREFS = "#Mon Nov 15 17:54:11 CET 2010\n"
+	static final String SAMPLE_DERIVED_ENCODING_TO_TRUE_REGULAR_PREFS = "#Mon Nov 15 17:54:11 CET 2010\n" //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			+ ResourcesPlugin.PREF_SEPARATE_DERIVED_ENCODINGS
 			+ "=true\nencoding//b1/a.txt=UTF-8\neclipse.preferences.version=1";
 	static final String[] SAMPLE_DERIVED_ENCODING_AFTER_TRUE_REGULAR_PREFS = {
-			ResourcesPlugin.PREF_SEPARATE_DERIVED_ENCODINGS + "=true", "eclipse.preferences.version=1" };
+			ResourcesPlugin.PREF_SEPARATE_DERIVED_ENCODINGS + "=true", "eclipse.preferences.version=1" }; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	static final String[] SAMPLE_DERIVED_ENCODING_AFTER_TRUE_DERIVED_PREFS = { "encoding//b1/a.txt=UTF-8",
 			"eclipse.preferences.version=1" };
 
 	private String savedWorkspaceCharset;
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Disabled("disabled due to bug 67606")
 	public void testBug67606() throws CoreException {
 		IWorkspace workspace = getWorkspace();
@@ -203,7 +203,7 @@ public class CharsetTest {
 			final IFile file = project.getFile("file.txt");
 			createInWorkspace(file);
 			project.setDefaultCharset("FOO", createTestMonitor());
-			workspace.run((IWorkspaceRunnable) monitor -> {
+			workspace.run((IWorkspaceRunnable) monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 				assertEquals("FOO", file.getCharset());
 				file.setCharset("BAR", createTestMonitor());
 				assertEquals("BAR", file.getCharset());
@@ -217,7 +217,7 @@ public class CharsetTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCharsetMoveOnFileMove() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		final IProject project = workspace.getRoot().getProject("MyProject");
@@ -261,14 +261,14 @@ public class CharsetTest {
 	 * Asserts that the given resources have the given [default] charset.
 	 */
 	private void assertCharsetIs(String encoding, IResource[] resources, boolean checkImplicit) throws CoreException {
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String resourceCharset = resource instanceof IFile f ? f.getCharset(checkImplicit)
 					: ((IContainer) resource).getDefaultCharset(checkImplicit);
 			assertEquals(encoding, resourceCharset, resource.getFullPath().toString());
 		}
 	}
 
-	private void clearAllEncodings(IResource root) throws CoreException {
+	private void clearAllEncodings(IResource root) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (root == null || !root.exists()) {
 			return;
 		}
@@ -295,17 +295,17 @@ public class CharsetTest {
 	private IFile getResourcesPreferenceFile(IProject project, boolean forDerivedResources) {
 		if (forDerivedResources) {
 			return project.getFolder(EclipsePreferences.DEFAULT_PREFERENCES_DIRNAME)
-					.getFile(PI_RESOURCES + ".derived." + EclipsePreferences.PREFS_FILE_EXTENSION);
+					.getFile(PI_RESOURCES + ".derived." + EclipsePreferences.PREFS_FILE_EXTENSION); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return project.getFolder(EclipsePreferences.DEFAULT_PREFERENCES_DIRNAME)
-				.getFile(PI_RESOURCES + "." + EclipsePreferences.PREFS_FILE_EXTENSION);
+				.getFile(PI_RESOURCES + "." + EclipsePreferences.PREFS_FILE_EXTENSION); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private Reader getTextContents(String text) {
 		return new StringReader(text);
 	}
 
-	private boolean isDerivedEncodingStoredSeparately(IProject project) {
+	private boolean isDerivedEncodingStoredSeparately(IProject project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		org.osgi.service.prefs.Preferences node = Platform.getPreferencesService().getRootNode().node(ProjectScope.SCOPE);
 		String projectName = project.getName();
 		try {
@@ -423,7 +423,7 @@ public class CharsetTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug333056() throws Exception {
 		IProject project = null;
 		try {
@@ -454,7 +454,7 @@ public class CharsetTest {
 	 * #getContentDescription() checks file sync state(), always returning the
 	 * correct content description, whereas getCharset() uses the cached charset if available.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug186984() throws Exception {
 		getResourcesPreferences().putBoolean(ResourcesPlugin.PREF_LIGHTWEIGHT_AUTO_REFRESH, false);
 		IWorkspace workspace = getWorkspace();
@@ -534,7 +534,7 @@ public class CharsetTest {
 		assertTrue(file.getCharset().equals("ascii"));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug207510() throws CoreException, InterruptedException, BackingStoreException {
 		IWorkspace workspace = getWorkspace();
 		CharsetVerifier verifier = new CharsetVerifierWithExtraInfo(CharsetVerifier.IGNORE_BACKGROUND_THREAD);
@@ -671,7 +671,7 @@ public class CharsetTest {
 		assertEquals("UTF-8", file.getCharset());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testChangesDifferentProject() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		IProject project1 = workspace.getRoot().getProject("Project1");
@@ -702,7 +702,7 @@ public class CharsetTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testChangesSameProject() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		IProject project = workspace.getRoot().getProject("MyProject");
@@ -736,7 +736,7 @@ public class CharsetTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testClosingAndReopeningProject() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		IProject project = workspace.getRoot().getProject("MyProject");
@@ -766,7 +766,7 @@ public class CharsetTest {
 	/**
 	 * Tests Content Manager-based charset setting.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testContentBasedCharset() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		IProject project = workspace.getRoot().getProject("MyProject");
@@ -787,17 +787,17 @@ public class CharsetTest {
 			// tests with BOM -BOMs are strings for convenience, encoded itno bytes using ISO-8859-1 (which handles 128-255 bytes better)
 			// tests with UTF-8 BOM
 			String UTF8_BOM = new String(IContentDescription.BOM_UTF_8, StandardCharsets.ISO_8859_1);
-			file.setContents((UTF8_BOM + SAMPLE_XML_DEFAULT_ENCODING).getBytes(StandardCharsets.ISO_8859_1), false,
+			file.setContents((UTF8_BOM + SAMPLE_XML_DEFAULT_ENCODING).getBytes(StandardCharsets.ISO_8859_1), false, //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					false, null);
 			assertEquals("UTF-8", file.getCharset());
 			// tests with UTF-16 Little Endian BOM
 			String UTF16_LE_BOM = new String(IContentDescription.BOM_UTF_16LE, StandardCharsets.ISO_8859_1);
-			file.setContents((UTF16_LE_BOM + SAMPLE_XML_DEFAULT_ENCODING).getBytes(StandardCharsets.ISO_8859_1), false,
+			file.setContents((UTF16_LE_BOM + SAMPLE_XML_DEFAULT_ENCODING).getBytes(StandardCharsets.ISO_8859_1), false, //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					false, null);
 			assertEquals("UTF-16", file.getCharset());
 			// tests with UTF-16 Big Endian BOM
 			String UTF16_BE_BOM = new String(IContentDescription.BOM_UTF_16BE, StandardCharsets.ISO_8859_1);
-			file.setContents((UTF16_BE_BOM + SAMPLE_XML_DEFAULT_ENCODING).getBytes(StandardCharsets.ISO_8859_1), false,
+			file.setContents((UTF16_BE_BOM + SAMPLE_XML_DEFAULT_ENCODING).getBytes(StandardCharsets.ISO_8859_1), false, //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					false, null);
 			assertEquals("UTF-16", file.getCharset());
 		} finally {
@@ -805,7 +805,7 @@ public class CharsetTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDefaults() throws CoreException {
 		IProject project = null;
 		try {
@@ -895,7 +895,7 @@ public class CharsetTest {
 	}
 
 	// check we react to content type changes
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeltaOnContentTypeChanges() throws CoreException {
 		final String USER_SETTING = "USER_CHARSET";
 		final String PROVIDER_SETTING = "PROVIDER_CHARSET";
@@ -951,7 +951,7 @@ public class CharsetTest {
 
 	// check preference change events are reflected in the charset settings
 	// temporarily disabled+
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeltaOnPreferenceChanges() throws IOException, CoreException {
 		CharsetVerifier backgroundVerifier = new CharsetVerifier(CharsetVerifier.IGNORE_CREATION_THREAD);
 		getWorkspace().addResourceChangeListener(backgroundVerifier, IResourceChangeEvent.POST_CHANGE);
@@ -1009,7 +1009,7 @@ public class CharsetTest {
 	 * Test the contents of the resource deltas which are generated
 	 * when we make encoding changes to containers (folders, projects, root).
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeltasContainer() throws CoreException {
 		MultipleDeltasCharsetVerifier verifier = new MultipleDeltasCharsetVerifier(CharsetVerifier.IGNORE_BACKGROUND_THREAD);
 		IProject project = getWorkspace().getRoot().getProject(createUniqueString());
@@ -1098,7 +1098,7 @@ public class CharsetTest {
 	 * Check that we are broadcasting the correct resource deltas when
 	 * making encoding changes.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeltasFile() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		MultipleDeltasCharsetVerifier verifier = new MultipleDeltasCharsetVerifier(
@@ -1153,7 +1153,7 @@ public class CharsetTest {
 			verifier.addExpectedChange(new IResource[] {file1, file2}, IResourceDelta.CHANGED, IResourceDelta.ENCODING);
 			verifier.addExpectedChange(prefs.getParent(), IResourceDelta.CHANGED, 0);
 			verifier.addExpectedChange(prefs, IResourceDelta.CHANGED, IResourceDelta.CONTENT);
-			workspace.run((IWorkspaceRunnable) unused -> {
+			workspace.run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				file1.setCharset("FOO", createTestMonitor());
 				file2.setCharset("FOO", createTestMonitor());
 			}, createTestMonitor());
@@ -1164,7 +1164,7 @@ public class CharsetTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileCreation() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		IProject project = workspace.getRoot().getProject("MyProject");
@@ -1194,7 +1194,7 @@ public class CharsetTest {
 	/**
 	 * See enhancement request 60636.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetCharsetFor() throws CoreException {
 		IProject project = null;
 		try {
@@ -1207,7 +1207,7 @@ public class CharsetTest {
 			IFile oldFile = project.getFile("oldfile.xml");
 			IFile newXMLFile = project.getFile("newfile.xml");
 			IFile newTXTFile = project.getFile("newfile.txt");
-			IFile newRandomFile = project.getFile("newFile." + (long) (Math.random() * (Long.MAX_VALUE)));
+			IFile newRandomFile = project.getFile("newFile." + (long) (Math.random() * (Long.MAX_VALUE))); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			createInWorkspace(oldFile, SAMPLE_XML_DEFAULT_ENCODING);
 			// sets project default charset
 			project.setDefaultCharset("BAR", createTestMonitor());
@@ -1243,7 +1243,7 @@ public class CharsetTest {
 	/**
 	 * Moves a project and ensures the charsets are preserved.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMovingProject() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		IProject project1 = workspace.getRoot().getProject("Project1");
@@ -1282,7 +1282,7 @@ public class CharsetTest {
 	 * 	- non-existing resources default to the parent's default charset;
 	 * 	- cannot set the charset for a non-existing resource (exception is thrown).
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNonExistingResource() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		IProject project = workspace.getRoot().getProject("MyProject");
@@ -1319,7 +1319,7 @@ public class CharsetTest {
 		assertEquals(IResourceStatus.RESOURCE_NOT_FOUND, e.getStatus().getCode(), "the resource should not exist");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug528827() throws CoreException, OperationCanceledException, InterruptedException {
 		IWorkspace workspace = getWorkspace();
 		IProject project = workspace.getRoot().getProject(createUniqueString());
@@ -1353,25 +1353,25 @@ public class CharsetTest {
 	}
 
 	private static void waitForJobFamily(Object family) {
-		TestUtil.waitForJobs("Waiting for " + family, 100, 10_000, family);
+		TestUtil.waitForJobs("Waiting for " + family, 100, 10_000, family); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	private class CharsetVerifierWithExtraInfo extends CharsetVerifier {
+	private class CharsetVerifierWithExtraInfo extends CharsetVerifier { //FLLDCIM: MARK — T07  IMPLEMENTS
 		CharsetVerifierWithExtraInfo(int flags) {
 			super(flags);
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void verifyDelta(IResourceDelta delta) {
 			appendToMessage("Delta verification triggered:");
 			appendToMessage(Arrays.toString(Thread.currentThread().getStackTrace()));
 			LinkedList<IResourceDelta> queue = new LinkedList<>();
 			queue.add(delta);
-			while (!queue.isEmpty()) {
+			while (!queue.isEmpty()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResourceDelta current = queue.removeFirst();
 				if (current != null) {
 					appendToMessage(
-							"delta child: " + current + ", with flags: " + convertChangeFlags(current.getFlags()));
+							"delta child: " + current + ", with flags: " + convertChangeFlags(current.getFlags())); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					IResourceDelta[] children = current.getAffectedChildren();
 					if (children != null) {
 						queue.addAll(Arrays.asList(children));
@@ -1390,7 +1390,7 @@ public class CharsetTest {
 	 * This verifier succeeds if either all expected changes are received in a
 	 * single delta, or if each expected change is received in a delta of its own.
 	 */
-	private class MultipleDeltasCharsetVerifier implements IResourceChangeListener {
+	private class MultipleDeltasCharsetVerifier implements IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 
 		private final int flags;
 		private final CharsetVerifier singleDeltaVerifier;
@@ -1401,7 +1401,7 @@ public class CharsetTest {
 		MultipleDeltasCharsetVerifier(int flags) {
 			this.flags = flags;
 			singleDeltaVerifier = new CharsetVerifierWithExtraInfo(flags);
-			deltaVerifiers = new ArrayList<>();
+			deltaVerifiers = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			expectedDeltasCount = 0;
 			verifiedDeltasCount = 0;
 		}
@@ -1452,36 +1452,36 @@ public class CharsetTest {
 
 		void reset() {
 			singleDeltaVerifier.reset();
-			for (CharsetVerifier deltaVerifier : deltaVerifiers) {
+			for (CharsetVerifier deltaVerifier : deltaVerifiers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				deltaVerifier.reset();
 			}
 			deltaVerifiers.clear();
 		}
 
-		void assertExpectedDeltasWereReceived() {
+		void assertExpectedDeltasWereReceived() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			waitForNotificationManagerJob();
 			if (expectedDeltasCount > 0 && verifiedDeltasCount == 0) {
-				fail("expected " + expectedDeltasCount + " deltas but received no deltas");
+				fail("expected " + expectedDeltasCount + " deltas but received no deltas"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			if (verifiedDeltasCount > 0 && expectedDeltasCount == 0) {
-				fail("expected no deltas but received " + verifiedDeltasCount + " deltas");
+				fail("expected no deltas but received " + verifiedDeltasCount + " deltas"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			if (!singleDeltaVerifier.isDeltaValid()) {
 				if (verifiedDeltasCount == 1) {
 					fail(singleDeltaVerifier.getMessage());
 				} else {
 					boolean validDeltas = true;
-					StringBuilder failMessage = new StringBuilder();
-					for (int i = 0; i < expectedDeltasCount; i++) {
+					StringBuilder failMessage = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+					for (int i = 0; i < expectedDeltasCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						CharsetVerifier deltaVerifier = deltaVerifiers.get(i);
 						boolean isValidDelta = deltaVerifier.isDeltaValid();
 						validDeltas &= isValidDelta;
-						failMessage.append("listing verification result for expected change with index " + i);
-						failMessage.append(System.lineSeparator());
-						failMessage.append("verifier.isValidDelta(): " + isValidDelta);
-						failMessage.append(System.lineSeparator());
-						failMessage.append(deltaVerifier.getMessage());
-						failMessage.append(System.lineSeparator());
+						failMessage.append("listing verification result for expected change with index " + i); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+						failMessage.append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+						failMessage.append("verifier.isValidDelta(): " + isValidDelta); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+						failMessage.append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+						failMessage.append(deltaVerifier.getMessage()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+						failMessage.append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
 					assertTrue(validDeltas, failMessage.toString());
 				}

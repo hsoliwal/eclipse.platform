@@ -37,7 +37,7 @@ import org.eclipse.ant.internal.ui.dtd.Parser;
 @SuppressWarnings("restriction")
 public class dumper {
 
-	public static int main(String[] args) {
+	public static int main(String[] args) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (args.length <= 0) {
 			System.out.println("Usage: java DTDMerger URL"); //$NON-NLS-1$
@@ -70,10 +70,10 @@ public class dumper {
 	 */
 	private static void dumpSchema(ISchema schema) {
 		IElement[] elements = schema.getElements();
-		System.out.println("" + elements.length + " elements defined"); //$NON-NLS-1$ //$NON-NLS-2$
-		for (IElement element : elements) {
+		System.out.println("" + elements.length + " elements defined"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		for (IElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IModel model = element.getContentModel();
-			System.out.println("ELEMENT " + element.getName() //$NON-NLS-1$
+			System.out.println("ELEMENT " + element.getName() //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					+ '"' + model.stringRep() + '"');
 			dumpDfm(element.getDfm());
 		}
@@ -96,28 +96,28 @@ public class dumper {
 	 *            to dump
 	 */
 	private static void dumpDfm(IDfm dfm) {
-		HashMap<IDfm, Integer> map = new HashMap<>();
+		HashMap<IDfm, Integer> map = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		dumpDfm(dfm, map, 0);
 		LinkedList<State> list = new LinkedList<>();
 		Iterator<Entry<IDfm, Integer>> it = map.entrySet().iterator();
-		while (it.hasNext()) {
+		while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Entry<IDfm, Integer> entry = it.next();
 			list.add(new State(entry.getKey(), entry.getValue()));
 		}
 		State[] states = list.toArray(new State[list.size()]);
 		Arrays.sort(states);
-		for (State state : states) {
+		for (State state : states) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			print(state, map);
 		}
 	}
 
 	private static void print(State state, HashMap<IDfm, Integer> map) {
-		System.out.print("  S" + state.n.intValue() //$NON-NLS-1$
+		System.out.print("  S" + state.n.intValue() //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ (state.dfm.isAccepting() ? "*  " : "  ")); //$NON-NLS-1$ //$NON-NLS-2$
-		for (String accept : state.dfm.getAccepts()) {
+		for (String accept : state.dfm.getAccepts()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IDfm next = state.dfm.advance(accept);
 			int n = map.get(next).intValue();
-			System.out.print(" " + accept + "=>S" + n); //$NON-NLS-1$ //$NON-NLS-2$
+			System.out.print(" " + accept + "=>S" + n); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		System.out.println();
 	}
@@ -125,7 +125,7 @@ public class dumper {
 	private static int dumpDfm(IDfm dfm, HashMap<IDfm, Integer> map, int num) {
 		if (!map.containsKey(dfm)) {
 			map.put(dfm, Integer.valueOf(num++));
-			for (String accept : dfm.getAccepts()) {
+			for (String accept : dfm.getAccepts()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IDfm next = dfm.advance(accept);
 				num = dumpDfm(next, map, num);
 			}

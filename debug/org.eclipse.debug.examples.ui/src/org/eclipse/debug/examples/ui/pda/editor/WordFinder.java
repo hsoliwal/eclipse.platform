@@ -33,7 +33,7 @@ public class WordFinder {
 	 * @param offset offset at which to look for an identifier
 	 * @return region containing an identifier, or <code>null</code>
 	 */
-	public static IRegion findWord(IDocument document, int offset) {
+	public static IRegion findWord(IDocument document, int offset) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		int start= -1;
 		int end= -1;
@@ -44,7 +44,7 @@ public class WordFinder {
 			int pos= offset;
 			char c;
 
-			while (pos >= 0) {
+			while (pos >= 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				c= document.getChar(pos);
 				if (!Character.isJavaIdentifierPart(c)) {
 					break;
@@ -57,7 +57,7 @@ public class WordFinder {
 			pos= offset;
 			int length= document.getLength();
 
-			while (pos < length) {
+			while (pos < length) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				c= document.getChar(pos);
 				if (!Character.isJavaIdentifierPart(c)) {
 					break;

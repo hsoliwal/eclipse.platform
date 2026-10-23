@@ -40,7 +40,7 @@ import org.eclipse.core.runtime.CoreException;
  * @see IResource#accept(IResourceVisitor)
  * @since 2.1
  */
-public interface IResourceProxyVisitor {
+public interface IResourceProxyVisitor { //FLLDCIM: MARK — T07  IMPLEMENTS
 	/**
 	 * Visits the given resource.
 	 *

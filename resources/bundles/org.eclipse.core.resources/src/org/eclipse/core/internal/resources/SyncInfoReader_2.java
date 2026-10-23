@@ -59,8 +59,8 @@ public class SyncInfoReader_2 extends SyncInfoReader {
 	@Override
 	public void readSyncInfo(DataInputStream input) throws IOException, CoreException {
 		try {
-			List<QualifiedName> readPartners = new ArrayList<>(5);
-			while (true) {
+			List<QualifiedName> readPartners = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IPath path = IPath.fromOSString(input.readUTF());
 				readSyncInfo(path, input, readPartners);
 			}
@@ -69,10 +69,10 @@ public class SyncInfoReader_2 extends SyncInfoReader {
 		}
 	}
 
-	private void readSyncInfo(IPath path, DataInputStream input, List<QualifiedName> readPartners) throws IOException, CoreException {
+	private void readSyncInfo(IPath path, DataInputStream input, List<QualifiedName> readPartners) throws IOException, CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int size = input.readInt();
 		ObjectMap<QualifiedName, Object> table = new ObjectMap<>(size);
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			QualifiedName name = null;
 			int type = input.readInt();
 			switch (type) {

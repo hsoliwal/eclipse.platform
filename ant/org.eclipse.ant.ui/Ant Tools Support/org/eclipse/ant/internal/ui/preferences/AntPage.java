@@ -132,7 +132,7 @@ public abstract class AntPage {
 		button.setFont(parent.getFont());
 		button.setText(buttonText);
 		button.setData(Integer.valueOf(buttonId));
-		button.addSelectionListener(selectionAdapter);
+		button.addSelectionListener(selectionAdapter); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 		preferencePage.setButtonLayoutData(button);
 		return button;
 	}
@@ -155,7 +155,7 @@ public abstract class AntPage {
 	/**
 	 * Creates the table viewer.
 	 */
-	protected void createTable(Composite parent) {
+	protected void createTable(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Table table = new Table(parent, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER);
 		GridData data = new GridData(GridData.FILL_BOTH);
 		data.widthHint = 425;
@@ -172,16 +172,16 @@ public abstract class AntPage {
 		contentProvider = getContentProvider();
 		tableViewer = new TableViewer(table);
 		tableViewer.setContentProvider(contentProvider);
-		tableViewer.setLabelProvider(this.labelProvider);
-		tableViewer.addSelectionChangedListener(event -> tableSelectionChanged((IStructuredSelection) event.getSelection()));
+		tableViewer.setLabelProvider(this.labelProvider); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
+		tableViewer.addSelectionChangedListener(event -> tableSelectionChanged((IStructuredSelection) event.getSelection())); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 
-		tableViewer.addDoubleClickListener(event -> {
+		tableViewer.addDoubleClickListener(event -> { //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
 			if (!event.getSelection().isEmpty() && editButton.isEnabled()) {
 				edit((IStructuredSelection) event.getSelection());
 			}
 		});
-		ArrayList<ColumnSorter> sorters = new ArrayList<>(fTableColumnHeaders.length);
-		for (int i = 0; i < fTableColumnHeaders.length; i++) {
+		ArrayList<ColumnSorter> sorters = new ArrayList<>(fTableColumnHeaders.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (int i = 0; i < fTableColumnHeaders.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			tableLayout.addColumnData(fTableColumnLayouts[i]);
 			TableColumn column = new TableColumn(table, SWT.NONE, i);
 			column.setResizable(fTableColumnLayouts[i].resizable);
@@ -194,7 +194,7 @@ public abstract class AntPage {
 			});
 		}
 
-		table.addKeyListener(new KeyAdapter() {
+		table.addKeyListener(new KeyAdapter() { //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 			@Override
 			public void keyPressed(KeyEvent event) {
 				if (editButton.isEnabled() && event.character == SWT.DEL && event.stateMask == 0) {
@@ -216,13 +216,13 @@ public abstract class AntPage {
 	public void saveColumnSettings(IDialogSettings settings) {
 		Table table = this.tableViewer.getTable();
 		int columnCount = table.getColumnCount();
-		for (int i = 0; i < columnCount; i++) {
-			settings.put(getHelpContextId() + ".columnWidth" + i, table.getColumn(i).getWidth()); //$NON-NLS-1$
+		for (int i = 0; i < columnCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			settings.put(getHelpContextId() + ".columnWidth" + i, table.getColumn(i).getWidth()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		TableColumn column = table.getSortColumn();
 		if (column != null) {
-			settings.put(getHelpContextId() + ".sortColumn", table.indexOf(column)); //$NON-NLS-1$
-			settings.put(getHelpContextId() + ".sortDirection", table.getSortDirection()); //$NON-NLS-1$
+			settings.put(getHelpContextId() + ".sortColumn", table.indexOf(column)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			settings.put(getHelpContextId() + ".sortDirection", table.getSortDirection()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -233,13 +233,13 @@ public abstract class AntPage {
 	 *            dialog settings store
 	 * @since 3.5
 	 */
-	private void restoreColumnSettings(IDialogSettings settings, ArrayList<ColumnSorter> sorters) {
+	private void restoreColumnSettings(IDialogSettings settings, ArrayList<ColumnSorter> sorters) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		restoreColumnWidths(settings);
 		int idx = 0;
 		int direction = SWT.DOWN;
 		try {
-			idx = settings.getInt(getHelpContextId() + ".sortColumn"); //$NON-NLS-1$
-			direction = settings.getInt(getHelpContextId() + ".sortDirection"); //$NON-NLS-1$
+			idx = settings.getInt(getHelpContextId() + ".sortColumn"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			direction = settings.getInt(getHelpContextId() + ".sortDirection"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		catch (NumberFormatException e) {
 			// do nothing
@@ -263,13 +263,13 @@ public abstract class AntPage {
 	 *
 	 * @since 3.5
 	 */
-	private void restoreColumnWidths(IDialogSettings settings) {
+	private void restoreColumnWidths(IDialogSettings settings) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Table table = this.tableViewer.getTable();
 		int columnCount = table.getColumnCount();
-		for (int i = 0; i < columnCount; i++) {
+		for (int i = 0; i < columnCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int width = -1;
 			try {
-				width = settings.getInt(getHelpContextId() + ".columnWidth" + i); //$NON-NLS-1$
+				width = settings.getInt(getHelpContextId() + ".columnWidth" + i); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			catch (NumberFormatException e) {
 				// do nothing
@@ -301,16 +301,16 @@ public abstract class AntPage {
 	 *            Whether the result is to be displayed in the UI or stored in the preferences
 	 * @return The list of objects currently displayed in the table
 	 */
-	protected List<Object> getContents(boolean forDisplay) {
+	protected List<Object> getContents(boolean forDisplay) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (tableViewer == null || tableViewer.getControl().isDisposed()) {
 			return null;
 		}
 		List<IAntClasspathEntry> entries = getPreferencePage().getLibraryEntries();
 
 		Object[] elements = contentProvider.getElements(tableViewer.getInput());
-		List<Object> contents = new ArrayList<>(elements.length);
+		List<Object> contents = new ArrayList<>(elements.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		AntObject antObject;
-		for (Object element : elements) {
+		for (Object element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element instanceof AntObject) {
 				antObject = (AntObject) element;
 				if (forDisplay) {
@@ -357,7 +357,7 @@ public abstract class AntPage {
 		AntContentProvider antContentProvider = (AntContentProvider) viewer.getContentProvider();
 		IStructuredSelection sel = (IStructuredSelection) viewer.getSelection();
 		Iterator<?> itr = sel.iterator();
-		while (itr.hasNext()) {
+		while (itr.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			antContentProvider.remove(itr.next());
 		}
 	}
@@ -369,7 +369,7 @@ public abstract class AntPage {
 		if (tableViewer == null || tableViewer.getControl().isDisposed()) {
 			return;
 		}
-		tableViewer.setInput(inputs);
+		tableViewer.setInput(inputs); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		tableSelectionChanged((IStructuredSelection) tableViewer.getSelection());
 	}
 
@@ -418,7 +418,7 @@ public abstract class AntPage {
 		boolean enabled = true;
 
 		Iterator<?> itr = newSelection.iterator();
-		while (itr.hasNext()) {
+		while (itr.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object element = itr.next();
 			if (element instanceof AntObject antObject) {
 				if (antObject.isDefault()) {
@@ -452,7 +452,7 @@ public abstract class AntPage {
 	protected abstract String getHelpContextId();
 
 	protected void connectToFolder(final TabItem item, TabFolder folder) {
-		folder.addSelectionListener(new SelectionAdapter() {
+		folder.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				if (e.item == item) {

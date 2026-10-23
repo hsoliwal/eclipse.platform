@@ -44,12 +44,12 @@ public class ResourceChangeListenerList {
 
 		@Override
 		public String toString() {
-			StringBuilder sb = new StringBuilder();
-			sb.append("Listener [eventMask="); //$NON-NLS-1$
-			sb.append(eventMask);
-			sb.append(", "); //$NON-NLS-1$
-			sb.append(listener);
-			sb.append("]"); //$NON-NLS-1$
+			StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+			sb.append("Listener [eventMask="); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(eventMask); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(", "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(listener); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append("]"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			return sb.toString();
 		}
 	}
@@ -73,7 +73,7 @@ public class ResourceChangeListenerList {
 	 * @param listener the listener
 	 * @param mask     event types
 	 */
-	public synchronized void add(IResourceChangeListener listener, int mask) {
+	public synchronized void add(IResourceChangeListener listener, int mask) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Objects.requireNonNull(listener);
 		if (mask == 0) {
 			remove(listener);
@@ -82,7 +82,7 @@ public class ResourceChangeListenerList {
 		ResourceChangeListenerList.ListenerEntry entry = new ResourceChangeListenerList.ListenerEntry(listener, mask);
 		final int oldSize = listeners.size();
 		// check for duplicates using identity
-		for (int i = 0; i < oldSize; ++i) {
+		for (int i = 0; i < oldSize; ++i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ListenerEntry oldEntry = listeners.get(i);
 			if (oldEntry.listener == listener) {
 				removing(oldEntry.eventMask);
@@ -95,7 +95,7 @@ public class ResourceChangeListenerList {
 		listeners.add(entry);
 	}
 
-	private void adding(int mask) {
+	private void adding(int mask) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if ((mask & 1) != 0) {
 			count1++;
 		}
@@ -124,7 +124,7 @@ public class ResourceChangeListenerList {
 		return listeners.toArray(ListenerEntry[]::new);
 	}
 
-	public boolean hasListenerFor(int event) {
+	public boolean hasListenerFor(int event) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		switch (event) {
 		case 1:
 			return count1 > 0;
@@ -152,7 +152,7 @@ public class ResourceChangeListenerList {
 	public synchronized void remove(IResourceChangeListener listener) {
 		Objects.requireNonNull(listener);
 		final int oldSize = listeners.size();
-		for (int i = 0; i < oldSize; ++i) {
+		for (int i = 0; i < oldSize; ++i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ListenerEntry oldEntry = listeners.get(i);
 			if (oldEntry.listener == listener) {
 				removing(oldEntry.eventMask);
@@ -172,7 +172,7 @@ public class ResourceChangeListenerList {
 		count32 = 0;
 	}
 
-	private void removing(int mask) {
+	private void removing(int mask) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if ((mask & 1) != 0) {
 			count1--;
 		}
@@ -195,13 +195,13 @@ public class ResourceChangeListenerList {
 
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("ResourceChangeListenerList ["); //$NON-NLS-1$
+		StringBuilder builder = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		builder.append("ResourceChangeListenerList ["); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		if (listeners != null) {
-			builder.append("listeners="); //$NON-NLS-1$
-			builder.append(listeners.toString());
+			builder.append("listeners="); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			builder.append(listeners.toString()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		builder.append("]"); //$NON-NLS-1$
+		builder.append("]"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return builder.toString();
 	}
 }

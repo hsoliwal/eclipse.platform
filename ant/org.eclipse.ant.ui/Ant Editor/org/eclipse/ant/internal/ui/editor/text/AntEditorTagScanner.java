@@ -34,7 +34,7 @@ public class AntEditorTagScanner extends AbstractAntEditorScanner {
 	private final Token fStringToken;
 	private final Token fAttributeNameToken;
 
-	public AntEditorTagScanner() {
+	public AntEditorTagScanner() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fStringToken = new Token(createTextAttribute(SyntaxThemeConstants.STRING_COLOR));
 		fAttributeNameToken = new Token(createTextAttribute(SyntaxThemeConstants.ATTRIBUTE_NAME_COLOR));
 
@@ -76,22 +76,22 @@ public class AntEditorTagScanner extends AbstractAntEditorScanner {
 			fToken = token;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public IToken evaluate(ICharacterScanner scanner) {
 			int read = 0;
 			int c;
-			do {
+			do { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				c = scanner.read();
 				read++;
 			} while (isNameChar(c));
 			int nameLength = read - 1;
-			while (c == ' ' || c == '\t' || c == '\r' || c == '\n') {
+			while (c == ' ' || c == '\t' || c == '\r' || c == '\n') { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				c = scanner.read();
 				read++;
 			}
 			// keep only the name in the token
 			int unread = nameLength > 0 && c == '=' ? read - nameLength : read;
-			for (int i = 0; i < unread; i++) {
+			for (int i = 0; i < unread; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				scanner.unread();
 			}
 			return unread == read ? Token.UNDEFINED : fToken;

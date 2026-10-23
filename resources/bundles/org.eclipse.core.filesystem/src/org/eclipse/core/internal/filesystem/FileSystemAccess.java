@@ -40,7 +40,7 @@ public class FileSystemAccess {
 	 * Returns the local file system location that should be used for
 	 * caching file data.
 	 */
-	public static IPath getCacheLocation() {
+	public static IPath getCacheLocation() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//try to put the cache in the instance location if possible (3.2 behaviour)
 		try {
 			Bundle bundle = FrameworkUtil.getBundle(FileSystemAccess.class);

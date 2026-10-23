@@ -33,7 +33,7 @@ public class NatureManager implements ILifecycleListener, IManager {
 	private Map<String, IProjectNatureDescriptor> descriptors;
 
 	//maps IProject -> String[] of enabled natures for that project
-	private final Map<Project, String[]> natureEnablements = new HashMap<>(20);
+	private final Map<Project, String[]> natureEnablements = new HashMap<>(20); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	//maps String (builder ID) -> String (nature ID)
 	private Map<String, String> buildersToNatures;
@@ -54,7 +54,7 @@ public class NatureManager implements ILifecycleListener, IManager {
 	 * Enablement computation is subtly different from nature set
 	 * validation, because it must find and remove all inconsistencies.
 	 */
-	protected String[] computeNatureEnablements(Project project) {
+	protected String[] computeNatureEnablements(Project project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final ProjectDescription description = project.internalGetDescription();
 		if (description == null) {
 			return new String[0];//project deleted concurrently
@@ -66,10 +66,10 @@ public class NatureManager implements ILifecycleListener, IManager {
 		}
 
 		//set of the nature ids being validated (String (id))
-		HashSet<String> candidates = new HashSet<>(count * 2);
+		HashSet<String> candidates = new HashSet<>(count * 2); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		//table of String(set ID) -> ArrayList (nature IDs that belong to that set)
-		HashMap<String, ArrayList<String>> setsToNatures = new HashMap<>(count);
-		for (int i = 0; i < count; i++) {
+		HashMap<String, ArrayList<String>> setsToNatures = new HashMap<>(count); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String id = natureIds[i];
 			ProjectNatureDescriptor desc = (ProjectNatureDescriptor) getNatureDescriptor(id);
 			if (desc == null) {
@@ -80,17 +80,17 @@ public class NatureManager implements ILifecycleListener, IManager {
 			}
 			//build set to nature map
 			String[] setIds = desc.getNatureSetIds();
-			for (String set : setIds) {
+			for (String set : setIds) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ArrayList<String> current = setsToNatures.get(set);
 				if (current == null) {
-					current = new ArrayList<>(5);
+					current = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 					setsToNatures.put(set, current);
 				}
 				current.add(id);
 			}
 		}
 		//now remove all natures that belong to sets with more than one member
-		for (ArrayList<String> setMembers : setsToNatures.values()) {
+		for (ArrayList<String> setMembers : setsToNatures.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (setMembers.size() > 1) {
 				candidates.removeAll(setMembers);
 			}
@@ -100,10 +100,10 @@ public class NatureManager implements ILifecycleListener, IManager {
 		//disabled for some other reason, we must ensure both A and B are disabled
 		String[] orderedCandidates = candidates.toArray(new String[candidates.size()]);
 		orderedCandidates = sortNatureSet(orderedCandidates);
-		for (String id : orderedCandidates) {
+		for (String id : orderedCandidates) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProjectNatureDescriptor desc = getNatureDescriptor(id);
 			String[] required = desc.getRequiredNatureIds();
-			for (String t : required) {
+			for (String t : required) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!candidates.contains(t)) {
 					candidates.remove(id);
 					break;
@@ -146,7 +146,7 @@ public class NatureManager implements ILifecycleListener, IManager {
 	/**
 	 * Configures the nature with the given ID for the given project.
 	 */
-	protected void configureNature(final Project project, final String natureID, final MultiStatus errors) {
+	protected void configureNature(final Project project, final String natureID, final MultiStatus errors) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ISafeRunnable code = new ISafeRunnable() {
 			@Override
 			public void run() throws Exception {
@@ -166,7 +166,7 @@ public class NatureManager implements ILifecycleListener, IManager {
 			}
 		};
 		if (Policy.DEBUG_NATURES) {
-			Policy.debug("Configuring nature: " + natureID + " on project: " + project.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug("Configuring nature: " + natureID + " on project: " + project.getName()); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		SafeRunner.run(code);
 	}
@@ -177,12 +177,12 @@ public class NatureManager implements ILifecycleListener, IManager {
 	 * new description are removed.  Updates the old description so that it reflects
 	 * the new set of the natures.  Errors are added to the given multi-status.
 	 */
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings({"unchecked"}) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void configureNatures(Project project, ProjectDescription oldDescription, ProjectDescription newDescription, MultiStatus status) {
 		// Be careful not to rely on much state because (de)configuring a nature
 		// may well result in recursive calls to this method.
-		HashSet<String> oldNatures = new HashSet<>(Arrays.asList(oldDescription.getNatureIds(false)));
-		HashSet<String> newNatures = new HashSet<>(Arrays.asList(newDescription.getNatureIds(false)));
+		HashSet<String> oldNatures = new HashSet<>(Arrays.asList(oldDescription.getNatureIds(false))); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		HashSet<String> newNatures = new HashSet<>(Arrays.asList(newDescription.getNatureIds(false))); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		if (oldNatures.equals(newNatures)) {
 			return;
 		}
@@ -209,13 +209,13 @@ public class NatureManager implements ILifecycleListener, IManager {
 		String[] ordered = null;
 		if (deletions.size() > 0) {
 			ordered = sortNatureSet(deletions.toArray(new String[deletions.size()]));
-			for (int i = ordered.length; --i >= 0;) {
+			for (int i = ordered.length; --i >= 0;) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				deconfigureNature(project, ordered[i], status);
 			}
 		}
 		if (additions.size() > 0) {
 			ordered = sortNatureSet(additions.toArray(new String[additions.size()]));
-			for (String element : ordered) {
+			for (String element : ordered) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				configureNature(project, element, status);
 			}
 		}
@@ -224,7 +224,7 @@ public class NatureManager implements ILifecycleListener, IManager {
 	/**
 	 * Finds the nature extension, and initializes and returns an instance.
 	 */
-	protected IProjectNature createNature(Project project, String natureID) throws CoreException {
+	protected IProjectNature createNature(Project project, String natureID) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IExtension extension = Platform.getExtensionRegistry().getExtension(ResourcesPlugin.PI_RESOURCES, ResourcesPlugin.PT_NATURES, natureID);
 		if (extension == null) {
 			String message = NLS.bind(Messages.resources_natureExtension, natureID);
@@ -237,7 +237,7 @@ public class NatureManager implements ILifecycleListener, IManager {
 		}
 		//find the runtime configuration element
 		IConfigurationElement config = null;
-		for (int i = 0; config == null && i < configs.length; i++) {
+		for (int i = 0; config == null && i < configs.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if ("runtime".equalsIgnoreCase(configs[i].getName())) { //$NON-NLS-1$
 				config = configs[i];
 			}
@@ -259,7 +259,7 @@ public class NatureManager implements ILifecycleListener, IManager {
 	/**
 	 * Deconfigures the nature with the given ID for the given project.
 	 */
-	protected void deconfigureNature(final Project project, final String natureID, final MultiStatus status) {
+	protected void deconfigureNature(final Project project, final String natureID, final MultiStatus status) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final ProjectInfo info = (ProjectInfo) project.getResourceInfo(false, true);
 		IProjectNature existingNature = info.getNature(natureID);
 		if (existingNature == null) {
@@ -289,7 +289,7 @@ public class NatureManager implements ILifecycleListener, IManager {
 			}
 		};
 		if (Policy.DEBUG_NATURES) {
-			Policy.debug("Deconfiguring nature: " + natureID + " on project: " + project.getName()); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug("Deconfiguring nature: " + natureID + " on project: " + project.getName()); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		SafeRunner.run(code);
 	}
@@ -300,7 +300,7 @@ public class NatureManager implements ILifecycleListener, IManager {
 	private void detectCycles() {
 		Collection<IProjectNatureDescriptor> values = descriptors.values();
 		ProjectNatureDescriptor[] natures = values.toArray(new ProjectNatureDescriptor[values.size()]);
-		for (ProjectNatureDescriptor nature : natures) {
+		for (ProjectNatureDescriptor nature : natures) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (nature.colour == WHITE) {
 				hasCycles(nature);
 			}
@@ -320,12 +320,12 @@ public class NatureManager implements ILifecycleListener, IManager {
 	 */
 	public synchronized String findNatureForBuilder(String builderID) {
 		if (buildersToNatures == null) {
-			buildersToNatures = new HashMap<>(10);
+			buildersToNatures = new HashMap<>(10); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			IProjectNatureDescriptor[] descs = getNatureDescriptors();
-			for (IProjectNatureDescriptor desc : descs) {
+			for (IProjectNatureDescriptor desc : descs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String natureId = desc.getNatureId();
 				String[] builders = ((ProjectNatureDescriptor) desc).getBuilderIds();
-				for (String builder : builders) {
+				for (String builder : builders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					//FIXME: how to handle multiple natures specifying same builder
 					buildersToNatures.put(builder, natureId);
 				}
@@ -357,7 +357,7 @@ public class NatureManager implements ILifecycleListener, IManager {
 	 * dependencies starting at root i.  Returns false otherwise.
 	 * Marks all descriptors that are involved in the cycle as invalid.
 	 */
-	protected boolean hasCycles(ProjectNatureDescriptor desc) {
+	protected boolean hasCycles(ProjectNatureDescriptor desc) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (desc.colour == BLACK) {
 			//this subgraph has already been traversed, so we know the answer
 			return desc.hasCycle;
@@ -373,7 +373,7 @@ public class NatureManager implements ILifecycleListener, IManager {
 
 		//visit all dependents of nature i
 		String[] required = desc.getRequiredNatureIds();
-		for (String element : required) {
+		for (String element : required) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ProjectNatureDescriptor dependency = (ProjectNatureDescriptor) getNatureDescriptor(element);
 			//missing dependencies cannot create cycles
 			if (dependency != null && hasCycles(dependency)) {
@@ -393,7 +393,7 @@ public class NatureManager implements ILifecycleListener, IManager {
 	protected boolean hasLinks(IProject project) {
 		try {
 			IResource[] children = project.members();
-			for (IResource element : children) {
+			for (IResource element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (element.isLinked()) {
 					return true;
 				}
@@ -417,8 +417,8 @@ public class NatureManager implements ILifecycleListener, IManager {
 		//efficiency not so important because these sets are very small
 		String[] setsOne = one.getNatureSetIds();
 		String[] setsTwo = two.getNatureSetIds();
-		for (String element : setsOne) {
-			for (String element2 : setsTwo) {
+		for (String element : setsOne) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (String element2 : setsTwo) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (element.equals(element2)) {
 					return element;
 				}
@@ -439,7 +439,7 @@ public class NatureManager implements ILifecycleListener, IManager {
 		IProjectNatureDescriptor desc = getNatureDescriptor(id);
 		if (desc != null) {
 			String[] prereqs = desc.getRequiredNatureIds();
-			for (String prereq : prereqs) {
+			for (String prereq : prereqs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				insert(list, seen, prereq);
 			}
 		}
@@ -453,7 +453,7 @@ public class NatureManager implements ILifecycleListener, IManager {
 	 */
 	public boolean isNatureEnabled(Project project, String id) {
 		String[] enabled = getEnabledNatures(project);
-		for (String element : enabled) {
+		for (String element : enabled) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element.equals(id)) {
 				return true;
 			}
@@ -465,14 +465,14 @@ public class NatureManager implements ILifecycleListener, IManager {
 	 * Only initialize the descriptor cache when we know it is actually needed.
 	 * Running programs may never need to refer to this cache.
 	 */
-	private void lazyInitialize() {
+	private void lazyInitialize() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (descriptors != null) {
 			return;
 		}
 		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(ResourcesPlugin.PI_RESOURCES, ResourcesPlugin.PT_NATURES);
 		IExtension[] extensions = point.getExtensions();
-		descriptors = new HashMap<>(extensions.length * 2 + 1);
-		for (IExtension extension : extensions) {
+		descriptors = new HashMap<>(extensions.length * 2 + 1); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (IExtension extension : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProjectNatureDescriptor desc = null;
 			try {
 				desc = new ProjectNatureDescriptor(extension);
@@ -496,20 +496,20 @@ public class NatureManager implements ILifecycleListener, IManager {
 	/* (non-Javadoc)
 	 * @see IWorkspace#sortNatureSet(String[])
 	 */
-	public String[] sortNatureSet(String[] natureIds) {
+	public String[] sortNatureSet(String[] natureIds) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int count = natureIds.length;
 		if (count == 0) {
 			return natureIds;
 		}
-		ArrayList<String> result = new ArrayList<>(count);
-		HashSet<String> seen = new HashSet<>(count);//for cycle and duplicate detection
-		for (int i = 0; i < count; i++) {
+		ArrayList<String> result = new ArrayList<>(count); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		HashSet<String> seen = new HashSet<>(count);//for cycle and duplicate detection //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			insert(result, seen, natureIds[i]);
 		}
 		//remove added prerequisites that didn't exist in original list
 		seen.clear();
 		seen.addAll(Arrays.asList(natureIds));
-		for (Iterator<String> it = result.iterator(); it.hasNext();) {
+		for (Iterator<String> it = result.iterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object id = it.next();
 			if (!seen.contains(id)) {
 				it.remove();
@@ -533,10 +533,10 @@ public class NatureManager implements ILifecycleListener, IManager {
 	 * @return An OK status if all additions are valid, and an error status
 	 * 	if any of the additions introduce new inconsistencies.
 	 */
-	protected IStatus validateAdditions(HashSet<String> newNatures, HashSet<String> additions, IProject project) {
+	protected IStatus validateAdditions(HashSet<String> newNatures, HashSet<String> additions, IProject project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Boolean hasLinks = null;//three states: true, false, null (not yet computed)
 		//perform checks in order from least expensive to most expensive
-		for (String id : additions) {
+		for (String id : additions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// check for adding a nature that is not available.
 			IProjectNatureDescriptor desc = getNatureDescriptor(id);
 			if (desc == null) {
@@ -548,13 +548,13 @@ public class NatureManager implements ILifecycleListener, IManager {
 			}
 			// check for adding a nature that has a missing prerequisite.
 			String[] required = desc.getRequiredNatureIds();
-			for (String r : required) {
+			for (String r : required) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!newNatures.contains(r)) {
 					return failure(NLS.bind(Messages.natures_missingPrerequisite, id, r));
 				}
 			}
 			// check for adding a nature that creates a duplicated set member.
-			for (String current : newNatures) {
+			for (String current : newNatures) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!current.equals(id)) {
 					String overlap = hasSetOverlap(desc, getNatureDescriptor(current));
 					if (overlap != null) {
@@ -584,7 +584,7 @@ public class NatureManager implements ILifecycleListener, IManager {
 	 * a corresponding nature definition will be ignored).
 	 */
 	public IStatus validateLinkCreation(String[] natureIds) {
-		for (String natureId : natureIds) {
+		for (String natureId : natureIds) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProjectNatureDescriptor desc = getNatureDescriptor(natureId);
 			if (desc != null && !desc.isLinkingAllowed()) {
 				String msg = NLS.bind(Messages.links_natureVeto, desc.getLabel());
@@ -606,11 +606,11 @@ public class NatureManager implements ILifecycleListener, IManager {
 	 */
 	protected IStatus validateRemovals(HashSet<String> newNatures, HashSet<String> deletions) {
 		//iterate over new nature set, and ensure that none of their prerequisites are being deleted
-		for (String currentID : newNatures) {
+		for (String currentID : newNatures) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProjectNatureDescriptor desc = getNatureDescriptor(currentID);
 			if (desc != null) {
 				String[] required = desc.getRequiredNatureIds();
-				for (String element : required) {
+				for (String element : required) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (deletions.contains(element)) {
 						return failure(NLS.bind(Messages.natures_invalidRemoval, element, currentID));
 					}
@@ -623,7 +623,7 @@ public class NatureManager implements ILifecycleListener, IManager {
 	/* (non-Javadoc)
 	 * @see IWorkspace#validateNatureSet(String[])
 	 */
-	public IStatus validateNatureSet(String[] natureIds) {
+	public IStatus validateNatureSet(String[] natureIds) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int count = natureIds.length;
 		if (count == 0) {
 			return Status.OK_STATUS;
@@ -632,10 +632,10 @@ public class NatureManager implements ILifecycleListener, IManager {
 		MultiStatus result = new MultiStatus(ResourcesPlugin.PI_RESOURCES, IResourceStatus.INVALID_NATURE_SET, msg, null);
 
 		//set of the nature ids being validated (String (id))
-		HashSet<String> natures = new HashSet<>(count * 2);
+		HashSet<String> natures = new HashSet<>(count * 2); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		//set of nature sets for which a member nature has been found (String (id))
-		HashSet<String> sets = new HashSet<>(count);
-		for (int i = 0; i < count; i++) {
+		HashSet<String> sets = new HashSet<>(count); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String id = natureIds[i];
 			ProjectNatureDescriptor desc = (ProjectNatureDescriptor) getNatureDescriptor(id);
 			if (desc == null) {
@@ -650,20 +650,20 @@ public class NatureManager implements ILifecycleListener, IManager {
 			}
 			//validate nature set one-of constraint
 			String[] setIds = desc.getNatureSetIds();
-			for (String setId : setIds) {
+			for (String setId : setIds) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!sets.add(setId)) {
 					result.add(failure(NLS.bind(Messages.natures_multipleSetMembers, setId)));
 				}
 			}
 		}
 		//now walk over the set and ensure all pre-requisite natures are present
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProjectNatureDescriptor desc = getNatureDescriptor(natureIds[i]);
 			if (desc == null) {
 				continue;
 			}
 			String[] required = desc.getRequiredNatureIds();
-			for (String r : required) {
+			for (String r : required) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!natures.contains(r)) {
 					result.add(failure(NLS.bind(Messages.natures_missingPrerequisite, natureIds[i], r)));
 				}

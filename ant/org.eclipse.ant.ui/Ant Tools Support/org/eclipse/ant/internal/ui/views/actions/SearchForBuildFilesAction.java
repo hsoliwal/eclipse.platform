@@ -46,7 +46,7 @@ public class SearchForBuildFilesAction extends Action {
 	/**
 	 * Opens the <code>SearchForBuildFilesDialog</code> and adds the results to the ant view.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run() {
 		SearchForBuildFilesDialog dialog = new SearchForBuildFilesDialog();
 		if (dialog.open() != Window.CANCEL) {
@@ -54,11 +54,11 @@ public class SearchForBuildFilesAction extends Action {
 			final boolean includeErrorNodes = dialog.getIncludeErrorResults();
 			final AntProjectNode[] existingProjects = view.getProjects();
 			try {
-				PlatformUI.getWorkbench().getProgressService().busyCursorWhile(new IRunnableWithProgress() {
-					@Override
+				PlatformUI.getWorkbench().getProgressService().busyCursorWhile(new IRunnableWithProgress() { //FLLDCIM: MARK — T09  ANONYMOUS
+					@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 					public void run(IProgressMonitor monitor) {
 						monitor.beginTask(AntViewActionMessages.SearchForBuildFilesAction_Processing_search_results_3, files.length);
-						for (int i = 0; i < files.length && !monitor.isCanceled(); i++) {
+						for (int i = 0; i < files.length && !monitor.isCanceled(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							String buildFileName = files[i].getFullPath().toString();
 							monitor.subTask(MessageFormat.format(AntViewActionMessages.SearchForBuildFilesAction_Adding__0__4, buildFileName));
 							if (alreadyAdded(buildFileName)) {
@@ -70,7 +70,7 @@ public class SearchForBuildFilesAction extends Action {
 							project.parseBuildFile();
 							monitor.worked(1);
 							if (includeErrorNodes || !(project.isErrorNode())) {
-								Display.getDefault().asyncExec(() -> view.addProject(project));
+								Display.getDefault().asyncExec(() -> view.addProject(project)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 							}
 						}
 					}
@@ -79,7 +79,7 @@ public class SearchForBuildFilesAction extends Action {
 					 * Returns whether or not the given build file already exists in the ant view.
 					 */
 					private boolean alreadyAdded(String buildFileName) {
-						for (AntProjectNode existingProject : existingProjects) {
+						for (AntProjectNode existingProject : existingProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							if (existingProject.getBuildFileName().equals(buildFileName)) {
 								return true;
 							}

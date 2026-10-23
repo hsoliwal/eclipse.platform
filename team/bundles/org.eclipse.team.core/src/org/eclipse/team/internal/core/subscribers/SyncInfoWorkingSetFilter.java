@@ -48,7 +48,7 @@ public class SyncInfoWorkingSetFilter extends FastSyncInfoFilter {
 	private boolean isIncluded(IResource resource) {
 		// otherwise, if their is a parent of the resource in the set,
 		// it is included
-		for (IResource setResource : resources) {
+		for (IResource setResource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isParent(setResource, resource)) {
 				return true;
 			}
@@ -67,8 +67,8 @@ public class SyncInfoWorkingSetFilter extends FastSyncInfoFilter {
 		}
 
 		// filter the roots by the selected working set
-		Set<IResource> result = new HashSet<>();
-		for (IResource resource : roots) {
+		Set<IResource> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IResource resource : roots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result.addAll(Arrays.asList(getIntersectionWithSet(subscriber, resource)));
 		}
 		return result.toArray(new IResource[result.size()]);
@@ -78,9 +78,9 @@ public class SyncInfoWorkingSetFilter extends FastSyncInfoFilter {
 	 * Answer the intersection between the given resource and it's children
 	 * and the receiver's working set.
 	 */
-	private IResource[] getIntersectionWithSet(Subscriber subscriber, IResource resource) {
-		List<IResource> result = new ArrayList<>();
-		for (IResource setResource : resources) {
+	private IResource[] getIntersectionWithSet(Subscriber subscriber, IResource resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<IResource> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IResource setResource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (setResource != null) {
 				if (isParent(resource, setResource)) {
 					try {

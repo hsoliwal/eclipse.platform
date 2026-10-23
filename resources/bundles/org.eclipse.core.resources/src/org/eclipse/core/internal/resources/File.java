@@ -74,7 +74,7 @@ public class File extends Resource implements IFile {
 		super(path, container);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void appendContents(InputStream content, int updateFlags, IProgressMonitor monitor) throws CoreException {
 		String message = NLS.bind(Messages.resources_settingContents, getFullPath());
 		SubMonitor subMonitor = SubMonitor.convert(monitor, message, 100);
@@ -136,7 +136,7 @@ public class File extends Resource implements IFile {
 		return result;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void create(InputStream content, int updateFlags, IProgressMonitor monitor) throws CoreException {
 		String message = NLS.bind(Messages.resources_creating, getFullPath());
 		SubMonitor subMonitor = SubMonitor.convert(monitor, message, 100);
@@ -183,7 +183,7 @@ public class File extends Resource implements IFile {
 		create(content, (force ? IResource.FORCE : IResource.NONE), monitor);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void create(byte[] content, int updateFlags, IProgressMonitor monitor) throws CoreException {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, NLS.bind(Messages.resources_creating, getFullPath()), 100);
 		try {
@@ -229,7 +229,7 @@ public class File extends Resource implements IFile {
 		checkValidGroupContainer(parent, false, false);
 	}
 
-	IFileInfo create(int updateFlags, IProgressMonitor subMonitor, IFileStore store)
+	IFileInfo create(int updateFlags, IProgressMonitor subMonitor, IFileStore store) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws CoreException, ResourceException {
 		String message;
 		IFileInfo localInfo;
@@ -290,7 +290,7 @@ public class File extends Resource implements IFile {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String getCharsetFor(Reader contents) throws CoreException {
 		String charset;
 		ResourceInfo info = getResourceInfo(false, false);
@@ -420,11 +420,11 @@ public class File extends Resource implements IFile {
 		workspace.getAliasManager().updateAliases(this, getStore(), IResource.DEPTH_ZERO, monitor);
 	}
 
-	static void internalSetMultipleContents(ConcurrentMap<File, byte[]> filesToCreate, int updateFlags, boolean append,
+	static void internalSetMultipleContents(ConcurrentMap<File, byte[]> filesToCreate, int updateFlags, boolean append, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IProgressMonitor monitor, ExecutorService executorService) throws CoreException {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, filesToCreate.size());
-		List<Future<CoreException>> futures = new ArrayList<>(filesToCreate.size());
-		for (Entry<File, byte[]> e : filesToCreate.entrySet()) {
+		List<Future<CoreException>> futures = new ArrayList<>(filesToCreate.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Entry<File, byte[]> e : filesToCreate.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Future<CoreException> future = executorService.submit(() -> {
 				try {
 					File file = e.getKey();
@@ -438,7 +438,7 @@ public class File extends Resource implements IFile {
 			futures.add(future);
 		}
 		CoreException ex = null;
-		for (Future<CoreException> f : futures) {
+		for (Future<CoreException> f : futures) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			CoreException ce;
 			try {
 				ce = f.get();
@@ -458,7 +458,7 @@ public class File extends Resource implements IFile {
 			throw ex;
 		}
 		NullProgressMonitor npm = new NullProgressMonitor();
-		for (File file : filesToCreate.keySet()) {
+		for (File file : filesToCreate.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			file.updateMetadataFiles();
 			file.workspace.getAliasManager().updateAliases(file, file.getStore(), IResource.DEPTH_ZERO, npm);
 			file.setLocal(true);
@@ -490,7 +490,7 @@ public class File extends Resource implements IFile {
 		setContents(content.getContents(), updateFlags, monitor);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setContents(InputStream content, int updateFlags, IProgressMonitor monitor) throws CoreException {
 		String message = NLS.bind(Messages.resources_settingContents, getFullPath());
 		SubMonitor subMonitor = SubMonitor.convert(monitor, message, 100);
@@ -523,7 +523,7 @@ public class File extends Resource implements IFile {
 			subMonitor.done();
 		}
 	}
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setContents(byte[] content, int updateFlags, IProgressMonitor monitor) throws CoreException {
 		String message = NLS.bind(Messages.resources_settingContents, getFullPath());
 		SubMonitor subMonitor = SubMonitor.convert(monitor, message, 100);
@@ -608,7 +608,7 @@ public class File extends Resource implements IFile {
 		workspace.getCharsetManager().setCharsetFor(getFullPath(), newCharset);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setCharset(String newCharset, IProgressMonitor monitor) throws CoreException {
 		String message = NLS.bind(Messages.resources_settingCharset, getFullPath());
 		SubMonitor subMonitor = SubMonitor.convert(monitor, message, 100);
@@ -650,7 +650,7 @@ public class File extends Resource implements IFile {
 		setContents(source.getContents(), updateFlags, monitor);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String getLineSeparator(boolean checkParent) throws CoreException {
 		if (exists()) {
 			try (
@@ -658,7 +658,7 @@ public class File extends Resource implements IFile {
 					// reflect the average length of the first Line:
 					InputStream input = new BufferedInputStream(getContents(), 128);) {
 				int c = input.read();
-				while (c != -1 && c != '\r' && c != '\n') {
+				while (c != -1 && c != '\r' && c != '\n') { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					c = input.read();
 				}
 				if (c == '\n') {

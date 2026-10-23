@@ -38,7 +38,7 @@ public class RefreshLocalAliasVisitor extends RefreshLocalVisitor {
 		}
 		IResource[] aliases = workspace.getAliasManager().computeAliases(target, store);
 		if (aliases != null) {
-			for (IResource alias : aliases) {
+			for (IResource alias : aliases) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (alias.getProject().isOpen() && !((Resource) alias).isFiltered()) {
 					super.createResource(node, (Resource) alias);
 				}
@@ -46,7 +46,7 @@ public class RefreshLocalAliasVisitor extends RefreshLocalVisitor {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void deleteResource(UnifiedTreeNode node, Resource target) throws CoreException {
 		super.deleteResource(node, target);
 		IFileStore store = node.getStore();
@@ -59,7 +59,7 @@ public class RefreshLocalAliasVisitor extends RefreshLocalVisitor {
 			if (store.exists()) {
 				wasFilteredOut = target.isFiltered();
 			}
-			for (IResource aliase : aliases) {
+			for (IResource aliase : aliases) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (aliase.getProject().isOpen()) {
 					if (wasFilteredOut) {
 						if (((Resource) aliase).isFiltered()) {
@@ -82,7 +82,7 @@ public class RefreshLocalAliasVisitor extends RefreshLocalVisitor {
 		}
 		IResource[] aliases = workspace.getAliasManager().computeAliases(target, store);
 		if (aliases != null) {
-			for (IResource aliase : aliases) {
+			for (IResource aliase : aliases) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (aliase.getProject().isOpen()) {
 					super.resourceChanged(node, (Resource) aliase);
 				}
@@ -99,7 +99,7 @@ public class RefreshLocalAliasVisitor extends RefreshLocalVisitor {
 		}
 		IResource[] aliases = workspace.getAliasManager().computeAliases(target, store);
 		if (aliases != null) {
-			for (IResource aliase : aliases) {
+			for (IResource aliase : aliases) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				super.fileToFolder(node, (Resource) aliase);
 			}
 		}
@@ -114,7 +114,7 @@ public class RefreshLocalAliasVisitor extends RefreshLocalVisitor {
 		}
 		IResource[] aliases = workspace.getAliasManager().computeAliases(target, store);
 		if (aliases != null) {
-			for (IResource aliase : aliases) {
+			for (IResource aliase : aliases) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				super.folderToFile(node, (Resource) aliase);
 			}
 		}

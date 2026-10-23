@@ -41,7 +41,7 @@ public class ThreeWayResourceComparator implements IResourceVariantComparator {
 		this.synchronizer = synchronizer;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean compare(IResource local, IResourceVariant remote) {
 		// First, ensure the resources are the same gender
 		if ((local.getType() == IResource.FILE) == remote.isContainer()) {
@@ -88,7 +88,7 @@ public class ThreeWayResourceComparator implements IResourceVariantComparator {
 		if (syncBytes.length != oldBytes.length) {
 			return false;
 		}
-		for (int i = 0; i < oldBytes.length; i++) {
+		for (int i = 0; i < oldBytes.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (oldBytes[i] != syncBytes[i]) {
 				return false;
 			}

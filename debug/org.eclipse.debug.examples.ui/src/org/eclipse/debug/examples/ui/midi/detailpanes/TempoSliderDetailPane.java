@@ -39,7 +39,7 @@ public class TempoSliderDetailPane implements IDetailPane {
 		fSlider = new Slider(parent, SWT.HORIZONTAL);
 		fSlider.setMinimum(20);
 		fSlider.setMaximum(500);
-		fSlider.addSelectionListener(new SelectionAdapter(){
+		fSlider.addSelectionListener(new SelectionAdapter(){ //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				int selection = fSlider.getSelection();

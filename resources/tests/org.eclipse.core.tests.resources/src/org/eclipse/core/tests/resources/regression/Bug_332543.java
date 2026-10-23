@@ -101,7 +101,7 @@ public class Bug_332543 {
 		});
 	}
 
-	private void testCancel(Function<ByteArrayInputStream, InputStream> wrap) throws Exception {
+	private void testCancel(Function<ByteArrayInputStream, InputStream> wrap) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 
 		String proj_name = createUniqueString();

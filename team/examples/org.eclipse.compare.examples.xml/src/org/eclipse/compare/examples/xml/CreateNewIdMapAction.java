@@ -33,22 +33,22 @@ public class CreateNewIdMapAction extends Action {
 		setToolTipText(XMLCompareMessages.XMLStructureViewer_newtask);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run() {
 		XMLPlugin plugin= XMLPlugin.getDefault();
 		fIdMapsInternal= plugin.getIdMapsInternal();//fIdMapsInternal is only read, not modified
 
-		fIdMaps = new HashMap<>();
+		fIdMaps = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		HashMap<String, HashMap<String, String>> PluginIdMaps = plugin.getIdMaps();
 		Set<String> keySet = PluginIdMaps.keySet();
-		for (String key : keySet) {
-			fIdMaps.put(key, new HashMap<>(PluginIdMaps.get(key)));
+		for (String key : keySet) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			fIdMaps.put(key, new HashMap<>(PluginIdMaps.get(key))); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 
-		fIdExtensionToName = new HashMap<>();
+		fIdExtensionToName = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		HashMap<String, String> PluginIdExtensionToName = plugin.getIdExtensionToName();
 		keySet= PluginIdExtensionToName.keySet();
-		for (String key : keySet) {
+		for (String key : keySet) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fIdExtensionToName.put(key, PluginIdExtensionToName.get(key));
 		}
 
@@ -56,7 +56,7 @@ public class CreateNewIdMapAction extends Action {
 		XMLCompareAddIdMapDialog dialog= new XMLCompareAddIdMapDialog(XMLPlugin.getActiveWorkbenchShell(),idmap,fIdMaps,fIdMapsInternal,fIdExtensionToName,false);
 		if (dialog.open() == Window.OK) {
 			if (!fIdMaps.containsKey(idmap.getName())) {
-				fIdMaps.put(idmap.getName(), new HashMap<>());
+				fIdMaps.put(idmap.getName(), new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 				if (!idmap.getExtension().isEmpty())
 					fIdExtensionToName.put(idmap.getExtension(),idmap.getName());
 				XMLPlugin.getDefault().setIdMaps(fIdMaps,fIdExtensionToName,null,false);

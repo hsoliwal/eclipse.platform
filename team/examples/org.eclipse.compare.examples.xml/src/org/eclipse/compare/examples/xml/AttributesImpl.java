@@ -43,7 +43,7 @@ public class AttributesImpl implements Attributes {
 	public int getIndex(String raw) {
 		ListNode place= fHead;
 		int index= 0;
-		while (place != null) {
+		while (place != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (place.raw.equals(raw)) {
 				return index;
 			}
@@ -58,7 +58,7 @@ public class AttributesImpl implements Attributes {
 	public int getIndex(String uri, String local) {
 		ListNode place= fHead;
 		int index= 0;
-		while (place != null) {
+		while (place != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (place.uri.equals(uri) && place.local.equals(local)) {
 				return index;
 			}
@@ -175,7 +175,7 @@ public class AttributesImpl implements Attributes {
 	}
 
 	/* Inserts an attribute. */
-	public void insertAttributeAt(
+	public void insertAttributeAt( //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int index,
 		String uri,
 		String local,
@@ -203,7 +203,7 @@ public class AttributesImpl implements Attributes {
 	}
 
 	/* Removes an attribute. */
-	public void removeAttributeAt(int index) {
+	public void removeAttributeAt(int index) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (fLength == 0)
 			return;
@@ -240,7 +240,7 @@ public class AttributesImpl implements Attributes {
 	/* Returns the node at the specified index. */
 	private ListNode getListNodeAt(int i) {
 
-		for (ListNode place= fHead; place != null; place= place.next) {
+		for (ListNode place= fHead; place != null; place= place.next) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (--i == -1) {
 				return place;
 			}
@@ -253,7 +253,7 @@ public class AttributesImpl implements Attributes {
 
 		if (uri != null && local != null) {
 			ListNode place= fHead;
-			while (place != null) {
+			while (place != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (place.uri != null
 					&& place.local != null
 					&& place.uri.equals(uri)
@@ -270,7 +270,7 @@ public class AttributesImpl implements Attributes {
 	private ListNode getListNode(String raw) {
 
 		if (raw != null) {
-			for (ListNode place= fHead; place != null; place= place.next) {
+			for (ListNode place= fHead; place != null; place= place.next) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (place.raw != null && place.raw.equals(raw)) {
 					return place;
 				}
@@ -283,19 +283,19 @@ public class AttributesImpl implements Attributes {
 	/* Returns a string representation of this object. */
 	@Override
 	public String toString() {
-		StringBuilder str= new StringBuilder();
+		StringBuilder str= new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
-		str.append('[');
-		str.append("len="); //$NON-NLS-1$
-		str.append(fLength);
-		str.append(", {"); //$NON-NLS-1$
-		for (ListNode place= fHead; place != null; place= place.next) {
-			str.append(place.toString());
+		str.append('['); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		str.append("len="); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		str.append(fLength); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		str.append(", {"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		for (ListNode place= fHead; place != null; place= place.next) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			str.append(place.toString()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			if (place.next != null) {
-				str.append(", "); //$NON-NLS-1$
+				str.append(", "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
-		str.append("}]"); //$NON-NLS-1$
+		str.append("}]"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 		return str.toString();
 	}

@@ -146,14 +146,14 @@ public class MockProcess extends Process {
 	 * @param timeoutMs mockup process will be stopped after given amount of
 	 *            milliseconds. If <i>negative</i> timeout is disabled.
 	 */
-	public MockProcess(final int expectedInputSize, long timeoutMs) {
+	public MockProcess(final int expectedInputSize, long timeoutMs) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super();
 		this.stdout = new ByteArrayInputStream(new byte[0]);
 		this.stderr = new ByteArrayInputStream(new byte[0]);
 		this.endTime = (timeoutMs > 0 ? System.currentTimeMillis() + timeoutMs : RUN_FOREVER);
 
 		final Thread inputMonitor = new Thread(() -> {
-			while (!MockProcess.this.isTerminated()) {
+			while (!MockProcess.this.isTerminated()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				synchronized (waitForTerminationLock) {
 					if (receivedInput.get() + stdin.size() >= expectedInputSize) {
 						endTime = System.currentTimeMillis();
@@ -176,12 +176,12 @@ public class MockProcess extends Process {
 	 * Create a new mock process that the stdout stream will indicate status of
 	 * the process. The codes are defined by {@link ProcessState#getCode()}
 	 */
-	public MockProcess() {
+	public MockProcess() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super();
 		this.stderr = new ByteArrayInputStream(new byte[0]);
 		this.endTime = RUN_FOREVER;
 		this.stdout = new InputStream() {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public int read() throws IOException {
 				if (processState == ProcessState.LASTREAD) {
 					/*
@@ -256,7 +256,7 @@ public class MockProcess extends Process {
 	@Override
 	public int waitFor() throws InterruptedException {
 		synchronized (waitForTerminationLock) {
-			while (!isTerminated()) {
+			while (!isTerminated()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (endTime == RUN_FOREVER) {
 					waitForTerminationLock.wait();
 				} else {
@@ -271,12 +271,12 @@ public class MockProcess extends Process {
 		return exitCode;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean waitFor(long timeout, TimeUnit unit) throws InterruptedException {
 		long remainingMs = unit.toMillis(timeout);
 		final long timeoutMs = System.currentTimeMillis() + remainingMs;
 		synchronized (waitForTerminationLock) {
-			while (!isTerminated() && remainingMs > 0) {
+			while (!isTerminated() && remainingMs > 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				long waitTime = endTime == RUN_FOREVER ? Long.MAX_VALUE : endTime - System.currentTimeMillis();
 				waitTime = Math.min(waitTime, remainingMs);
 				if (waitTime > 0) {
@@ -294,8 +294,8 @@ public class MockProcess extends Process {
 	@Override
 	public int exitValue() {
 		if (!isTerminated()) {
-			final String end = (endTime == RUN_FOREVER ? "never." : "in " + (endTime - System.currentTimeMillis()) + " ms.");
-			throw new IllegalThreadStateException("Mockup process terminates " + end);
+			final String end = (endTime == RUN_FOREVER ? "never." : "in " + (endTime - System.currentTimeMillis()) + " ms."); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			throw new IllegalThreadStateException("Mockup process terminates " + end); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return exitCode;
 	}

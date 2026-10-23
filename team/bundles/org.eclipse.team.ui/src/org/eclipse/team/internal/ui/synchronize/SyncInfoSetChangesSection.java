@@ -66,7 +66,7 @@ public class SyncInfoSetChangesSection extends ForwardingChangesSection {
 	 * Listener registered with the subscriber sync info set which contains
 	 * all out-of-sync resources for the subscriber.
 	 */
-	private final ISyncInfoSetChangeListener subscriberListener = new ISyncInfoSetChangeListener() {
+	private final ISyncInfoSetChangeListener subscriberListener = new ISyncInfoSetChangeListener() { //FLLDCIM: MARK — T38  ANONYMOUS
 		@Override
 		public void syncInfoSetReset(SyncInfoSet set, IProgressMonitor monitor) {
 			// Handled by output set listener
@@ -85,7 +85,7 @@ public class SyncInfoSetChangesSection extends ForwardingChangesSection {
 	 * Listener registered with the output sync info set which contains
 	 * only the visible sync info.
 	 */
-	private final ISyncInfoSetChangeListener outputSetListener = new ISyncInfoSetChangeListener() {
+	private final ISyncInfoSetChangeListener outputSetListener = new ISyncInfoSetChangeListener() { //FLLDCIM: MARK — T38  ANONYMOUS
 		@Override
 		public void syncInfoSetReset(SyncInfoSet set, IProgressMonitor monitor) {
 			calculateDescription();
@@ -125,7 +125,7 @@ public class SyncInfoSetChangesSection extends ForwardingChangesSection {
 		SyncInfoTree syncInfoTree = getVisibleSyncInfoSet();
 		if (syncInfoTree.getErrors().length > 0) {
 			if (!showingError) {
-				TeamUIPlugin.getStandardDisplay().asyncExec(() -> {
+				TeamUIPlugin.getStandardDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 					updatePage(getErrorComposite(getContainer()));
 					showingError = true;
 				});
@@ -137,7 +137,7 @@ public class SyncInfoSetChangesSection extends ForwardingChangesSection {
 		super.calculateDescription();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected long getChangesInMode(int candidateMode) {
 		SyncInfoSet participantSet = getParticipantSyncInfoSet();
 		long numChanges;
@@ -163,7 +163,7 @@ public class SyncInfoSetChangesSection extends ForwardingChangesSection {
 	 * Return the candidate mode based on the presence of unfiltered changes
 	 * and the modes supported by the page.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected int getCandidateMode() {
 		SyncInfoSet participantSet = getParticipantSyncInfoSet();
 		SynchronizePageConfiguration configuration = (SynchronizePageConfiguration)getConfiguration();
@@ -196,7 +196,7 @@ public class SyncInfoSetChangesSection extends ForwardingChangesSection {
 		getVisibleSyncInfoSet().removeSyncSetChangedListener(outputSetListener);
 	}
 
-	private Composite getErrorComposite(Composite parent) {
+	private Composite getErrorComposite(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setBackground(getListBackgroundColor());
 		GridLayout layout = new GridLayout();

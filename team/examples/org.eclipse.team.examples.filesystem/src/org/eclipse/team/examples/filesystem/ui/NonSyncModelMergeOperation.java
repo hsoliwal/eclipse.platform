@@ -44,7 +44,7 @@ import org.eclipse.ui.IWorkbenchPart;
  * is a reasonable assumption, it is not enforced by the API specification.</li>
  * </ol>
  */
-public class NonSyncModelMergeOperation extends ModelMergeOperation {
+public class NonSyncModelMergeOperation extends ModelMergeOperation { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	private FileSystemMergeContext context;
 
@@ -57,7 +57,7 @@ public class NonSyncModelMergeOperation extends ModelMergeOperation {
 		super(part, manager);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void initializeContext(IProgressMonitor monitor) throws CoreException {
 		try {
 			monitor.beginTask(null, 100);
@@ -91,7 +91,7 @@ public class NonSyncModelMergeOperation extends ModelMergeOperation {
 	protected void handlePreviewRequest() {
 		// We perform a syncExec so that the job will dispose of the scope manager
 		// after the dialog closes
-		Display.getDefault().syncExec(() -> NonSyncMergeDialog.openFor(NonSyncModelMergeOperation.this));
+		Display.getDefault().syncExec(() -> NonSyncMergeDialog.openFor(NonSyncModelMergeOperation.this)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 	}
 
 	@Override

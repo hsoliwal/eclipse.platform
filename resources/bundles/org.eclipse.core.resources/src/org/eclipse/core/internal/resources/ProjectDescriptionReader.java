@@ -120,7 +120,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 	 */
 	private static SAXParser singletonParser;
 
-	protected final StringBuilder charBuffer = new StringBuilder();
+	protected final StringBuilder charBuffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 	protected Deque<Object> objectStack;
 	protected MultiStatus problems;
@@ -192,7 +192,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 	@Override
 	public void characters(char[] chars, int offset, int length) {
 		//accumulate characters and process them when endElement is reached
-		charBuffer.append(chars, offset, length);
+		charBuffer.append(chars, offset, length); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
 	/**
@@ -242,7 +242,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 		}
 	}
 
-	static void parseBuildTriggers(BuildCommand command, String string) {
+	static void parseBuildTriggers(BuildCommand command, String string) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		command.setBuilding(IncrementalProjectBuilder.AUTO_BUILD, false);
 		command.setBuilding(IncrementalProjectBuilder.CLEAN_BUILD, false);
 		command.setBuilding(IncrementalProjectBuilder.FULL_BUILD, false);
@@ -250,7 +250,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 
 		// set new values according to value in the triggers element
 		StringTokenizer tokens = new StringTokenizer(string, ","); //$NON-NLS-1$
-		while (tokens.hasMoreTokens()) {
+		while (tokens.hasMoreTokens()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String next = tokens.nextToken();
 			if (next.equalsIgnoreCase(TRIGGER_AUTO)) {
 				command.setBuilding(IncrementalProjectBuilder.AUTO_BUILD, true);
@@ -280,7 +280,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 		}
 	}
 
-	private void endDictionaryKey(String elementName) {
+	private void endDictionaryKey(String elementName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (elementName.equals(KEY)) {
 			// There is a value place holder on the top of the stack and
 			// a key place holder just below it.
@@ -317,7 +317,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 	/**
 	 * @see ContentHandler#endElement(String, String, String)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void endElement(String uri, String elementName, String qname) {
 		switch (state) {
 			case S_PROJECT_DESC :
@@ -512,7 +512,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 	/**
 	 * End a single linked resource and add it to the HashMap.
 	 */
-	private void endLinkElement(String elementName) {
+	private void endLinkElement(String elementName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (elementName.equals(LINK)) {
 			state = S_LINKED_RESOURCES;
 			// Pop off the link description
@@ -539,7 +539,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 		}
 	}
 
-	private void endMatcherElement(String elementName) {
+	private void endMatcherElement(String elementName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (elementName.equals(MATCHER)) {
 			// Pop off an array (Object[2]) containing the matcher id and arguments.
 			Object[] matcher = (Object[]) objectStack.pop();
@@ -569,7 +569,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 	/**
 	 * End a single filtered resource and add it to the HashMap.
 	 */
-	private void endFilterElement(String elementName) {
+	private void endFilterElement(String elementName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (elementName.equals(FILTER)) {
 			// Pop off the filter description
 			FilterDescription filter = (FilterDescription) objectStack.pop();
@@ -654,7 +654,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 	 * Link locations that are not stored in the local file system are represented
 	 * in the project description under the "locationURI" tag.
 	 */
-	private void endLinkLocationURI(String elementName) {
+	private void endLinkLocationURI(String elementName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (elementName.equals(LOCATION_URI)) {
 			// A link location is an URI.  URIs cannot have leading/trailing whitespace
 			String newLocation = charBuffer.toString().trim();
@@ -704,7 +704,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 		}
 	}
 
-	private void endMatcherArguments(String elementName) {
+	private void endMatcherArguments(String elementName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (elementName.equals(ARGUMENTS)) {
 			ArrayList<FileInfoMatcherDescription> matchers = (ArrayList<FileInfoMatcherDescription>) objectStack.pop();
 			Object newArguments = charBuffer.toString();
@@ -739,7 +739,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 		}
 	}
 
-	private void endFilterPath(String elementName) {
+	private void endFilterPath(String elementName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (elementName.equals(NAME)) {
 			IPath newPath = IPath.fromOSString(charBuffer.toString());
 			// objectStack has a FilterDescription on it. Set the name
@@ -760,7 +760,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 		}
 	}
 
-	private void endFilterType(String elementName) {
+	private void endFilterType(String elementName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (elementName.equals(TYPE)) {
 			int newType = -1;
 			try {
@@ -803,7 +803,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 		}
 	}
 
-	private void endLinkType(String elementName) {
+	private void endLinkType(String elementName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (elementName.equals(TYPE)) {
 			//FIXME we should handle this case by removing the entire link
 			//for now we default to a file link
@@ -857,7 +857,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 		}
 		IWorkspaceRoot root = workspace.getRoot();
 		IProject[] projects = new IProject[referencedProjects.size()];
-		for (int i = 0; i < projects.length; i++) {
+		for (int i = 0; i < projects.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			projects[i] = root.getProject(referencedProjects.get(i));
 		}
 		projectDescription.setReferencedProjects(projects);
@@ -910,7 +910,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 		problems.add(new Status(IStatus.WARNING, ResourcesPlugin.PI_RESOURCES, IResourceStatus.FAILED_READ_METADATA, errorMessage, null));
 	}
 
-	private void parseProjectDescription(String elementName) {
+	private void parseProjectDescription(String elementName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (elementName.equals(NAME)) {
 			state = S_PROJECT_NAME;
 			return;
@@ -926,7 +926,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 			// popped off the stack, massaged into the right format
 			// and added to the project description when we hit the
 			// end element for PROJECTS.
-			objectStack.push(new ArrayList<>());
+			objectStack.push(new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			return;
 		}
 		if (elementName.equals(BUILD_SPEC)) {
@@ -935,30 +935,30 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 			// for this build spec.  This array list will be popped off the stack,
 			// massaged into the right format and added to the project's build
 			// spec when we hit the end element for BUILD_SPEC.
-			objectStack.push(new ArrayList<>());
+			objectStack.push(new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			return;
 		}
 		if (elementName.equals(NATURES)) {
 			state = S_NATURES;
 			// Push an array list to hold all the nature names.
-			objectStack.push(new ArrayList<>());
+			objectStack.push(new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			return;
 		}
 		if (elementName.equals(LINKED_RESOURCES)) {
 			// Push a HashMap to collect all the links.
-			objectStack.push(new HashMap<>());
+			objectStack.push(new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			state = S_LINKED_RESOURCES;
 			return;
 		}
 		if (elementName.equals(FILTERED_RESOURCES)) {
 			// Push a HashMap to collect all the filters.
-			objectStack.push(new HashMap<>());
+			objectStack.push(new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			state = S_FILTERED_RESOURCES;
 			return;
 		}
 		if (elementName.equals(VARIABLE_LIST)) {
 			// Push a HashMap to collect all the variables.
-			objectStack.push(new HashMap<>());
+			objectStack.push(new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			state = S_VARIABLE_LIST;
 			return;
 		}
@@ -968,9 +968,9 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 		}
 	}
 
-	public ProjectDescription read(InputSource input) {
+	public ProjectDescription read(InputSource input) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		problems = new MultiStatus(ResourcesPlugin.PI_RESOURCES, IResourceStatus.FAILED_READ_METADATA, Messages.projRead_failureReadingProjectDesc, null);
-		objectStack = new ArrayDeque<>();
+		objectStack = new ArrayDeque<>(); //FLLDCIM: MARK — M08 M3_DEQUE_LANES NEW
 		state = S_INITIAL;
 		try {
 			createParser(workspace).parse(input, this);
@@ -1021,7 +1021,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 	/**
 	 * @see ContentHandler#startElement(String, String, String, Attributes)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void startElement(String uri, String elementName, String qname, Attributes attributes) throws SAXException {
 		//clear the character buffer at the start of every element
 		charBuffer.setLength(0);
@@ -1057,7 +1057,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 					state = S_BUILD_COMMAND_ARGUMENTS;
 					// Push a HashMap to hold all the key/value pairs which
 					// will become the argument list.
-					objectStack.push(new HashMap<>());
+					objectStack.push(new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 				}
 				break;
 			case S_BUILD_COMMAND_ARGUMENTS :
@@ -1133,7 +1133,7 @@ public class ProjectDescriptionReader extends DefaultHandler implements IModelOb
 					state = S_MATCHER_ID;
 				} else if (elementName.equals(ARGUMENTS)) {
 					state = S_MATCHER_ARGUMENTS;
-					objectStack.push(new ArrayList<>());
+					objectStack.push(new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				}
 				break;
 			case S_MATCHER_ARGUMENTS :

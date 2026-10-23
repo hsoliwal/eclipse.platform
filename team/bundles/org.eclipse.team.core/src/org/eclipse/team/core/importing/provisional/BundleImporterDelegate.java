@@ -55,11 +55,11 @@ public abstract class BundleImporterDelegate implements IBundleImporterDelegate 
 
 	protected abstract RepositoryProviderType getProviderType();
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ScmUrlImportDescription[] validateImport(Map[] manifests) {
 		ScmUrlImportDescription[] results = new ScmUrlImportDescription[manifests.length];
 		if (getProviderType() != null) {
-			for (int i = 0; i < manifests.length; i++) {
+			for (int i = 0; i < manifests.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Map manifest = manifests[i];
 				String value = (String) manifest.get(ECLIPSE_SOURCE_REFERENCES);
 				if (value != null && value.length() > 8) {
@@ -67,7 +67,7 @@ public abstract class BundleImporterDelegate implements IBundleImporterDelegate 
 					if (getSupportedValues().contains(prefix)) {
 						try {
 							ManifestElement[] elements = ManifestElement.parseHeader(ECLIPSE_SOURCE_REFERENCES, value);
-							for (ManifestElement element : elements) {
+							for (ManifestElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 								String url = element.toString();
 								String project = element.getAttribute(ATTR_PROJECT);
 								if (project == null) {
@@ -89,14 +89,14 @@ public abstract class BundleImporterDelegate implements IBundleImporterDelegate 
 		return results;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IProject[] performImport(ScmUrlImportDescription[] descriptions, IProgressMonitor monitor) throws CoreException {
-		List<String> references = new ArrayList<>();
+		List<String> references = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		ProjectSetCapability psfCapability = getProviderType().getProjectSetCapability();
 		IProject[] result = null;
 		if (psfCapability != null) {
 			// collect and validate all header values
-			for (ScmUrlImportDescription description : descriptions) {
+			for (ScmUrlImportDescription description : descriptions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				references.add(psfCapability.asReference(description.getUri(), description.getProject()));
 			}
 			// create projects

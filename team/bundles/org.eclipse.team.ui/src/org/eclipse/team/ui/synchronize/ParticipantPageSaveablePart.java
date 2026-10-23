@@ -63,7 +63,7 @@ import org.eclipse.ui.part.IPageBookViewPage;
  * @deprecated Clients should use a subclass of {@link PageCompareEditorInput}
  *      and {@link CompareUI#openCompareDialog(org.eclipse.compare.CompareEditorInput)}
  */
-@Deprecated
+@Deprecated //FLLDCIM: MARK — T37  IMPLEMENTS
 public class ParticipantPageSaveablePart extends PageSaveablePart implements IContentChangeListener {
 	private final ISynchronizeParticipant participant;
 	private final ISynchronizePageConfiguration pageConfiguration;
@@ -170,15 +170,15 @@ public class ParticipantPageSaveablePart extends PageSaveablePart implements ICo
 		}
 	}
 
-	@Deprecated
+	@Deprecated //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Override
 	protected Control createPage(Composite parent, ToolBarManager toolBarManager) {
-		listener = event -> {
+		listener = event -> { //FLLDCIM: MARK — T06  LAMBDA
 			if (event.getProperty().equals(ISynchronizePageConfiguration.P_PAGE_DESCRIPTION)) {
 				updateDescription();
 			}
 		};
-		pageConfiguration.addPropertyChangeListener(listener);
+		pageConfiguration.addPropertyChangeListener(listener); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		updateDescription();
 
 		page = participant.createPage(pageConfiguration);
@@ -224,7 +224,7 @@ public class ParticipantPageSaveablePart extends PageSaveablePart implements ICo
 	 */
 	private void initializeDiffViewer(Viewer viewer) {
 		if (viewer instanceof StructuredViewer) {
-			((StructuredViewer) viewer).addOpenListener(event -> {
+			((StructuredViewer) viewer).addOpenListener(event -> { //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
 				ISelection s = event.getSelection();
 				final SyncInfoModelElement node = getElement(s);
 				if (node == null) {
@@ -243,7 +243,7 @@ public class ParticipantPageSaveablePart extends PageSaveablePart implements ICo
 	 * {@inheritDoc}
 	 * @since 3.2
 	 */
-	@Deprecated
+	@Deprecated //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Override
 	protected void prepareInput(final ICompareInput input, CompareConfiguration configuration, IProgressMonitor monitor) throws InvocationTargetException {
 		monitor.beginTask(TeamUIMessages.SyncInfoCompareInput_3, 100);
@@ -302,7 +302,7 @@ public class ParticipantPageSaveablePart extends PageSaveablePart implements ICo
 		}
 
 		IDiffElement[] children = node.getChildren();
-		for (IDiffElement c : children) {
+		for (IDiffElement c : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			commit(pm, (DiffNode) c);
 		}
 	}

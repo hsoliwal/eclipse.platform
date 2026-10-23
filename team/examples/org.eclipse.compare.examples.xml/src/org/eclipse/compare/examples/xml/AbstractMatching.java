@@ -44,7 +44,7 @@ public abstract class AbstractMatching {
 			leaves.add(root);
 		} else {
 			Object[] children = root.getChildren();
-			for (Object child : children) {
+			for (Object child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				findLeaves((XMLNode) child, leaves);
 			}
 		}
@@ -62,7 +62,7 @@ public abstract class AbstractMatching {
 			numbering.add(root);
 			Object[] children = root.getChildren();
 			if (children != null) {
-				for (Object child : children) {
+				for (Object child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					numberNodes((XMLNode) child, numbering);
 				}
 			}
@@ -75,7 +75,7 @@ public abstract class AbstractMatching {
 		int count = 1;
 		if (isLeaf(root)) return count;
 		Object[] children = root.getChildren();
-		for (Object child : children) {
+		for (Object child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			count += countNodes((XMLNode) child);
 		}
 		return count;
@@ -84,7 +84,7 @@ public abstract class AbstractMatching {
 	/* returns index of node x in fNLeft */
 	protected int indexOfLN (XMLNode x) {
 		int i= 0;
-		while ((i<fNLeft.size()) && (fNLeft.elementAt(i) != x))
+		while ((i<fNLeft.size()) && (fNLeft.elementAt(i) != x)) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			i++;
 		return i;
 	}
@@ -92,7 +92,7 @@ public abstract class AbstractMatching {
 	/* returns index of node y in fNRight */
 	protected int indexOfRN (XMLNode y) {
 		int j= 0;
-		while ((j<fNRight.size()) && (fNRight.elementAt(j) != y))
+		while ((j<fNRight.size()) && (fNRight.elementAt(j) != y)) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			j++;
 		return j;
 	}
@@ -115,7 +115,7 @@ public Vector<Match> getMatches() {
 			return fXML_elements.length;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public boolean rangesEqual(
 			int thisIndex,
 			IRangeComparator other_irc,
@@ -181,15 +181,15 @@ public Vector<Match> getMatches() {
 		}
 	}
 
-	protected int handleRangeDifferencer(Object[] xc_elements, Object[] yc_elements, ArrayList<Match> DTMatching, int distance) {
+	protected int handleRangeDifferencer(Object[] xc_elements, Object[] yc_elements, ArrayList<Match> DTMatching, int distance) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		RangeDifference[] differences= RangeDifferencer.findDifferences(new XMLComparator(xc_elements), new XMLComparator(yc_elements));
 
 		int cur_pos_left= 0;
 		int cur_pos_right= 0;
-		for (RangeDifference rd : differences) {
+		for (RangeDifference rd : differences) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int equal_length= rd.leftStart();
 			//handle elements before current range which are unchanged
-			while (cur_pos_left < equal_length) {
+			while (cur_pos_left < equal_length) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				//assuming XMLComparator has already filled fDT and fDT_Matchings for subtrees
 				//rooted at xc_elements[cur_pos_left] and yc_elements[cur_pos_right]
 //				if ( fDT[indexOfLN( (XMLNode)xc_elements[cur_pos_left])][indexOfRN( (XMLNode)yc_elements[cur_pos_right])] != 0)
@@ -211,7 +211,7 @@ public Vector<Match> getMatches() {
 				greater_length= rd.rightLength();
 			}
 			//handle elements elements in range
-			for (int j=0; j < smaller_length; j++) {
+			for (int j=0; j < smaller_length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				distance += dist((XMLNode) xc_elements[cur_pos_left], (XMLNode) yc_elements[cur_pos_right]);
 				DTMatching.add(new Match( (XMLNode)xc_elements[cur_pos_left], (XMLNode)yc_elements[cur_pos_right]));
 				cur_pos_left++;
@@ -219,13 +219,13 @@ public Vector<Match> getMatches() {
 			}
 			//int cur_pos_greater= (leftGreater)?cur_pos_left:cur_pos_right;
 			if (leftGreater) {
-				for (int j=smaller_length; j < greater_length; j++) {
+				for (int j=smaller_length; j < greater_length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					distance += countNodes((XMLNode) xc_elements[cur_pos_left]);
 					DTMatching.add(new Match( (XMLNode)xc_elements[cur_pos_left], null));
 					cur_pos_left++;
 				}
 			} else {
-				for (int j=smaller_length; j < greater_length; j++) {
+				for (int j=smaller_length; j < greater_length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					distance += countNodes((XMLNode) yc_elements[cur_pos_right]);
 					DTMatching.add(new Match( null, (XMLNode)yc_elements[cur_pos_right]));
 					cur_pos_right++;
@@ -241,7 +241,7 @@ public Vector<Match> getMatches() {
 //				cur_pos_right= cur_pos_greater;
 		}
 
-		for (int i= cur_pos_left; i < xc_elements.length; i++) {
+		for (int i= cur_pos_left; i < xc_elements.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			//distance += fDT[indexOfLN( (XMLNode)xc_elements[cur_pos_left])][indexOfRN( (XMLNode)yc_elements[cur_pos_right])];
 			//DTMatching.addAll(fDT_Matchings[index_left][index_right]);
 			DTMatching.add(new Match( (XMLNode)xc_elements[cur_pos_left], (XMLNode)yc_elements[cur_pos_right]));
@@ -254,7 +254,7 @@ public Vector<Match> getMatches() {
 
 	abstract public void match(XMLNode LeftTree, XMLNode RightTree, boolean rightTreeIsAncestor, IProgressMonitor monitor);
 
-	protected int dist(XMLNode x, XMLNode y) {
+	protected int dist(XMLNode x, XMLNode y) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//System.out.println("dist( "+x.getSignature()+" , "+y.getSignature()+")");
 		int ret= NO_ENTRY;
 

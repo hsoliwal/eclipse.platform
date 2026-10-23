@@ -121,11 +121,11 @@ public class TextPreferencePage extends PreferencePage implements IWorkbenchPref
 	protected FileTypeTable fTable;
 
 	public TextPreferencePage() {
-		fItems= new ArrayList<>();
+		fItems= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		initializeItems();
 	}
 
-	private void initializeItems() {
+	private void initializeItems() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		fItems.clear();
 
@@ -137,12 +137,12 @@ public class TextPreferencePage extends PreferencePage implements IWorkbenchPref
 		Set fPluginNames= makeSetOfStrings(manager.getDefaultNameMappings());
 		Set fPluginExtensions= makeSetOfStrings(manager.getDefaultExtensionMappings());
 
-		for (IStringMapping info : extensionInfoArray) {
+		for (IStringMapping info : extensionInfoArray) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final FileTypeTable.Extension extension= new FileTypeTable.Extension(info.getString(), fPluginExtensions.contains(info.getString()));
 			extension.mode= info.getType();
 			fItems.add(extension);
 		}
-		for (IStringMapping info : nameInfoArray) {
+		for (IStringMapping info : nameInfoArray) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final FileTypeTable.Name name= new FileTypeTable.Name(info.getString(), fPluginNames.contains(info.getString()));
 			name.mode= info.getType();
 			fItems.add(name);
@@ -151,8 +151,8 @@ public class TextPreferencePage extends PreferencePage implements IWorkbenchPref
 	}
 
 	private static Set<String> makeSetOfStrings(IStringMapping [] mappings) {
-		final Set<String> set= new HashSet<>(mappings.length);
-		for (IStringMapping mapping : mappings) {
+		final Set<String> set= new HashSet<>(mappings.length); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IStringMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			set.add(mapping.getString());
 		}
 		return set;
@@ -162,7 +162,7 @@ public class TextPreferencePage extends PreferencePage implements IWorkbenchPref
 	public void init(IWorkbench workbench) {
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createContents(Composite parent) {
 
 		initializeDialogUnits(parent);
@@ -173,9 +173,9 @@ public class TextPreferencePage extends PreferencePage implements IWorkbenchPref
 
 		fTable= new FileTypeTable(composite, fItems, false);
 
-		fTable.getViewer().getControl().addListener(SWT.Selection, unused -> handleSelection());
+		fTable.getViewer().getControl().addListener(SWT.Selection, unused -> handleSelection()); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 
-		fTable.getViewer().addDoubleClickListener(event -> {
+		fTable.getViewer().addDoubleClickListener(event -> { //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
 			final ISelection selection = event.getSelection();
 			if (selection == null || !(selection instanceof IStructuredSelection)) {
 				return;
@@ -209,14 +209,14 @@ public class TextPreferencePage extends PreferencePage implements IWorkbenchPref
 		fChangeButton.setLayoutData(SWTUtils.createGridData(buttonWidth, SWT.DEFAULT, SWT.FILL, SWT.FILL, false, false));
 		fRemoveButton.setLayoutData(SWTUtils.createGridData(buttonWidth, SWT.DEFAULT, SWT.FILL, SWT.FILL, false, false));
 
-		addExtensionButton.addListener(SWT.Selection, unused -> addExtension());
-		addNameButton.addListener(SWT.Selection, unused -> addName());
+		addExtensionButton.addListener(SWT.Selection, unused -> addExtension()); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
+		addNameButton.addListener(SWT.Selection, unused -> addName()); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 
 		fChangeButton.setEnabled(false);
-		fChangeButton.addListener(SWT.Selection, unused -> changePattern());
+		fChangeButton.addListener(SWT.Selection, unused -> changePattern()); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 
 		fRemoveButton.setEnabled(false);
-		fRemoveButton.addListener(SWT.Selection, unused -> removePattern());
+		fRemoveButton.addListener(SWT.Selection, unused -> removePattern()); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 
 		// set F1 help
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(getControl(), IHelpContextIds.FILE_TYPE_PREFERENCE_PAGE);
@@ -229,7 +229,7 @@ public class TextPreferencePage extends PreferencePage implements IWorkbenchPref
 		super.performDefaults();
 		initializeItems();
 		if (fTable != null) {
-			fTable.getViewer().refresh();
+			fTable.getViewer().refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		}
 	}
 
@@ -238,15 +238,15 @@ public class TextPreferencePage extends PreferencePage implements IWorkbenchPref
 	 *
 	 * @return whether it is okay to close the preference page
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean performOk() {
-		final ArrayList<String> extensionsList= new ArrayList<>();
-		final ArrayList<Integer> extensionsModesList= new ArrayList<>();
+		final ArrayList<String> extensionsList= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		final ArrayList<Integer> extensionsModesList= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-		final ArrayList<String> namesList= new ArrayList<>();
-		final ArrayList<Integer> namesModesList= new ArrayList<>();
+		final ArrayList<String> namesList= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		final ArrayList<Integer> namesModesList= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-		for (FileTypeTable.Item item : fItems) {
+		for (FileTypeTable.Item item : fItems) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (item instanceof FileTypeTable.Extension) {
 				extensionsList.add(item.name);
 				extensionsModesList.add(Integer.valueOf(item.mode));
@@ -273,7 +273,7 @@ public class TextPreferencePage extends PreferencePage implements IWorkbenchPref
 	private static int [] integerListToIntArray(List integers) {
 		final int [] array= new int [integers.size()];
 		int index= 0;
-		for (Object element : integers) {
+		for (Object element : integers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			array[index++]= ((Integer)element).intValue();
 		}
 		return array;
@@ -282,7 +282,7 @@ public class TextPreferencePage extends PreferencePage implements IWorkbenchPref
 	/**
 	 * Add a new item to the table with the default type of Text.
 	 */
-	void addExtension() {
+	void addExtension() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final ExtensionValidator validator = new ExtensionValidator();
 		final InputDialog dialog = new InputDialog(getShell(), TeamUIMessages.TextPreferencePage_enterExtensionShort, TeamUIMessages.TextPreferencePage_enterExtensionLong, null, validator); //
 		if (dialog.open() != Window.OK) {
@@ -293,7 +293,7 @@ public class TextPreferencePage extends PreferencePage implements IWorkbenchPref
 
 		// Check if the item already exists
 		final Iterator it = fItems.iterator();
-		while (it.hasNext()) {
+		while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final FileTypeTable.Item item= (FileTypeTable.Item)it.next();
 			if (item instanceof FileTypeTable.Extension && item.name.equals(extension)) {
 				MessageDialog.openWarning(getShell(), TeamUIMessages.TextPreferencePage_extensionExistsShort, TeamUIMessages.TextPreferencePage_extensionExistsLong); //
@@ -302,13 +302,13 @@ public class TextPreferencePage extends PreferencePage implements IWorkbenchPref
 		}
 		final FileTypeTable.Item item= new FileTypeTable.Extension(extension, false);
 		fItems.add(item);
-		fTable.getViewer().refresh();
+		fTable.getViewer().refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 	}
 
 	/**
 	 * Add a new item to the table with the default type of Text.
 	 */
-	void addName() {
+	void addName() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final InputDialog dialog = new InputDialog(getShell(), TeamUIMessages.TextPreferencePage_6, TeamUIMessages.TextPreferencePage_7, null, new FilenameValidator()); //
 		if (dialog.open() != Window.OK) {
 			return;
@@ -318,7 +318,7 @@ public class TextPreferencePage extends PreferencePage implements IWorkbenchPref
 
 		// Check if the item already exists
 		final Iterator it = fItems.iterator();
-		while (it.hasNext()) {
+		while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final FileTypeTable.Item item= (FileTypeTable.Item)it.next();
 			if (item instanceof FileTypeTable.Name && item.name.equals(name)) {
 				MessageDialog.openWarning(getShell(), TeamUIMessages.TextPreferencePage_extensionExistsShort, TeamUIMessages.TextPreferencePage_extensionExistsLong); //
@@ -327,7 +327,7 @@ public class TextPreferencePage extends PreferencePage implements IWorkbenchPref
 		}
 		final FileTypeTable.Item item= new FileTypeTable.Name(name, false);
 		fItems.add(item);
-		fTable.getViewer().refresh();
+		fTable.getViewer().refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 	}
 
 	/**
@@ -339,14 +339,14 @@ public class TextPreferencePage extends PreferencePage implements IWorkbenchPref
 			return;
 		}
 
-		for (Object element : selection) {
+		for (Object element : selection) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final FileTypeTable.Item item= (FileTypeTable.Item)element;
 			if (item.contributed) {
 				continue;
 			}
 			fItems.remove(item);
 		}
-		fTable.getViewer().refresh();
+		fTable.getViewer().refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		handleSelection();
 	}
 	/**
@@ -358,10 +358,10 @@ public class TextPreferencePage extends PreferencePage implements IWorkbenchPref
 			return;
 		}
 
-		for (Object element : selection) {
+		for (Object element : selection) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final FileTypeTable.Item item= (FileTypeTable.Item)element;
 			item.mode= item.mode == Team.TEXT ? Team.BINARY : Team.TEXT;
-			fTable.getViewer().refresh(item);
+			fTable.getViewer().refresh(item); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		}
 	}
 

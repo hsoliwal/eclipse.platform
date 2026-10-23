@@ -30,7 +30,7 @@ package org.eclipse.debug.examples.core.pda.protocol;
 public class PDADataCommand extends PDACommand {
 
 	public PDADataCommand(int threadId) {
-		super("data " + threadId); //$NON-NLS-1$
+		super("data " + threadId); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override

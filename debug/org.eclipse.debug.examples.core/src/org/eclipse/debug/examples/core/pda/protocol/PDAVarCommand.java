@@ -33,7 +33,7 @@ package org.eclipse.debug.examples.core.pda.protocol;
 public class PDAVarCommand extends PDACommand {
 
 	public PDAVarCommand(int threadId, int frameId, String name) {
-		super("var " + threadId + " " + frameId + " " + name); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		super("var " + threadId + " " + frameId + " " + name); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 

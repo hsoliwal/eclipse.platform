@@ -53,13 +53,13 @@ import org.eclipse.team.internal.core.subscribers.SyncInfoStatistics;
 public class SyncInfoSet {
 	// fields used to hold resources of interest
 	// {IPath -> SyncInfo}
-	private final Map<IPath, SyncInfo> resources = Collections.synchronizedMap(new HashMap<>());
+	private final Map<IPath, SyncInfo> resources = Collections.synchronizedMap(new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	// keep track of number of sync kinds in the set
 	private final SyncInfoStatistics statistics = new SyncInfoStatistics();
 
 	// keep track of errors that occurred while trying to populate the set
-	private final Map<IResource, ITeamStatus> errors = new HashMap<>();
+	private final Map<IResource, ITeamStatus> errors = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	private boolean lockedForModification;
 
@@ -78,7 +78,7 @@ public class SyncInfoSet {
 	public SyncInfoSet(SyncInfo[] infos) {
 		this();
 		// use the internal add since we can't have listeners at this point anyway
-		for (SyncInfo info : infos) {
+		for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			internalAdd(info);
 		}
 	}
@@ -101,8 +101,8 @@ public class SyncInfoSet {
 	 */
 	public IResource[] getResources() {
 		SyncInfo[] infos = getSyncInfos();
-		List<IResource> resources = new ArrayList<>();
-		for (SyncInfo info : infos) {
+		List<IResource> resources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			resources.add(info.getLocal());
 		}
 		return resources.toArray(new IResource[resources.size()]);
@@ -289,7 +289,7 @@ public class SyncInfoSet {
 	 * @param monitor a progress monitor
 	 */
 	public void connect(final ISyncInfoSetChangeListener listener, IProgressMonitor monitor) {
-		run(monitor1 -> {
+		run(monitor1 -> { //FLLDCIM: MARK — T09  LAMBDA
 			try {
 				monitor1.beginTask(null, 100);
 				addSyncSetChangedListener(listener);
@@ -302,7 +302,7 @@ public class SyncInfoSet {
 
 	private final ILock lock = Job.getJobManager().newLock();
 
-	private final Set<ISyncInfoSetChangeListener> listeners = Collections.synchronizedSet(new HashSet<>());
+	private final Set<ISyncInfoSetChangeListener> listeners = Collections.synchronizedSet(new HashSet<>()); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	private SyncInfoSetChangeEvent changes = createEmptyChangeEvent();
 
@@ -345,7 +345,7 @@ public class SyncInfoSet {
 		try {
 			beginInput();
 			SyncInfo[] infos = set.getSyncInfos();
-			for (SyncInfo info : infos) {
+			for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				add(info);
 			}
 		} finally {
@@ -376,7 +376,7 @@ public class SyncInfoSet {
 	public void removeAll(IResource[] resources) {
 		try {
 			beginInput();
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				remove(resource);
 			}
 		} finally {
@@ -413,7 +413,7 @@ public class SyncInfoSet {
 	 */
 	public boolean hasNodes(FastSyncInfoFilter filter) {
 		SyncInfo[] infos = getSyncInfos();
-		for (SyncInfo info : infos) {
+		for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (info != null && filter.select(info)) {
 				return true;
 			}
@@ -431,7 +431,7 @@ public class SyncInfoSet {
 		try {
 			beginInput();
 			SyncInfo[] infos = getSyncInfos();
-			for (SyncInfo info : infos) {
+			for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (info == null || !filter.select(info)) {
 					remove(info.getLocal());
 				}
@@ -451,7 +451,7 @@ public class SyncInfoSet {
 		try {
 			beginInput();
 			SyncInfo[] infos = getSyncInfos();
-			for (SyncInfo info : infos) {
+			for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (info != null && filter.select(info)) {
 					remove(info.getLocal());
 				}
@@ -468,9 +468,9 @@ public class SyncInfoSet {
 	 * @return the nodes that match the filter
 	 */
 	public SyncInfo[] getNodes(FastSyncInfoFilter filter) {
-		List<SyncInfo> result = new ArrayList<>();
+		List<SyncInfo> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		SyncInfo[] infos = getSyncInfos();
-		for (SyncInfo info : infos) {
+		for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (info != null && filter.select(info)) {
 				result.add(info);
 			}
@@ -562,7 +562,7 @@ public class SyncInfoSet {
 		return new SyncInfoSetChangeEvent(this);
 	}
 
-	private void fireChanges(final IProgressMonitor monitor) {
+	private void fireChanges(final IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Only one thread at the time can enter the method, so the event we
 		// send is static
 		final SyncInfoSetChangeEvent event = getChangeEvent();
@@ -577,7 +577,7 @@ public class SyncInfoSet {
 		// Fire the events using an ISafeRunnable
 		final ITeamStatus[] newErrors = event.getErrors();
 		monitor.beginTask(null, 100 + (newErrors.length > 0 ? 50 : 0) * allListeners.length);
-		for (ISyncInfoSetChangeListener listener : allListeners) {
+		for (ISyncInfoSetChangeListener listener : allListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
 				public void handleException(Throwable exception) {

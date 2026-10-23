@@ -33,7 +33,7 @@ public class Bug29116Nature extends TestNature {
 	/**
 	 * @see org.eclipse.core.resources.IProjectNature#configure()
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void configure() throws CoreException {
 		//install the snow builder
 		IProject project = getProject();
@@ -43,7 +43,7 @@ public class Bug29116Nature extends TestNature {
 		System.arraycopy(oldSpec, 0, newSpec, 0, oldSpec.length);
 		ICommand newCommand = desc.newCommand();
 		newCommand.setBuilderName(SortBuilder.BUILDER_NAME);
-		HashMap<String, String> args = new HashMap<>(20);
+		HashMap<String, String> args = new HashMap<>(20); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		newCommand.setArguments(args);
 		newSpec[oldSpec.length] = newCommand;
 		desc.setBuildSpec(newSpec);

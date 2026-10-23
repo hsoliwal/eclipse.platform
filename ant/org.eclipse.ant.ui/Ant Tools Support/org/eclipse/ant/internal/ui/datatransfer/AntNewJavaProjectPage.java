@@ -86,27 +86,27 @@ public class AntNewJavaProjectPage extends WizardPage {
 	private IAntModel fAntModel;
 	private TableViewer fTableViewer;
 
-	private final ModifyListener fLocationModifyListener = unused -> {
+	private final ModifyListener fLocationModifyListener = unused -> { //FLLDCIM: MARK — T02  LAMBDA
 		// no lexical or position, has task info
 		fAntModel = AntUtil.getAntModel(getProjectLocationFieldValue(), false, false, true);
 		AntProjectNode projectNode = fAntModel == null ? null : fAntModel.getProjectNode();
 		if (fAntModel != null && projectNode != null) {
 			setProjectName(); // page will be validated on setting the project name
-			List<AntTaskNode> javacNodes = new ArrayList<>();
+			List<AntTaskNode> javacNodes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			getJavacNodes(javacNodes, projectNode);
-			fTableViewer.setInput(javacNodes.toArray());
+			fTableViewer.setInput(javacNodes.toArray()); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 			if (!javacNodes.isEmpty()) {
 				fTableViewer.setSelection(new StructuredSelection(javacNodes.get(0)));
 			}
 			fTableViewer.getControl().setEnabled(true);
 		} else {
-			fTableViewer.setInput(new Object[] {});
+			fTableViewer.setInput(new Object[] {}); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 			fTableViewer.getControl().setEnabled(false);
 		}
 		setPageComplete(validatePage());
 	};
 
-	private final ModifyListener fNameModifyListener = unused -> setPageComplete(validatePage());
+	private final ModifyListener fNameModifyListener = unused -> setPageComplete(validatePage()); //FLLDCIM: MARK — T02  LAMBDA
 
 	private static final int SIZING_TEXT_FIELD_WIDTH = 250;
 
@@ -118,7 +118,7 @@ public class AntNewJavaProjectPage extends WizardPage {
 
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createControl(Composite parent) {
 		initializeDialogUnits(parent);
 		Composite composite = new Composite(parent, SWT.NONE);
@@ -173,7 +173,7 @@ public class AntNewJavaProjectPage extends WizardPage {
 	 * @param parent
 	 *            the parent composite
 	 */
-	private final void createProjectNameGroup(Composite parent) {
+	private final void createProjectNameGroup(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		Font dialogFont = parent.getFont();
 
@@ -193,7 +193,7 @@ public class AntNewJavaProjectPage extends WizardPage {
 		fProjectNameField.setLayoutData(gd);
 		fProjectNameField.setFont(dialogFont);
 
-		fProjectNameField.addModifyListener(fNameModifyListener);
+		fProjectNameField.addModifyListener(fNameModifyListener); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 	}
 
 	/**
@@ -202,7 +202,7 @@ public class AntNewJavaProjectPage extends WizardPage {
 	 * @param projectGroup
 	 *            the parent composite
 	 */
-	private void createUserSpecifiedProjectLocationGroup(Composite projectGroup) {
+	private void createUserSpecifiedProjectLocationGroup(Composite projectGroup) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		Font dialogFont = projectGroup.getFont();
 
@@ -219,14 +219,14 @@ public class AntNewJavaProjectPage extends WizardPage {
 		fBrowseButton.setFont(dialogFont);
 		setButtonLayoutData(fBrowseButton);
 
-		fBrowseButton.addSelectionListener(new SelectionAdapter() {
+		fBrowseButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 				handleBrowseButtonPressed();
 			}
 		});
 
-		fLocationPathField.addModifyListener(fLocationModifyListener);
+		fLocationPathField.addModifyListener(fLocationModifyListener); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 	}
 
 	/**
@@ -289,7 +289,7 @@ public class AntNewJavaProjectPage extends WizardPage {
 	 *
 	 * @return <code>true</code> if all controls are valid, and <code>false</code> if at least one is invalid
 	 */
-	private boolean validatePage() {
+	private boolean validatePage() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		String locationFieldContents = getProjectLocationFieldValue();
 
@@ -374,19 +374,19 @@ public class AntNewJavaProjectPage extends WizardPage {
 	 *
 	 * @return the created project resource, or <code>null</code> if the project was not created
 	 */
-	protected IJavaProject createProject() {
+	protected IJavaProject createProject() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final IJavaProject[] result = new IJavaProject[1];
 		final String projectName = getProjectNameFieldValue();
 		final File buildFile = getBuildFile(getProjectLocationFieldValue());
 		final List<?> selectedJavacs = ((IStructuredSelection) fTableViewer.getSelection()).toList();
 		final boolean link = fLinkButton.getSelection();
-		WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
+		WorkspaceModifyOperation op = new WorkspaceModifyOperation() { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			protected void execute(IProgressMonitor monitor) throws CoreException {
 				List<?> javacTasks = resolveJavacTasks(selectedJavacs);
 				ProjectCreator creator = new ProjectCreator();
 				Iterator<?> iter = javacTasks.iterator();
-				while (iter.hasNext()) {
+				while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Javac javacTask = (Javac) iter.next();
 					IJavaProject javaProject = creator.createJavaProjectFromJavacNode(projectName, javacTask, monitor);
 					importBuildFile(monitor, javaProject, buildFile, link);
@@ -418,7 +418,7 @@ public class AntNewJavaProjectPage extends WizardPage {
 		return result[0];
 	}
 
-	protected void importBuildFile(IProgressMonitor monitor, IJavaProject javaProject, File buildFile, boolean link) {
+	protected void importBuildFile(IProgressMonitor monitor, IJavaProject javaProject, File buildFile, boolean link) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (link) {
 			IProject project = javaProject.getProject();
 			IFile iBuildFile = project.getFile(buildFile.getName());
@@ -450,10 +450,10 @@ public class AntNewJavaProjectPage extends WizardPage {
 		}
 	}
 
-	private List<?> resolveJavacTasks(List<?> javacNodes) {
-		List<Object> resolvedJavacTasks = new ArrayList<>(javacNodes.size());
+	private List<?> resolveJavacTasks(List<?> javacNodes) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<Object> resolvedJavacTasks = new ArrayList<>(javacNodes.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Iterator<?> nodes = javacNodes.iterator();
-		while (nodes.hasNext()) {
+		while (nodes.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			AntTaskNode taskNode = (AntTaskNode) nodes.next();
 			Task javacTask = taskNode.getTask();
 			if (javacTask instanceof UnknownElement) {
@@ -474,7 +474,7 @@ public class AntNewJavaProjectPage extends WizardPage {
 			return;
 		}
 		List<IAntElement> children = parent.getChildNodes();
-		for (IAntElement node : children) {
+		for (IAntElement node : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (node instanceof AntTargetNode) {
 				getJavacNodes(javacNodes, node);
 			} else if (node instanceof AntTaskNode task) {
@@ -499,7 +499,7 @@ public class AntNewJavaProjectPage extends WizardPage {
 	 * @param parent
 	 *            the parent composite
 	 */
-	private void createTargetsTable(Composite parent) {
+	private void createTargetsTable(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Font font = parent.getFont();
 		Label label = new Label(parent, SWT.NONE);
 		label.setFont(font);
@@ -519,7 +519,7 @@ public class AntNewJavaProjectPage extends WizardPage {
 		table.setFont(font);
 
 		fTableViewer = new TableViewer(table);
-		fTableViewer.setLabelProvider(new JavacTableLabelProvider());
+		fTableViewer.setLabelProvider(new JavacTableLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 		fTableViewer.setContentProvider(new AntModelContentProvider());
 		fTableViewer.getControl().setEnabled(false);
 	}

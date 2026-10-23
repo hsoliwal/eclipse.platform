@@ -36,7 +36,7 @@ public class SystemProxyTest {
 	private boolean isProxiesDefault;
 	private boolean isSystemProxiesDefault;
 
-	private final Map<String, IProxyData> proxyDataMap = new HashMap<>();
+	private final Map<String, IProxyData> proxyDataMap = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	@BeforeEach
 	public void setUp() throws Exception {
@@ -51,7 +51,7 @@ public class SystemProxyTest {
 		setProxiesEnabled(isProxiesDefault);
 		setSystemProxiesEnabled(isSystemProxiesDefault);
 		IProxyData[] data = getProxyManager().getProxyData();
-		for (IProxyData proxyData : data) {
+		for (IProxyData proxyData : data) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			proxyData.disable();
 		}
 		getProxyManager().setProxyData(data);
@@ -107,8 +107,8 @@ public class SystemProxyTest {
 		IProxyData[] proxiesData = getProxyManager().getProxyDataForHost(host);
 		assertNotNull(proxiesData);
 
-		Map<String, String> typeMap = new HashMap<>();
-		for (IProxyData p : proxiesData) {
+		Map<String, String> typeMap = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (IProxyData p : proxiesData) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertProxyDataEqual(p, proxyDataMap.get(p.getType()));
 			typeMap.put(p.getType(), p.getType());
 		}
@@ -120,8 +120,8 @@ public class SystemProxyTest {
 		IProxyData[] proxiesData = ProxySelector.getProxyData("Native");
 		assertNotNull(proxiesData);
 
-		Map<String, String> typeMap = new HashMap<>();
-		for (IProxyData p : proxiesData) {
+		Map<String, String> typeMap = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (IProxyData p : proxiesData) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertProxyDataEqual(p, proxyDataMap.get(p.getType()));
 			typeMap.put(p.getType(), p.getType());
 		}
