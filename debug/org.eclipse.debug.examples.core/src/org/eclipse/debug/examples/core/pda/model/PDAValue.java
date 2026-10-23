@@ -21,6 +21,8 @@ import org.eclipse.debug.core.model.IVariable;
 import org.eclipse.debug.examples.core.pda.protocol.PDAChildrenCommand;
 import org.eclipse.debug.examples.core.pda.protocol.PDAListResult;
 
+import java.util.regex.Pattern;
+
 /**
  * Value of a PDA variable.
  */
@@ -68,6 +70,8 @@ public class PDAValue extends PDADebugElement implements IValue {
 		return children;
 	}
 
+	private static final Pattern HAS_VARIABLES_PATTERN = Pattern.compile("\\W+"); //$NON-NLS-1$
+
 	@Override
 	public boolean hasVariables() throws DebugException {
 		if (getVariables().length != 0) {
@@ -76,7 +80,7 @@ public class PDAValue extends PDADebugElement implements IValue {
 		// Value with multiple words can be show as an array using logical
 		// structures. If the value has multiple words, it needs to indicate
 		// that it has children even if logical structures are not turned on.
-		return fValue.split("\\W+").length > 1; //$NON-NLS-1$
+		return HAS_VARIABLES_PATTERN.split(fValue).length > 1;
 	}
 
 	@Override
