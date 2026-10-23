@@ -11,44 +11,38 @@
  * Contributors:
  *     Hannes Wellmann - initial API and implementation
  *     Hannes Wellmann - Migrate from JNA to FFM API
+ *     Hitesh Soliwal (Synexia) - JNA restored for Java 21 (M3JDK21), later fixes ported
  *******************************************************************************/
 package org.eclipse.core.internal.filesystem.local;
 
-import com.microsoft.windows.FILETIME;
-import com.microsoft.windows.FileAPI;
-import com.microsoft.windows.WIN32_FIND_DATAW;
-import java.io.File;
+import com.sun.jna.Memory;
+import com.sun.jna.Native;
+import com.sun.jna.NativeLibrary;
+import com.sun.jna.Pointer;
+import com.sun.jna.WString;
+import com.sun.jna.platform.win32.WinBase;
+import com.sun.jna.platform.win32.WinDef;
+import com.sun.jna.platform.win32.WinError;
+import com.sun.jna.platform.win32.WinNT;
 import java.io.IOException;
-import java.lang.foreign.Arena;
-import java.lang.foreign.Linker;
-import java.lang.foreign.MemoryLayout;
-import java.lang.foreign.MemorySegment;
-import java.lang.foreign.StructLayout;
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.VarHandle;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.attribute.DosFileAttributes;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileInfo;
 import org.eclipse.core.filesystem.provider.FileInfo;
 
 /**
- * A NativeHandler for Windows file systems that supports legacy {@code DOS} attributes and
- * calls the Windows {@code fileapi.h} API directly through the Java foreigen functions API.
- *
- * See the implementation notes for the rational for direct native method invocations.
+ * Native handler for Windows through JNA, the Java 21 (M3JDK21) form of the handler. The FFM API form of master
+ * (JEP 454, final in Java 22) is kept in history; this file carries the same behaviour: the raw-path handling of
+ * DOS device paths, the {@link EFS#IGNORE_NAME_CASE} fast path, the directory listing through a directory
+ * stream, the name of a file that does not exist, and the two-argument {@link #putFileInfo(String, IFileInfo)}.
  */
 public class Win32Handler extends NativeHandler {
 
@@ -58,29 +52,19 @@ public class Win32Handler extends NativeHandler {
 	private static final int ATTRIBUTES = EFS.ATTRIBUTE_SYMLINK | EFS.ATTRIBUTE_LINK_TARGET // symbolic link support
 			| EFS.ATTRIBUTE_ARCHIVE | EFS.ATTRIBUTE_READ_ONLY | EFS.ATTRIBUTE_HIDDEN; // standard DOS attributes
 
+	private static final IFileInfo[] EMPTY_FILEINFO_ARRAY = {};
+
 	@Override
 	public int getSupportedAttributes() {
 		return ATTRIBUTES;
 	}
 
-	/**
-	 * Fetches the {@link IFileInfo} of the given file.
-	 *
-	 * @implNote
-	 * This implementation invokes the native {@code FindFirstFileW} method of the Windows API directly
-	 * to obtain the {@code WIN32_FIND_DATA} for only the last segment of the given file-path.
-	 * The Windows file-system is case-insensitive and we need to determine the real casing of the filename, therefore calling this search method is necessary.
-	 * The only available Java APIs for this are {@link Path#toRealPath(java.nio.file.LinkOption...)} and {@link File#getCanonicalPath()}.
-	 * Internally these methods also call the native {@code FindFirstFileW} method, but for each segment of the path.
-	 * Because only the last segment is relevant and considered here, searching the real name of each parent is unnecessary and wasteful.
-	 * Depending on the length of the path, this implementation is consequently multiple times, up to a magnitude faster than the mentioned Java API.
-	 */
 	@Override
 	public FileInfo fetchFileInfo(String fileName, int options) {
-		FileInfo fileInfo = new FileInfo();
-
 		String target = toLongWindowsPath(fileName);
 		Path file = Path.of(target);
+		// If the file exists, the name will be replaced by its real casing.
+		FileInfo fileInfo = createFileInfo(file);
 
 		if (target.length() == 7 && target.startsWith(WIN32_RAW_PATH_PREFIX) && target.endsWith(":\\")) { //$NON-NLS-1$
 			// FindFirstFile does not work at the root level. However, we don't need it because the root will never change time-stamp.
@@ -94,26 +78,24 @@ public class Win32Handler extends NativeHandler {
 			readDosFileAttributesIntoFileInfo(fileInfo, file);
 			return fileInfo;
 		}
-		try (Arena arena = Arena.ofConfined()) {
-			MemorySegment lpFileName = allocateWideString(target, arena);
-			@SuppressWarnings("static-access")
-			MemorySegment lpFindFileData = arena.allocate(WIN32_FIND_DATAW.layout());
-			MemorySegment capturedError = arena.allocate(LAST_ERROR_CAPTURE_LAYOUT);
-
+		try (Memory mem = new Memory(WIN32_FIND_DATA_SIZE)) {
+			// Allocating (uninitialized) memory explicitly in advance is faster than using
+			// the slightly more convenient direct instantiation of a JNA WinBase.WIN32_FIND_DATA structure,
+			// probably because the latter perform also an initial autowrite and computes the size each time.
+			// For the same reason it is again faster to read the data-structure 'manually'.
 			// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findfirstfilew
-			MemorySegment handle = FindFirstFileW(lpFileName, lpFindFileData, capturedError);
-
-			if (FileAPI.INVALID_HANDLE_VALUE().equals(handle)) {
-				int error = GetLastError(capturedError);
-				if (!(error == FileAPI.ERROR_FILE_NOT_FOUND() // file not found in existing parent directory
-						|| error == FileAPI.ERROR_PATH_NOT_FOUND())) { // Not even the parent directory exists
+			long handle = FileAPIh.FindFirstFileW(new WString(target), mem);
+			if (handle == FileAPIh.INVALID_HANDLE_VALUE) {
+				int error = Native.getLastError();
+				if (!(error == WinError.ERROR_FILE_NOT_FOUND // file not found in existing parent directory
+						|| error == WinError.ERROR_PATH_NOT_FOUND)) { // Not even the parent directory exists
 					fileInfo.setError(IFileInfo.IO_ERROR);
 				}
 				return fileInfo;
 			}
-			FileAPI.FindClose(handle);
+			FileAPIh.FindClose(handle);
 
-			convertFindDataWToFileInfo(lpFindFileData, fileInfo, file);
+			convertFindDataWToFileInfo(mem, fileInfo, file);
 		} catch (IOException e) {
 			// Leave alone and continue. The name is set before an IOException can be thrown
 			fileInfo.setError(IFileInfo.IO_ERROR);
@@ -121,46 +103,14 @@ public class Win32Handler extends NativeHandler {
 		return fileInfo;
 	}
 
-	private static final StructLayout LAST_ERROR_CAPTURE_LAYOUT = Linker.Option.captureStateLayout();
-	private static final VarHandle GET_LAST_ERROR_HANDLE = LAST_ERROR_CAPTURE_LAYOUT.varHandle(//
-			MemoryLayout.PathElement.groupElement("GetLastError")); //$NON-NLS-1$
-	private static final MethodHandle FIND_FIRST_FILE_W_HANDLE = Linker.nativeLinker().downcallHandle( //
-			FileAPI.FindFirstFileW$address(), FileAPI.FindFirstFileW$descriptor(), //
-			Linker.Option.captureCallState("GetLastError")); //$NON-NLS-1$
-
-	/**
-	 * Calls the native method {@code FindFirstFileW}, ensuring the {@code GetLastError()} method usable.
-	 * <p>
-	 * Enable "the linker option used to save portions of the execution state immediately after calling a foreign function associated with a downcall method handle,
-	 * before it can be overwritten by the Java runtime".
-	 * For more details, see https://docs.oracle.com/en/java/javase/25/core/checking-native-errors-using-errno.html
-	 * </p>
-	 * @see java.lang.foreign.Linker.Option#captureCallState(String...)
-	 */
-	private static MemorySegment FindFirstFileW(MemorySegment lpFileName, MemorySegment lpFindFileData, MemorySegment capturedError) {
-		try {
-			return (MemorySegment) FIND_FIRST_FILE_W_HANDLE.invokeExact(capturedError, lpFileName, lpFindFileData);
-		} catch (Error | RuntimeException e) {
-			throw e;
-		} catch (Throwable e) {
-			throw new AssertionError("should not reach here", e); //$NON-NLS-1$
-		}
-	}
-
-	private static int GetLastError(MemorySegment capturedError) {
-		return (int) GET_LAST_ERROR_HANDLE.get(capturedError, 0L);
-	}
-
-	private static final IFileInfo[] EMPTY_FILEINFO_ARRAY = {};
-
 	@Override
 	public IFileInfo[] listDirectoryAndGetFileInfos(String fileName) {
 		Path file = Path.of(fileName);
 		List<IFileInfo> children = new ArrayList<>();
 		try (DirectoryStream<Path> directoryContent = Files.newDirectoryStream(file);) {
 			for (Path child : directoryContent) {
-				FileInfo fileInfo = new FileInfo();
-				// The directory stream delivers real names and therefore the faster method can be used
+				// The directory stream delivers names with real casing and therefore the faster method can be used
+				FileInfo fileInfo = createFileInfo(child);
 				readDosFileAttributesIntoFileInfo(fileInfo, child);
 				children.add(fileInfo);
 			}
@@ -179,54 +129,47 @@ public class Win32Handler extends NativeHandler {
 	 * Through {@link java.nio.file.attribute.DosFileAttributeView} each file attribute can only be set individually,
 	 * which leads to one native file-attributes get and (up to) one set invocation per attribute.
 	 * The NIO API does not provide means for batch updates.
-	 * Since there are currently there file attributes considered, using the Java NIO API would consequently be up to three times slower.
+	 * Since there are currently three file attributes considered, using the Java NIO API would consequently be up to three times slower.
 	 */
 	@Override
 	public boolean putFileInfo(String fileName, IFileInfo info) {
-		String longFilename = toLongWindowsPath(fileName);
-		try (Arena arena = Arena.ofConfined()) {
-			MemorySegment lpFileName = allocateWideString(longFilename, arena);
-			// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfileattributesw
-			int dwFileAttributes = FileAPI.GetFileAttributesW(lpFileName);
-			if (dwFileAttributes == FileAPI.INVALID_FILE_ATTRIBUTES()) {
-				return false;
-			}
-			if (dwFileAttributes == FileAPI.FILE_ATTRIBUTE_NORMAL()) {
-				// Assume nothing is set, as the documentation of FILE_ATTRIBUTE_NORMAL states:
-				// "A file that does not have other attributes set. This attribute is valid only when used alone."
-				dwFileAttributes = 0;
-			}
-			int fileAttributes = dwFileAttributes;
-
-			boolean archive = info.getAttribute(EFS.ATTRIBUTE_ARCHIVE);
-			boolean readOnly = info.getAttribute(EFS.ATTRIBUTE_READ_ONLY);
-			boolean hidden = info.getAttribute(EFS.ATTRIBUTE_HIDDEN);
-			fileAttributes = set(fileAttributes, FileAPI.FILE_ATTRIBUTE_ARCHIVE(), archive);
-			fileAttributes = set(fileAttributes, FileAPI.FILE_ATTRIBUTE_READONLY(), readOnly);
-			fileAttributes = set(fileAttributes, FileAPI.FILE_ATTRIBUTE_HIDDEN(), hidden);
-
-			if (dwFileAttributes == fileAttributes) {
-				return true; // Everything is already up to date -> nothing to do
-			}
-			// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-setfileattributesw
-			return FileAPI.SetFileAttributesW(lpFileName, fileAttributes) != 0;
+		WString lpFileName = new WString(toLongWindowsPath(fileName));
+		// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfileattributesw
+		long dwFileAttributes = FileAPIh.GetFileAttributesW(lpFileName);
+		if (dwFileAttributes == FileAPIh.INVALID_FILE_ATTRIBUTES) {
+			return false;
 		}
+		if (dwFileAttributes == WinNT.FILE_ATTRIBUTE_NORMAL) {
+			// Assume nothing is set, as the documentation of FILE_ATTRIBUTE_NORMAL states:
+			// "A file that does not have other attributes set. This attribute is valid only when used alone."
+			dwFileAttributes = 0;
+		}
+		long fileAttributes = dwFileAttributes;
+
+		boolean archive = info.getAttribute(EFS.ATTRIBUTE_ARCHIVE);
+		boolean readOnly = info.getAttribute(EFS.ATTRIBUTE_READ_ONLY);
+		boolean hidden = info.getAttribute(EFS.ATTRIBUTE_HIDDEN);
+		fileAttributes = set(fileAttributes, WinNT.FILE_ATTRIBUTE_ARCHIVE, archive);
+		fileAttributes = set(fileAttributes, WinNT.FILE_ATTRIBUTE_READONLY, readOnly);
+		fileAttributes = set(fileAttributes, WinNT.FILE_ATTRIBUTE_HIDDEN, hidden);
+
+		if (dwFileAttributes == fileAttributes) {
+			return true; // Everything is already up to date -> nothing to do
+		}
+		// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-setfileattributesw
+		return FileAPIh.SetFileAttributesW(lpFileName, fileAttributes);
 	}
 
 	public static String getShortPathName(String longPath) {
 		longPath = toLongWindowsPath(longPath);
+		char[] buffer = new char[longPath.length()];
 		// https://learn.microsoft.com/de-de/windows/win32/api/fileapi/nf-fileapi-getshortpathnamew
-		try (Arena arena = Arena.ofConfined()) {
-			MemorySegment lpszLongPath = allocateWideString(longPath, arena);
-			MemorySegment lpszShortPath = arena.allocate(lpszLongPath.byteSize()); // short name should be shorter -> will fit into array
-
-			int newLength = FileAPI.GetShortPathNameW(lpszLongPath, lpszShortPath, longPath.length());
-			if (0 < newLength && newLength < longPath.length()) { // zero means error and if not shorter it's not useful
-				int offset = longPath.startsWith(WIN32_UNC_RAW_PATH_PREFIX) ? WIN32_UNC_RAW_PATH_PREFIX.length() : WIN32_RAW_PATH_PREFIX.length();
-				return getWideString(lpszShortPath).substring(offset);
-			}
-			return null;
+		int newLength = com.sun.jna.platform.win32.Kernel32.INSTANCE.GetShortPathName(longPath, buffer, buffer.length);
+		if (0 < newLength && newLength < buffer.length) { // zero means error and if not shorter it's not useful
+			int offset = longPath.startsWith(WIN32_UNC_RAW_PATH_PREFIX) ? WIN32_UNC_RAW_PATH_PREFIX.length() : WIN32_RAW_PATH_PREFIX.length();
+			return new String(buffer, offset, newLength - offset);
 		}
+		return null;
 	}
 
 	private static String toLongWindowsPath(String fileName) {
@@ -243,6 +186,17 @@ public class Win32Handler extends NativeHandler {
 		}
 	}
 
+	private static FileInfo createFileInfo(Path file) {
+		FileInfo fileInfo = new FileInfo();
+		if (file.getFileName() instanceof Path name) {
+			// Behind null check because roots don't have names, e.g.,
+			// - network shares '\\?\UNC\server\share'
+			// - drives '\\?\c:\'
+			fileInfo.setName(name.toString());
+		}
+		return fileInfo;
+	}
+
 	/**
 	 * Reads the DOS file attributes of the file without determining its real name
 	 * (which may have different letter case, because the Window file system is case-insensitive).
@@ -254,7 +208,6 @@ public class Win32Handler extends NativeHandler {
 		try {
 			DosFileAttributes attributes = Files.readAttributes(path, DosFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
 
-			fileInfo.setName(path.getFileName().toString()); // path is not a root, so filename is available
 			fileInfo.setExists(true);
 			fileInfo.setLastModified(attributes.lastModifiedTime().toMillis());
 			fileInfo.setLength(attributes.size());
@@ -275,74 +228,126 @@ public class Win32Handler extends NativeHandler {
 		}
 	}
 
-	@SuppressWarnings("static-access")
-	private static void convertFindDataWToFileInfo(MemorySegment mem, FileInfo info, Path file) throws IOException {
-		/**
-		 * For possible values of dwFileAttributes and their descriptions,
-		 * see <a href="https://learn.microsoft.com/en-us/windows/win32/fileio/file-attribute-constants">File Attribute Constants</a>.
-		 */
-		int dwFileAttributes = WIN32_FIND_DATAW.dwFileAttributes(mem);
-		Instant ftLastWriteTime = readFILETIME(WIN32_FIND_DATAW.ftLastWriteTime(mem));
-
-		int nFileSizeHigh = WIN32_FIND_DATAW.nFileSizeHigh(mem);
-		int nFileSizeLow = WIN32_FIND_DATAW.nFileSizeLow(mem);
-		int dwReserved0 = WIN32_FIND_DATAW.dwReserved0(mem);
-		String cFileName = getWideString(WIN32_FIND_DATAW.cFileName(mem));
-
-		long fileLength = toLong(nFileSizeHigh, nFileSizeLow);
-
-		info.setName(cFileName);
-		info.setExists(true);
-		info.setLastModified(ftLastWriteTime.toEpochMilli());
-		info.setLength(fileLength);
-		info.setDirectory(isSet(dwFileAttributes, FileAPI.FILE_ATTRIBUTE_DIRECTORY()));
-		info.setAttribute(EFS.ATTRIBUTE_ARCHIVE, isSet(dwFileAttributes, FileAPI.FILE_ATTRIBUTE_ARCHIVE()));
-		info.setAttribute(EFS.ATTRIBUTE_READ_ONLY, isSet(dwFileAttributes, FileAPI.FILE_ATTRIBUTE_READONLY()));
-		info.setAttribute(EFS.ATTRIBUTE_HIDDEN, isSet(dwFileAttributes, FileAPI.FILE_ATTRIBUTE_HIDDEN()));
-
-		boolean isReparsePoint = isSet(dwFileAttributes, FileAPI.FILE_ATTRIBUTE_REPARSE_POINT());
-		if (isReparsePoint && dwReserved0 == FileAPI.IO_REPARSE_TAG_SYMLINK()) {
-			setSymLink(file, info);
-		}
-	}
-
 	private static void setSymLink(Path path, FileInfo info) throws IOException {
 		Path linkTarget = Files.readSymbolicLink(path);
 		info.setAttribute(EFS.ATTRIBUTE_SYMLINK, true);
 		info.setStringAttribute(EFS.ATTRIBUTE_LINK_TARGET, linkTarget.toString());
 	}
 
-	private static final Instant WINDOWS_REFERENCE_DATE = LocalDateTime.of(1601, Month.JANUARY, 1, 0, 0).toInstant(ZoneOffset.UTC);
+	static class FileAPIh {
+		static {
+			Native.register(NativeLibrary.getInstance("Kernel32" /* , W32APIOptions.DEFAULT_OPTIONS */ )); //$NON-NLS-1$
+			// Not using W32APIOptions.DEFAULT_OPTIONS requires the usage of a few special types (e.g. WString) but improves performance.
+		}
+		private static final long INVALID_HANDLE_VALUE = Pointer.nativeValue(WinBase.INVALID_HANDLE_VALUE.getPointer());
 
-	// https://learn.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-filetime
-	@SuppressWarnings("static-access")
-	private static Instant readFILETIME(MemorySegment struct) {
-		int low = FILETIME.dwLowDateTime(struct);
-		int high = FILETIME.dwHighDateTime(struct);
-		final long filetime = toLong(high, low);
-		return WINDOWS_REFERENCE_DATE.plus(filetime / 10, ChronoUnit.MICROS);
+		// winnt.h HANDLE can be expressed as java long
+
+		// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-findfirstfilew
+		static native long FindFirstFileW(WString lpFileName, Pointer lpFindFileData);
+
+		// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfileattributesw
+		static native long GetFileAttributesW(WString lpFileName);
+
+		// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-setfileattributesw
+		static native boolean SetFileAttributesW(WString lpFileName, long dwFileAttributes);
+
+		static final long INVALID_FILE_ATTRIBUTES = new WinBase.DWORD(-1).longValue();
+
+		static native boolean FindClose(long handle);
 	}
 
-	// https://learn.microsoft.com/en-us/windows/win32/learnwin32/working-with-strings
-	private static MemorySegment allocateWideString(String longPath, Arena arena) {
-		return arena.allocateFrom(longPath, StandardCharsets.UTF_16LE);
+	private static final int DWORD_SIZE = WinBase.DWORD.SIZE;
+	private static final int FILETIME_SIZE = 2 * DWORD_SIZE;
+	private static final int WCHAR_SIZE = 2;
+
+	/**
+	 * Read the of the native memory data-structure
+	 * <a href="https://learn.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-win32_find_dataw">{@code WIN32_FIND_DATAW}</a>.
+	 * <pre>
+	 *	typedef struct _WIN32_FIND_DATAW {
+	 *		DWORD dwFileAttributes;
+	 *		FILETIME ftCreationTime;
+	 *		FILETIME ftLastAccessTime;
+	 *		FILETIME ftLastWriteTime;
+	 *		DWORD nFileSizeHigh;
+	 *		DWORD nFileSizeLow;
+	 *		DWORD dwReserved0;
+	 *		DWORD dwReserved1;
+	 *		_Field_z_ WCHAR  cFileName[ MAX_PATH ];
+	 *		_Field_z_ WCHAR  cAlternateFileName[ 14 ];
+	 *	} WIN32_FIND_DATAW
+	 * </pre>
+	 */
+	private static final int DW_FILE_ATTRIBUTES = 0;
+	private static final int FT_CREATION_TIME = DW_FILE_ATTRIBUTES + DWORD_SIZE;
+	private static final int FT_LAST_ACCESS_TIME = FT_CREATION_TIME + FILETIME_SIZE;
+	private static final int FT_LAST_WRITE_TIME = FT_LAST_ACCESS_TIME + FILETIME_SIZE;
+	private static final int N_FILE_SIZE_HIGH = FT_LAST_WRITE_TIME + FILETIME_SIZE;
+	private static final int N_FILE_SIZE_LOW = N_FILE_SIZE_HIGH + DWORD_SIZE;
+	private static final int DW_RESERVED_0 = N_FILE_SIZE_LOW + DWORD_SIZE;
+	private static final int DW_RESERVED_1 = DW_RESERVED_0 + DWORD_SIZE;
+	private static final int C_FILE_NAME = DW_RESERVED_1 + DWORD_SIZE;
+	private static final int C_ALTERNATE_FILE_NAME = C_FILE_NAME + WinDef.MAX_PATH * WCHAR_SIZE;
+
+	private static final int WIN32_FIND_DATA_SIZE = C_ALTERNATE_FILE_NAME + 14 * WCHAR_SIZE;
+	static {
+		if (WIN32_FIND_DATA_SIZE != WinBase.WIN32_FIND_DATA.sizeOf()) {
+			throw new IllegalStateException("Struct 'WIN32_FIND_DATAW' has unexpected size"); //$NON-NLS-1$
+		}
+	}
+	private static final long MAXDWORD = 0xFFFFFFFFL; // unsigned long from winnt.h. On Windows a C long usually has only 32bit
+
+	private static void convertFindDataWToFileInfo(Memory mem, FileInfo info, Path file) throws IOException {
+		/**
+		 * For possible values of dwFileAttributes and their descriptions,
+		 * see <a href="https://learn.microsoft.com/en-us/windows/win32/fileio/file-attribute-constants">File Attribute Constants</a>.
+		 */
+		int dwFileAttributes = readDWORDAsSignedInt(mem, DW_FILE_ATTRIBUTES);
+		Date ftLastWriteTime = readFILETIME(mem, FT_LAST_WRITE_TIME);
+		long nFileSizeHigh = readDWORD(mem, N_FILE_SIZE_HIGH);
+		long nFileSizeLow = readDWORD(mem, N_FILE_SIZE_LOW);
+		int dwReserved0 = readDWORDAsSignedInt(mem, DW_RESERVED_0);
+		String cFileName = mem.getWideString(C_FILE_NAME);
+
+		long fileLength = (nFileSizeHigh * (MAXDWORD + 1)) + nFileSizeLow;
+
+		info.setName(cFileName);
+		info.setExists(true);
+		info.setLastModified(ftLastWriteTime.getTime());
+		info.setLength(fileLength);
+		info.setDirectory(isSet(dwFileAttributes, WinNT.FILE_ATTRIBUTE_DIRECTORY));
+		info.setAttribute(EFS.ATTRIBUTE_ARCHIVE, isSet(dwFileAttributes, WinNT.FILE_ATTRIBUTE_ARCHIVE));
+		info.setAttribute(EFS.ATTRIBUTE_READ_ONLY, isSet(dwFileAttributes, WinNT.FILE_ATTRIBUTE_READONLY));
+		info.setAttribute(EFS.ATTRIBUTE_HIDDEN, isSet(dwFileAttributes, WinNT.FILE_ATTRIBUTE_HIDDEN));
+
+		boolean isReparsePoint = isSet(dwFileAttributes, WinNT.FILE_ATTRIBUTE_REPARSE_POINT);
+		if (isReparsePoint && dwReserved0 == WinNT.IO_REPARSE_TAG_SYMLINK) {
+			setSymLink(file, info);
+		}
 	}
 
-	private static String getWideString(MemorySegment memory) {
-		return memory.getString(0, StandardCharsets.UTF_16LE);
+	private static int readDWORDAsSignedInt(Memory memory, int offset) {
+		return memory.getInt(offset); // int is signed
 	}
 
-	// See also https://learn.microsoft.com/en-us/windows/win32/winprog/windows-data-types
-
-	private static long toLong(int highDWORD, int lowDWORD) {
-		return (long) highDWORD << 32 | lowDWORD & 0xffffffffL;
+	private static long readDWORD(Memory memory, int offset) {
+		// From https://learn.microsoft.com/en-us/windows/win32/winprog/windows-data-types
+		// "DWORD - A 32-bit unsigned integer. The range is 0 through 4294967295 decimal. This type is declared in IntSafe.h as follows: typedef unsigned long DWORD;"
+		return readDWORDAsSignedInt(memory, offset) & MAXDWORD;
 	}
 
-	private static boolean isSet(int field, int bit) {
+	private static Date readFILETIME(Memory memory, int offset) {
+		int low = readDWORDAsSignedInt(memory, offset);
+		int high = readDWORDAsSignedInt(memory, offset + DWORD_SIZE);
+		return WinBase.FILETIME.filetimeToDate(high, low);
+	}
+
+	private static boolean isSet(long field, int bit) {
 		return (field & bit) != 0;
 	}
 
-	private int set(int field, int bit, boolean isSet) {
+	private long set(long field, int bit, boolean isSet) {
 		return isSet ? (field | bit) : (field & ~bit);
 	}
 
