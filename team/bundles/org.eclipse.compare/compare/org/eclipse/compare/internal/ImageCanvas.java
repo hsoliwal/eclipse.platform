@@ -40,13 +40,13 @@ class ImageCanvas extends Canvas {
 
 		ScrollBar sb= getHorizontalBar();
 		sb.setIncrement(20);
-		sb.addListener(SWT.Selection, _ -> repaint());
+		sb.addListener(SWT.Selection, unused -> repaint());
 
 		sb= getVerticalBar();
 		sb.setIncrement(20);
-		sb.addListener(SWT.Selection, _ -> repaint());
+		sb.addListener(SWT.Selection, unused -> repaint());
 
-		addListener(SWT.Resize, _ -> updateScrollbars());
+		addListener(SWT.Resize, unused -> updateScrollbars());
 
 		addListener(SWT.Paint, event -> paint(event.gc));
 	}

@@ -77,7 +77,7 @@ public class ModelCompareEditorInput extends SaveableCompareEditorInput implemen
 		Assert.isNotNull(input);
 		this.participant = participant;
 		this.input = input;
-		contextListener = _ -> closeEditor(true);
+		contextListener = unused -> closeEditor(true);
 		getCompareConfiguration().addPropertyChangeListener(this);
 		setTitle(NLS.bind(TeamUIMessages.SyncInfoCompareInput_title, input.getName()));
 	}

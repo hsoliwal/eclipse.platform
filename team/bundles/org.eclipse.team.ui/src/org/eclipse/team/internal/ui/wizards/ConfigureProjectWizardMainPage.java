@@ -164,7 +164,7 @@ public class ConfigureProjectWizardMainPage extends WizardPage {
 			// Ask the container to update button enablement
 			setPageComplete(true);
 		});
-		viewer.addDoubleClickListener(_ -> getWizard().getContainer().showPage(getNextPage()));
+		viewer.addDoubleClickListener(unused -> getWizard().getContainer().showPage(getNextPage()));
 		viewer.setComparator(new ViewerComparator() {
 			@Override
 			public int compare(Viewer viewer, Object e1, Object e2) {

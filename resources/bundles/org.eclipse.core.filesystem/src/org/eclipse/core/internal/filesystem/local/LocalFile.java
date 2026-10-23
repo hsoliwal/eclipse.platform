@@ -296,7 +296,7 @@ public class LocalFile extends FileStore {
 				/* corePoolSize */ 0, //
 				/* maximumPoolSize */ threadCount, //
 				/* minimumRunnable */ 0, //
-				_ -> true, // if maximumPoolSize would be exceeded, don't throw RejectedExecutionException
+				unused -> true, // if maximumPoolSize would be exceeded, don't throw RejectedExecutionException
 				/* keepAliveTime */ 1, TimeUnit.MINUTES); // pool terminates 1 thread per
 	}
 

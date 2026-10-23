@@ -29,7 +29,7 @@ public class AntTemplateInformationControlCreator implements IInformationControl
 	@Override
 	public IInformationControl createInformationControl(Shell parent) {
 		fControl = new AntSourceViewerInformationControl(parent);
-		fControl.addDisposeListener(_ -> fControl = null);
+		fControl.addDisposeListener(unused -> fControl = null);
 		return fControl;
 	}
 

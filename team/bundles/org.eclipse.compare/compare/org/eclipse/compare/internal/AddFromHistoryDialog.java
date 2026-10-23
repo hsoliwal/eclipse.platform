@@ -244,7 +244,7 @@ public class AddFromHistoryDialog extends ResizableDialog {
 					| GridData.VERTICAL_ALIGN_FILL | GridData.GRAB_VERTICAL));
 
 		vsplitter.addDisposeListener(
-			_ -> {
+			unused -> {
 				if (fDateImage != null) {
 					fDateImage.dispose();
 				}

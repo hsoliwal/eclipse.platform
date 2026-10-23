@@ -68,7 +68,7 @@ public class PessimisticRepositoryProvider extends RepositoryProvider {
 		public IStatus validateEdit(final IFile[] files, FileModificationValidationContext context) {
 			if (markWritableOnEdit) {
 				try {
-					ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) _ -> {
+					ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) unused -> {
 						for (int i = 0, length = files.length; i < length; i++) {
 							try {
 								setReadOnly(files[i], false);

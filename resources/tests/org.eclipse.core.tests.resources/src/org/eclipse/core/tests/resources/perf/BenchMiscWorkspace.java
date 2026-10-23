@@ -43,7 +43,7 @@ public class BenchMiscWorkspace {
 	@Test
 	public void testNoOp() throws Exception {
 		final IWorkspace ws = ResourcesPlugin.getWorkspace();
-		final IWorkspaceRunnable noop = _ -> {
+		final IWorkspaceRunnable noop = unused -> {
 		};
 		//run a first operation to make sure no other jobs are running before starting timer
 		ws.run(noop, null);

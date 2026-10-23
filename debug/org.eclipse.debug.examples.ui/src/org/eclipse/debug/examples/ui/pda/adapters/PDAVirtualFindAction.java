@@ -261,7 +261,7 @@ public class PDAVirtualFindAction extends Action implements IUpdate {
 
 	private int calcUpdatesCount(IModelDelta stateDelta) {
 		final int[] count = new int[] {0};
-		IModelDeltaVisitor deltaCounter = (delta, _) -> {
+		IModelDeltaVisitor deltaCounter = (delta, unused) -> {
 			if ((delta.getFlags() & IModelDelta.EXPAND) != 0) {
 				count[0] += delta.getChildCount();
 				return true;

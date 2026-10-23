@@ -516,7 +516,7 @@ public class ProjectPreferencesTest {
 		}
 
 		// add a log listener to ensure that no errors are reported silently
-		ILogListener logListener = (status, _) -> {
+		ILogListener logListener = (status, unused) -> {
 			Throwable exception = status.getException();
 			if (exception == null || !(exception instanceof CoreException coreException)) {
 				return;
@@ -525,7 +525,7 @@ public class ProjectPreferencesTest {
 		};
 
 		// listener to react to changes in the workspace
-		IResourceChangeListener rclistener = _ -> new ProjectScope(project).getNode(qualifier);
+		IResourceChangeListener rclistener = unused -> new ProjectScope(project).getNode(qualifier);
 
 		// add the listeners
 		try {
