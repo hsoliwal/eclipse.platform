@@ -194,13 +194,15 @@ public final class AntUtil {
 		return getTargets(project);
 	}
 
+	private static final Pattern GET_ALL_PROPERTIES_PATTERN = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$
+
 	private static Map<String, String> getAllProperties(ILaunchConfiguration config) throws CoreException {
 		String allArgs = config.getAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, (String) null);
 		Map<String, String> properties = new HashMap<>();
 		if (allArgs != null) {
 			// filter arguments to avoid resolving variables that will prompt the user
 			List<String> filtered = new ArrayList<>();
-			Pattern pattern = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$
+			Pattern pattern = GET_ALL_PROPERTIES_PATTERN;
 			IStringVariableManager manager = VariablesPlugin.getDefault().getStringVariableManager();
 			for (String arg : ExternalToolsUtil.parseStringIntoList(allArgs)) {
 				if (arg.startsWith("-D")) { //$NON-NLS-1$
