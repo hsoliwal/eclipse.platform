@@ -121,7 +121,7 @@ public class AntHomeClasspathEntry extends AbstractRuntimeClasspathEntry {
 		if (parentDir == null || !parentDir.exists()) {
 			abort(MessageFormat.format(AntLaunchConfigurationMessages.AntHomeClasspathEntry_10, antHomeLocation), null);
 		}
-		if (!lib.exists() || !lib.isDirectory()) {
+		if (!lib.isDirectory()) {
 			abort(MessageFormat.format(AntLaunchConfigurationMessages.AntHomeClasspathEntry_11, antHomeLocation), null);
 		}
 		return lib;

@@ -287,7 +287,7 @@ public class FileSystemMainPage extends WizardPage {
 			return;
 		}
 		File file = new File(location);
-		if(!file.exists() || !file.isDirectory()) {
+		if(!file.isDirectory()) {
 			setErrorMessage(Policy.bind("FileSystemMainPage.notValidLocation")); //$NON-NLS-1$
 			setPageComplete(false);
 			return;

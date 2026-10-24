@@ -581,7 +581,7 @@ public class InputPatchPage extends WizardPage {
 			String path= fPatchFileNameField.getText();
 			if (path != null && path.length() > 0) {
 				File file= new File(path);
-				gotPatch= file.exists() && file.isFile() && file.length() > 0;
+				gotPatch= file.isFile() && file.length() > 0;
 				if (!gotPatch) {
 					error= PatchMessages.InputPatchPage_CannotLocatePatch_message + path;
 				}
@@ -613,7 +613,7 @@ public class InputPatchPage extends WizardPage {
 						error = PatchMessages.InputPatchPage_PatchFileNotFound_message;
 					} else {
 						File actualFile= location.toFile();
-						gotPatch= actualFile.exists()&&actualFile.isFile()&&actualFile.length() > 0;
+						gotPatch= actualFile.isFile()&&actualFile.length() > 0;
 						if (!gotPatch) {
 							error= PatchMessages.InputPatchPage_FileSelectedNotPatch_message;
 						}
