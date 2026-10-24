@@ -19,16 +19,20 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.ILogicalStructureTypeDelegate;
 import org.eclipse.debug.core.model.IValue;
 
+import java.util.regex.Pattern;
+
 /**
  * Logical stucture to translate a string into its words.
  */
 public class WordStructureDelegate implements ILogicalStructureTypeDelegate {
 
+	private static final Pattern WORDS_PATTERN = Pattern.compile("\\W+"); //$NON-NLS-1$
+
 	@Override
 	public boolean providesLogicalStructure(IValue value) {
 		try {
 			String string = value.getValueString();
-			String[] words = string.split("\\W+"); //$NON-NLS-1$
+			String[] words = WORDS_PATTERN.split(string);
 			return words.length > 1;
 		} catch (DebugException e) {
 		}
