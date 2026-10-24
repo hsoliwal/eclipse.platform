@@ -477,9 +477,11 @@ public class AntModel implements IAntModel {
 		loadPropertyFiles(project);
 	}
 
+	private static final Pattern SET_EXTRA_PROPERTIES_PATTERN = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$
+
 	private void setExtraProperties(Project project) {
 		if (fProperties != null) {
-			Pattern pattern = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$
+			Pattern pattern = SET_EXTRA_PROPERTIES_PATTERN;
 			IStringVariableManager manager = VariablesPlugin.getDefault().getStringVariableManager();
 			for (String name : fProperties.keySet()) {
 				String value = fProperties.get(name);
