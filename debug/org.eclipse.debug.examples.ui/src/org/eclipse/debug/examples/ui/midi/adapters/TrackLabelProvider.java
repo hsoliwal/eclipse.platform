@@ -39,13 +39,7 @@ public class TrackLabelProvider extends ElementLabelProvider {
 				break;
 			}
 		}
-		StringBuilder buf = new StringBuilder();
-		buf.append("Track "); //$NON-NLS-1$
-		buf.append(i);
-		buf.append(" ["); //$NON-NLS-1$
-		buf.append(track.size());
-		buf.append(" events]"); //$NON-NLS-1$
-		return buf.toString();
+		return "Track " + i + " [" + track.size() + " events]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 }
