@@ -1191,11 +1191,8 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 				}
 				replaceString.append(openElementName);
 				replaceString.append('>');
-				StringBuilder displayString = new StringBuilder("</"); //$NON-NLS-1$
-				displayString.append(openElementName);
-				displayString.append('>');
 				proposal = new AntCompletionProposal(replaceString.toString(), cursorPosition
-						- prefix.length(), prefix.length(), replaceString.length(), null, displayString.toString(), AntEditorMessages.getString("AntEditorCompletionProcessor.39"), AntCompletionProposal.TAG_CLOSING_PROPOSAL); //$NON-NLS-1$
+						- prefix.length(), prefix.length(), replaceString.length(), null, "</" + openElementName + '>', AntEditorMessages.getString("AntEditorCompletionProcessor.39"), AntCompletionProposal.TAG_CLOSING_PROPOSAL); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 

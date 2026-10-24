@@ -68,18 +68,6 @@ public class ResourceStatus extends Status implements IResourceStatus {
 	// for debug only
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[type: "); //$NON-NLS-1$
-		sb.append(getTypeName());
-		sb.append("], [path: "); //$NON-NLS-1$
-		sb.append(getPath());
-		sb.append("], [message: "); //$NON-NLS-1$
-		sb.append(getMessage());
-		sb.append("], [plugin: "); //$NON-NLS-1$
-		sb.append(getPlugin());
-		sb.append("], [exception: "); //$NON-NLS-1$
-		sb.append(getException());
-		sb.append("]\n"); //$NON-NLS-1$
-		return sb.toString();
+		return "[type: " + getTypeName() + "], [path: " + getPath() + "], [message: " + getMessage() + "], [plugin: " + getPlugin() + "], [exception: " + getException() + "]\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 	}
 }
