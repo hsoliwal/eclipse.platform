@@ -19,17 +19,17 @@ import java.lang.reflect.Method;
 
 public class ReflectionUtils {
 
-	public static Object callMethod(Object object, String name, Object... args)
+	public static Object callMethod(Object object, String name, Object... args) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws IllegalArgumentException, IllegalAccessException,
 			InvocationTargetException, NoSuchMethodException {
 		Class<?> types[] = new Class[args.length];
-		for (int i = 0; i < args.length; i++) {
+		for (int i = 0; i < args.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			types[i] = args[i].getClass();
 		}
 		Method method = null;
 		Class<?> clazz = object.getClass();
 		NoSuchMethodException ex = null;
-		while (method == null && clazz != null) {
+		while (method == null && clazz != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				method = clazz.getDeclaredMethod(name, types);
 			} catch (NoSuchMethodException e) {
@@ -61,12 +61,12 @@ public class ReflectionUtils {
 		return ret;
 	}
 
-	public static Object getField(Object object, String name, boolean deep)
+	public static Object getField(Object object, String name, boolean deep) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws IllegalArgumentException, IllegalAccessException,
 			SecurityException, NoSuchFieldException {
 		Class<?> clazz = object.getClass();
 		NoSuchFieldException ex = null;
-		while (clazz != null) {
+		while (clazz != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				Field field = clazz.getDeclaredField(name);
 				field.setAccessible(true);

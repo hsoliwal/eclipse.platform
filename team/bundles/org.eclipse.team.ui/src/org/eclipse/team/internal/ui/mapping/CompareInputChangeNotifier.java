@@ -51,10 +51,10 @@ import org.eclipse.team.internal.ui.TeamUIMessages;
  * </p>
  * @since 3.3
  */
-public abstract class CompareInputChangeNotifier implements
+public abstract class CompareInputChangeNotifier implements //FLLDCIM: MARK — T07  IMPLEMENTS
 		IResourceChangeListener {
 
-	private final Map<ICompareInput, CompareInputConnecton> inputs = new HashMap<>();
+	private final Map<ICompareInput, CompareInputConnecton> inputs = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	private InputChangeEventHandler eventHandler;
 
 	private static class CompareInputConnecton {
@@ -89,14 +89,14 @@ public abstract class CompareInputChangeNotifier implements
 
 	private class InputChangeEventHandler extends BackgroundEventHandler {
 
-		private final Set<ICompareInput> changedInputs = new HashSet<>();
-		private final List<Event> pendingRunnables = new ArrayList<>();
+		private final Set<ICompareInput> changedInputs = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		private final List<Event> pendingRunnables = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		protected InputChangeEventHandler() {
 			super(TeamUIMessages.CompareInputChangeNotifier_0, TeamUIMessages.CompareInputChangeNotifier_1);
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		protected boolean doDispatchEvents(IProgressMonitor monitor)
 				throws TeamException {
 			ICompareInput[] toDispatch;
@@ -113,13 +113,13 @@ public abstract class CompareInputChangeNotifier implements
 				}
 			}
 			dispatchChanges(toDispatch, monitor);
-			for (RunnableEvent event : events) {
+			for (RunnableEvent event : events) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				executeRunnableNow(event, monitor);
 			}
 			return true;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		protected void processEvent(Event event, IProgressMonitor monitor)
 				throws CoreException {
 			int type = event.getType();
@@ -267,7 +267,7 @@ public abstract class CompareInputChangeNotifier implements
 	 */
 	protected void dispatchChanges(final ICompareInput[] inputs, IProgressMonitor monitor) {
 		prepareInputs(inputs, monitor);
-		Display.getDefault().syncExec(() -> fireChanges(inputs));
+		Display.getDefault().syncExec(() -> fireChanges(inputs)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 	}
 
 	/**
@@ -278,7 +278,7 @@ public abstract class CompareInputChangeNotifier implements
 	 */
 	protected void prepareInputs(ICompareInput[] inputs, IProgressMonitor monitor) {
 		monitor.beginTask(null, inputs.length * 100);
-		for (ICompareInput input : inputs) {
+		for (ICompareInput input : inputs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			prepareInput(input, Policy.subMonitorFor(monitor, 100));
 		}
 		monitor.done();
@@ -304,7 +304,7 @@ public abstract class CompareInputChangeNotifier implements
 	 * @param inputs the changed inputs
 	 */
 	protected void fireChanges(ICompareInput[] inputs) {
-		for (ICompareInput input : inputs) {
+		for (ICompareInput input : inputs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fireChange(input);
 		}
 	}
@@ -317,13 +317,13 @@ public abstract class CompareInputChangeNotifier implements
 		eventHandler.queueEvent(new BackgroundEventHandler.RunnableEvent(runnable, false));
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void resourceChanged(IResourceChangeEvent event) {
-		List<ICompareInput> changedInputs = new ArrayList<>();
+		List<ICompareInput> changedInputs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		ICompareInput[] inputs = getConnectedInputs();
-		for (ICompareInput input : inputs) {
+		for (ICompareInput input : inputs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource[] resources = getResources(input);
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (resource != null) {
 					IResourceDelta delta = event.getDelta().findMember(resource.getFullPath());
 					if (delta != null) {
@@ -360,8 +360,8 @@ public abstract class CompareInputChangeNotifier implements
 		if (force) {
 			realChanges = inputs;
 		} else {
-			List<ICompareInput> result = new ArrayList<>();
-			for (ICompareInput input : inputs) {
+			List<ICompareInput> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (ICompareInput input : inputs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (isChanged(input)) {
 					result.add(input);
 				}

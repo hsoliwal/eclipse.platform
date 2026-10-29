@@ -35,7 +35,7 @@ public class TagRule extends MultiLineRule {
 		super("<", ">", token); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected boolean sequenceDetected(ICharacterScanner scanner, char[] sequence, boolean eofAllowed) {
 		int c = scanner.read();
 		if (sequence[0] == '<') {
@@ -59,7 +59,7 @@ public class TagRule extends MultiLineRule {
 	@Override
 	protected boolean endSequenceDetected(ICharacterScanner scanner) {
 		int c;
-		while ((c = scanner.read()) != ICharacterScanner.EOF) {
+		while ((c = scanner.read()) != ICharacterScanner.EOF) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (c == fEscapeCharacter) {
 				// Skip the escaped character.
 				scanner.read();
@@ -73,11 +73,11 @@ public class TagRule extends MultiLineRule {
 		return false;
 	}
 
-	private void endOfTagDetected(ICharacterScanner scanner) {
+	private void endOfTagDetected(ICharacterScanner scanner) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int c;
 		int scanAhead = 0;
 		int endOfTagOffset = 0;
-		while ((c = scanner.read()) != ICharacterScanner.EOF && c != '<') {
+		while ((c = scanner.read()) != ICharacterScanner.EOF && c != '<') { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			scanAhead++;
 			if (c == '>') {
 				endOfTagOffset = scanAhead;
@@ -86,7 +86,7 @@ public class TagRule extends MultiLineRule {
 
 		if (c == '<') {
 			int rewind = (scanAhead - endOfTagOffset) + 1;
-			for (int i = 0; i < rewind; i++) {
+			for (int i = 0; i < rewind; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				scanner.unread();
 			}
 		}

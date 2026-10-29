@@ -23,18 +23,18 @@ import org.eclipse.jface.text.IDocument;
 public class SimpleIgnoreWhitespaceContributor implements IIgnoreWhitespaceContributor {
 
 	private final IDocument document;
-	private final TreeMap<Integer /* start offset */, Integer /* end offset */> literalsByOffset = new TreeMap<>();
+	private final TreeMap<Integer /* start offset */, Integer /* end offset */> literalsByOffset = new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	public SimpleIgnoreWhitespaceContributor(IDocument document) {
 		this.document = document;
 		scanAndCreateLiteralsByOffset();
 	}
 
-	private void scanAndCreateLiteralsByOffset() {
+	private void scanAndCreateLiteralsByOffset() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String s = document.get();
 		boolean inStringLiteral = false;
 		int start = 0, end = 0;
-		for (int i = 0; i < s.length(); i++) {
+		for (int i = 0; i < s.length(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c = s.charAt(i);
 			if (c == '\\' && inStringLiteral) {
 				i++;

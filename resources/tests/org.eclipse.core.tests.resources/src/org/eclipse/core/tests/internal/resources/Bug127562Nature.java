@@ -31,14 +31,14 @@ public class Bug127562Nature extends TestNature {
 	@Override
 	public void configure() throws CoreException {
 		super.configure();
-		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject("Project" + System.currentTimeMillis());
+		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject("Project" + System.currentTimeMillis()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		p.create(null);
 	}
 
 	@Override
 	public void deconfigure() throws CoreException {
 		super.deconfigure();
-		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject("Project" + System.currentTimeMillis());
+		IProject p = ResourcesPlugin.getWorkspace().getRoot().getProject("Project" + System.currentTimeMillis()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		p.create(null);
 	}
 }

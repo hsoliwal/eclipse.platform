@@ -85,7 +85,7 @@ public class LocalResourceTypedElement extends ResourceNode implements IAdaptabl
 	 * the underlying resource.
 	 * @param monitor a progress monitor
 	 */
-	public void commit(IProgressMonitor monitor) throws CoreException {
+	public void commit(IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (isDirty()) {
 			if (isConnected()) {
 				saveDocument(true, monitor);
@@ -129,7 +129,7 @@ public class LocalResourceTypedElement extends ResourceNode implements IAdaptabl
 	 * Returned the shared document adapter for this element. If one does not exist
 	 * yet, it will be created.
 	 */
-	private synchronized ISharedDocumentAdapter getSharedDocumentAdapter() {
+	private synchronized ISharedDocumentAdapter getSharedDocumentAdapter() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (sharedDocumentAdapter == null) {
 			sharedDocumentAdapter = new EditableSharedDocumentAdapter(new EditableSharedDocumentAdapter.ISharedDocumentAdapterListener() {
 				@Override
@@ -364,7 +364,7 @@ public class LocalResourceTypedElement extends ResourceNode implements IAdaptabl
 	 * @throws CoreException if fetching the revision properties fails
 	 * @since 3.7
 	 */
-	public void fetchAuthor(IProgressMonitor monitor) throws CoreException {
+	public void fetchAuthor(IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		author = null;
 
 		IFileHistoryProvider fileHistoryProvider= Utils.getHistoryProvider(getResource());

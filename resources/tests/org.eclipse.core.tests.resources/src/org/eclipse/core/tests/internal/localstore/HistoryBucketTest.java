@@ -36,7 +36,7 @@ public class HistoryBucketTest {
 	 * Ensures that if another entry having exactly the same UUID is added,
 	 * the original one is not replaced.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDuplicates() throws CoreException {
 		IPath baseLocation = getRandomLocation();
 		fileStoreExtension.deleteOnTearDown(baseLocation);
@@ -58,7 +58,7 @@ public class HistoryBucketTest {
 		assertEquals(lastModified, entry.getTimestamp(0));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPersistence() throws CoreException {
 		IPath baseLocation = getRandomLocation();
 		fileStoreExtension.deleteOnTearDown(baseLocation);
@@ -110,7 +110,7 @@ public class HistoryBucketTest {
 	/**
 	 * This test does not cause any data to be written.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSort() {
 		HistoryBucket index = new HistoryBucket();
 		IPath path = IPath.fromOSString("/foo");

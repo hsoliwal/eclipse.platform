@@ -51,10 +51,10 @@ public class FileSystemPerformanceTest {
 	}
 
 	public String createString(int length) {
-		StringBuilder buf = new StringBuilder(length);
+		StringBuilder buf = new StringBuilder(length); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		//fill the string with random characters up to the desired length
-		for (int i = 0; i < length; i++) {
-			buf.append(chars.charAt(random.nextInt(chars.length())));
+		for (int i = 0; i < length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			buf.append(chars.charAt(random.nextInt(chars.length()))); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return buf.toString();
 	}
@@ -62,10 +62,10 @@ public class FileSystemPerformanceTest {
 	void createStructure() throws CoreException, IOException {
 		baseStore = EFS.getLocalFileSystem().getStore(getRandomLocation(getTempDir()));
 		baseStore.mkdir(EFS.NONE, null);
-		for (int i = 0; i < DIR_COUNT; i++) {
+		for (int i = 0; i < DIR_COUNT; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IFileStore dir = baseStore.getChild(createString(8));
 			dir.mkdir(EFS.SHALLOW, null);
-			for (int j = 0; j < FILE_COUNT; j++) {
+			for (int j = 0; j < FILE_COUNT; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IFileStore file = dir.getChild(createString(16));
 				createInFileSystem(file);
 			}
@@ -74,9 +74,9 @@ public class FileSystemPerformanceTest {
 
 	void setAttributesOnTree() throws CoreException {
 		IFileStore[] dirs = baseStore.childStores(EFS.NONE, null);
-		for (IFileStore dir : dirs) {
+		for (IFileStore dir : dirs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IFileStore[] files = dir.childStores(EFS.NONE, null);
-			for (IFileStore file : files) {
+			for (IFileStore file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IFileInfo fileInfo = file.fetchInfo();
 				boolean clear = fileInfo.getAttribute(EFS.ATTRIBUTE_READ_ONLY);
 				fileInfo.setAttribute(EFS.ATTRIBUTE_EXECUTABLE | EFS.ATTRIBUTE_READ_ONLY, !clear);

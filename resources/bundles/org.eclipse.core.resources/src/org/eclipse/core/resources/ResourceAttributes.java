@@ -231,6 +231,6 @@ public class ResourceAttributes {
 	 */
 	@Override
 	public String toString() {
-		return "ResourceAttributes(" + attributes + ')'; //$NON-NLS-1$
+		return "ResourceAttributes(" + attributes + ')'; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

@@ -132,7 +132,7 @@ public class MemoryRenderingTests {
 		assertThat(type).as("has correct binding").isEqualTo(manager.getRenderingType("rendering_type_1"));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBindingChangeNotification() {
 		final boolean[] changed = new boolean[1];
 		IMemoryRenderingBindingsListener listener = () -> changed[0] = true;
@@ -159,7 +159,7 @@ public class MemoryRenderingTests {
 	}
 
 	protected int indexOf(Object thing, Object[] list) {
-		for (int i = 0; i < list.length; i++) {
+		for (int i = 0; i < list.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object object2 = list[i];
 			if (object2.equals(thing)) {
 				return i;

@@ -79,14 +79,14 @@ public class Bug_303517 {
 	/**
 	 * Tests that file deleted is updated after #getContents
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testExists() throws Exception {
 		IFile f = getWorkspace().getRoot().getFile(IPath.fromOSString(resourcePaths[resourcePaths.length - 1]));
 		assertThat(f).matches(IResource::exists, "exists");
 		assertThat(f).matches(isSynchronizedDepthOne, "is synchronized");
 
 		// Touch on file-system
-		f.getLocation().toFile().delete();
+		f.getLocation().toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		// Core.resources still thinks the file exists
 		assertThat(f).matches(IResource::exists, "exists");
 		assertThrows(CoreException.class, () -> {
@@ -105,7 +105,7 @@ public class Bug_303517 {
 	/**
 	 * Tests that file discovered out-of-sync during #getContents is updated
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetContents() throws Exception {
 		IFile f = getWorkspace().getRoot().getFile(IPath.fromOSString(resourcePaths[resourcePaths.length - 1]));
 		assertThat(f).matches(IResource::exists, "exists");
@@ -132,7 +132,7 @@ public class Bug_303517 {
 	/**
 	 * Tests that file discovered out-of-sync during #getContents is updated
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetContentsTrue() throws Exception {
 		IFile f = getWorkspace().getRoot().getFile(IPath.fromOSString(resourcePaths[resourcePaths.length - 1]));
 		assertThat(f).matches(IResource::exists, "exists");
@@ -151,7 +151,7 @@ public class Bug_303517 {
 
 		// Test that getContent(true) on an out-if-sync deleted file throws a CoreException
 		// with IResourceStatus.RESOURCE_NOT_FOUND error code.
-		f.getLocation().toFile().delete();
+		f.getLocation().toFile().delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		CoreException exception = assertThrows(CoreException.class, () -> {
 			try (InputStream unused = f.getContents(true)) {
 			}
@@ -183,7 +183,7 @@ public class Bug_303517 {
 	/**
 	 * Tests that when changing resource gender is correctly picked up.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testChangeResourceGender() throws Exception {
 		IResource f = getWorkspace().getRoot().getFile(IPath.fromOSString(resourcePaths[resourcePaths.length - 1]));
 		assertThat(f).matches(IResource::exists, "exists");
@@ -191,11 +191,11 @@ public class Bug_303517 {
 
 		// Replace the file with a folder
 		File osResource = f.getLocation().toFile();
-		osResource.delete();
-		osResource.mkdir();
+		osResource.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		osResource.mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertThat(osResource).matches(File::exists, "exists");
 		File osChild = new File(osResource, "child");
-		osChild.createNewFile();
+		osChild.createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertThat(osChild).matches(File::exists, "exists");
 
 		assertThat(f).matches(not(isSynchronizedDepthOne), "is not synchronized");

@@ -77,7 +77,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		createInWorkspace(new IResource[] { existingProject, otherExistingProject });
 	}
 
-	public void internalMovedAndCopyTest(IResource resource, int copyMoveFlag, boolean copyMoveSucceeds) {
+	public void internalMovedAndCopyTest(IResource resource, int copyMoveFlag, boolean copyMoveSucceeds) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//		try {
 		//			resource.copy(otherExistingProject.getFullPath().append(resource.getProjectRelativePath()), copyMoveFlag, getMonitor());
 		//			if (!copyMoveSucceeds)
@@ -103,7 +103,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		//		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileLinkedToNonExistent_Deep() throws Exception {
 		IFile fileLink = existingProject.getFile(createUniqueString());
 		IPath fileLocation = getRandomLocation();
@@ -132,7 +132,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		internalMovedAndCopyTest(fileLink, IResource.NONE, true);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileLinkedToNonExistent_Shallow() throws Exception {
 		IFile fileLink = existingProject.getFile(createUniqueString());
 		IPath fileLocation = getRandomLocation();
@@ -153,7 +153,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		internalMovedAndCopyTest(fileLink, IResource.SHALLOW, true);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFolderLinkedToNonExistent_Deep() throws CoreException {
 		IFolder folderLink = existingProject.getFolder(createUniqueString());
 		IPath folderLocation = getRandomLocation();
@@ -162,7 +162,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		assertTrue(folderLink.isSynchronized(IResource.DEPTH_INFINITE));
 		internalMovedAndCopyTest(folderLink, IResource.NONE, false);
 
-		folderLocation.toFile().mkdir();
+		folderLocation.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		fileStoreExtension.deleteOnTearDown(folderLocation);
 
 		assertFalse(folderLink.isSynchronized(IResource.DEPTH_INFINITE));
@@ -174,7 +174,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		internalMovedAndCopyTest(folderLink, IResource.NONE, true);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFolderLinkedToNonExistent_Shallow() throws CoreException {
 		IFolder folderLink = existingProject.getFolder(createUniqueString());
 		IPath folderLocation = getRandomLocation();
@@ -183,7 +183,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		assertTrue(folderLink.isSynchronized(IResource.DEPTH_INFINITE));
 		internalMovedAndCopyTest(folderLink, IResource.SHALLOW, true);
 
-		folderLocation.toFile().mkdir();
+		folderLocation.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		fileStoreExtension.deleteOnTearDown(folderLocation);
 
 		assertFalse(folderLink.isSynchronized(IResource.DEPTH_INFINITE));
@@ -198,7 +198,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 	/**
 	 * Tests bug 299024.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveFolderWithLinksToNonExisitngLocations_withShallow() throws CoreException {
 		// create a folder
 		IFolder folderWithLinks = existingProject.getFolder(createUniqueString());
@@ -227,7 +227,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 	/**
 	 * Tests bug 299024.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Disabled("see bug 299024")
 	public void testCopyFolderWithLinksToNonExistingLocations_withShallow() throws CoreException {
 		// create a folder
@@ -253,7 +253,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		assertTrue(linkedFile.exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFolderWithFileLinkedToNonExistent_Deep() throws Exception {
 		IFolder folder = existingProject.getFolder(createUniqueString());
 		createInWorkspace(folder);
@@ -278,7 +278,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		internalMovedAndCopyTest(folder, IResource.NONE, true);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFolderWithFileLinkedToNonExistent_Shallow() throws Exception {
 		IFolder folder = existingProject.getFolder(createUniqueString());
 		createInWorkspace(folder);
@@ -303,7 +303,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		internalMovedAndCopyTest(folder, IResource.SHALLOW, true);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFolderWithFolderLinkedToNonExistent_Deep() throws CoreException {
 		IFolder folder = existingProject.getFolder(createUniqueString());
 		createInWorkspace(folder);
@@ -316,7 +316,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		assertTrue(folder.isSynchronized(IResource.DEPTH_INFINITE));
 		internalMovedAndCopyTest(folder, IResource.NONE, false);
 
-		folderLocation.toFile().mkdir();
+		folderLocation.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		fileStoreExtension.deleteOnTearDown(folderLocation);
 
 		assertFalse(folder.isSynchronized(IResource.DEPTH_INFINITE));
@@ -328,7 +328,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		internalMovedAndCopyTest(folder, IResource.NONE, true);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFolderWithFolderLinkedToNonExistent_Shallow() throws CoreException {
 		IFolder folder = existingProject.getFolder(createUniqueString());
 		createInWorkspace(folder);
@@ -341,7 +341,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		assertTrue(folder.isSynchronized(IResource.DEPTH_INFINITE));
 		internalMovedAndCopyTest(folder, IResource.SHALLOW, true);
 
-		folderLocation.toFile().mkdir();
+		folderLocation.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		fileStoreExtension.deleteOnTearDown(folderLocation);
 
 		assertFalse(folder.isSynchronized(IResource.DEPTH_INFINITE));
@@ -353,7 +353,7 @@ public class LinkedResourceSyncMoveAndCopyTest {
 		internalMovedAndCopyTest(folder, IResource.SHALLOW, true);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test361201() throws CoreException {
 		String linkName = createUniqueString();
 		IFile fileLink = existingProject.getFile(linkName);

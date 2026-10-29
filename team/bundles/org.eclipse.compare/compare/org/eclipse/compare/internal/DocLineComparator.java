@@ -78,7 +78,7 @@ public class DocLineComparator implements ITokenComparator {
 	 *                                    empty optional allowed, but
 	 *                                    <code>null</code> is not allowed
 	 */
-	public DocLineComparator(IDocument document, IRegion region,
+	public DocLineComparator(IDocument document, IRegion region, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			boolean ignoreWhiteSpace, ICompareFilter[] compareFilters,
 			char contributor, Optional<IIgnoreWhitespaceContributor> ignoreWhitespaceContributor) {
 		fDocument = document;
@@ -90,7 +90,7 @@ public class DocLineComparator implements ITokenComparator {
 		boolean cacheFilteredLines = false;
 		if (compareFilters != null && compareFilters.length > 0) {
 			cacheFilteredLines = true;
-			for (ICompareFilter compareFilter : compareFilters) {
+			for (ICompareFilter compareFilter : compareFilters) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!compareFilter.canCacheFilteredRegions()) {
 					cacheFilteredLines = false;
 					break;
@@ -168,7 +168,7 @@ public class DocLineComparator implements ITokenComparator {
 	 * @param otherIndex the number of the line within the other comparator
 	 * @return <code>true</code> if the lines are equal
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean rangesEqual(int thisIndex, IRangeComparator otherComparator, int otherIndex) {
 
 		if (otherComparator != null && otherComparator.getClass() == getClass()) {
@@ -209,7 +209,7 @@ public class DocLineComparator implements ITokenComparator {
 
 	//---- private methods
 
-	private String[] extract(int thisIndex, int otherIndex,
+	private String[] extract(int thisIndex, int otherIndex, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			DocLineComparator other, boolean includeSeparator) {
 
 		String[] extracts = new String[2];
@@ -278,16 +278,16 @@ public class DocLineComparator implements ITokenComparator {
 		return ""; //$NON-NLS-1$
 	}
 
-	private boolean compareIgnoreWhitespace(String s1, String s2, int thisLineIndex, int otherLineIndex,
+	private boolean compareIgnoreWhitespace(String s1, String s2, int thisLineIndex, int otherLineIndex, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			DocLineComparator other) {
 		int l1 = s1.length();
 		int l2 = s2.length();
 		int c1 = 0, c2 = 0;
 		int i1 = 0, i2 = 0;
-		while (c1 != -1) {
+		while (c1 != -1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 
 			c1 = -1;
-			while (i1 < l1) {
+			while (i1 < l1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int lineOffset = i1;
 				char c = s1.charAt(i1++);
 				if (!isSignificantWhitespace(s1, lineOffset, c, thisLineIndex, this)) {
@@ -297,7 +297,7 @@ public class DocLineComparator implements ITokenComparator {
 			}
 
 			c2 = -1;
-			while (i2 < l2) {
+			while (i2 < l2) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int lineOffset = i2;
 				char c = s2.charAt(i2++);
 				if (!isSignificantWhitespace(s2, lineOffset, c, otherLineIndex, other)) {

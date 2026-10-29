@@ -43,7 +43,7 @@ public class IWorkspaceTest {
 	/**
 	 * 1GDKIHD: ITPCORE:WINNT - API - IWorkspace.move needs to keep history
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultiMove_1GDKIHD() throws CoreException {
 		// create common objects
 		IProject project = getWorkspace().getRoot().getProject("MyProject");
@@ -81,7 +81,7 @@ public class IWorkspaceTest {
 	/**
 	 * 1GDGRIZ: ITPCORE:WINNT - API - IWorkspace.delete needs to keep history
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultiDelete_1GDGRIZ() throws CoreException {
 		// create common objects
 		IProject project = getWorkspace().getRoot().getProject("MyProject");
@@ -145,7 +145,7 @@ public class IWorkspaceTest {
 		IProject one = getWorkspace().getRoot().getProject("One");
 		Path oneTempDirectory = tempDirectory.toRealPath().resolve(one.getName());
 		IPath oneLocation = IPath.fromPath(oneTempDirectory);
-		Files.createDirectories(oneTempDirectory);
+		Files.createDirectories(oneTempDirectory); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		IProjectDescription oneDescription = getWorkspace().newProjectDescription(one.getName());
 		oneDescription.setLocation(oneLocation);
 

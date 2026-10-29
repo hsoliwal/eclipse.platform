@@ -91,7 +91,7 @@ public class OccurrencesFinderTests {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPropertyRefFromTaskText() throws PartInitException, BadLocationException {
 		try {
 			IFile file = getIFile("occurrencesTest.xml"); //$NON-NLS-1$
@@ -163,7 +163,7 @@ public class OccurrencesFinderTests {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTargetFromAnt() throws PartInitException, BadLocationException {
 		try {
 			IFile file = getIFile("occurrencesTest.xml"); //$NON-NLS-1$
@@ -185,7 +185,7 @@ public class OccurrencesFinderTests {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTargetFromAntCall() throws PartInitException, BadLocationException {
 		try {
 			IFile file = getIFile("occurrencesTest.xml"); //$NON-NLS-1$
@@ -210,7 +210,7 @@ public class OccurrencesFinderTests {
 	/**
 	 * bug 89115
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTargetFromProjectDefault() throws PartInitException, BadLocationException {
 		try {
 			IFile file = getIFile("89115.xml"); //$NON-NLS-1$
@@ -233,7 +233,7 @@ public class OccurrencesFinderTests {
 	/**
 	 * bug 89115
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTargetFromTargetDepends() throws PartInitException, BadLocationException {
 		try {
 			IFile file = getIFile("89115.xml"); //$NON-NLS-1$
@@ -327,7 +327,7 @@ public class OccurrencesFinderTests {
 	/**
 	 * Bug 89901
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPropertyAndTargetWithSameName() throws PartInitException, BadLocationException {
 		try {
 			IFile file = getIFile("89901.xml"); //$NON-NLS-1$
@@ -361,13 +361,13 @@ public class OccurrencesFinderTests {
 
 	private void assertContainsPosition(List<Position> positions, int offset, int length) {
 		boolean found = false;
-		for (Position position : positions) {
+		for (Position position : positions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (position.getLength() == length && position.getOffset() <= offset && (position.getOffset() + length) > offset) {
 				found = true;
 				break;
 			}
 		}
-		assertTrue(found, "Did not find position at offset: " + offset + " length: " + length); //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue(found, "Did not find position at offset: " + offset + " length: " + length); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private OccurrencesFinder getOccurrencesFinder(AntEditor editor, int offset) {

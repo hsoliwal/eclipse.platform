@@ -83,7 +83,7 @@ public class ConvertPath extends Task {
 		}
 	}
 
-	protected void convertFileSystemPathToResourcePath(IPath path) {
+	protected void convertFileSystemPathToResourcePath(IPath path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource resource;
 		if (Platform.getLocation().equals(path)) {
 			resource = ResourcesPlugin.getWorkspace().getRoot();
@@ -107,7 +107,7 @@ public class ConvertPath extends Task {
 		}
 	}
 
-	protected void convertResourcePathToFileSystemPath(IPath path) {
+	protected void convertResourcePathToFileSystemPath(IPath path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource resource = null;
 		switch (path.segmentCount()) {
 			case 0 :

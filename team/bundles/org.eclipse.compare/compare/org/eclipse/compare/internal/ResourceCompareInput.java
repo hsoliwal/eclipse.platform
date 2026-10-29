@@ -60,7 +60,7 @@ import org.eclipse.swt.widgets.Shell;
 /**
  * A two-way or three-way compare for arbitrary IResources.
  */
-class ResourceCompareInput extends CompareEditorInput {
+class ResourceCompareInput extends CompareEditorInput { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	private static final boolean NORMALIZE_CASE= true;
 
@@ -91,7 +91,7 @@ class ResourceCompareInput extends CompareEditorInput {
 			setDirty(true);
 			fDirty= true;
 			if (fDiffViewer != null) {
-				fDiffViewer.refresh(this);
+				fDiffViewer.refresh(this); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 			}
 		}
 		void clearDirty() {
@@ -103,7 +103,7 @@ class ResourceCompareInput extends CompareEditorInput {
 				fLastName= super.getName();
 			}
 			if (fDirty) {
-				return '<' + fLastName + '>';
+				return '<' + fLastName + '>'; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			return fLastName;
 		}
@@ -140,10 +140,10 @@ class ResourceCompareInput extends CompareEditorInput {
 		super(config);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Viewer createDiffViewer(Composite parent) {
 		fDiffViewer= new DiffTreeViewer(parent, getCompareConfiguration()) {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			protected void fillContextMenu(IMenuManager manager) {
 
 				if (fOpenAction == null) {
@@ -203,9 +203,9 @@ class ResourceCompareInput extends CompareEditorInput {
 			Composite composite = new Composite(parent, SWT.NONE);
 			composite.setLayout(new GridLayout());
 			buttons = new Button[3];
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < 3; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				buttons[i] = new Button(composite, SWT.RADIO);
-				buttons[i].addSelectionListener(selectionListener);
+				buttons[i].addSelectionListener(selectionListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 				buttons[i].setText(NLS.bind(CompareMessages.SelectAncestorDialog_option,
 					theResources[i].getFullPath().toPortableString()));
 				buttons[i].setFont(parent.getFont());
@@ -229,7 +229,7 @@ class ResourceCompareInput extends CompareEditorInput {
 				if (!selectedButton.getSelection()) {
 					return;
 				}
-				for (int i = 0; i < 3; i++) {
+				for (int i = 0; i < 3; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (selectedButton == buttons[i]) {
 						pickAncestor(i);
 					}
@@ -242,7 +242,7 @@ class ResourceCompareInput extends CompareEditorInput {
 	// showSelectAncestorDialog flag it uses different dialogs to get the
 	// feedback from the user. Returns false if the user cancels the prompt,
 	// true otherwise.
-	boolean setSelection(ISelection s, Shell shell, boolean showSelectAncestorDialog) {
+	boolean setSelection(ISelection s, Shell shell, boolean showSelectAncestorDialog) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (!showSelectAncestorDialog) {
 			return showCompareWithOtherResourceDialog(shell, s);
@@ -275,7 +275,7 @@ class ResourceCompareInput extends CompareEditorInput {
 		return true;
 	}
 
-	private boolean showCompareWithOtherResourceDialog(Shell shell, ISelection s) {
+	private boolean showCompareWithOtherResourceDialog(Shell shell, ISelection s) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		CompareWithOtherResourceDialog dialog = new CompareWithOtherResourceDialog(shell, s);
 		if (dialog.open() != IDialogConstants.OK_ID) {
 			return false;
@@ -303,7 +303,7 @@ class ResourceCompareInput extends CompareEditorInput {
 	}
 
 	private boolean checkSelection(IResource[] resources) {
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource == null) {
 				return false;
 			}
@@ -314,7 +314,7 @@ class ResourceCompareInput extends CompareEditorInput {
 	/*
 	 * Returns true if compare can be executed for the given selection.
 	 */
-	public boolean isEnabled(ISelection s) {
+	public boolean isEnabled(ISelection s) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		IResource[] selection= Utilities.getResources(s);
 		if (selection.length < 2 || selection.length > 3) {
@@ -405,7 +405,7 @@ class ResourceCompareInput extends CompareEditorInput {
 	/*
 	 * Performs a two-way or three-way diff on the current selection.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Object prepareInput(IProgressMonitor pm) throws InvocationTargetException {
 
 		try {
@@ -487,7 +487,7 @@ class ResourceCompareInput extends CompareEditorInput {
 				commit(pm, (DiffNode) fRoot);
 			} finally {
 				if (fDiffViewer != null) {
-					fDiffViewer.refresh();
+					fDiffViewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 				}
 				setDirty(false);
 			}
@@ -497,7 +497,7 @@ class ResourceCompareInput extends CompareEditorInput {
 	/*
 	 * Recursively walks the diff tree and commits all changes.
 	 */
-	private static void commit(IProgressMonitor pm, DiffNode node) throws CoreException {
+	private static void commit(IProgressMonitor pm, DiffNode node) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (node instanceof MyDiffNode) {
 			((MyDiffNode)node).clearDirty();
@@ -515,7 +515,7 @@ class ResourceCompareInput extends CompareEditorInput {
 
 		IDiffElement[] children= node.getChildren();
 		if (children != null) {
-			for (IDiffElement element : children) {
+			for (IDiffElement element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (element instanceof DiffNode) {
 					commit(pm, (DiffNode) element);
 				}
@@ -523,7 +523,7 @@ class ResourceCompareInput extends CompareEditorInput {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Override
 	public <T> T getAdapter(Class<T> adapter) {
 		if (IFile.class.equals(adapter)) {
@@ -537,14 +537,14 @@ class ResourceCompareInput extends CompareEditorInput {
 			return null;
 		}
 		if (IFile[].class.equals(adapter)) {
-			HashSet<IFile> collector= new HashSet<>();
+			HashSet<IFile> collector= new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			collectDirtyResources(fRoot, collector);
 			return (T) collector.toArray(new IFile[collector.size()]);
 		}
 		return super.getAdapter(adapter);
 	}
 
-	private void collectDirtyResources(Object o, Set<IFile> collector) {
+	private void collectDirtyResources(Object o, Set<IFile> collector) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (o instanceof DiffNode node) {
 			ITypedElement left= node.getLeft();
 			if (left instanceof BufferedResourceNode bn) {
@@ -568,7 +568,7 @@ class ResourceCompareInput extends CompareEditorInput {
 
 			IDiffElement[] children= node.getChildren();
 			if (children != null) {
-				for (IDiffElement element : children) {
+				for (IDiffElement element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (element instanceof DiffNode) {
 						collectDirtyResources(element, collector);
 					}

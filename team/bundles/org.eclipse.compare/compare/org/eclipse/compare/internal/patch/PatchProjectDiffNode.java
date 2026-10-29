@@ -53,7 +53,7 @@ public class PatchProjectDiffNode extends PatchDiffNode {
 
 	private boolean containsProblems() {
 		IDiffElement[] elements = getChildren();
-		for (IDiffElement diffElement : elements) {
+		for (IDiffElement diffElement : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (diffElement instanceof PatchFileDiffNode node) {
 				if (node.getDiffResult().containsProblems()) {
 					return true;

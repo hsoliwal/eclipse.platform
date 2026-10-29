@@ -36,7 +36,7 @@ public class AntModelForDocument {
 	private IDocument loadDocument(String fileName) {
 		File file = getBuildFile(fileName);
 		try {
-			String initialContent = Files.readString(file.toPath());
+			String initialContent = Files.readString(file.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return new Document(initialContent);
 		} catch (IOException e) {
 			return null;

@@ -66,7 +66,7 @@ public abstract class BackgroundEventHandler {
 	public static final int RUNNABLE_EVENT = 1000;
 
 	// Events that need to be processed
-	private final List<Event> awaitingProcessing = new ArrayList<>();
+	private final List<Event> awaitingProcessing = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	// The job that runs when events need to be processed
 	private Job eventHandlerJob;
@@ -197,7 +197,7 @@ public abstract class BackgroundEventHandler {
 	 * Create the job used for processing the events in the queue. The job stops working when
 	 * the queue is empty.
 	 */
-	protected void createEventHandlingJob() {
+	protected void createEventHandlingJob() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		eventHandlerJob = new Job(getName()) {
 			@Override
 			public IStatus run(IProgressMonitor monitor) {
@@ -294,7 +294,7 @@ public abstract class BackgroundEventHandler {
 	 */
 	protected synchronized void queueEvent(Event event, boolean front) {
 		if (Policy.DEBUG_BACKGROUND_EVENTS) {
-			System.out.println("Event queued on " + getName() + ":" + event.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+			System.out.println("Event queued on " + getName() + ":" + event.toString()); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		if (front) {
 			awaitingProcessing.add(0, event);
@@ -356,7 +356,7 @@ public abstract class BackgroundEventHandler {
 	 * fine grained UI updating.
 	 * @param monitor a progress monitor
 	 */
-	protected IStatus processEvents(IProgressMonitor monitor) {
+	protected IStatus processEvents(IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		errors.clear();
 		try {
 			SubMonitor subMonitor = SubMonitor.convert(monitor, 1024);
@@ -364,11 +364,11 @@ public abstract class BackgroundEventHandler {
 			Event event;
 			timeOfLastDispatch = System.currentTimeMillis();
 			dispatchCount = 1;
-			while ((event = nextElement()) != null && ! isShutdown()) {
+			while ((event = nextElement()) != null && ! isShutdown()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					processEvent(event, subMonitor);
 					if (Policy.DEBUG_BACKGROUND_EVENTS) {
-						System.out.println("Event processed on " + getName() + ":" + event.toString()); //$NON-NLS-1$ //$NON-NLS-2$
+						System.out.println("Event processed on " + getName() + ":" + event.toString()); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 					if(isReadyForDispatch(true /*wait if queue is empty*/)) {
 						dispatchEvents(Policy.subMonitorFor(subMonitor, 1));
@@ -416,7 +416,7 @@ public abstract class BackgroundEventHandler {
 	 * @return <code>true</code> if processed events should be dispatched and
 	 * <code>false</code> otherwise
 	 */
-	protected boolean isReadyForDispatch(boolean wait) {
+	protected boolean isReadyForDispatch(boolean wait) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Check if the time since the last dispatch is greater than the delay.
 		if (isDispatchDelayExceeded()) {
 			return true;

@@ -35,7 +35,7 @@ import org.eclipse.team.internal.ui.Utils;
 import org.eclipse.team.ui.mapping.SynchronizationOperation;
 import org.eclipse.team.ui.synchronize.ISynchronizePageConfiguration;
 
-public class ResourceMergeHandler extends ResourceMergeActionHandler {
+public class ResourceMergeHandler extends ResourceMergeActionHandler { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	private final boolean overwrite;
 	private ResourceModelProviderOperation operation;
@@ -45,10 +45,10 @@ public class ResourceMergeHandler extends ResourceMergeActionHandler {
 		this.overwrite = overwrite;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected synchronized SynchronizationOperation getOperation() {
 		if (operation == null) {
-			operation = new ResourceModelProviderOperation(getConfiguration(), getStructuredSelection()) {
+			operation = new ResourceModelProviderOperation(getConfiguration(), getStructuredSelection()) { //FLLDCIM: MARK — T09  ANONYMOUS
 				@Override
 				public void execute(IProgressMonitor monitor) throws InvocationTargetException,
 						InterruptedException {

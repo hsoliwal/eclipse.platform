@@ -63,7 +63,7 @@ public class BundleImporterExtension implements IBundleImporter {
 	 * @return delegate
 	 * @exception CoreException if unable to instantiate delegate
 	 */
-	private synchronized IBundleImporterDelegate getDelegate() throws CoreException {
+	private synchronized IBundleImporterDelegate getDelegate() throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (delegate == null) {
 			delegate =  new BundleImporterDelegate() {
 				private Set<String> supportedValues;
@@ -72,8 +72,8 @@ public class BundleImporterExtension implements IBundleImporter {
 				protected Set getSupportedValues() {
 					if (supportedValues == null) {
 						IConfigurationElement[] supported = element.getChildren("supports"); //$NON-NLS-1$
-						supportedValues = new HashSet<>(supported.length);
-						for (IConfigurationElement s : supported) {
+						supportedValues = new HashSet<>(supported.length); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+						for (IConfigurationElement s : supported) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							supportedValues.add(s.getAttribute("prefix")); //$NON-NLS-1$
 						}
 					}

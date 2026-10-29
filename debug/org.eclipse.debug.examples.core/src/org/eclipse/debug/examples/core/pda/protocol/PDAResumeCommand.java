@@ -34,7 +34,7 @@ package org.eclipse.debug.examples.core.pda.protocol;
 public class PDAResumeCommand extends PDACommand {
 
 	public PDAResumeCommand(int threadId) {
-		super("resume " + threadId); //$NON-NLS-1$
+		super("resume " + threadId); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 

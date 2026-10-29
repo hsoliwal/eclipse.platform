@@ -48,7 +48,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 /*
  * Class that removes field declarations which aren't referenced.
  */
-@SuppressWarnings("restriction")
+@SuppressWarnings("restriction") //FLLDCIM: MARK — T09  IMPLEMENTS
 public class FindUnusedMembers implements IRunnableWithProgress {
 
 	public static interface IResultReporter {
@@ -82,7 +82,7 @@ public class FindUnusedMembers implements IRunnableWithProgress {
 		}
 
 		private void writeHeader(IType type) throws IOException {
-			output.write("\n\n" + type.getFullyQualifiedName()); //$NON-NLS-1$
+			output.write("\n\n" + type.getFullyQualifiedName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		private void writeResult(IField field) throws IOException, JavaModelException {
@@ -99,7 +99,7 @@ public class FindUnusedMembers implements IRunnableWithProgress {
 			output.write(method.getElementName());
 			output.write("("); //$NON-NLS-1$
 			String[] types = method.getParameterTypes();
-			for (int i = 0; i < types.length; i++) {
+			for (int i = 0; i < types.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				output.write(Signature.toString(types[i]));
 				if (i < types.length - 1) {
 					output.write(","); //$NON-NLS-1$
@@ -122,21 +122,21 @@ public class FindUnusedMembers implements IRunnableWithProgress {
 		this.result = resultReporter;
 	}
 
-	private void doSearchCU(ICompilationUnit cu, IProgressMonitor monitor) throws CoreException {
+	private void doSearchCU(ICompilationUnit cu, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IType[] allTypes = cu.getAllTypes();
-		SubMonitor subMonitor = SubMonitor.convert(monitor, "Processing " + cu.getElementName(), allTypes.length + 1); //$NON-NLS-1$
+		SubMonitor subMonitor = SubMonitor.convert(monitor, "Processing " + cu.getElementName(), allTypes.length + 1); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		ASTParser astParser = ASTParser.newParser(AST.getJLSLatest());
 		astParser.setResolveBindings(true);
 		astParser.setProject(cu.getJavaProject());
 
 		IBinding[] bindings = astParser.createBindings(allTypes, subMonitor.newChild(1));
-		for (IBinding binding : bindings) {
+		for (IBinding binding : bindings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (monitor.isCanceled()) {
 				throw new OperationCanceledException();
 			}
 			ITypeBinding typeBinding = (ITypeBinding) binding;
-			subMonitor.setTaskName("Processing '" + typeBinding.getQualifiedName() + "'"); //$NON-NLS-1$//$NON-NLS-2$
+			subMonitor.setTaskName("Processing '" + typeBinding.getQualifiedName() + "'"); //$NON-NLS-1$//$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			doSearchType(typeBinding, subMonitor.newChild(1));
 		}
 	}
@@ -145,13 +145,13 @@ public class FindUnusedMembers implements IRunnableWithProgress {
 		return Bindings.findOverriddenMethod(binding, true) != null;
 	}
 
-	public void doSearchType(ITypeBinding typeBinding, IProgressMonitor monitor) throws CoreException {
+	public void doSearchType(ITypeBinding typeBinding, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IMethodBinding[] methods = typeBinding.getDeclaredMethods();
 		IVariableBinding[] fields = typeBinding.getDeclaredFields();
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Searching for references.", //$NON-NLS-1$
 				methods.length + fields.length);
 
-		for (IMethodBinding methodBinding : methods) {
+		for (IMethodBinding methodBinding : methods) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (monitor.isCanceled()) {
 				throw new OperationCanceledException();
 			}
@@ -171,7 +171,7 @@ public class FindUnusedMembers implements IRunnableWithProgress {
 			result.unusedElementFound(method);
 			unusedMemberCount++;
 		}
-		for (IVariableBinding fieldBinding : fields) {
+		for (IVariableBinding fieldBinding : fields) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IField field = (IField) fieldBinding.getJavaElement();
 			if (field == null) {
 				continue;
@@ -192,7 +192,7 @@ public class FindUnusedMembers implements IRunnableWithProgress {
 		return unusedMemberCount;
 	}
 
-	private boolean hasReferences(IMember member, IProgressMonitor monitor) throws JavaModelException {
+	private boolean hasReferences(IMember member, IProgressMonitor monitor) throws JavaModelException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		final class ReferenceFound extends Error {
 			private static final long serialVersionUID = 1L;
@@ -221,7 +221,7 @@ public class FindUnusedMembers implements IRunnableWithProgress {
 
 	public void process(IProgressMonitor monitor) throws CoreException {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, "Searching unused members", this.units.length); //$NON-NLS-1$
-		for (ICompilationUnit unit : this.units) {
+		for (ICompilationUnit unit : this.units) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			doSearchCU(unit, subMonitor.split(1));
 		}
 	}

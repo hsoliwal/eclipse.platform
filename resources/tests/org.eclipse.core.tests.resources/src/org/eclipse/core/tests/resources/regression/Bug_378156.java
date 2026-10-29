@@ -47,7 +47,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class Bug_378156 {
 
-	class ModifyFileJob extends WorkspaceJob {
+	class ModifyFileJob extends WorkspaceJob { //FLLDCIM: MARK — T09  IMPLEMENTS
 		private boolean cancel;
 		private final IFile jobFile;
 		private final Semaphore jobFlag;
@@ -56,7 +56,7 @@ public class Bug_378156 {
 		 * Modifies a file and then waits for a signal before returning.
 		 */
 		public ModifyFileJob(IFile file, Semaphore semaphore) {
-			super("Modifying " + file);
+			super("Modifying " + file); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			this.jobFlag = semaphore;
 			jobFile = file;
 		}
@@ -85,7 +85,7 @@ public class Bug_378156 {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBugTwoThreads() throws Exception {
 		//setup
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
@@ -124,7 +124,7 @@ public class Bug_378156 {
 		assertThat(builder).matches(SignaledBuilder::wasExecuted, "was executed");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBugOneThread() throws Exception {
 		//setup
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
@@ -140,12 +140,12 @@ public class Bug_378156 {
 		SignaledBuilder builder = SignaledBuilder.getInstance(project1);
 		builder.reset();
 
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			//modify the file so autobuild is needed
 			file.setContents(createRandomContentsStream(), IResource.NONE, null);
 			//create a nested operation that immediately cancels
 			try {
-				getWorkspace().run((IWorkspaceRunnable) unused2 -> {
+				getWorkspace().run((IWorkspaceRunnable) unused2 -> { //FLLDCIM: MARK — T09  LAMBDA
 					throw new OperationCanceledException();
 				}, null);
 			} catch (OperationCanceledException e) {

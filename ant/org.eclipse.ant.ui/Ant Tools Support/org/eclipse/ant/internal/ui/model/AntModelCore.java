@@ -42,7 +42,7 @@ public class AntModelCore implements IBreakpointsListener {
 		return inst;
 	}
 
-	private final List<IAntModelListener> fModelChangeListeners = new ArrayList<>();
+	private final List<IAntModelListener> fModelChangeListeners = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	private AntModelCore() {
 	}
@@ -62,9 +62,9 @@ public class AntModelCore implements IBreakpointsListener {
 	public void notifyAntModelListeners(AntModelChangeEvent event) {
 		Iterator<IAntModelListener> i;
 		synchronized (fModelChangeListeners) {
-			i = new ArrayList<>(fModelChangeListeners).iterator();
+			i = new ArrayList<>(fModelChangeListeners).iterator(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
-		while (i.hasNext()) {
+		while (i.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			i.next().antModelChanged(event);
 		}
 	}
@@ -74,9 +74,9 @@ public class AntModelCore implements IBreakpointsListener {
 	 *
 	 * @see org.eclipse.debug.core.IBreakpointsListener#breakpointsAdded(org.eclipse.debug.core.model.IBreakpoint[])
 	 */
-	private void updateBreakpointMessages(final IBreakpoint[] breakpoints) {
-		IWorkspaceRunnable runnable = unused -> {
-			for (IBreakpoint breakpoint : breakpoints) {
+	private void updateBreakpointMessages(final IBreakpoint[] breakpoints) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		IWorkspaceRunnable runnable = unused -> { //FLLDCIM: MARK — T09  LAMBDA
+			for (IBreakpoint breakpoint : breakpoints) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (breakpoint instanceof AntLineBreakpoint) {
 					IMarker marker = breakpoint.getMarker();
 					if (marker.exists()) {

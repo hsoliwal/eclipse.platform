@@ -66,7 +66,7 @@ public class PDAWatchpoint extends PDALineBreakpoint implements IWatchpoint {
 	 * @throws CoreException if unable to create the watchpoint
 	 */
 	public PDAWatchpoint(final IResource resource, final int lineNumber, final String functionName, final String varName, final boolean access, final boolean modification) throws CoreException {
-		IWorkspaceRunnable runnable = unused -> {
+		IWorkspaceRunnable runnable = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			IMarker marker = resource.createMarker("org.eclipse.debug.examples.core.pda.markerType.watchpoint"); //$NON-NLS-1$
 			setMarker(marker);
 			setEnabled(true);
@@ -75,7 +75,7 @@ public class PDAWatchpoint extends PDALineBreakpoint implements IWatchpoint {
 			setAccess(access);
 			setModification(modification);
 			setVariable(functionName, varName);
-			marker.setAttribute(IMarker.MESSAGE, "Watchpoint: " + resource.getName() + " [line: " + lineNumber + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			marker.setAttribute(IMarker.MESSAGE, "Watchpoint: " + resource.getName() + " [line: " + lineNumber + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		};
 		run(getMarkerRule(resource), runnable);
 	}
@@ -192,8 +192,8 @@ public class PDAWatchpoint extends PDALineBreakpoint implements IWatchpoint {
 	 *
 	 * @param event breakpoint event
 	 */
-	private void handleHit(PDARunControlEvent event) {
-		String[] strings = event.fMessage.split(" "); //$NON-NLS-1$
+	private void handleHit(PDARunControlEvent event) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		String[] strings = event.fMessage.split(" "); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		if (strings.length == 4) {
 			String fv = strings[3];
 			int j = fv.indexOf("::"); //$NON-NLS-1$

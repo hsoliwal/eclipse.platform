@@ -142,15 +142,15 @@ public class Utils {
 		/**
 		 * Sort the objects in sorted collection and return that collection.
 		 */
-		private Object[] quickSort(Object[] sortedCollection, int left, int right) {
+		private Object[] quickSort(Object[] sortedCollection, int left, int right) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			int originalLeft = left;
 			int originalRight = right;
 			Object mid = sortedCollection[(left + right) >>> 1];
-			do {
-				while (compare(sortedCollection[left], mid)) {
+			do { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				while (compare(sortedCollection[left], mid)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					left++;
 				}
-				while (compare(mid, sortedCollection[right])) {
+				while (compare(mid, sortedCollection[right])) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					right--;
 				}
 				if (left <= right) {
@@ -210,7 +210,7 @@ public class Utils {
 	 * @param message
 	 *            the message for the error dialog
 	 */
-	public static void handleError(Shell shell, Exception exception, String title, String message) {
+	public static void handleError(Shell shell, Exception exception, String title, String message) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IStatus status = null;
 		boolean log = false;
 		boolean dialog = false;
@@ -263,7 +263,7 @@ public class Utils {
 		}
 	}
 
-	public static void runWithProgress(Shell parent, boolean cancelable, final IRunnableWithProgress runnable) throws InvocationTargetException, InterruptedException {
+	public static void runWithProgress(Shell parent, boolean cancelable, final IRunnableWithProgress runnable) throws InvocationTargetException, InterruptedException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean createdShell = false;
 		try {
 			if (parent == null || parent.isDisposed()) {
@@ -311,7 +311,7 @@ public class Utils {
 		return getShell(site, false);
 	}
 
-	public static Shell getShell(IWorkbenchSite site, boolean syncIfNecessary) {
+	public static Shell getShell(IWorkbenchSite site, boolean syncIfNecessary) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if(site != null) {
 			Shell shell = site.getShell();
 			if (!shell.isDisposed()) {
@@ -335,7 +335,7 @@ public class Utils {
 			if (syncIfNecessary) {
 				final Shell[] result = new Shell[] { null };
 				Runnable r = () -> result[0] = new Shell(Display.getDefault());
-				display.syncExec(r);
+				display.syncExec(r); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				return result[0];
 			}
 		}
@@ -348,8 +348,8 @@ public class Utils {
 	 * This method is only for use by the Target Management feature (see bug
 	 * 16509). @param t
 	 */
-	public static void handle(final Throwable exception) {
-		TeamUIPlugin.getStandardDisplay().asyncExec(() -> {
+	public static void handle(final Throwable exception) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		TeamUIPlugin.getStandardDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			IStatus error = null;
 			Throwable t = exception;
 			if (t instanceof InvocationTargetException) {
@@ -394,7 +394,7 @@ public class Utils {
 		Utils.initAction(a, prefix, bundle, null);
 	}
 
-	public static void updateLabels(SyncInfo sync, CompareConfiguration config, IProgressMonitor monitor) {
+	public static void updateLabels(SyncInfo sync, CompareConfiguration config, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final IResourceVariant remote = sync.getRemote();
 		final IResourceVariant base = sync.getBase();
 		String baseAuthor = null;
@@ -469,7 +469,7 @@ public class Utils {
 		return store.getBoolean(IPreferenceIds.SHOW_AUTHOR_IN_COMPARE_EDITOR);
 	}
 
-	private static String getAuthor(IResourceVariant variant,
+	private static String getAuthor(IResourceVariant variant, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IProgressMonitor monitor) {
 		String author = null;
 		if (variant instanceof IAdaptable adaptable) {
@@ -489,7 +489,7 @@ public class Utils {
 		return author;
 	}
 
-	public static String getLocalContentId(IDiff diff) {
+	public static String getLocalContentId(IDiff diff) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (diff instanceof IThreeWayDiff twd) {
 			diff = twd.getLocalChange();
 			if (diff == null) {
@@ -555,16 +555,16 @@ public class Utils {
 	 * @param bundle the bundle
 	 * @param bindings additional input to the action label
 	 */
-	public static void initAction(IAction a, String prefix, ResourceBundle bundle, String[] bindings) {
+	public static void initAction(IAction a, String prefix, ResourceBundle bundle, String[] bindings) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String labelKey = "label"; //$NON-NLS-1$
 		String tooltipKey = "tooltip"; //$NON-NLS-1$
 		String imageKey = "image"; //$NON-NLS-1$
 		String descriptionKey = "description"; //$NON-NLS-1$
 		if (prefix != null && prefix.length() > 0) {
-			labelKey = prefix + labelKey;
-			tooltipKey = prefix + tooltipKey;
-			imageKey = prefix + imageKey;
-			descriptionKey = prefix + descriptionKey;
+			labelKey = prefix + labelKey; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			tooltipKey = prefix + tooltipKey; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			imageKey = prefix + imageKey; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			descriptionKey = prefix + descriptionKey; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		String s = null;
 		if (bindings != null) {
@@ -588,9 +588,9 @@ public class Utils {
 			String ePath;
 			if (relPath.contains("/")) { //$NON-NLS-1$
 				String path = relPath.substring(1);
-				ePath = 'e' + path;
+				ePath = 'e' + path; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			} else {
-				ePath = "elcl16/" + relPath; //$NON-NLS-1$
+				ePath = "elcl16/" + relPath; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			ImageDescriptor id = TeamImages.getImageDescriptor(ePath);
 			if (id != null) {
@@ -605,7 +605,7 @@ public class Utils {
 		} catch (MissingResourceException e) {
 			return key;
 		} catch (NullPointerException e) {
-			return "!" + key + "!"; //$NON-NLS-1$ //$NON-NLS-2$
+			return "!" + key + "!"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -628,10 +628,10 @@ public class Utils {
 	 * Returns the list of resources contained in the given elements.
 	 * @return the list of resources contained in the given elements.
 	 */
-	private static IResource[] getResources(Object[] elements, List<Object> nonResources,
+	private static IResource[] getResources(Object[] elements, List<Object> nonResources, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			boolean isContributed, boolean includeMappingResources) {
-		List<IResource> resources = new ArrayList<>();
-		for (Object element : elements) {
+		List<IResource> resources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Object element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			boolean isResource = false;
 			if (element instanceof IResource) {
 				resources.add((IResource) element);
@@ -683,7 +683,7 @@ public class Utils {
 	private static void getResources(ResourceMapping element, List<IResource> resources) {
 		try {
 			ResourceTraversal[] traversals = element.getTraversals(ResourceMappingContext.LOCAL_CONTEXT, null);
-			for (ResourceTraversal traversal : traversals) {
+			for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource[] resourceArray = traversal.getResources();
 				Collections.addAll(resources, resourceArray);
 			}
@@ -693,7 +693,7 @@ public class Utils {
 	}
 
 	public static Object[] getNonResources(Object[] elements) {
-		List<Object> nonResources = new ArrayList<>();
+		List<Object> nonResources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		getResources(elements, nonResources, false, false);
 		return nonResources.toArray();
 	}
@@ -715,7 +715,7 @@ public class Utils {
 	 * descendants match the given filter
 	 */
 	public static boolean hasMatchingDescendant(IStructuredSelection selection, FastSyncInfoFilter filter) {
-		for (Object o : selection) {
+		for (Object o : selection) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (o instanceof ISynchronizeModelElement) {
 				if (hasMatchingDescendant((ISynchronizeModelElement)o, filter)) {
 					return true;
@@ -733,7 +733,7 @@ public class Utils {
 			}
 		}
 		IDiffElement[] children = element.getChildren();
-		for (IDiffElement child : children) {
+		for (IDiffElement child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (child instanceof ISynchronizeModelElement) {
 				if (hasMatchingDescendant((ISynchronizeModelElement)child, filter)) {
 					return true;
@@ -751,8 +751,8 @@ public class Utils {
 	 * @return the list of selected sync infos
 	 */
 	public static IDiffElement[] getDiffNodes(Object[] selected) {
-		Set<IDiffElement> result = new HashSet<>();
-		for (Object object : selected) {
+		Set<IDiffElement> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (Object object : selected) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if(object instanceof IDiffElement) {
 				collectAllNodes((IDiffElement)object, result);
 			}
@@ -766,7 +766,7 @@ public class Utils {
 		}
 		if(element instanceof IDiffContainer) {
 			IDiffElement[] children = ((IDiffContainer)element).getChildren();
-			for (IDiffElement c : children) {
+			for (IDiffElement c : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				collectAllNodes(c, nodes);
 			}
 		}
@@ -794,17 +794,17 @@ public class Utils {
 	}
 
 	public static String getKey(String id, String secondaryId) {
-		return secondaryId == null ? id : id + '/' + secondaryId;
+		return secondaryId == null ? id : id + '/' + secondaryId; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	public static String convertSelection(IResource[] resources) {
-		StringBuilder  buffer = new StringBuilder();
-		for (int i = 0; i < resources.length; i++) {
+		StringBuilder  buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < resources.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = resources[i];
 			if(i > 0) {
-				buffer.append(", "); //$NON-NLS-1$
+				buffer.append(", "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append(resource.getFullPath());
+			buffer.append(resource.getFullPath()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return buffer.toString();
 	}
@@ -861,7 +861,7 @@ public class Utils {
 		}
 		final Control ctrl = v.getControl();
 		if (ctrl != null && !ctrl.isDisposed()) {
-			ctrl.getDisplay().asyncExec(() -> {
+			ctrl.getDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				if (!ctrl.isDisposed()) {
 					BusyIndicator.showWhile(ctrl.getDisplay(), r);
 				}
@@ -879,7 +879,7 @@ public class Utils {
 
 	public static void syncExec(final Runnable r, final Control ctrl) {
 		if (ctrl != null && !ctrl.isDisposed()) {
-			ctrl.getDisplay().syncExec(() -> {
+			ctrl.getDisplay().syncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				if (!ctrl.isDisposed()) {
 					BusyIndicator.showWhile(ctrl.getDisplay(), r);
 				}
@@ -889,7 +889,7 @@ public class Utils {
 
 	public static void asyncExec(final Runnable r, final Control ctrl) {
 		if (ctrl != null && !ctrl.isDisposed()) {
-			ctrl.getDisplay().asyncExec(() -> {
+			ctrl.getDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				if (!ctrl.isDisposed()) {
 					BusyIndicator.showWhile(ctrl.getDisplay(), r);
 				}
@@ -943,7 +943,7 @@ public class Utils {
 	}
 
 
-	public static ResourceMapping getResourceMapping(Object o) {
+	public static ResourceMapping getResourceMapping(Object o) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (o instanceof ResourceMapping) {
 			return (ResourceMapping) o;
 		}
@@ -966,8 +966,8 @@ public class Utils {
 	}
 
 	public static ResourceMapping[] getResourceMappings(Object[] objects) {
-		List<ResourceMapping> result = new ArrayList<>();
-		for (Object object : objects) {
+		List<ResourceMapping> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Object object : objects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceMapping mapping = getResourceMapping(object);
 			if (mapping != null) {
 				result.add(mapping);
@@ -1018,16 +1018,16 @@ public class Utils {
 	}
 
 	public static String convertSelection(ResourceMapping[] mappings) {
-		StringBuilder  buffer = new StringBuilder();
+		StringBuilder  buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		boolean hadOne = false;
-		for (ResourceMapping resourceMapping : mappings) {
+		for (ResourceMapping resourceMapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String label = getLabel(resourceMapping);
 			if (label != null) {
 				if(hadOne) {
-					buffer.append(", "); //$NON-NLS-1$
+					buffer.append(", "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 				hadOne = true;
-				buffer.append(label);
+				buffer.append(label); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 		return buffer.toString();
@@ -1035,7 +1035,7 @@ public class Utils {
 
 	public static ResourceTraversal[] getTraversals(Object[] elements) throws CoreException {
 		CompoundResourceTraversal traversal = new CompoundResourceTraversal();
-		for (Object object : elements) {
+		for (Object object : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceMapping mapping = getResourceMapping(object);
 			if (mapping != null) {
 				traversal.addTraversals(mapping.getTraversals(ResourceMappingContext.LOCAL_CONTEXT, null));
@@ -1050,7 +1050,7 @@ public class Utils {
 	 * See bug 99568 for a request to move the createEditor method to IEditorDescriptor.
 	 * @return whether the editor associated with a descriptor is a text editor
 	 */
-	public static boolean isTextEditor(IEditorDescriptor descriptor) throws CoreException {
+	public static boolean isTextEditor(IEditorDescriptor descriptor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!(descriptor instanceof EditorDescriptor desc)) {
 			return false;
 		}
@@ -1095,7 +1095,7 @@ public class Utils {
 		return openEditor(page, editorInput, id);
 	}
 
-	public static IEditorPart openEditor(IWorkbenchPage page,
+	public static IEditorPart openEditor(IWorkbenchPage page, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			FileRevisionEditorInput editorInput, String editorId)
 			throws PartInitException {
 		try {
@@ -1196,15 +1196,15 @@ public class Utils {
 	 *            the input being opened
 	 * @return an EditorPart or <code>null</code> if none can be found
 	 */
-	public static IEditorPart findReusableCompareEditor(
+	public static IEditorPart findReusableCompareEditor( //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			CompareEditorInput input, IWorkbenchPage page,
 			Class[] editorInputClasses) {
 		IEditorReference[] editorRefs = page.getEditorReferences();
 		// first loop looking for an editor with the same input
-		for (IEditorReference editorRef : editorRefs) {
+		for (IEditorReference editorRef : editorRefs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IEditorPart part = editorRef.getEditor(false);
 			if (part != null && part instanceof IReusableEditor) {
-				for (Class editorInputClasse : editorInputClasses) {
+				for (Class editorInputClasse : editorInputClasses) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					// check if the editor input type
 					// complies with the types given by the caller
 					if (editorInputClasse.isInstance(part.getEditorInput()) && part.getEditorInput().equals(input)) {
@@ -1217,7 +1217,7 @@ public class Utils {
 		// a non-dirty editor
 		if (TeamUIPlugin.getPlugin().getPreferenceStore()
 				.getBoolean(IPreferenceIds.REUSE_OPEN_COMPARE_EDITOR)) {
-			for (IEditorReference editorRef : editorRefs) {
+			for (IEditorReference editorRef : editorRefs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IEditorPart part = editorRef.getEditor(false);
 				if (part != null
 						&& (part.getEditorInput() instanceof SaveableCompareEditorInput)

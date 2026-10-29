@@ -82,7 +82,7 @@ public abstract class AbstractDataTreeNode {
 	 * If keepDeleted is true, explicit representations of deletions are kept,
 	 * otherwise nodes to be deleted are removed in the result.
 	 */
-	static AbstractDataTreeNode[] assembleWith(AbstractDataTreeNode[] oldNodes, AbstractDataTreeNode[] newNodes, boolean keepDeleted) {
+	static AbstractDataTreeNode[] assembleWith(AbstractDataTreeNode[] oldNodes, AbstractDataTreeNode[] newNodes, boolean keepDeleted) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// Optimize the common case where the new list is empty.
 		if (newNodes.length == 0) {
@@ -98,7 +98,7 @@ public abstract class AbstractDataTreeNode {
 		int oldIndex = 0;
 		int newIndex = 0;
 		int resultIndex = 0;
-		while (oldIndex < oldNodes.length && newIndex < newNodes.length) {
+		while (oldIndex < oldNodes.length && newIndex < newNodes.length) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int log2 = 31 - Integer.numberOfLeadingZeros(oldNodes.length - oldIndex);
 			if (log2 > 1 && (newNodes.length - newIndex) <= (oldNodes.length - oldIndex) / log2) {
 				// We can expect to fare better using binary search. In particular, this will optimize the case of a folder refresh (new linked
@@ -111,7 +111,7 @@ public abstract class AbstractDataTreeNode {
 				int left = oldIndex;
 				int right = oldNodes.length - 1;
 				boolean found = false;
-				while (left <= right) {
+				while (left <= right) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					int mid = (left + right) / 2;
 					int compare = key.compareTo(oldNodes[mid].name);
 					if (compare < 0) {
@@ -157,10 +157,10 @@ public abstract class AbstractDataTreeNode {
 				}
 			}
 		}
-		while (oldIndex < oldNodes.length) {
+		while (oldIndex < oldNodes.length) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			resultNodes[resultIndex++] = oldNodes[oldIndex++];
 		}
-		while (newIndex < newNodes.length) {
+		while (newIndex < newNodes.length) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			AbstractDataTreeNode resultNode = newNodes[newIndex++];
 			if (!resultNode.isDeleted() || keepDeleted) {
 				resultNodes[resultIndex++] = resultNode;
@@ -177,7 +177,7 @@ public abstract class AbstractDataTreeNode {
 	/**
 	 * Returns the result of assembling this node with the given forward delta node.
 	 */
-	AbstractDataTreeNode assembleWith(AbstractDataTreeNode node) {
+	AbstractDataTreeNode assembleWith(AbstractDataTreeNode node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// If not a delta, or if the old node was deleted,
 		// then the new node represents the complete picture.
@@ -212,7 +212,7 @@ public abstract class AbstractDataTreeNode {
 	/**
 	 * Returns the result of assembling this node with the given forward delta node.
 	 */
-	AbstractDataTreeNode assembleWith(AbstractDataTreeNode node, IPath key, int keyIndex) {
+	AbstractDataTreeNode assembleWith(AbstractDataTreeNode node, IPath key, int keyIndex) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// leaf case
 		int keyLen = key.segmentCount();
@@ -230,7 +230,7 @@ public abstract class AbstractDataTreeNode {
 
 		// Child not found.  Build up NoDataDeltaNode hierarchy for rest of key
 		// and assemble with that.
-		for (int i = keyLen - 2; i >= keyIndex; --i) {
+		for (int i = keyLen - 2; i >= keyIndex; --i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			node = new NoDataDeltaNode(key.segment(i), node);
 		}
 		node = new NoDataDeltaNode(name, node);
@@ -271,7 +271,7 @@ public abstract class AbstractDataTreeNode {
 	 */
 	AbstractDataTreeNode childAtIgnoreCase(String localName) {
 		AbstractDataTreeNode result = null;
-		for (AbstractDataTreeNode element : children) {
+		for (AbstractDataTreeNode element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element.getName().equalsIgnoreCase(localName)) {
 				//if we find a deleted child, keep looking for a real child
 				if (element.isDeleted()) {
@@ -284,7 +284,7 @@ public abstract class AbstractDataTreeNode {
 		return result;
 	}
 
-	protected static AbstractDataTreeNode[] compareWith(AbstractDataTreeNode[] oldNodes, AbstractDataTreeNode[] newNodes, IComparator comparator) {
+	protected static AbstractDataTreeNode[] compareWith(AbstractDataTreeNode[] oldNodes, AbstractDataTreeNode[] newNodes, IComparator comparator) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		int oldLen = oldNodes.length;
 		int newLen = newNodes.length;
@@ -293,7 +293,7 @@ public abstract class AbstractDataTreeNode {
 		AbstractDataTreeNode[] comparedNodes = new AbstractDataTreeNode[oldLen + newLen];
 		int count = 0;
 
-		while (oldIndex < oldLen && newIndex < newLen) {
+		while (oldIndex < oldLen && newIndex < newLen) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			DataTreeNode oldNode = (DataTreeNode) oldNodes[oldIndex];
 			DataTreeNode newNode = (DataTreeNode) newNodes[newIndex];
 			int compare = oldNode.name.compareTo(newNode.name);
@@ -323,7 +323,7 @@ public abstract class AbstractDataTreeNode {
 				++newIndex;
 			}
 		}
-		while (oldIndex < oldLen) {
+		while (oldIndex < oldLen) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			DataTreeNode oldNode = (DataTreeNode) oldNodes[oldIndex++];
 
 			/* give the client a chance to say whether it should be in the delta */
@@ -332,7 +332,7 @@ public abstract class AbstractDataTreeNode {
 				comparedNodes[count++] = convertToRemovedComparisonNode(oldNode, userComparison);
 			}
 		}
-		while (newIndex < newLen) {
+		while (newIndex < newLen) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			DataTreeNode newNode = (DataTreeNode) newNodes[newIndex++];
 
 			/* give the client a chance to say whether it should be in the delta */
@@ -351,11 +351,11 @@ public abstract class AbstractDataTreeNode {
 		return comparedNodes;
 	}
 
-	protected static AbstractDataTreeNode[] compareWithParent(AbstractDataTreeNode[] nodes, IPath key, DeltaDataTree parent, IComparator comparator) {
+	protected static AbstractDataTreeNode[] compareWithParent(AbstractDataTreeNode[] nodes, IPath key, DeltaDataTree parent, IComparator comparator) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		AbstractDataTreeNode[] comparedNodes = new AbstractDataTreeNode[nodes.length];
 		int count = 0;
-		for (AbstractDataTreeNode node : nodes) {
+		for (AbstractDataTreeNode node : nodes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			AbstractDataTreeNode comparedNode = node.compareWithParent(key.append(node.getName()), parent, comparator);
 			NodeComparison comparison = (NodeComparison) comparedNode.getData();
 			// Skip it if it's an empty comparison (and no children).
@@ -382,7 +382,7 @@ public abstract class AbstractDataTreeNode {
 			convertedChildren = NO_CHILDREN;
 		} else {
 			convertedChildren = new AbstractDataTreeNode[n];
-			for (int i = 0; i < n; ++i) {
+			for (int i = 0; i < n; ++i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				convertedChildren[i] = convertToAddedComparisonNode(children[i], userComparison);
 			}
 		}
@@ -397,7 +397,7 @@ public abstract class AbstractDataTreeNode {
 			convertedChildren = NO_CHILDREN;
 		} else {
 			convertedChildren = new AbstractDataTreeNode[n];
-			for (int i = 0; i < n; ++i) {
+			for (int i = 0; i < n; ++i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				convertedChildren[i] = convertToRemovedComparisonNode(children[i], userComparison);
 			}
 		}
@@ -416,7 +416,7 @@ public abstract class AbstractDataTreeNode {
 	 */
 	protected void copyChildren(int from, int to, AbstractDataTreeNode otherNode, int start) {
 		int other = start;
-		for (int i = from; i <= to; i++, other++) {
+		for (int i = from; i <= to; i++, other++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			this.children[i] = otherNode.children[other];
 		}
 	}
@@ -464,7 +464,7 @@ public abstract class AbstractDataTreeNode {
 		AbstractDataTreeNode[] nodes = this.children;
 		int left = 0;
 		int right = nodes.length - 1;
-		while (left <= right) {
+		while (left <= right) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int mid = (left + right) / 2;
 			int compare = localName.compareTo(nodes[mid].name);
 			if (compare < 0) {
@@ -506,7 +506,7 @@ public abstract class AbstractDataTreeNode {
 	String[] namesOfChildren() {
 		String names[] = new String[children.length];
 		/* copy child names (Reverse loop optimized) */
-		for (int i = children.length; --i >= 0;) {
+		for (int i = children.length; --i >= 0;) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			names[i] = children[i].getName();
 		}
 		return names;
@@ -541,14 +541,14 @@ public abstract class AbstractDataTreeNode {
 	/**
 	 * Simplifies the given nodes, and answers their replacements.
 	 */
-	protected static AbstractDataTreeNode[] simplifyWithParent(AbstractDataTreeNode[] nodes, IPath key, DeltaDataTree parent, IComparator comparer) {
+	protected static AbstractDataTreeNode[] simplifyWithParent(AbstractDataTreeNode[] nodes, IPath key, DeltaDataTree parent, IComparator comparer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int nodeCount = nodes.length;
 		if (nodeCount == 0) {
 			return NO_CHILDREN;
 		}
 		AbstractDataTreeNode[] simplifiedNodes = new AbstractDataTreeNode[nodeCount];
 		int simplifiedCount = 0;
-		for (int i = 0; i < nodeCount; ++i) {
+		for (int i = 0; i < nodeCount; ++i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			AbstractDataTreeNode node = nodes[i];
 			AbstractDataTreeNode simplifiedNode = node.simplifyWithParent(key.append(node.getName()), parent, comparer);
 			if (!simplifiedNode.isEmptyDelta()) {
@@ -584,7 +584,7 @@ public abstract class AbstractDataTreeNode {
 		//copy children pointer in case of concurrent modification
 		AbstractDataTreeNode[] nodes = children;
 		if (nodes != null) {
-			for (int i = nodes.length; --i >= 0;) {
+			for (int i = nodes.length; --i >= 0;) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				nodes[i].storeStrings(set);
 			}
 		}
@@ -608,15 +608,15 @@ public abstract class AbstractDataTreeNode {
 	//	   rightOfRoot DataTreeNode with 1 children
 	//	      rightOfRight DataTreeNode"
 	String toLongString() {
-		return toShortString() + "\n" + getChildrenString(1); //$NON-NLS-1$
+		return toShortString() + "\n" + getChildrenString(1); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	// example output:
 	// "rightOfRoot DataTreeNode with 1 children"
 	String toShortString() {
-		return (getName() == null ? "" : getName() + " ") + this.getClass().getSimpleName() //$NON-NLS-1$ //$NON-NLS-2$
+		return (getName() == null ? "" : getName() + " ") + this.getClass().getSimpleName() //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ (getChildren().length == 0 ? "" //$NON-NLS-1$
-				: (" with " + getChildren().length + " children"));//$NON-NLS-1$ //$NON-NLS-2$
+				: (" with " + getChildren().length + " children"));//$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private String getChildrenString(int depth) {
@@ -624,7 +624,7 @@ public abstract class AbstractDataTreeNode {
 		String indent = "   ".repeat(depth); //$NON-NLS-1$
 		return (depth > MAXDEPTH ? "" //$NON-NLS-1$
 				: (Arrays.stream(getChildren())
-						.map(n -> indent + n.toShortString() + "\n" + n.getChildrenString(depth + 1)) //$NON-NLS-1$
+						.map(n -> indent + n.toShortString() + "\n" + n.getChildrenString(depth + 1)) //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						.collect(Collectors.joining())));
 	}
 

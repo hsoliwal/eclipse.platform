@@ -69,9 +69,9 @@ public class MultiProjectBuildTest {
 	 * Modifies any files in the given projects, all in a single operation
 	 */
 	private void dirty(final IProject[] projects) throws CoreException {
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
-			for (IProject project : projects) {
-				for (IResource member : project.members()) {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
+			for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				for (IResource member : project.members()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (member.getType() == IResource.FILE && !member.getName().equals(IProjectDescription.DESCRIPTION_FILE_NAME)) {
 						((IFile) member).setContents(createRandomContentsStream(), true, true, null);
 					}
@@ -90,7 +90,7 @@ public class MultiProjectBuildTest {
 		}
 		int len = input.length;
 		IProject[][] output = (IProject[][]) Array.newInstance(IProject[].class, len);
-		for (int i = 0; i < len; i++) {
+		for (int i = 0; i < len; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			output[len - i - 1] = input[i];
 		}
 		return output;
@@ -119,7 +119,7 @@ public class MultiProjectBuildTest {
 	 * In this test, only project1 has a builder, but it is interested in deltas from the other projects.
 	 * We vary the set of projects that are changed, and the set of projects we request deltas for.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeltas() throws Exception {
 		//add builder and do an initial build to get the instance
 		setAutoBuilding(false);
@@ -136,14 +136,14 @@ public class MultiProjectBuildTest {
 		//hold onto the set of requested projects here
 		final IProject[][] previousRequest = new IProject[][] {new IProject[] {project1}};
 		//hold onto projects that have been modified since the last time the builder was run.
-		final HashSet<IProject> previouslyModified = new HashSet<>();
+		final HashSet<IProject> previouslyModified = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		new TestPerformer("testDeltas") {
 			@Override
 			public Object[] interestingOldState(Object[] args) throws Exception {
 				return null;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public Object invokeMethod(Object[] args, int count) throws Exception {
 				//set requests for next build
 				IProject[] requested = (IProject[]) args[0];
@@ -168,12 +168,12 @@ public class MultiProjectBuildTest {
 				return false;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean wasSuccess(Object[] args, Object result, Object[] oldState) throws Exception {
-				HashSet<IProject> requested = new HashSet<>(Arrays.asList((IProject[]) result));
-				HashSet<IProject> modified = new HashSet<>(Arrays.asList((IProject[]) args[1]));
+				HashSet<IProject> requested = new HashSet<>(Arrays.asList((IProject[]) result)); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+				HashSet<IProject> modified = new HashSet<>(Arrays.asList((IProject[]) args[1])); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 				modified.addAll(previouslyModified);
-				HashSet<IProject> obtained = new HashSet<>();
+				HashSet<IProject> obtained = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 				if (!builder.getReceivedDeltas().isEmpty()) {
 					obtained.addAll(builder.getReceivedDeltas());
 				}
@@ -182,7 +182,7 @@ public class MultiProjectBuildTest {
 				//the builder's project is implicitly requested
 				requested.add(builder.getProject());
 
-				for (IProject project : allProjects) {
+				for (IProject project : allProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					boolean wasObtained = obtained.contains(project);
 					boolean wasRequested = requested.contains(project);
 					boolean wasModified = modified.contains(project);
@@ -207,7 +207,7 @@ public class MultiProjectBuildTest {
 	/**
 	 * Tests a builder that requests deltas for closed and missing projects.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRequestMissingProject() throws CoreException {
 		//add builder and do an initial build to get the instance
 		updateProjectDescription(project1).addingCommand(DeltaVerifierBuilder.BUILDER_NAME)

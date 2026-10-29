@@ -43,9 +43,9 @@ public class HistoryHandler extends AbstractHandler {
 	/**
 	 * An identifier of Show History command
 	 */
-	public static final String COMMAND_ID = UnitTestPlugin.PLUGIN_ID + ".history"; //$NON-NLS-1$
+	public static final String COMMAND_ID = UnitTestPlugin.PLUGIN_ID + ".history"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		Shell shell = HandlerUtil.getActiveShell(event);
 		IWorkbenchPage page = HandlerUtil.getActivePart(event).getSite().getPage();

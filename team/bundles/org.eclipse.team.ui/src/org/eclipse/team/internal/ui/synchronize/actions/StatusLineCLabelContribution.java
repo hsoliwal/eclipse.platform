@@ -46,7 +46,7 @@ public class StatusLineCLabelContribution extends ContributionItem {
 		setVisible(false); // no text to start with
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void fill(Composite parent) {
 		Label sep = new Label(parent, SWT.SEPARATOR);
 		label = new CLabel(parent, SWT.SHADOW_NONE);
@@ -66,7 +66,7 @@ public class StatusLineCLabelContribution extends ContributionItem {
 		label.setText(text);
 		label.setImage(image);
 		if(listener != null) {
-			label.addListener(eventType, listener);
+			label.addListener(eventType, listener); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 		}
 		if(tooltip != null) {
 			label.setToolTipText(tooltip);
@@ -82,7 +82,7 @@ public class StatusLineCLabelContribution extends ContributionItem {
 		this.listener = listener;
 	}
 
-	public void setText(String text) {
+	public void setText(String text) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (text == null) {
 			throw new NullPointerException();
 		}
@@ -126,7 +126,7 @@ public class StatusLineCLabelContribution extends ContributionItem {
 		}
 	}
 
-	public void setImage(Image image) {
+	public void setImage(Image image) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (image == null) {
 			throw new NullPointerException();
 		}

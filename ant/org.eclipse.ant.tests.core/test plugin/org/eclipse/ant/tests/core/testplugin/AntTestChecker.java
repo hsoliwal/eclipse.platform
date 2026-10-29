@@ -34,17 +34,17 @@ public class AntTestChecker {
 
 	private int buildsFinishedCount;
 
-	private List<String> messages = new ArrayList<>();
+	private List<String> messages = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-	private List<String> targets = new ArrayList<>();
+	private List<String> targets = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-	private List<String> tasks = new ArrayList<>();
+	private List<String> tasks = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-	private List<String> projects = new ArrayList<>();
+	private List<String> projects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	private Hashtable<String, Object> userProperties;
 
-	private List<String> nameOfListeners = new ArrayList<>();
+	private List<String> nameOfListeners = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	private AntTestChecker() {
 	}
@@ -184,12 +184,12 @@ public class AntTestChecker {
 		targetsFinishedCount = 0;
 		buildsStartedCount = 0;
 		buildsFinishedCount = 0;
-		messages = new ArrayList<>();
-		tasks = new ArrayList<>();
-		targets = new ArrayList<>();
-		projects = new ArrayList<>();
+		messages = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		tasks = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		targets = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		projects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		userProperties = null;
-		nameOfListeners = new ArrayList<>();
+		nameOfListeners = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	}
 
 	/**

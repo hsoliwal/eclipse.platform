@@ -59,7 +59,7 @@ public class Win32Handler extends NativeHandler {
 		return ATTRIBUTES;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public FileInfo fetchFileInfo(String fileName, int options) {
 		String target = toLongWindowsPath(fileName);
 		Path file = Path.of(target);
@@ -70,7 +70,7 @@ public class Win32Handler extends NativeHandler {
 			// FindFirstFile does not work at the root level. However, we don't need it because the root will never change time-stamp.
 			// A root path is for example: \\?\c:\
 			fileInfo.setDirectory(true);
-			fileInfo.setExists(Files.exists(file));
+			fileInfo.setExists(Files.exists(file)); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return fileInfo;
 		}
 		if ((options & EFS.IGNORE_NAME_CASE) != 0) {
@@ -106,9 +106,9 @@ public class Win32Handler extends NativeHandler {
 	@Override
 	public IFileInfo[] listDirectoryAndGetFileInfos(String fileName) {
 		Path file = Path.of(fileName);
-		List<IFileInfo> children = new ArrayList<>();
-		try (DirectoryStream<Path> directoryContent = Files.newDirectoryStream(file);) {
-			for (Path child : directoryContent) {
+		List<IFileInfo> children = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		try (DirectoryStream<Path> directoryContent = Files.newDirectoryStream(file);) { //FLLDCIM: MARK — M24 M3FILE_STREAMS CALL
+			for (Path child : directoryContent) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// The directory stream delivers names with real casing and therefore the faster method can be used
 				FileInfo fileInfo = createFileInfo(child);
 				readDosFileAttributesIntoFileInfo(fileInfo, child);
@@ -131,7 +131,7 @@ public class Win32Handler extends NativeHandler {
 	 * The NIO API does not provide means for batch updates.
 	 * Since there are currently three file attributes considered, using the Java NIO API would consequently be up to three times slower.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean putFileInfo(String fileName, IFileInfo info) {
 		WString lpFileName = new WString(toLongWindowsPath(fileName));
 		// https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getfileattributesw
@@ -179,10 +179,10 @@ public class Win32Handler extends NativeHandler {
 			return fileName;
 		} else if (fileName.startsWith("\\\\")) { //$NON-NLS-1$
 			//convert UNC path of form \\server\path to long/unicode form \\?\UNC\server\path
-			return WIN32_UNC_RAW_PATH_PREFIX + fileName.substring(1);
+			return WIN32_UNC_RAW_PATH_PREFIX + fileName.substring(1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} else {
 			//convert simple path of form C:\path to long/unicode form \\?\C:\path
-			return WIN32_RAW_PATH_PREFIX + fileName;
+			return WIN32_RAW_PATH_PREFIX + fileName; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -204,9 +204,9 @@ public class Win32Handler extends NativeHandler {
 	 * This is significantly faster than using {@code FindFirstFileW()}, which effectively searches a directory
 	 * and requires two native calls.
 	 */
-	private static void readDosFileAttributesIntoFileInfo(FileInfo fileInfo, Path path) {
+	private static void readDosFileAttributesIntoFileInfo(FileInfo fileInfo, Path path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
-			DosFileAttributes attributes = Files.readAttributes(path, DosFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+			DosFileAttributes attributes = Files.readAttributes(path, DosFileAttributes.class, LinkOption.NOFOLLOW_LINKS); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 			fileInfo.setExists(true);
 			fileInfo.setLastModified(attributes.lastModifiedTime().toMillis());
@@ -219,7 +219,7 @@ public class Win32Handler extends NativeHandler {
 				setSymLink(path, fileInfo);
 				// For sym-links, DosFileAttributes.isDirectory() always returns false.
 				// Determine the real type of the link target and follow-links to the eventual target
-				fileInfo.setDirectory(Files.isDirectory(path));
+				fileInfo.setDirectory(Files.isDirectory(path)); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			}
 		} catch (NoSuchFileException unused) { // file just does not exist
 		} catch (IOException unused) {
@@ -298,7 +298,7 @@ public class Win32Handler extends NativeHandler {
 	}
 	private static final long MAXDWORD = 0xFFFFFFFFL; // unsigned long from winnt.h. On Windows a C long usually has only 32bit
 
-	private static void convertFindDataWToFileInfo(Memory mem, FileInfo info, Path file) throws IOException {
+	private static void convertFindDataWToFileInfo(Memory mem, FileInfo info, Path file) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/**
 		 * For possible values of dwFileAttributes and their descriptions,
 		 * see <a href="https://learn.microsoft.com/en-us/windows/win32/fileio/file-attribute-constants">File Attribute Constants</a>.

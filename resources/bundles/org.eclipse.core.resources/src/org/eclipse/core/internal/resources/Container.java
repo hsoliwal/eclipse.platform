@@ -41,12 +41,12 @@ public abstract class Container extends Resource implements IContainer {
 		}
 		super.convertToPhantom();
 		IResource[] members = members(IContainer.INCLUDE_PHANTOMS | IContainer.INCLUDE_TEAM_PRIVATE_MEMBERS | IContainer.INCLUDE_HIDDEN);
-		for (IResource member : members) {
+		for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			((Resource) member).convertToPhantom();
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IResourceFilterDescription createFilter(int type, FileInfoMatcherDescription matcherDescription, int updateFlags, IProgressMonitor monitor) throws CoreException {
 		Assert.isNotNull(getProject());
 		monitor = Policy.monitorFor(monitor);
@@ -131,7 +131,7 @@ public abstract class Container extends Resource implements IContainer {
 			return;
 		}
 		IResource[] members = members(IContainer.INCLUDE_PHANTOMS | IContainer.INCLUDE_TEAM_PRIVATE_MEMBERS | IContainer.INCLUDE_HIDDEN);
-		for (IResource member : members) {
+		for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			((Resource) member).fixupAfterMoveSource();
 		}
 	}
@@ -140,7 +140,7 @@ public abstract class Container extends Resource implements IContainer {
 		return getChildrenWithInfo(memberFlags).resources();
 	}
 
-	private MembersWithInfo getChildrenWithInfo(int memberFlags) {
+	private MembersWithInfo getChildrenWithInfo(int memberFlags) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath[] children = null;
 		try {
 			children = workspace.tree.getChildren(path);
@@ -154,7 +154,7 @@ public abstract class Container extends Resource implements IContainer {
 		Resource[] result = new Resource[children.length];
 		ResourceInfo[] infos = new ResourceInfo[children.length];
 		int found = 0;
-		for (IPath child : children) {
+		for (IPath child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceInfo info = workspace.getResourceInfo(child, true, false);
 			if (info != null && isMember(info.getFlags(), memberFlags)) {
 				infos[found] = info;
@@ -181,7 +181,7 @@ public abstract class Container extends Resource implements IContainer {
 			LinkedList<FilterDescription> list = desc.getFilter(getProjectRelativePath());
 			if (list != null) {
 				results = new IResourceFilterDescription[list.size()];
-				for (int i = 0; i < list.size(); i++) {
+				for (int i = 0; i < list.size(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					results[i] = list.get(i);
 				}
 				return results;
@@ -220,7 +220,7 @@ public abstract class Container extends Resource implements IContainer {
 		return (IFolder) workspace.newResource(getFullPath().append(childPath), FOLDER);
 	}
 
-	@Deprecated
+	@Deprecated //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Override
 	public boolean isLocal(int flags, int depth) {
 		if (!super.isLocal(flags, depth)) {
@@ -235,7 +235,7 @@ public abstract class Container extends Resource implements IContainer {
 		// get the children via the workspace since we know that this
 		// resource exists (it is local).
 		IResource[] children = getChildren(IResource.NONE);
-		for (IResource c : children) {
+		for (IResource c : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!c.isLocal(depth)) {
 				return false;
 			}
@@ -281,7 +281,7 @@ public abstract class Container extends Resource implements IContainer {
 		return getChildrenWithInfo(memberFlags);
 	}
 
-	public void removeFilter(IResourceFilterDescription filterDescription, int updateFlags, IProgressMonitor monitor) throws CoreException {
+	public void removeFilter(IResourceFilterDescription filterDescription, int updateFlags, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		monitor = Policy.monitorFor(monitor);
 		try {
 			String message = NLS.bind(Messages.links_creating, getFullPath());
@@ -328,12 +328,12 @@ public abstract class Container extends Resource implements IContainer {
 		return getDefaultCharset(true);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IFile[] findDeletedMembersWithHistory(int depth, IProgressMonitor monitor) {
 		IHistoryStore historyStore = getLocalManager().getHistoryStore();
 		IPath basePath = getFullPath();
 		IWorkspaceRoot root = getWorkspace().getRoot();
-		Set<IFile> deletedFiles = new HashSet<>();
+		Set<IFile> deletedFiles = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 		if (depth == IResource.DEPTH_ZERO) {
 			// this folder might have been a file in a past life
@@ -345,7 +345,7 @@ public abstract class Container extends Resource implements IContainer {
 			}
 		} else {
 			// convert IPaths to IFiles keeping only files that no longer exist
-			for (IPath filePath : historyStore.allFiles(basePath, depth, monitor)) {
+			for (IPath filePath : historyStore.allFiles(basePath, depth, monitor)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IFile file = root.getFile(filePath);
 				if (!file.exists()) {
 					deletedFiles.add(file);
@@ -363,7 +363,7 @@ public abstract class Container extends Resource implements IContainer {
 		workspace.getCharsetManager().setCharsetFor(getFullPath(), charset);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setDefaultCharset(String newCharset, IProgressMonitor monitor) throws CoreException {
 		monitor = Policy.monitorFor(monitor);
 		try {
@@ -381,7 +381,7 @@ public abstract class Container extends Resource implements IContainer {
 				IElementContentVisitor visitor = new IElementContentVisitor() {
 					boolean visitedRoot = false;
 
-					@Override
+					@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 					public boolean visitElement(ElementTree tree, IPathRequestor requestor, Object elementContents) {
 						if (elementContents == null) {
 							return false;

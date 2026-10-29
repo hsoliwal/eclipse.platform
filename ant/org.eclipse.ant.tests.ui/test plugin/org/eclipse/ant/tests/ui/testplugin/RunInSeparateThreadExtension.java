@@ -30,7 +30,7 @@ class RunInSeparateThreadExtension implements InvocationInterceptor {
 		final Display display = Display.getCurrent();
 		CompletableFuture<Result> future = evaluateAsync(invocation);
 		future.thenRun(display::wake);
-		while (!future.isDone()) {
+		while (!future.isDone()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			doReadAndDispatch(display);
 		}
 		Throwable thrownException = future.get().throwable;

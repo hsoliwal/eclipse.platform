@@ -82,7 +82,7 @@ public class ResourceComparator implements IElementComparator, ICoreConstants {
 	/**
 	 * Compare the ElementInfos for two resources.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public int compare(Object o1, Object o2) {
 		// == handles null, null.
 		if (o1 == o2) {

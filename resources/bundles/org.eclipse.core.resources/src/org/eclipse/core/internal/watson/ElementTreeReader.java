@@ -51,7 +51,7 @@ public class ElementTreeReader {
 	 * Constructs a new element tree reader that works for
 	 * the given element info flattener.
 	 */
-	public ElementTreeReader(final IElementInfoFlattener factory) {
+	public ElementTreeReader(final IElementInfoFlattener factory) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isNotNull(factory);
 		elementInfoFlattener = factory;
 

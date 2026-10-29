@@ -26,7 +26,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
  */
 public class WorkQueue {
 
-	private final List<IRunnableWithProgress> runnables = new ArrayList<>();
+	private final List<IRunnableWithProgress> runnables = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	public boolean add(IRunnableWithProgress runnable) {
 		if (runnables.contains(runnable)) {

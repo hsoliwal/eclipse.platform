@@ -51,7 +51,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 
-public class CompareContentViewerSwitchingPane extends CompareViewerSwitchingPane {
+public class CompareContentViewerSwitchingPane extends CompareViewerSwitchingPane { //FLLDCIM: MARK — T05  IMPLEMENTS
 	private static final String OPTIMIZED_INFO_IMAGE_NAME = "obj16/message_info.svg"; //$NON-NLS-1$
 	public static final String OPTIMIZED_ALGORITHM_USED = "OPTIMIZED_ALGORITHM_USED"; //$NON-NLS-1$
 	public static final String DISABLE_CAPPING_TEMPORARILY = "DISABLE_CAPPING_TEMPORARILY"; //$NON-NLS-1$
@@ -76,7 +76,7 @@ public class CompareContentViewerSwitchingPane extends CompareViewerSwitchingPan
 		return fCompareEditorInput.getCompareConfiguration();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Viewer getViewer(Viewer oldViewer, Object input) {
 		if (fSelectedViewerDescriptor != null) {
 			ViewerDescriptor[] array = CompareUIPlugin.getDefault().findContentViewerDescriptor(
@@ -103,7 +103,7 @@ public class CompareContentViewerSwitchingPane extends CompareViewerSwitchingPan
 		return null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createTopLeft(Composite p) {
 		final Composite composite = new Composite(p, SWT.NONE) {
 			@Override
@@ -125,13 +125,13 @@ public class CompareContentViewerSwitchingPane extends CompareViewerSwitchingPan
 		final ToolItem toolItem = new ToolItem(toolBar, SWT.PUSH, 0);
 		Utilities.setMenuImage(toolItem);
 		toolItem.setToolTipText(CompareMessages.CompareContentViewerSwitchingPane_switchButtonTooltip);
-		toolItem.addSelectionListener(new SelectionAdapter() {
+		toolItem.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				showMenu();
 			}
 		});
-		toolBar.addMouseListener(new MouseAdapter() {
+		toolBar.addMouseListener(new MouseAdapter() { //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 			@Override
 			public void mouseDown(MouseEvent e) {
 				showMenu();
@@ -144,7 +144,7 @@ public class CompareContentViewerSwitchingPane extends CompareViewerSwitchingPan
 		labelOptimized.setToolTipText(CompareMessages.CompareContentViewerSwitchingPane_optimizedTooltip);
 		labelOptimized.setImage(CompareUIPlugin.getImageDescriptor(
 				OPTIMIZED_INFO_IMAGE_NAME).createImage());
-		labelOptimized.addDisposeListener(unused -> {
+		labelOptimized.addDisposeListener(unused -> { //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 			Image img = labelOptimized.getImage();
 			if ((img != null) && (!img.isDisposed())) {
 				img.dispose();
@@ -156,8 +156,8 @@ public class CompareContentViewerSwitchingPane extends CompareViewerSwitchingPan
 		recomputeLink = new Link(composite, SWT.NONE);
 		recomputeLink.setText(CompareMessages.CompareContentViewerSwitchingPane_optimizedLinkLabel);
 		recomputeLink.setToolTipText(CompareMessages.CompareContentViewerSwitchingPane_optimizedTooltip);
-		recomputeLink.addSelectionListener(new SelectionAdapter() {
-			@Override
+		recomputeLink.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void widgetSelected(SelectionEvent e) {
 				/*
 				 * Disable capping temporarily, refresh, restore global state.
@@ -197,7 +197,7 @@ public class CompareContentViewerSwitchingPane extends CompareViewerSwitchingPan
 				|| fCompareEditorInput.getContentViewerDescriptor() != fSelectedViewerDescriptor;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setInput(Object input) {
 		super.setInput(input);
 		if (getViewer() == null || !Utilities.okToUse(getViewer().getControl())) {
@@ -217,7 +217,7 @@ public class CompareContentViewerSwitchingPane extends CompareViewerSwitchingPan
 		((RowData) recomputeLink.getLayoutData()).exclude = !optimizedVisible;
 	}
 
-	private void showMenu() {
+	private void showMenu() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (menuShowing) {
 			return;
 		}
@@ -233,13 +233,13 @@ public class CompareContentViewerSwitchingPane extends CompareViewerSwitchingPan
 		String label = CompareMessages.CompareContentViewerSwitchingPane_defaultViewer;
 		MenuItem defaultItem = new MenuItem(menu, SWT.RADIO);
 		defaultItem.setText(label);
-		defaultItem.addSelectionListener(createSelectionListener(null));
+		defaultItem.addSelectionListener(createSelectionListener(null)); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 		defaultItem.setSelection(fSelectedViewerDescriptor == null);
 
 		new MenuItem(menu, SWT.SEPARATOR);
 
 		// Add others
-		for (ViewerDescriptor vdi : vd) {
+		for (ViewerDescriptor vdi : vd) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			label = vdi.getLabel();
 			if (label == null || label.isEmpty()) {
 				String l = CompareUIPlugin.getDefault().findContentTypeNameOrType((ICompareInput) getInput(),
@@ -251,7 +251,7 @@ public class CompareContentViewerSwitchingPane extends CompareViewerSwitchingPan
 			}
 			MenuItem item = new MenuItem(menu, SWT.RADIO);
 			item.setText(label);
-			item.addSelectionListener(createSelectionListener(vdi));
+			item.addSelectionListener(createSelectionListener(vdi)); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			item.setSelection(vdi == fSelectedViewerDescriptor);
 		}
 
@@ -263,16 +263,16 @@ public class CompareContentViewerSwitchingPane extends CompareViewerSwitchingPan
 		menu.setVisible(true);
 
 		// 3. Dispose on close
-		menu.addMenuListener(new MenuAdapter() {
+		menu.addMenuListener(new MenuAdapter() { //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 			@Override
 			public void menuHidden(MenuEvent e) {
 				menuShowing= false;
-				e.display.asyncExec(() -> menu.dispose());
+				e.display.asyncExec(() -> menu.dispose()); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			}
 		});
 	}
 
-	private SelectionListener createSelectionListener(final ViewerDescriptor vd) {
+	private SelectionListener createSelectionListener(final ViewerDescriptor vd) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		return new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -294,7 +294,7 @@ public class CompareContentViewerSwitchingPane extends CompareViewerSwitchingPan
 	@Override
 	public void setText(String text) {
 		Composite c = (Composite) getTopLeft();
-		for (Control child : c.getChildren()) {
+		for (Control child : c.getChildren()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (child instanceof CLabel label) {
 				if (label != null && !label.isDisposed()) {
 					label.setText(text);
@@ -308,7 +308,7 @@ public class CompareContentViewerSwitchingPane extends CompareViewerSwitchingPan
 	@Override
 	public void setImage(Image image) {
 		Composite c = (Composite) getTopLeft();
-		for (Control child : c.getChildren()) {
+		for (Control child : c.getChildren()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (child instanceof CLabel label) {
 				if (label != null && !label.isDisposed()) {
 					label.setImage(image);
@@ -321,9 +321,9 @@ public class CompareContentViewerSwitchingPane extends CompareViewerSwitchingPan
 	@Override
 	public void addMouseListener(MouseListener listener) {
 		Composite c = (Composite) getTopLeft();
-		for (Control child : c.getChildren()) {
+		for (Control child : c.getChildren()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (child instanceof CLabel label) {
-				label.addMouseListener(listener);
+				label.addMouseListener(listener); //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 			}
 		}
 	}

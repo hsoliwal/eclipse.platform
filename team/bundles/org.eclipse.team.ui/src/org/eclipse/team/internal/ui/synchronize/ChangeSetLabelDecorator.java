@@ -72,7 +72,7 @@ public class ChangeSetLabelDecorator extends LabelProvider implements ILabelDeco
 				if (boldFont == null) {
 					Font defaultFont = JFaceResources.getDefaultFont();
 					FontData[] data = defaultFont.getFontData();
-					for (FontData d : data) {
+					for (FontData d : data) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						d.setStyle(SWT.BOLD);
 					}
 					boldFont = new Font(TeamUIPlugin.getStandardDisplay(), data);

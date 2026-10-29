@@ -39,7 +39,7 @@ public class AppletUtil {
 	}
 
 	// create instance to access helper method
-	private static AbstractJavaLaunchConfigurationDelegate fgDelegate = new AbstractJavaLaunchConfigurationDelegate() {
+	private static AbstractJavaLaunchConfigurationDelegate fgDelegate = new AbstractJavaLaunchConfigurationDelegate() { //FLLDCIM: MARK — T27  ANONYMOUS
 		@Override
 		public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
 			// do nothing
@@ -51,46 +51,46 @@ public class AppletUtil {
 	 *
 	 * @return the created HTML file
 	 */
-	public static String buildHTMLFile(ILaunchConfiguration configuration) throws CoreException {
+	public static String buildHTMLFile(ILaunchConfiguration configuration) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String name = getMainTypeName(configuration);
-		StringBuilder b = new StringBuilder();
-		b.append("<!--" + BuildFileCreator.WARNING + " -->" + ExportUtil.NEWLINE); //$NON-NLS-1$ //$NON-NLS-2$
-		b.append("<html>" + ExportUtil.NEWLINE); //$NON-NLS-1$
-		b.append("    <body>" + ExportUtil.NEWLINE); //$NON-NLS-1$
-		b.append("        <applet code="); //$NON-NLS-1$
-		b.append(getQuotedString(name + ".class")); //$NON-NLS-1$
+		StringBuilder b = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		b.append("<!--" + BuildFileCreator.WARNING + " -->" + ExportUtil.NEWLINE); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		b.append("<html>" + ExportUtil.NEWLINE); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		b.append("    <body>" + ExportUtil.NEWLINE); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		b.append("        <applet code="); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		b.append(getQuotedString(name + ".class")); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		String appletName = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_APPLET_NAME, IAntCoreConstants.EMPTY_STRING);
 		if (appletName.length() != 0) {
-			b.append(" name=\"" + appletName + "\""); //$NON-NLS-1$ //$NON-NLS-2$
+			b.append(" name=\"" + appletName + "\""); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		b.append(" width=\""); //$NON-NLS-1$
-		b.append(Integer.toString(configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_APPLET_WIDTH, 200)));
-		b.append("\" height=\""); //$NON-NLS-1$
-		b.append(Integer.toString(configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_APPLET_HEIGHT, 200)));
-		b.append("\">" + ExportUtil.NEWLINE); //$NON-NLS-1$
-		Map<String, String> parameters = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_APPLET_PARAMETERS, new HashMap<>());
+		b.append(" width=\""); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		b.append(Integer.toString(configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_APPLET_WIDTH, 200))); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		b.append("\" height=\""); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		b.append(Integer.toString(configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_APPLET_HEIGHT, 200))); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		b.append("\">" + ExportUtil.NEWLINE); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		Map<String, String> parameters = configuration.getAttribute(IJavaLaunchConfigurationConstants.ATTR_APPLET_PARAMETERS, new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		if (parameters.size() != 0) {
 			Iterator<Entry<String, String>> iterator = parameters.entrySet().iterator();
-			while (iterator.hasNext()) {
+			while (iterator.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Entry<String, String> next = iterator.next();
-				b.append("            <param name="); //$NON-NLS-1$
-				b.append(getQuotedString(next.getKey()));
-				b.append(" value="); //$NON-NLS-1$
-				b.append(getQuotedString(next.getValue()));
-				b.append(">" + ExportUtil.NEWLINE); //$NON-NLS-1$
+				b.append("            <param name="); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				b.append(getQuotedString(next.getKey())); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				b.append(" value="); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				b.append(getQuotedString(next.getValue())); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				b.append(">" + ExportUtil.NEWLINE); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
-		b.append("        </applet>" + ExportUtil.NEWLINE); //$NON-NLS-1$
-		b.append("    </body>" + ExportUtil.NEWLINE); //$NON-NLS-1$
-		b.append("</html>" + ExportUtil.NEWLINE); //$NON-NLS-1$
+		b.append("        </applet>" + ExportUtil.NEWLINE); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		b.append("    </body>" + ExportUtil.NEWLINE); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		b.append("</html>" + ExportUtil.NEWLINE); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return b.toString();
 	}
 
 	private static String getQuotedString(String string) {
 		if (string.indexOf('"') == -1) {
-			return '"' + string + '"';
+			return '"' + string + '"'; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
-		return '\'' + string + '\'';
+		return '\'' + string + '\''; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**

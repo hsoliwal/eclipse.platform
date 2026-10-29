@@ -71,7 +71,7 @@ public class AntLaunchShortcut implements ILaunchShortcut2 {
 	private static final int MAX_TARGET_APPEND_LENGTH = 30;
 	private static final String DEFAULT_TARGET = "default"; //$NON-NLS-1$
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void launch(ISelection selection, String mode) {
 		if (selection instanceof IStructuredSelection structuredSelection) {
 			Object object = structuredSelection.getFirstElement();
@@ -114,14 +114,14 @@ public class AntLaunchShortcut implements ILaunchShortcut2 {
 	 * @param mode
 	 *            the mode of the launch
 	 */
-	public void launch(AntElementNode node, String mode) {
+	public void launch(AntElementNode node, String mode) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String selectedTargetName = null;
 		if (node instanceof AntTargetNode targetNode) {
 			if (targetNode.isDefaultTarget()) {
 				selectedTargetName = DEFAULT_TARGET;
 			} else {
 				// append a comma to be consistent with ant targets tab
-				selectedTargetName = targetNode.getTarget().getName() + ',';
+				selectedTargetName = targetNode.getTarget().getName() + ','; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		} else if (node instanceof AntProjectNode) {
 			selectedTargetName = DEFAULT_TARGET;
@@ -162,15 +162,15 @@ public class AntLaunchShortcut implements ILaunchShortcut2 {
 	/**
 	 * Walks the file hierarchy looking for a build file. Returns the first build file found that matches the search criteria.
 	 */
-	private IFile findBuildFile(IContainer parent) {
+	private IFile findBuildFile(IContainer parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String[] names = AntUtil.getKnownBuildfileNames();
 		if (names == null) {
 			return null;
 		}
 		IContainer lparent = parent;
 		IResource file = null;
-		while (file == null || file.getType() != IResource.FILE) {
-			for (String name : names) {
+		while (file == null || file.getType() != IResource.FILE) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (String name : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				file = lparent.findMember(name);
 				if (file != null && file.getType() == IResource.FILE) {
 					break;
@@ -193,15 +193,15 @@ public class AntLaunchShortcut implements ILaunchShortcut2 {
 	 *
 	 * @since 3.4
 	 */
-	protected List<ILaunchConfiguration> collectConfigurations(IPath filepath) {
+	protected List<ILaunchConfiguration> collectConfigurations(IPath filepath) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 		ILaunchConfigurationType type = manager.getLaunchConfigurationType(IAntLaunchConstants.ID_ANT_LAUNCH_CONFIGURATION_TYPE);
 		if (type != null) {
 			try {
 				ILaunchConfiguration[] configs = manager.getLaunchConfigurations(type);
-				ArrayList<ILaunchConfiguration> list = new ArrayList<>();
+				ArrayList<ILaunchConfiguration> list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				IPath location = null;
-				for (ILaunchConfiguration config : configs) {
+				for (ILaunchConfiguration config : configs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (config.exists()) {
 						try {
 							location = ExternalToolsUtil.getLocation(config);
@@ -235,27 +235,27 @@ public class AntLaunchShortcut implements ILaunchShortcut2 {
 	 *            the listing of targets to execute or <code>null</code> for default target execution
 	 * @return a unique name for the copy
 	 */
-	public static String getNewLaunchConfigurationName(IPath filePath, String projectName, String targetAttribute) {
-		StringBuilder buffer = new StringBuilder();
+	public static String getNewLaunchConfigurationName(IPath filePath, String projectName, String targetAttribute) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		if (projectName != null) {
-			buffer.append(projectName);
-			buffer.append(' ');
-			buffer.append(filePath.lastSegment());
+			buffer.append(projectName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append(filePath.lastSegment()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		} else {
-			buffer.append(filePath.lastSegment());
+			buffer.append(filePath.lastSegment()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 
 		if (targetAttribute != null) {
-			buffer.append(" ["); //$NON-NLS-1$
+			buffer.append(" ["); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			if (targetAttribute.length() > MAX_TARGET_APPEND_LENGTH + 3) {
 				// The target attribute can potentially be a long, comma-separated list
 				// of target. Make sure the generated name isn't extremely long.
-				buffer.append(targetAttribute.substring(0, MAX_TARGET_APPEND_LENGTH));
-				buffer.append("..."); //$NON-NLS-1$
+				buffer.append(targetAttribute.substring(0, MAX_TARGET_APPEND_LENGTH)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				buffer.append("..."); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			} else {
-				buffer.append(targetAttribute);
+				buffer.append(targetAttribute); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append(']');
+			buffer.append(']'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 
 		String name = DebugPlugin.getDefault().getLaunchManager().generateLaunchConfigurationName(buffer.toString());
@@ -277,7 +277,7 @@ public class AntLaunchShortcut implements ILaunchShortcut2 {
 	 *
 	 *            configuration targets attribute.
 	 */
-	public void launch(IPath filePath, IProject project, String mode, String targetAttribute) {
+	public void launch(IPath filePath, IProject project, String mode, String targetAttribute) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ILaunchConfiguration configuration = null;
 		IFile backingfile = null;
 		if (project != null) {
@@ -330,7 +330,7 @@ public class AntLaunchShortcut implements ILaunchShortcut2 {
 	 * @param configuration
 	 *            the <code>ILaunchConfiguration</code> to launch
 	 */
-	private void launch(String mode, ILaunchConfiguration configuration) {
+	private void launch(String mode, ILaunchConfiguration configuration) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fShowDialog) {
 			/*
 			 * // Offer to save dirty editors before opening the dialog as the contents // of an Ant editor often affect the contents of the dialog.
@@ -367,7 +367,7 @@ public class AntLaunchShortcut implements ILaunchShortcut2 {
 	 *            the project containing the buildfile or <code>null</code> if the buildfile is not contained in a project (is external).
 	 * @return default launch configuration or <code>null</code> if one could not be created
 	 */
-	public static ILaunchConfiguration createDefaultLaunchConfiguration(IPath filePath, IProject project) {
+	public static ILaunchConfiguration createDefaultLaunchConfiguration(IPath filePath, IProject project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
 		ILaunchConfigurationType type = manager.getLaunchConfigurationType(IAntLaunchConstants.ID_ANT_LAUNCH_CONFIGURATION_TYPE);
 
@@ -412,8 +412,8 @@ public class AntLaunchShortcut implements ILaunchShortcut2 {
 	 *            the buildfile resource
 	 * @return list of launch configurations
 	 */
-	public static List<ILaunchConfiguration> findExistingLaunchConfigurations(IFile file) {
-		List<ILaunchConfiguration> validConfigs = new ArrayList<>();
+	public static List<ILaunchConfiguration> findExistingLaunchConfigurations(IFile file) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<ILaunchConfiguration> validConfigs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (file != null) {
 			IPath filePath = file.getLocation();
 			if (filePath != null) {
@@ -421,7 +421,7 @@ public class AntLaunchShortcut implements ILaunchShortcut2 {
 				ILaunchConfigurationType type = manager.getLaunchConfigurationType(IAntLaunchConstants.ID_ANT_LAUNCH_CONFIGURATION_TYPE);
 				if (type != null) {
 					try {
-						for (ILaunchConfiguration config : manager.getLaunchConfigurations(type)) {
+						for (ILaunchConfiguration config : manager.getLaunchConfigurations(type)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							try {
 								if (filePath.equals(ExternalToolsUtil.getLocation(config))) {
 									validConfigs.add(config);
@@ -467,7 +467,7 @@ public class AntLaunchShortcut implements ILaunchShortcut2 {
 		return null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void launch(IEditorPart editor, String mode) {
 		IEditorInput input = editor.getEditorInput();
 		IFile file = input.getAdapter(IFile.class);
@@ -520,7 +520,7 @@ public class AntLaunchShortcut implements ILaunchShortcut2 {
 		fShowDialog = showDialog;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ILaunchConfiguration[] getLaunchConfigurations(ISelection selection) {
 		if (selection instanceof IStructuredSelection structuredSelection) {
 			Object object = structuredSelection.getFirstElement();
@@ -553,7 +553,7 @@ public class AntLaunchShortcut implements ILaunchShortcut2 {
 		return null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ILaunchConfiguration[] getLaunchConfigurations(IEditorPart editor) {
 		IEditorInput input = editor.getEditorInput();
 		IFile file = input.getAdapter(IFile.class);
@@ -575,7 +575,7 @@ public class AntLaunchShortcut implements ILaunchShortcut2 {
 		return null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IResource getLaunchableResource(ISelection selection) {
 		if (selection instanceof IStructuredSelection structuredSelection) {
 			Object object = structuredSelection.getFirstElement();

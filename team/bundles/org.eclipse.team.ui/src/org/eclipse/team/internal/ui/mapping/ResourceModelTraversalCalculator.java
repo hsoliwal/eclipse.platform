@@ -55,7 +55,7 @@ public class ResourceModelTraversalCalculator {
 		configuration = null;
 	}
 
-	public int getLayoutDepth(IResource resource, TreePath path) {
+	public int getLayoutDepth(IResource resource, TreePath path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (isFlatPageLayout()) {
 			return (resource instanceof IWorkspaceRoot) ? IResource.DEPTH_INFINITE : IResource.DEPTH_ZERO;
 		}
@@ -80,7 +80,7 @@ public class ResourceModelTraversalCalculator {
 		return TeamUIPlugin.getPlugin().getPreferenceStore().getString(IPreferenceIds.SYNCVIEW_DEFAULT_LAYOUT);
 	}
 
-	public Object[] filterChildren(IResourceDiffTree diffTree, IResource resource, Object parentOrPath, Object[] children) {
+	public Object[] filterChildren(IResourceDiffTree diffTree, IResource resource, Object parentOrPath, Object[] children) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (parentOrPath instanceof TreePath tp) {
 			if (hasNonResource(tp)) {
 				return getTreeChildren(diffTree, resource, children);
@@ -103,7 +103,7 @@ public class ResourceModelTraversalCalculator {
 	}
 
 	private boolean hasNonResource(TreePath parentPath) {
-		for (int i = 0; i < parentPath.getSegmentCount(); i++) {
+		for (int i = 0; i < parentPath.getSegmentCount(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object o = parentPath.getSegment(i);
 			if (!(o instanceof IResource) && !(o instanceof ModelProvider) && !(o instanceof ChangeSet)) {
 				return true;
@@ -112,10 +112,10 @@ public class ResourceModelTraversalCalculator {
 		return false;
 	}
 
-	private Object[] getCompressedChildren(IResourceDiffTree diffTree, IProject project, Object[] children) {
-		Set<Object> result = new HashSet<>();
+	private Object[] getCompressedChildren(IResourceDiffTree diffTree, IProject project, Object[] children) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		Set<Object> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IDiff[] diffs = diffTree.getDiffs(project, IResource.DEPTH_INFINITE);
-		for (IDiff diff : diffs) {
+		for (IDiff diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = diffTree.getResource(diff);
 			if (resource.getType() == IResource.FILE) {
 				IContainer parent = resource.getParent();
@@ -134,9 +134,9 @@ public class ResourceModelTraversalCalculator {
 	/*
 	 * Only return the files that are direct children of the folder
 	 */
-	private Object[] getCompressedChildren(IResourceDiffTree diffTree, IFolder folder, Object[] children) {
-		Set<Object> result = new HashSet<>();
-		for (Object object : children) {
+	private Object[] getCompressedChildren(IResourceDiffTree diffTree, IFolder folder, Object[] children) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		Set<Object> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (Object object : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (object instanceof IResource resource) {
 				if (resource.getType() == IResource.FILE) {
 					result.add(resource);
@@ -144,7 +144,7 @@ public class ResourceModelTraversalCalculator {
 			}
 		}
 		IDiff[] diffs = diffTree.getDiffs(folder, IResource.DEPTH_ONE);
-		for (IDiff diff : diffs) {
+		for (IDiff diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = diffTree.getResource(diff);
 			if (resource.getType() == IResource.FILE) {
 				result.add(resource);
@@ -156,8 +156,8 @@ public class ResourceModelTraversalCalculator {
 	private Object[] getFlatChildren(IResourceDiffTree diffTree, IResource resource) {
 		Object[] allChildren;
 		IDiff[] diffs = diffTree.getDiffs(resource, IResource.DEPTH_INFINITE);
-		ArrayList<Object> result = new ArrayList<>();
-		for (IDiff diff : diffs) {
+		ArrayList<Object> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IDiff diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result.add(diffTree.getResource(diff));
 		}
 		allChildren = result.toArray();
@@ -165,7 +165,7 @@ public class ResourceModelTraversalCalculator {
 	}
 
 	private Object[] getTreeChildren(IResourceDiffTree diffTree, IResource resource, Object[] children) {
-		Set<Object> result = new HashSet<>();
+		Set<Object> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		Collections.addAll(result, children);
 		IResource[] setChildren = getChildren(diffTree, resource);
 		Collections.addAll(result, setChildren);
@@ -173,10 +173,10 @@ public class ResourceModelTraversalCalculator {
 		return allChildren;
 	}
 
-	public static IResource[] getChildren(IResourceDiffTree diffTree, IResource resource) {
-		Set<IResource> result = new HashSet<>();
+	public static IResource[] getChildren(IResourceDiffTree diffTree, IResource resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		Set<IResource> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IPath[] childPaths = diffTree.getChildren(resource.getFullPath());
-		for (IPath path : childPaths) {
+		for (IPath path : childPaths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IDiff delta = diffTree.getDiff(path);
 			IResource child;
 			if (delta == null) {
@@ -199,16 +199,16 @@ public class ResourceModelTraversalCalculator {
 		return new ResourceTraversal[] { new ResourceTraversal(resources, IResource.DEPTH_ZERO, IResource.NONE) };
 	}
 
-	private IResource[] getResource(DiffChangeSet dcs, TreePath tp) {
+	private IResource[] getResource(DiffChangeSet dcs, TreePath tp) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (tp.getSegmentCount() == 1 && tp.getFirstSegment() == dcs) {
 			return dcs.getResources();
 		}
-		Set<IResource> result = new HashSet<>();
+		Set<IResource> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		Object o = tp.getLastSegment();
 		if (o instanceof IResource resource) {
 			int depth = getLayoutDepth(resource, tp);
 			IDiff[] diffs = dcs.getDiffTree().getDiffs(resource, depth);
-			for (IDiff diff : diffs) {
+			for (IDiff diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource r = ResourceDiffTree.getResourceFor(diff);
 				if (r != null) {
 					result.add(r);
@@ -223,7 +223,7 @@ public class ResourceModelTraversalCalculator {
 	}
 
 	public boolean isResourcePath(TreePath path) {
-		for (int i = 0; i < path.getSegmentCount(); i++) {
+		for (int i = 0; i < path.getSegmentCount(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object o = path.getSegment(i);
 			if (!(o instanceof IResource)) {
 				return false;
@@ -232,7 +232,7 @@ public class ResourceModelTraversalCalculator {
 		return true;
 	}
 
-	public String getLabel(Object elementOrPath) {
+	public String getLabel(Object elementOrPath) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (elementOrPath instanceof TreePath && hasNonResource((TreePath)elementOrPath)) {
 			return null;
 		}
@@ -302,7 +302,7 @@ public class ResourceModelTraversalCalculator {
 		return null;
 	}
 
-	public boolean hasChildren(ISynchronizationContext context, Object elementOrPath) {
+	public boolean hasChildren(ISynchronizationContext context, Object elementOrPath) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Object element = internalGetElement(elementOrPath);
 		if (element instanceof IContainer container) {
 			// For containers check to see if the delta contains any children
@@ -317,7 +317,7 @@ public class ResourceModelTraversalCalculator {
 					if (depth == IResource.DEPTH_INFINITE) {
 						return true;
 					}
-					for (IResource resource : members) {
+					for (IResource resource : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (resource.getType() == IResource.FILE) {
 							return true;
 						}
@@ -328,7 +328,7 @@ public class ResourceModelTraversalCalculator {
 		return false;
 	}
 
-	public TreePath getParentPath(ISynchronizationContext context, ModelProvider provider, Object element) {
+	public TreePath getParentPath(ISynchronizationContext context, ModelProvider provider, Object element) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (element instanceof IResource resource) {
 			TreePath treePath = getProviderRootPath(context, provider);
 			if (resource.getType() == IResource.ROOT){
@@ -349,11 +349,11 @@ public class ResourceModelTraversalCalculator {
 			}
 			IResource parent = resource.getParent();
 			IResource[] resourcePath = new IResource[parent.getFullPath().segmentCount()];
-			for (int i = resourcePath.length - 1; i >= 0; i--) {
+			for (int i = resourcePath.length - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				resourcePath[i] = parent;
 				parent = parent.getParent();
 			}
-			for (IResource r : resourcePath) {
+			for (IResource r : resourcePath) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				treePath = treePath.createChildPath(r);
 			}
 			return treePath;

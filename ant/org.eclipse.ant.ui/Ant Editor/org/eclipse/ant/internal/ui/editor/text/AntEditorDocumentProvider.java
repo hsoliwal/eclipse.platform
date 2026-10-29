@@ -69,7 +69,7 @@ public class AntEditorDocumentProvider extends TextFileDocumentProvider {
 		return new AntModel(document, requestor, new LocationProvider(element instanceof IEditorInput i ? i : null));
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected FileInfo createFileInfo(Object element) throws CoreException {
 		FileInfo info = super.createFileInfo(element);
 		if (!(info instanceof AntFileInfo)) {
@@ -115,7 +115,7 @@ public class AntEditorDocumentProvider extends TextFileDocumentProvider {
 		return xmlInfo;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void disposeFileInfo(Object element, FileInfo info) {
 		if (info instanceof AntFileInfo xmlInfo) {
 			if (xmlInfo.fAntModel != null) {

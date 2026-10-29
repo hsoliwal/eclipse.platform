@@ -67,9 +67,9 @@ public class NestedProjectCreator {
 		}
 	}
 
-	private void doCreateNestedProjects(final IProject[] projects, Shell shell) throws InvocationTargetException, InterruptedException {
+	private void doCreateNestedProjects(final IProject[] projects, Shell shell) throws InvocationTargetException, InterruptedException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final Object[] result = new Object[1];
-		context.run(true, true, unused -> result[0] = findNestedProjects(projects));
+		context.run(true, true, unused -> result[0] = findNestedProjects(projects)); //FLLDCIM: MARK — T09  LAMBDA
 		if (result[0] == null)
 			return;
 		IProjectDescription[] rawDescriptions = (IProjectDescription[]) result[0];
@@ -82,12 +82,12 @@ public class NestedProjectCreator {
 		excludeOverlap = MessageDialog.openQuestion(shell, "Exclude overlapping resources?", message);
 		//create the projects
 		final IWorkspaceRoot root = workspace.getRoot();
-		context.run(true, true, new WorkspaceModifyOperation() {
+		context.run(true, true, new WorkspaceModifyOperation() { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			protected void execute(IProgressMonitor monitor) throws CoreException {
 				try {
 					monitor.beginTask("Creating Projects", finalDescriptions.length * 2);
-					for (int i = 0; i < finalDescriptions.length; i++) {
+					for (int i = 0; i < finalDescriptions.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						IProject project = root.getProject(finalDescriptions[i].getName());
 						if (excludeOverlap)
 							excludeOverlap(finalDescriptions[i]);
@@ -106,7 +106,7 @@ public class NestedProjectCreator {
 	 * The given project is about to be created.  Exclude any corresponding
 	 * resources in an overlapping parent project.
 	 */
-	protected void excludeOverlap(IProjectDescription description) throws CoreException {
+	protected void excludeOverlap(IProjectDescription description) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		URI location = description.getLocationURI();
 		if (location == null) {
 			//default location for this project is below the root location
@@ -122,7 +122,7 @@ public class NestedProjectCreator {
 			//if this happens we cannot exclude the resource
 			return;
 		}
-		for (int i = 0; i < containers.length; i++) {
+		for (int i = 0; i < containers.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (containers[i].getType() != IResource.FOLDER)
 				continue;
 			IFolder folder = (IFolder) containers[i];
@@ -144,13 +144,13 @@ public class NestedProjectCreator {
 	 * @return The descriptions of projects physically located within
 	 * the given project.
 	 */
-	public IProjectDescription[] findNestedProjects(IProject[] projects) {
-		final ArrayList<IProjectDescription> descriptions = new ArrayList<>();
-		for (int i = 0; i < projects.length; i++) {
+	public IProjectDescription[] findNestedProjects(IProject[] projects) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		final ArrayList<IProjectDescription> descriptions = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (int i = 0; i < projects.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!projects[i].isAccessible())
 				continue;
 			try {
-				projects[i].accept(new IResourceProxyVisitor() {
+				projects[i].accept(new IResourceProxyVisitor() { //FLLDCIM: MARK — T07  ANONYMOUS
 					private void addDescription(final ArrayList<IProjectDescription> descriptions, IProjectDescription description) {
 						IProject project = workspace.getRoot().getProject(description.getName());
 						if (!project.exists())
@@ -182,7 +182,7 @@ public class NestedProjectCreator {
 					 * Searches for project description files within the given store,
 					 * and adds any found descriptions to the supplied list.
 					 */
-					private void searchInStore(IFileStore store) {
+					private void searchInStore(IFileStore store) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 						try {
 							if (store.getName().equals(IProjectDescription.DESCRIPTION_FILE_NAME)) {
 								if (!store.isDirectory()) {
@@ -198,7 +198,7 @@ public class NestedProjectCreator {
 							}
 							//recurse on children
 							IFileStore[] children = store.childStores(EFS.NONE, null);
-							for (int j = 0; j < children.length; j++)
+							for (int j = 0; j < children.length; j++) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 								searchInStore(children[j]);
 						} catch (CoreException e) {
 							//ignore if there are problems accessing the file system
@@ -236,7 +236,7 @@ public class NestedProjectCreator {
 	 * This provider just converts IProjectDescription->IProject, and then
 	 * uses the standard {@link WorkbenchLabelProvider}.
 	 */
-	private ILabelProvider getProjectDescriptionLabelProvider() {
+	private ILabelProvider getProjectDescriptionLabelProvider() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		return new LabelProvider() {
 			private final LabelProvider realProvider = new WorkbenchLabelProvider();
 			private final IWorkspaceRoot root = workspace.getRoot();

@@ -45,7 +45,7 @@ import org.eclipse.ui.IWorkbenchPage;
 
 public class CompareAction extends TeamAction {
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void execute(IAction action) throws InvocationTargetException,
 			InterruptedException {
 
@@ -82,7 +82,7 @@ public class CompareAction extends TeamAction {
 		openInCompare(ancestor, left, right);
 	}
 
-	private void openInCompare(ITypedElement ancestor, ITypedElement left,
+	private void openInCompare(ITypedElement ancestor, ITypedElement left, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			ITypedElement right) {
 		IWorkbenchPage workBenchPage = getTargetPage();
 		CompareEditorInput input = new SaveablesCompareEditorInput(ancestor,
@@ -140,9 +140,9 @@ public class CompareAction extends TeamAction {
 			Composite composite = new Composite(parent, SWT.NONE);
 			composite.setLayout(new GridLayout());
 			buttons = new Button[3];
-			for (int i = 0; i < 3; i++) {
+			for (int i = 0; i < 3; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				buttons[i] = new Button(composite, SWT.RADIO);
-				buttons[i].addSelectionListener(selectionListener);
+				buttons[i].addSelectionListener(selectionListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 				buttons[i].setText(NLS.bind(
 						TeamUIMessages.SelectAncestorDialog_option,
 						theResources[i].getFullPath().toPortableString()));
@@ -167,7 +167,7 @@ public class CompareAction extends TeamAction {
 				if (!selectedButton.getSelection()) {
 					return;
 				}
-				for (int i = 0; i < 3; i++) {
+				for (int i = 0; i < 3; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (selectedButton == buttons[i]) {
 						pickAncestor(i);
 					}

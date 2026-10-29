@@ -15,7 +15,7 @@ package org.eclipse.team.internal.core.subscribers;
 
 import org.eclipse.core.resources.IResource;
 
-public class WorkingSetSyncSetInput extends SyncSetInputFromSyncSet {
+public class WorkingSetSyncSetInput extends SyncSetInputFromSyncSet { //FLLDCIM: MARK — T38  IMPLEMENTS
 
 	private final SyncInfoWorkingSetFilter workingSetFilter = new SyncInfoWorkingSetFilter();
 

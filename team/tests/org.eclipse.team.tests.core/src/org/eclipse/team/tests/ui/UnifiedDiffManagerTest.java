@@ -98,14 +98,14 @@ public class UnifiedDiffManagerTest {
 
 	private IFile file;
 	private ITextEditor editor;
-	private final List<IStatus> loggedErrors = synchronizedList(new ArrayList<>());
+	private final List<IStatus> loggedErrors = synchronizedList(new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private final ILogListener logListener = (status, unused) -> {
 		if (status.getSeverity() == IStatus.ERROR) {
 			loggedErrors.add(status);
 		}
 	};
 
-	@BeforeEach
+	@BeforeEach //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setUp() throws Exception {
 		// Tests force a paint cycle, which requires a real Display. Fail loudly if
 		// the test is launched in a headless environment instead of silently passing.
@@ -137,10 +137,10 @@ public class UnifiedDiffManagerTest {
 		assertThat(loggedErrors).as("errors logged during open + paint").isEmpty();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testOverlayReadOnlyModeProducesAnnotationsAndPaints() {
 		IStatus status = UnifiedDiff.create(editor, RIGHT, UnifiedDiffMode.OVERLAY_READ_ONLY_MODE).open();
-		assertTrue(status.isOK(), "open() should return OK status: " + status);
+		assertTrue(status.isOK(), "open() should return OK status: " + status); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		ITextViewer viewer = editor.getAdapter(ITextViewer.class);
 		assertNotNull(viewer, "editor must adapt to ITextViewer");
@@ -154,17 +154,17 @@ public class UnifiedDiffManagerTest {
 		int deletionCount = countAnnotations(model, DELETION_ANNO_TYPE);
 		int detailedDeletionCount = countAnnotations(model, DETAILED_DELETION_ANNO_TYPE);
 		assertTrue(deletionCount >= 1,
-				"expected at least one deletion annotation, got " + deletionCount);
+				"expected at least one deletion annotation, got " + deletionCount); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertTrue(detailedDeletionCount >= 1,
-				"expected at least one detailed-deletion annotation, got " + detailedDeletionCount);
+				"expected at least one detailed-deletion annotation, got " + detailedDeletionCount); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		forcePaintCycle(viewer.getTextWidget());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRevertModeProducesAnnotationsAndPaints() {
 		IStatus status = UnifiedDiff.create(editor, RIGHT, UnifiedDiffMode.REVERT_MODE).open();
-		assertTrue(status.isOK(), "open() should return OK status: " + status);
+		assertTrue(status.isOK(), "open() should return OK status: " + status); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		ITextViewer viewer = editor.getAdapter(ITextViewer.class);
 		assertNotNull(viewer, "editor must adapt to ITextViewer");
@@ -178,9 +178,9 @@ public class UnifiedDiffManagerTest {
 		int additionCount = countAnnotations(model, ADDITION_ANNO_TYPE);
 		int detailedAdditionCount = countAnnotations(model, DETAILED_ADDITION_ANNO_TYPE);
 		assertTrue(additionCount >= 1,
-				"expected at least one addition annotation, got " + additionCount);
+				"expected at least one addition annotation, got " + additionCount); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertTrue(detailedAdditionCount >= 1,
-				"expected at least one detailed-addition annotation, got " + detailedAdditionCount);
+				"expected at least one detailed-addition annotation, got " + detailedAdditionCount); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		forcePaintCycle(viewer.getTextWidget());
 	}
@@ -221,7 +221,7 @@ public class UnifiedDiffManagerTest {
 	 * the offsets of all following ones, so a wrong delta only shows up from the
 	 * second diff onwards.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testReplaceModeAppliesSeveralDiffsOfDifferentLength() {
 		String left = """
 				one
@@ -255,7 +255,7 @@ public class UnifiedDiffManagerTest {
 		setEditorContent(LEFT);
 
 		IStatus status = UnifiedDiff.create(editor, RIGHT, UnifiedDiffMode.REPLACE_MODE).open();
-		assertTrue(status.isOK(), "open() should return OK status: " + status);
+		assertTrue(status.isOK(), "open() should return OK status: " + status); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		List<Annotation> additions = annotations(annotationModel(), ADDITION_ANNO_TYPE);
 		assertEquals(1, additions.size(), "one addition annotation for the single diff");
@@ -323,7 +323,7 @@ public class UnifiedDiffManagerTest {
 	 * The detailed (token level) annotations are positioned relative to the
 	 * enclosing diff, so their offsets must stay inside it.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDetailedAnnotationsStayInsideTheirDiff() throws BadLocationException {
 		setEditorContent(LEFT);
 
@@ -333,13 +333,13 @@ public class UnifiedDiffManagerTest {
 		Position parent = model.getPosition(annotations(model, DELETION_ANNO_TYPE).get(0));
 		List<Annotation> detailed = annotations(model, DETAILED_DELETION_ANNO_TYPE);
 		assertTrue(detailed.size() >= 1, "expected at least one detailed annotation");
-		for (Annotation annotation : detailed) {
+		for (Annotation annotation : detailed) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Position position = model.getPosition(annotation);
 			assertTrue(position.offset >= parent.offset && position.offset + position.length <= parent.offset
-					+ parent.length, "detailed annotation " + position.offset + "+" + position.length
+					+ parent.length, "detailed annotation " + position.offset + "+" + position.length //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							+ " is outside its diff " + parent.offset + "+" + parent.length);
 			String text = document().get(position.offset, position.length);
-			assertTrue(!text.isBlank(), "a detailed annotation must not cover whitespace only, was '" + text + "'");
+			assertTrue(!text.isBlank(), "a detailed annotation must not cover whitespace only, was '" + text + "'"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -351,7 +351,7 @@ public class UnifiedDiffManagerTest {
 
 		IStatus status = UnifiedDiff.create(editor, LEFT, UnifiedDiffMode.OVERLAY_MODE).open();
 
-		assertTrue(status.isOK(), "open() should return OK status: " + status);
+		assertTrue(status.isOK(), "open() should return OK status: " + status); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertTrue(UnifiedDiffManager.get(viewer()).isEmpty(), "identical content must not produce diffs");
 		assertEquals(0, countAnnotations(annotationModel(), DELETION_ANNO_TYPE));
 		assertEquals(LEFT, document().get());
@@ -406,7 +406,7 @@ public class UnifiedDiffManagerTest {
 		assertNotNull(header, "the removed content must be shown as a line header mining, not as a document footer");
 		int reserved = header.getHeight();
 		assertTrue(reserved >= 200 * viewer().getTextWidget().getLineHeight(),
-				"the 200 removed lines must reserve scrollable space, but only " + reserved + " pixels were reserved");
+				"the 200 removed lines must reserve scrollable space, but only " + reserved + " pixels were reserved"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -452,7 +452,7 @@ public class UnifiedDiffManagerTest {
 	// ------------------------------------------------------ mouse move listener
 
 	/** Hovering over a diff must open its toolbar. */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMouseMoveOpensTheToolbarForTheHoveredDiff() throws BadLocationException {
 		setEditorContent(LEFT);
 		assertTrue(UnifiedDiff.create(editor, RIGHT, UnifiedDiffMode.OVERLAY_READ_ONLY_MODE).open().isOK());
@@ -479,7 +479,7 @@ public class UnifiedDiffManagerTest {
 				"the diff under the mouse cursor must be the one whose toolbar is shown");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testToolbarActionPresentationCanOverrideTextAndRemoveImage() throws BadLocationException {
 		setEditorContent(LEFT);
 
@@ -503,7 +503,7 @@ public class UnifiedDiffManagerTest {
 		assertTextOnlyToolbarItem(toolbar(oneDiffToolbar), "Apply change");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testToolbarActionPresentationInRevertMode() throws BadLocationException {
 		setEditorContent(LEFT);
 
@@ -566,7 +566,7 @@ public class UnifiedDiffManagerTest {
 	 * Opening a second diff on the same editor must replace the first toolbar
 	 * presentations, not accumulate them.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testReopeningReplacesToolbarPresentations() throws BadLocationException {
 		setEditorContent(LEFT);
 
@@ -611,7 +611,7 @@ public class UnifiedDiffManagerTest {
 
 		IStatus status = UnifiedDiff.create(editor, right, UnifiedDiffMode.REPLACE_MODE).open();
 
-		assertTrue(status.isOK(), "open() should return OK status: " + status);
+		assertTrue(status.isOK(), "open() should return OK status: " + status); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertEquals(right, document().get(), "REPLACE_MODE must transform the document into the compared source");
 	}
 
@@ -670,7 +670,7 @@ public class UnifiedDiffManagerTest {
 
 	private static ToolBar toolbar(Composite composite) {
 		assertNotNull(composite, "the toolbar composite must be shown");
-		for (var child : composite.getChildren()) {
+		for (var child : composite.getChildren()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (child instanceof ToolBar toolbar) {
 				return toolbar;
 			}
@@ -679,7 +679,7 @@ public class UnifiedDiffManagerTest {
 	}
 
 	private static ToolItem findToolbarItem(ToolBar toolbar, Function<ToolItem, String> property, String expected) {
-		for (ToolItem item : toolbar.getItems()) {
+		for (ToolItem item : toolbar.getItems()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (expected.equals(property.apply(item))) {
 				return item;
 			}
@@ -690,7 +690,7 @@ public class UnifiedDiffManagerTest {
 	/** Asserts that an action without an image is shown with the given text. */
 	private static void assertTextOnlyToolbarItem(ToolBar toolbar, String text) {
 		ToolItem item = findToolbarItem(toolbar, ToolItem::getText, text);
-		assertNotNull(item, "toolbar item not found: " + text);
+		assertNotNull(item, "toolbar item not found: " + text); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertNull(item.getImage(), "an action without an image must display its text");
 	}
 
@@ -719,9 +719,9 @@ public class UnifiedDiffManagerTest {
 	}
 
 	private static List<Annotation> annotations(IAnnotationModel model, String type) {
-		List<Annotation> result = new ArrayList<>();
+		List<Annotation> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Iterator<Annotation> it = model.getAnnotationIterator();
-		while (it.hasNext()) {
+		while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Annotation anno = it.next();
 			if (type.equals(anno.getType())) {
 				result.add(anno);
@@ -744,10 +744,10 @@ public class UnifiedDiffManagerTest {
 	 */
 	private LineHeaderAnnotation waitForLineHeaderAnnotation() {
 		long deadline = System.currentTimeMillis() + 10_000;
-		while (System.currentTimeMillis() < deadline) {
+		while (System.currentTimeMillis() < deadline) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			processEvents();
 			Iterator<Annotation> it = ((ISourceViewer) viewer()).getAnnotationModel().getAnnotationIterator();
-			while (it.hasNext()) {
+			while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (it.next() instanceof LineHeaderAnnotation header) {
 					return header;
 				}
@@ -770,7 +770,7 @@ public class UnifiedDiffManagerTest {
 		if (display == null) {
 			return;
 		}
-		while (display.readAndDispatch()) {
+		while (display.readAndDispatch()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// drain the event queue
 		}
 	}

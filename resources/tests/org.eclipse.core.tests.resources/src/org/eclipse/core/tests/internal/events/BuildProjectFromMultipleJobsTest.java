@@ -87,33 +87,33 @@ public class BuildProjectFromMultipleJobsTest {
 	 * @see <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=517411">Eclipse
 	 *      bug 517411</a>
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test10IterationsWithBuildsFrom8Jobs() throws Exception {
 		IProgressMonitor monitor = new NullProgressMonitor();
 
 		int iterations = 10;
 		int jobs = 8;
 
-		for (int i = 0; i < iterations; ++i) {
+		for (int i = 0; i < iterations; ++i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProject project = createTestProject(SimpleBuilder.BUILDER_ID, monitor);
 
-			List<BuildTestProject> buildJobs = new ArrayList<>();
-			for (int j = 0; j < jobs; ++j) {
+			List<BuildTestProject> buildJobs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (int j = 0; j < jobs; ++j) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				BuildTestProject buildTestProject = new BuildTestProject(project, j);
 				buildJobs.add(buildTestProject);
 			}
 
-			for (BuildTestProject buildJob : buildJobs) {
+			for (BuildTestProject buildJob : buildJobs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				buildJob.schedule();
 			}
 
-			for (BuildTestProject buildJob : buildJobs) {
+			for (BuildTestProject buildJob : buildJobs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				buildJob.join();
 			}
 
 			project.delete(true, monitor);
 
-			String errorMessage = "Building in parallel encountered an exception in iteration " + i;
+			String errorMessage = "Building in parallel encountered an exception in iteration " + i; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			logListener.assertNoExceptionsWereLogged(errorMessage);
 		}
 	}
@@ -122,7 +122,7 @@ public class BuildProjectFromMultipleJobsTest {
 	/**
 	 * Tests that modifying {@link BuildCommand#getBuilders()} map does not allow to modify internal state of the command.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBuildersAreNotModifiable() throws Exception {
 		Project project = (Project) createTestProject(ConfigurationBuilder.BUILDER_NAME, null);
 		project.build(IncrementalProjectBuilder.FULL_BUILD, null);
@@ -168,7 +168,7 @@ public class BuildProjectFromMultipleJobsTest {
 		private final List<Throwable> loggedExceptions;
 
 		public ErrorLogListener() {
-			loggedExceptions = new ArrayList<>();
+			loggedExceptions = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 
 		@Override
@@ -178,7 +178,7 @@ public class BuildProjectFromMultipleJobsTest {
 		}
 
 		void assertNoExceptionsWereLogged(String errorMessage) {
-			for (Throwable loggedException : loggedExceptions) {
+			for (Throwable loggedException : loggedExceptions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				throw new AssertionError(errorMessage, loggedException);
 			}
 		}
@@ -193,7 +193,7 @@ public class BuildProjectFromMultipleJobsTest {
 		private final IProject project;
 
 		public BuildTestProject(IProject project, int number) {
-			super("build test project " + number);
+			super("build test project " + number); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			this.project = project;
 		}
 
@@ -206,7 +206,7 @@ public class BuildProjectFromMultipleJobsTest {
 			} catch (CoreException e) {
 				return e.getStatus();
 			}
-			return new Status(IStatus.OK, PI_RESOURCES_TESTS, getName() + " finished");
+			return new Status(IStatus.OK, PI_RESOURCES_TESTS, getName() + " finished"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		@Override

@@ -51,8 +51,8 @@ public class PromptingDialog extends MultipleYesNoPrompter {
 	 *             if the user choose to cancel on the prompt dialog
 	 */
 	public IResource[] promptForMultiple() throws InterruptedException {
-		List<IResource> targetResources = new ArrayList<>();
-		for (IResource resource : resources) {
+		List<IResource> targetResources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!condition.needsPrompt(resource) || shouldInclude(condition.promptMessage(resource))) {
 				targetResources.add(resource);
 			}

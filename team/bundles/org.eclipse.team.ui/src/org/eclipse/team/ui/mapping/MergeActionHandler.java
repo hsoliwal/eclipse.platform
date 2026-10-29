@@ -80,7 +80,7 @@ public abstract class MergeActionHandler extends AbstractHandler {
 	public MergeActionHandler(ISynchronizePageConfiguration configuration) {
 		this.configuration = configuration;
 		ISelectionProvider selectionProvider = getConfiguration().getSite().getSelectionProvider();
-		selectionProvider.addSelectionChangedListener(listener);
+		selectionProvider.addSelectionChangedListener(listener); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 		updateEnablement((IStructuredSelection)selectionProvider.getSelection());
 	}
 

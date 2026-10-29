@@ -67,7 +67,7 @@ public class HistoryItem {
 	 *
 	 * @param session a {@link TestRunSession} object
 	 */
-	public HistoryItem(TestRunSession session) {
+	public HistoryItem(TestRunSession session) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		this.session = session;
 		this.name = session.getTestRunName();
 		this.startTime = session.getStartTime();
@@ -177,8 +177,8 @@ public class HistoryItem {
 	 * @throws IOException in case of I/O failure
 	 */
 	public void removeSwapFile() throws IOException {
-		if (historyFile != null && historyFile.exists()) {
-			Files.delete(historyFile.toPath());
+		if (historyFile != null && historyFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			Files.delete(historyFile.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 	}
 
@@ -191,11 +191,11 @@ public class HistoryItem {
 	 * @throws CoreException                        in case of storing operation
 	 *                                              failure
 	 */
-	void storeSessionToFile(File target) throws TransformerFactoryConfigurationError, CoreException {
+	void storeSessionToFile(File target) throws TransformerFactoryConfigurationError, CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (this.session == null) {
 			return;
 		}
-		try (FileOutputStream out = new FileOutputStream(target)) {
+		try (FileOutputStream out = new FileOutputStream(target)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			@SuppressWarnings("restriction")
 			Transformer transformer = org.eclipse.core.internal.runtime.XmlProcessorFactory
 					.createTransformerFactoryWithErrorOnDOCTYPE().newTransformer();
@@ -232,7 +232,7 @@ public class HistoryItem {
 			File historyDir = History.INSTANCE.getDirectory();
 			String isoTime = new SimpleDateFormat("yyyyMMdd-HHmmss.SSS") //$NON-NLS-1$
 					.format(new Date(getStartDate().toEpochMilli()));
-			String swapFileName = session.getTestRunName() + '@' + isoTime + ".xml"; //$NON-NLS-1$
+			String swapFileName = session.getTestRunName() + '@' + isoTime + ".xml"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			this.historyFile = new File(historyDir, swapFileName);
 		}
 
@@ -318,8 +318,8 @@ public class HistoryItem {
 	 */
 	public Long getSizeOnDisk() {
 		File file = getFile();
-		if (file != null && file.isFile()) {
-			return Long.valueOf(file.length());
+		if (file != null && file.isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			return Long.valueOf(file.length()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		return null;
 	}

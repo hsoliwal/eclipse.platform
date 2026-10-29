@@ -47,7 +47,7 @@ public class PopFrameActionDelegate implements IObjectActionDelegate, IActionDel
 		//#endif
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void selectionChanged(IAction action, ISelection selection) {
 		if (selection instanceof IStructuredSelection ss) {
 			Object element = ss.getFirstElement();

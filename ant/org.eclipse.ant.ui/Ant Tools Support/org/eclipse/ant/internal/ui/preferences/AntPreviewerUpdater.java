@@ -47,18 +47,18 @@ class AntPreviewerUpdater {
 	 * @param preferenceStore
 	 *            the preference store
 	 */
-	public AntPreviewerUpdater(final SourceViewer viewer, final AntSourceViewerConfiguration configuration, final IPreferenceStore preferenceStore) {
+	public AntPreviewerUpdater(final SourceViewer viewer, final AntSourceViewerConfiguration configuration, final IPreferenceStore preferenceStore) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		initializeViewerColors(viewer, preferenceStore);
 
-		final IPropertyChangeListener fontChangeListener = event -> {
+		final IPropertyChangeListener fontChangeListener = event -> { //FLLDCIM: MARK — T06  LAMBDA
 			if (event.getProperty().equals(JFaceResources.TEXT_FONT)) {
 				Font font = JFaceResources.getFont(JFaceResources.TEXT_FONT);
 				viewer.getTextWidget().setFont(font);
 			}
 		};
-		final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() {
-			@Override
+		final IPropertyChangeListener propertyChangeListener = new IPropertyChangeListener() { //FLLDCIM: MARK — T06  ANONYMOUS
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void propertyChange(PropertyChangeEvent event) {
 
 				String property = event.getProperty();
@@ -92,11 +92,11 @@ class AntPreviewerUpdater {
 				viewer.getDocument().set(contents);
 			}
 		};
-		viewer.getTextWidget().addDisposeListener(unused -> {
+		viewer.getTextWidget().addDisposeListener(unused -> { //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 			preferenceStore.removePropertyChangeListener(propertyChangeListener);
 			JFaceResources.getFontRegistry().removeListener(fontChangeListener);
 		});
-		JFaceResources.getFontRegistry().addListener(fontChangeListener);
+		JFaceResources.getFontRegistry().addListener(fontChangeListener); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 		preferenceStore.addPropertyChangeListener(propertyChangeListener);
 	}
 
@@ -107,7 +107,7 @@ class AntPreviewerUpdater {
 	 *            the viewer to be initialized
 	 * @since 2.0
 	 */
-	protected void initializeViewerColors(ISourceViewer viewer, IPreferenceStore store) {
+	protected void initializeViewerColors(ISourceViewer viewer, IPreferenceStore store) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		StyledText styledText = viewer.getTextWidget();
 
@@ -142,7 +142,7 @@ class AntPreviewerUpdater {
 	 * @return the created color according to the specification in the preference store
 	 * @since 2.0
 	 */
-	private Color createColor(IPreferenceStore store, String key) {
+	private Color createColor(IPreferenceStore store, String key) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		RGB rgb = null;
 

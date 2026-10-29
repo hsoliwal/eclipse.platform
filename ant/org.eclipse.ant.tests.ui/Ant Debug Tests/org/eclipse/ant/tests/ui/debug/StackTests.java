@@ -40,9 +40,9 @@ public class StackTests {
 		antCallStack(true);
 	}
 
-	private void antCallStack(boolean sepVM) throws CoreException {
+	private void antCallStack(boolean sepVM) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String fileName = "85769"; //$NON-NLS-1$
-		IFile file = getIFile(fileName + ".xml"); //$NON-NLS-1$
+		IFile file = getIFile(fileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		ILineBreakpoint bp = createLineBreakpoint(18, file);
 		AntThread thread = null;
 		try {

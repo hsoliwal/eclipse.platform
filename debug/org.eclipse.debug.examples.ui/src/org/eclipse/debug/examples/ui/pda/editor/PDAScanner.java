@@ -74,7 +74,7 @@ public class PDAScanner extends BufferedRuleBasedScanner {
 		// keywords
 		Token token = new Token(new TextAttribute(DebugUIPlugin.getDefault().getColor(DebugUIPlugin.KEYWORD)));
 		WordRule keywords = new WordRule(new PDAWordDetector());
-		for (int i = 0; i < fgKeywords.length; i++) {
+		for (int i = 0; i < fgKeywords.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String keyword = fgKeywords[i];
 			keywords.addWord(keyword, token);
 		}

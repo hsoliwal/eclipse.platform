@@ -97,7 +97,7 @@ public class XMLStructureViewer extends StructureDiffViewer {
 			return 0;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void sort(final Viewer viewer, Object[] elements) {
 			if ((fOrdered != null || fAlwaysOrderSort)
 				&& elements != null
@@ -115,7 +115,7 @@ public class XMLStructureViewer extends StructureDiffViewer {
 									- XMLStructureCreator.SIGN_ELEMENT.length());
 						if (fAlwaysOrderSort || fOrdered.contains(newSig)) {
 							final ArrayList<DiffNode> originalTree =
-									new ArrayList<>(
+									new ArrayList<>( //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 											List.of((DiffNode[]) parent.getChildren()));
 							Arrays.sort(elements, (a, b) -> XMLSorter.this.compare(
 								(DiffNode) a,
@@ -267,7 +267,7 @@ public class XMLStructureViewer extends StructureDiffViewer {
 	 *
 	 * @param manager the menu manager for which to add menu items
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void fillContextMenu(IMenuManager manager) {
 		super.fillContextMenu(manager);
 		ISelection s= getSelection();
@@ -322,7 +322,7 @@ public class XMLStructureViewer extends StructureDiffViewer {
 								idname.indexOf(
 									XMLStructureCreator.ID_SEPARATOR));
 						idname=
-							Character.valueOf(XMLStructureCreator.ID_TYPE_BODY)
+							Character.valueOf(XMLStructureCreator.ID_TYPE_BODY) //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 								+ idname;
 					}
 					if (idmapHM.containsKey(signature)) {
@@ -403,7 +403,7 @@ public class XMLStructureViewer extends StructureDiffViewer {
 			fDiffNode= diffnode;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void run() {
 			XMLStructureCreator sc= getXMLStructureCreator();
 			//			DiffNode diffnode = (DiffNode) ((StructuredSelection) getSelection()).getFirstElement();
@@ -446,7 +446,7 @@ public class XMLStructureViewer extends StructureDiffViewer {
 							elem.getSignature().indexOf(XMLStructureCreator.SIGN_ELEMENT));
 					String idname= idelem.getOrigId();
 					idname = idname.substring(0, idname.indexOf(XMLStructureCreator.ID_SEPARATOR));
-					idname = Character.valueOf(XMLStructureCreator.ID_TYPE_BODY) + idname;
+					idname = Character.valueOf(XMLStructureCreator.ID_TYPE_BODY) + idname; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					idmapHM.put(signature, idname);
 					XMLPlugin.getDefault().setIdMaps(
 						fIdMaps,
@@ -475,7 +475,7 @@ public class XMLStructureViewer extends StructureDiffViewer {
 				ArrayList<String> idmapOrdered =
 					fOrderedElements.get(fIdMapName);
 				if (idmapOrdered == null) {
-					idmapOrdered = new ArrayList<>();
+					idmapOrdered = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 					fOrderedElements.put(fIdMapName, idmapOrdered);
 				}
 				idmapOrdered.add(fSignature);
@@ -507,7 +507,7 @@ public class XMLStructureViewer extends StructureDiffViewer {
 		super.propertyChange(event);
 	}
 
-	private void performMatching(final XMLNode left, final XMLNode right,
+	private void performMatching(final XMLNode left, final XMLNode right, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			final XMLNode ancestor, IProgressMonitor monitor) {
 		if (monitor == null) {
 			monitor= new NullProgressMonitor();

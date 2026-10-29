@@ -31,7 +31,7 @@ import org.eclipse.jface.action.IAction;
  */
 public class PDAViewActionProvider implements IViewActionProvider {
 
-	Map<IPresentationContext, Action> fActions = new HashMap<>();
+	Map<IPresentationContext, Action> fActions = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	@Override
 	public IAction getAction(IPresentationContext presentationContext, String actionID) {

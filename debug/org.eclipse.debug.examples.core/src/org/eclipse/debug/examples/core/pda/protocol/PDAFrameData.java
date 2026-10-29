@@ -40,8 +40,8 @@ public class PDAFrameData {
 		fPC = Integer.parseInt(st.nextToken());
 		fFunction = st.nextToken();
 
-		List<String> variablesList = new ArrayList<>();
-		while (st.hasMoreTokens()) {
+		List<String> variablesList = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		while (st.hasMoreTokens()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			variablesList.add(st.nextToken());
 		}
 		fVariables = variablesList.toArray(new String[variablesList.size()]);

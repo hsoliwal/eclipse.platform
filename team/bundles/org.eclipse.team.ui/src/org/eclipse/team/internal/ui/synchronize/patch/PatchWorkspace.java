@@ -84,8 +84,8 @@ public class PatchWorkspace extends DiffNode implements IAdaptable {
 
 	// see org.eclipse.compare.internal.patch.PatchCompareEditorInput.processDiffs(FilePatch2[])
 	private IDiffElement[] processDiffs(FilePatch2[] diffs) {
-		List<IDiffElement> result = new ArrayList<>();
-		for (FilePatch2 diff : diffs) {
+		List<IDiffElement> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (FilePatch2 diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result.addAll(processDiff(diff, this));
 		}
 		return result.toArray(new IDiffElement[result.size()]);
@@ -93,12 +93,12 @@ public class PatchWorkspace extends DiffNode implements IAdaptable {
 
 	// see org.eclipse.compare.internal.patch.PatchCompareEditorInput.processProjects(DiffProject[])
 	private IDiffElement[] processProjects(DiffProject[] diffProjects) {
-		List<IDiffElement> result = new ArrayList<>();
-		for (DiffProject diffProject : diffProjects) {
+		List<IDiffElement> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (DiffProject diffProject : diffProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			PatchProjectDiffNode projectNode = new PatchProjectDiffNode(this, diffProject, getPatcher().getConfiguration());
 			result.add(projectNode);
 			FilePatch2[] diffs = diffProject.getFileDiffs();
-			for (FilePatch2 fileDiff : diffs) {
+			for (FilePatch2 fileDiff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				processDiff(fileDiff, projectNode);
 			}
 		}
@@ -107,12 +107,12 @@ public class PatchWorkspace extends DiffNode implements IAdaptable {
 
 	// see org.eclipse.compare.internal.patch.PatchCompareEditorInput.processDiff(FilePatch2, DiffNode)
 	private List<IDiffElement> processDiff(FilePatch2 diff, DiffNode parent) {
-		List<IDiffElement> result = new ArrayList<>();
+		List<IDiffElement> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		FileDiffResult diffResult = getPatcher().getDiffResult(diff);
 		PatchFileDiffNode node = new PatchFileDiffNode(diffResult, parent, PatchFileDiffNode.getKind(diffResult), PatchFileDiffNode.getAncestorElement(diffResult), getLeftElement(diffResult), PatchFileDiffNode.getRightElement(diffResult));
 		result.add(node);
 		HunkResult[] hunkResults = diffResult.getHunkResults();
-		for (HunkResult hunkResult : hunkResults) {
+		for (HunkResult hunkResult : hunkResults) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			new HunkDiffNode(hunkResult, node, Differencer.CHANGE, HunkDiffNode.getAncestorElement(hunkResult, false), getLeftElement(hunkResult), HunkDiffNode.getRightElement(hunkResult, false));
 			// result.add(hunkDiffNode);
 		}

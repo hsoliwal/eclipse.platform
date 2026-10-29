@@ -116,7 +116,7 @@ public class ProjectContentTypes {
 	private final Cache<String, Set<String>> contentTypesPerProject = new Cache<>();
 	private final Workspace workspace;
 
-	static boolean usesContentTypePreferences(String projectName) {
+	static boolean usesContentTypePreferences(String projectName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			// be careful looking up for our node so not to create any nodes as side effect
 			Preferences node = PROJECT_SCOPE;
@@ -153,8 +153,8 @@ public class ProjectContentTypes {
 		if (enabledNatures.length == 0) {
 			return Collections.EMPTY_SET;
 		}
-		Set<String> related = new HashSet<>(enabledNatures.length);
-		for (String enabledNature : enabledNatures) {
+		Set<String> related = new HashSet<>(enabledNatures.length); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (String enabledNature : enabledNatures) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ProjectNatureDescriptor descriptor = (ProjectNatureDescriptor) workspace.getNatureDescriptor(enabledNature);
 			if (descriptor == null) {
 				// no descriptor found for the nature, skip it
@@ -181,7 +181,7 @@ public class ProjectContentTypes {
 		return Platform.getContentTypeManager().getMatcher(projectContentTypeSelectionPolicy, projectContentTypeSelectionPolicy);
 	}
 
-	private Set<String> getAssociatedContentTypes(Project project) {
+	private Set<String> getAssociatedContentTypes(Project project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final ResourceInfo info = project.getResourceInfo(false, false);
 		if (info == null) {
 			// the project has been deleted
@@ -228,7 +228,7 @@ public class ProjectContentTypes {
 	 *
 	 *  @see org.eclipse.core.runtime.content.IContentTypeManager.ISelectionPolicy
 	 */
-	final IContentType[] select(Project project, IContentType[] candidates, boolean fileName, boolean content) {
+	final IContentType[] select(Project project, IContentType[] candidates, boolean fileName, boolean content) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// since no vetoing is done here, don't go further if there is nothing to sort
 		if (candidates.length < 2) {
 			return candidates;
@@ -239,14 +239,14 @@ public class ProjectContentTypes {
 			return candidates;
 		}
 		int associatedCount = 0;
-		for (int i = 0; i < candidates.length; i++) {
+		for (int i = 0; i < candidates.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// is it an associated content type?
 			if (associated.contains(candidates[i].getId())) {
 				// need to move it to the right spot (unless all types visited so far are associated as well)
 				if (associatedCount < i) {
 					final IContentType promoted = candidates[i];
 					// move all non-associated content types before it one one position up...
-					for (int j = i; j > associatedCount; j--) {
+					for (int j = i; j > associatedCount; j--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						candidates[j] = candidates[j - 1];
 					}
 					// ...so there is an empty spot for the content type we are promoting

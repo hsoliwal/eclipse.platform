@@ -45,7 +45,7 @@ public class RefreshUserNotificationPolicy implements IRefreshSubscriberListener
 
 	@Override
 	public void refreshStarted(final IRefreshEvent event) {
-		TeamUIPlugin.getStandardDisplay().asyncExec(() -> {
+		TeamUIPlugin.getStandardDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			if (event.getRefreshType() == IRefreshEvent.USER_REFRESH && event.getParticipant() == participant) {
 				ISynchronizeView view = TeamUI.getSynchronizeManager().showSynchronizeViewInActivePage();
 				if (view != null) {
@@ -55,7 +55,7 @@ public class RefreshUserNotificationPolicy implements IRefreshSubscriberListener
 		});
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ActionFactory.IWorkbenchAction refreshDone(final IRefreshEvent event) {
 		// Ensure that this event was generated for this participant
 		if (event.getParticipant() != participant) {
@@ -68,7 +68,7 @@ public class RefreshUserNotificationPolicy implements IRefreshSubscriberListener
 		}
 		// Decide on what action to take after the refresh is completed
 		return new WorkbenchAction() {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void run() {
 				boolean prompt = (event.getStatus().getCode() == IRefreshEvent.STATUS_NO_CHANGES);
 
@@ -102,7 +102,7 @@ public class RefreshUserNotificationPolicy implements IRefreshSubscriberListener
 	}
 
 	private void notifyIfNeededModal(final IRefreshEvent event) {
-		TeamUIPlugin.getStandardDisplay().asyncExec(() -> {
+		TeamUIPlugin.getStandardDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			String title = (event.getRefreshType() == IRefreshEvent.SCHEDULED_REFRESH
 					? NLS.bind(TeamUIMessages.RefreshCompleteDialog_4a, Utils.getTypeName(participant))
 					: NLS.bind(TeamUIMessages.RefreshCompleteDialog_4,
@@ -111,12 +111,12 @@ public class RefreshUserNotificationPolicy implements IRefreshSubscriberListener
 		});
 	}
 
-	protected boolean handleRefreshDone(final IRefreshEvent event, boolean prompt) {
+	protected boolean handleRefreshDone(final IRefreshEvent event, boolean prompt) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (participant instanceof SubscriberParticipant sp) {
 			SyncInfo[] infos = ((RefreshChangeListener)event.getChangeDescription()).getChanges();
-			List<IResource> selectedResources = new ArrayList<>();
+			List<IResource> selectedResources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			selectedResources.addAll(Arrays.asList(((RefreshChangeListener)event.getChangeDescription()).getResources()));
-			for (SyncInfo info : infos) {
+			for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				selectedResources.add(info.getLocal());
 			}
 			IResource[] resources = selectedResources.toArray(new IResource[selectedResources.size()]);

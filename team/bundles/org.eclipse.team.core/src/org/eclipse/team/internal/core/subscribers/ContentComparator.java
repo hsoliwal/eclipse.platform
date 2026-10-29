@@ -39,7 +39,7 @@ public class ContentComparator extends AbstractContentComparator{
 	 *                   second input to contents compare
 	 * @return <code>true</code> if content is equal
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected boolean contentsEqual(IProgressMonitor monitor, InputStream is1,
 			InputStream is2, boolean ignoreWhitespace) {
 		try {
@@ -55,13 +55,13 @@ public class ContentComparator extends AbstractContentComparator{
 				return false;
 			}
 
-			while (true) {
+			while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				int c1 = is1.read();
-				while (shouldIgnoreWhitespace() && isWhitespace(c1)) {
+				while (shouldIgnoreWhitespace() && isWhitespace(c1)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					c1 = is1.read();
 				}
 				int c2 = is2.read();
-				while (shouldIgnoreWhitespace() && isWhitespace(c2)) {
+				while (shouldIgnoreWhitespace() && isWhitespace(c2)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					c2 = is2.read();
 				}
 				if (c1 == -1 && c2 == -1) {

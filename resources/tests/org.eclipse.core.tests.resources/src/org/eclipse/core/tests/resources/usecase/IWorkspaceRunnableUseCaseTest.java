@@ -36,8 +36,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class IWorkspaceRunnableUseCaseTest {
 
-	protected IWorkspaceRunnable createRunnable(final IProject project, final IWorkspaceRunnable nestedOperation, final boolean triggerBuild, final Exception exceptionToThrow) {
-		return unused -> {
+	protected IWorkspaceRunnable createRunnable(final IProject project, final IWorkspaceRunnable nestedOperation, final boolean triggerBuild, final Exception exceptionToThrow) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		return unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			if (exceptionToThrow != null) {
 				if (exceptionToThrow instanceof CoreException ce) {
 					throw ce;
@@ -56,7 +56,7 @@ public class IWorkspaceRunnableUseCaseTest {
 		};
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNestedOperationsAndBuilds() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("MyProject");
 		setAutoBuilding(true);

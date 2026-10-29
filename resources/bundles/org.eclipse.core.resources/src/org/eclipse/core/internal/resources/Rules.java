@@ -35,7 +35,7 @@ class Rules implements IResourceRuleFactory, ILifecycleListener {
 	/**
 	 * Map of project names to the factory for that project.
 	 */
-	private final Map<String, IResourceRuleFactory> projectsToRules = Collections.synchronizedMap(new HashMap<>());
+	private final Map<String, IResourceRuleFactory> projectsToRules = Collections.synchronizedMap(new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	private final TeamHook teamHook;
 	private final IWorkspaceRoot root;
 
@@ -204,7 +204,7 @@ class Rules implements IResourceRuleFactory, ILifecycleListener {
 	 * Combines rules for each parameter to validateEdit from the corresponding
 	 * rule factories.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ISchedulingRule validateEditRule(IResource[] resources) {
 		if (resources.length == 0) {
 			return null;
@@ -217,9 +217,9 @@ class Rules implements IResourceRuleFactory, ILifecycleListener {
 			return factoryFor(resources[0]).validateEditRule(resources);
 		}
 		//gather rules for each resource from appropriate factory
-		HashSet<ISchedulingRule> rules = new HashSet<>();
+		HashSet<ISchedulingRule> rules = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IResource[] oneResource = new IResource[1];
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() == IResource.ROOT) {
 				return root;
 			}

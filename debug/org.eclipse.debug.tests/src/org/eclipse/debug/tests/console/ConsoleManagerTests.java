@@ -55,9 +55,9 @@ public class ConsoleManagerTests {
 	private IViewPart consoleView;
 	private IWorkbenchPage activePage;
 
-	@BeforeEach
+	@BeforeEach //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setUp(TestInfo testInfo) throws Exception {
-		assertNotNull(Display.getCurrent(), "Must run in UI thread, but was in: " + Thread.currentThread().getName());
+		assertNotNull(Display.getCurrent(), "Must run in UI thread, but was in: " + Thread.currentThread().getName()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		count = 20;
 		latch = new CountDownLatch(count);
 		executorService = Executors.newFixedThreadPool(count);
@@ -65,7 +65,7 @@ public class ConsoleManagerTests {
 		activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		TestUtil.processUIEvents(100);
 		consoles = new ConsoleMock[count];
-		for (int i = 0; i < count; i++) {
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final ConsoleMock console = new ConsoleMock(i + 1);
 			consoles[i] = console;
 		}
@@ -103,11 +103,11 @@ public class ConsoleManagerTests {
 	 * <p>
 	 * See bug 489546.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testShowAllConsoles(TestInfo testInfo) throws Exception {
 		// Create a number of threads which will start and wait for the last one
 		// created to call ConsoleManager.show.
-		for (ConsoleMock console : consoles) {
+		for (ConsoleMock console : consoles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			showConsole(console, testInfo.getDisplayName());
 		}
 		System.out.println("All tasks scheduled, processing UI events now..."); //$NON-NLS-1$
@@ -135,11 +135,11 @@ public class ConsoleManagerTests {
 			System.out.println("Done waiting on execution service to finish"); //$NON-NLS-1$
 		}
 		int shown = ConsoleMock.allShownConsoles.intValue();
-		assertEquals(count, shown, "Only " + shown + " consoles were shown from " + count);
+		assertEquals(count, shown, "Only " + shown + " consoles were shown from " + count); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private boolean waitForExecutorService() throws Exception {
-		for (int i = 0; i < 60; i++) {
+		for (int i = 0; i < 60; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (executorService.awaitTermination(1, TimeUnit.SECONDS)) {
 				return true;
 			}
@@ -155,7 +155,7 @@ public class ConsoleManagerTests {
 			latch.countDown();
 			try {
 				latch.await(1, TimeUnit.MINUTES);
-				System.out.println("Requesting to show: " + console); //$NON-NLS-1$
+				System.out.println("Requesting to show: " + console); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				manager.showConsoleView(console);
 				TestUtil.waitForJobs(testName, ConsoleManager.CONSOLE_JOB_FAMILY, 200, 5000);
 			} catch (InterruptedException e) {

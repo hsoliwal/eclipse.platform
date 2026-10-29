@@ -102,7 +102,7 @@ public class IResourceTest {
 	protected static final Boolean[] FALSE_AND_TRUE = { Boolean.FALSE, Boolean.TRUE };
 	protected static final IPath[] interestingPaths = getInterestingPaths();
 	protected static IResource[] interestingResources;
-	protected static Set<IResource> nonExistingResources = new HashSet<>();
+	protected static Set<IResource> nonExistingResources = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 	protected static final IProgressMonitor[] PROGRESS_MONITORS = { new FussyProgressMonitor(),
 			new CancelingProgressMonitor(), null };
 
@@ -144,7 +144,7 @@ public class IResourceTest {
 	 */
 	protected static final int S_WORKSPACE_ONLY = 0;
 	protected static final Boolean[] TRUE_AND_FALSE = { Boolean.TRUE, Boolean.FALSE };
-	protected static Set<IResource> unsynchronizedResources = new HashSet<>();
+	protected static Set<IResource> unsynchronizedResources = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	@RegisterExtension
 	private final FileStoreAutoDeleteExtension fileStoreExtension = new FileStoreAutoDeleteExtension();
@@ -160,13 +160,13 @@ public class IResourceTest {
 	 * @return set of files and directories in given directory and sub-directories
 	 */
 	protected static Set<File> getAllFilesForDirectory(File dir) {
-		Set<File> result = new HashSet<>(50);
-		String[] members = dir.list();
+		Set<File> result = new HashSet<>(50); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		String[] members = dir.list(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		if (members != null) {
-			for (String member2 : members) {
+			for (String member2 : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				File member = new File(dir, member2);
 				result.add(member);
-				if (member.isDirectory()) {
+				if (member.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					result.addAll(getAllFilesForDirectory(member));
 				}
 			}
@@ -184,15 +184,15 @@ public class IResourceTest {
 	 *            if <code>true</code> force reading from filesystem
 	 * @return set of files and directories under given resource
 	 */
-	protected static Set<File> getAllFilesForResource(IResource resource, boolean considerUnsyncLocalFiles)
+	protected static Set<File> getAllFilesForResource(IResource resource, boolean considerUnsyncLocalFiles) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws CoreException {
-		Set<File> result = new HashSet<>(50);
+		Set<File> result = new HashSet<>(50); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		if (resource.getLocation() != null && (resource.getType() != IResource.PROJECT || ((IProject) resource).isOpen())) {
 			java.io.File file = resource.getLocation().toFile();
 			if (considerUnsyncLocalFiles) {
-				if (file.exists()) {
+				if (file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					result.add(file);
-					if (file.isDirectory()) {
+					if (file.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						result.addAll(getAllFilesForDirectory(file));
 					}
 				}
@@ -202,7 +202,7 @@ public class IResourceTest {
 					if (resource.getType() != IResource.FILE) {
 						IContainer container = (IContainer) resource;
 						IResource[] children = container.members();
-						for (IResource member : children) {
+						for (IResource member : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							result.addAll(getAllFilesForResource(member, considerUnsyncLocalFiles));
 						}
 					}
@@ -217,13 +217,13 @@ public class IResourceTest {
 	 * @param resource IResource
 	 */
 	protected static Set<IResource> getAllResourcesForResource(IResource resource) throws CoreException {
-		Set<IResource> result = new HashSet<>(50);
+		Set<IResource> result = new HashSet<>(50); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		if (resource.exists()) {
 			result.add(resource);
 			if (resource.getType() != IResource.FILE && resource.isAccessible()) {
 				IContainer container = (IContainer) resource;
 				IResource[] children = container.members();
-				for (IResource member : children) {
+				for (IResource member : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					result.addAll(getAllResourcesForResource(member));
 				}
 			}
@@ -249,7 +249,7 @@ public class IResourceTest {
 		return result;
 	}
 
-	private IResource[] buildSampleResources(IContainer root) throws Exception {
+	private IResource[] buildSampleResources(IContainer root) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// do not change the example resources unless you change references to
 		// specific indices in setUp()
 		IResource[] result = buildResources(root, "1/", "1/1/", "1/1/1/", "1/1/1/1", "1/1/2/", "1/1/2/1/", "1/1/2/2/", "1/1/2/3/", "1/2/", "1/2/1", "1/2/2", "1/2/3/", "1/2/3/1", "1/2/3/2", "1/2/3/3", "1/2/3/4", "2", "2");
@@ -268,7 +268,7 @@ public class IResourceTest {
 		//file system only
 		unsynchronized = buildResources(root, "1/1/2/2/1");
 		removeFromWorkspace(unsynchronized);
-		for (IResource resource : unsynchronized) {
+		for (IResource resource : unsynchronized) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			createInFileSystem(resource);
 		}
 		unsynchronizedResources.add(unsynchronized[0]);
@@ -280,7 +280,7 @@ public class IResourceTest {
 				"1/2/", "1/2/1", "1/2/2", "1/2/3/", "1/2/3/1", "1/2/3/2", "1/2/3/3", "1/2/3/4", "2", "2/1", "2/2",
 				"2/3", "2/4", "2/1/", "2/2/", "2/3/", "2/4/", ".." };
 		IPath[] paths = new IPath[interestingPathnames.length];
-		for (int i = 0; i < interestingPathnames.length; i++) {
+		for (int i = 0; i < interestingPathnames.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			paths[i] = IPath.fromOSString(interestingPathnames[i]);
 		}
 		return paths;
@@ -292,7 +292,7 @@ public class IResourceTest {
 	 * call
 	 * @param target the resource that was out of sync
 	 */
-	protected boolean checkAfterState(IResource receiver, IResource target, int state, int depth) {
+	protected boolean checkAfterState(IResource receiver, IResource target, int state, int depth) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		assertTrue(verifier.isDeltaValid(), verifier.getMessage());
 		switch (state) {
 			case S_FILESYSTEM_ONLY :
@@ -354,8 +354,8 @@ public class IResourceTest {
 	 * Returns an array of all projects in the given resource array.
 	 */
 	protected IProject[] getProjects(IResource[] resources) {
-		ArrayList<IProject> list = new ArrayList<>();
-		for (IResource resource : resources) {
+		ArrayList<IProject> list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() == IResource.PROJECT) {
 				list.add((IProject) resource);
 			}
@@ -376,7 +376,7 @@ public class IResourceTest {
 			return resource2.equals(resource1.getParent());
 		}
 		IResource parent = resource1.getParent();
-		while (parent != null) {
+		while (parent != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (parent.equals(resource2)) {
 				return true;
 			}
@@ -415,7 +415,7 @@ public class IResourceTest {
 
 	/**
 	 * Returns true if this combination of arguments makes sense. */
-	protected boolean makesSense(IResource receiver, IResource target, int state, int depth) {
+	protected boolean makesSense(IResource receiver, IResource target, int state, int depth) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/* don't allow projects or the root as targets */
 		if (target.getType() == IResource.PROJECT || target.getType() == IResource.ROOT) {
 			return false;
@@ -453,7 +453,7 @@ public class IResourceTest {
 		initializeProjects();
 	}
 
-	private void initializeProjects() throws Exception {
+	private void initializeProjects() throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		nonExistingResources.clear();
 		// closed project
 		IProject closedProject = getWorkspace().getRoot().getProject("ClosedProject");
@@ -474,14 +474,14 @@ public class IResourceTest {
 		nonExistingProject.open(null);
 		nonExistingProject.delete(true, null);
 
-		ArrayList<IResource> resources = new ArrayList<>();
+		ArrayList<IResource> resources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		resources.add(openProject);
-		for (IResource element : resourcesInOpenProject) {
+		for (IResource element : resourcesInOpenProject) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			resources.add(element);
 		}
 
 		resources.add(closedProject);
-		for (IResource element : resourcesInClosedProject) {
+		for (IResource element : resourcesInClosedProject) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			resources.add(element);
 			nonExistingResources.add(element);
 		}
@@ -519,7 +519,7 @@ public class IResourceTest {
 
 	/**
 	 * Sets up the workspace and file system for this test. */
-	protected void setupBeforeState(IResource receiver, IResource target, int state, int depth, boolean addVerifier)
+	protected void setupBeforeState(IResource receiver, IResource target, int state, int depth, boolean addVerifier) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws OperationCanceledException, InterruptedException, CoreException, IOException {
 		// Wait for any outstanding refresh to finish
 		Job.getJobManager().wakeUp(ResourcesPlugin.FAMILY_AUTO_REFRESH);
@@ -605,7 +605,7 @@ public class IResourceTest {
 			case S_FILE_TO_FOLDER :
 				createInWorkspace(target);
 				removeFromFileSystem(target);
-				target.getLocation().toFile().mkdirs();
+				target.getLocation().toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				if (addVerifier) {
 					verifier.reset();
 					// we only get a delta if the receiver of refreshLocal
@@ -634,7 +634,7 @@ public class IResourceTest {
 	 * Performs black box testing of the following method: void
 	 * accept(IResourceVisitor)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAccept2() throws Exception {
 		class LoggingResourceVisitor implements IResourceVisitor {
 			Vector<IResource> visitedResources = new Vector<>();
@@ -695,7 +695,7 @@ public class IResourceTest {
 				return nonExistingResources.contains(resource) || !resource.isAccessible();
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean wasSuccess(Object[] args, Object result, Object[] oldState) {
 				IResource resource = (IResource) args[0];
 				LoggingResourceVisitor visitor = (LoggingResourceVisitor) args[1];
@@ -731,17 +731,17 @@ public class IResourceTest {
 		// pass DEPTH_ONE to avoid using proxy visitor
 		assertThrows(CoreException.class, () -> a.accept((IResourceVisitor) unused -> true, IResource.DEPTH_ONE, IResource.NONE));
 
-		assertThrows(CoreException.class, () -> a.accept(unused -> true, IResource.NONE));
+		assertThrows(CoreException.class, () -> a.accept(unused -> true, IResource.NONE)); //FLLDCIM: MARK — T07  LAMBDA
 
 		// pass DEPTH_ONE to avoid using proxy visitor
 		// if we don't check for existence, then no exception should be thrown
 		a.accept((IResourceVisitor) unused -> true, IResource.DEPTH_ONE, IContainer.DO_NOT_CHECK_EXISTENCE);
 
 		// if we don't check for existence, then no exception should be thrown
-		a.accept(unused -> true, IContainer.DO_NOT_CHECK_EXISTENCE);
+		a.accept(unused -> true, IContainer.DO_NOT_CHECK_EXISTENCE); //FLLDCIM: MARK — T07  LAMBDA
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAcceptProxyVisitorWithDepth() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject(createUniqueString());
 		IFolder a = project.getFolder("a");
@@ -753,10 +753,10 @@ public class IResourceTest {
 		IFolder c = b.getFolder("c");
 		IFile c1 = c.getFile("c1.txt");
 		IFile c2 = c.getFile("c2.txt");
-		final Set<IResource> toVisit = new HashSet<>();
+		final Set<IResource> toVisit = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		final int[] toVisitCount = { 0 };
 
-		IResourceProxyVisitor visitor = proxy -> {
+		IResourceProxyVisitor visitor = proxy -> { //FLLDCIM: MARK — T07  LAMBDA
 			toVisit.remove(proxy.requestResource());
 			toVisitCount[0]--;
 			return true;
@@ -785,7 +785,7 @@ public class IResourceTest {
 
 	/**
 	 * This method tests the IResource.refreshLocal() operation */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAddLocalProject() throws CoreException {
 		/**
 		 * Add a project in the file system, but not in the workspace */
@@ -798,7 +798,7 @@ public class IResourceTest {
 
 		IPath projectPath = project1.getLocation().removeLastSegments(1).append("NewProject");
 		fileStoreExtension.deleteOnTearDown(projectPath);
-		projectPath.toFile().mkdirs();
+		projectPath.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		project1.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
 		project2.refreshLocal(IResource.DEPTH_INFINITE, createTestMonitor());
@@ -810,7 +810,7 @@ public class IResourceTest {
 
 	/**
 	 * Tests various resource constants. */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testConstants() {
 		// IResource constants (all have fixed values)
 		assertEquals(0, IResource.NONE);
@@ -841,7 +841,7 @@ public class IResourceTest {
 	 * Performs black box testing of the following method: void copy(IPath,
 	 * boolean, IProgressMonitor)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopy() throws Exception {
 		//add markers to all resources ... markers should not be copied
 		getWorkspace().getRoot().accept(resource -> {
@@ -888,7 +888,7 @@ public class IResourceTest {
 				return false;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean wasSuccess(Object[] args, Object result, Object[] oldState) throws CoreException {
 				IResource source = (IResource) args[0];
 				IPath destination = (IPath) args[1];
@@ -914,7 +914,7 @@ public class IResourceTest {
 		}.performTest(inputs);
 	}
 
-	private boolean shouldMoveOrCopyFail(IResource source, IPath destination, boolean forceUpdate,
+	private boolean shouldMoveOrCopyFail(IResource source, IPath destination, boolean forceUpdate, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IProgressMonitor monitor, Consumer<String> expectedFailMessageReceiver) {
 		if (monitor instanceof CancelingProgressMonitor) {
 			expectedFailMessageReceiver.accept("canceling progress monitor is used");
@@ -928,15 +928,15 @@ public class IResourceTest {
 				: source.getLocation().removeLastSegments(1).append(destination.removeLastSegments(1)).toFile();
 		File destinationFile = destination.isAbsolute() ? destination.toFile()
 				: source.getLocation().removeLastSegments(1).append(destination).removeTrailingSeparator().toFile();
-		if (!destinationParent.exists()) {
+		if (!destinationParent.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			expectedFailMessageReceiver.accept("parent of destination does not exist");
 			return true;
 		}
-		if (!destinationParent.isDirectory()) {
+		if (!destinationParent.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			expectedFailMessageReceiver.accept("parent of destination is not a directory");
 			return true;
 		}
-		if (destinationFile.exists()) {
+		if (destinationFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			expectedFailMessageReceiver.accept("destination already exists");
 			return true;
 		}
@@ -948,17 +948,17 @@ public class IResourceTest {
 
 	}
 
-	private boolean hasUnsynchronizedContents(IResource resource) throws CoreException {
+	private boolean hasUnsynchronizedContents(IResource resource) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final boolean[] hasUnsynchronizedResources = new boolean[] { false };
 		resource.accept(new IResourceVisitor() {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean visit(IResource toVisit) throws CoreException {
 				File target = toVisit.getLocation().toFile();
-				if (target.exists() != toVisit.exists()) {
+				if (target.exists() != toVisit.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					hasUnsynchronizedResources[0] = true;
 					return false;
 				}
-				if (target.isFile() != (toVisit.getType() == IResource.FILE)) {
+				if (target.isFile() != (toVisit.getType() == IResource.FILE)) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					hasUnsynchronizedResources[0] = true;
 					return false;
 				}
@@ -966,18 +966,18 @@ public class IResourceTest {
 					hasUnsynchronizedResources[0] = true;
 					return false;
 				}
-				if (target.isFile()) {
+				if (target.isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					return false;
 				}
 				// Process children that only exist in file system but not in workspace
-				String[] list = target.list();
+				String[] list = target.list(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				if (list == null) {
 					return true;
 				}
 				IContainer container = (IContainer) toVisit;
-				for (String element : list) {
+				for (String element : list) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					File file = new File(target, element);
-					IResource child = file.isFile() ? (IResource) container.getFile(IPath.fromOSString(element))
+					IResource child = file.isFile() ? (IResource) container.getFile(IPath.fromOSString(element)) //FLLDCIM: MARK — M31 M3FILE_IO CALL
 							: container.getFolder(IPath.fromOSString(element));
 					if (!child.exists()) {
 						visit(child);
@@ -992,12 +992,12 @@ public class IResourceTest {
 	/**
 	 * copy a project to external location which has resource filters.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyProjectWithResFilterToExternLocation() throws CoreException {
 		IProject sourceProj = createProject(true);
 
 		// prepare destination project description.
-		IProject destProj = getWorkspace().getRoot().getProject("testCopyProject" + 2);
+		IProject destProj = getWorkspace().getRoot().getProject("testCopyProject" + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IPath targetLocation = IPath
 				.fromOSString(getRandomLocation(FileSystemHelper.getTempDir()).append(destProj.getName()).toOSString());
 		fileStoreExtension.deleteOnTearDown(targetLocation);
@@ -1009,19 +1009,19 @@ public class IResourceTest {
 		logListener.assertNoLoggedErrors();
 		// assert there is no duplicate folder in the workspace.
 		IPath destProjLocInWs = getWorkspace().getRoot().getLocation().append(destProj.getName());
-		assertFalse(destProjLocInWs.toFile().exists(),
+		assertFalse(destProjLocInWs.toFile().exists(), //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				"Project folder should not exist in workspace when copied to external location");
 	}
 
 	/**
 	 * copy a project to external location.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyProjectWithoutResFilterToExternLocation() throws CoreException {
 		IProject sourceProj = createProject(false);
 
 		// prepare destination project description.
-		IProject destProj = getWorkspace().getRoot().getProject("testCopyProject" + 2);
+		IProject destProj = getWorkspace().getRoot().getProject("testCopyProject" + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IPath targetLocation = IPath
 				.fromOSString(getRandomLocation(FileSystemHelper.getTempDir()).append(destProj.getName()).toOSString());
 		fileStoreExtension.deleteOnTearDown(targetLocation);
@@ -1033,9 +1033,9 @@ public class IResourceTest {
 		logListener.assertNoLoggedErrors();
 		// assert there is no duplicate folder in the workspace.
 		IPath destProjLocInWs = getWorkspace().getRoot().getLocation().append(destProj.getName());
-		assertFalse(destProjLocInWs.toFile().exists(),
+		assertFalse(destProjLocInWs.toFile().exists(), //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				"Project folder should not exist in workspace when copied to external location");
-		assertTrue(destProj.getLocation().toFile().exists(), "Project folder should exist in external location");
+		assertTrue(destProj.getLocation().toFile().exists(), "Project folder should exist in external location"); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	/**
@@ -1047,7 +1047,7 @@ public class IResourceTest {
 		IProject sourceProj = createProject(true);
 
 		// prepare destination project description.
-		IProject destProj = getWorkspace().getRoot().getProject("testCopyProject" + 2);
+		IProject destProj = getWorkspace().getRoot().getProject("testCopyProject" + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IProjectDescription desc = prepareDestProjDesc(sourceProj, destProj, null);
 
 		LogListener logListener = copyProject(sourceProj, desc);
@@ -1056,7 +1056,7 @@ public class IResourceTest {
 		logListener.assertNoLoggedErrors();
 		// assert there is no duplicate folder in the workspace.
 		IPath destProjLocInWs = getWorkspace().getRoot().getLocation().append(destProj.getName());
-		assertTrue(destProjLocInWs.toFile().exists(),
+		assertTrue(destProjLocInWs.toFile().exists(), //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				"Project folder should exist in workspace when copied with default location");
 	}
 
@@ -1102,7 +1102,7 @@ public class IResourceTest {
 	 * Performs black box testing of the following method: void delete(boolean,
 	 * IProgressMonitor)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDelete() throws Exception {
 		IProgressMonitor[] monitors = new IProgressMonitor[] {new FussyProgressMonitor(), null};
 		Object[][] inputs = { FALSE_AND_TRUE, monitors, interestingResources };
@@ -1116,7 +1116,7 @@ public class IResourceTest {
 				return new Object[] {Boolean.valueOf(resource.isAccessible()), getAllFilesForResource(resource, force.booleanValue()), getAllResourcesForResource(resource)};
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public Object invokeMethod(Object[] args, int count) throws Exception {
 				Boolean force = (Boolean) args[0];
 				IProgressMonitor monitor = (IProgressMonitor) args[1];
@@ -1141,7 +1141,7 @@ public class IResourceTest {
 				return null;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean shouldFail(Object[] args, int count) throws Exception {
 				Boolean force = (Boolean) args[0];
 				IProgressMonitor monitor = (IProgressMonitor) args[1];
@@ -1159,7 +1159,7 @@ public class IResourceTest {
 							return false;
 						}
 						IResource[] children = project.members();
-						for (IResource member : children) {
+						for (IResource member : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							if (shouldFail(new Object[] {args[0], args[1], member}, count)) {
 								return true;
 							}
@@ -1179,7 +1179,7 @@ public class IResourceTest {
 				return false;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean wasSuccess(Object[] args, Object result, Object[] oldState) throws Exception {
 				Boolean force = (Boolean) args[0];
 				IProgressMonitor monitor = (IProgressMonitor) args[1];
@@ -1197,7 +1197,7 @@ public class IResourceTest {
 					// check the parent's members, deleted resource should not
 					// be a member
 					IResource[] children = ((IContainer) getWorkspace().getRoot().findMember(resource.getFullPath().removeLastSegments(1))).members();
-					for (IResource element : children) {
+					for (IResource element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (resource == element) {
 							return false;
 						}
@@ -1208,14 +1208,14 @@ public class IResourceTest {
 				}
 				@SuppressWarnings("unchecked")
 				Set<File> oldFiles = (Set<File>) oldState[1];
-				for (File oldFile : oldFiles) {
-					if (oldFile.exists() == wasResourceAccessible) {
+				for (File oldFile : oldFiles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					if (oldFile.exists() == wasResourceAccessible) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						return false;
 					}
 				}
 				@SuppressWarnings("unchecked")
 				Set<IResource> oldResources = (Set<IResource>) oldState[2];
-				for (IResource oldResource : oldResources) {
+				for (IResource oldResource : oldResources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (oldResource.exists() || getWorkspace().getRoot().findMember(oldResource.getFullPath()) != null) {
 						return false;
 					}
@@ -1231,7 +1231,7 @@ public class IResourceTest {
 	 * Performs black box testing of the following methods: isDerived() and
 	 * setDerived(boolean, IProgressMonitor)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDerived() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject project = root.getProject("Project");
@@ -1343,7 +1343,7 @@ public class IResourceTest {
 	 * Performs black box testing of the following methods: isDerived() and
 	 * setDerived(boolean)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Deprecated // Explicitly tests deprecated API
 	public void testDeprecatedDerived() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
@@ -1427,7 +1427,7 @@ public class IResourceTest {
 	/**
 	 * Test the isDerived() and isDerived(int) methods
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDerivedUsingAncestors() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject project = root.getProject(createUniqueString());
@@ -1440,7 +1440,7 @@ public class IResourceTest {
 		createInWorkspace(resources);
 
 		// initial values should be false
-		for (IResource resource2 : resources) {
+		for (IResource resource2 : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = resource2;
 			assertFalse(resource.isDerived(), resource.getFullPath().toString());
 		}
@@ -1482,7 +1482,7 @@ public class IResourceTest {
 		folder.setDerived(false, new NullProgressMonitor());
 
 		// values should be false again
-		for (IResource resource2 : resources) {
+		for (IResource resource2 : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertFalse(resource2.isDerived(), resource2.getFullPath().toString());
 		}
 	}
@@ -1491,7 +1491,7 @@ public class IResourceTest {
 	 * Performs black box testing of the following method: boolean
 	 * equals(Object)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testEquals() throws Exception {
 		Object[][] inputs = { interestingResources, interestingResources };
 		new TestPerformer("IResourceTest.testEquals") {
@@ -1530,7 +1530,7 @@ public class IResourceTest {
 
 	/**
 	 * Performs black box testing of the following method: boolean exists() */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testExists() throws Exception {
 		Object[][] inputs = { interestingResources };
 		new TestPerformer("IResourceTest.testExists") {
@@ -1562,7 +1562,7 @@ public class IResourceTest {
 
 	/**
 	 * Performs black box testing of the following method: IPath getLocation() */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetLocation() throws Exception {
 		Object[][] inputs = { interestingResources };
 		new TestPerformer("IResourceTest.testGetLocation") {
@@ -1601,16 +1601,16 @@ public class IResourceTest {
 		}.performTest(inputs);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetModificationStamp() throws CoreException {
 		// cleanup auto-created resources
 		getWorkspace().getRoot().delete(IResource.FORCE | IResource.ALWAYS_DELETE_PROJECT_CONTENT, createTestMonitor());
 
 		// setup
 		IResource[] resources = buildResources(getWorkspace().getRoot(), "/1/", "/1/1", "/1/2", "/1/3", "/2/", "/2/1");
-		final Map<IPath, Long> table = new HashMap<>(resources.length);
+		final Map<IPath, Long> table = new HashMap<>(resources.length); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() != IResource.ROOT) {
 				assertEquals(IResource.NULL_STAMP, resource.getModificationStamp(), resource.getFullPath().toString());
 			}
@@ -1620,7 +1620,7 @@ public class IResourceTest {
 		// modification stamp
 		IProject[] projects = getProjects(resources);
 		IProject project;
-		for (IProject project2 : projects) {
+		for (IProject project2 : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			project = project2;
 			project.create(createTestMonitor());
 			assertEquals(IResource.NULL_STAMP, project.getModificationStamp(), project.getFullPath().toString());
@@ -1628,7 +1628,7 @@ public class IResourceTest {
 
 		// open the project(s) and create the resources. none should have a
 		// null stamp anymore.
-		for (IProject project2 : projects) {
+		for (IProject project2 : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			project = project2;
 			assertEquals(IResource.NULL_STAMP, project.getModificationStamp(), project.getFullPath().toString());
 			project.open(createTestMonitor());
@@ -1636,7 +1636,7 @@ public class IResourceTest {
 			// cache the value for later use
 			table.put(project.getFullPath(), Long.valueOf(project.getModificationStamp()));
 		}
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() != IResource.PROJECT) {
 				assertEquals(IResource.NULL_STAMP, resource.getModificationStamp(), resource.getFullPath().toString());
 				createInWorkspace(resource);
@@ -1648,22 +1648,22 @@ public class IResourceTest {
 		}
 
 		// close the projects. now all resources should have a null stamp again
-		for (IProject project2 : projects) {
+		for (IProject project2 : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			project = project2;
 			project.close(createTestMonitor());
 		}
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() != IResource.ROOT) {
 				assertEquals(IResource.NULL_STAMP, resource.getModificationStamp(), resource.getFullPath().toString());
 			}
 		}
 
 		// re-open the projects. all resources should have the same stamps
-		for (IProject project2 : projects) {
+		for (IProject project2 : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			project = project2;
 			project.open(createTestMonitor());
 		}
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() != IResource.PROJECT) {
 				Object v = table.get(resource.getFullPath());
 				assertNotNull(v, resource.getFullPath().toString());
@@ -1673,8 +1673,8 @@ public class IResourceTest {
 		}
 
 		// touch all the resources. this will update the modification stamp
-		final Map<IPath, Long> tempTable = new HashMap<>(resources.length);
-		for (IResource resource : resources) {
+		final Map<IPath, Long> tempTable = new HashMap<>(resources.length); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() != IResource.ROOT) {
 				resource.touch(createTestMonitor());
 				long stamp = resource.getModificationStamp();
@@ -1709,7 +1709,7 @@ public class IResourceTest {
 		// the last one
 		getWorkspace().getRoot().setLocal(true, IResource.DEPTH_INFINITE, createTestMonitor());
 		tempTable.clear();
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() != IResource.ROOT) {
 				long stamp = resource.getModificationStamp();
 				assertNotEquals(IResource.NULL_STAMP, stamp, resource.getFullPath().toString());
@@ -1725,7 +1725,7 @@ public class IResourceTest {
 		//set local on resources that are already local, this should not
 		// affect the modification stamp
 		getWorkspace().getRoot().setLocal(true, IResource.DEPTH_INFINITE, createTestMonitor());
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() != IResource.ROOT) {
 				long newStamp = resource.getModificationStamp();
 				assertNotEquals(IResource.NULL_STAMP, newStamp, resource.getFullPath().toString());
@@ -1741,7 +1741,7 @@ public class IResourceTest {
 
 		// none of the resources exist yet so all the modification stamps
 		// should be null
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() != IResource.ROOT) {
 				assertEquals(IResource.NULL_STAMP, resource.getModificationStamp(), resource.getFullPath().toString());
 			}
@@ -1749,7 +1749,7 @@ public class IResourceTest {
 
 		// create all the resources (non-local) and ensure all stamps are null
 		createInWorkspace(getProjects(resources));
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource instanceof IFolder folder) {
 				folder.create(true, false, createTestMonitor());
 			} else if (resource instanceof IFile file) {
@@ -1757,7 +1757,7 @@ public class IResourceTest {
 			}
 		}
 
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			switch (resource.getType()) {
 				case IResource.ROOT :
 					break;
@@ -1795,7 +1795,7 @@ public class IResourceTest {
 		assertNotEquals(modificationStamp, IResource.NULL_STAMP);
 
 		// Remove and re-create the file in a workspace operation
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			file.delete(false, createTestMonitor());
 			file.create(nullInputStream(), true, createTestMonitor());
 		}, createTestMonitor());
@@ -1807,7 +1807,7 @@ public class IResourceTest {
 	 * Performs black box testing of the following method: IPath
 	 * getRawLocation()
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetRawLocation() throws Exception {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IFolder topFolder = project.getFolder("TopFolder");
@@ -1877,7 +1877,7 @@ public class IResourceTest {
 			removeFromWorkspace(topFolder);
 			removeFromWorkspace(topFile);
 			createInFileSystem(EFS.getFileSystem(EFS.SCHEME_FILE).getStore(fileLocation));
-			folderLocation.toFile().mkdirs();
+			folderLocation.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			topFolder.createLink(folderLocation, IResource.NONE, createTestMonitor());
 			topFile.createLink(fileLocation, IResource.NONE, createTestMonitor());
 			createInWorkspace(deepFile);
@@ -1905,7 +1905,7 @@ public class IResourceTest {
 			removeFromWorkspace(topFolder);
 			removeFromWorkspace(topFile);
 			createInFileSystem(EFS.getFileSystem(EFS.SCHEME_FILE).getStore(varMan.resolvePath(variableFileLocation)));
-			varMan.resolvePath(variableFolderLocation).toFile().mkdirs();
+			varMan.resolvePath(variableFolderLocation).toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			topFolder.createLink(variableFolderLocation, IResource.NONE, createTestMonitor());
 			topFile.createLink(variableFileLocation, IResource.NONE, createTestMonitor());
 			createInWorkspace(deepFile);
@@ -1931,7 +1931,7 @@ public class IResourceTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIsConflicting() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IFolder a = project.getFolder("a");
@@ -1953,7 +1953,7 @@ public class IResourceTest {
 		project.delete(true, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIsConflicting2() throws CoreException {
 		final IProject project = getWorkspace().getRoot().getProject("Project");
 		createInWorkspace(project);
@@ -1991,7 +1991,7 @@ public class IResourceTest {
 
 	/**
 	 * This method tests the IResource.isSynchronized() operation */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIsSynchronized() throws Exception {
 		//don't need auto-created resources
 		getWorkspace().getRoot().delete(true, true, createTestMonitor());
@@ -2024,7 +2024,7 @@ public class IResourceTest {
 				return false;
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public boolean wasSuccess(Object[] args, Object result, Object[] oldState) {
 				if (result == null)
 				 {
@@ -2064,7 +2064,7 @@ public class IResourceTest {
 	 * Performs black box testing of the following method: void move(IPath,
 	 * boolean, IProgressMonitor)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMove() throws Exception {
 		Object[][] inputs = { interestingResources, interestingPaths, TRUE_AND_FALSE, PROGRESS_MONITORS };
 		new ProjectsReinitializingTestPerformer("IResourceTest.testMove") {
@@ -2117,7 +2117,7 @@ public class IResourceTest {
 		}.performTest(inputs);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultiCreation() throws CoreException {
 		final IProject project = getWorkspace().getRoot().getProject("bar");
 		final IResource[] resources = buildResources(project, "a/", "a/b");
@@ -2129,7 +2129,7 @@ public class IResourceTest {
 		assertExistsInWorkspace(project);
 		// define an operation which will create a bunch of resources including
 		// a project.
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			switch (resource.getType()) {
 			case IResource.FILE:
 				((IFile) resource).create(null, false, createTestMonitor());
@@ -2165,7 +2165,7 @@ public class IResourceTest {
 	/**
 	 * Tests IResource#getPersistentProperties and IResource#getSessionProperties
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProperties() throws CoreException {
 		QualifiedName qn1 = new QualifiedName("package", "property1");
 		QualifiedName qn2 = new QualifiedName("package", "property2");
@@ -2244,7 +2244,7 @@ public class IResourceTest {
 	 * Tests IResource.isReadOnly and setReadOnly
 	 * @deprecated This test is for deprecated API
 	 */
-	@Deprecated
+	@Deprecated //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Test
 	public void testReadOnly() throws CoreException {
 		// We need to know whether or not we can unset the read-only flag
@@ -2275,7 +2275,7 @@ public class IResourceTest {
 
 	/**
 	 * This method tests the IResource.refreshLocal() operation */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshLocal() throws Exception {
 		//don't need auto-created resources
 		getWorkspace().getRoot().delete(true, true, createTestMonitor());
@@ -2324,7 +2324,7 @@ public class IResourceTest {
 		}.performTest(inputs);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshLocalWithDepth() throws Exception {
 		IProject project = getWorkspace().getRoot().getProject("Project");
 		IFolder folder = project.getFolder("Folder");
@@ -2334,7 +2334,7 @@ public class IResourceTest {
 
 		String[] hierarchy = {"Folder/", "Folder/Folder/", "Folder/Folder/Folder/", "Folder/Folder/Folder/Folder/"};
 		IResource[] resources = buildResources(folder, hierarchy);
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			createInFileSystem(resource);
 		}
 		assertDoesNotExistInWorkspace(resources);
@@ -2367,7 +2367,7 @@ public class IResourceTest {
 
 	/**
 	 * This method tests the IResource.revertModificationStamp() operation */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRevertModificationStamp() throws Throwable {
 		//revert all existing resources
 		getWorkspace().getRoot().accept(resource -> {
@@ -2390,17 +2390,17 @@ public class IResourceTest {
 		//illegal values
 		IResource[] resources = buildInterestingResources();
 		long[] illegal = { -1, -10, -100 };
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!resource.isAccessible()) {
 				continue;
 			}
-			for (long element : illegal) {
+			for (long element : illegal) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				assertThrows(RuntimeException.class, () -> resource.revertModificationStamp(element));
 			}
 		}
 		//should fail for non-existent resources
 		getWorkspace().getRoot().delete(IResource.ALWAYS_DELETE_PROJECT_CONTENT, createTestMonitor());
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			//should fail except for root
 			Executable revertOperation = () -> resource.revertModificationStamp(1);
 			if (resource.getType() == IResource.ROOT) {
@@ -2413,7 +2413,7 @@ public class IResourceTest {
 
 	/**
 	 * This method tests the IResource.setLocalTimeStamp() operation */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetLocalTimeStamp() throws Exception {
 		//don't need auto-created resources
 		getWorkspace().getRoot().delete(true, true, createTestMonitor());
@@ -2466,7 +2466,7 @@ public class IResourceTest {
 	 * Performs black box testing of the following methods:
 	 * isTeamPrivateMember() and setTeamPrivateMember(boolean)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTeamPrivateMember() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject project = root.getProject("Project");
@@ -2547,7 +2547,7 @@ public class IResourceTest {
 	}
 
 	// https://bugs.eclipse.org/461838
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAcceptProxyVisitorAlphabetic() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("P");
 		IFolder settings = project.getFolder(".settings");
@@ -2561,8 +2561,8 @@ public class IResourceTest {
 
 		createInWorkspace(new IResource[] {project, settings, prefs, a, a1, a2, b, b1, b2});
 
-		final List<IResource> actualOrder = new ArrayList<>();
-		IResourceProxyVisitor visitor = proxy -> {
+		final List<IResource> actualOrder = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		IResourceProxyVisitor visitor = proxy -> { //FLLDCIM: MARK — T07  LAMBDA
 			actualOrder.add(proxy.requestResource());
 			return true;
 		};
@@ -2574,7 +2574,7 @@ public class IResourceTest {
 	}
 
 	private static class LogListener implements ILogListener {
-		private final List<IStatus> errors = new ArrayList<>();
+		private final List<IStatus> errors = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		@Override
 		public void logging(IStatus status, String plugin) {

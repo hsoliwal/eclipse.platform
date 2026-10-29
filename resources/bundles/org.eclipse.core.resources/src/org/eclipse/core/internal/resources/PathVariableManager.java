@@ -60,8 +60,8 @@ public class PathVariableManager implements IPathVariableManager, IManager {
 	 * Constructor for the class.
 	 */
 	public PathVariableManager() {
-		this.listeners = Collections.synchronizedSet(new HashSet<>());
-		this.projectListeners = Collections.synchronizedMap(new HashMap<>());
+		this.listeners = Collections.synchronizedSet(new HashSet<>()); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		this.projectListeners = Collections.synchronizedMap(new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		this.preferences = ResourcesPlugin.getPlugin().getPluginPreferences();
 	}
 
@@ -76,7 +76,7 @@ public class PathVariableManager implements IPathVariableManager, IManager {
 	synchronized public void addChangeListener(IPathVariableChangeListener listener, IProject project) {
 		Collection<IPathVariableChangeListener> list = projectListeners.get(project);
 		if (list == null) {
-			list = Collections.synchronizedSet(new HashSet<>());
+			list = Collections.synchronizedSet(new HashSet<>()); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			projectListeners.put(project, list);
 		}
 		list.add(listener);
@@ -124,14 +124,14 @@ public class PathVariableManager implements IPathVariableManager, IManager {
 		fireVariableChangeEvent(this.listeners, name, value, type);
 	}
 
-	private void fireVariableChangeEvent(Collection<IPathVariableChangeListener> list, String name, IPath value, int type) {
+	private void fireVariableChangeEvent(Collection<IPathVariableChangeListener> list, String name, IPath value, int type) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (list.isEmpty()) {
 			return;
 		}
 		// use a separate collection to avoid interference of simultaneous additions/removals
 		IPathVariableChangeListener[] listenerArray = list.toArray(new IPathVariableChangeListener[list.size()]);
 		final PathVariableChangeEvent pve = new PathVariableChangeEvent(this, name, value, type);
-		for (final IPathVariableChangeListener listener : listenerArray) {
+		for (final IPathVariableChangeListener listener : listenerArray) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ISafeRunnable job = new ISafeRunnable() {
 				@Override
 				public void handleException(Throwable exception) {
@@ -158,17 +158,17 @@ public class PathVariableManager implements IPathVariableManager, IManager {
 	 * Return a key to use in the Preferences.
 	 */
 	private String getKeyForName(String varName) {
-		return VARIABLE_PREFIX + varName;
+		return VARIABLE_PREFIX + varName; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
 	 * @see org.eclipse.core.resources.IPathVariableManager#getPathVariableNames()
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String[] getPathVariableNames() {
 		List<String> result = new LinkedList<>();
 		String[] names = preferences.propertyNames();
-		for (String name : names) {
+		for (String name : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (name.startsWith(VARIABLE_PREFIX)) {
 				String key = name.substring(VARIABLE_PREFIX.length());
 				// filter out names for preferences which might be valid in the
@@ -258,7 +258,7 @@ public class PathVariableManager implements IPathVariableManager, IManager {
 	/**
 	 * @see org.eclipse.core.resources.IPathVariableManager#setValue(String, IPath)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setValue(String varName, IPath newValue) throws CoreException {
 		checkIsValidName(varName);
 		//convert path value to canonical form
@@ -310,7 +310,7 @@ public class PathVariableManager implements IPathVariableManager, IManager {
 	/**
 	 * @see org.eclipse.core.resources.IPathVariableManager#validateName(String)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus validateName(String name) {
 		String message = null;
 		if (name.length() == 0) {
@@ -324,7 +324,7 @@ public class PathVariableManager implements IPathVariableManager, IManager {
 			return new ResourceStatus(IResourceStatus.INVALID_VALUE, null, message);
 		}
 
-		for (int i = 1; i < name.length(); i++) {
+		for (int i = 1; i < name.length(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char following = name.charAt(i);
 			if (Character.isWhitespace(following)) {
 				return new ResourceStatus(IResourceStatus.INVALID_VALUE, null, Messages.pathvar_whitespace);

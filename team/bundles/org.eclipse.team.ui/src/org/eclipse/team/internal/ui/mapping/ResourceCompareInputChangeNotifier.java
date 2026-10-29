@@ -45,7 +45,7 @@ import org.eclipse.team.internal.ui.synchronize.LocalResourceTypedElement;
 /**
  * A change notifier for resource-based compare inputs.
  */
-public class ResourceCompareInputChangeNotifier extends CompareInputChangeNotifier implements IDiffChangeListener {
+public class ResourceCompareInputChangeNotifier extends CompareInputChangeNotifier implements IDiffChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 
 	static final String RESOURCE_CHANGE_NOTIFIER_PROPERTY = "org.eclipse.team.ui.ResourceChangeNotifier"; //$NON-NLS-1$
 
@@ -59,7 +59,7 @@ public class ResourceCompareInputChangeNotifier extends CompareInputChangeNotifi
 			return null;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public String getAncestorLabel(Object input) {
 			if (input instanceof ResourceDiffCompareInput rdci) {
 				ITypedElement element = rdci.getAncestor();
@@ -91,7 +91,7 @@ public class ResourceCompareInputChangeNotifier extends CompareInputChangeNotifi
 			return null;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public String getLeftLabel(Object input) {
 			if (input instanceof ResourceDiffCompareInput rdci) {
 				String localContentId = rdci.getLocalContentId();
@@ -122,7 +122,7 @@ public class ResourceCompareInputChangeNotifier extends CompareInputChangeNotifi
 			return null;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public String getRightLabel(Object input) {
 			if (input instanceof ResourceDiffCompareInput rdci) {
 				ITypedElement element = rdci.getRight();
@@ -165,7 +165,7 @@ public class ResourceCompareInputChangeNotifier extends CompareInputChangeNotifi
 		}
 
 		public void fireChangeEvent(final Object element) {
-			Display.getDefault().asyncExec(() -> fireLabelProviderChanged(new LabelProviderChangedEvent(CompareInputLabelProvider.this, element)));
+			Display.getDefault().asyncExec(() -> fireLabelProviderChanged(new LabelProviderChangedEvent(CompareInputLabelProvider.this, element))); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		}
 	}
 
@@ -213,25 +213,25 @@ public class ResourceCompareInputChangeNotifier extends CompareInputChangeNotifi
 		labelProvider.dispose();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void diffsChanged(IDiffChangeEvent event, IProgressMonitor monitor) {
-		Set<ICompareInput> changedInputs = new HashSet<>();
+		Set<ICompareInput> changedInputs = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IDiff[] added = event.getAdditions();
-		for (IDiff diff : added) {
+		for (IDiff diff : added) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ICompareInput input = findInput(ResourceDiffTree.getResourceFor(diff));
 			if (input != null) {
 				changedInputs.add(input);
 			}
 		}
 		IDiff[] changed = event.getChanges();
-		for (IDiff diff : changed) {
+		for (IDiff diff : changed) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ICompareInput input = findInput(ResourceDiffTree.getResourceFor(diff));
 			if (input != null) {
 				changedInputs.add(input);
 			}
 		}
 		IPath[] paths = event.getRemovals();
-		for (IPath path : paths) {
+		for (IPath path : paths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ICompareInput input = findInput(path);
 			if (input != null) {
 				changedInputs.add(input);
@@ -266,7 +266,7 @@ public class ResourceCompareInputChangeNotifier extends CompareInputChangeNotifi
 
 	private ICompareInput findInput(IPath path) {
 		ICompareInput[] inputs = getConnectedInputs();
-		for (ICompareInput input : inputs) {
+		for (ICompareInput input : inputs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource inputResource = getResource(input);
 			if (inputResource != null && inputResource.getFullPath().equals(path)) {
 				return input;
@@ -277,7 +277,7 @@ public class ResourceCompareInputChangeNotifier extends CompareInputChangeNotifi
 
 	private ICompareInput findInput(IResource resource) {
 		ICompareInput[] inputs = getConnectedInputs();
-		for (ICompareInput input : inputs) {
+		for (ICompareInput input : inputs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource inputResource = getResource(input);
 			if (inputResource != null && inputResource.equals(resource)) {
 				return input;
@@ -314,7 +314,7 @@ public class ResourceCompareInputChangeNotifier extends CompareInputChangeNotifi
 			return;
 		}
 		fetchingInput= input;
-		runInBackground(monitor -> fetchAuthors(input, monitor));
+		runInBackground(monitor -> fetchAuthors(input, monitor)); //FLLDCIM: MARK — T09  LAMBDA
 	}
 
 	protected void fetchAuthors(ResourceDiffCompareInput input, IProgressMonitor monitor) throws CoreException {

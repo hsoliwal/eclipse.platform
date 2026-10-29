@@ -35,7 +35,7 @@ public interface ISynchronizeModelProvider {
 	 * the old and new viewer sorter. Instead, clients should re-obtain the sorter
 	 * from the provider.
 	 */
-	public static final String P_VIEWER_SORTER = TeamUIPlugin.ID  + ".P_VIEWER_SORTER"; //$NON-NLS-1$
+	public static final String P_VIEWER_SORTER = TeamUIPlugin.ID  + ".P_VIEWER_SORTER"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Returns the sync set this model provider is showing.

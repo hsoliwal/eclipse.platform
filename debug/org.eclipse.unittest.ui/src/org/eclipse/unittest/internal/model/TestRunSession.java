@@ -102,7 +102,7 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 		Assert.isNotNull(testRunName);
 		fTestRunName = testRunName;
 
-		fIdToTest = new HashMap<>();
+		fIdToTest = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 		fTestRunnerClient = null;
 		fStartTime = startTime;
@@ -115,7 +115,7 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 	 *
 	 * @param launch an {@link ILaunch} object
 	 */
-	public TestRunSession(ILaunch launch) {
+	public TestRunSession(ILaunch launch) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super(null, "-1", "<TestRunSession>", null, null, null); //$NON-NLS-1$ //$NON-NLS-2$
 		Assert.isNotNull(launch);
 
@@ -130,14 +130,14 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 			fTestRunnerSupport = null;
 		}
 
-		fIdToTest = new HashMap<>();
+		fIdToTest = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 		if (fTestRunnerSupport != null) {
 			fTestRunnerClient = fTestRunnerSupport.newTestRunnerClient(this);
 		}
 
 		final ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
-		launchManager.addLaunchListener(new ILaunchesListener2() {
+		launchManager.addLaunchListener(new ILaunchesListener2() { //FLLDCIM: MARK — T27  ANONYMOUS
 			@Override
 			public void launchesTerminated(ILaunch[] launches) {
 				if (Arrays.asList(launches).contains(fLaunch)) {
@@ -176,7 +176,7 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 	 */
 	public void reset() {
 		fTestResult = null;
-		fIdToTest = new HashMap<>();
+		fIdToTest = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	}
 
 	@Override
@@ -351,7 +351,7 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 		return testElement;
 	}
 
-	private static final class NoopLaunch extends Launch {
+	private static final class NoopLaunch extends Launch { //FLLDCIM: MARK — T27  IMPLEMENTS
 		private NoopLaunch(ILaunchConfiguration launchConfiguration, String mode, ISourceLocator locator) {
 			super(launchConfiguration, mode, locator);
 		}
@@ -384,7 +384,7 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 			fStartTime = Instant.now();
 			fPredefinedTestCount = testCount;
 
-			for (ITestSessionListener listener : fSessionListeners) {
+			for (ITestSessionListener listener : fSessionListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				listener.sessionStarted();
 			}
 		}
@@ -395,7 +395,7 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 		 * @param duration a duration of this test run
 		 */
 		public void testRunEnded(Duration duration) {
-			for (ITestSessionListener listener : fSessionListeners) {
+			for (ITestSessionListener listener : fSessionListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				listener.sessionCompleted(duration);
 			}
 		}
@@ -408,7 +408,7 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 		public void testRunStopped(Duration duration) {
 			fIsAborted = true;
 
-			for (ITestSessionListener listener : fSessionListeners) {
+			for (ITestSessionListener listener : fSessionListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				listener.sessionAborted(duration);
 			}
 		}
@@ -433,7 +433,7 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 			ITestElement testElement = addTreeEntry(testId, testName, isSuite, testCount, isDynamicTest,
 					(TestSuiteElement) parent, displayName, uniqueId);
 
-			for (ITestSessionListener listener : fSessionListeners) {
+			for (ITestSessionListener listener : fSessionListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				listener.testAdded(testElement);
 			}
 			return testElement;
@@ -449,14 +449,14 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 				return;
 			}
 			if (firstStart) {
-				for (ITestSessionListener listener : fSessionListeners) {
+				for (ITestSessionListener listener : fSessionListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					listener.runningBegins();
 				}
 				firstStart = false;
 			}
 			setStatus(test, Status.RUNNING);
 
-			for (ITestSessionListener listener : fSessionListeners) {
+			for (ITestSessionListener listener : fSessionListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				listener.testStarted((ITestCaseElement) test);
 			}
 		}
@@ -467,7 +467,7 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 		 * @param testElement a test element object
 		 * @param isIgnored   indicates a skipped (not run) test element
 		 */
-		public void testEnded(ITestElement testElement, boolean isIgnored) {
+		public void testEnded(ITestElement testElement, boolean isIgnored) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			if (testElement == null) {
 				return;
 			}
@@ -488,7 +488,7 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 				setStatus(testCaseElement, Status.OK);
 			}
 
-			for (ITestSessionListener listener : fSessionListeners) {
+			for (ITestSessionListener listener : fSessionListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				listener.testEnded(testCaseElement);
 			}
 		}
@@ -514,14 +514,14 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 
 			registerTestFailureStatus((TestElement) testElement, status, trace);
 
-			for (ITestSessionListener listener : fSessionListeners) {
+			for (ITestSessionListener listener : fSessionListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				listener.testFailed(testElement, status, trace);
 			}
 		}
 
 		private void logUnexpectedTest(String testId, ITestElement testElement) {
 			UnitTestPlugin
-					.log(new Exception("Unexpected TestElement type for testId '" + testId + "': " + testElement)); //$NON-NLS-1$ //$NON-NLS-2$
+					.log(new Exception("Unexpected TestElement type for testId '" + testId + "': " + testElement)); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -570,7 +570,7 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 	 * @return an array of failed {@link ITestElement}s
 	 */
 	public List<TestElement> getAllFailedTestElements() {
-		List<TestElement> failures = new ArrayList<>();
+		List<TestElement> failures = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		addFailures(failures, this);
 		return Collections.unmodifiableList(failures);
 	}
@@ -581,7 +581,7 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 			failures.add(testElement);
 		}
 		if (testElement instanceof TestSuiteElement testSuiteElement) {
-			for (TestElement child : testSuiteElement.getChildren()) {
+			for (TestElement child : testSuiteElement.getChildren()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				addFailures(failures, child);
 			}
 		}
@@ -591,9 +591,9 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 	public String toString() {
 		Instant startTime = getStartTime();
 		if (startTime == null) {
-			return fTestRunName + " (not started)"; //$NON-NLS-1$
+			return fTestRunName + " (not started)"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
-		return fTestRunName + " " + DateFormat.getDateTimeInstance().format(new Date(fStartTime.toEpochMilli())); //$NON-NLS-1$
+		return fTestRunName + " " + DateFormat.getDateTimeInstance().format(new Date(fStartTime.toEpochMilli())); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override
@@ -723,7 +723,7 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 		});
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Integer getFinalTestCaseCount() {
 		if (predefinedTestCount != null) {
 			return predefinedTestCount;
@@ -733,7 +733,7 @@ public class TestRunSession extends TestSuiteElement implements ITestRunSession,
 		}
 		if (!isRunning()) {
 			int res = 0;
-			for (TestElement child : getChildren()) {
+			for (TestElement child : getChildren()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Integer childCount = child.getFinalTestCaseCount();
 				if (childCount == null) {
 					return null;

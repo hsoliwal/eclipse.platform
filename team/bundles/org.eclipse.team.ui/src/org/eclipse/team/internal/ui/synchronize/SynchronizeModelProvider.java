@@ -44,9 +44,9 @@ import org.eclipse.team.ui.synchronize.ISynchronizePageConfiguration;
  * @see CompressedFoldersModelProvider
  * @since 3.0
  */
-public abstract class SynchronizeModelProvider extends AbstractSynchronizeModelProvider implements ISyncInfoSetChangeListener {
+public abstract class SynchronizeModelProvider extends AbstractSynchronizeModelProvider implements ISyncInfoSetChangeListener { //FLLDCIM: MARK — T38  IMPLEMENTS
 
-	protected final Map<IResource, ISynchronizeModelElement> resourceMap = Collections.synchronizedMap(new HashMap<>());
+	protected final Map<IResource, ISynchronizeModelElement> resourceMap = Collections.synchronizedMap(new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	protected static final boolean DEBUG = false;
 
@@ -130,8 +130,8 @@ public abstract class SynchronizeModelProvider extends AbstractSynchronizeModelP
 	 * @param resources the resources to remove
 	 */
 	protected void removeFromViewer(IResource[] resources) {
-		List<ISynchronizeModelElement> elements = new ArrayList<>();
-		for (IResource resource : resources) {
+		List<ISynchronizeModelElement> elements = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ISynchronizeModelElement element = getModelObject(resource);
 			if(element != null) {
 				elements.add(element);
@@ -174,7 +174,7 @@ public abstract class SynchronizeModelProvider extends AbstractSynchronizeModelP
 	public ISynchronizeModelElement[] getClosestExistingParents(IResource resource) {
 		ISynchronizeModelElement element = getModelObject(resource);
 		if(element == null) {
-			do {
+			do { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				resource = resource.getParent();
 				element = getModelObject(resource);
 			} while(element == null && resource != null);
@@ -194,7 +194,7 @@ public abstract class SynchronizeModelProvider extends AbstractSynchronizeModelP
 	protected void handleResourceChanges(ISyncInfoTreeChangeEvent event) {
 		// Refresh the viewer for each changed resource
 		SyncInfo[] infos = event.getChangedResources();
-		for (SyncInfo info : infos) {
+		for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource local = info.getLocal();
 			ISynchronizeModelElement diffNode = getModelObject(local);
 			if (diffNode != null) {
@@ -231,7 +231,7 @@ public abstract class SynchronizeModelProvider extends AbstractSynchronizeModelP
 	 * @param added the added infos
 	 */
 	protected void addResources(SyncInfo[] added) {
-		for (SyncInfo info : added) {
+		for (SyncInfo info : added) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			addResource(info);
 		}
 	}

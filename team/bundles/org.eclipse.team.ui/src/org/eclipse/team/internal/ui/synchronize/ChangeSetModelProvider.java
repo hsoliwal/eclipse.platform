@@ -40,14 +40,14 @@ import org.eclipse.team.ui.synchronize.SynchronizePageActionGroup;
 /**
  * Model provider for showing change sets in a sync page.
  */
-public class ChangeSetModelProvider extends CompositeModelProvider {
+public class ChangeSetModelProvider extends CompositeModelProvider { //FLLDCIM: MARK — T38  IMPLEMENTS
 
 	private ViewerComparator viewerComparator;
 
 	// The id of the sub-provider
 	private final String subProvierId;
 
-	private final Map<ISynchronizeModelElement, ISynchronizeModelProvider> rootToProvider = new HashMap<>();
+	private final Map<ISynchronizeModelElement, ISynchronizeModelProvider> rootToProvider = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	private ViewerComparator embeddedSorter;
 
@@ -98,7 +98,7 @@ public class ChangeSetModelProvider extends CompositeModelProvider {
 	 * Descriptor for this model provider
 	 */
 	public static class ChangeSetModelProviderDescriptor implements ISynchronizeModelProviderDescriptor {
-		public static final String ID = TeamUIPlugin.ID + ".modelprovider_cvs_changelog"; //$NON-NLS-1$
+		public static final String ID = TeamUIPlugin.ID + ".modelprovider_cvs_changelog"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		@Override
 		public String getId() {
 			return ID;
@@ -130,7 +130,7 @@ public class ChangeSetModelProvider extends CompositeModelProvider {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void handleChanges(ISyncInfoTreeChangeEvent event, IProgressMonitor monitor) {
 		boolean handled = false;
 		if (checkedInCollector != null && getChangeSetCapability().enableCheckedInChangeSetsFor(getConfiguration())) {
@@ -150,11 +150,11 @@ public class ChangeSetModelProvider extends CompositeModelProvider {
 					set.beginInput();
 					set.removeAll(event.getRemovedResources());
 					SyncInfo[] added = event.getAddedResources();
-					for (SyncInfo info : added) {
+					for (SyncInfo info : added) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						set.add(info);
 					}
 					SyncInfo[] changed = event.getChangedResources();
-					for (SyncInfo info : changed) {
+					for (SyncInfo info : changed) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						set.add(info);
 					}
 				} finally {
@@ -169,7 +169,7 @@ public class ChangeSetModelProvider extends CompositeModelProvider {
 		// Nothing to do since change handling was bypassed
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected IDiffElement[] buildModelObjects(ISynchronizeModelElement node) {
 		// This method is invoked on a reset after the provider state has been cleared.
 		// Resetting the collector will rebuild the model
@@ -285,7 +285,7 @@ public class ChangeSetModelProvider extends CompositeModelProvider {
 	 * it is empty so we can have access to the appropriate sorter
 	 * and action group
 	 */
-	private void createRootProvider() {
+	private void createRootProvider() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Recreate the sub-provider at the root and use it's viewer sorter and action group
 		SyncInfoTree tree;
 		if (activeCollector != null && getChangeSetCapability().enableActiveChangeSetsFor(getConfiguration())) {
@@ -301,7 +301,7 @@ public class ChangeSetModelProvider extends CompositeModelProvider {
 			if (actionGroup != null) {
 				// This action group will be disposed when the provider is disposed
 				getConfiguration().addActionContribution(actionGroup);
-				provider.addPropertyChangeListener(event -> {
+				provider.addPropertyChangeListener(event -> { //FLLDCIM: MARK — T06  LAMBDA
 					if (event.getProperty().equals(P_VIEWER_SORTER)) {
 						embeddedSorter = provider.getViewerComparator();
 						ChangeSetModelProvider.this.firePropertyChange(P_VIEWER_SORTER, null, null);
@@ -317,7 +317,7 @@ public class ChangeSetModelProvider extends CompositeModelProvider {
 	 */
 	protected ISynchronizeModelElement getModelElement(ChangeSet set) {
 		IDiffElement[] children = getModelRoot().getChildren();
-		for (IDiffElement element : children) {
+		for (IDiffElement element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element instanceof ChangeSetDiffNode && ((ChangeSetDiffNode)element).getSet() == set) {
 				return (ISynchronizeModelElement)element;
 			}
@@ -391,7 +391,7 @@ public class ChangeSetModelProvider extends CompositeModelProvider {
 	public void refreshLabel(ChangeSet set) {
 		ISynchronizeModelElement node = getModelElement(set);
 		if (node != null) {
-			getViewer().refresh(node);
+			getViewer().refresh(node); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		}
 	}
 }

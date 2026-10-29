@@ -37,19 +37,19 @@ public class DiffTest {
 
 	static final String SEPARATOR = System.lineSeparator();
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLineAddition() {
-		String s1 = ABC + SEPARATOR + DEF + SEPARATOR + XYZ;
-		String s2 = ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ;
+		String s1 = ABC + SEPARATOR + DEF + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String s2 = ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		TextLineLCS.TextLine[] l1 = TextLineLCS.getTextLines(s1);
 		TextLineLCS.TextLine[] l2 = TextLineLCS.getTextLines(s2);
 		TextLineLCS lcs = new TextLineLCS(l1, l2);
 		lcs.longestCommonSubsequence(SubMonitor.convert(null, 100));
 		TextLineLCS.TextLine[][] result = lcs.getResult();
 		assertThat(result[0]).hasSameSizeAs(result[1]).hasSize(3);
-		for (int i = 0; i < result[0].length; i++) {
+		for (int i = 0; i < result[0].length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int index = i;
-			assertThat(result[0][i]).matches(it -> it.sameText(result[1][index]), "same text at index " + index);
+			assertThat(result[0][i]).matches(it -> it.sameText(result[1][index]), "same text at index " + index); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		assertThat(result[0][0].lineNumber()).isEqualTo(0);
 		assertThat(result[1][0].lineNumber()).isEqualTo(0);
@@ -59,19 +59,19 @@ public class DiffTest {
 		assertThat(result[1][2].lineNumber()).isEqualTo(3);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLineDeletion() {
-		String s1 = ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ;
-		String s2 = ABC + SEPARATOR + DEF + SEPARATOR + XYZ;
+		String s1 = ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String s2 = ABC + SEPARATOR + DEF + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		TextLineLCS.TextLine[] l1 = TextLineLCS.getTextLines(s1);
 		TextLineLCS.TextLine[] l2 = TextLineLCS.getTextLines(s2);
 		TextLineLCS lcs = new TextLineLCS(l1, l2);
 		lcs.longestCommonSubsequence(SubMonitor.convert(null, 100));
 		TextLineLCS.TextLine[][] result = lcs.getResult();
 		assertThat(result[0]).hasSameSizeAs(result[1]);
-		for (int i = 0; i < result[0].length; i++) {
+		for (int i = 0; i < result[0].length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int index = i;
-			assertThat(result[0][i]).matches(it -> it.sameText(result[1][index]), "same text at index " + index);
+			assertThat(result[0][i]).matches(it -> it.sameText(result[1][index]), "same text at index " + index); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		assertThat(result[0][0].lineNumber()).isEqualTo(0);
 		assertThat(result[0][1].lineNumber()).isEqualTo(1);
@@ -81,19 +81,19 @@ public class DiffTest {
 		assertThat(result[1][2].lineNumber()).isEqualTo(2);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLineAppendEnd() {
-		String s1 = ABC + SEPARATOR + DEF;
-		String s2 = ABC + SEPARATOR + DEF + SEPARATOR + _123;
+		String s1 = ABC + SEPARATOR + DEF; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String s2 = ABC + SEPARATOR + DEF + SEPARATOR + _123; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		TextLineLCS.TextLine[] l1 = TextLineLCS.getTextLines(s1);
 		TextLineLCS.TextLine[] l2 = TextLineLCS.getTextLines(s2);
 		TextLineLCS lcs = new TextLineLCS(l1, l2);
 		lcs.longestCommonSubsequence(SubMonitor.convert(null, 100));
 		TextLineLCS.TextLine[][] result = lcs.getResult();
 		assertThat(result[0]).hasSameSizeAs(result[1]).hasSize(2);
-		for (int i = 0; i < result[0].length; i++) {
+		for (int i = 0; i < result[0].length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int index = i;
-			assertThat(result[0][i]).matches(it -> it.sameText(result[1][index]), "same text at index " + index);
+			assertThat(result[0][i]).matches(it -> it.sameText(result[1][index]), "same text at index " + index); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		assertThat(result[0][0].lineNumber()).isEqualTo(0);
 		assertThat(result[1][0].lineNumber()).isEqualTo(0);
@@ -101,19 +101,19 @@ public class DiffTest {
 		assertThat(result[1][1].lineNumber()).isEqualTo(1);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLineDeleteEnd() {
-		String s1 = ABC + SEPARATOR + DEF + SEPARATOR + _123;
-		String s2 = ABC + SEPARATOR + DEF;
+		String s1 = ABC + SEPARATOR + DEF + SEPARATOR + _123; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String s2 = ABC + SEPARATOR + DEF; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		TextLineLCS.TextLine[] l1 = TextLineLCS.getTextLines(s1);
 		TextLineLCS.TextLine[] l2 = TextLineLCS.getTextLines(s2);
 		TextLineLCS lcs = new TextLineLCS(l1, l2);
 		lcs.longestCommonSubsequence(SubMonitor.convert(null, 100));
 		TextLineLCS.TextLine[][] result = lcs.getResult();
 		assertThat(result[0]).hasSameSizeAs(result[1]).hasSize(2);
-		for (int i = 0; i < result[0].length; i++) {
+		for (int i = 0; i < result[0].length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int index = i;
-			assertThat(result[0][i]).matches(it -> it.sameText(result[1][index]), "same text at index " + index);
+			assertThat(result[0][i]).matches(it -> it.sameText(result[1][index]), "same text at index " + index); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		assertThat(result[0][0].lineNumber()).isEqualTo(0);
 		assertThat(result[1][0].lineNumber()).isEqualTo(0);
@@ -121,19 +121,19 @@ public class DiffTest {
 		assertThat(result[1][1].lineNumber()).isEqualTo(1);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLineAppendStart() {
-		String s1 = ABC + SEPARATOR + DEF;
-		String s2 = _123 + SEPARATOR + ABC + SEPARATOR + DEF;
+		String s1 = ABC + SEPARATOR + DEF; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String s2 = _123 + SEPARATOR + ABC + SEPARATOR + DEF; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		TextLineLCS.TextLine[] l1 = TextLineLCS.getTextLines(s1);
 		TextLineLCS.TextLine[] l2 = TextLineLCS.getTextLines(s2);
 		TextLineLCS lcs = new TextLineLCS(l1, l2);
 		lcs.longestCommonSubsequence(SubMonitor.convert(null, 100));
 		TextLineLCS.TextLine[][] result = lcs.getResult();
 		assertThat(result[0]).hasSameSizeAs(result[1]).hasSize(2);
-		for (int i = 0; i < result[0].length; i++) {
+		for (int i = 0; i < result[0].length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int index = i;
-			assertThat(result[0][i]).matches(it -> it.sameText(result[1][index]), "same text at index " + index);
+			assertThat(result[0][i]).matches(it -> it.sameText(result[1][index]), "same text at index " + index); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		assertThat(result[0][0].lineNumber()).isEqualTo(0);
 		assertThat(result[1][0].lineNumber()).isEqualTo(1);
@@ -141,19 +141,19 @@ public class DiffTest {
 		assertThat(result[1][1].lineNumber()).isEqualTo(2);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLineDeleteStart() {
-		String s1 = _123 + SEPARATOR + ABC + SEPARATOR + DEF;
-		String s2 = ABC + SEPARATOR + DEF;
+		String s1 = _123 + SEPARATOR + ABC + SEPARATOR + DEF; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String s2 = ABC + SEPARATOR + DEF; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		TextLineLCS.TextLine[] l1 = TextLineLCS.getTextLines(s1);
 		TextLineLCS.TextLine[] l2 = TextLineLCS.getTextLines(s2);
 		TextLineLCS lcs = new TextLineLCS(l1, l2);
 		lcs.longestCommonSubsequence(SubMonitor.convert(null, 100));
 		TextLineLCS.TextLine[][] result = lcs.getResult();
 		assertThat(result[0]).hasSameSizeAs(result[1]).hasSize(2);
-		for (int i = 0; i < result[0].length; i++) {
+		for (int i = 0; i < result[0].length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int index = i;
-			assertThat(result[0][i]).matches(it -> it.sameText(result[1][index]), "same text at index " + index);
+			assertThat(result[0][i]).matches(it -> it.sameText(result[1][index]), "same text at index " + index); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		assertThat(result[0][0].lineNumber()).isEqualTo(1);
 		assertThat(result[0][1].lineNumber()).isEqualTo(2);
@@ -178,8 +178,8 @@ public class DiffTest {
 
 	@Test
 	public void testDocAddition() {
-		String s1 = ABC + SEPARATOR + DEF + SEPARATOR + XYZ;
-		String s2 = ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ;
+		String s1 = ABC + SEPARATOR + DEF + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String s2 = ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		RangeDifference[] result = getDifferences(s1, s2);
 
@@ -192,8 +192,8 @@ public class DiffTest {
 
 	@Test
 	public void testDocDeletion() {
-		String s1 = ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ;
-		String s2 = ABC + SEPARATOR + DEF + SEPARATOR + XYZ;
+		String s1 = ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String s2 = ABC + SEPARATOR + DEF + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		RangeDifference[] result = getDifferences(s1, s2);
 
@@ -206,8 +206,8 @@ public class DiffTest {
 
 	@Test
 	public void testDocAppendStart() {
-		String s1 = ABC + SEPARATOR + DEF;
-		String s2 = _123 + SEPARATOR + ABC + SEPARATOR + DEF;
+		String s1 = ABC + SEPARATOR + DEF; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String s2 = _123 + SEPARATOR + ABC + SEPARATOR + DEF; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		RangeDifference[] result = getDifferences(s1, s2);
 
@@ -220,8 +220,8 @@ public class DiffTest {
 
 	@Test
 	public void testDocDeleteStart() {
-		String s1 = _123 + SEPARATOR + ABC + SEPARATOR + DEF;
-		String s2 = ABC + SEPARATOR + DEF;
+		String s1 = _123 + SEPARATOR + ABC + SEPARATOR + DEF; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String s2 = ABC + SEPARATOR + DEF; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		RangeDifference[] result = getDifferences(s1, s2);
 
@@ -234,8 +234,8 @@ public class DiffTest {
 
 	@Test
 	public void testDocAppendEnd() {
-		String s1 = ABC + SEPARATOR + DEF;
-		String s2 = ABC + SEPARATOR + DEF + SEPARATOR + _123;
+		String s1 = ABC + SEPARATOR + DEF; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String s2 = ABC + SEPARATOR + DEF + SEPARATOR + _123; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		RangeDifference[] result = getDifferences(s1, s2);
 
@@ -248,8 +248,8 @@ public class DiffTest {
 
 	@Test
 	public void testDocDeleteEnd() {
-		String s1 = ABC + SEPARATOR + DEF + SEPARATOR + _123;
-		String s2 = ABC + SEPARATOR + DEF;
+		String s1 = ABC + SEPARATOR + DEF + SEPARATOR + _123; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String s2 = ABC + SEPARATOR + DEF; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		RangeDifference[] result = getDifferences(s1, s2);
 

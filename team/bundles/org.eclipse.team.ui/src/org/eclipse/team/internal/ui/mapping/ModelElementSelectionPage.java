@@ -61,15 +61,15 @@ public class ModelElementSelectionPage extends GlobalRefreshElementSelectionPage
 		super("elementSelection"); //$NON-NLS-1$
 		setDescription(TeamUIMessages.GlobalRefreshResourceSelectionPage_2);
 		setTitle(TeamUIMessages.GlobalRefreshResourceSelectionPage_3);
-		List<ResourceMapping> result = new ArrayList<>();
-		for (IResource resource : roots) {
+		List<ResourceMapping> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IResource resource : roots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result.add(Utils.getResourceMapping(resource));
 		}
 		manager = new SynchronizationScopeManager(TeamUIMessages.ModelElementSelectionPage_0, result.toArray(new ResourceMapping[result.size()]),
 						ResourceMappingContext.LOCAL_CONTEXT, true);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected ContainerCheckedTreeViewer createViewer(Composite top) {
 		GridData data;
 		fViewer = new ContainerCheckedTreeViewer(top, SWT.BORDER);
@@ -82,8 +82,8 @@ public class ModelElementSelectionPage extends GlobalRefreshElementSelectionPage
 		data.heightHint = 100;
 		fViewer.getControl().setLayoutData(data);
 		fViewer.setContentProvider(service.createCommonContentProvider());
-		fViewer.setLabelProvider(new DecoratingLabelProvider(service.createCommonLabelProvider(), PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator()));
-		fViewer.addCheckStateListener(event -> {
+		fViewer.setLabelProvider(new DecoratingLabelProvider(service.createCommonLabelProvider(), PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator())); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
+		fViewer.addCheckStateListener(event -> { //FLLDCIM: MARK — T21 CHECK_STATE_LANE CALL
 			Object element = event.getElement();
 			//If the workspace model has been checked, switch the scope to workspace
 			if (event.getChecked() && element instanceof ModelProvider && ((ModelProvider) element).getId().equals(ModelProvider.RESOURCE_MODEL_PROVIDER_ID)) {
@@ -102,7 +102,7 @@ public class ModelElementSelectionPage extends GlobalRefreshElementSelectionPage
 				}
 			}
 		});
-		fViewer.getTree().addTreeListener(new TreeListener(){
+		fViewer.getTree().addTreeListener(new TreeListener(){ //FLLDCIM: MARK — T22 EXPAND_STATE_LANE CALL
 
 			@Override
 			public void treeCollapsed(TreeEvent e) {
@@ -120,11 +120,11 @@ public class ModelElementSelectionPage extends GlobalRefreshElementSelectionPage
 		return fViewer;
 	}
 
-	public ResourceMapping[] getSelectedMappings() {
+	public ResourceMapping[] getSelectedMappings() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (isWorkingSetSelected()) {
-			List<ResourceMapping> result = new ArrayList<>();
+			List<ResourceMapping> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			IWorkingSet[] sets = getWorkingSets();
-			for (IWorkingSet set : sets) {
+			for (IWorkingSet set : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				result.add(Utils.getResourceMapping(set));
 			}
 			return result.toArray(new ResourceMapping[result.size()]);
@@ -143,9 +143,9 @@ public class ModelElementSelectionPage extends GlobalRefreshElementSelectionPage
 			ResourceMapping[] mappings = manager.getScope().getMappings(ModelProvider.RESOURCE_MODEL_PROVIDER_ID);
 			return mappings;
 		}
-		List<ResourceMapping> result = new ArrayList<>();
+		List<ResourceMapping> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Object[] objects = getRootElement();
-		for (Object object : objects) {
+		for (Object object : objects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceMapping mapping = Utils.getResourceMapping(object);
 			if (mapping != null) {
 				result.add(mapping);
@@ -167,9 +167,9 @@ public class ModelElementSelectionPage extends GlobalRefreshElementSelectionPage
 
 	@Override
 	protected boolean checkWorkingSetElements() {
-		List<Object> allWorkingSetElements = new ArrayList<>();
+		List<Object> allWorkingSetElements = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IWorkingSet[] workingSets = getWorkingSets();
-		for (IWorkingSet set : workingSets) {
+		for (IWorkingSet set : workingSets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			allWorkingSetElements.addAll(computeSelectedResources(new StructuredSelection(set.getElements())));
 		}
 		getViewer().setCheckedElements(allWorkingSetElements.toArray());
@@ -177,8 +177,8 @@ public class ModelElementSelectionPage extends GlobalRefreshElementSelectionPage
 	}
 
 	private Collection<Object> computeSelectedResources(StructuredSelection selection) {
-		List<Object> result = new ArrayList<>();
-		for (Object element : selection) {
+		List<Object> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Object element : selection) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceMapping mapping = Utils.getResourceMapping(element);
 			if (mapping != null && scopeContainsMapping(mapping)) {
 				result.add(element);
@@ -189,7 +189,7 @@ public class ModelElementSelectionPage extends GlobalRefreshElementSelectionPage
 
 	private boolean scopeContainsMapping(ResourceMapping mapping) {
 		ResourceMapping[] mappings = manager.getScope().getMappings();
-		for (ResourceMapping m : mappings) {
+		for (ResourceMapping m : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (m.contains(mapping)) {
 				return true;
 			}
@@ -202,7 +202,7 @@ public class ModelElementSelectionPage extends GlobalRefreshElementSelectionPage
 		anExtension.getStateModel().setProperty(ITeamContentProviderManager.P_SYNCHRONIZATION_SCOPE, manager.getScope());
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
 		if (visible && !initialized) {
@@ -212,7 +212,7 @@ public class ModelElementSelectionPage extends GlobalRefreshElementSelectionPage
 				ISynchronizationScope syncScope = manager.getScope();
 				ModelProvider[] providers = syncScope.getModelProviders();
 				boolean foundEnabledModelProvider = false;
-				for (ModelProvider provider : providers) {
+				for (ModelProvider provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (isEnabled(provider)) {
 						foundEnabledModelProvider = true;
 						break;
@@ -221,8 +221,8 @@ public class ModelElementSelectionPage extends GlobalRefreshElementSelectionPage
 
 				if (!foundEnabledModelProvider){
 					if (MessageDialog.openConfirm(getShell(), TeamUIMessages.ModelElementSelectionPage_AllModelsDisabledTitle, TeamUIMessages.ModelElementSelectionPage_AllModelsDisabledMessage)) {
-						ArrayList<ITeamContentProviderDescriptor> teamProviderDescriptors = new ArrayList<>();
-						for (ModelProvider provider : providers) {
+						ArrayList<ITeamContentProviderDescriptor> teamProviderDescriptors = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+						for (ModelProvider provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							teamProviderDescriptors.add(TeamUI.getTeamContentProviderManager().getDescriptor(provider.getId()));
 						}
 
@@ -232,7 +232,7 @@ public class ModelElementSelectionPage extends GlobalRefreshElementSelectionPage
 				}
 				service.bindExtensions(TeamUI.getTeamContentProviderManager().getContentProviderIds(syncScope), true);
 				service.getActivationService().activateExtensions(TeamUI.getTeamContentProviderManager().getContentProviderIds(syncScope), true);
-				fViewer.setInput(syncScope);
+				fViewer.setInput(syncScope); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 				initializeScopingHint();
 			}
 		}
@@ -240,7 +240,7 @@ public class ModelElementSelectionPage extends GlobalRefreshElementSelectionPage
 
 	private void initialize() {
 		try {
-			getContainer().run(true, true, monitor -> {
+			getContainer().run(true, true, monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 				try {
 					manager.initialize(monitor);
 					initialized = true;
@@ -260,18 +260,18 @@ public class ModelElementSelectionPage extends GlobalRefreshElementSelectionPage
 		return (desc != null && desc.isEnabled());
 	}
 
-	private void uncheckOtherModels(String modelProviderId) {
+	private void uncheckOtherModels(String modelProviderId) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (!isSelectedResourcesSelected()) {
 			ModelProvider[] providers = manager.getScope().getModelProviders();
-			ArrayList<ModelProvider> disabledProviders = new ArrayList<>();
-			for (ModelProvider provider : providers) {
+			ArrayList<ModelProvider> disabledProviders = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (ModelProvider provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!provider.getId().equals(modelProviderId)) {
 					disabledProviders.add(provider);
 				}
 			}
 
-			for (ModelProvider disable : disabledProviders) {
+			for (ModelProvider disable : disabledProviders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fViewer.setChecked(disable, false);
 			}
 		}

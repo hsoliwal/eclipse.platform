@@ -56,7 +56,7 @@ public class PropertyChangeHandler {
 			}
 			fEvent = event;
 			Object[] copiedListeners = fListeners.getListeners();
-			for (Object copiedListener : copiedListeners) {
+			for (Object copiedListener : copiedListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				fListener = (IPropertyChangeListener) copiedListener;
 				SafeRunner.run(this);
 			}

@@ -38,7 +38,7 @@ public class AntThread extends AntDebugElement implements IThread {
 	/**
 	 * The stackframes associated with this thread
 	 */
-	private final List<AntStackFrame> fFrames = new ArrayList<>(1);
+	private final List<AntStackFrame> fFrames = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	/**
 	 * The stackframes to be reused on suspension
@@ -93,7 +93,7 @@ public class AntThread extends AntDebugElement implements IThread {
 	/**
 	 * Retrieves the current stack frames in the thread possibly waiting until the frames are populated
 	 */
-	private void getStackFrames0() throws DebugException {
+	private void getStackFrames0() throws DebugException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		synchronized (fFrames) {
 			getAntDebugTarget().getStackFrames();
 			if (fFrames.size() > 0) {
@@ -102,7 +102,7 @@ public class AntThread extends AntDebugElement implements IThread {
 			}
 			int attempts = 0;
 			try {
-				while (fFrames.isEmpty() && !isTerminated()) {
+				while (fFrames.isEmpty() && !isTerminated()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					fFrames.wait(50);
 					if (attempts == 20 && fFrames.isEmpty() && !isTerminated()) {
 						throwDebugException(DebugModelMessages.AntThread_3);
@@ -225,7 +225,7 @@ public class AntThread extends AntDebugElement implements IThread {
 
 	private void aboutToResume(int detail, boolean stepping) {
 		fRefreshProperties = true;
-		fOldFrames = new ArrayList<>(fFrames);
+		fOldFrames = new ArrayList<>(fFrames); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		fFrames.clear();
 		setPropertiesValid(false);
 		setStepping(stepping);
@@ -278,9 +278,9 @@ public class AntThread extends AntDebugElement implements IThread {
 		fStepping = stepping;
 	}
 
-	public void buildStack(String data) {
+	public void buildStack(String data) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		synchronized (fFrames) {
-			String[] strings = data.split(DebugMessageIds.MESSAGE_DELIMITER);
+			String[] strings = data.split(DebugMessageIds.MESSAGE_DELIMITER); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			// 0 STACK message
 			// 1 targetName
 			// 2 taskName
@@ -295,16 +295,16 @@ public class AntThread extends AntDebugElement implements IThread {
 			int lineNumber;
 			int stackFrameId = 0;
 			String taskName;
-			for (int i = 1; i < strings.length; i++) {
+			for (int i = 1; i < strings.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (strings[i].length() > 0) {
-					name = new StringBuilder(strings[i]);
+					name = new StringBuilder(strings[i]); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 					taskName = strings[++i];
 					if (taskName.length() > 0) {
-						name.append(": "); //$NON-NLS-1$
-						name.append(taskName);
+						name.append(": "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+						name.append(taskName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
 				} else {
-					name = new StringBuilder(strings[++i]);
+					name = new StringBuilder(strings[++i]); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 				}
 				filePath = strings[++i];
 				lineNumber = Integer.parseInt(strings[++i]);
@@ -340,10 +340,10 @@ public class AntThread extends AntDebugElement implements IThread {
 		return frame;
 	}
 
-	public void newProperties(String data) {
+	public void newProperties(String data) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		synchronized (fPropertiesLock) {
 			try {
-				String[] datum = data.split(DebugMessageIds.MESSAGE_DELIMITER);
+				String[] datum = data.split(DebugMessageIds.MESSAGE_DELIMITER); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 				if (fUserProperties == null) {
 					initializePropertyGroups();
 				}
@@ -363,10 +363,10 @@ public class AntThread extends AntDebugElement implements IThread {
 					StringBuffer propertyValue;
 					int propertyNameLength;
 					int propertyValueLength;
-					for (int i = 1; i < datum.length; i++) {
+					for (int i = 1; i < datum.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						propertyNameLength = Integer.parseInt(datum[i]);
 						propertyName = new StringBuffer(datum[++i]);
-						while (propertyName.length() != propertyNameLength) {
+						while (propertyName.length() != propertyNameLength) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							propertyName.append(DebugMessageIds.MESSAGE_DELIMITER);
 							propertyName.append(datum[++i]);
 						}
@@ -379,7 +379,7 @@ public class AntThread extends AntDebugElement implements IThread {
 						} else {
 							propertyValue = new StringBuffer(datum[++i]);
 						}
-						while (propertyValue.length() != propertyValueLength) {
+						while (propertyValue.length() != propertyValueLength) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							propertyValue.append(DebugMessageIds.MESSAGE_DELIMITER);
 							propertyValue.append(datum[++i]);
 						}
@@ -427,7 +427,7 @@ public class AntThread extends AntDebugElement implements IThread {
 		fRuntimeProperties.setValue(new AntPropertiesValue(target));
 	}
 
-	protected IVariable[] getVariables() throws DebugException {
+	protected IVariable[] getVariables() throws DebugException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		synchronized (fPropertiesLock) {
 			if (fRefreshProperties) {
 				getAntDebugTarget().getProperties();
@@ -435,7 +435,7 @@ public class AntThread extends AntDebugElement implements IThread {
 					// properties have not been set; need to wait
 					try {
 						int attempts = 0;
-						while (fRefreshProperties && !isTerminated()) {
+						while (fRefreshProperties && !isTerminated()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							fPropertiesLock.wait(50);
 							if (attempts == 20 && fRefreshProperties && !isTerminated()) {
 								throwDebugException(DebugModelMessages.AntThread_4);

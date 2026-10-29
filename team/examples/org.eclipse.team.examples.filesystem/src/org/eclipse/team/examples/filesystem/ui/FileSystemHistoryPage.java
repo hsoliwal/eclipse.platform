@@ -81,7 +81,7 @@ public class FileSystemHistoryPage extends HistoryPage {
 				fileHistory.refresh(monitor);
 				//Internal code used for convenience - you can use
 				//your own here
-				Utils.asyncExec((Runnable) () -> tableViewer.setInput(fileHistory), tableViewer);
+				Utils.asyncExec((Runnable) () -> tableViewer.setInput(fileHistory), tableViewer); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 			}
 
 			return status;
@@ -97,7 +97,7 @@ public class FileSystemHistoryPage extends HistoryPage {
 
 		//blank current input only after we're sure that we have a file
 		//to fetch history for
-		this.tableViewer.setInput(null);
+		this.tableViewer.setInput(null); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 
 		fileSystemHistory = new FileSystemHistory(file);
 
@@ -138,9 +138,9 @@ public class FileSystemHistoryPage extends HistoryPage {
 
 	}
 
-	private void contributeActions() {
+	private void contributeActions() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		openAction = new OpenFileSystemRevisionAction("Open");  //$NON-NLS-1$
-		tableViewer.getTable().addSelectionListener(new SelectionAdapter() {
+		tableViewer.getTable().addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				openAction.selectionChanged(tableViewer.getStructuredSelection());
@@ -150,7 +150,7 @@ public class FileSystemHistoryPage extends HistoryPage {
 		//Contribute actions to popup menu
 		MenuManager menuMgr = new MenuManager();
 		Menu menu = menuMgr.createContextMenu(tableViewer.getTable());
-		menuMgr.addMenuListener(menuMgr1 -> {
+		menuMgr.addMenuListener(menuMgr1 -> { //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 			menuMgr1.add(new Separator(IWorkbenchActionConstants.GROUP_FILE));
 			menuMgr1.add(openAction);
 		});
@@ -158,7 +158,7 @@ public class FileSystemHistoryPage extends HistoryPage {
 		tableViewer.getTable().setMenu(menu);
 	}
 
-	private TableViewer createTable(Composite parent) {
+	private TableViewer createTable(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fileSystemTableProvider = new FileSystemTableProvider();
 		TableViewer viewer = fileSystemTableProvider.createTable(parent);
 		viewer.setContentProvider(new IStructuredContentProvider() {

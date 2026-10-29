@@ -42,14 +42,14 @@ public class ShowLocalHistory extends ActionDelegate implements IObjectActionDel
 	private IStructuredSelection fSelection;
 	private IWorkbenchPart targetPart;
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run(IAction action) {
 		IFileState states[]= getLocalHistory();
 		if (states == null || states.length == 0) {
 			return;
 		}
 		try {
-			PlatformUI.getWorkbench().getProgressService().busyCursorWhile(unused -> {
+			PlatformUI.getWorkbench().getProgressService().busyCursorWhile(unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				final IResource resource = (IResource) fSelection.getFirstElement();
 				Runnable r = () -> {
 					IHistoryView view = TeamUI.showHistoryFor(TeamUIPlugin.getActivePage(), resource,  LocalHistoryPageSource.getInstance());
@@ -58,7 +58,7 @@ public class ShowLocalHistory extends ActionDelegate implements IObjectActionDel
 						historyPage.setClickAction(isCompare());
 					}
 				};
-				TeamUIPlugin.getStandardDisplay().asyncExec(r);
+				TeamUIPlugin.getStandardDisplay().asyncExec(r); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			});
 		} catch (InvocationTargetException exception) {
 			ErrorDialog.openError(getShell(), null, null, new Status(IStatus.ERROR, TeamUIPlugin.PLUGIN_ID, IStatus.ERROR, TeamUIMessages.ShowLocalHistory_1, exception.getTargetException()));

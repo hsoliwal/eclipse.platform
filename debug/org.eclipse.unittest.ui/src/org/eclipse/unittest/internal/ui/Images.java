@@ -66,7 +66,7 @@ public class Images {
 	}
 
 	private static void setImageDescriptors(IAction action, String type, String relPath) {
-		ImageDescriptor descriptor = createImageDescriptor("e" + type, relPath, true); //$NON-NLS-1$
+		ImageDescriptor descriptor = createImageDescriptor("e" + type, relPath, true); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		action.setImageDescriptor(descriptor);
 	}
 

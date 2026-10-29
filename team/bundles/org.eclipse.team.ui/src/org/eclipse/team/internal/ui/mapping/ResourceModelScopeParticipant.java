@@ -37,7 +37,7 @@ import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.IWorkingSetManager;
 import org.eclipse.ui.PlatformUI;
 
-public class ResourceModelScopeParticipant implements
+public class ResourceModelScopeParticipant implements //FLLDCIM: MARK — T07  IMPLEMENTS
 		ISynchronizationScopeParticipant, IResourceChangeListener, IPropertyChangeListener {
 	private final ModelProvider provider;
 	private final ISynchronizationScope scope;
@@ -55,7 +55,7 @@ public class ResourceModelScopeParticipant implements
 
 	private boolean hasWorkingSetMappings() {
 		ResourceMapping[] mappings = scope.getMappings(provider.getDescriptor().getId());
-		for (ResourceMapping mapping : mappings) {
+		for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object modelObject = mapping.getModelObject();
 			if (modelObject instanceof IWorkingSet) {
 				return true;
@@ -66,7 +66,7 @@ public class ResourceModelScopeParticipant implements
 
 	private boolean hasWorkspaceMapping() {
 		ResourceMapping[] mappings = scope.getMappings(provider.getDescriptor().getId());
-		for (ResourceMapping mapping : mappings) {
+		for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object modelObject = mapping.getModelObject();
 			if (modelObject instanceof IResource resource) {
 				if (resource.getType() == IResource.ROOT) {
@@ -85,25 +85,25 @@ public class ResourceModelScopeParticipant implements
 	public ResourceMapping[] handleContextChange(
 			ISynchronizationScope scope, IResource[] resources,
 			IProject[] projects) {
-		Set<ResourceMapping> result = new HashSet<>();
-		for (IProject project : projects) {
+		Set<ResourceMapping> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			collectMappings(project, result);
 		}
 		return result.toArray(new ResourceMapping[result.size()]);
 	}
 
-	private void collectMappings(IProject project, Set<ResourceMapping> result) {
+	private void collectMappings(IProject project, Set<ResourceMapping> result) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourceMapping[] mappings = scope.getMappings(provider.getDescriptor().getId());
-		for (ResourceMapping mapping : mappings) {
+		for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			boolean refresh = false;
 			Object modelObject = mapping.getModelObject();
 			if (modelObject instanceof IWorkingSet set) {
 				IAdaptable[] elements = set.getElements();
-				for (IAdaptable adaptable : elements) {
+				for (IAdaptable adaptable : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					ResourceMapping m = Adapters.adapt(adaptable, ResourceMapping.class);
 					if (m != null) {
 						IProject[] p = m.getProjects();
-						for (IProject mp : p) {
+						for (IProject mp : p) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							if (mp.equals(project)) {
 								refresh = true;
 								break;
@@ -142,12 +142,12 @@ public class ResourceModelScopeParticipant implements
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void resourceChanged(IResourceChangeEvent event) {
 		// Only interested in project additions and removals
-		Set<ResourceMapping> result = new HashSet<>();
+		Set<ResourceMapping> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IResourceDelta[] children = event.getDelta().getAffectedChildren();
-		for (IResourceDelta delta : children) {
+		for (IResourceDelta delta : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = delta.getResource();
 			if (resource.getType() == IResource.PROJECT
 					&& ((delta.getKind() & (IResourceDelta.ADDED | IResourceDelta.REMOVED)) != 0
@@ -166,7 +166,7 @@ public class ResourceModelScopeParticipant implements
 
 	private boolean isInContext(IResource resource) {
 		IProject[] projects = scope.getProjects();
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (project.equals(resource.getProject())) {
 				return true;
 			}
@@ -183,7 +183,7 @@ public class ResourceModelScopeParticipant implements
 		if (event.getProperty() == IWorkingSetManager.CHANGE_WORKING_SET_CONTENT_CHANGE) {
 			IWorkingSet newSet = (IWorkingSet) event.getNewValue();
 			ResourceMapping[] mappings = scope.getMappings(provider.getDescriptor().getId());
-			for (ResourceMapping mapping : mappings) {
+			for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (newSet == mapping.getModelObject()) {
 					fireChange(new ResourceMapping[] { mapping });
 				}

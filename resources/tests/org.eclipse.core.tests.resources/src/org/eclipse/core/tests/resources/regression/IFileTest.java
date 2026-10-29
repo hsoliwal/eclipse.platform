@@ -55,7 +55,7 @@ public class IFileTest {
 	 * you try to create a file in a read-only folder on Linux should be
 	 * ERROR_WRITE.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Disabled("This test is no longer valid since the error code is dependent on whether or not the parent folder is marked as read-only. We need to write a different test to make the file.create fail.")
 	public void testBug25658() throws CoreException {
 		// We need to know whether or not we can unset the read-only flag
@@ -86,7 +86,7 @@ public class IFileTest {
 	 * parent to see if it is read-only so we can return a better error code and message
 	 * to the user.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug25662() throws CoreException {
 
 		// We need to know whether or not we can unset the read-only flag
@@ -138,7 +138,7 @@ public class IFileTest {
 	/**
 	 * Do not throw RuntimeException when accessing a deleted file
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIssue2290() throws CoreException, InterruptedException, BrokenBarrierException {
 		IProject project = getWorkspace().getRoot().getProject("MyProject");
 		IFile subject = project.getFile("subject.txt");
@@ -146,12 +146,12 @@ public class IFileTest {
 		// Can't use `Job.cancel()`, it makes `getResult()` unstable.
 		// https://github.com/eclipse-platform/eclipse.platform/issues/2339
 		AtomicBoolean keepRunning = new AtomicBoolean(true);
-		Job createDelete = Job.create("Create/delete", unused -> {
+		Job createDelete = Job.create("Create/delete", unused -> { //FLLDCIM: MARK — T09 BACKGROUND_MODEL_THREAD CALL
 			try {
 				jobStart.await();
-				while (keepRunning.get()) {
+				while (keepRunning.get()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					createInWorkspace(subject);
-					while (keepRunning.get()) {
+					while (keepRunning.get()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						try {
 							subject.delete(true, null);
 							break;
@@ -179,7 +179,7 @@ public class IFileTest {
 			createDelete.schedule();
 			jobStart.await();
 			long stop = currentTimeMillis() + 1000;
-			while (currentTimeMillis() < stop) {
+			while (currentTimeMillis() < stop) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// should not throw
 				// https://github.com/eclipse-platform/eclipse.platform/issues/2290
 				assertContentAccessibleOrNotFound(subject);
@@ -194,7 +194,7 @@ public class IFileTest {
 		}
 	}
 
-	private void assertContentAccessibleOrNotFound(IFile file) {
+	private void assertContentAccessibleOrNotFound(IFile file) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try (InputStream contents = file.getContents(false)) {
 			contents.transferTo(OutputStream.nullOutputStream());
 		} catch (IOException e) {

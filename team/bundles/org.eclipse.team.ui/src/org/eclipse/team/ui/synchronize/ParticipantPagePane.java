@@ -95,7 +95,7 @@ public final class ParticipantPagePane {
 		return Utils.shortenText(SynchronizeView.MAX_NAME_LENGTH, participant.getName());
 	}
 
-	public Control createPartControl(Composite parent) {
+	public Control createPartControl(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Composite top = new Composite(parent, SWT.NULL);
 		GridLayout layout = new GridLayout();
 		layout.marginHeight = 0;

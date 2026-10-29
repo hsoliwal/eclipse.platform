@@ -56,7 +56,7 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
  * @see IWorkspace#run(ICoreRunnable, ISchedulingRule, int, IProgressMonitor)
  * @since 3.0
  */
-public abstract class WorkspaceJob extends InternalWorkspaceJob {
+public abstract class WorkspaceJob extends InternalWorkspaceJob { //FLLDCIM: MARK — T09  IMPLEMENTS
 	/**
 	 * Creates a new workspace job with the specified name. The job name is
 	 * a human-readable value that is displayed to users. The name does not

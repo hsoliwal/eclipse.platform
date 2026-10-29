@@ -40,15 +40,15 @@ class ImageCanvas extends Canvas {
 
 		ScrollBar sb= getHorizontalBar();
 		sb.setIncrement(20);
-		sb.addListener(SWT.Selection, unused -> repaint());
+		sb.addListener(SWT.Selection, unused -> repaint()); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 
 		sb= getVerticalBar();
 		sb.setIncrement(20);
-		sb.addListener(SWT.Selection, unused -> repaint());
+		sb.addListener(SWT.Selection, unused -> repaint()); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 
-		addListener(SWT.Resize, unused -> updateScrollbars());
+		addListener(SWT.Resize, unused -> updateScrollbars()); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 
-		addListener(SWT.Paint, event -> paint(event.gc));
+		addListener(SWT.Paint, event -> paint(event.gc)); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 	}
 
 	/*
@@ -74,7 +74,7 @@ class ImageCanvas extends Canvas {
 		}
 	}
 
-	void paint(GC gc) {
+	void paint(GC gc) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fImage != null) {
 			Rectangle bounds= fImage.getBounds();
 			Rectangle clientArea= getClientArea();
@@ -100,7 +100,7 @@ class ImageCanvas extends Canvas {
 	/**
 	 * @private
 	 */
-	void updateScrollbars() {
+	void updateScrollbars() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Rectangle bounds= fImage != null ? fImage.getBounds() : new Rectangle(0, 0, 0, 0);
 		Point size= getSize();
 		Rectangle clientArea= getClientArea();

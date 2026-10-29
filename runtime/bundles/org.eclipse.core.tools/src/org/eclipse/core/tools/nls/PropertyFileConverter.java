@@ -30,7 +30,7 @@ import org.eclipse.ltk.core.refactoring.Change;
  */
 public class PropertyFileConverter {
 
-	private static final HashSet<String> keywords = new HashSet<>();
+	private static final HashSet<String> keywords = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	static {
 		keywords.add("abstract"); //$NON-NLS-1$
@@ -80,65 +80,65 @@ public class PropertyFileConverter {
 	 * Appends the text to put at the end of each Java messages file.
 	 */
 	private void appendPostText(StringBuilder buffer, String bundlePath, String typeName) {
-		buffer.append("\n\tstatic {\n"); //$NON-NLS-1$
-		buffer.append("\t\t// load message values from bundle file\n"); //$NON-NLS-1$
-		buffer.append("\t\tNLS.initializeMessages(BUNDLE_NAME, "); //$NON-NLS-1$
-		buffer.append(typeName);
-		buffer.append(".class"); //$NON-NLS-1$
-		buffer.append(");\n"); //$NON-NLS-1$
-		buffer.append("\t}\n"); //$NON-NLS-1$
-		buffer.append("}"); //$NON-NLS-1$
+		buffer.append("\n\tstatic {\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append("\t\t// load message values from bundle file\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append("\t\tNLS.initializeMessages(BUNDLE_NAME, "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(typeName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(".class"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(");\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append("\t}\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append("}"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
 	/**
 	 * Appends the text to put at the beginning of each Java messages file.
 	 */
-	private void appendPreText(StringBuilder buffer, String pkgName, String bundleName, String typeName) {
+	private void appendPreText(StringBuilder buffer, String pkgName, String bundleName, String typeName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//if this text had typos, would it be a false pretext?
-		buffer.append("/**********************************************************************\n"); //$NON-NLS-1$
-		buffer.append(" * Copyright (c) 2005 IBM Corporation and others.\n"); //$NON-NLS-1$
-		buffer.append(" *\n"); //$NON-NLS-1$
-		buffer.append(" * This program and the accompanying materials are made available under the terms of\n"); //$NON-NLS-1$
-		buffer.append(" * the Eclipse Public License 2.0 which accompanies this distribution, and is\n"); //$NON-NLS-1$
-		buffer.append(" * available at\n"); //$NON-NLS-1$
-		buffer.append(" * https://www.eclipse.org/legal/epl-2.0/\n"); //$NON-NLS-1$
-		buffer.append(" * \n"); //$NON-NLS-1$
-		buffer.append(" * SPDX-License-Identifier: EPL-2.0\n"); //$NON-NLS-1$
-		buffer.append(" * \n"); //$NON-NLS-1$
-		buffer.append(" * Contributors: \n"); //$NON-NLS-1$
-		buffer.append(" * IBM - Initial API and implementation\n"); //$NON-NLS-1$
-		buffer.append(" **********************************************************************/\n"); //$NON-NLS-1$
-		buffer.append("package "); //$NON-NLS-1$
-		buffer.append(pkgName);
-		buffer.append(";\n\n"); //$NON-NLS-1$
+		buffer.append("/**********************************************************************\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(" * Copyright (c) 2005 IBM Corporation and others.\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(" *\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(" * This program and the accompanying materials are made available under the terms of\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(" * the Eclipse Public License 2.0 which accompanies this distribution, and is\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(" * available at\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(" * https://www.eclipse.org/legal/epl-2.0/\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(" * \n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(" * SPDX-License-Identifier: EPL-2.0\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(" * \n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(" * Contributors: \n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(" * IBM - Initial API and implementation\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(" **********************************************************************/\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append("package "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(pkgName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(";\n\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
-		buffer.append("import org.eclipse.osgi.util.NLS;\n\n"); //$NON-NLS-1$
-		buffer.append("public class "); //$NON-NLS-1$
-		buffer.append(typeName);
-		buffer.append(" extends NLS {\n"); //$NON-NLS-1$
-		buffer.append("\tprivate static final String BUNDLE_NAME = \"" + pkgName + '.' + bundleName + "\";//$NON-NLS-1$\n"); //$NON-NLS-1$ //$NON-NLS-2$
+		buffer.append("import org.eclipse.osgi.util.NLS;\n\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append("public class "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(typeName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append(" extends NLS {\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append("\tprivate static final String BUNDLE_NAME = \"" + pkgName + '.' + bundleName + "\";//$NON-NLS-1$\n"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
 	/*
 	 * Remove the properties in the specified list from the file.
 	 */
-	public Change trim(IFile propertiesFile, List<String> toDelete) throws IOException, CoreException {
+	public Change trim(IFile propertiesFile, List<String> toDelete) throws IOException, CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (toDelete == null || toDelete.isEmpty()) {
 			return null;
 		}
 
-		StringBuilder bundle = new StringBuilder();
+		StringBuilder bundle = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(propertiesFile.getContents()))) {
 			String line;
 			boolean isContinued = false;
 			boolean wasDeleted = false;
-			while ((line = reader.readLine()) != null) {
+			while ((line = reader.readLine()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				line = line.trim();
 				// just add comments directly to the output
 				if (skipLine(line)) {
-					bundle.append(line);
-					bundle.append("\r\n"); //$NON-NLS-1$
+					bundle.append(line); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					bundle.append("\r\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					continue;
 				}
 
@@ -151,8 +151,8 @@ public class PropertyFileConverter {
 						// skip this line
 					} else {
 						// otherwise write it out
-						bundle.append(line);
-						bundle.append("\r\n"); //$NON-NLS-1$
+						bundle.append(line); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+						bundle.append("\r\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
 				} else {
 					// we weren't continued from the previous line
@@ -163,8 +163,8 @@ public class PropertyFileConverter {
 						wasDeleted = true;
 					} else {
 						wasDeleted = false;
-						bundle.append(line);
-						bundle.append("\r\n"); //$NON-NLS-1$
+						bundle.append(line); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+						bundle.append("\r\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
 				}
 
@@ -179,46 +179,46 @@ public class PropertyFileConverter {
 	 * Reads an old properties file, and creates a new properties file and corresponding
 	 * Java messages file.
 	 */
-	public Change[] convertFile(IType accessorType, IFile propertiesFile) throws IOException, CoreException {
+	public Change[] convertFile(IType accessorType, IFile propertiesFile) throws IOException, CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String pkgName = accessorType.getPackageFragment().getElementName();
 		IFile accessorFile = (IFile) accessorType.getCompilationUnit().getCorrespondingResource();
 		String typeName = accessorFile.getFullPath().removeFileExtension().lastSegment();
 
 		String bundleName = propertiesFile.getName();
-		StringBuilder clazz = new StringBuilder();
+		StringBuilder clazz = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		// convert the bundle resource (messages.properties) to the simple name (messages)
 		String simpleBundleName = IPath.fromOSString(bundleName).removeFileExtension().toString();
 		appendPreText(clazz, pkgName, simpleBundleName, typeName);
-		StringBuilder bundle = new StringBuilder();
+		StringBuilder bundle = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		int savings = 0;
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(propertiesFile.getContents()))) {
 			String line;
 			boolean isContinued = false;
-			while ((line = reader.readLine()) != null) {
+			while ((line = reader.readLine()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				line = line.trim();
 				boolean wasContinued = isContinued;
 				isContinued = isContinued(line);
 				if (!wasContinued) {
 					if (skipLine(line)) {
-						clazz.append(convertToComment(line));
+						clazz.append(convertToComment(line)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					} else {
 						String key = extractKey(line);
 						savings += 88 + 4 * key.length();
 						String identifier = convertToJavaIdentifier(key);
-						clazz.append("\tpublic static String "); //$NON-NLS-1$
-						clazz.append(identifier);
-						clazz.append(";\n"); //$NON-NLS-1$
+						clazz.append("\tpublic static String "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+						clazz.append(identifier); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+						clazz.append(";\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 						//convert the bundle file line to use the Java identifier
-						line = identifier + line.substring(key.length());
+						line = identifier + line.substring(key.length()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 				}
 				//write the line out to the new bundle file
-				bundle.append(line);
-				bundle.append("\r\n"); //$NON-NLS-1$
+				bundle.append(line); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				bundle.append("\r\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
-		System.out.println("Memory saved by converting to field-based keys: " + savings);
-		appendPostText(clazz, pkgName + '.' + bundleName, typeName);
+		System.out.println("Memory saved by converting to field-based keys: " + savings); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		appendPostText(clazz, pkgName + '.' + bundleName, typeName); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		NLSFileChange pChange = new NLSFileChange(propertiesFile);
 		pChange.setContents(bundle.toString());
@@ -233,22 +233,22 @@ public class PropertyFileConverter {
 	 * Writes the given line as a comment int the provided class buffer.
 	 * Blank lines are preserved.
 	 */
-	private String convertToComment(String line) {
-		StringBuilder comment = new StringBuilder();
+	private String convertToComment(String line) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		StringBuilder comment = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		if (!line.trim().isEmpty()) {
-			comment.append("\t//"); //$NON-NLS-1$
+			comment.append("\t//"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		int offset = 0;
 		//skip leading comment characters
-		while (offset < line.length()) {
+		while (offset < line.length()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c = line.charAt(offset);
 			if (c != '!' && c != '#') {
 				break;
 			}
 			offset++;
 		}
-		comment.append(line.substring(offset));
-		comment.append('\n');
+		comment.append(line.substring(offset)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		comment.append('\n'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return comment.toString();
 	}
 
@@ -256,34 +256,34 @@ public class PropertyFileConverter {
 	 * Converts an arbitrary string into a string that represents a valid
 	 * Java identifier.
 	 */
-	public static String convertToJavaIdentifier(String key) {
+	public static String convertToJavaIdentifier(String key) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String string = key.trim();
 		int len = string.length();
 		if (len == 0) {
 			return string;
 		}
-		StringBuilder result = new StringBuilder();
+		StringBuilder result = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		char c = string.charAt(0);
 		if (Character.isJavaIdentifierStart(c)) {
-			result.append(c);
+			result.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		} else {
 			//if it's a valid part, just add an underscore first but keep the character
-			result.append('_');
+			result.append('_'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			if (Character.isJavaIdentifierPart(c)) {
-				result.append(c);
+				result.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
-		for (int i = 1; i < len; i++) {
+		for (int i = 1; i < len; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			c = string.charAt(i);
 			if (Character.isJavaIdentifierPart(c)) {
-				result.append(c);
+				result.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			} else {
-				result.append('_');
+				result.append('_'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 		//preserve trailing space
 		if (key.endsWith(" ")) { //$NON-NLS-1$
-			result.append(' ');
+			result.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return makeUnique(result.toString());
 	}
@@ -295,8 +295,8 @@ public class PropertyFileConverter {
 	private static String makeUnique(String originalKey) {
 		String attempt = originalKey;
 		int counter = 0;
-		while (keywords.contains(attempt)) {
-			attempt = originalKey + counter++;
+		while (keywords.contains(attempt)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			attempt = originalKey + counter++; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return attempt;
 	}
@@ -307,14 +307,14 @@ public class PropertyFileConverter {
 	 */
 	private String extractKey(String line) {
 		int len = line.length();
-		StringBuilder key = new StringBuilder();
-		for (int i = 0; i < len; i++) {
+		StringBuilder key = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < len; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c = line.charAt(i);
 			//whitespace, colon, or equals characters represent key separators
 			if (Character.isWhitespace(c) || c == ':' || c == '=') {
 				break;
 			}
-			key.append(c);
+			key.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return key.toString();
 	}
@@ -326,7 +326,7 @@ public class PropertyFileConverter {
 		//note that literal escaped slash characters at the end of a line are not
 		//treated as continuation markers.
 		boolean continuation = false;
-		for (int i = line.length() - 1; (i >= 0) && (line.charAt(i) == '\\'); i--) {
+		for (int i = line.length() - 1; (i >= 0) && (line.charAt(i) == '\\'); i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			continuation = !continuation;
 		}
 		return continuation;

@@ -88,7 +88,7 @@ public class OpenWithActionGroup extends ActionGroup {
 	 * @param menu the context menu
 	 * @param selection the current selection
 	 */
-	private void fillOpenWithMenu(IMenuManager menu, String groupId, IStructuredSelection selection) {
+	private void fillOpenWithMenu(IMenuManager menu, String groupId, IStructuredSelection selection) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// Only supported if at least one file is selected.
 		if (selection == null || selection.size() < 1) {
@@ -104,7 +104,7 @@ public class OpenWithActionGroup extends ActionGroup {
 					ISynchronizeParticipant participant = getParticipant();
 					if (participant instanceof ModelSynchronizeParticipant msp) {
 						boolean allElementsHaveCompareInput = true;
-						for (Object element : elements) {
+						for (Object element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							if (!msp.hasCompareInputFor(element)) {
 								allElementsHaveCompareInput = false;
 								break;
@@ -125,7 +125,7 @@ public class OpenWithActionGroup extends ActionGroup {
 		}
 
 		boolean allFiles = true;
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() != IResource.FILE) {
 				// Open actions are only supported if all the items are files.
 				allFiles = false;
@@ -139,7 +139,7 @@ public class OpenWithActionGroup extends ActionGroup {
 			}
 		}
 
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!resource.exists()) {
 				// Only support non-compare actions if all resources exist.
 				return;

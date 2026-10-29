@@ -63,7 +63,7 @@ public class AntImportNode extends AntTaskNode {
 	/**
 	 * Execute the import. Returns <code>true</code> as the import adds to the Ant model
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean configure(boolean validateFully) {
 		if (fConfigured) {
 			return false;

@@ -130,10 +130,10 @@ public class TestRunnerViewPart extends ViewPart {
 	/**
 	 * An identifier of Test Runner View Part
 	 */
-	public static final String NAME = UnitTestPlugin.PLUGIN_ID + ".ResultView"; //$NON-NLS-1$
+	public static final String NAME = UnitTestPlugin.PLUGIN_ID + ".ResultView"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-	private static final String RERUN_LAST_COMMAND = UnitTestPlugin.PLUGIN_ID + ".UnitTestShortcut.rerunLast"; //$NON-NLS-1$
-	private static final String RERUN_FAILED_CASES_COMMAND = UnitTestPlugin.PLUGIN_ID
+	private static final String RERUN_LAST_COMMAND = UnitTestPlugin.PLUGIN_ID + ".UnitTestShortcut.rerunLast"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	private static final String RERUN_FAILED_CASES_COMMAND = UnitTestPlugin.PLUGIN_ID //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			+ ".UnitTestShortcut.rerunFailedCases"; //$NON-NLS-1$
 
 	static final int REFRESH_INTERVAL = 200;
@@ -283,7 +283,7 @@ public class TestRunnerViewPart extends ViewPart {
 	private ILock fUnitTestIsRunningLock;
 	public static final Object FAMILY_UNITTEST_RUN = new Object();
 
-	private final IPartListener2 fPartListener = new IPartListener2() {
+	private final IPartListener2 fPartListener = new IPartListener2() { //FLLDCIM: MARK — T20  ANONYMOUS
 		@Override
 		public void partActivated(IWorkbenchPartReference ref) {
 			// do nothing
@@ -370,9 +370,9 @@ public class TestRunnerViewPart extends ViewPart {
 	}
 
 	private class TestRunSessionListener implements ITestRunSessionListener {
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void sessionAdded(final ITestRunSession testRunSession) {
-			getDisplay().asyncExec(() -> {
+			getDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				if (UnitTestUIPreferencesConstants.getShowInAllViews()
 						|| getSite().getWorkbenchWindow() == PlatformUI.getWorkbench().getActiveWorkbenchWindow()) {
 					if (fInfoMessage == null) {
@@ -394,7 +394,7 @@ public class TestRunnerViewPart extends ViewPart {
 
 		@Override
 		public void sessionRemoved(final ITestRunSession testRunSession) {
-			getDisplay().asyncExec(() -> {
+			getDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				if (testRunSession.equals(fTestRunSession)) {
 					List<TestRunSession> testRunSessions = UnitTestModel.getInstance().getTestRunSessions();
 					if (!testRunSessions.isEmpty()) {
@@ -420,7 +420,7 @@ public class TestRunnerViewPart extends ViewPart {
 			fEditLaunchConfigAction.setEnabled(fTestRunSession.getLaunch() != null);
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void sessionCompleted(Duration duration) {
 			deregisterTestSessionListener();
 
@@ -428,7 +428,7 @@ public class TestRunnerViewPart extends ViewPart {
 
 			final String msg = MessageFormat.format(Messages.TestRunnerViewPart_message_finish,
 					Double.valueOf(duration != null ? duration.toNanos() / 1.0e9 : 0));
-			getDisplay().asyncExec(() -> registerInfoMessage(msg));
+			getDisplay().asyncExec(() -> registerInfoMessage(msg)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 
 			postSyncRunnable(() -> {
 				if (isDisposed()) {
@@ -456,7 +456,7 @@ public class TestRunnerViewPart extends ViewPart {
 
 			fTestViewer.registerAutoScrollTarget(null);
 
-			getDisplay().asyncExec(() -> registerInfoMessage(Messages.TestRunnerViewPart_message_stopped));
+			getDisplay().asyncExec(() -> registerInfoMessage(Messages.TestRunnerViewPart_message_stopped)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			handleStopped();
 		}
 
@@ -498,7 +498,7 @@ public class TestRunnerViewPart extends ViewPart {
 		}
 	}
 
-	private class UpdateUIJob extends UIJob {
+	private class UpdateUIJob extends UIJob { //FLLDCIM: MARK — T09  IMPLEMENTS
 		private boolean fRunning = true;
 
 		public UpdateUIJob(String name) {
@@ -591,7 +591,7 @@ public class TestRunnerViewPart extends ViewPart {
 	private class ToggleOrientationAction extends Action {
 		private final int fActionOrientation;
 
-		public ToggleOrientationAction(int orientation) {
+		public ToggleOrientationAction(int orientation) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			super("", AS_RADIO_BUTTON); //$NON-NLS-1$
 			switch (orientation) {
 			case TestRunnerViewPart.VIEW_ORIENTATION_HORIZONTAL:
@@ -721,8 +721,8 @@ public class TestRunnerViewPart extends ViewPart {
 	/**
 	 * Constructs Test Runner View part object
 	 */
-	public TestRunnerViewPart() {
-		fImagesToDispose = new ArrayList<>();
+	public TestRunnerViewPart() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		fImagesToDispose = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		fStackViewIcon = createManagedImage("eview16/stackframe.svg");//$NON-NLS-1$
 		fTestRunOKIcon = createManagedImage("eview16/unitsucc.svg"); //$NON-NLS-1$
@@ -776,7 +776,7 @@ public class TestRunnerViewPart extends ViewPart {
 		return null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void saveState(IMemento memento) {
 		if (fSashForm == null) {
 			// part has not been created
@@ -800,7 +800,7 @@ public class TestRunnerViewPart extends ViewPart {
 		memento.putString(TAG_SHOW_TIME, fShowTimeAction.isChecked() ? "true" : "false"); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
-	private void restoreLayoutState(IMemento memento) {
+	private void restoreLayoutState(IMemento memento) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 //		Integer page= memento.getInteger(TAG_PAGE);
 //		if (page != null) {
 //			int p= page.intValue();
@@ -933,7 +933,7 @@ public class TestRunnerViewPart extends ViewPart {
 				fTestRunSession.abortTestRun();
 			}
 		}
-		List<ITestElement> allFailedTestCases = new ArrayList<>();
+		List<ITestElement> allFailedTestCases = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		collectFailedTestCases(fTestRunSession, allFailedTestCases);
 		ILaunchConfiguration tmp = fTestRunSession.getTestViewSupport().getRerunLaunchConfiguration(allFailedTestCases);
 		if (tmp != null) {
@@ -1027,7 +1027,7 @@ public class TestRunnerViewPart extends ViewPart {
 	private void showMessageIfNoTests() {
 		if (fTestRunSession != null && fTestRunSession.getFinalTestCaseCount() != null
 				&& fTestRunSession.getFinalTestCaseCount().intValue() == 0) {
-			Display.getDefault().asyncExec(() -> {
+			Display.getDefault().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				String msg = MessageFormat.format(Messages.TestRunnerViewPart_error_no_tests_found, getDisplayName());
 				MessageDialog.openInformation(getSite().getShell(), Messages.TestRunnerViewPart__error_cannotrun, msg);
 			});
@@ -1076,7 +1076,7 @@ public class TestRunnerViewPart extends ViewPart {
 	 * @return deactivated session, or <code>null</code> iff no session got
 	 *         deactivated
 	 */
-	public TestRunSession setActiveTestRunSession(TestRunSession testRunSession) {
+	public TestRunSession setActiveTestRunSession(TestRunSession testRunSession) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/*
 		 * - State: fTestRunSession fTestSessionListener Jobs
 		 * fTestViewer.processChangesInUI(); - UI: fCounterPanel fProgressBar
@@ -1141,7 +1141,7 @@ public class TestRunnerViewPart extends ViewPart {
 				stopUpdateJobs();
 			}
 		}
-		getSite().getShell().getDisplay().asyncExec(this::processChangesInUI);
+		getSite().getShell().getDisplay().asyncExec(this::processChangesInUI); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		return deactivatedSession;
 	}
 
@@ -1179,7 +1179,7 @@ public class TestRunnerViewPart extends ViewPart {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public synchronized void dispose() {
 		fIsDisposed = true;
 		if (fTestRunSessionListener != null) {
@@ -1214,18 +1214,18 @@ public class TestRunnerViewPart extends ViewPart {
 	}
 
 	private void disposeImages() {
-		for (Image imageToDispose : fImagesToDispose) {
+		for (Image imageToDispose : fImagesToDispose) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			imageToDispose.dispose();
 		}
 	}
 
 	private void postSyncRunnable(Runnable r) {
 		if (!isDisposed()) {
-			getDisplay().syncExec(r);
+			getDisplay().syncExec(r); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		}
 	}
 
-	private void refreshCounters() {
+	private void refreshCounters() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// TODO: Inefficient. Either
 		// - keep a boolean fHasTestRun and update only on changes, or
 		// - improve components to only redraw on changes (once!).
@@ -1293,7 +1293,7 @@ public class TestRunnerViewPart extends ViewPart {
 	/**
 	 * Makes the test results view visible
 	 */
-	public void showTestResultsView() {
+	public void showTestResultsView() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IWorkbenchWindow window = getSite().getWorkbenchWindow();
 		IWorkbenchPage page = window.getActivePage();
 		TestRunnerViewPart testRunner = null;
@@ -1335,8 +1335,8 @@ public class TestRunnerViewPart extends ViewPart {
 		fInfoMessage = message;
 	}
 
-	private SashForm createSashForm(Composite parent) {
-		fSashForm = new SashForm(parent, SWT.VERTICAL);
+	private SashForm createSashForm(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		fSashForm = new SashForm(parent, SWT.VERTICAL); //FLLDCIM: MARK — M26 SPLIT_PANEL NEW
 
 		ViewForm top = new ViewForm(fSashForm, SWT.NONE);
 
@@ -1383,7 +1383,7 @@ public class TestRunnerViewPart extends ViewPart {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createPartControl(Composite parent) {
 		fParent = parent;
 		addResizeListener(parent);
@@ -1440,7 +1440,7 @@ public class TestRunnerViewPart extends ViewPart {
 		}
 	}
 
-	private void addDropAdapter(Composite parent) {
+	private void addDropAdapter(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		DropTarget dropTarget = new DropTarget(parent,
 				DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK | DND.DROP_DEFAULT);
 		dropTarget.setTransfer(TextTransfer.getInstance());
@@ -1471,10 +1471,10 @@ public class TestRunnerViewPart extends ViewPart {
 				}
 			}
 		}
-		dropTarget.addDropListener(new DropAdapter());
+		dropTarget.addDropListener(new DropAdapter()); //FLLDCIM: MARK — T25 DND CALL
 	}
 
-	private void initPageSwitcher() {
+	private void initPageSwitcher() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/*
 		 * @SuppressWarnings("unused") PageSwitcher pageSwitcher= new PageSwitcher(this)
 		 * {
@@ -1498,7 +1498,7 @@ public class TestRunnerViewPart extends ViewPart {
 	}
 
 	private void addResizeListener(Composite parent) {
-		parent.addControlListener(ControlListener.controlResizedAdapter(unused -> {
+		parent.addControlListener(ControlListener.controlResizedAdapter(unused -> { //FLLDCIM: MARK — T11 VIEWPORT_RESIZE_DELTA CALL
 			computeOrientation();
 		}));
 	}
@@ -1519,7 +1519,7 @@ public class TestRunnerViewPart extends ViewPart {
 		}
 	}
 
-	private void configureToolBar() {
+	private void configureToolBar() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IActionBars actionBars = getViewSite().getActionBars();
 		IToolBarManager toolBar = actionBars.getToolBarManager();
 		IMenuManager viewMenu = actionBars.getMenuManager();
@@ -1563,7 +1563,7 @@ public class TestRunnerViewPart extends ViewPart {
 			}
 		};
 		fRerunFailedFirstActivation = handlerService.activateHandler(RERUN_FAILED_CASES_COMMAND, handler);
-		fEditLaunchConfigAction = new EditLaunchConfigurationAction() {
+		fEditLaunchConfigAction = new EditLaunchConfigurationAction() { //FLLDCIM: MARK — T04  ANONYMOUS
 			@Override
 			protected ILaunchConfiguration getLaunchConfiguration() {
 				return fTestRunSession != null ? fTestRunSession.getLaunch().getLaunchConfiguration() : null;
@@ -1618,7 +1618,7 @@ public class TestRunnerViewPart extends ViewPart {
 		viewMenu.add(new Separator());
 
 		MenuManager layoutSubMenu = new MenuManager(Messages.TestRunnerViewPart_layout_menu);
-		for (ToggleOrientationAction toggleOrientationAction : fToggleOrientationActions) {
+		for (ToggleOrientationAction toggleOrientationAction : fToggleOrientationActions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			layoutSubMenu.add(toggleOrientationAction);
 		}
 		viewMenu.add(layoutSubMenu);
@@ -1635,12 +1635,12 @@ public class TestRunnerViewPart extends ViewPart {
 		viewMenu.add(fActivateOnErrorAction);
 		fViewMenuListener = unused -> fActivateOnErrorAction.update();
 
-		viewMenu.addMenuListener(fViewMenuListener);
+		viewMenu.addMenuListener(fViewMenuListener); //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 
 		actionBars.updateActionBars();
 	}
 
-	private IStatusLineManager getStatusLine() {
+	private IStatusLineManager getStatusLine() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// we want to show messages globally hence we
 		// have to go through the active part
 		IViewSite site = getViewSite();
@@ -1728,7 +1728,7 @@ public class TestRunnerViewPart extends ViewPart {
 		return fViewImage;
 	}
 
-	void codeHasChanged() {
+	void codeHasChanged() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/*
 		 * if (fDirtyListener != null) {
 		 * JavaCore.removeElementChangedListener(fDirtyListener); fDirtyListener= null;
@@ -1747,7 +1747,7 @@ public class TestRunnerViewPart extends ViewPart {
 			firePropertyChange(IWorkbenchPart.PROP_TITLE);
 		};
 		if (!isDisposed()) {
-			getDisplay().asyncExec(r);
+			getDisplay().asyncExec(r); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		}
 	}
 
@@ -1781,7 +1781,7 @@ public class TestRunnerViewPart extends ViewPart {
 		}
 		boolean horizontal = orientation == VIEW_ORIENTATION_HORIZONTAL;
 		fSashForm.setOrientation(horizontal ? SWT.HORIZONTAL : SWT.VERTICAL);
-		for (ToggleOrientationAction toggleOrientationAction : fToggleOrientationActions) {
+		for (ToggleOrientationAction toggleOrientationAction : fToggleOrientationActions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			toggleOrientationAction.setChecked(fOrientation == toggleOrientationAction.getOrientation());
 		}
 		fCurrentOrientation = orientation;
@@ -1806,7 +1806,7 @@ public class TestRunnerViewPart extends ViewPart {
 	static void importTestRunSession(final String url) {
 		try {
 			PlatformUI.getWorkbench().getProgressService()
-					.busyCursorWhile(monitor -> UnitTestModel.getInstance().importTestRunSession(url, monitor));
+					.busyCursorWhile(monitor -> UnitTestModel.getInstance().importTestRunSession(url, monitor)); //FLLDCIM: MARK — T09  LAMBDA
 		} catch (InterruptedException e) {
 			// cancelled
 		} catch (InvocationTargetException e) {

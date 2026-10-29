@@ -21,7 +21,7 @@ import org.eclipse.ant.core.IAntClasspathEntry;
 
 public abstract class AbstractClasspathEntry implements IClasspathEntry {
 
-	protected List<IAntClasspathEntry> fChildEntries = new ArrayList<>();
+	protected List<IAntClasspathEntry> fChildEntries = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	protected IClasspathEntry fParent = null;
 
 	@Override

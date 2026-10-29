@@ -44,11 +44,11 @@ import org.eclipse.team.ui.synchronize.TeamStateProvider;
  * provider type that is associated with the projects that an element maps to
  * using the ResourceMapping API.
  */
-public class WorkspaceTeamStateProvider extends TeamStateProvider
+public class WorkspaceTeamStateProvider extends TeamStateProvider //FLLDCIM: MARK — T07  IMPLEMENTS
 		implements ITeamStateChangeListener, IRepositoryProviderListener,
 		IResourceChangeListener {
 
-	private final Map<String, ITeamStateProvider> providers = new HashMap<>();
+	private final Map<String, ITeamStateProvider> providers = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	public WorkspaceTeamStateProvider() {
 		RepositoryProviderManager.getInstance().addListener(this);
@@ -56,7 +56,7 @@ public class WorkspaceTeamStateProvider extends TeamStateProvider
 				IResourceChangeEvent.POST_CHANGE);
 		IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot()
 				.getProjects();
-		for (IProject project : allProjects) {
+		for (IProject project : allProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			handleProject(project);
 		}
 	}
@@ -150,7 +150,7 @@ public class WorkspaceTeamStateProvider extends TeamStateProvider
 
 	private String getProviderId(IProject[] projects) {
 		String id = null;
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String nextId = getProviderId(project);
 			if (id == null) {
 				id = nextId;
@@ -219,7 +219,7 @@ public class WorkspaceTeamStateProvider extends TeamStateProvider
 		IResourceDelta[] projectDeltas = delta
 				.getAffectedChildren(IResourceDelta.ADDED
 						| IResourceDelta.CHANGED);
-		for (IResourceDelta projectDelta : projectDeltas) {
+		for (IResourceDelta projectDelta : projectDeltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = projectDelta.getResource();
 			if ((projectDelta.getFlags() & IResourceDelta.OPEN) != 0
 					&& resource.getType() == IResource.PROJECT) {

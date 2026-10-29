@@ -123,12 +123,12 @@ public class BuilderTest {
 	 *
 	 * @see SortBuilder
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAutoBuildPR() throws CoreException {
 		//REF: 1FUQUJ4
 		// Create some resource handles
 		IWorkspace workspace = getWorkspace();
-		IProject project1 = workspace.getRoot().getProject("PROJECT" + 1);
+		IProject project1 = workspace.getRoot().getProject("PROJECT" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IFolder folder = project1.getFolder("FOLDER");
 		IFolder sub = folder.getFolder("sub");
 		IFile fileA = folder.getFile("A");
@@ -157,7 +157,7 @@ public class BuilderTest {
 	 * Tests installing and running a builder that always fails during
 	 * instantation.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBrokenBuilder() throws CoreException {
 		// Create some resource handles
 		IProject project = getWorkspace().getRoot().getProject("PROJECT");
@@ -189,7 +189,7 @@ public class BuilderTest {
 		getWorkspace().build(IncrementalProjectBuilder.FULL_BUILD, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBuildClean() throws CoreException {
 		// Create some resource handles
 		IProject project = getWorkspace().getRoot().getProject("PROJECT");
@@ -242,12 +242,12 @@ public class BuilderTest {
 	 *
 	 * @see SortBuilder
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBuildCommands() throws CoreException {
 		// Create some resource handles
 		IWorkspace workspace = getWorkspace();
-		IProject project1 = workspace.getRoot().getProject("PROJECT" + 1);
-		IProject project2 = workspace.getRoot().getProject("PROJECT" + 2);
+		IProject project1 = workspace.getRoot().getProject("PROJECT" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IProject project2 = workspace.getRoot().getProject("PROJECT" + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IFile file1 = project1.getFile("FILE1");
 		IFile file2 = project2.getFile("FILE2");
 		//set the build order
@@ -367,13 +367,13 @@ public class BuilderTest {
 	 * Tests that a pre_build listener is not called if there have been no changes
 	 * since the last build of any kind occurred.  See https://bugs.eclipse.org/bugs/show_bug.cgi?id=154880.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreBuildEvent() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		// Create some resource handles
 		final boolean[] notified = new boolean[] {false};
-		IProject proj1 = workspace.getRoot().getProject("PROJECT" + 1);
-		final IResourceChangeListener listener = unused -> notified[0] = true;
+		IProject proj1 = workspace.getRoot().getProject("PROJECT" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		final IResourceChangeListener listener = unused -> notified[0] = true; //FLLDCIM: MARK — T07  LAMBDA
 		try {
 			workspace.addResourceChangeListener(listener, IResourceChangeEvent.PRE_BUILD);
 			// Turn auto-building off
@@ -385,7 +385,7 @@ public class BuilderTest {
 			IProjectDescription desc = proj1.getDescription();
 			desc.setBuildSpec(new ICommand[] { createCommand(desc, SortBuilder.BUILDER_NAME, "Build0") });
 			proj1.setDescription(desc, createTestMonitor());
-			proj1.build(IncrementalProjectBuilder.FULL_BUILD, SortBuilder.BUILDER_NAME, new HashMap<>(), null);
+			proj1.build(IncrementalProjectBuilder.FULL_BUILD, SortBuilder.BUILDER_NAME, new HashMap<>(), null); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			notified[0] = false;
 			//now turn on autobuild and see if the listener is notified again
 			setAutoBuilding(true);
@@ -400,12 +400,12 @@ public class BuilderTest {
 	 *
 	 * @see SortBuilder
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBuildOrder() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		// Create some resource handles
-		IProject proj1 = workspace.getRoot().getProject("PROJECT" + 1);
-		IProject proj2 = workspace.getRoot().getProject("PROJECT" + 2);
+		IProject proj1 = workspace.getRoot().getProject("PROJECT" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IProject proj2 = workspace.getRoot().getProject("PROJECT" + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Turn auto-building off
 		setAutoBuilding(false);
@@ -472,18 +472,18 @@ public class BuilderTest {
 	 * Tests that changing the dynamic build order will induce an autobuild on a project.
 	 * This is a regression test for bug 60653.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testChangeDynamicBuildOrder() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		// Create some resource handles
-		final IProject proj1 = workspace.getRoot().getProject("PROJECT" + 1);
-		final IProject proj2 = workspace.getRoot().getProject("PROJECT" + 2);
+		final IProject proj1 = workspace.getRoot().getProject("PROJECT" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		final IProject proj2 = workspace.getRoot().getProject("PROJECT" + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Turn auto-building on and make sure there is no explicit build order
 		setAutoBuilding(true);
 		setBuildOrder((IProject[]) null);
 		// Create and set a build spec for project two
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			proj2.create(createTestMonitor());
 			proj2.open(createTestMonitor());
 			IProjectDescription desc = proj2.getDescription();
@@ -497,7 +497,7 @@ public class BuilderTest {
 		verifier.reset();
 		//create project two and establish a build order by adding a dynamic
 		//reference from proj2->proj1 in the same operation
-		getWorkspace().run((IWorkspaceRunnable) unused -> extracted(proj1, proj2), createTestMonitor());
+		getWorkspace().run((IWorkspaceRunnable) unused -> extracted(proj1, proj2), createTestMonitor()); //FLLDCIM: MARK — T09  LAMBDA
 
 		waitForBuild();
 		//ensure the build happened in the correct order, and that both projects were built
@@ -527,7 +527,7 @@ public class BuilderTest {
 	 * to be built in the correct order.
 	 * This is a regression test for bug 330194.
 	 */
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Test
 	public void testChangeDynamicBuildOrderDuringPreBuild() throws Throwable {
 		IWorkspace workspace = getWorkspace();
@@ -557,7 +557,7 @@ public class BuilderTest {
 				Function::identity);
 
 		// Add pre-build listener that swap around the dependencies
-		IResourceChangeListener buildListener = unused -> {
+		IResourceChangeListener buildListener = unused -> { //FLLDCIM: MARK — T07  LAMBDA
 			try {
 				IProjectDescription desc1 = proj1.getDescription();
 				IProjectDescription desc2 = proj2.getDescription();
@@ -623,10 +623,10 @@ public class BuilderTest {
 	/**
 	 * Ensure that build order is preserved when project is closed/opened.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCloseOpenProject() throws CoreException {
 		IWorkspace workspace = getWorkspace();
-		IProject project = workspace.getRoot().getProject("PROJECT" + 1);
+		IProject project = workspace.getRoot().getProject("PROJECT" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		// Create some resources
 		project.create(createTestMonitor());
 		project.open(createTestMonitor());
@@ -655,12 +655,12 @@ public class BuilderTest {
 	 * Tests that when a project is copied, the copied project has a full build
 	 * but the source project does not.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopyProject(TestInfo testInfo) throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		// Create some resource handles
-		IProject proj1 = workspace.getRoot().getProject("testCopyProject" + 1);
-		IProject proj2 = workspace.getRoot().getProject("testCopyProject" + 2);
+		IProject proj1 = workspace.getRoot().getProject("testCopyProject" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IProject proj2 = workspace.getRoot().getProject("testCopyProject" + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Turn auto-building on
 		setAutoBuilding(true);
@@ -697,13 +697,13 @@ public class BuilderTest {
 	 * Tests an implicit workspace build order created by setting dynamic
 	 * project references.
 	 */
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings("deprecation") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Test
 	public void testDynamicBuildOrder() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		// Create some resource handles
-		IProject proj1 = workspace.getRoot().getProject("PROJECT" + 1);
-		IProject proj2 = workspace.getRoot().getProject("PROJECT" + 2);
+		IProject proj1 = workspace.getRoot().getProject("PROJECT" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IProject proj2 = workspace.getRoot().getProject("PROJECT" + 2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Turn auto-building off
 		setAutoBuilding(false);
@@ -763,7 +763,7 @@ public class BuilderTest {
 	/**
 	 * Tests that enabling autobuild causes a build to occur.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testEnableAutobuild() throws CoreException {
 		// Create some resource handles
 		IProject project = getWorkspace().getRoot().getProject("PROJECT");
@@ -794,7 +794,7 @@ public class BuilderTest {
 	/**
 	 * Tests installing and running a builder that always fails in its build method
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testExceptionBuilder() throws CoreException {
 		// Create some resource handles
 		IProject project = getWorkspace().getRoot().getProject("PROJECT");
@@ -811,7 +811,7 @@ public class BuilderTest {
 		project.setDescription(desc, createTestMonitor());
 
 		final AtomicReference<Boolean> listenerCalled = new AtomicReference<>();
-		IResourceChangeListener listener = unused -> listenerCalled.set(true);
+		IResourceChangeListener listener = unused -> listenerCalled.set(true); //FLLDCIM: MARK — T07  LAMBDA
 		try {
 			getWorkspace().addResourceChangeListener(listener, IResourceChangeEvent.POST_BUILD);
 			// do an incremental build -- build should fail, but POST_BUILD should still
@@ -829,7 +829,7 @@ public class BuilderTest {
 	/**
 	 * Tests the method IncrementProjectBuilder.forgetLastBuiltState
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testForgetLastBuiltState() throws CoreException {
 		// Create some resource handles
 		IProject project = getWorkspace().getRoot().getProject("PROJECT");
@@ -878,7 +878,7 @@ public class BuilderTest {
 	 * Tests that a client invoking a manual incremental build before autobuild has had
 	 * a chance to run will block until the build completes. See bug 275879.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIncrementalBuildBeforeAutobuild() throws Exception {
 		// Create some resource handles
 		final IProject project = getWorkspace().getRoot().getProject("PROJECT");
@@ -902,7 +902,7 @@ public class BuilderTest {
 		//change the file and then immediately perform build
 		final ByteArrayOutputStream out = new ByteArrayOutputStream();
 		AtomicReference<IOException> exception = new AtomicReference<>();
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			input.setContents(new byte[] { 5, 4, 3, 2, 1 }, IResource.NONE, createTestMonitor());
 			project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, createTestMonitor());
 			try (InputStream inputStream = output.getContents()) {
@@ -922,7 +922,7 @@ public class BuilderTest {
 	/**
 	 * Tests that autobuild is interrupted by a background scheduled job, but eventually completes.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInterruptAutobuild() throws Exception {
 		// Create some resource handles
 		IProject project = getWorkspace().getRoot().getProject("PROJECT");
@@ -950,10 +950,10 @@ public class BuilderTest {
 		final TestBarrier2 barrier = new TestBarrier2();
 		barrier.setStatus(TestBarrier2.STATUS_WAIT_FOR_START);
 		//install a listener that will cause autobuild to be interrupted
-		IResourceChangeListener listener = unused -> {
+		IResourceChangeListener listener = unused -> { //FLLDCIM: MARK — T07  LAMBDA
 			blockedJob.schedule();
 			//wait for autobuild to become blocking
-			while (!Job.getJobManager().currentJob().isBlocking()) {
+			while (!Job.getJobManager().currentJob().isBlocking()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
@@ -983,7 +983,7 @@ public class BuilderTest {
 	/**
 	 * Tests the lifecycle of a builder.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLifecycleEvents() throws CoreException {
 		// Create some resource handles
 		IProject project = getWorkspace().getRoot().getProject("PROJECT");
@@ -1047,11 +1047,11 @@ public class BuilderTest {
 	 *
 	 * @see SortBuilder
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveProject() throws CoreException {
 		// Create some resource handles
 		IWorkspace workspace = getWorkspace();
-		IProject proj1 = workspace.getRoot().getProject("PROJECT" + 1);
+		IProject proj1 = workspace.getRoot().getProject("PROJECT" + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IProject proj2 = workspace.getRoot().getProject("Destination");
 
 		// Turn auto-building off
@@ -1082,7 +1082,7 @@ public class BuilderTest {
 	 * Tests that turning autobuild on will invoke a build in the next
 	 * operation.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTurnOnAutobuild() throws CoreException {
 		// Create some resource handles
 		IProject project = getWorkspace().getRoot().getProject("PROJECT");
@@ -1115,7 +1115,7 @@ public class BuilderTest {
 
 		// Now make a change and then turn autobuild on. Turning it on should
 		// cause a build.
-		IWorkspaceRunnable r = unused -> {
+		IWorkspaceRunnable r = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			file.setContents(createRandomContentsStream(), IResource.NONE, createTestMonitor());
 			IWorkspaceDescription description = getWorkspace().getDescription();
 			description.setAutoBuilding(true);

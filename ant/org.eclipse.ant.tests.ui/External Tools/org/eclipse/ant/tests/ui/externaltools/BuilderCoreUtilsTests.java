@@ -65,7 +65,7 @@ public class BuilderCoreUtilsTests {
 	 */
 	@Test
 	public void testConfigFromBuildCommandArgs1() throws Exception {
-		ILaunchConfiguration config = BuilderCoreUtils.configFromBuildCommandArgs(getProject(), new HashMap<>(), new String[] {
+		ILaunchConfiguration config = BuilderCoreUtils.configFromBuildCommandArgs(getProject(), new HashMap<>(), new String[] { //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 				BuilderCoreUtils.VERSION_1_0 });
 		assertNull(config, "There should be no configuration returned without the config handle and arguments"); //$NON-NLS-1$
 	}
@@ -89,7 +89,7 @@ public class BuilderCoreUtilsTests {
 	 */
 	@Test
 	public void testConfigFromBuildCommandArgs3() throws Exception {
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put(BuilderCoreUtils.LAUNCH_CONFIG_HANDLE, "foo"); //$NON-NLS-1$
 		ILaunchConfiguration config = BuilderCoreUtils.configFromBuildCommandArgs(getProject(), args, new String[] { BuilderCoreUtils.VERSION_2_1 });
 		assertNull(config, "There should be no configuration returned"); //$NON-NLS-1$
@@ -104,7 +104,7 @@ public class BuilderCoreUtilsTests {
 	@Test
 	public void testConfigFromBuildCommandArgs4() throws Exception {
 		createExternalToolBuilder(getProject(), "testConfigFromBuildCommandArgs4", null); //$NON-NLS-1$
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put(BuilderCoreUtils.LAUNCH_CONFIG_HANDLE, "/.externalToolBuilders/testConfigFromBuildCommandArgs4.launch"); //$NON-NLS-1$
 		ILaunchConfiguration config = BuilderCoreUtils.configFromBuildCommandArgs(getProject(), args, new String[] { BuilderCoreUtils.VERSION_2_1 });
 		assertNull(config, "There should be no configuration returned"); //$NON-NLS-1$
@@ -119,7 +119,7 @@ public class BuilderCoreUtilsTests {
 	@Test
 	public void testConfigFromBuildCommandArgs5() throws Exception {
 		createExternalToolBuilder(getProject(), "testConfigFromBuildCommandArgs5", null); //$NON-NLS-1$
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put(BuilderCoreUtils.LAUNCH_CONFIG_HANDLE, "testConfigFromBuildCommandArgs5.launch"); //$NON-NLS-1$
 		ILaunchConfiguration config = BuilderCoreUtils.configFromBuildCommandArgs(getProject(), args, new String[] { BuilderCoreUtils.VERSION_2_1 });
 		assertNotNull(config, "There should be a configuration returned"); //$NON-NLS-1$
@@ -134,7 +134,7 @@ public class BuilderCoreUtilsTests {
 	@Test
 	public void testConfigFromBuildCommandArgs6() throws Exception {
 		createExternalToolBuilder(getProject(), "testConfigFromBuildCommandArgs6", null); //$NON-NLS-1$
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put(BuilderCoreUtils.LAUNCH_CONFIG_HANDLE, "<project>/testConfigFromBuildCommandArgs6.launch"); //$NON-NLS-1$
 		ILaunchConfiguration config = BuilderCoreUtils.configFromBuildCommandArgs(getProject(), args, new String[] { BuilderCoreUtils.VERSION_2_1 });
 		assertNull(config, "There should be no configuration returned"); //$NON-NLS-1$
@@ -148,7 +148,7 @@ public class BuilderCoreUtilsTests {
 	@Test
 	public void testConfigFromBuildCommandArgs7() throws Exception {
 		createExternalToolBuilder(getProject(), "testConfigFromBuildCommandArgs7", null); //$NON-NLS-1$
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put(BuilderCoreUtils.LAUNCH_CONFIG_HANDLE, "<project>/.externalToolBuilders/testConfigFromBuildCommandArgs7.launch"); //$NON-NLS-1$
 		ILaunchConfiguration config = BuilderCoreUtils.configFromBuildCommandArgs(getProject(), args, new String[] { BuilderCoreUtils.VERSION_2_1 });
 		assertNotNull(config, "There should be a configuration returned"); //$NON-NLS-1$
@@ -162,7 +162,7 @@ public class BuilderCoreUtilsTests {
 	 */
 	@Test
 	public void testConfigureTriggers1() throws Exception {
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put(IAntLaunchConstants.ATTR_ANT_AFTER_CLEAN_TARGETS, null);
 		args.put(IExternalToolConstants.ATTR_LOCATION, getBuildFile(EXT_BUILD_FILE_NAME).getAbsolutePath());
 		args.put(IExternalToolConstants.ATTR_RUN_BUILD_KINDS, IExternalToolConstants.BUILD_TYPE_FULL);
@@ -184,7 +184,7 @@ public class BuilderCoreUtilsTests {
 	 */
 	@Test
 	public void testConfigureTriggers2() throws Exception {
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put(IAntLaunchConstants.ATTR_ANT_AFTER_CLEAN_TARGETS, "def,clean"); //$NON-NLS-1$
 		args.put(IExternalToolConstants.ATTR_LOCATION, getBuildFile(EXT_BUILD_FILE_NAME).getAbsolutePath());
 		args.put(IExternalToolConstants.ATTR_RUN_BUILD_KINDS, IExternalToolConstants.BUILD_TYPE_FULL);
@@ -208,7 +208,7 @@ public class BuilderCoreUtilsTests {
 	 */
 	@Test
 	public void testConfigureTriggers3() throws Exception {
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put(IAntLaunchConstants.ATTR_ANT_MANUAL_TARGETS, null);
 		args.put(IExternalToolConstants.ATTR_LOCATION, getBuildFile(EXT_BUILD_FILE_NAME).getAbsolutePath());
 		args.put(IExternalToolConstants.ATTR_RUN_BUILD_KINDS, IExternalToolConstants.BUILD_TYPE_INCREMENTAL);
@@ -234,7 +234,7 @@ public class BuilderCoreUtilsTests {
 	 */
 	@Test
 	public void testConfigureTriggers4() throws Exception {
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put(IAntLaunchConstants.ATTR_ANT_MANUAL_TARGETS, "def,inc"); //$NON-NLS-1$
 		args.put(IExternalToolConstants.ATTR_LOCATION, getBuildFile(EXT_BUILD_FILE_NAME).getAbsolutePath());
 		args.put(IExternalToolConstants.ATTR_RUN_BUILD_KINDS, IExternalToolConstants.BUILD_TYPE_INCREMENTAL);
@@ -256,7 +256,7 @@ public class BuilderCoreUtilsTests {
 	 */
 	@Test
 	public void testConfigureTriggers5() throws Exception {
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put(IAntLaunchConstants.ATTR_ANT_AUTO_TARGETS, null);
 		args.put(IExternalToolConstants.ATTR_LOCATION, getBuildFile(EXT_BUILD_FILE_NAME).getAbsolutePath());
 		args.put(IExternalToolConstants.ATTR_RUN_BUILD_KINDS, IExternalToolConstants.BUILD_TYPE_AUTO);
@@ -278,7 +278,7 @@ public class BuilderCoreUtilsTests {
 	 */
 	@Test
 	public void testConfigureTriggers6() throws Exception {
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put(IAntLaunchConstants.ATTR_ANT_AUTO_TARGETS, "def,auto"); //$NON-NLS-1$
 		args.put(IExternalToolConstants.ATTR_LOCATION, getBuildFile(EXT_BUILD_FILE_NAME).getAbsolutePath());
 		args.put(IExternalToolConstants.ATTR_RUN_BUILD_KINDS, IExternalToolConstants.BUILD_TYPE_AUTO);
@@ -300,7 +300,7 @@ public class BuilderCoreUtilsTests {
 	 */
 	@Test
 	public void testConfigureTriggers7() throws Exception {
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put(IAntLaunchConstants.ATTR_ANT_CLEAN_TARGETS, null);
 		args.put(IExternalToolConstants.ATTR_LOCATION, getBuildFile(EXT_BUILD_FILE_NAME).getAbsolutePath());
 		args.put(IExternalToolConstants.ATTR_RUN_BUILD_KINDS, IExternalToolConstants.BUILD_TYPE_CLEAN);
@@ -322,7 +322,7 @@ public class BuilderCoreUtilsTests {
 	 */
 	@Test
 	public void testConfigureTriggers8() throws Exception {
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put(IAntLaunchConstants.ATTR_ANT_CLEAN_TARGETS, "def,clean"); //$NON-NLS-1$
 		args.put(IExternalToolConstants.ATTR_LOCATION, getBuildFile(EXT_BUILD_FILE_NAME).getAbsolutePath());
 		args.put(IExternalToolConstants.ATTR_RUN_BUILD_KINDS, IExternalToolConstants.BUILD_TYPE_CLEAN);
@@ -343,13 +343,13 @@ public class BuilderCoreUtilsTests {
 	 * Tests that the triggers are configured for a full + incremental build with the targets 'def' and 'inc' specified for after clean targets and
 	 * manual targets respectively
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testConfigureTriggers9() throws Exception {
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put(IAntLaunchConstants.ATTR_ANT_AFTER_CLEAN_TARGETS, "def"); //$NON-NLS-1$
 		args.put(IAntLaunchConstants.ATTR_ANT_MANUAL_TARGETS, "inc"); //$NON-NLS-1$
 		args.put(IExternalToolConstants.ATTR_LOCATION, getBuildFile(EXT_BUILD_FILE_NAME).getAbsolutePath());
-		args.put(IExternalToolConstants.ATTR_RUN_BUILD_KINDS, IExternalToolConstants.BUILD_TYPE_CLEAN + "," //$NON-NLS-1$
+		args.put(IExternalToolConstants.ATTR_RUN_BUILD_KINDS, IExternalToolConstants.BUILD_TYPE_CLEAN + "," //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ IExternalToolConstants.BUILD_TYPE_INCREMENTAL);
 		ILaunchConfiguration config = createExternalToolBuilder(getProject(), "testConfigureTriggers9", args); //$NON-NLS-1$
 		assertNotNull(config, "the test builder must not be null"); //$NON-NLS-1$
@@ -370,15 +370,15 @@ public class BuilderCoreUtilsTests {
 	 * Tests that the triggers are configured for a full + incremental build with the targets 'def' and 'inc' specified for after clean targets and
 	 * manual targets respectively
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testConfigureTriggers10() throws Exception {
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		args.put(IAntLaunchConstants.ATTR_ANT_AFTER_CLEAN_TARGETS, "def"); //$NON-NLS-1$
 		args.put(IAntLaunchConstants.ATTR_ANT_MANUAL_TARGETS, "inc"); //$NON-NLS-1$
 		args.put(IAntLaunchConstants.ATTR_ANT_AUTO_TARGETS, "auto"); //$NON-NLS-1$
 		args.put(IAntLaunchConstants.ATTR_ANT_CLEAN_TARGETS, "clean"); //$NON-NLS-1$
 		args.put(IExternalToolConstants.ATTR_LOCATION, getBuildFile(EXT_BUILD_FILE_NAME).getAbsolutePath());
-		String kinds = IExternalToolConstants.BUILD_TYPE_CLEAN + "," + //$NON-NLS-1$
+		String kinds = IExternalToolConstants.BUILD_TYPE_CLEAN + "," + //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				IExternalToolConstants.BUILD_TYPE_INCREMENTAL + "," + //$NON-NLS-1$
 				IExternalToolConstants.BUILD_TYPE_AUTO + "," + //$NON-NLS-1$
 				IExternalToolConstants.BUILD_TYPE_FULL;
@@ -446,7 +446,7 @@ public class BuilderCoreUtilsTests {
 	 */
 	@Test
 	public void testToBuildCommand2() throws Exception {
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		ILaunchConfiguration copy = createExternalToolBuilder(getProject(), "testToBuildCommand2", args); //$NON-NLS-1$
 		ICommand command = BuilderCoreUtils.toBuildCommand(getProject(), copy, getProject().getDescription().newCommand());
 		assertNotNull(command, "There should have been a new build command created"); //$NON-NLS-1$
@@ -461,7 +461,7 @@ public class BuilderCoreUtilsTests {
 	 */
 	@Test
 	public void testToBuildCommand3() throws Exception {
-		Map<String, String> args = new HashMap<>();
+		Map<String, String> args = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		ILaunchConfiguration copy = createExternalToolBuilder(getProject(), "testToBuildCommand3", args); //$NON-NLS-1$
 		ICommand command = BuilderCoreUtils.toBuildCommand(getProject(), copy.getWorkingCopy(), getProject().getDescription().newCommand());
 		assertNotNull(command, "There should have been a new build command created"); //$NON-NLS-1$
@@ -472,14 +472,14 @@ public class BuilderCoreUtilsTests {
 	 */
 	@Test
 	public void testBuildTypesToArray1() throws Exception {
-		String kinds = IExternalToolConstants.BUILD_TYPE_CLEAN + "," + //$NON-NLS-1$
+		String kinds = IExternalToolConstants.BUILD_TYPE_CLEAN + "," + //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				IExternalToolConstants.BUILD_TYPE_INCREMENTAL + "," + //$NON-NLS-1$
 				IExternalToolConstants.BUILD_TYPE_AUTO + "," + //$NON-NLS-1$
 				IExternalToolConstants.BUILD_TYPE_FULL;
 		int[] array = BuilderCoreUtils.buildTypesToArray(kinds);
 		assertNotNull(array, "The build kinds array cannot be null"); //$NON-NLS-1$
 		boolean contains = true;
-		for (int element : array) {
+		for (int element : array) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			contains &= (element == IncrementalProjectBuilder.AUTO_BUILD) || (element == IncrementalProjectBuilder.CLEAN_BUILD) || (element == IncrementalProjectBuilder.FULL_BUILD) || (element == IncrementalProjectBuilder.INCREMENTAL_BUILD);
 			if (!contains) {
 				break;

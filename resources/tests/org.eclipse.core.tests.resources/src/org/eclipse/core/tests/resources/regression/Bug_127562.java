@@ -39,7 +39,7 @@ public class Bug_127562 {
 		createInWorkspace(project);
 		IProjectDescription description = project.getDescription();
 		description.setComment("Foo");
-		getWorkspace().run((IWorkspaceRunnable) unused -> project.setDescription(description, createTestMonitor()),
+		getWorkspace().run((IWorkspaceRunnable) unused -> project.setDescription(description, createTestMonitor()), //FLLDCIM: MARK — T09  LAMBDA
 				getWorkspace().getRoot(), IResource.NONE, createTestMonitor());
 	}
 

@@ -67,7 +67,7 @@ public class IFileTest {
 	 * Test deleting file that doesn't exist (failure?).
 	 * Finish testing IResource API
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFile() throws CoreException {
 		IProgressMonitor monitor = null;
 		IWorkspace workspace = getWorkspace();
@@ -89,17 +89,17 @@ public class IFileTest {
 		assertThat(file.getProject()).isEqualTo(proj);
 		assertThat(file.getParent()).isEqualTo(folder);
 		assertThat(file.getType()).isEqualTo(IResource.FILE);
-		assertThat(file.getFullPath()).isEqualTo(IPath.fromOSString("/" + PROJECT + "/" + FOLDER + "/" + FILE));
+		assertThat(file.getFullPath()).isEqualTo(IPath.fromOSString("/" + PROJECT + "/" + FOLDER + "/" + FILE)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertThat(file.getName()).isEqualTo(FILE);
 		assertThat(proj.getFolder(IPath.fromOSString(FOLDER))).isEqualTo(folder);
 		assertThat(workspace.getRoot().getFile(file.getFullPath())).isEqualTo(file);
-		IPath projRelativePath = IPath.fromOSString(FOLDER + "/" + FILE);
+		IPath projRelativePath = IPath.fromOSString(FOLDER + "/" + FILE); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertThat(proj.getFile(projRelativePath)).isEqualTo(file);
 		assertThat(folder.getFile(IPath.fromOSString(FILE))).isEqualTo(file);
 		assertThat(file).matches(it -> !workspace.getRoot().exists(it.getFullPath()), "is not contained in workspace");
-		IPath absolutePath = IPath.fromOSString(proj.getLocation().toOSString() + "/" + FOLDER + "/" + FILE);
+		IPath absolutePath = IPath.fromOSString(proj.getLocation().toOSString() + "/" + FOLDER + "/" + FILE); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertThat(file.getLocation()).isEqualTo(absolutePath);
-		assertThat(file.getProjectRelativePath()).isEqualTo(IPath.fromOSString(FOLDER + "/" + FILE));
+		assertThat(file.getProjectRelativePath()).isEqualTo(IPath.fromOSString(FOLDER + "/" + FILE)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// Create a folder.
 		folder.create(false, true, monitor);
@@ -116,7 +116,7 @@ public class IFileTest {
 		// Now tests pass that require that the file exists.
 		assertThat(file).matches(IFile::exists, "exists")
 				.matches(it -> workspace.getRoot().exists(it.getFullPath()), "is contained in workspace")
-				.matches(it -> folder.findMember(it.getName()).exists(), "is contained in folder: " + folder)
+				.matches(it -> folder.findMember(it.getName()).exists(), "is contained in folder: " + folder) //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				.isEqualTo(workspace.getRoot().findMember(file.getFullPath()));
 		assertThat(file.getLocation()).isEqualTo(absolutePath);
 

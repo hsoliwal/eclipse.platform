@@ -166,7 +166,7 @@ public final class AntUtil {
 			return null;
 		}
 		String[] propertyFiles = AntUtil.parseString(attribute, ","); //$NON-NLS-1$
-		for (int i = 0; i < propertyFiles.length; i++) {
+		for (int i = 0; i < propertyFiles.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String propertyFile = propertyFiles[i];
 			propertyFile = expandVariableString(propertyFile, AntUIModelMessages.AntUtil_6);
 			propertyFiles[i] = propertyFile;
@@ -174,7 +174,7 @@ public final class AntUtil {
 		return propertyFiles;
 	}
 
-	public static AntTargetNode[] getTargets(String path, ILaunchConfiguration config) throws CoreException {
+	public static AntTargetNode[] getTargets(String path, ILaunchConfiguration config) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		File buildfile = getBuildFile(path);
 		if (buildfile == null) {
 			return null;
@@ -194,17 +194,17 @@ public final class AntUtil {
 		return getTargets(project);
 	}
 
-	private static Map<String, String> getAllProperties(ILaunchConfiguration config) throws CoreException {
+	private static Map<String, String> getAllProperties(ILaunchConfiguration config) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String allArgs = config.getAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, (String) null);
-		Map<String, String> properties = new HashMap<>();
+		Map<String, String> properties = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		if (allArgs != null) {
 			// filter arguments to avoid resolving variables that will prompt the user
-			List<String> filtered = new ArrayList<>();
-			Pattern pattern = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$
+			List<String> filtered = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			Pattern pattern = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			IStringVariableManager manager = VariablesPlugin.getDefault().getStringVariableManager();
-			for (String arg : ExternalToolsUtil.parseStringIntoList(allArgs)) {
+			for (String arg : ExternalToolsUtil.parseStringIntoList(allArgs)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (arg.startsWith("-D")) { //$NON-NLS-1$
-					if (!pattern.matcher(arg).find()) {
+					if (!pattern.matcher(arg).find()) { //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 						filtered.add(manager.performStringSubstitution(arg, false));
 					}
 				}
@@ -214,7 +214,7 @@ public final class AntUtil {
 		Map<String, String> configProperties = getProperties(config);
 		if (configProperties != null) {
 			Iterator<String> keys = configProperties.keySet().iterator();
-			while (keys.hasNext()) {
+			while (keys.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String name = keys.next();
 				if (properties.get(name) == null) {
 					properties.put(name, configProperties.get(name));
@@ -228,8 +228,8 @@ public final class AntUtil {
 		if (project == null || !project.hasChildren()) {
 			return null;
 		}
-		List<IAntElement> targets = new ArrayList<>();
-		for (IAntElement node : project.getChildNodes()) {
+		List<IAntElement> targets = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IAntElement node : project.getChildNodes()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (node instanceof AntTargetNode) {
 				targets.add(node);
 			}
@@ -240,7 +240,7 @@ public final class AntUtil {
 		return targets.toArray(new AntTargetNode[targets.size()]);
 	}
 
-	public static AntTargetNode[] getTargets(String path) {
+	public static AntTargetNode[] getTargets(String path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		File buildfile = getBuildFile(path);
 		if (buildfile == null) {
 			return null;
@@ -275,15 +275,15 @@ public final class AntUtil {
 	 */
 	private static File getBuildFile(String path) {
 		File buildFile = new File(path);
-		if (!buildFile.isFile() || !buildFile.exists()) {
+		if (!buildFile.isFile() || !buildFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return null;
 		}
 
 		return buildFile;
 	}
 
-	private static IAntModel getAntModel(final File buildFile, URL[] urls, boolean needsLexical, boolean needsPosition, boolean needsTask) {
-		if (buildFile == null || !buildFile.exists()) {
+	private static IAntModel getAntModel(final File buildFile, URL[] urls, boolean needsLexical, boolean needsPosition, boolean needsTask) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		if (buildFile == null || !buildFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return null;
 		}
 		IDocument doc = getDocument(buildFile);
@@ -313,7 +313,7 @@ public final class AntUtil {
 		return model;
 	}
 
-	private static IDocument getDocument(File buildFile) {
+	private static IDocument getDocument(File buildFile) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ITextFileBufferManager manager = FileBuffers.getTextFileBufferManager();
 		IPath location = IPath.fromOSString(buildFile.getAbsolutePath());
 		boolean connected = false;
@@ -406,7 +406,7 @@ public final class AntUtil {
 		return AntLaunchingUtil.getFile(fullPath);
 	}
 
-	public static IHyperlink getLocationLink(String path, File buildFileParent) {
+	public static IHyperlink getLocationLink(String path, File buildFileParent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		path = path.trim();
 		if (path.length() == 0) {
 			return null;
@@ -470,7 +470,7 @@ public final class AntUtil {
 		AntLaunchingUtil.migrateToNewClasspathFormat(configuration);
 	}
 
-	private static int getOffset(int line, int column, ITextEditor editor) {
+	private static int getOffset(int line, int column, ITextEditor editor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IDocumentProvider provider = editor.getDocumentProvider();
 		IEditorInput input = editor.getEditorInput();
 		try {
@@ -508,7 +508,7 @@ public final class AntUtil {
 	 * @param node
 	 *            the node from the buildfile to open and then select in the editor
 	 */
-	public static void openInEditor(IWorkbenchPage page, IEditorDescriptor editorDescriptor, AntElementNode node) {
+	public static void openInEditor(IWorkbenchPage page, IEditorDescriptor editorDescriptor, AntElementNode node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IEditorPart editorPart = null;
 		IFile fileResource = node.getIFile();
 		try {
@@ -567,8 +567,8 @@ public final class AntUtil {
 	 * @param errorDialogTitle
 	 *            the title of any error dialog
 	 */
-	public static void openBrowser(final String urlString, final Shell shell, final String errorDialogTitle) {
-		shell.getDisplay().syncExec(() -> {
+	public static void openBrowser(final String urlString, final Shell shell, final String errorDialogTitle) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		shell.getDisplay().syncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			IWorkbenchBrowserSupport support = PlatformUI.getWorkbench().getBrowserSupport();
 			try {
 				IWebBrowser browser = support.createBrowser(fgBrowserId);
@@ -613,7 +613,7 @@ public final class AntUtil {
 	 *
 	 * @since 3.6
 	 */
-	public static boolean isKnownAntFile(IResource resource) {
+	public static boolean isKnownAntFile(IResource resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (resource != null) {
 			// workspace file
 			IFile file = null;
@@ -643,8 +643,8 @@ public final class AntUtil {
 	 *
 	 * @since 3.8
 	 */
-	public static boolean isKnownAntFile(File file) {
-		if (file != null && !file.isDirectory()) {
+	public static boolean isKnownAntFile(File file) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		if (file != null && !file.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			String filename = file.getName();
 			IContentType type = Platform.getContentTypeManager().findContentTypeFor(filename);
 			if (type != null) {
@@ -654,7 +654,7 @@ public final class AntUtil {
 				}
 			}
 			String[] names = getKnownBuildfileNames();
-			for (int i = 0; names != null && i < names.length; i++) { // names can be null!
+			for (int i = 0; names != null && i < names.length; i++) { // names can be null! //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (filename.endsWith(names[i])) {
 					return true;
 				}
@@ -687,7 +687,7 @@ public final class AntUtil {
 	 */
 	public static boolean isKnownBuildfileName(String filename) {
 		String[] names = getKnownBuildfileNames();
-		for (int i = 0; names != null && i < names.length; i++) { // names can be null!
+		for (int i = 0; names != null && i < names.length; i++) { // names can be null! //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (names[i].equalsIgnoreCase(filename)) {
 				return true;
 			}

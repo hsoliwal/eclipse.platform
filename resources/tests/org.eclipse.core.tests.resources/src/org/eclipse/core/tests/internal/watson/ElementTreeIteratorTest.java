@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
  */
 public class ElementTreeIteratorTest {
 
-	static void setupElementTree(ElementTree tree, int num) {
+	static void setupElementTree(ElementTree tree, int num) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final IElementTreeData data = new IElementTreeData() {
 			@Override
 			public Object clone() {
@@ -43,21 +43,21 @@ public class ElementTreeIteratorTest {
 		};
 		IPath sol = IPath.ROOT.append("sol");
 		tree.createElement(sol, data);
-		for (int p = 0; p < num; p++) {
-			IPath proj = sol.append("proj" + p);
+		for (int p = 0; p < num; p++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			IPath proj = sol.append("proj" + p); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			tree.createElement(proj, data);
-			for (int k = 0; k < num; k++) {
-				IPath folder = proj.append("folder" + k);
+			for (int k = 0; k < num; k++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				IPath folder = proj.append("folder" + k); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				tree.createElement(folder, data);
-				for (int c = 0; c < num; c++) {
-					IPath file = folder.append("file" + c);
+				for (int c = 0; c < num; c++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					IPath file = folder.append("file" + c); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					tree.createElement(file, data);
 				}
 			}
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testConcurrentModification() {
 		//the dining detectives problem
 		ElementTree baseTree = new ElementTree();
@@ -66,18 +66,18 @@ public class ElementTreeIteratorTest {
 		baseTree.immutable();
 		final ElementTree tree = baseTree.newEmptyDelta();
 		modifyTree(tree);
-		final ArrayList<Object> elts = new ArrayList<>();
+		final ArrayList<Object> elts = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		final IElementContentVisitor visitor = (unused, unused2, info) -> {
 			elts.add(info);
 			return true;
 		};
 		Thread reader = new Thread((Runnable) () -> {
-			for (int i = 0; i < 80000; i++) {
+			for (int i = 0; i < 80000; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				new ElementTreeIterator(tree, IPath.ROOT).iterate(visitor);
 			}
 		}, "Holmes (reader)");
 		Thread writer = new Thread((Runnable) () -> {
-			for (int i = 0; i < 1000; i++) {
+			for (int i = 0; i < 1000; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				modifyTree(tree);
 				recursiveDelete(tree, IPath.ROOT);
 				setupElementTree(tree, 3);
@@ -99,7 +99,7 @@ public class ElementTreeIteratorTest {
 		ElementTree tree = new ElementTree();
 		int n = 3;
 		setupElementTree(tree, n);
-		final ArrayList<IPath> elts = new ArrayList<>();
+		final ArrayList<IPath> elts = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IElementContentVisitor elementVisitor = (unused, requestor, unused2) -> {
 			elts.add(requestor.requestPath());
 			return true;
@@ -118,13 +118,13 @@ public class ElementTreeIteratorTest {
 	 */
 	void recursiveDelete(ElementTree tree, IPath path) {
 		IPath[] children = tree.getChildren(path);
-		for (IPath element : children) {
+		for (IPath element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			recursiveDelete(tree, element);
 		}
 		tree.deleteElement(path);
 	}
 
-	protected void modifyTree(ElementTree tree) {
+	protected void modifyTree(ElementTree tree) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		class MyStack extends Stack<IPath> {
 			/**
 			 * All serializable objects should have a stable serialVersionUID
@@ -132,7 +132,7 @@ public class ElementTreeIteratorTest {
 			private static final long serialVersionUID = 1L;
 
 			public void pushAll(IPath[] array) {
-				for (IPath element : array) {
+				for (IPath element : array) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					push(element);
 				}
 			}
@@ -140,7 +140,7 @@ public class ElementTreeIteratorTest {
 		MyStack toModify = new MyStack();
 		IPath[] children = tree.getChildren(IPath.ROOT);
 		toModify.pushAll(children);
-		while (!toModify.isEmpty()) {
+		while (!toModify.isEmpty()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IPath visit = toModify.pop();
 			tree.openElementData(visit);
 			toModify.pushAll(tree.getChildren(visit));

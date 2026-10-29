@@ -101,7 +101,7 @@ public class XmlTagFormatterTest {
 		}
 	}
 
-	private FormattingPreferences getPreferences(final boolean wrapLongTags, final boolean alignCloseChar,
+	private FormattingPreferences getPreferences(final boolean wrapLongTags, final boolean alignCloseChar, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			final int maxLineWidth) {
 
 		return new FormattingPreferences() {
@@ -132,7 +132,7 @@ public class XmlTagFormatterTest {
 
 	/* ---------------- Test Methods ---------------- */
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testParserGetElementName() throws Exception {
 
 		InnerClassFactory.TagParser tagParser = InnerClassFactory.createTagParser();
@@ -158,7 +158,7 @@ public class XmlTagFormatterTest {
 
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testParserGetAttributes() throws Exception {
 		InnerClassFactory.TagParser tagParser = InnerClassFactory.createTagParser();
 
@@ -196,7 +196,7 @@ public class XmlTagFormatterTest {
 		String lineSep = System.lineSeparator();
 		String indent = "\t"; //$NON-NLS-1$
 		String source = "<target name=\"myTargetName\" depends=\"a,b,c,d,e,f,g\" description=\"This is a very long element which ought to be wrapped.\">"; //$NON-NLS-1$
-		String target = "<target name=\"myTargetName\"" + lineSep //$NON-NLS-1$
+		String target = "<target name=\"myTargetName\"" + lineSep //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ indent + "        depends=\"a,b,c,d,e,f,g\"" + lineSep //$NON-NLS-1$
 				+ indent + "        description=\"This is a very long element which ought to be wrapped.\">"; //$NON-NLS-1$
 
@@ -208,7 +208,7 @@ public class XmlTagFormatterTest {
 		String lineSep = System.lineSeparator();
 		String indent = "\t"; //$NON-NLS-1$
 		String source = "<target name=\"myTargetName\" depends=\"a,b,c,d,e,f,g\" description=\"This is a very long element which ought to be wrapped.\">"; //$NON-NLS-1$
-		String target = "<target name=\"myTargetName\"" + lineSep //$NON-NLS-1$
+		String target = "<target name=\"myTargetName\"" + lineSep //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ indent + "        depends=\"a,b,c,d,e,f,g\"" + lineSep //$NON-NLS-1$
 				+ indent + "        description=\"This is a very long element which ought to be wrapped.\"" + lineSep //$NON-NLS-1$
 				+ indent + ">"; //$NON-NLS-1$
@@ -221,7 +221,7 @@ public class XmlTagFormatterTest {
 		String lineSep = System.lineSeparator();
 		String indent = "\t"; //$NON-NLS-1$
 		String source = "<target name='myTargetName' depends=\"a,b,c,d,e,f,g\" description=\'This is a very long element which ought to be \"wrapped\".'>"; //$NON-NLS-1$
-		String target = "<target name='myTargetName'" + lineSep //$NON-NLS-1$
+		String target = "<target name='myTargetName'" + lineSep //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ indent + "        depends=\"a,b,c,d,e,f,g\"" + lineSep //$NON-NLS-1$
 				+ indent + "        description='This is a very long element which ought to be \"wrapped\".'" + lineSep //$NON-NLS-1$
 				+ indent + ">"; //$NON-NLS-1$
@@ -255,7 +255,7 @@ public class XmlTagFormatterTest {
 		assertEquals(19, tagFormatter.tabExpandedLineWidth("\t1\t2	34567890", 3)); //$NON-NLS-1$
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTabToStringAndMinimumLength() throws Exception {
 		InnerClassFactory.Tag tag = InnerClassFactory.createTag();
 
@@ -280,7 +280,7 @@ public class XmlTagFormatterTest {
 		assertEquals(tag.toString().length(), tag.minimumLength());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWrapTag() throws Exception {
 
 		InnerClassFactory.Tag tag = InnerClassFactory.createTag();
@@ -309,21 +309,21 @@ public class XmlTagFormatterTest {
 		tag.setClosed(true);
 
 		String lineSep = System.lineSeparator();
-		assertEquals("<myElement attribute1=\"value1\"" + lineSep //$NON-NLS-1$
+		assertEquals("<myElement attribute1=\"value1\"" + lineSep //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ "\t\t             attribute2=\"value2\" />", //$NON-NLS-1$
 				tagFormatter.wrapTag(tag, dontAlignCloseChar, "\t\t  ", lineSep)); //$NON-NLS-1$
 
-		assertEquals("<myElement attribute1=\"value1\"" + lineSep //$NON-NLS-1$
+		assertEquals("<myElement attribute1=\"value1\"" + lineSep //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ "\t\t             attribute2=\"value2\"" + lineSep + "\t\t  />", //$NON-NLS-1$ //$NON-NLS-2$
 				tagFormatter.wrapTag(tag, doAlignCloseChar, "\t\t  ", lineSep)); //$NON-NLS-1$
 
 		tag.setClosed(false);
 
-		assertEquals("<myElement attribute1=\"value1\"" + lineSep //$NON-NLS-1$
+		assertEquals("<myElement attribute1=\"value1\"" + lineSep //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ "\t\t             attribute2=\"value2\">", //$NON-NLS-1$
 				tagFormatter.wrapTag(tag, dontAlignCloseChar, "\t\t  ", lineSep)); //$NON-NLS-1$
 
-		assertEquals("<myElement attribute1=\"value1\"" + lineSep //$NON-NLS-1$
+		assertEquals("<myElement attribute1=\"value1\"" + lineSep //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ "\t\t             attribute2=\"value2\"" + lineSep + "\t\t  >", //$NON-NLS-1$ //$NON-NLS-2$
 				tagFormatter.wrapTag(tag, doAlignCloseChar, "\t\t  ", lineSep)); //$NON-NLS-1$
 
@@ -336,7 +336,7 @@ public class XmlTagFormatterTest {
 		// but if the formatter is working correctly these examples will be
 		// considered malformed and will be passed through untouched.
 		String lineSep = System.lineSeparator();
-		String source1 = "<echo  file=\"foo\">" + lineSep + "&lt;html>&lt;body>&lt;pre>" //$NON-NLS-1$ //$NON-NLS-2$
+		String source1 = "<echo  file=\"foo\">" + lineSep + "&lt;html>&lt;body>&lt;pre>" //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ "${compilelog}&lt;/pre>&lt;/body>&lt;/html>"; //$NON-NLS-1$
 		FormattingPreferences prefs = getPreferences(true, false, 60);
 		simpleTest(source1, source1, prefs, "\t", lineSep); //$NON-NLS-1$

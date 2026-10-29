@@ -65,22 +65,22 @@ public class AntClasspathLabelProvider implements ILabelProvider {
 		return getClasspathImage();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String getText(Object element) {
 		if (element instanceof IAntClasspathEntry entry) {
-			StringBuilder label = new StringBuilder(entry.getLabel());
+			StringBuilder label = new StringBuilder(entry.getLabel()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 			if (element instanceof GlobalClasspathEntries) {
 				if (((GlobalClasspathEntries) element).getType() == ClasspathModel.ANT_HOME) {
 					AntCorePreferences prefs = AntCorePlugin.getPlugin().getPreferences();
 					String defaultAntHome = prefs.getDefaultAntHome();
 					String currentAntHome = fBlock.getAntHome();
-					label.append(" ("); //$NON-NLS-1$
+					label.append(" ("); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					if (defaultAntHome == null || defaultAntHome.equals(currentAntHome)) {
-						label.append(AntPreferencesMessages.AntClasspathLabelProvider_0);
+						label.append(AntPreferencesMessages.AntClasspathLabelProvider_0); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					} else {
-						label.append(fBlock.getAntHome());
+						label.append(fBlock.getAntHome()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
-					label.append(')');
+					label.append(')'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			}
 			return label.toString();

@@ -60,7 +60,7 @@ public class Bug_026294 {
 	 * Tries to delete an open project containing an unremovable file.
 	 * Works only for Windows.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteOpenProjectWindows() throws Exception {
 		assumeTrue(OS.isWindows(), "only relevant on Windows\"");
 
@@ -130,7 +130,7 @@ public class Bug_026294 {
 	 * Tries to delete an open project containing an non-removable file. Works only
 	 * for Linux with natives.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteOpenProjectLinux() throws CoreException {
 		assumeTrue(OS.isLinux() && isReadOnlySupported(), "only relevant on Linux");
 
@@ -177,7 +177,7 @@ public class Bug_026294 {
 	 * Tries to delete a closed project containing a non-removable file.
 	 * Works only for Windows.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteClosedProjectWindows() throws Exception {
 		assumeTrue(OS.isWindows(), "only relevant on Windows");
 
@@ -214,7 +214,7 @@ public class Bug_026294 {
 	 * Tries to delete a closed project containing an non-removable file. Works only
 	 * for Linux with natives.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteClosedProjectLinux() throws CoreException {
 		assumeTrue(OS.isLinux(), "only relevant on Linux");
 
@@ -257,7 +257,7 @@ public class Bug_026294 {
 	 * Tries to delete a folder containing a non-removable file. Works only for
 	 * Windows.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteFolderWindows() throws Exception {
 		assumeTrue(OS.isWindows(), "only relevant on Windows");
 
@@ -289,7 +289,7 @@ public class Bug_026294 {
 	 * Tries to delete a folder containing a non-removable file. Works only for
 	 * Linux with natives.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteFolderLinux() throws CoreException {
 		assumeTrue(OS.isLinux(), "only relevant on Linux");
 

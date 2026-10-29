@@ -93,7 +93,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	 * only a single delta is interesting).
 	 */
 	static class DeltaCache<E> {
-		private final Map<IPath, E> deltas = new HashMap<>();
+		private final Map<IPath, E> deltas = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		private ElementTree newTree;
 		private ElementTree oldTree;
 
@@ -160,7 +160,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 
 	//the job for performing background autobuild
 	final AutoBuildJob autoBuildJob;
-	private final Set<IProject> builtProjects = Collections.synchronizedSet(new HashSet<>());
+	private final Set<IProject> builtProjects = Collections.synchronizedSet(new HashSet<>()); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	//the following four fields only apply for the lifetime of a single builder invocation.
 	protected final Set<InternalBuilder> currentBuilders;
@@ -199,7 +199,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	 * immediately, "false" to continue build and start project build again after
 	 * all builders were done. If no value is set, no rebuild is requested.
 	 */
-	private final Map<IProject, Boolean> restartBuildImmediately;
+	private final Map<IProject, Boolean> restartBuildImmediately; //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	// Shows if we are in the parallel build loop or not
 	boolean parallelBuild;
@@ -215,7 +215,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 
 	public BuildManager(Workspace workspace, ILock workspaceLock) {
 		this.workspace = workspace;
-		this.currentBuilders = Collections.synchronizedSet(new HashSet<>());
+		this.currentBuilders = Collections.synchronizedSet(new HashSet<>()); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		this.autoBuildJob = new AutoBuildJob(workspace);
 		projectsToRebuild = ConcurrentHashMap.newKeySet();
 		restartBuildImmediately = new ConcurrentHashMap<>();
@@ -225,7 +225,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 				Boolean.getBoolean("org.eclipse.core.resources.allowEarlyBuildLoopExit")); //$NON-NLS-1$ );
 	}
 
-	private void basicBuild(int trigger, IncrementalProjectBuilder builder, Map<String, String> args, MultiStatus status, IProgressMonitor monitor) {
+	private void basicBuild(int trigger, IncrementalProjectBuilder builder, Map<String, String> args, MultiStatus status, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		InternalBuilder currentBuilder = builder; // downcast to make package methods visible
 		try {
 			currentBuilders.add(currentBuilder);
@@ -338,7 +338,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 		}
 	}
 
-	protected void basicBuild(IBuildConfiguration buildConfiguration, final int trigger, IBuildContext context,
+	protected void basicBuild(IBuildConfiguration buildConfiguration, final int trigger, IBuildContext context, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			ICommand[] commands, MultiStatus status, IProgressMonitor monitor) {
 		int remainingIterations = Math.max(1, workspace.getDescription().getMaxBuildIterations());
 
@@ -348,12 +348,12 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 		Arrays.fill(triggers, trigger);
 		boolean shouldRebuild = true;
 		try {
-			while (shouldRebuild) {
+			while (shouldRebuild) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				shouldRebuild = false;
 				// If rebuild was requested, the triggers for next builder executions
 				// will be changed to incremental.
 				int[] nextTriggers = null;
-				for (int i = 0; i < commands.length; i++) {
+				for (int i = 0; i < commands.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					int currentTrigger = triggers[i];
 					checkCanceled(currentTrigger, monitor);
 					BuildCommand command = (BuildCommand) commands[i];
@@ -422,7 +422,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 		IProject project = currentBuilder.getProject();
 		String projectName = project != null ? project.getFullPath().toString() : "<unknown>"; //$NON-NLS-1$
 		String op = beginRule ? "beginRule" : "endRule"; //$NON-NLS-1$ //$NON-NLS-2$
-		String enhancedMessage = String.format("%s failed for builder %s ('%s', plugin %s) on project %s: %s", //$NON-NLS-1$
+		String enhancedMessage = String.format("%s failed for builder %s ('%s', plugin %s) on project %s: %s", //$NON-NLS-1$ //FLLDCIM: MARK — M11 FORMAT_PRECOMPUTE CALL
 				op,
 				currentBuilder.getClass().getName(),
 				label != null ? label : "<unknown>", //$NON-NLS-1$
@@ -447,7 +447,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 		}
 	}
 
-	private void basicBuild(final IBuildConfiguration buildConfiguration, final int trigger, final IBuildContext context, final MultiStatus status, final IProgressMonitor monitor) {
+	private void basicBuild(final IBuildConfiguration buildConfiguration, final int trigger, final IBuildContext context, final MultiStatus status, final IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			final IProject project = buildConfiguration.getProject();
 			final ICommand[] commands;
@@ -496,7 +496,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	 * Runs the builder with the given name on the given project config.
 	 * @return A status indicating if the build succeeded or failed
 	 */
-	private IStatus basicBuild(IBuildConfiguration buildConfiguration, int trigger, String builderName, Map<String, String> args, IProgressMonitor monitor) {
+	private IStatus basicBuild(IBuildConfiguration buildConfiguration, int trigger, String builderName, Map<String, String> args, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final IProject project = buildConfiguration.getProject();
 		monitor = Policy.monitorFor(monitor);
 		try {
@@ -527,7 +527,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	/**
 	 * Loop the workspace build until no more builders request a rebuild.
 	 */
-	private void basicBuildLoop(IBuildConfiguration[] configs, IBuildConfiguration[] requestedConfigs, int trigger, MultiStatus status, IProgressMonitor monitor) {
+	private void basicBuildLoop(IBuildConfiguration[] configs, IBuildConfiguration[] requestedConfigs, int trigger, MultiStatus status, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int projectWork = configs.length > 0 ? TOTAL_BUILD_WORK / configs.length : 0;
 		int maxIterations = workspace.getDescription().getMaxBuildIterations();
 		// Scale allowed iterations count depending on affected projects -
@@ -539,7 +539,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 
 		rebuildRequested = true;
 		boolean rebuildSomething = true;
-		for (int iter = 0; rebuildSomething && iter < maxIterations; iter++) {
+		for (int iter = 0; rebuildSomething && iter < maxIterations; iter++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// Used for compatibility reason with requestRebuild()
 			boolean rebuildAll = rebuildRequested;
 			final boolean lastIteration = iter == maxIterations - 1;
@@ -573,7 +573,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 		}
 	}
 
-	private void basicBuildLoop(IBuildConfiguration[] configs, IBuildConfiguration[] requestedConfigs, int trigger,
+	private void basicBuildLoop(IBuildConfiguration[] configs, IBuildConfiguration[] requestedConfigs, int trigger, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			MultiStatus status, IProgressMonitor monitor, int projectWork, final boolean lastIteration) {
 
 		// If we are rebuilding anything, we can clear already build projects.
@@ -593,7 +593,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 		restartBuildImmediately.clear();
 
 		// Basic loop over projects
-		for (IBuildConfiguration config : configs) {
+		for (IBuildConfiguration config : configs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (config.getProject().isAccessible()) {
 				IBuildContext context = new BuildContext(config, requestedConfigs, configs);
 
@@ -643,7 +643,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	 * they are given.
 	 * @return A status indicating if the build succeeded or failed
 	 */
-	public IStatus buildParallel(Digraph<IBuildConfiguration> configs, IBuildConfiguration[] requestedConfigs, int trigger, JobGroup buildJobGroup, IProgressMonitor monitor) {
+	public IStatus buildParallel(Digraph<IBuildConfiguration> configs, IBuildConfiguration[] requestedConfigs, int trigger, JobGroup buildJobGroup, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		parallelBuild = true;
 		monitor = Policy.monitorFor(monitor);
 		try {
@@ -674,7 +674,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 		}
 	}
 
-	private void parallelBuildLoop(final Digraph<IBuildConfiguration> configs, IBuildConfiguration[] requestedConfigs, int trigger, JobGroup buildJobGroup, MultiStatus status, IProgressMonitor monitor) {
+	private void parallelBuildLoop(final Digraph<IBuildConfiguration> configs, IBuildConfiguration[] requestedConfigs, int trigger, JobGroup buildJobGroup, MultiStatus status, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final int projectWork = configs.vertexList.size() > 0 ? TOTAL_BUILD_WORK / configs.vertexList.size() : 0;
 		builtProjects.clear();
 		final GraphProcessor<IBuildConfiguration> graphProcessor = new GraphProcessor<>(configs, IBuildConfiguration.class, (config, graphCrawler) -> {
@@ -752,7 +752,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	 * builder_3,  config_1, 3
 	 * builder_3,  config_1, 3
 	 */
-	public ArrayList<BuilderPersistentInfo> createBuildersPersistentInfo(IProject project) throws CoreException {
+	public ArrayList<BuilderPersistentInfo> createBuildersPersistentInfo(IProject project) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/* get the old builders (those not yet instantiated) */
 		ArrayList<BuilderPersistentInfo> oldInfos = getBuildersPersistentInfo(project);
 
@@ -767,8 +767,8 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 		IBuildConfiguration[] configs = project.getBuildConfigs();
 
 		/* build the new list */
-		ArrayList<BuilderPersistentInfo> newInfos = new ArrayList<>(commands.length * configs.length);
-		for (int i = 0; i < commands.length; i++) {
+		ArrayList<BuilderPersistentInfo> newInfos = new ArrayList<>(commands.length * configs.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (int i = 0; i < commands.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			BuildCommand command = (BuildCommand) commands[i];
 			String builderName = command.getBuilderName();
 
@@ -776,7 +776,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 			boolean supportsConfigs = command.supportsConfigs();
 			int numberConfigs = supportsConfigs ? configs.length : 1;
 
-			for (int j = 0; j < numberConfigs; j++) {
+			for (int j = 0; j < numberConfigs; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IBuildConfiguration config = configs[j];
 				BuilderPersistentInfo info = null;
 				IncrementalProjectBuilder builder = ((BuildCommand) commands[i]).getBuilder(config);
@@ -811,7 +811,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 		if (currentBuilders == null) {
 			return "<no project>"; //$NON-NLS-1$
 		}
-		return "[" + currentBuilders.stream().map(builder -> builder.getProject().getFullPath().toString()).collect(Collectors.joining(",")) + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+		return "[" + currentBuilders.stream().map(builder -> builder.getProject().getFullPath().toString()).collect(Collectors.joining(",")) + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -853,14 +853,14 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 		waitFor(autoBuildJob.noBuildJob);
 	}
 
-	private static void waitFor(Job job) {
+	private static void waitFor(Job job) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IJobManager jobManager = Job.getJobManager();
 
 		// Need to loop because jobs can reschedule itself and concurrent running
 		// background jobs change the states too
-		while (job.getState() != Job.NONE) {
+		while (job.getState() != Job.NONE) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// Need to wake up thread to finish as soon as possible:
-			while (job.getState() != Job.RUNNING && job.getState() != Job.NONE) {
+			while (job.getState() != Job.RUNNING && job.getState() != Job.NONE) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (jobManager.isSuspended()) {
 					throw new JobManagerSuspendedException("The JobManager is suspended, waiting for " //$NON-NLS-1$
 							+ "a job to finish will just block this thread forever. Activate the JobManager again before waiting " //$NON-NLS-1$
@@ -900,7 +900,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	 * the index is unknown
 	 * @param status MultiStatus for collecting errors
 	 */
-	private IncrementalProjectBuilder getBuilder(IBuildConfiguration buildConfiguration, ICommand command, int buildSpecIndex, MultiStatus status) throws CoreException {
+	private IncrementalProjectBuilder getBuilder(IBuildConfiguration buildConfiguration, ICommand command, int buildSpecIndex, MultiStatus status) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		BuildCommand buildCommand = (BuildCommand) command;
 		InternalBuilder result = buildCommand.getBuilder(buildConfiguration);
 		String builderName = command.getBuilderName();
@@ -982,11 +982,11 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	 * @param configName or null if the builder doesn't support configurations
 	 * @param buildSpecIndex The index in the build spec, or -1 if unknown
 	 */
-	private BuilderPersistentInfo getBuilderInfo(ArrayList<BuilderPersistentInfo> infos, String builderName, String configName, int buildSpecIndex) {
+	private BuilderPersistentInfo getBuilderInfo(ArrayList<BuilderPersistentInfo> infos, String builderName, String configName, int buildSpecIndex) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//try to match on builder index, but if not match is found, use the builder name and config name
 		//this is because older workspace versions did not store builder infos in build spec order
 		BuilderPersistentInfo nameMatch = null;
-		for (BuilderPersistentInfo info : infos) {
+		for (BuilderPersistentInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// match on name, config name and build spec index if known
 			// Note: the config name may be null for builders that don't support configurations, or old workspaces
 			if (info.getBuilderName().equals(builderName) && (info.getConfigName() == null || info.getConfigName().equals(configName))) {
@@ -1023,7 +1023,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	 */
 	private ICommand getCommand(IProject project, String builderName, Map<String, String> args) {
 		ICommand[] buildSpec = ((Project) project).internalGetDescription().getBuildSpec(false);
-		for (ICommand element : buildSpec) {
+		for (ICommand element : buildSpec) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element.getBuilderName().equals(builderName)) {
 				return element;
 			}
@@ -1051,12 +1051,12 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	 *
 	 * @param project the project to get a delta for
 	 */
-	IResourceDelta getDelta(IProject project) {
+	IResourceDelta getDelta(IProject project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			lock.acquire();
 			if (currentTree == null) {
 				if (Policy.DEBUG_BUILD_FAILURE) {
-					Policy.debug("Build: no tree for delta " + debugBuilder() + " [" + debugProject() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					Policy.debug("Build: no tree for delta " + debugBuilder() + " [" + debugProject() + "]"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				return null;
 			}
@@ -1064,7 +1064,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 			//check if this builder has indicated it cares about this project
 			if (interestedBuilders.isEmpty()) {
 				if (Policy.DEBUG_BUILD_FAILURE) {
-					Policy.debug("Build: project not interesting for current builders " + debugBuilder() + " [" + debugProject() + "] " + project.getFullPath()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+					Policy.debug("Build: project not interesting for current builders " + debugBuilder() + " [" + debugProject() + "] " + project.getFullPath()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				return null;
 			}
@@ -1076,13 +1076,13 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 		}
 	}
 
-	private IResourceDelta getDeltaCached(IProject project, ElementTree oldTree, ElementTree newTree) {
+	private IResourceDelta getDeltaCached(IProject project, ElementTree oldTree, ElementTree newTree) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final IPath fullPath = project.getFullPath();
 		IResourceDelta resultDelta = deltaCache.computeIfAbsent(fullPath, oldTree, newTree, () -> {
 			long startTime = 0L;
 			if (Policy.DEBUG_BUILD_DELTA) {
 				startTime = System.currentTimeMillis();
-				Policy.debug("Computing delta for project: " + project.getName()); //$NON-NLS-1$
+				Policy.debug("Computing delta for project: " + project.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			IResourceDelta result;
 			if (!project.exists() && !newTree.includes(fullPath) && !oldTree.includes(fullPath)) {
@@ -1092,10 +1092,10 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 			}
 			if (Policy.DEBUG_BUILD_FAILURE && result == null) {
 				Policy.debug(
-						"Build: no delta " + debugBuilder() + " [" + debugProject() + "] " + fullPath); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						"Build: no delta " + debugBuilder() + " [" + debugProject() + "] " + fullPath); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			if (Policy.DEBUG_BUILD_DELTA) {
-				Policy.debug("Finished computing delta, time: " + (System.currentTimeMillis() - startTime) + "ms" //$NON-NLS-1$ //$NON-NLS-2$
+				Policy.debug("Finished computing delta, time: " + (System.currentTimeMillis() - startTime) + "ms" //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						+ ((ResourceDelta) result).toDeepDebugString());
 			}
 
@@ -1107,9 +1107,9 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	/**
 	 * Returns the safe runnable instance for invoking a builder
 	 */
-	private ISafeRunnable getSafeRunnable(final InternalBuilder currentBuilder, final int trigger, final Map<String, String> args, final MultiStatus status, final IProgressMonitor monitor) {
+	private ISafeRunnable getSafeRunnable(final InternalBuilder currentBuilder, final int trigger, final Map<String, String> args, final MultiStatus status, final IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		return new ISafeRunnable() {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void handleException(Throwable e) {
 				if (e instanceof OperationCanceledException) {
 					if (Policy.DEBUG_BUILD_INVOKING) {
@@ -1207,11 +1207,11 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 		// a threshold of 0 collects statistics for every run without logging any of them
 		if (run.stats() != null && ResourceStats.TRACE_BUILDERS_THRESHOLD > 0
 				&& duration > ResourceStats.TRACE_BUILDERS_THRESHOLD) {
-			String message = "Builder " + toString(builder) + " took " + duration + " ms for " + debugTrigger(trigger); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			String message = "Builder " + toString(builder) + " took " + duration + " ms for " + debugTrigger(trigger); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			Policy.log(IStatus.INFO, message, null);
 		}
 		if (Policy.DEBUG_BUILD_INVOKING) {
-			Policy.debug("Builder finished: " + toString(builder) + " time: " + duration + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Policy.debug("Builder finished: " + toString(builder) + " time: " + duration + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -1228,7 +1228,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 			autoBuildJob.forceBuild();
 		}
 		if (Policy.DEBUG_BUILD_INVOKING) {
-			Policy.debug("Top-level build-end time: " + (System.currentTimeMillis() - overallTimeStamp)); //$NON-NLS-1$
+			Policy.debug("Top-level build-end time: " + (System.currentTimeMillis() - overallTimeStamp)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			overallTimeStamp = -1;
 		}
 	}
@@ -1242,7 +1242,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 			return null;
 		}
 		if (Policy.DEBUG_BUILD_INVOKING) {
-			Policy.debug("Invoking (" + debugTrigger(trigger) + ") on builder: " + toString(builder)); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug("Invoking (" + debugTrigger(trigger) + ") on builder: " + toString(builder)); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return ResourceStats.isTracingBuilders() ? ResourceStats.startBuild(builder) : ResourceStats.startTiming();
 	}
@@ -1254,15 +1254,15 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	 */
 	private void hookStartBuild(IBuildConfiguration[] configs, int trigger) {
 		if (Policy.DEBUG_BUILD_STACK) {
-			Policy.debug(new RuntimeException("Starting build: " + debugTrigger(trigger))); //$NON-NLS-1$
+			Policy.debug(new RuntimeException("Starting build: " + debugTrigger(trigger))); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		if (Policy.DEBUG_BUILD_INVOKING) {
 			overallTimeStamp = System.currentTimeMillis();
-			StringBuilder sb = new StringBuilder("Top-level build-start of: "); //$NON-NLS-1$
-			for (IBuildConfiguration config : configs) {
-				sb.append(config).append(", "); //$NON-NLS-1$
+			StringBuilder sb = new StringBuilder("Top-level build-start of: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+			for (IBuildConfiguration config : configs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				sb.append(config).append(", "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			sb.append(debugTrigger(trigger));
+			sb.append(debugTrigger(trigger)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			Policy.debug(sb.toString());
 		}
 	}
@@ -1274,7 +1274,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	 * prevent trying to instantiate it every time a build is run.
 	 * This method NEVER returns null.
 	 */
-	private InternalBuilder initializeBuilder(ICommand command, String builderName, IBuildConfiguration buildConfiguration, BuilderPersistentInfo info, MultiStatus status) {
+	private InternalBuilder initializeBuilder(ICommand command, String builderName, IBuildConfiguration buildConfiguration, BuilderPersistentInfo info, MultiStatus status) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IProject project = buildConfiguration.getProject();
 		InternalBuilder builder = null;
 		try {
@@ -1323,7 +1323,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	 * Instantiates and returns the builder with the given name.  If the builder, its plugin, or its nature
 	 * is missing, returns null.
 	 */
-	private IncrementalProjectBuilder instantiateBuilder(String builderName) throws CoreException {
+	private IncrementalProjectBuilder instantiateBuilder(String builderName) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IExtension extension = Platform.getExtensionRegistry().getExtension(ResourcesPlugin.PI_RESOURCES, ResourcesPlugin.PT_BUILDERS, builderName);
 		if (extension == null) {
 			return null;
@@ -1375,7 +1375,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 			return true;
 		}
 		IProject[] interestingProjects = currentBuilder.getInterestingProjects();
-		for (IProject interestingProject : interestingProjects) {
+		for (IProject interestingProject : interestingProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (interestingProject.equals(project)) {
 				return true;
 			}
@@ -1384,8 +1384,8 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	}
 
 	private Set<InternalBuilder> getInterestedBuilders(final IProject project) {
-		final Set<InternalBuilder> res = new HashSet<>();
-		for (final InternalBuilder builder : this.currentBuilders) {
+		final Set<InternalBuilder> res = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (final InternalBuilder builder : this.currentBuilders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isInterestingProject(builder, project)) {
 				res.add(builder);
 			}
@@ -1404,7 +1404,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	 * computing project deltas and invoking builders for projects that haven't
 	 * changed.
 	 */
-	private boolean needsBuild(InternalBuilder builder, int trigger) {
+	private boolean needsBuild(InternalBuilder builder, int trigger) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//on some triggers we build regardless of the delta
 		switch (trigger) {
 			case IncrementalProjectBuilder.CLEAN_BUILD :
@@ -1412,7 +1412,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 			case IncrementalProjectBuilder.FULL_BUILD :
 				return true;
 			case IncrementalProjectBuilder.INCREMENTAL_BUILD :
-				for (InternalBuilder currentBuilder : this.currentBuilders) {
+				for (InternalBuilder currentBuilder : this.currentBuilders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (currentBuilder.callOnEmptyDelta()) {
 						return true;
 					}
@@ -1431,7 +1431,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 
 		//search for builder's interesting projects
 		IProject[] projects = builder.getInterestingProjects();
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (project != builder.getProject() // was already checked.
 					&& hasDelta(builder, project, oldTree, newTree)) {
 				return true;
@@ -1448,7 +1448,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 		IResourceDelta[] children = delta.getAffectedChildren();
 		boolean hasDelta = delta.getKind() != IResourceDelta.NO_CHANGE || children.length > 0;
 		if (hasDelta && Policy.DEBUG_BUILD_NEEDED) {
-			Policy.debug(toString(builder) + " needs building because of changes in: " + project.getName()); //$NON-NLS-1$
+			Policy.debug(toString(builder) + " needs building because of changes in: " + project.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			if (Policy.DEBUG_BUILD_NEEDED_DELTA) {
 				debugPrintDeltaRecursive(delta);
 			}
@@ -1460,7 +1460,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 		if (delta.getKind() != IResourceDelta.NO_CHANGE) {
 			Policy.debug(((ResourceDelta) delta).toDebugString());
 		}
-		for (IResourceDelta childDelta : delta.getAffectedChildren()) {
+		for (IResourceDelta childDelta : delta.getAffectedChildren()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			debugPrintDeltaRecursive(childDelta);
 		}
 	}
@@ -1469,7 +1469,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	 * Removes all builders with the given ID from the build spec.
 	 * Does nothing if there were no such builders in the spec
 	 */
-	private void removeBuilders(IProject project, String builderId) throws CoreException {
+	private void removeBuilders(IProject project, String builderId) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IProjectDescription desc = project.getDescription();
 		ICommand[] oldSpec = desc.getBuildSpec();
 		int oldLength = oldSpec.length;
@@ -1478,7 +1478,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 		}
 		int remaining = 0;
 		//null out all commands that match the builder to remove
-		for (int i = 0; i < oldSpec.length; i++) {
+		for (int i = 0; i < oldSpec.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (oldSpec[i].getBuilderName().equals(builderId)) {
 				oldSpec[i] = null;
 			} else {
@@ -1490,7 +1490,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 			return;
 		}
 		ICommand[] newSpec = new ICommand[remaining];
-		for (int i = 0, newIndex = 0; i < oldLength; i++) {
+		for (int i = 0, newIndex = 0; i < oldLength; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (oldSpec[i] != null) {
 				newSpec[newIndex++] = oldSpec[i];
 			}
@@ -1544,7 +1544,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	 * @param current     project currently built with current builder
 	 */
 	void requestRebuild(Collection<IProject> toBeRebuilt, IProject current) {
-		for (IProject project : toBeRebuilt) {
+		for (IProject project : toBeRebuilt) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (project != null && hasBeenBuilt(project) || project.equals(current)) {
 				requestRebuildOnNextRound(project);
 			}
@@ -1603,7 +1603,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	}
 
 	private static QualifiedName keyForBuilderInfo(String builderName) {
-		return new QualifiedName(ResourcesPlugin.PI_RESOURCES, BUILDER_INIT + builderName);
+		return new QualifiedName(ResourcesPlugin.PI_RESOURCES, BUILDER_INIT + builderName); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override
@@ -1624,9 +1624,9 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 		String name = builder.getClass().getName();
 		name = name.substring(name.lastIndexOf('.') + 1);
 		if (builder instanceof MissingBuilder) {
-			name = name + ": '" + ((MissingBuilder) builder).getName() + "'"; //$NON-NLS-1$ //$NON-NLS-2$
+			name = name + ": '" + ((MissingBuilder) builder).getName() + "'"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
-		return name + "(" + builder.getBuildConfig() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+		return name + "(" + builder.getBuildConfig() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -1662,18 +1662,18 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 	/**
 	 * Returns the scheduling rule that is required for building the project.
 	 */
-	public ISchedulingRule getRule(IBuildConfiguration buildConfiguration, int trigger, String builderName, Map<String, String> buildArgs) {
+	public ISchedulingRule getRule(IBuildConfiguration buildConfiguration, int trigger, String builderName, Map<String, String> buildArgs) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IProject project = buildConfiguration.getProject();
 		MultiStatus status = new MultiStatus(ResourcesPlugin.PI_RESOURCES, IResourceStatus.INTERNAL_ERROR, Messages.events_errors, null);
 		if (builderName == null) {
 			final ICommand[] commands;
 			if (project.isAccessible()) {
-				Set<ISchedulingRule> rules = new HashSet<>();
+				Set<ISchedulingRule> rules = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 				ProjectDescription description = ((Project) project).internalGetDescription();
 				commands = description == null ? new ICommand[0] : description.getBuildSpec(false);
 				boolean hasNullBuildRule = false;
 				BuildContext context = new BuildContext(buildConfiguration);
-				for (int i = 0; i < commands.length; i++) {
+				for (int i = 0; i < commands.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					BuildCommand command = (BuildCommand) commands[i];
 					Map<String, String> allArgs = command.getArguments(true);
 					if (allArgs == null) {
@@ -1707,7 +1707,7 @@ public class BuildManager implements ICoreConstants, IManager, ILifecycleListene
 		} else {
 			// Returns the derived resources for the specified builderName
 			ICommand command = getCommand(project, builderName, buildArgs);
-			Map<String, String> allArgs = new HashMap<>();
+			Map<String, String> allArgs = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			if (command.getArguments() != null) {
 				allArgs.putAll(command.getArguments());
 			}

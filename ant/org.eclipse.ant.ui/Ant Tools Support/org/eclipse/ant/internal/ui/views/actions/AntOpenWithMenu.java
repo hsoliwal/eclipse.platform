@@ -48,7 +48,7 @@ public class AntOpenWithMenu extends ContributionItem {
 
 	private final IWorkbenchPage fPage;
 	private final IEditorRegistry fRegistry = PlatformUI.getWorkbench().getEditorRegistry();
-	private static final String SYSTEM_EDITOR_ID = PlatformUI.PLUGIN_ID + ".SystemEditor"; //$NON-NLS-1$
+	private static final String SYSTEM_EDITOR_ID = PlatformUI.PLUGIN_ID + ".SystemEditor"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	private static Map<ImageDescriptor, Image> imageCache = new Hashtable<>(11);
 
@@ -57,7 +57,7 @@ public class AntOpenWithMenu extends ContributionItem {
 	/**
 	 * The id of this action.
 	 */
-	public static final String ID = IAntUIConstants.PLUGIN_ID + ".AntOpenWithMenu"; //$NON-NLS-1$
+	public static final String ID = IAntUIConstants.PLUGIN_ID + ".AntOpenWithMenu"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	public AntOpenWithMenu(IWorkbenchPage page) {
 		super(ID);
@@ -67,7 +67,7 @@ public class AntOpenWithMenu extends ContributionItem {
 	@Override
 	public void dispose() {
 		super.dispose();
-		for (Image image : imageCache.values()) {
+		for (Image image : imageCache.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			image.dispose();
 		}
 		imageCache.clear();
@@ -136,7 +136,7 @@ public class AntOpenWithMenu extends ContributionItem {
 	 * @param preferredEditor
 	 *            the descriptor of the preferred editor, or <code>null</code>
 	 */
-	private void createMenuItem(Menu menu, final IEditorDescriptor descriptor, final IEditorDescriptor preferredEditor) {
+	private void createMenuItem(Menu menu, final IEditorDescriptor descriptor, final IEditorDescriptor preferredEditor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// XXX: Would be better to use bold here, but SWT does not support it.
 		final MenuItem menuItem = new MenuItem(menu, SWT.RADIO);
 		boolean isPreferred = preferredEditor != null && descriptor.getId().equals(preferredEditor.getId());
@@ -157,10 +157,10 @@ public class AntOpenWithMenu extends ContributionItem {
 					break;
 			}
 		};
-		menuItem.addListener(SWT.Selection, listener);
+		menuItem.addListener(SWT.Selection, listener); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void fill(Menu menu, int index) {
 		IFile fileResource = fNode.getIFile();
 		if (fileResource == null) {
@@ -181,8 +181,8 @@ public class AntOpenWithMenu extends ContributionItem {
 
 		boolean defaultFound = false;
 		boolean antFound = false;
-		List<String> alreadyAddedEditors = new ArrayList<>(editors.length);
-		for (IEditorDescriptor editor : editors) {
+		List<String> alreadyAddedEditors = new ArrayList<>(editors.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IEditorDescriptor editor : editors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (alreadyAddedEditors.contains(editor.getId())) {
 				continue;
 			}
@@ -243,7 +243,7 @@ public class AntOpenWithMenu extends ContributionItem {
 	 * @param registry
 	 *            the editor registry
 	 */
-	private void createDefaultMenuItem(Menu menu, final IFile fileResource) {
+	private void createDefaultMenuItem(Menu menu, final IFile fileResource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final MenuItem menuItem = new MenuItem(menu, SWT.RADIO);
 		menuItem.setSelection(IDE.getDefaultEditor(fileResource) == null);
 		menuItem.setText(AntViewActionMessages.AntViewOpenWithMenu_Default_Editor_4);
@@ -266,7 +266,7 @@ public class AntOpenWithMenu extends ContributionItem {
 			}
 		};
 
-		menuItem.addListener(SWT.Selection, listener);
+		menuItem.addListener(SWT.Selection, listener); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 	}
 
 	public void setNode(AntElementNode node) {

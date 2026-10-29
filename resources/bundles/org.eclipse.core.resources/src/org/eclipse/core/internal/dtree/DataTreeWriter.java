@@ -50,7 +50,7 @@ public class DataTreeWriter {
 	 * @param rootNode Whether the node is the root of the tree.
 	 * @param depth The depth of the subtree to write.
 	 */
-	protected void writeNode(AbstractDataTreeNode node, boolean rootNode, int depth) throws IOException {
+	protected void writeNode(AbstractDataTreeNode node, boolean rootNode, int depth) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int type = node.type();
 
 		/* write the node name */
@@ -89,7 +89,7 @@ public class DataTreeWriter {
 
 			/* write the children */
 			int newDepth = (depth == D_INFINITE) ? D_INFINITE : depth - 1;
-			for (AbstractDataTreeNode element : children) {
+			for (AbstractDataTreeNode element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				writeNode(element, false, newDepth);
 			}
 		} else {
@@ -116,7 +116,7 @@ public class DataTreeWriter {
 	 * Writes a single node to the output.  Does not recurse
 	 * on child nodes, and does not write the number of children.
 	 */
-	protected void writeSingleNode(AbstractDataTreeNode node, boolean rootNode) throws IOException {
+	protected void writeSingleNode(AbstractDataTreeNode node, boolean rootNode) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/* write the node name */
 		String name = node.getName();
 		if (name == null) {
@@ -155,13 +155,13 @@ public class DataTreeWriter {
 	 *  only write up to this depth.  A depth of infinity is given
 	 *  by the constant D_INFINITE.
 	 */
-	public void writeTree(DeltaDataTree tree, IPath path, int depth, DataOutput dataOutput) throws IOException {
+	public void writeTree(DeltaDataTree tree, IPath path, int depth, DataOutput dataOutput) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		this.output = dataOutput;
 		/* tunnel down relevant path */
 		AbstractDataTreeNode node = tree.getRootNode();
 		IPath currentPath = IPath.ROOT;
 		String[] segments = path.segments();
-		for (String nextSegment : segments) {
+		for (String nextSegment : segments) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			/* write this node to the output */
 			writeSingleNode(node, currentPath.isRoot());
 

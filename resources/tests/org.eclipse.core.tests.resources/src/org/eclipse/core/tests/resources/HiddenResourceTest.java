@@ -49,7 +49,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class HiddenResourceTest {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshLocal(TestInfo testInfo) throws Exception {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject project = root.getProject(createUniqueString());
@@ -76,7 +76,7 @@ public class HiddenResourceTest {
 	/**
 	 * Resources which are marked as hidden resources should always be found.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFindMember() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject project = root.getProject(createUniqueString());
@@ -111,7 +111,7 @@ public class HiddenResourceTest {
 	 * Resources which are marked as hidden are not included in #members
 	 * calls unless specifically included by calling #members(IContainer.INCLUDE_HIDDEN)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMembers() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject(createUniqueString());
 		IFolder folder = project.getFolder("folder");
@@ -198,7 +198,7 @@ public class HiddenResourceTest {
 	 * Resources which are marked as hidden resources should not be visited by
 	 * resource visitors.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAccept() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject(createUniqueString());
 		IFolder folder = project.getFolder("folder");
@@ -272,7 +272,7 @@ public class HiddenResourceTest {
 		assertTrue(visitor.isValid(), visitor.getMessage());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopy() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject project = root.getProject(createUniqueString());
@@ -326,7 +326,7 @@ public class HiddenResourceTest {
 		assertExistsInWorkspace(destFolder, destSubFile);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMove() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject project = root.getProject(createUniqueString());
@@ -380,7 +380,7 @@ public class HiddenResourceTest {
 		assertExistsInWorkspace(destFolder, destSubFile);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDelete() throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		IProject project = root.getProject(createUniqueString());
@@ -439,7 +439,7 @@ public class HiddenResourceTest {
 		assertExistsInWorkspace(project, file);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeltas(TestInfo testInfo) throws CoreException {
 		IWorkspaceRoot root = getWorkspace().getRoot();
 		final IProject project = root.getProject(createUniqueString());
@@ -452,7 +452,7 @@ public class HiddenResourceTest {
 		final IResource[] resources = new IResource[] { project, folder, file, subFile, settings, prefs };
 		final ResourceDeltaVerifier listener = new ResourceDeltaVerifier();
 		try {
-			IWorkspaceRunnable body = unused -> createInWorkspace(resources);
+			IWorkspaceRunnable body = unused -> createInWorkspace(resources); //FLLDCIM: MARK — T09  LAMBDA
 			listener.addExpectedChange(resources, IResourceDelta.ADDED, IResource.NONE);
 			listener.addExpectedChange(project, IResourceDelta.ADDED, IResourceDelta.OPEN);
 			listener.addExpectedChange(description, IResourceDelta.ADDED, IResource.NONE);
@@ -469,7 +469,7 @@ public class HiddenResourceTest {
 		}
 
 		try {
-			IWorkspaceRunnable body = unused -> {
+			IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				createInWorkspace(resources);
 				setHidden(folder, true, IResource.DEPTH_ZERO);
 			};
@@ -488,7 +488,7 @@ public class HiddenResourceTest {
 		}
 
 		try {
-			IWorkspaceRunnable body = unused -> {
+			IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				createInWorkspace(resources);
 				setHidden(project, true, IResource.DEPTH_INFINITE);
 			};
@@ -512,14 +512,14 @@ public class HiddenResourceTest {
 		// otherwise it would be removed while auto refresh is running
 		// and might even get called in another thread after removing in this thread
 		listener.shutDown();
-		getWorkspace().run(unused -> getWorkspace().removeResourceChangeListener(listener), null);
+		getWorkspace().run(unused -> getWorkspace().removeResourceChangeListener(listener), null); //FLLDCIM: MARK — T09  LAMBDA
 	}
 
 	private void addResourceChangeListener(ResourceDeltaVerifier listener) throws CoreException {
 		// addResourceChangeListener need to happen in an atomic workspace operation
 		// otherwise it would be added while auto refresh is running
 		// and might get called in another thread before explicit refresh in this thread
-		getWorkspace().run(unused -> {
+		getWorkspace().run(unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			getWorkspace().addResourceChangeListener(listener);
 			listener.active();
 		}, null);
@@ -530,7 +530,7 @@ public class HiddenResourceTest {
 	 * Resources which are marked as hidden resources return TRUE
 	 * in all calls to #exists.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testExists() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject(createUniqueString());
 		IFolder folder = project.getFolder("folder");
@@ -556,7 +556,7 @@ public class HiddenResourceTest {
 	/**
 	 * Test the set and get methods for hidden resources.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSetGet() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject(createUniqueString());
 		IFolder folder = project.getFolder("folder");
@@ -565,7 +565,7 @@ public class HiddenResourceTest {
 		IResource[] resources = new IResource[] {project, folder, file, subFile};
 
 		// trying to set the value on non-existing resources will fail
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThrows(CoreException.class, () -> resource.setHidden(true));
 		}
 
@@ -573,18 +573,18 @@ public class HiddenResourceTest {
 		createInWorkspace(resources);
 
 		// initial values should be false
-		for (IResource resource2 : resources) {
+		for (IResource resource2 : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = resource2;
 			assertFalse(resource.isHidden(), resource.getFullPath().toString());
 		}
 
 		// now set the values
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			resource.setHidden(true);
 		}
 
 		// the values should be true for projects only
-		for (IResource resource2 : resources) {
+		for (IResource resource2 : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = resource2;
 			switch (resource.getType()) {
 				case IResource.PROJECT :
@@ -599,12 +599,12 @@ public class HiddenResourceTest {
 		}
 
 		// clear the values
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			resource.setHidden(false);
 		}
 
 		// values should be false again
-		for (IResource resource2 : resources) {
+		for (IResource resource2 : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = resource2;
 			assertFalse(resource.isHidden(), resource.getFullPath().toString());
 		}
@@ -616,7 +616,7 @@ public class HiddenResourceTest {
 	 * and {@link IProject#create(IProjectDescription, int, IProgressMonitor)}
 	 * handles {@link IResource#HIDDEN} flag properly.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreateHiddenResources() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject(createUniqueString());
 		IFolder folder = project.getFolder("folder");

@@ -37,7 +37,7 @@ import org.eclipse.ui.actions.SelectionListenerAction;
 /**
  * Copies a test failure stack trace to the clipboard.
  */
-public class UnitTestCopyAction extends SelectionListenerAction {
+public class UnitTestCopyAction extends SelectionListenerAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 	private final FailureTraceUIBlock fView;
 
 	private final Clipboard fClipboard;
@@ -58,7 +58,7 @@ public class UnitTestCopyAction extends SelectionListenerAction {
 		fClipboard = clipboard;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run() {
 		String trace = fView.getTrace();
 		String source = null;
@@ -102,7 +102,7 @@ public class UnitTestCopyAction extends SelectionListenerAction {
 		BufferedReader bufferedReader = new BufferedReader(stringReader);
 		String line;
 		try {
-			while ((line = bufferedReader.readLine()) != null) {
+			while ((line = bufferedReader.readLine()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				printWriter.println(line);
 			}
 		} catch (IOException e) {

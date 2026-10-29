@@ -37,13 +37,13 @@ public class AntInputHandler extends DefaultInputHandler {
 		}
 		BuildException[] problem = new BuildException[1];
 		Runnable runnable = getHandleInputRunnable(request, problem);
-		Display.getDefault().syncExec(runnable);
+		Display.getDefault().syncExec(runnable); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		if (problem[0] != null) {
 			throw problem[0];
 		}
 	}
 
-	protected Runnable getHandleInputRunnable(final InputRequest request, final BuildException[] problem) {
+	protected Runnable getHandleInputRunnable(final InputRequest request, final BuildException[] problem) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		return () -> {
 			String prompt = getPrompt(request);
 			String title = AntSupportMessages.AntInputHandler_Ant_Input_Request_1;

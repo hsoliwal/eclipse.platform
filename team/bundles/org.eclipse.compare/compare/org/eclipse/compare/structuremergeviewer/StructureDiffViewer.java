@@ -76,13 +76,13 @@ public class StructureDiffViewer extends DiffTreeViewer {
 	/*
 	 * A set of background tasks for updating the structure
 	 */
-	private final IRunnableWithProgress diffTask = monitor -> {
+	private final IRunnableWithProgress diffTask = monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 		monitor.beginTask(CompareMessages.StructureDiffViewer_0, 100);
 		diff(SubMonitor.convert(monitor, 100));
 		monitor.done();
 	};
 
-	private final IRunnableWithProgress inputChangedTask = monitor -> {
+	private final IRunnableWithProgress inputChangedTask = monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 		monitor.beginTask(CompareMessages.StructureDiffViewer_1, 100);
 		// TODO: Should we always force
 		compareInputChanged((ICompareInput) getInput(), true, SubMonitor.convert(monitor, 100));
@@ -98,7 +98,7 @@ public class StructureDiffViewer extends DiffTreeViewer {
 		private IStructureComparator fStructureComparator;
 		private final IRunnableWithProgress refreshTask = this::refresh;
 
-		public boolean setInput(ITypedElement newInput, boolean force, IProgressMonitor monitor) {
+		public boolean setInput(ITypedElement newInput, boolean force, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			boolean changed = false;
 			if (force || newInput != fInput) {
 				removeDocumentRangeUpdaters();
@@ -214,7 +214,7 @@ public class StructureDiffViewer extends DiffTreeViewer {
 		setAutoExpandLevel(3);
 
 		fContentChangedListener= StructureDiffViewer.this::contentChanged;
-		fCompareInputChangeListener = input -> StructureDiffViewer.this.compareInputChanged(input, true);
+		fCompareInputChangeListener = input -> StructureDiffViewer.this.compareInputChanged(input, true); //FLLDCIM: MARK — T37  LAMBDA
 	}
 
 	/**
@@ -314,7 +314,7 @@ public class StructureDiffViewer extends DiffTreeViewer {
 		compareInputChanged(input, false);
 	}
 
-	/* package */ void compareInputChanged(final ICompareInput input, final boolean force) {
+	/* package */ void compareInputChanged(final ICompareInput input, final boolean force) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (input == null) {
 			// When closing, we don't need a progress monitor to handle the input change
 			compareInputChanged(input, force, null);
@@ -335,7 +335,7 @@ public class StructureDiffViewer extends DiffTreeViewer {
 		}
 	}
 
-	/* package */ void compareInputChanged(ICompareInput input, boolean force, IProgressMonitor monitor) {
+	/* package */ void compareInputChanged(ICompareInput input, boolean force, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ITypedElement t= null;
 		boolean changed= false;
 
@@ -399,7 +399,7 @@ public class StructureDiffViewer extends DiffTreeViewer {
 	 * Calls <code>diff</code> whenever the byte contents changes.
 	 * @param changed the object that sent out the notification
 	 */
-	protected void contentChanged(final IContentChangeNotifier changed) {
+	protected void contentChanged(final IContentChangeNotifier changed) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fStructureCreator == null) {
 			return;
 		}
@@ -463,7 +463,7 @@ public class StructureDiffViewer extends DiffTreeViewer {
 	 * from a background (non-UI) thread).
 	 * @param monitor a progress monitor or <code>null</code> if progress in not required
 	 */
-	protected void diff(IProgressMonitor monitor) {
+	protected void diff(IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			beginWork(monitor, 150);
 
@@ -516,7 +516,7 @@ public class StructureDiffViewer extends DiffTreeViewer {
 				refreshAfterDiff(message);
 			} else {
 				final String theMessage = message;
-				Display.getDefault().asyncExec(() -> refreshAfterDiff(theMessage));
+				Display.getDefault().asyncExec(() -> refreshAfterDiff(theMessage)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			}
 		} finally {
 			endWork(monitor);
@@ -531,7 +531,7 @@ public class StructureDiffViewer extends DiffTreeViewer {
 			fParent.setTitleArgument(message);
 		}
 
-		refresh(getRoot());
+		refresh(getRoot()); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		// Setting the auto-expand level doesn't do anything for refreshes
 		expandToLevel(3);
 	}
@@ -539,12 +539,12 @@ public class StructureDiffViewer extends DiffTreeViewer {
 	/**
 	 * Runs the difference engine and refreshes the tree.
 	 */
-	protected void diff() {
+	protected void diff() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			CompareConfiguration compareConfiguration = getCompareConfiguration();
 			// A null compare configuration indicates that the viewer was disposed
 			if (compareConfiguration != null) {
-				compareConfiguration.getContainer().run(true, true, monitor -> {
+				compareConfiguration.getContainer().run(true, true, monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 					try {
 						diffTask.run(SubMonitor.convert(monitor, CompareMessages.StructureDiffViewer_2, 100));
 					} finally {
@@ -572,7 +572,7 @@ public class StructureDiffViewer extends DiffTreeViewer {
 		if (Display.getCurrent() != null) {
 			runnable.run();
 		} else {
-			Display.getDefault().asyncExec(runnable);
+			Display.getDefault().asyncExec(runnable); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		}
 	}
 
@@ -620,7 +620,7 @@ public class StructureDiffViewer extends DiffTreeViewer {
 	 * Called from the difference engine.
 	 * Returns <code>null</code> if no structure creator has been set.
 	 */
-	private boolean contentsEqual(Object o1, char contributor1, Object o2,
+	private boolean contentsEqual(Object o1, char contributor1, Object o2, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			char contributor2) {
 		if (fStructureCreator != null) {
 			boolean ignoreWhiteSpace = Utilities.getBoolean(
@@ -652,7 +652,7 @@ public class StructureDiffViewer extends DiffTreeViewer {
 	 * In this case they must call the inherited method.
 	 * @param event the property changed event that triggered the call to this method
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void propertyChange(PropertyChangeEvent event) {
 		String key= event.getProperty();
 		if (key.equals(CompareConfiguration.IGNORE_WHITESPACE)) {
@@ -705,7 +705,7 @@ public class StructureDiffViewer extends DiffTreeViewer {
 		if (Display.getCurrent() != null) {
 			runnable.run();
 		} else {
-			getControl().getDisplay().syncExec(() -> {
+			getControl().getDisplay().syncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				if (!getControl().isDisposed()) {
 					runnable.run();
 				}

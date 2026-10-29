@@ -33,7 +33,7 @@ import org.eclipse.jface.text.link.LinkedPositionGroup;
 import org.eclipse.jface.text.source.ISourceViewer;
 import org.eclipse.ui.texteditor.link.EditorLinkedModeUI;
 
-public class RenameInFileAction extends SelectionDispatchAction {
+public class RenameInFileAction extends SelectionDispatchAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 	private AntEditor fEditor;
 
@@ -45,7 +45,7 @@ public class RenameInFileAction extends SelectionDispatchAction {
 		setToolTipText(AntEditorActionMessages.getString("RenameInFileAction.2")); //$NON-NLS-1$
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run() {
 		if (fEditor == null) {
 			return;
@@ -80,13 +80,13 @@ public class RenameInFileAction extends SelectionDispatchAction {
 		}
 	}
 
-	private void addPositionsToGroup(int offset, List<Position> positions, IDocument document, LinkedPositionGroup group) {
+	private void addPositionsToGroup(int offset, List<Position> positions, IDocument document, LinkedPositionGroup group) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Iterator<Position> iter = positions.iterator();
 		int i = 0;
 		int j = 0;
 		int firstPosition = -1;
 		try {
-			while (iter.hasNext()) {
+			while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Position position = iter.next();
 				if (firstPosition == -1) {
 					if (position.overlapsWith(offset, 0)) {
@@ -99,7 +99,7 @@ public class RenameInFileAction extends SelectionDispatchAction {
 				i++;
 			}
 
-			for (i = 0; i < firstPosition; i++) {
+			for (i = 0; i < firstPosition; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Position position = positions.get(i);
 				group.addPosition(new LinkedPosition(document, position.getOffset(), position.getLength(), j++));
 			}

@@ -48,7 +48,7 @@ public class TestUtil {
 		boolean timedOut = waitForJobs(owner, 5, 5000);
 		if (timedOut) {
 			// We don't expect any extra jobs run during the test: try to cancel them
-			log(IStatus.INFO, owner, "Trying to cancel running jobs: " + getRunningOrWaitingJobs(null));
+			log(IStatus.INFO, owner, "Trying to cancel running jobs: " + getRunningOrWaitingJobs(null)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			getRunningOrWaitingJobs(null).forEach(Job::cancel);
 			waitForJobs(owner, 5, 1000);
 		}
@@ -63,7 +63,7 @@ public class TestUtil {
 			error = optionalError[0];
 		}
 		Bundle testBundle = FrameworkUtil.getBundle(TestUtil.class);
-		Status status = new Status(severity, testBundle.getSymbolicName(), "[" + owner + "] " + message, error);
+		Status status = new Status(severity, testBundle.getSymbolicName(), "[" + owner + "] " + message, error); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		ILog.of(testBundle).log(status);
 	}
 
@@ -74,7 +74,7 @@ public class TestUtil {
 	public static void processUIEvents() {
 		Display display = Display.getCurrent();
 		if (display != null && !display.isDisposed()) {
-			while (display.readAndDispatch()) {
+			while (display.readAndDispatch()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// Keep pumping events until the queue is empty
 			}
 		}
@@ -112,12 +112,12 @@ public class TestUtil {
 	 *
 	 * @return true if the method timed out, false if all the jobs terminated before the timeout
 	 */
-	public static boolean waitForJobs(String owner, long minTimeMs, long maxTimeMs, Object... excludedFamilies) {
+	public static boolean waitForJobs(String owner, long minTimeMs, long maxTimeMs, Object... excludedFamilies) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (maxTimeMs < minTimeMs) {
 			throw new IllegalArgumentException("Max time is smaller as min time!");
 		}
 		final long start = System.currentTimeMillis();
-		while (System.currentTimeMillis() - start < minTimeMs) {
+		while (System.currentTimeMillis() - start < minTimeMs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			processUIEvents();
 			try {
 				Thread.sleep(Math.min(10, minTimeMs));
@@ -125,7 +125,7 @@ public class TestUtil {
 				// Uninterruptable
 			}
 		}
-		while (!Job.getJobManager().isIdle()) {
+		while (!Job.getJobManager().isIdle()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			List<Job> jobs = getRunningOrWaitingJobs(null, excludedFamilies);
 			if (jobs.isEmpty()) {
 				// only uninteresting jobs running
@@ -156,39 +156,39 @@ public class TestUtil {
 	static Set<Job> runningJobs = new LinkedHashSet<>();
 
 	private static void dumpRunningOrWaitingJobs(String owner, List<Job> jobs) {
-		String message = "Some job is still running or waiting to run: " + dumpRunningOrWaitingJobs(jobs);
+		String message = "Some job is still running or waiting to run: " + dumpRunningOrWaitingJobs(jobs); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		log(IStatus.ERROR, owner, message);
 	}
 
-	private static String dumpRunningOrWaitingJobs(List<Job> jobs) {
+	private static String dumpRunningOrWaitingJobs(List<Job> jobs) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (jobs.isEmpty()) {
 			return "";
 		}
 		// clear "old" running jobs, we only remember most recent
 		runningJobs.clear();
-		StringBuilder sb = new StringBuilder();
-		for (Job job : jobs) {
+		StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (Job job : jobs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			runningJobs.add(job);
-			sb.append("\n'").append(job.toString()).append("'/");
-			sb.append(job.getClass().getName());
+			sb.append("\n'").append(job.toString()).append("'/"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(job.getClass().getName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			Thread thread = job.getThread();
 			if (thread != null) {
 				ThreadInfo[] threadInfos = ManagementFactory.getThreadMXBean().getThreadInfo(new long[] {
 						thread.threadId() }, true, true);
 				if (threadInfos[0] != null) {
-					sb.append("\nthread info: ").append(threadInfos[0]);
+					sb.append("\nthread info: ").append(threadInfos[0]); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			}
-			sb.append(", ");
+			sb.append(", "); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		sb.setLength(sb.length() - 2);
 		return sb.toString();
 	}
 
 	public static List<Job> getRunningOrWaitingJobs(Object jobFamily, Object... excludedFamilies) {
-		List<Job> running = new ArrayList<>();
+		List<Job> running = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Job[] jobs = Job.getJobManager().find(jobFamily);
-		for (Job job : jobs) {
+		for (Job job : jobs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isRunningOrWaitingJob(job) && !belongsToFamilies(job, excludedFamilies)) {
 				running.add(job);
 			}
@@ -205,7 +205,7 @@ public class TestUtil {
 		if (excludedFamilies == null || excludedFamilies.length == 0) {
 			return false;
 		}
-		for (Object family : excludedFamilies) {
+		for (Object family : excludedFamilies) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (job.belongsTo(family)) {
 				return true;
 			}

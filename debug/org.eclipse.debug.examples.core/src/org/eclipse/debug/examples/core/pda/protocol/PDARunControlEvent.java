@@ -37,7 +37,7 @@ public class PDARunControlEvent extends PDAEvent {
 			try {
 				return Integer.parseInt(message.substring(nameEnd + 1, threadIdEnd));
 			} catch (NumberFormatException e) {
-				throw new IllegalArgumentException("Invalid event: " + message);                 //$NON-NLS-1$
+				throw new IllegalArgumentException("Invalid event: " + message);                 //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		} else {
 			return -1;

@@ -44,7 +44,7 @@ import org.osgi.framework.FrameworkUtil;
  *
  * @since 3.3
  */
-public class CompareDialog extends TrayDialog implements IPropertyChangeListener {
+public class CompareDialog extends TrayDialog implements IPropertyChangeListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	private final CompareEditorInput fCompareEditorInput;
 	private Button fCommitButton;
@@ -186,7 +186,7 @@ public class CompareDialog extends TrayDialog implements IPropertyChangeListener
 	public int open() {
 		// Before opening, set the container of the input and listen
 		// for changes to the input
-		fCompareEditorInput.addPropertyChangeListener(this);
+		fCompareEditorInput.addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		fCompareEditorInput.setContainer(fContainer);
 		return super.open();
 	}

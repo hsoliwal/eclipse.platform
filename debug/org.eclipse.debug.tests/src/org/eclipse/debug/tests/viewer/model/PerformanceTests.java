@@ -40,7 +40,7 @@ abstract public class PerformanceTests extends AbstractViewerModelTest implement
 	private TestInfo testInfo;
 
 	public String getDefaultScenarioId() {
-		return this.getClass().getName() + '#' + testInfo.getDisplayName() + "()"; //$NON-NLS-1$
+		return this.getClass().getName() + '#' + testInfo.getDisplayName() + "()"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override
@@ -61,7 +61,7 @@ abstract public class PerformanceTests extends AbstractViewerModelTest implement
 	 */
 	abstract protected int getTestModelDepth();
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshStruct() throws Exception {
 		TestModel model = new TestModel();
 		model.setRoot(new TestElement(model, "root", new TestElement[0])); //$NON-NLS-1$
@@ -80,9 +80,9 @@ abstract public class PerformanceTests extends AbstractViewerModelTest implement
 		Performance perf = Performance.getDefault();
 		PerformanceMeter meter = perf.createPerformanceMeter(getDefaultScenarioId());
 		try {
-			for (int i = 0; i < 10; i++) {
+			for (int i = 0; i < 10; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// Update the model
-				model.setAllAppendix(" - pass " + i); //$NON-NLS-1$
+				model.setAllAppendix(" - pass " + i); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 				TestElement element = model.getRootElement();
 				fListener.reset(TreePath.EMPTY, element, -1, false, false);
@@ -101,7 +101,7 @@ abstract public class PerformanceTests extends AbstractViewerModelTest implement
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshStruct2() throws Exception {
 		TestModel model = new TestModel();
 		model.setRoot(new TestElement(model, "root", new TestElement[0])); //$NON-NLS-1$
@@ -121,9 +121,9 @@ abstract public class PerformanceTests extends AbstractViewerModelTest implement
 		Performance perf = Performance.getDefault();
 		PerformanceMeter meter = perf.createPerformanceMeter(getDefaultScenarioId());
 		try {
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < 100; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// Update the model
-				model.setAllAppendix(" - pass " + i); //$NON-NLS-1$
+				model.setAllAppendix(" - pass " + i); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 				TestElement element = model.getRootElement();
 				//fListener.reset(TreePath.EMPTY, element, -1, false, false);
@@ -145,7 +145,7 @@ abstract public class PerformanceTests extends AbstractViewerModelTest implement
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshStructReplaceElements() throws Exception {
 		TestModel model = new TestModel();
 		model.setRoot(new TestElement(model, "root", new TestElement[0])); //$NON-NLS-1$
@@ -164,9 +164,9 @@ abstract public class PerformanceTests extends AbstractViewerModelTest implement
 		Performance perf = Performance.getDefault();
 		PerformanceMeter meter = perf.createPerformanceMeter(getDefaultScenarioId());
 		try {
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < 100; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// Update the model
-				model.setElementChildren(TreePath.EMPTY, TestModel.makeMultiLevelElements(model, getTestModelDepth(), "pass " + i + ".")); //$NON-NLS-1$ //$NON-NLS-2$
+				model.setElementChildren(TreePath.EMPTY, TestModel.makeMultiLevelElements(model, getTestModelDepth(), "pass " + i + ".")); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 				TestElement element = model.getRootElement();
 				fListener.reset(TreePath.EMPTY, element, -1, false, false);
@@ -185,7 +185,7 @@ abstract public class PerformanceTests extends AbstractViewerModelTest implement
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshList() throws Exception {
 		TestModel model = new TestModel();
 		model.setRoot(new TestElement(model, "root", new TestElement[0])); //$NON-NLS-1$
@@ -205,9 +205,9 @@ abstract public class PerformanceTests extends AbstractViewerModelTest implement
 		Performance perf = Performance.getDefault();
 		PerformanceMeter meter = perf.createPerformanceMeter(getDefaultScenarioId());
 		try {
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < 100; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// Update the model
-				model.setAllAppendix(" - pass " + i); //$NON-NLS-1$
+				model.setAllAppendix(" - pass " + i); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 				TestElement element = model.getRootElement();
 				fListener.reset(TreePath.EMPTY, element, -1, false, false);
@@ -226,7 +226,7 @@ abstract public class PerformanceTests extends AbstractViewerModelTest implement
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSaveAndRestore() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = TestModel.simpleMultiLevel();
@@ -251,9 +251,9 @@ abstract public class PerformanceTests extends AbstractViewerModelTest implement
 		Performance perf = Performance.getDefault();
 		PerformanceMeter meter = perf.createPerformanceMeter(getDefaultScenarioId());
 		try {
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < 100; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// Update the model
-				model.setAllAppendix(" - pass " + i); //$NON-NLS-1$
+				model.setAllAppendix(" - pass " + i); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 				// Set the viewer input to null.  This will trigger the view to save the viewer state.
 				fListener.reset(true, false);
@@ -281,7 +281,7 @@ abstract public class PerformanceTests extends AbstractViewerModelTest implement
 
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshListFiltered() throws Exception {
 		TestModel model = new TestModel();
 		model.setRoot(new TestElement(model, "root", new TestElement[0])); //$NON-NLS-1$
@@ -293,7 +293,7 @@ abstract public class PerformanceTests extends AbstractViewerModelTest implement
 		// Create the listener
 		fListener.reset(TreePath.EMPTY, model.getRootElement(), -1, true, false);
 
-		fViewer.addFilter(new ViewerFilter() {
+		fViewer.addFilter(new ViewerFilter() { //FLLDCIM: MARK — T23  ANONYMOUS
 			@Override
 			public boolean select(Viewer viewer, Object parentElement, Object element) {
 				if (element instanceof TestElement) {
@@ -317,9 +317,9 @@ abstract public class PerformanceTests extends AbstractViewerModelTest implement
 		Performance perf = Performance.getDefault();
 		PerformanceMeter meter = perf.createPerformanceMeter(getDefaultScenarioId());
 		try {
-			for (int i = 0; i < 100; i++) {
+			for (int i = 0; i < 100; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// Update the model
-				model.setAllAppendix(" - pass " + i); //$NON-NLS-1$
+				model.setAllAppendix(" - pass " + i); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 				TestElement element = model.getRootElement();
 				fListener.reset(TreePath.EMPTY, element, -1, false, false);

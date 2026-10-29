@@ -228,7 +228,7 @@ public class SortedMap implements FactoryObject {
 		return fSet.indexOf(key);
 	}
 
-	public void merge(SortedMap other) {
+	public void merge(SortedMap other) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Object[] values = fHolder.getValues();
 		Object[] keys = fHolder.getKeys();
 		Object[] othervalues = other.fHolder.getValues();
@@ -245,7 +245,7 @@ public class SortedMap implements FactoryObject {
 		int mthis = keys.length, mother = otherkeys.length;
 		Object[] ktmp = new Object[mthis + mother];
 		Object[] vtmp = new Object[mthis + mother];
-		while (ithis < mthis && iother < mother) {
+		while (ithis < mthis && iother < mother) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int comp = fSet.fComp.compare(keys[ithis], otherkeys[iother]);
 			if (comp <= 0) {
 				vtmp[i] = values[ithis];
@@ -255,11 +255,11 @@ public class SortedMap implements FactoryObject {
 				ktmp[i++] = otherkeys[iother++];
 			}
 		}
-		while (ithis < mthis) {
+		while (ithis < mthis) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			vtmp[i] = values[ithis];
 			ktmp[i++] = keys[ithis++];
 		}
-		while (iother < mother) {
+		while (iother < mother) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			vtmp[i] = othervalues[iother];
 			ktmp[i++] = otherkeys[iother++];
 		}

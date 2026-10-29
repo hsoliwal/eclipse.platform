@@ -42,7 +42,7 @@ public class AntFoldingStructureProvider {
 	/**
 	 * A mapping of the foldable position to the <code>AntElementNode</code> that represent that region
 	 */
-	private Map<Position, IAntElement> fPositionToElement = new HashMap<>();
+	private Map<Position, IAntElement> fPositionToElement = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	public AntFoldingStructureProvider(AntEditor editor) {
 		fEditor = editor;
@@ -51,8 +51,8 @@ public class AntFoldingStructureProvider {
 	private void updateFoldingRegions(ProjectionAnnotationModel model, Set<Position> currentRegions) {
 		Annotation[] deletions = computeDifferences(model, currentRegions);
 
-		Map<Annotation, Position> additionsMap = new HashMap<>();
-		for (Position position : currentRegions) {
+		Map<Annotation, Position> additionsMap = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (Position position : currentRegions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IAntElement node = fPositionToElement.get(position);
 			additionsMap.put(new ProjectionAnnotation(node.collapseProjection()), position);
 		}
@@ -63,8 +63,8 @@ public class AntFoldingStructureProvider {
 	}
 
 	private Annotation[] computeDifferences(ProjectionAnnotationModel model, Set<Position> additions) {
-		List<Annotation> deletions = new ArrayList<>();
-		for (Iterator<Annotation> iter = model.getAnnotationIterator(); iter.hasNext();) {
+		List<Annotation> deletions = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Iterator<Annotation> iter = model.getAnnotationIterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object annotation = iter.next();
 			if (annotation instanceof ProjectionAnnotation) {
 				Annotation annot = (Annotation) annotation;
@@ -79,16 +79,16 @@ public class AntFoldingStructureProvider {
 		return deletions.toArray(new Annotation[deletions.size()]);
 	}
 
-	public void updateFoldingRegions(AntModel antModel) {
-		fPositionToElement = new HashMap<>();
+	public void updateFoldingRegions(AntModel antModel) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		fPositionToElement = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		try {
 			ProjectionAnnotationModel model = fEditor.getAdapter(ProjectionAnnotationModel.class);
 			if (model == null) {
 				return;
 			}
 
-			Set<Position> currentRegions = new HashSet<>();
-			List<IAntElement> root = new ArrayList<>();
+			Set<Position> currentRegions = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+			List<IAntElement> root = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			AntProjectNode node = antModel.getProjectNode();
 			if (node != null && node.getOffset() != -1) {
 				root.add(node);
@@ -103,9 +103,9 @@ public class AntFoldingStructureProvider {
 		}
 	}
 
-	private void addFoldingRegions(Set<Position> regions, List<IAntElement> children) throws BadLocationException {
+	private void addFoldingRegions(Set<Position> regions, List<IAntElement> children) throws BadLocationException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// add a Position to 'regions' for each foldable region
-		for (IAntElement element : children) {
+		for (IAntElement element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element.getImportNode() != null || element.isExternal()) {
 				continue; // elements are not really in this document and therefore are not foldable
 			}

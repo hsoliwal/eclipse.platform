@@ -33,7 +33,7 @@ public abstract class FastDiffFilter extends DiffFilter {
 			@Override
 			public boolean select(IDiff node) {
 				int status = ((Diff)node).getStatus();
-				for (int state : states) {
+				for (int state : states) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if ((status & mask) == state) {
 						return true;
 					}

@@ -32,7 +32,7 @@ public class StructStat {
 	public long st_mtime_msec; // millisecond component of the file timestamp, filled on Linux systems
 	public long st_flags; // Filled only on Mac OS X
 
-	public FileInfo toFileInfo() {
+	public FileInfo toFileInfo() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		FileInfo info = new FileInfo();
 		info.setExists(true);
 		info.setLength(st_size);

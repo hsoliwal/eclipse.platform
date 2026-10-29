@@ -57,7 +57,7 @@ public class Bug_134364 {
 		return other;
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test1() throws Exception {
 		final IProject other = createOtherProject();
 		final boolean[] done = new boolean[] {false};
@@ -68,7 +68,7 @@ public class Bug_134364 {
 			protected IStatus run(IProgressMonitor monitor) {
 				IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 				try {
-					while (!done[0]) {
+					while (!done[0]) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						root.getProjects();
 						try {
 							other.members();
@@ -85,12 +85,12 @@ public class Bug_134364 {
 		}.schedule();
 		//create a job that continually creates projects, thus causing snapshots to occur
 		Job writer = new Job("Writer-134364") {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public IStatus run(IProgressMonitor monitor) {
 				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject("TestBug134364");
-				for (int i = 0; i < 100; i++) {
+				for (int i = 0; i < 100; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (failure[0] != null) {
-						System.out.println("Failure: " + i);
+						System.out.println("Failure: " + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						break;
 					}
 					try {

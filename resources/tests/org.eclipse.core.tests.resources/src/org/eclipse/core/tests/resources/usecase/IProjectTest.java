@@ -107,7 +107,7 @@ public class IProjectTest {
 	 * Test IResource API
 	 * Test IFolder API
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProject() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		IProgressMonitor monitor = null;
@@ -119,7 +119,7 @@ public class IProjectTest {
 		assertThat(proj).matches(not(IProject::exists), "does not exist");
 		assertThat(proj.getWorkspace()).isEqualTo(workspace);
 		assertThat(proj.getType()).isEqualTo(IResource.PROJECT);
-		assertThat(proj.getFullPath()).isEqualTo(IPath.fromOSString("/" + PROJECT));
+		assertThat(proj.getFullPath()).isEqualTo(IPath.fromOSString("/" + PROJECT)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertThat(proj.getName()).isEqualTo(PROJECT);
 		assertThat(proj).matches(it -> !workspace.getRoot().exists(it.getFullPath()), "is not contained in workspace");
 		assertThat(workspace.getRoot().findMember(proj.getFullPath())).isNull();

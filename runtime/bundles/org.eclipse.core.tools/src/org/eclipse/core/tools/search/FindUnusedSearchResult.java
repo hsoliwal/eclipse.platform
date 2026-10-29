@@ -51,7 +51,7 @@ public class FindUnusedSearchResult extends AbstractTextSearchResult implements 
 		if (getMatchCount() == 1) {
 			return "1 unused element found"; //$NON-NLS-1$
 		}
-		return getMatchCount() + " unused elements found"; //$NON-NLS-1$
+		return getMatchCount() + " unused elements found"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override

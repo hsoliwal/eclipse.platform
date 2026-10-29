@@ -35,11 +35,11 @@ public class ResourceStats {
 	}
 
 	//performance event names
-	public static final String EVENT_BUILDERS = ResourcesPlugin.PI_RESOURCES + "/perf/builders"; //$NON-NLS-1$
-	public static final String EVENT_LISTENERS = ResourcesPlugin.PI_RESOURCES + "/perf/listeners"; //$NON-NLS-1$
-	public static final String EVENT_SAVE_PARTICIPANTS = ResourcesPlugin.PI_RESOURCES + "/perf/save.participants"; //$NON-NLS-1$
-	public static final String EVENT_SNAPSHOT = ResourcesPlugin.PI_RESOURCES + "/perf/snapshot"; //$NON-NLS-1$
-	public static final String EVENT_REFRESH = ResourcesPlugin.PI_RESOURCES + "/perf/refresh"; //$NON-NLS-1$
+	public static final String EVENT_BUILDERS = ResourcesPlugin.PI_RESOURCES + "/perf/builders"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String EVENT_LISTENERS = ResourcesPlugin.PI_RESOURCES + "/perf/listeners"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String EVENT_SAVE_PARTICIPANTS = ResourcesPlugin.PI_RESOURCES + "/perf/save.participants"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String EVENT_SNAPSHOT = ResourcesPlugin.PI_RESOURCES + "/perf/snapshot"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+	public static final String EVENT_REFRESH = ResourcesPlugin.PI_RESOURCES + "/perf/refresh"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/*
 	 * Whether the debug option of the event is set. Only this bundle's own options,

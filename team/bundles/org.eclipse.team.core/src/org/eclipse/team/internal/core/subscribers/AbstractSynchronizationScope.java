@@ -38,11 +38,11 @@ public abstract class AbstractSynchronizationScope implements ISynchronizationSc
 
 	@Override
 	public IResource[] getRoots() {
-		List<IResource> result = new ArrayList<>();
+		List<IResource> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		ResourceTraversal[] traversals = getTraversals();
-		for (ResourceTraversal traversal : traversals) {
+		for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource[] resources = traversal.getResources();
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				accumulateRoots(result, resource);
 			}
 		}
@@ -52,7 +52,7 @@ public abstract class AbstractSynchronizationScope implements ISynchronizationSc
 	@Override
 	public boolean contains(IResource resource) {
 		ResourceTraversal[] traversals = getTraversals();
-		for (ResourceTraversal traversal : traversals) {
+		for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (traversal.contains(resource)) {
 				return true;
 			}
@@ -66,7 +66,7 @@ public abstract class AbstractSynchronizationScope implements ISynchronizationSc
 	 */
 	private void accumulateRoots(List<IResource> roots, IResource resource) {
 		IPath resourcePath = resource.getFullPath();
-		for (Iterator iter = roots.iterator(); iter.hasNext();) {
+		for (Iterator iter = roots.iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource root = (IResource) iter.next();
 			IPath rootPath = root.getFullPath();
 			// If there is a higher resource in the collection, skip this one
@@ -89,7 +89,7 @@ public abstract class AbstractSynchronizationScope implements ISynchronizationSc
 	 */
 	public void fireTraversalsChangedEvent(final ResourceTraversal[] newTraversals, final ResourceMapping[] newMappings) {
 		Object[] allListeners = listeners.getListeners();
-		for (Object listener : allListeners) {
+		for (Object listener : allListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
 				public void run() throws Exception {

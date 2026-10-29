@@ -66,13 +66,13 @@ public class BenchElementTree {
 	/**
 	 * Tests the performance of the deleteElement operation.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeleteElement() throws Exception {
 		final int repeat = 400;
 
 		/* create copies of the original tree */
 		ElementTree[] trees = new ElementTree[repeat];
-		for (int i = 0; i < repeat; i++) {
+		for (int i = 0; i < repeat; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			trees[i] = createTestTree(false);
 		}
 
@@ -80,7 +80,7 @@ public class BenchElementTree {
 			int rep = 0;
 			@Override
 			protected void test() {
-				for (IPath file : files) {
+				for (IPath file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					trees[rep].deleteElement(file);
 				}
 				rep++;
@@ -98,7 +98,7 @@ public class BenchElementTree {
 		new PerformanceTestRunner() {
 			@Override
 			protected void test() {
-				for (IPath file : files) {
+				for (IPath file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					tree.getElementData(file);
 				}
 			}
@@ -108,14 +108,14 @@ public class BenchElementTree {
 	/**
 	 * Tests the performance of the mergeDeltaChain operation.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMergeDeltaChain() throws Exception {
 		final int repeat = 50;
 
 		/* create all the test trees */
 		ElementTree[] bases = new ElementTree[repeat];
 		ElementTree[][] chains = new ElementTree[repeat][];
-		for (int i = 0; i < repeat; i++) {
+		for (int i = 0; i < repeat; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			bases[i] = createTestTree(true);
 			chains[i] = buildDeltaChain(createTestTree(false));
 		}
@@ -156,7 +156,7 @@ public class BenchElementTree {
 		new PerformanceTestRunner() {
 			@Override
 			protected void test() {
-				for (IPath file : files) {
+				for (IPath file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					tree.setElementData(file, data);
 				}
 			}
@@ -167,8 +167,8 @@ public class BenchElementTree {
 	 * Does several routine operations on the given tree.
 	 * Returns an array of all the intermediary element trees.
 	 */
-	private ElementTree[] buildDeltaChain(ElementTree tree) {
-		ArrayList<ElementTree> trees = new ArrayList<>();
+	private ElementTree[] buildDeltaChain(ElementTree tree) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		ArrayList<ElementTree> trees = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		trees.add(tree);
 
 		int repeat = 1;
@@ -176,7 +176,7 @@ public class BenchElementTree {
 		/* create file elements */
 		tree = tree.newEmptyDelta();
 		IPath[] filePaths = getFilePaths();
-		for (IPath filePath : filePaths) {
+		for (IPath filePath : filePaths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object data = filePath.toString();
 			tree.createElement(filePath, data);
 
@@ -186,9 +186,9 @@ public class BenchElementTree {
 		}
 
 		/* modify the data of all file elements a few times */
-		for (int i = 0; i < repeat; i++) {
-			Object data = "data" + i;
-			for (IPath filePath : filePaths) {
+		for (int i = 0; i < repeat; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			Object data = "data" + i; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			for (IPath filePath : filePaths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				tree.setElementData(filePath, data);
 
 				tree.immutable();
@@ -198,7 +198,7 @@ public class BenchElementTree {
 		}
 
 		/* delete all file elements */
-		for (IPath filePath : filePaths) {
+		for (IPath filePath : filePaths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			tree.deleteElement(filePath);
 			tree.immutable();
 			trees.add(tree);
@@ -214,7 +214,7 @@ public class BenchElementTree {
 	 * Creates a test element tree.  If withDeltas is true,
 	 * a new delta is created after each operation.
 	 */
-	ElementTree createTestTree(boolean withDeltas) {
+	ElementTree createTestTree(boolean withDeltas) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ElementTree tree = new ElementTree();
 		Object data = new Object();
 
@@ -231,7 +231,7 @@ public class BenchElementTree {
 		}
 		tree.createElement(folder, data);
 
-		for (String javaLangUnit : javaLangUnits) {
+		for (String javaLangUnit : javaLangUnits) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (withDeltas) {
 				tree.immutable();
 				tree = tree.newEmptyDelta();
@@ -247,14 +247,14 @@ public class BenchElementTree {
 	 * a new delta is generated for each operation.
 	 * Returns the number of basic ElementTree operations performed.
 	 */
-	private int doRoutineOperations() {
+	private int doRoutineOperations() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ElementTree tree = createTestTree(true);
 		int repeat = 1;
 
 		/* modify the data of all file elements a few times */
-		for (int i = 0; i < repeat; i++) {
-			Object data = "data" + i;
-			for (IPath file : files) {
+		for (int i = 0; i < repeat; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			Object data = "data" + i; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			for (IPath file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				tree = tree.newEmptyDelta();
 				tree.setElementData(file, data);
 				tree.immutable();
@@ -262,7 +262,7 @@ public class BenchElementTree {
 		}
 
 		/* delete all file elements */
-		for (IPath file : files) {
+		for (IPath file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			tree = tree.newEmptyDelta();
 			tree.deleteElement(file);
 			tree.immutable();
@@ -273,7 +273,7 @@ public class BenchElementTree {
 
 	static IPath[] getFilePaths() {
 		IPath[] jcuIDs = new IPath[javaLangUnits.length];
-		for (int i = 0, len = javaLangUnits.length; i < len; ++i) {
+		for (int i = 0, len = javaLangUnits.length; i < len; ++i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			jcuIDs[i] = folder.append(javaLangUnits[i]);
 		}
 		return jcuIDs;

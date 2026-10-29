@@ -30,7 +30,7 @@ final class FileSystemTestUtil {
 
 	static void ensureDoesNotExist(IFileStore store) throws CoreException {
 		store.delete(EFS.NONE, getMonitor());
-		assertFalse(store.exists(), "store was not properly deleted: " + store);
+		assertFalse(store.exists(), "store was not properly deleted: " + store); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -40,15 +40,15 @@ final class FileSystemTestUtil {
 		if (directory) {
 			store.mkdir(EFS.NONE, getMonitor());
 			final IFileInfo info = store.fetchInfo();
-			assertTrue(info.exists(), "file info for store does not exist: " + store);
-			assertTrue(info.isDirectory(), "created file for store is not a directory: " + store);
+			assertTrue(info.exists(), "file info for store does not exist: " + store); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertTrue(info.isDirectory(), "created file for store is not a directory: " + store); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} else {
 			try (OutputStream out = store.openOutputStream(EFS.NONE, getMonitor())) {
 				out.write(5);
 			}
 			final IFileInfo info = store.fetchInfo();
-			assertTrue(info.exists(), "file info for store does not exist: " + store);
-			assertFalse(info.isDirectory(), "created file for store is not a directory: " + store);
+			assertTrue(info.exists(), "file info for store does not exist: " + store); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertFalse(info.isDirectory(), "created file for store is not a directory: " + store); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 

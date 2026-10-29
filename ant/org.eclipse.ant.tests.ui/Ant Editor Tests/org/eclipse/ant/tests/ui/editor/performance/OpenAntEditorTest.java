@@ -79,7 +79,7 @@ public class OpenAntEditorTest extends PerformanceTestCaseJunit5 {
 
 	protected File getBuildFile(String buildFileName) {
 		IFile file = getIFile(buildFileName);
-		assertTrue(file.exists(), "Could not find build file named: " + buildFileName); //$NON-NLS-1$
+		assertTrue(file.exists(), "Could not find build file named: " + buildFileName); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return file.getLocation().toFile();
 	}
 
@@ -94,7 +94,7 @@ public class OpenAntEditorTest extends PerformanceTestCaseJunit5 {
 
 	synchronized protected void measureOpenInEditor(IFile file) throws PartInitException, InterruptedException {
 		try {
-			for (int i = 0; i < 15; i++) {
+			for (int i = 0; i < 15; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				startMeasuring();
 				EditorTestHelper.openInEditor(file, true);
 				stopMeasuring();

@@ -49,7 +49,7 @@ public class ResourceDragAdapterAssistant extends CommonDragAdapterAssistant {
 		return SUPPORTED_TRANSFERS;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean setDragData(DragSourceEvent anEvent,
 			IStructuredSelection aSelection) {
 
@@ -69,7 +69,7 @@ public class ResourceDragAdapterAssistant extends CommonDragAdapterAssistant {
 				final int length = resources.length;
 				int actualLength = 0;
 				String[] fileNames = new String[length];
-				for (int i = 0; i < length; i++) {
+				for (int i = 0; i < length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IPath location = resources[i].getLocation();
 					// location may be null. See bug 29491.
 					if (location != null) {
@@ -100,7 +100,7 @@ public class ResourceDragAdapterAssistant extends CommonDragAdapterAssistant {
 	private IResource[] getSelectedResources(IStructuredSelection aSelection) {
 		Set<IResource> resources = new LinkedHashSet<>();
 		IResource resource = null;
-		for (Object selected : aSelection) {
+		for (Object selected : aSelection) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			resource = adaptToResource(selected);
 			if (resource != null) {
 				resources.add(resource);

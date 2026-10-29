@@ -132,14 +132,14 @@ public class ResourceNode extends BufferedContent
 		return getName().hashCode();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Object[] getChildren() {
 		if (fChildren == null) {
-			fChildren= new ArrayList<>();
+			fChildren= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			if (fResource instanceof IContainer) {
 				try {
 					IResource members[]= ((IContainer)fResource).members();
-					for (IResource member : members) {
+					for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						IStructureComparator child = createChild(member);
 						if (child != null) {
 							fChildren.add(child);
@@ -174,7 +174,7 @@ public class ResourceNode extends BufferedContent
 	 * @return a buffered input stream containing the contents of this storage
 	 * @exception CoreException if the contents of this storage could not be accessed
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected InputStream createStream() throws CoreException {
 		if (fResource instanceof IStorage storage) {
 			InputStream is= null;

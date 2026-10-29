@@ -126,7 +126,7 @@ public class UnifiedDiffManager {
 	private static final String TOOLBAR_COMPOSITE_FOR_ONE_DIFF_KEY = "TOOLBAR_COMPOSITE_FOR_ONE_DIFF_KEY"; //$NON-NLS-1$
 	private static final String TOOLBAR_COMPOSITE_FOR_ALL_DIFFS_KEY = "TOOLBAR_COMPOSITE_FOR_ALL_DIFFS_KEY"; //$NON-NLS-1$
 	private static final String TOOLBAR_ACTION_PRESENTATIONS_KEY = "TOOLBAR_ACTION_PRESENTATIONS_KEY"; //$NON-NLS-1$
-	private static final Map<ITextViewer, List<UnifiedDiff>> diffsByViewer = new HashMap<>();
+	private static final Map<ITextViewer, List<UnifiedDiff>> diffsByViewer = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/**
 
@@ -223,7 +223,7 @@ public class UnifiedDiffManager {
 				ToolbarActionPresentations.NONE);
 	}
 
-	public static IStatus open(ITextViewer viewer, IDocument leftDocument, IAnnotationModel model, IFile file,
+	public static IStatus open(ITextViewer viewer, IDocument leftDocument, IAnnotationModel model, IFile file, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			String source, UnifiedDiffMode mode, List<Action> additionalActions,
 			TokenComparatorFactory tokenComparatorFactory,
 			IgnoreWhitespaceContributorFactory ignoreWhitespaceContributorFactory, boolean ignoreWhiteSpace,
@@ -252,11 +252,11 @@ public class UnifiedDiffManager {
 				return Status.CANCEL_STATUS;
 			}
 		}
-		Map<Annotation, UnifiedDiff> diffByAnno = new HashMap<>();
+		Map<Annotation, UnifiedDiff> diffByAnno = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		// When the model supports batch updates, stage annotations into a map and flush
 		// them with a single replaceAnnotations() call so listeners receive one event
 		// instead of one per annotation. Otherwise fall back to per-annotation addAnnotation().
-		Map<Annotation, Position> annotationsToAdd = (model instanceof IAnnotationModelExtension) ? new HashMap<>()
+		Map<Annotation, Position> annotationsToAdd = (model instanceof IAnnotationModelExtension) ? new HashMap<>() //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 				: null;
 		BiConsumer<Annotation, Position> addOrStage = (anno, pos) -> {
 			if (annotationsToAdd != null) {
@@ -268,7 +268,7 @@ public class UnifiedDiffManager {
 		if (UnifiedDiffMode.REPLACE_MODE.equals(mode)) {
 			// modify document
 			int delta = 0;
-			for (UnifiedDiff unifiedDiff : unifiedDiffs) {
+			for (UnifiedDiff unifiedDiff : unifiedDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					unifiedDiff.leftStart += delta;
 					leftDocument.replace(unifiedDiff.leftStart, unifiedDiff.leftLength, unifiedDiff.rightStr);
@@ -276,7 +276,7 @@ public class UnifiedDiffManager {
 					Annotation myAnnotation = new UnifiedDiffAnnotation(mode, unifiedDiff);
 					Position position = new Position(unifiedDiff.leftStart, unifiedDiff.rightLength);
 					addOrStage.accept(myAnnotation, position);
-					for (var detailedDiff : unifiedDiff.detailedDiffs) {
+					for (var detailedDiff : unifiedDiff.detailedDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (detailedDiff.rightStr.trim().length() == 0) {
 							continue;
 						}
@@ -291,11 +291,11 @@ public class UnifiedDiffManager {
 				}
 			}
 		} else {
-			for (UnifiedDiff unifiedDiff : unifiedDiffs) {
+			for (UnifiedDiff unifiedDiff : unifiedDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Annotation myAnnotation = new UnifiedDiffAnnotation(mode, unifiedDiff);
 				Position position = new Position(unifiedDiff.leftStart, unifiedDiff.leftLength);
 				addOrStage.accept(myAnnotation, position);
-				for (var detailedDiff : unifiedDiff.detailedDiffs) {
+				for (var detailedDiff : unifiedDiff.detailedDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (detailedDiff.leftStr.trim().length() == 0) {
 						continue;
 					}
@@ -359,8 +359,8 @@ public class UnifiedDiffManager {
 		if (projectionModel == null) {
 			return;
 		}
-		Map<ProjectionAnnotation, Position> foldsToAdd = new HashMap<>();
-		for (Position region : unchangedFoldRegions(document, unifiedDiffs, mode, contextLines)) {
+		Map<ProjectionAnnotation, Position> foldsToAdd = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (Position region : unchangedFoldRegions(document, unifiedDiffs, mode, contextLines)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			foldsToAdd.put(new UnifiedDiffFoldAnnotation(), region);
 		}
 		if (!foldsToAdd.isEmpty()) {
@@ -375,7 +375,7 @@ public class UnifiedDiffManager {
 	 * the given diffs, each shortened by {@code contextLines} towards a neighboring
 	 * change. A gap that would not hide a line below its caption is left out.
 	 */
-	public static List<Position> unchangedFoldRegions(IDocument document, List<UnifiedDiff> unifiedDiffs, UnifiedDiffMode mode,
+	public static List<Position> unchangedFoldRegions(IDocument document, List<UnifiedDiff> unifiedDiffs, UnifiedDiffMode mode, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			int contextLines) {
 		if (unifiedDiffs.isEmpty()) {
 			return List.of();
@@ -386,14 +386,14 @@ public class UnifiedDiffManager {
 		int lineCount = document.getNumberOfLines();
 		// The gaps are walked front to back, so the diffs have to be in document order
 		// rather than in whatever order the caller collected them.
-		List<UnifiedDiff> diffs = new ArrayList<>(unifiedDiffs);
+		List<UnifiedDiff> diffs = new ArrayList<>(unifiedDiffs); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		diffs.sort(Comparator.comparingInt(diff -> diff.leftStart));
-		List<Position> regions = new ArrayList<>();
+		List<Position> regions = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		try {
 			// The unchanged regions are the gaps in the document before, between and
 			// after the displayed diffs.
 			int gapStart = 0; // first line of the current unchanged gap
-			for (int i = 0; i <= diffs.size(); i++) {
+			for (int i = 0; i <= diffs.size(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				boolean atStart = i == 0;
 				boolean atEnd = i == diffs.size();
 				int gapEnd = atEnd ? lineCount : document.getLineOfOffset(diffs.get(i).leftStart); // exclusive
@@ -450,7 +450,7 @@ public class UnifiedDiffManager {
 	 * Removes the unchanged-region folds previously added by
 	 * {@link #foldUnchangedRegions}, leaving the editor's own folds untouched.
 	 */
-	private static void removeFoldAnnotations(ProjectionViewer viewer) {
+	private static void removeFoldAnnotations(ProjectionViewer viewer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ProjectionAnnotationModel projectionModel = viewer.getProjectionAnnotationModel();
 		if (projectionModel == null) {
 			return;
@@ -463,8 +463,8 @@ public class UnifiedDiffManager {
 				projectionModel.removeAnnotationModelListener(listener);
 			}
 		}
-		List<Annotation> toRemove = new ArrayList<>();
-		for (Iterator<Annotation> it = projectionModel.getAnnotationIterator(); it.hasNext();) {
+		List<Annotation> toRemove = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Iterator<Annotation> it = projectionModel.getAnnotationIterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Annotation annotation = it.next();
 			if (annotation instanceof UnifiedDiffFoldAnnotation) {
 				toRemove.add(annotation);
@@ -490,7 +490,7 @@ public class UnifiedDiffManager {
 	 * caption line of the collapsed region and competes with it.
 	 */
 	public static boolean isShadowedByCollapsedRegion(Position fold, Collection<Position> collapsedRegions) {
-		for (Position region : collapsedRegions) {
+		for (Position region : collapsedRegions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (region.getOffset() <= fold.getOffset() && fold.getOffset() < region.getOffset() + region.getLength()) {
 				return true;
 			}
@@ -503,7 +503,7 @@ public class UnifiedDiffManager {
 	 * of the projection model and puts back those that became usable again, so that
 	 * the folding ruler only ever offers indicators that do something.
 	 */
-	private static void syncShadowedEditorFolds(ProjectionViewer viewer) {
+	private static void syncShadowedEditorFolds(ProjectionViewer viewer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ProjectionAnnotationModel projectionModel = viewer.getProjectionAnnotationModel();
 		StyledText tw = viewer.getTextWidget();
 		if (projectionModel == null || tw == null || tw.isDisposed()) {
@@ -516,9 +516,9 @@ public class UnifiedDiffManager {
 		long stamp = modificationStamp(document);
 		Collection<Position> collapsed = getCollapsedFoldRegions(viewer).values();
 		Map<Annotation, ShadowedFold> shadowed = getShadowedEditorFolds(tw);
-		Set<Integer> presentStarts = new HashSet<>();
-		List<Annotation> toHide = new ArrayList<>();
-		for (Iterator<Annotation> it = projectionModel.getAnnotationIterator(); it.hasNext();) {
+		Set<Integer> presentStarts = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
+		List<Annotation> toHide = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Iterator<Annotation> it = projectionModel.getAnnotationIterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Annotation annotation = it.next();
 			if (annotation instanceof UnifiedDiffFoldAnnotation || !(annotation instanceof ProjectionAnnotation fold)) {
 				continue;
@@ -535,8 +535,8 @@ public class UnifiedDiffManager {
 				shadowed.put(annotation, new ShadowedFold(position, stamp));
 			}
 		}
-		Map<Annotation, Position> toRestore = new HashMap<>();
-		for (Iterator<Map.Entry<Annotation, ShadowedFold>> it = shadowed.entrySet().iterator(); it.hasNext();) {
+		Map<Annotation, Position> toRestore = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (Iterator<Map.Entry<Annotation, ShadowedFold>> it = shadowed.entrySet().iterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Map.Entry<Annotation, ShadowedFold> entry = it.next();
 			ShadowedFold fold = entry.getValue();
 			if (isShadowedByCollapsedRegion(fold.position(), collapsed)) {
@@ -571,7 +571,7 @@ public class UnifiedDiffManager {
 		Map<Annotation, ShadowedFold> folds = (Map<Annotation, ShadowedFold>) tw
 				.getData(UNIFIED_DIFF_SHADOWED_FOLDS_KEY);
 		if (folds == null) {
-			folds = new HashMap<>();
+			folds = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			tw.setData(UNIFIED_DIFF_SHADOWED_FOLDS_KEY, folds);
 		}
 		return folds;
@@ -594,12 +594,12 @@ public class UnifiedDiffManager {
 		return foldRegions(viewer, false);
 	}
 
-	private static Map<Annotation, Position> foldRegions(ITextViewer viewer, boolean collapsedOnly) {
-		Map<Annotation, Position> result = new HashMap<>();
+	private static Map<Annotation, Position> foldRegions(ITextViewer viewer, boolean collapsedOnly) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		Map<Annotation, Position> result = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		if (viewer instanceof ProjectionViewer pv) {
 			ProjectionAnnotationModel projectionModel = pv.getProjectionAnnotationModel();
 			if (projectionModel != null) {
-				for (Iterator<Annotation> it = projectionModel.getAnnotationIterator(); it.hasNext();) {
+				for (Iterator<Annotation> it = projectionModel.getAnnotationIterator(); it.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Annotation annotation = it.next();
 					if (annotation instanceof UnifiedDiffFoldAnnotation fold
 							&& (fold.isCollapsed() || !collapsedOnly)) {
@@ -663,7 +663,7 @@ public class UnifiedDiffManager {
 			this.viewer = viewer;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void modelChanged(AnnotationModelEvent event) {
 			// folds the editor contributes later, such as after a reconcile, have to be
 			// checked against the collapsed regions as well
@@ -677,7 +677,7 @@ public class UnifiedDiffManager {
 			boolean ownFolds = event.isWorldChange() || concernsFolds(event, UnifiedDiffFoldAnnotation.class);
 			// the model is in the middle of a change and may even notify from its own
 			// thread, so do the rest once that change is through and on the UI thread
-			tw.getDisplay().asyncExec(() -> {
+			tw.getDisplay().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				if (tw.isDisposed()) {
 					return;
 				}
@@ -696,7 +696,7 @@ public class UnifiedDiffManager {
 
 		private static boolean concernsFolds(Annotation[] annotations, Class<? extends Annotation> foldType) {
 			if (annotations != null) {
-				for (Annotation annotation : annotations) {
+				for (Annotation annotation : annotations) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (foldType.isInstance(annotation)) {
 						return true;
 					}
@@ -711,7 +711,7 @@ public class UnifiedDiffManager {
 		}
 	}
 
-	static boolean isViewerInPart(IWorkbenchPart part, ITextViewer viewer) {
+	static boolean isViewerInPart(IWorkbenchPart part, ITextViewer viewer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (part == null) {
 			return false;
 		}
@@ -725,7 +725,7 @@ public class UnifiedDiffManager {
 		}
 		// Check if the viewer's text widget is a descendant of the part's control
 		Control current = textWidget;
-		while (current != null) {
+		while (current != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (current == partControl) {
 				return true;
 			}
@@ -773,21 +773,21 @@ public class UnifiedDiffManager {
 			this.tv = tv;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void modelChanged(AnnotationModelEvent event) {
 			Annotation[] annos = event.getRemovedAnnotations();
 			if (annos == null) {
 				return;
 			}
-			List<UnifiedDiff> unifiedDiffsToDelete = new ArrayList<>();
-			for (var anno : annos) {
+			List<UnifiedDiff> unifiedDiffsToDelete = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (var anno : annos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				UnifiedDiff unifiedDiff = getUnifiedDiffForAnno(anno);
 				if (unifiedDiff != null) {
 					unifiedDiffsToDelete.add(unifiedDiff);
 				}
 			}
 			if (unifiedDiffsToDelete.size() > 0) {
-				Display.getDefault().asyncExec(() -> {
+				Display.getDefault().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 					UnifiedDiff currentToolbarUnifiedDiff = null;
 					Composite toolbarCompositeForOneDiff = getToolbarCompositeForOneDiff(tv.getTextWidget());
 					if (toolbarCompositeForOneDiff != null) {
@@ -797,9 +797,9 @@ public class UnifiedDiffManager {
 					}
 					List<UnifiedDiff> container = null;
 					IAnnotationModel model = event.getAnnotationModel();
-					for (var unifiedDiff : unifiedDiffsToDelete) {
+					for (var unifiedDiff : unifiedDiffsToDelete) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						List<Annotation> annos1 = getAllAnnotationsForUnifiedDiff(model, unifiedDiff);
-						for (var lanno : annos1) {
+						for (var lanno : annos1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							model.removeAnnotation(lanno);
 						}
 						if (currentToolbarUnifiedDiff != null && currentToolbarUnifiedDiff.equals(unifiedDiff)) {
@@ -832,10 +832,10 @@ public class UnifiedDiffManager {
 			UnifiedDiffMode mode, TokenComparatorFactory tokenComparatorFactory,
 			IgnoreWhitespaceContributorFactory ignoreWhitespaceContributorFactory, boolean ignoreWhiteSpace)
 			throws InterruptedException {
-		List<List<UnifiedDiff>> computed = new ArrayList<>(1);
+		List<List<UnifiedDiff>> computed = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		try {
 			PlatformUI.getWorkbench().getProgressService()
-					.busyCursorWhile(monitor -> computed.add(computeDiffs(leftDocument, rightDocument, mode,
+					.busyCursorWhile(monitor -> computed.add(computeDiffs(leftDocument, rightDocument, mode, //FLLDCIM: MARK — T09  LAMBDA
 							tokenComparatorFactory, ignoreWhitespaceContributorFactory, ignoreWhiteSpace, monitor)));
 		} catch (InvocationTargetException e) {
 			error(e);
@@ -844,7 +844,7 @@ public class UnifiedDiffManager {
 		return computed.isEmpty() ? List.of() : computed.get(0);
 	}
 
-	private static List<UnifiedDiff> computeDiffs(IDocument leftDocument, IDocument rightDocument, UnifiedDiffMode mode,
+	private static List<UnifiedDiff> computeDiffs(IDocument leftDocument, IDocument rightDocument, UnifiedDiffMode mode, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			TokenComparatorFactory tokenComparatorFactory,
 			IgnoreWhitespaceContributorFactory ignoreWhitespaceContributorFactory, boolean ignoreWhiteSpace,
 			IProgressMonitor monitor) {
@@ -862,12 +862,12 @@ public class UnifiedDiffManager {
 			left = new DocLineComparator(leftDocument, null, ignoreWhiteSpace);
 			right = new DocLineComparator(rightDocument, null, ignoreWhiteSpace);
 		}
-		List<UnifiedDiff> unifiedDiffs = new ArrayList<>();
+		List<UnifiedDiff> unifiedDiffs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		SubMonitor progress = SubMonitor.convert(monitor, CompareMessages.UnifiedDiff_computing, 100);
 		RangeDifference[] rangeDiffs = RangeDifferencer.findDifferences(progress.split(70), left, right);
 		// The token diff of every change is computed eagerly, so let the user out of it.
 		SubMonitor tokenProgress = progress.split(30).setWorkRemaining(rangeDiffs.length);
-		for (RangeDifference rangeDiff : rangeDiffs) {
+		for (RangeDifference rangeDiff : rangeDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			tokenProgress.split(1);
 			try {
 				int leftStart = left.getTokenStart(rangeDiff.leftStart());
@@ -921,7 +921,7 @@ public class UnifiedDiffManager {
 							rightStart, rightEnd, rightDiffSource, unifiedDiffs, mode);
 					unifiedDiffs.add(diff);
 
-					for (RangeDifference detailedDiff : detailedDiffs) {
+					for (RangeDifference detailedDiff : detailedDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (detailedDiff.kind() == RangeDifference.NOCHANGE) {
 							continue;
 						}
@@ -961,7 +961,7 @@ public class UnifiedDiffManager {
 	}
 
 	private static boolean hasDetailedChanges(RangeDifference[] detailedDiffs) {
-		for (RangeDifference detailedDiff : detailedDiffs) {
+		for (RangeDifference detailedDiff : detailedDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (detailedDiff.kind() != RangeDifference.NOCHANGE) {
 				return true;
 			}
@@ -1003,7 +1003,7 @@ public class UnifiedDiffManager {
 		}
 	}
 
-	private static void drawToolBarForAllDiffs(ITextViewer tv, IAnnotationModel model, List<Action> additionalActions,
+	private static void drawToolBarForAllDiffs(ITextViewer tv, IAnnotationModel model, List<Action> additionalActions, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			UnifiedDiffMode mode, ToolbarActionPresentations presentations) {
 		StyledText tw = tv.getTextWidget();
 		var tm = new ToolBarManager(SWT.FLAT | SWT.HORIZONTAL | SWT.RIGHT);
@@ -1040,7 +1040,7 @@ public class UnifiedDiffManager {
 		addToolbarAction(tm, presentations.text(ToolbarAction.NEXT, next.getLabel()),
 				presentations.image(ToolbarAction.NEXT, next.getImageDescriptor()), next);
 		if (additionalActions != null) {
-			for (var additionalAction : additionalActions) {
+			for (var additionalAction : additionalActions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				addToolbarAction(tm, additionalAction);
 			}
 		}
@@ -1071,7 +1071,7 @@ public class UnifiedDiffManager {
 		composite.setVisible(true);
 		tw.setData(TOOLBAR_COMPOSITE_FOR_ALL_DIFFS_KEY, composite);
 
-		tw.addControlListener(new ControlListener() {
+		tw.addControlListener(new ControlListener() { //FLLDCIM: MARK — T11 VIEWPORT_RESIZE_DELTA CALL
 
 			@Override
 			public void controlResized(ControlEvent e) {
@@ -1090,19 +1090,19 @@ public class UnifiedDiffManager {
 		Stream<ToolbarDisposeListenerForOneAndAllDiffs> stream = tw.getTypedListeners(SWT.Dispose,
 				ToolbarDisposeListenerForOneAndAllDiffs.class);
 		if (stream == null || stream.count() == 0) {
-			tw.addDisposeListener(new ToolbarDisposeListenerForOneAndAllDiffs(tv, model));
+			tw.addDisposeListener(new ToolbarDisposeListenerForOneAndAllDiffs(tv, model)); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 		}
 	}
 
-	private static void clearAll(ITextViewer tv, IAnnotationModel model) {
+	private static void clearAll(ITextViewer tv, IAnnotationModel model) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		List<UnifiedDiff> diffs1 = get(tv);
 		if (diffs1 == null) {
 			return;
 		}
 		StyledText tw = tv.getTextWidget();
 		removeAnnotationModelListener(model, tw);
-		for (UnifiedDiff diff : diffs1) {
-			for (Annotation annotation : getAllAnnotationsForUnifiedDiff(model, diff)) {
+		for (UnifiedDiff diff : diffs1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (Annotation annotation : getAllAnnotationsForUnifiedDiff(model, diff)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// the code mining annotation belongs to the framework, which drops it
 				// once the provider stops returning its mining; taken out here, the
 				// framework keeps it as attached and never puts a mining back there
@@ -1124,7 +1124,7 @@ public class UnifiedDiffManager {
 		if (items == null) {
 			return;
 		}
-		for (IContributionItem item : items) {
+		for (IContributionItem item : items) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (item instanceof ActionContributionItem actionItem) {
 				IAction action = actionItem.getAction();
 				if (action == null) {
@@ -1157,7 +1157,7 @@ public class UnifiedDiffManager {
 		return false;
 	}
 
-	private static void applyDiffRightStr(ITextViewer tv, IAnnotationModel model) {
+	private static void applyDiffRightStr(ITextViewer tv, IAnnotationModel model) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		StyledText tw = tv.getTextWidget();
 		Composite toolbarCompositeForOneDiff = getToolbarCompositeForOneDiff(tw);
 		if (toolbarCompositeForOneDiff == null) {
@@ -1172,9 +1172,9 @@ public class UnifiedDiffManager {
 			return;
 		}
 		List<Annotation> annos = getAllAnnotationsForUnifiedDiff(model, diff);
-		List<Position> positions = new ArrayList<>();
-		List<String> replaceStrings = new ArrayList<>();
-		for (var lanno : annos) {
+		List<Position> positions = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<String> replaceStrings = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (var lanno : annos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (lanno instanceof UnifiedDiffAnnotation) {
 				Position pos = model.getPosition(lanno);
 				positions.add(pos);
@@ -1188,7 +1188,7 @@ public class UnifiedDiffManager {
 		// we have to insert with delay because otherwise the line header code minings
 		// cannot be deleted
 		runAfterRepaintFinished(tw, () -> {
-			for (int i = positions.size() - 1; i >= 0; i--) {
+			for (int i = positions.size() - 1; i >= 0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Position pos = positions.get(i);
 				String replaceStr = replaceStrings.get(i);
 				try {
@@ -1205,7 +1205,7 @@ public class UnifiedDiffManager {
 	 * when it is the last one). Used by the "Hide Diff" (overlay/revert) and "Keep"
 	 * (replace) toolbar actions.
 	 */
-	private static void dismissCurrentDiff(ITextViewer tv, IAnnotationModel model) {
+	private static void dismissCurrentDiff(ITextViewer tv, IAnnotationModel model) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		StyledText tw = tv.getTextWidget();
 		Composite toolbarCompositeForOneDiff = getToolbarCompositeForOneDiff(tw);
 		if (toolbarCompositeForOneDiff == null) {
@@ -1238,7 +1238,7 @@ public class UnifiedDiffManager {
 		}
 		diff.container.remove(diff);
 		List<Annotation> annos = getAllAnnotationsForUnifiedDiff(model, diff);
-		for (var lanno : annos) {
+		for (var lanno : annos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			model.removeAnnotation(lanno);
 		}
 		if (tv instanceof ISourceViewerExtension5 ext) {
@@ -1246,7 +1246,7 @@ public class UnifiedDiffManager {
 		}
 	}
 
-	private static void drawToolbarForOneDiff(ITextViewer tv, IAnnotationModel model) {
+	private static void drawToolbarForOneDiff(ITextViewer tv, IAnnotationModel model) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		List<UnifiedDiff> diffs = get(tv);
 		StyledText tw = tv.getTextWidget();
 		ToolbarActionPresentations presentations = toolbarActionPresentations(tv);
@@ -1296,7 +1296,7 @@ public class UnifiedDiffManager {
 				diff.container.remove(diff);
 				List<Annotation> annos = getAllAnnotationsForUnifiedDiff(model, diff);
 				int unifiedDiffAdditionCount = 0;
-				for (var lanno : annos) {
+				for (var lanno : annos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (lanno instanceof UnifiedDiffAnnotation) {
 						unifiedDiffAdditionCount++;
 						if (unifiedDiffAdditionCount > 1) {
@@ -1352,13 +1352,13 @@ public class UnifiedDiffManager {
 			Stream<VerticalBarSelectionAdapter> stream = verticalBar.getTypedListeners(SWT.Selection,
 					VerticalBarSelectionAdapter.class);
 			if (stream == null || stream.count() == 0) {
-				verticalBar.addSelectionListener(new VerticalBarSelectionAdapter(tv, model));
+				verticalBar.addSelectionListener(new VerticalBarSelectionAdapter(tv, model)); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			}
 		}
 		Stream<ToolbarDisposeListenerForOneAndAllDiffs> stream = tw.getTypedListeners(SWT.Dispose,
 				ToolbarDisposeListenerForOneAndAllDiffs.class);
 		if (stream == null || stream.count() == 0) {
-			tw.addDisposeListener(new ToolbarDisposeListenerForOneAndAllDiffs(tv, model));
+			tw.addDisposeListener(new ToolbarDisposeListenerForOneAndAllDiffs(tv, model)); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 		}
 	}
 
@@ -1384,7 +1384,7 @@ public class UnifiedDiffManager {
 		}
 	}
 
-	private static final class ToolbarDisposeListenerForOneAndAllDiffs implements DisposeListener {
+	private static final class ToolbarDisposeListenerForOneAndAllDiffs implements DisposeListener { //FLLDCIM: MARK — T01  IMPLEMENTS
 
 		private final ITextViewer tv;
 		private final IAnnotationModel model;
@@ -1444,7 +1444,7 @@ public class UnifiedDiffManager {
 		tw.setData(TOOLBAR_COMPOSITE_FOR_ALL_DIFFS_KEY, null);
 	}
 
-	private static void setToolbarLocationForOneDiff(ITextViewer tv, IAnnotationModel model, Annotation anno) {
+	private static void setToolbarLocationForOneDiff(ITextViewer tv, IAnnotationModel model, Annotation anno) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		var fToolbarShellForOneDiff = getToolbarCompositeForOneDiff(tv.getTextWidget());
 		if (fToolbarShellForOneDiff == null || fToolbarShellForOneDiff.isDisposed()) {
 			drawToolbarForOneDiff(tv, model);
@@ -1492,7 +1492,7 @@ public class UnifiedDiffManager {
 
 	private static Position getMinPosition(IAnnotationModel model, List<Annotation> all) {
 		Position min = null;
-		for (Annotation ann : all) {
+		for (Annotation ann : all) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Position position = model.getPosition(ann);
 			if (min == null) {
 				min = position;
@@ -1506,7 +1506,7 @@ public class UnifiedDiffManager {
 	static Annotation getMinPositionAnno(IAnnotationModel model, List<Annotation> all) {
 		Position min = null;
 		Annotation result = null;
-		for (Annotation ann : all) {
+		for (Annotation ann : all) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Position position = model.getPosition(ann);
 			if (min == null) {
 				min = position;
@@ -1519,7 +1519,7 @@ public class UnifiedDiffManager {
 		return result;
 	}
 
-	private static void addToolbarAction(ToolBarManager tm, String text, ImageDescriptor image, Runnable runnable) {
+	private static void addToolbarAction(ToolBarManager tm, String text, ImageDescriptor image, Runnable runnable) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String tooltip = text;
 		Action action = null;
 		if (image != null) {
@@ -1546,7 +1546,7 @@ public class UnifiedDiffManager {
 		tm.add(new Separator());
 	}
 
-	private static void addToolbarAction(ToolBarManager tm, Action action) {
+	private static void addToolbarAction(ToolBarManager tm, Action action) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Action a = null;
 		if (action.getImageDescriptor() != null) {
 			a = new Action(null, action.getImageDescriptor()) {
@@ -1579,7 +1579,7 @@ public class UnifiedDiffManager {
 		if (stream != null && stream.count() > 0) {
 			return;
 		}
-		textWidget.addMouseMoveListener(new UnifiedDiffMouseMoveListener(model, tv));
+		textWidget.addMouseMoveListener(new UnifiedDiffMouseMoveListener(model, tv)); //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 	}
 
 	private static final class UnifiedDiffMouseMoveListener implements MouseMoveListener {
@@ -1598,7 +1598,7 @@ public class UnifiedDiffManager {
 			this.lastMouseLine = -1;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void mouseMove(MouseEvent e) {
 			if (e.y > this.textWidget.getLinePixel(this.textWidget.getLineCount())) {
 				return;
@@ -1609,7 +1609,7 @@ public class UnifiedDiffManager {
 			}
 			this.lastMouseLine = mouseLine;
 			Iterator<Annotation> it = annotationIteratorForLine(mouseLine);
-			while (it.hasNext()) {
+			while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Annotation anno = getUnifiedDiffAnnotationFromIterator(it);
 				if (anno == null) {
 					continue;
@@ -1638,7 +1638,7 @@ public class UnifiedDiffManager {
 			}
 		}
 
-		private Iterator<Annotation> annotationIteratorForLine(int widgetLine) {
+		private Iterator<Annotation> annotationIteratorForLine(int widgetLine) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			if (this.model instanceof IAnnotationModelExtension2 ext) {
 				try {
 					int widgetStart = this.textWidget.getOffsetAtLine(widgetLine);
@@ -1663,7 +1663,7 @@ public class UnifiedDiffManager {
 
 	private static Annotation getFirstAnnotationForUnifiedDiff(IAnnotationModel model, UnifiedDiff unifiedDiff) {
 		Iterator<Annotation> it = model.getAnnotationIterator();
-		while (it.hasNext()) {
+		while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Annotation anno = getUnifiedDiffAnnotationFromIterator(it);
 			if (anno == null) {
 				continue;
@@ -1677,9 +1677,9 @@ public class UnifiedDiffManager {
 	}
 
 	static List<Annotation> getAllAnnotationsForUnifiedDiff(IAnnotationModel model, UnifiedDiff unifiedDiff) {
-		List<Annotation> result = new ArrayList<>();
+		List<Annotation> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Iterator<Annotation> it = model.getAnnotationIterator();
-		while (it.hasNext()) {
+		while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Annotation anno = getUnifiedDiffAnnotationFromIterator(it);
 			if (anno == null) {
 				continue;
@@ -1692,7 +1692,7 @@ public class UnifiedDiffManager {
 		return result;
 	}
 
-	private static Annotation getUnifiedDiffAnnotationFromIterator(Iterator<Annotation> it) {
+	private static Annotation getUnifiedDiffAnnotationFromIterator(Iterator<Annotation> it) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean doit = false;
 		Annotation anno = it.next();
 		if (anno instanceof AbstractInlinedAnnotation inlineAnno) {
@@ -1711,12 +1711,12 @@ public class UnifiedDiffManager {
 		return anno;
 	}
 
-	private static void addUndoListener(ITextViewer tv, IDocument document, IAnnotationModel model) {
+	private static void addUndoListener(ITextViewer tv, IDocument document, IAnnotationModel model) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IDocumentUndoManager documentUndoManager = DocumentUndoManagerRegistry.getDocumentUndoManager(document);
-		var undoListener = (IDocumentUndoListener) event -> {
+		var undoListener = (IDocumentUndoListener) event -> { //FLLDCIM: MARK — T28  LAMBDA
 			UnifiedDiff toBeDeletedDiff = null;
 			Iterator<Annotation> it = model.getAnnotationIterator();
-			while (it.hasNext()) {
+			while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Annotation anno = getUnifiedDiffAnnotationFromIterator(it);
 				if (anno == null) {
 					continue;
@@ -1735,7 +1735,7 @@ public class UnifiedDiffManager {
 			}
 			// delete the uni diff
 			List<Annotation> all = getAllAnnotationsForUnifiedDiff(model, toBeDeletedDiff);
-			for (var lanno : all) {
+			for (var lanno : all) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				model.removeAnnotation(lanno);
 			}
 			toBeDeletedDiff.container.remove(toBeDeletedDiff);
@@ -1750,7 +1750,7 @@ public class UnifiedDiffManager {
 		documentUndoManager.addDocumentUndoListener(undoListener);
 	}
 
-	static void disposeUnifiedDiff(ITextViewer tv, IAnnotationModel model, StyledText tw) {
+	static void disposeUnifiedDiff(ITextViewer tv, IAnnotationModel model, StyledText tw) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		disposeToolbarForOneDiff(getToolbarCompositeForOneDiff(tw), tv);
 		disposeToolbarForAllDiffs(getToolbarCompositeForAllDiffs(tw), tv);
 		var undoListener = (IDocumentUndoListener) tw.getData(UNDO_LISTENER_KEY);
@@ -1800,10 +1800,10 @@ public class UnifiedDiffManager {
 			w.removePaintListener(e);
 			e.dispose();
 		});
-		w.addPaintListener(new UnifiedDiffPaintListener(viewer, model, mode));
+		w.addPaintListener(new UnifiedDiffPaintListener(viewer, model, mode)); //FLLDCIM: MARK — T10 PAINT_DAMAGE CALL
 	}
 
-	private static class UnifiedDiffPaintListener implements PaintListener {
+	private static class UnifiedDiffPaintListener implements PaintListener { //FLLDCIM: MARK — T10  IMPLEMENTS
 
 		private final IAnnotationModel model;
 		private final ITextViewer viewer;
@@ -1836,7 +1836,7 @@ public class UnifiedDiffManager {
 			}
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void paintControl(PaintEvent e) {
 			Rectangle bounds = this.w.getBounds();
 			// Only the damaged lines: getTextBounds lays out every line it is asked for,
@@ -1844,7 +1844,7 @@ public class UnifiedDiffManager {
 			int firstDamagedLine = this.w.getLineIndex(e.y);
 			int lastDamagedLine = this.w.getLineIndex(e.y + e.height);
 			Iterator<Annotation> it = this.model.getAnnotationIterator();
-			while (it.hasNext()) {
+			while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Annotation anno = it.next();
 				if (!(ADDITION_ANNO_TYPE.equals(anno.getType()) || DELETION_ANNO_TYPE.equals(anno.getType()))) {
 					continue;
@@ -1879,7 +1879,7 @@ public class UnifiedDiffManager {
 				// worst a harmless repaint of one pixel row - and the only way to guarantee
 				// the edge is never missing when no mining is adjacent.
 				e.gc.setBackground(this.additionBackgroundColor);
-				for (int lineNr = fromLine; lineNr < toLine; lineNr++) {
+				for (int lineNr = fromLine; lineNr < toLine; lineNr++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String line = this.w.getLine(lineNr);
 					int endLineOffset = this.w.getOffsetAtLine(lineNr) + line.length();
 					Rectangle endLineBounds = this.w.getTextBounds(endLineOffset, endLineOffset);
@@ -1927,7 +1927,7 @@ public class UnifiedDiffManager {
 		final boolean result[] = new boolean[] { false };
 		try {
 			final IFile fFile = file;
-			ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) unused -> {
+			ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				IStatus status = ResourcesPlugin.getWorkspace().validateEdit(new IFile[] { fFile }, null);
 				if (status != null) {
 					if (status.isOK()) {
@@ -1961,11 +1961,11 @@ public class UnifiedDiffManager {
 		Position pos = model.getPosition(nextAnno);
 		tv.revealRange(pos.offset, pos.length);
 		tv.setSelectedRange(pos.offset, 0);
-		Display.getDefault().asyncExec(() -> setToolbarLocationForOneDiff(tv, model, nextAnno));
+		Display.getDefault().asyncExec(() -> setToolbarLocationForOneDiff(tv, model, nextAnno)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 	}
 
 	static void runAfterRepaintFinished(StyledText tw, Runnable runnable) {
-		tw.addPaintListener(new PaintListener() {
+		tw.addPaintListener(new PaintListener() { //FLLDCIM: MARK — T10 PAINT_DAMAGE CALL
 			private final PaintListener me = this;
 			private final Runnable r = () -> {
 				if (tw.isDisposed()) {
@@ -1977,7 +1977,7 @@ public class UnifiedDiffManager {
 
 			@Override
 			public void paintControl(PaintEvent e) {
-				Display.getDefault().timerExec(100, this.r);
+				Display.getDefault().timerExec(100, this.r); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			}
 		});
 	}
@@ -1992,7 +1992,7 @@ public class UnifiedDiffManager {
 		int rightStart;
 		int rightLength;
 		String rightStr;
-		public final List<UnifiedDiff> detailedDiffs = new ArrayList<>();
+		public final List<UnifiedDiff> detailedDiffs = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		final List<UnifiedDiff> container;
 		public final UnifiedDiffMode mode;
 

@@ -69,7 +69,7 @@ public class ResourceTraversal {
 	 * </ul>
 	 */
 	public void accept(IResourceVisitor visitor) throws CoreException {
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				if (resource.exists()) {
 					resource.accept(visitor, depth, flags);
@@ -93,7 +93,7 @@ public class ResourceTraversal {
 	 * <code>false</code> otherwise.
 	 */
 	public boolean contains(IResource resource) {
-		for (IResource member : resources) {
+		for (IResource member : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (contains(member, resource)) {
 				return true;
 			}
@@ -124,7 +124,7 @@ public class ResourceTraversal {
 	 */
 	void doFindMarkers(ArrayList<IMarker> result, String type, boolean includeSubtypes) {
 		MarkerManager markerMan = ((Workspace) ResourcesPlugin.getWorkspace()).getMarkerManager();
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			markerMan.doFindMarkers(resource, result, type, includeSubtypes, depth);
 		}
 	}
@@ -145,7 +145,7 @@ public class ResourceTraversal {
 		if (resources.length == 0) {
 			return new IMarker[0];
 		}
-		ArrayList<IMarker> result = new ArrayList<>();
+		ArrayList<IMarker> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		doFindMarkers(result, type, includeSubtypes);
 		return result.toArray(new IMarker[result.size()]);
 	}

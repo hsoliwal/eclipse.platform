@@ -31,7 +31,7 @@ public class SyncByteConverter {
 	 * @param newBytes the bytes to be put in the slot
 	 * @return the new sync bytes
 	 */
-	public static byte[] setSlot(byte[] syncBytes, int slot, byte[] newBytes) throws TeamException {
+	public static byte[] setSlot(byte[] syncBytes, int slot, byte[] newBytes) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int start = startOfSlot(syncBytes, slot);
 		if (start == -1) {
 			throw new TeamException(NLS.bind(Messages.SyncByteConverter_1, new String(syncBytes)));
@@ -59,7 +59,7 @@ public class SyncByteConverter {
 	 */
 	private static int startOfSlot(byte[] syncBytes, int slot) {
 		int count = 0;
-		for (int j = 0; j < syncBytes.length; j++) {
+		for (int j = 0; j < syncBytes.length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (syncBytes[j] == SEPARATOR_BYTE) {
 				count++;
 				if (count == slot) {
@@ -76,7 +76,7 @@ public class SyncByteConverter {
 	 */
 	private static int getOffsetOfDelimiter(byte[] bytes, byte delimiter, int start, int n) {
 		int count = 0;
-		for (int i = start; i < bytes.length; i++) {
+		for (int i = start; i < bytes.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (bytes[i] == delimiter) {
 				count++;
 			}
@@ -95,7 +95,7 @@ public class SyncByteConverter {
 	 * @param includeRest whether to include the rest
 	 * @return the bytes in the given slot
 	 */
-	public static byte[] getSlot(byte[] bytes, int index, boolean includeRest) {
+	public static byte[] getSlot(byte[] bytes, int index, boolean includeRest) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Find the starting index
 		byte delimiter = SEPARATOR_BYTE;
 		int start;
@@ -123,10 +123,10 @@ public class SyncByteConverter {
 	}
 
 	public static byte[] toBytes(String[] slots) {
-		StringBuilder buffer = new StringBuilder();
-		for (String string : slots) {
-			buffer.append(string);
-			buffer.append(new String(new byte[] {SyncByteConverter.SEPARATOR_BYTE }));
+		StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (String string : slots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			buffer.append(string); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buffer.append(new String(new byte[] {SyncByteConverter.SEPARATOR_BYTE })); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return buffer.toString().getBytes();
 	}

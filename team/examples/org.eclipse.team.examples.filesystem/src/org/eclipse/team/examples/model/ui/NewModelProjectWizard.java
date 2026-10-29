@@ -47,7 +47,7 @@ public class NewModelProjectWizard extends Wizard implements INewWizard {
 		this.addPage(mainPage);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean performFinish() {
 		// get a project handle
 		final IProject newProjectHandle = mainPage.getProjectHandle();
@@ -65,7 +65,7 @@ public class NewModelProjectWizard extends Wizard implements INewWizard {
 		description.setNatureIds(new String[] {ModelNature.NATURE_ID});
 
 		// create the new project operation
-		WorkspaceModifyOperation op = new WorkspaceModifyOperation() {
+		WorkspaceModifyOperation op = new WorkspaceModifyOperation() { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			protected void execute(IProgressMonitor monitor)
 					throws CoreException {

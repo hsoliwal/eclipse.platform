@@ -66,7 +66,7 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 		accept(visitor, includePhantoms ? IContainer.INCLUDE_PHANTOMS : 0);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void accept(IResourceDeltaVisitor visitor, int memberFlags) throws CoreException {
 		final boolean includePhantoms = (memberFlags & IContainer.INCLUDE_PHANTOMS) != 0;
 		final boolean includeTeamPrivate = (memberFlags & IContainer.INCLUDE_TEAM_PRIVATE_MEMBERS) != 0;
@@ -78,7 +78,7 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 		if (!visitor.visit(this)) {
 			return;
 		}
-		for (ResourceDelta childDelta : children) {
+		for (ResourceDelta childDelta : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// quietly exclude team-private, hidden and phantom members unless explicitly included
 			if (!includeTeamPrivate && childDelta.isTeamPrivate()) {
 				continue;
@@ -96,7 +96,7 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 	/**
 	 * Check for marker deltas, and set the appropriate change flag if there are any.
 	 */
-	protected void checkForMarkerDeltas() {
+	protected void checkForMarkerDeltas() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (deltaInfo.getMarkerDeltas() == null) {
 			return;
 		}
@@ -116,7 +116,7 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IResourceDelta findMember(IPath memberPath) {
 		int segmentCount = memberPath.segmentCount();
 		if (segmentCount == 0) {
@@ -125,8 +125,8 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 
 		//iterate over the path and find matching child delta
 		ResourceDelta current = this;
-		segments: for (int i = 0; i < segmentCount; i++) {
-			for (ResourceDelta element : current.children) {
+		segments: for (int i = 0; i < segmentCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (ResourceDelta element : current.children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (element.getFullPath().lastSegment().equals(memberPath.segment(i))) {
 					current = element;
 					continue segments;
@@ -144,7 +144,7 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 	 * reflect moves (setting MOVED_FROM and MOVED_TO), and marker changes on
 	 * added and removed resources.
 	 */
-	protected void fixMovesAndMarkers(ElementTree oldTree) {
+	protected void fixMovesAndMarkers(ElementTree oldTree) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		NodeIDMap nodeIDMap = deltaInfo.getNodeIDMap();
 		if (!path.isRoot() && !nodeIDMap.isEmpty()) {
 			int kind = getKind();
@@ -189,7 +189,7 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 		checkForMarkerDeltas();
 
 		//recurse on children
-		for (ResourceDelta element : children) {
+		for (ResourceDelta element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			element.fixMovesAndMarkers(oldTree);
 		}
 	}
@@ -204,7 +204,7 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 		return getAffectedChildren(kindMask, IResource.NONE);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IResourceDelta[] getAffectedChildren(int kindMask, int memberFlags) {
 		int numChildren = children.length;
 		//if there are no children, they all match
@@ -221,7 +221,7 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 
 		//first count the number of matches so we can allocate the exact array size
 		int matching = 0;
-		for (int i = 0; i < numChildren; i++) {
+		for (int i = 0; i < numChildren; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if ((children[i].getKind() & kindMask) == 0) {
 				continue;// child has wrong kind
 			}
@@ -245,7 +245,7 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 		//create the appropriate sized array and fill it
 		IResourceDelta[] result = new IResourceDelta[matching];
 		int nextPosition = 0;
-		for (int i = 0; i < numChildren; i++) {
+		for (int i = 0; i < numChildren; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if ((children[i].getKind() & kindMask) == 0) {
 				continue; // child has wrong kind
 			}
@@ -282,7 +282,7 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 		return status & KIND_MASK;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IMarkerDelta[] getMarkerDeltas() {
 		Map<IPath, MarkerSet> markerDeltas = deltaInfo.getMarkerDeltas();
 		if (markerDeltas == null) {
@@ -297,7 +297,7 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 		}
 		IMarkerSetElement[] elements = changes.elements();
 		IMarkerDelta[] result = new IMarkerDelta[elements.length];
-		for (int i = 0; i < elements.length; i++) {
+		for (int i = 0; i < elements.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result[i] = (IMarkerDelta) elements[i];
 		}
 		return result;
@@ -332,7 +332,7 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 		return full.removeFirstSegments(1);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IResource getResource() {
 		// return a cached copy if we have one
 		if (cachedResource != null) {
@@ -351,7 +351,7 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 		} else {
 			info = newInfo;
 		}
-		Assert.isNotNull(info, "Do not have resource info for resource in delta: " + path); //$NON-NLS-1$
+		Assert.isNotNull(info, "Do not have resource info for resource in delta: " + path); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		cachedResource = deltaInfo.getWorkspace().newResource(path, info.getType());
 		return cachedResource;
 	}
@@ -413,7 +413,7 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 	 * immediate structure suitable for debug purposes.
 	 */
 	public String toDebugString() {
-		final StringBuilder buffer = new StringBuilder();
+		final StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		writeDebugString(buffer);
 		return buffer.toString();
 	}
@@ -423,10 +423,10 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 	 * deep structure suitable for debug purposes.
 	 */
 	public String toDeepDebugString() {
-		final StringBuilder buffer = new StringBuilder("\n"); //$NON-NLS-1$
+		final StringBuilder buffer = new StringBuilder("\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		writeDebugString(buffer);
-		for (ResourceDelta element : children) {
-			buffer.append(element.toDeepDebugString());
+		for (ResourceDelta element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			buffer.append(element.toDeepDebugString()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return buffer.toString();
 	}
@@ -436,7 +436,7 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 	 */
 	@Override
 	public String toString() {
-		return "ResourceDelta(" + path + ')'; //$NON-NLS-1$
+		return "ResourceDelta(" + path + ')'; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -452,162 +452,162 @@ public class ResourceDelta extends PlatformObject implements IResourceDelta {
 	 * Writes a string representation of this delta's
 	 * immediate structure on the given string buffer.
 	 */
-	public void writeDebugString(StringBuilder buffer) {
-		buffer.append(getFullPath());
-		buffer.append('[');
+	public void writeDebugString(StringBuilder buffer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		buffer.append(getFullPath()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buffer.append('['); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		switch (getKind()) {
 			case ADDED :
-				buffer.append('+');
+				buffer.append('+'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case ADDED_PHANTOM :
-				buffer.append('>');
+				buffer.append('>'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case REMOVED :
-				buffer.append('-');
+				buffer.append('-'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case REMOVED_PHANTOM :
-				buffer.append('<');
+				buffer.append('<'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case CHANGED :
-				buffer.append('*');
+				buffer.append('*'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case NO_CHANGE :
-				buffer.append('~');
+				buffer.append('~'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			default :
-				buffer.append('?');
+				buffer.append('?'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 		}
-		buffer.append("]: {"); //$NON-NLS-1$
+		buffer.append("]: {"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		int changeFlags = getFlags();
 		boolean prev = false;
 		if ((changeFlags & CONTENT) != 0) {
 			if (prev) {
-				buffer.append(" | "); //$NON-NLS-1$
+				buffer.append(" | "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append("CONTENT"); //$NON-NLS-1$
+			buffer.append("CONTENT"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			prev = true;
 		}
 		if ((changeFlags & LOCAL_CHANGED) != 0) {
 			if (prev) {
-				buffer.append(" | "); //$NON-NLS-1$
+				buffer.append(" | "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append("LOCAL_CHANGED"); //$NON-NLS-1$
+			buffer.append("LOCAL_CHANGED"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			prev = true;
 		}
 		if ((changeFlags & MOVED_FROM) != 0) {
 			if (prev) {
-				buffer.append(" | "); //$NON-NLS-1$
+				buffer.append(" | "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append("MOVED_FROM(" + getMovedFromPath() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+			buffer.append("MOVED_FROM(" + getMovedFromPath() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			prev = true;
 		}
 		if ((changeFlags & MOVED_TO) != 0) {
 			if (prev) {
-				buffer.append(" | "); //$NON-NLS-1$
+				buffer.append(" | "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append("MOVED_TO(" + getMovedToPath() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+			buffer.append("MOVED_TO(" + getMovedToPath() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			prev = true;
 		}
 		if ((changeFlags & OPEN) != 0) {
 			if (prev) {
-				buffer.append(" | "); //$NON-NLS-1$
+				buffer.append(" | "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append("OPEN"); //$NON-NLS-1$
+			buffer.append("OPEN"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			prev = true;
 		}
 		if ((changeFlags & TYPE) != 0) {
 			if (prev) {
-				buffer.append(" | "); //$NON-NLS-1$
+				buffer.append(" | "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append("TYPE"); //$NON-NLS-1$
+			buffer.append("TYPE"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			prev = true;
 		}
 		if ((changeFlags & SYNC) != 0) {
 			if (prev) {
-				buffer.append(" | "); //$NON-NLS-1$
+				buffer.append(" | "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append("SYNC"); //$NON-NLS-1$
+			buffer.append("SYNC"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			prev = true;
 		}
 		if ((changeFlags & MARKERS) != 0) {
 			if (prev) {
-				buffer.append(" | "); //$NON-NLS-1$
+				buffer.append(" | "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append("MARKERS"); //$NON-NLS-1$
+			buffer.append("MARKERS"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			writeMarkerDebugString(buffer);
 			prev = true;
 		}
 		if ((changeFlags & REPLACED) != 0) {
 			if (prev) {
-				buffer.append(" | "); //$NON-NLS-1$
+				buffer.append(" | "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append("REPLACED"); //$NON-NLS-1$
+			buffer.append("REPLACED"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			prev = true;
 		}
 		if ((changeFlags & DESCRIPTION) != 0) {
 			if (prev) {
-				buffer.append(" | "); //$NON-NLS-1$
+				buffer.append(" | "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append("DESCRIPTION"); //$NON-NLS-1$
+			buffer.append("DESCRIPTION"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			prev = true;
 		}
 		if ((changeFlags & ENCODING) != 0) {
 			if (prev) {
-				buffer.append(" | "); //$NON-NLS-1$
+				buffer.append(" | "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append("ENCODING"); //$NON-NLS-1$
+			buffer.append("ENCODING"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			prev = true;
 		}
 		if ((changeFlags & DERIVED_CHANGED) != 0) {
 			if (prev) {
-				buffer.append(" | "); //$NON-NLS-1$
+				buffer.append(" | "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
-			buffer.append("DERIVED_CHANGED"); //$NON-NLS-1$
+			buffer.append("DERIVED_CHANGED"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			prev = true;
 		}
-		buffer.append("}"); //$NON-NLS-1$
+		buffer.append("}"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		if (isTeamPrivate()) {
-			buffer.append(" (team private)"); //$NON-NLS-1$
+			buffer.append(" (team private)"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if (isHidden()) {
-			buffer.append(" (hidden)"); //$NON-NLS-1$
+			buffer.append(" (hidden)"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 	}
 
-	public void writeMarkerDebugString(StringBuilder buffer) {
+	public void writeMarkerDebugString(StringBuilder buffer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Map<IPath, MarkerSet> markerDeltas = deltaInfo.getMarkerDeltas();
 		if (markerDeltas == null || markerDeltas.isEmpty()) {
 			return;
 		}
-		buffer.append('[');
-		for (Entry<IPath, MarkerSet> entry : markerDeltas.entrySet()) {
+		buffer.append('['); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		for (Entry<IPath, MarkerSet> entry : markerDeltas.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IPath key = entry.getKey();
 			if (getResource().getFullPath().equals(key)) {
 				MarkerSet set = entry.getValue();
 				IMarkerSetElement[] deltas = set.elements();
 				boolean addComma = false;
-				for (IMarkerSetElement delta2 : deltas) {
+				for (IMarkerSetElement delta2 : deltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IMarkerDelta delta = (IMarkerDelta) delta2;
 					if (addComma) {
-						buffer.append(',');
+						buffer.append(','); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
 					switch (delta.getKind()) {
 						case IResourceDelta.ADDED :
-							buffer.append('+');
+							buffer.append('+'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 							break;
 						case IResourceDelta.REMOVED :
-							buffer.append('-');
+							buffer.append('-'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 							break;
 						case IResourceDelta.CHANGED :
-							buffer.append('*');
+							buffer.append('*'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 							break;
 					}
-					buffer.append(delta.getId());
+					buffer.append(delta.getId()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					addComma = true;
 				}
 			}
 		}
-		buffer.append(']');
+		buffer.append(']'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 }

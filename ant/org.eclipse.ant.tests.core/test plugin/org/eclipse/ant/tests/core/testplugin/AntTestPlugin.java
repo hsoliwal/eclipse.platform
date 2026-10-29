@@ -54,7 +54,7 @@ public class AntTestPlugin extends AbstractUIPlugin {
 	public File getFileInPlugin(IPath path) {
 		try {
 			Bundle bundle = getDefault().getBundle();
-			URL installURL = bundle.getEntry("/" + path.toString()); //$NON-NLS-1$
+			URL installURL = bundle.getEntry("/" + path.toString()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			URL localURL = FileLocator.toFileURL(installURL);
 			return new File(localURL.getFile());
 		}

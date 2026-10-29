@@ -34,7 +34,7 @@ import org.eclipse.ui.PlatformUI;
  * @since 3.0
  * @noextend This class is not intended to be subclassed by clients.
  */
-public class WorkingSetScope extends AbstractSynchronizeScope implements IPropertyChangeListener {
+public class WorkingSetScope extends AbstractSynchronizeScope implements IPropertyChangeListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	/*
 	 * Constants used to save and restore this scope
@@ -81,12 +81,12 @@ public class WorkingSetScope extends AbstractSynchronizeScope implements IProper
 		if (sets.length == 0) {
 			return TeamUIMessages.WorkingSetScope_0;
 		}
-		StringBuilder name = new StringBuilder();
-		for (int i = 0; i < sets.length; i++) {
+		StringBuilder name = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < sets.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IWorkingSet set = sets[i];
-			name.append(set.getName());
+			name.append(set.getName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			if (i < sets.length - 1) {
-				name.append(", "); //$NON-NLS-1$
+				name.append(", "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 		return name.toString();
@@ -97,18 +97,18 @@ public class WorkingSetScope extends AbstractSynchronizeScope implements IProper
 		if (sets.length == 0) {
 			return null;
 		}
-		HashSet<IResource> roots = new HashSet<>();
-		for (IWorkingSet set : sets) {
+		HashSet<IResource> roots = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IWorkingSet set : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource[] resources = Utils.getResources(set.getElements());
 			addNonOverlapping(roots, resources);
 		}
 		return roots.toArray(new IResource[roots.size()]);
 	}
 
-	private void addNonOverlapping(HashSet<IResource> roots, IResource[] resources) {
-		for (IResource newResource : resources) {
+	private void addNonOverlapping(HashSet<IResource> roots, IResource[] resources) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		for (IResource newResource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			boolean add = true;
-			for (Iterator iter = roots.iterator(); iter.hasNext();) {
+			for (Iterator iter = roots.iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource existingResource = (IResource) iter.next();
 				if (existingResource.equals(newResource)) {
 					// No need to add it since it is already there
@@ -135,7 +135,7 @@ public class WorkingSetScope extends AbstractSynchronizeScope implements IProper
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getProperty() == IWorkingSetManager.CHANGE_WORKING_SET_CONTENT_CHANGE) {
 			IWorkingSet newSet = (IWorkingSet) event.getNewValue();
-			for (IWorkingSet set : sets) {
+			for (IWorkingSet set : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (newSet == set) {
 					fireRootsChanges();
 					return;
@@ -157,7 +157,7 @@ public class WorkingSetScope extends AbstractSynchronizeScope implements IProper
 	@Override
 	public void saveState(IMemento memento) {
 		super.saveState(memento);
-		for (IWorkingSet set : sets) {
+		for (IWorkingSet set : sets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IMemento rootNode = memento.createChild(CTX_SETS);
 			rootNode.putString(CTX_SET_NAME, set.getName());
 		}
@@ -168,8 +168,8 @@ public class WorkingSetScope extends AbstractSynchronizeScope implements IProper
 		super.init(memento);
 		IMemento[] rootNodes = memento.getChildren(CTX_SETS);
 		if (rootNodes != null) {
-			List<IWorkingSet> sets = new ArrayList<>();
-			for (IMemento rootNode : rootNodes) {
+			List<IWorkingSet> sets = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (IMemento rootNode : rootNodes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String setName = rootNode.getString(CTX_SET_NAME);
 				IWorkingSet set = PlatformUI.getWorkbench().getWorkingSetManager().getWorkingSet(setName);
 				if (set != null) {

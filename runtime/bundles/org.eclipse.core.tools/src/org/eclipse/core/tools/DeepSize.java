@@ -70,21 +70,21 @@ public class DeepSize {
 
 		@Override
 		public String toString() {
-			return "ObjectWrapper(" + object + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+			return "ObjectWrapper(" + object + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
 	public static final int ARRAY_HEADER_SIZE = 12;
 
 	public static final int HEADER_SIZE = 8;
-	static final HashSet<ObjectWrapper> ignoreSet = new HashSet<>();
+	static final HashSet<ObjectWrapper> ignoreSet = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 	public static final int OBJECT_HEADER_SIZE = HEADER_SIZE;
 	public static final int POINTER_SIZE = 4;
 	int byteSize;
-	final Map<Class<?>, Integer> counts = new HashMap<>();
+	final Map<Class<?>, Integer> counts = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	Set<String> ignoreTypeNames = null;
-	final Map<Object, Integer> sizes = new HashMap<>();
+	final Map<Object, Integer> sizes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	/**
 	 * Adds an object to the ignore set. Returns true if the object
@@ -117,7 +117,7 @@ public class DeepSize {
 	}
 
 	Set<String> getDefaultIgnoreTypeNames() {
-		Set<String> ignored = new HashSet<>();
+		Set<String> ignored = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		String[] ignore = { "org.eclipse.core.runtime.Plugin", "java.lang.ClassLoader", //$NON-NLS-1$ //$NON-NLS-2$
 				"org.eclipse.team.internal.ccvs.core.CVSTeamProvider",
 				"org.eclipse.core.internal.events.BuilderPersistentInfo",
@@ -155,11 +155,11 @@ public class DeepSize {
 	 */
 	public void printSizeReport() {
 		System.out.println("*** Begin DeepSize report ***"); //$NON-NLS-1$
-		for (java.util.Map.Entry<Object, Integer> entry : sizes.entrySet()) {
+		for (java.util.Map.Entry<Object, Integer> entry : sizes.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object clazz = entry.getKey();
 			int size = entry.getValue().intValue();
-			System.out.println('\t' + clazz.getClass().getName() + " size: " + size); //$NON-NLS-1$
-			System.out.println("Total size of all objects: " + getSize()); //$NON-NLS-1$
+			System.out.println('\t' + clazz.getClass().getName() + " size: " + size); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			System.out.println("Total size of all objects: " + getSize()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		System.out.println("*** End DeepSize report ***"); //$NON-NLS-1$
 	}
@@ -168,7 +168,7 @@ public class DeepSize {
 		if (ignoreTypeNames == null) {
 			ignoreTypeNames = getDefaultIgnoreTypeNames();
 		}
-		while (clazz != null) {
+		while (clazz != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (ignoreTypeNames.contains(clazz.getName())) {
 				return true;
 			}
@@ -191,7 +191,7 @@ public class DeepSize {
 		return clazz.isArray() ? sizeOfArray(clazz, o) : sizeOfObject(clazz, o);
 	}
 
-	private int sizeOfArray(Class<?> type, Object array) {
+	private int sizeOfArray(Class<?> type, Object array) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		int size = ARRAY_HEADER_SIZE;
 		Class<?> componentType = type.getComponentType();
@@ -223,7 +223,7 @@ public class DeepSize {
 			return size;
 		}
 		Object[] a = (Object[]) array;
-		for (Object element : a) {
+		for (Object element : a) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			size += POINTER_SIZE + sizeOf(element);
 		}
 		count(type, ARRAY_HEADER_SIZE + POINTER_SIZE * a.length);
@@ -231,14 +231,14 @@ public class DeepSize {
 
 	}
 
-	private int sizeOfObject(Class<?> type, Object o) {
+	private int sizeOfObject(Class<?> type, Object o) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		int internalSize = 0; // size of referenced objects
 		int shallowSize = OBJECT_HEADER_SIZE;
 		Class<?> clazz = type;
-		while (clazz != null) {
+		while (clazz != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Field[] fields = clazz.getDeclaredFields();
-			for (Field field : fields) {
+			for (Field field : fields) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Field f = field;
 				if (!isStaticField(f)) {
 					Class<?> fieldType = f.getType();

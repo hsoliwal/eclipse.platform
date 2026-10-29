@@ -25,7 +25,7 @@ import org.eclipse.jface.text.contentassist.IContextInformation;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 
-public class AntCompletionProposal implements ICompletionProposal, ICompletionProposalExtension2 {
+public class AntCompletionProposal implements ICompletionProposal, ICompletionProposalExtension2 { //FLLDCIM: MARK — T30  IMPLEMENTS
 
 	public static final int TAG_CLOSING_PROPOSAL = 0;
 	public static final int TASK_PROPOSAL = 1;
@@ -95,7 +95,7 @@ public class AntCompletionProposal implements ICompletionProposal, ICompletionPr
 		// do nothing
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean validate(IDocument document, int offset, DocumentEvent event) {
 		String enteredText = IAntCoreConstants.EMPTY_STRING;
 		try {

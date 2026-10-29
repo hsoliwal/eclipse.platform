@@ -86,14 +86,14 @@ import org.osgi.framework.FrameworkUtil;
 /**
  * A view which displays a hierarchical view of ant build files and allows the user to run selected targets from those files.
  */
-public class AntView extends ViewPart implements IResourceChangeListener, IShowInSource {
+public class AntView extends ViewPart implements IResourceChangeListener, IShowInSource { //FLLDCIM: MARK — T07  IMPLEMENTS
 
 	/**
 	 * The view root elements
 	 *
 	 * @since 3.5.00
 	 */
-	private final List<AntProjectNode> fInput = new ArrayList<>();
+	private final List<AntProjectNode> fInput = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private boolean filterInternalTargets = false;
 	private InternalTargetFilter fInternalTargetFilter = null;
 
@@ -156,9 +156,9 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 	 */
 	private void handleBuildFileChanged(AntProjectNode project) {
 		((AntProjectNodeProxy) project).parseBuildFile(true);
-		Display.getDefault().asyncExec(() -> {
+		Display.getDefault().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			// must do a full refresh to re-sort
-			projectViewer.refresh();
+			projectViewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 			// update the status line
 			handleSelectionChanged((IStructuredSelection) projectViewer.getSelection());
 		});
@@ -197,7 +197,7 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 		Control menuControl = viewer.getControl();
 		MenuManager menuMgr = new MenuManager("#PopUp"); //$NON-NLS-1$
 		menuMgr.setRemoveAllWhenShown(true);
-		menuMgr.addMenuListener(this::fillContextMenu);
+		menuMgr.addMenuListener(this::fillContextMenu); //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 		Menu menu = menuMgr.createContextMenu(menuControl);
 		menuControl.setMenu(menu);
 
@@ -239,8 +239,8 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 	/**
 	 * Initialize the actions for this view
 	 */
-	private void initializeActions() {
-		updateProjectActions = new ArrayList<>(5);
+	private void initializeActions() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		updateProjectActions = new ArrayList<>(5); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		addBuildFileAction = new AddBuildFilesAction(this);
 
@@ -267,7 +267,7 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 	 * Updates the enabled state of all <code>IUpdate</code> actions associated with the project viewer.
 	 */
 	private void updateProjectActions() {
-		for (IUpdate update : updateProjectActions) {
+		for (IUpdate update : updateProjectActions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			update.update();
 		}
 	}
@@ -275,7 +275,7 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 	/**
 	 * Create the viewer which displays the Ant projects
 	 */
-	private void createProjectViewer(Composite parent) {
+	private void createProjectViewer(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		projectViewer = new TreeViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.MULTI);
 		contentProvider = new AntModelContentProvider();
 		projectViewer.setContentProvider(contentProvider);
@@ -283,8 +283,8 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 		filterInternalTargetsAction.setChecked(filterInternalTargets);
 		setFilterInternalTargets(filterInternalTargets);
 
-		projectViewer.setLabelProvider(new AntModelLabelProvider());
-		projectViewer.setInput(fInput);
+		projectViewer.setLabelProvider(new AntModelLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
+		projectViewer.setInput(fInput); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		projectViewer.setComparator(new ViewerComparator() {
 			@Override
 			public int compare(Viewer viewer, Object e1, Object e2) {
@@ -295,15 +295,15 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 			}
 		});
 
-		projectViewer.addSelectionChangedListener(event -> handleSelectionChanged((IStructuredSelection) event.getSelection()));
+		projectViewer.addSelectionChangedListener(event -> handleSelectionChanged((IStructuredSelection) event.getSelection())); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 
-		projectViewer.addDoubleClickListener(event -> {
+		projectViewer.addDoubleClickListener(event -> { //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
 			if (!event.getSelection().isEmpty()) {
 				handleProjectViewerDoubleClick();
 			}
 		});
 
-		projectViewer.getControl().addKeyListener(new KeyAdapter() {
+		projectViewer.getControl().addKeyListener(new KeyAdapter() { //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 			@Override
 			public void keyPressed(KeyEvent event) {
 				handleProjectViewerKeyPress(event);
@@ -336,7 +336,7 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 	/**
 	 * Updates the actions and status line for selection change in one of the viewers.
 	 */
-	private void handleSelectionChanged(IStructuredSelection selection) {
+	private void handleSelectionChanged(IStructuredSelection selection) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		updateProjectActions();
 		Iterator<AntElementNode> selectionIter = selection.iterator();
 		AntElementNode selected = null;
@@ -361,32 +361,32 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 	/**
 	 * Returns text appropriate for display in the workbench status line for the given node.
 	 */
-	private String getStatusLineText(AntElementNode node) {
+	private String getStatusLineText(AntElementNode node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (node instanceof AntProjectNode project) {
-			StringBuilder message = new StringBuilder(project.getBuildFileName());
+			StringBuilder message = new StringBuilder(project.getBuildFileName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 			String description = project.getDescription();
 			if (description != null && description.length() > 0) {
-				message.append(": "); //$NON-NLS-1$
-				message.append(description);
+				message.append(": "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				message.append(description); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 			return message.toString();
 		} else if (node instanceof AntTargetNode target) {
-			StringBuilder message = new StringBuilder();
+			StringBuilder message = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 			Enumeration<String> depends = target.getTarget().getDependencies();
 			if (depends.hasMoreElements()) {
-				message.append(AntViewMessages.AntView_3);
-				message.append(depends.nextElement()); // Unroll the loop to avoid trailing comma
-				while (depends.hasMoreElements()) {
+				message.append(AntViewMessages.AntView_3); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				message.append(depends.nextElement()); // Unroll the loop to avoid trailing comma //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				while (depends.hasMoreElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String dependancy = depends.nextElement();
-					message.append(',').append(dependancy);
+					message.append(',').append(dependancy); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
-				message.append('\"');
+				message.append('\"'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 			String description = target.getTarget().getDescription();
 			if (description != null && description.length() != 0) {
-				message.append(AntViewMessages.AntView_4);
-				message.append(description);
-				message.append('\"');
+				message.append(AntViewMessages.AntView_4); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				message.append(description); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				message.append('\"'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 			return message.toString();
 		}
@@ -419,7 +419,7 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 	 */
 	public void addProject(AntProjectNode project) {
 		fInput.add(project);
-		projectViewer.refresh();
+		projectViewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(this);
 		handleSelectionChanged(new StructuredSelection(project));
 	}
@@ -432,7 +432,7 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 	 */
 	private void removeProject(AntProjectNode project) {
 		fInput.remove(project);
-		projectViewer.refresh();
+		projectViewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		setProjectViewerSelectionAfterDeletion();
 	}
 
@@ -455,10 +455,10 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 	 *            the list of <code>ProjectNode</code> objects to remove
 	 */
 	public void removeProjects(List<AntProjectNode> projectNodes) {
-		for (AntProjectNode project : projectNodes) {
+		for (AntProjectNode project : projectNodes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			fInput.remove(project);
 		}
-		projectViewer.refresh();
+		projectViewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		setProjectViewerSelectionAfterDeletion();
 	}
 
@@ -466,16 +466,16 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 	 * Removes all projects from the view
 	 */
 	public void removeAllProjects() {
-		for (AntProjectNode node : getProjects()) {
+		for (AntProjectNode node : getProjects()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			node.dispose();
 		}
 		fInput.clear();
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(this);
 		updateProjectActions();
-		projectViewer.refresh();
+		projectViewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void init(IViewSite site, IMemento memento) throws PartInitException {
 		super.init(site, memento);
 		String persistedMemento = getDialogSettingsSection(getClass().getName()).get("memento"); //$NON-NLS-1$
@@ -511,12 +511,12 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 	 * @param memento
 	 *            the memento containing the persisted viewer content
 	 */
-	private void restoreViewerInput(IMemento memento) {
+	private void restoreViewerInput(IMemento memento) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IMemento[] projects = memento.getChildren(TAG_PROJECT);
 		if (projects.length < 1) {
 			return;
 		}
-		for (IMemento projectMemento : projects) {
+		for (IMemento projectMemento : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String pathString = projectMemento.getString(KEY_PATH);
 			if (!ResourcesPlugin.getWorkspace().getRoot().getFile(IPath.fromOSString(pathString)).exists()) {
 				// If the file no longer exists, don't add it.
@@ -550,13 +550,13 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 	 *
 	 * @since 3.5.500
 	 */
-	private void saveViewerState() {
+	private void saveViewerState() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		XMLMemento memento = XMLMemento.createWriteRoot("antView"); //$NON-NLS-1$
 		StringWriter writer = new StringWriter();
 		AntProjectNode[] projects = getProjects();
 		if (projects.length > 0) {
 			IMemento projectMemento;
-			for (AntProjectNode project : projects) {
+			for (AntProjectNode project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				projectMemento = memento.createChild(TAG_PROJECT);
 				projectMemento.putString(KEY_PATH, project.getBuildFileName());
 				projectMemento.putString(KEY_NAME, project.getLabel());
@@ -605,7 +605,7 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 	public void resourceChanged(IResourceChangeEvent event) {
 		IResourceDelta delta = event.getDelta();
 		if (delta != null) {
-			for (AntProjectNode project : getProjects()) {
+			for (AntProjectNode project : getProjects()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IPath buildFilePath = IPath.fromOSString(project.getBuildFileName());
 				IResourceDelta change = delta.findMember(buildFilePath);
 				if (change != null) {
@@ -629,7 +629,7 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 			return;
 		}
 		if (delta.getKind() == IResourceDelta.REMOVED) {
-			Display.getDefault().asyncExec(() -> removeProject(project));
+			Display.getDefault().asyncExec(() -> removeProject(project)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		} else if (delta.getKind() == IResourceDelta.CHANGED && (delta.getFlags() & IResourceDelta.CONTENT) != 0) {
 			handleBuildFileChanged(project);
 		}
@@ -692,7 +692,7 @@ public class AntView extends ViewPart implements IResourceChangeListener, IShowI
 	public void setFilterInternalTargets(boolean filter) {
 		filterInternalTargets = filter;
 		if (filter) {
-			projectViewer.addFilter(getInternalTargetsFilter());
+			projectViewer.addFilter(getInternalTargetsFilter()); //FLLDCIM: MARK — T23 FILTER_LANE CALL
 		} else {
 			projectViewer.removeFilter(getInternalTargetsFilter());
 		}

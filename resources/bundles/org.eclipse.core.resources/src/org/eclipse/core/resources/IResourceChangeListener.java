@@ -77,7 +77,7 @@ import java.util.*;
  * @see IResourceDelta
  */
 
-@FunctionalInterface
+@FunctionalInterface //FLLDCIM: MARK — T07  IMPLEMENTS
 public interface IResourceChangeListener extends EventListener {
 
 	/**

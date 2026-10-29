@@ -30,7 +30,7 @@ import org.eclipse.team.internal.core.TeamPlugin;
 
 public class TextStorageMerger implements IStorageMerger {
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus merge(OutputStream output, String outputEncoding,
 			IStorage ancestor, IStorage target, IStorage other,
 			IProgressMonitor monitor) throws CoreException {
@@ -56,12 +56,12 @@ public class TextStorageMerger implements IStorageMerger {
 
 			RangeDifference[] diffs= RangeDifferencer.findRanges(monitor, a, t, o);
 
-			for (RangeDifference rd : diffs) {
+			for (RangeDifference rd : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				switch (rd.kind()) {
 				case RangeDifference.ANCESTOR: // pseudo conflict
 				case RangeDifference.NOCHANGE:
 				case RangeDifference.RIGHT:
-					for (int j= rd.rightStart(); j < rd.rightEnd(); j++) {
+					for (int j= rd.rightStart(); j < rd.rightEnd(); j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						String s= o.getLine(j);
 						if (!firstLine) {
 							output.write(lineSeparator.getBytes(outputEncoding));
@@ -72,7 +72,7 @@ public class TextStorageMerger implements IStorageMerger {
 					break;
 
 				case RangeDifference.LEFT:
-					for (int j= rd.leftStart(); j < rd.leftEnd(); j++) {
+					for (int j= rd.leftStart(); j < rd.leftEnd(); j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						String s= t.getLine(j);
 						if (!firstLine) {
 							output.write(lineSeparator.getBytes(outputEncoding));

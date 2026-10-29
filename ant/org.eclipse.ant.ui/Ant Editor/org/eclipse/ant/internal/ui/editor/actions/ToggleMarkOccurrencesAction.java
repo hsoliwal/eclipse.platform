@@ -31,7 +31,7 @@ import org.eclipse.ui.texteditor.TextEditorAction;
  *
  * @since 3.1
  */
-public class ToggleMarkOccurrencesAction extends TextEditorAction implements IPropertyChangeListener {
+public class ToggleMarkOccurrencesAction extends TextEditorAction implements IPropertyChangeListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	private IPreferenceStore fStore;
 
@@ -65,7 +65,7 @@ public class ToggleMarkOccurrencesAction extends TextEditorAction implements IPr
 		setEnabled(enabled);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setEditor(ITextEditor editor) {
 
 		super.setEditor(editor);

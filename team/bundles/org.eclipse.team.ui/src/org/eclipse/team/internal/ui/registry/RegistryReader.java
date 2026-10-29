@@ -44,7 +44,7 @@ public abstract class RegistryReader {
 	 * @return the extension object
 	 * @throws CoreException if the extension cannot be created
 	 */
-	public static Object createExtension(final IConfigurationElement element,
+	public static Object createExtension(final IConfigurationElement element, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			final String classAttribute) throws CoreException {
 		try {
 			// If plugin has been loaded create extension.
@@ -113,27 +113,27 @@ public abstract class RegistryReader {
 	 * Logs a very common registry error when a required attribute is missing.
 	 */
 	protected void logMissingAttribute(IConfigurationElement element, String attributeName) {
-		logError(element, "Required attribute '" + attributeName + "' not defined"); //$NON-NLS-2$//$NON-NLS-1$
+		logError(element, "Required attribute '" + attributeName + "' not defined"); //$NON-NLS-2$//$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
 	 * Logs a very common registry error when a required child is missing.
 	 */
 	protected void logMissingElement(IConfigurationElement element, String elementName) {
-		logError(element, "Required sub element '" + elementName + "' not defined"); //$NON-NLS-2$//$NON-NLS-1$
+		logError(element, "Required sub element '" + elementName + "' not defined"); //$NON-NLS-2$//$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
 	 * Logs a registry error when the configuration element is unknown.
 	 */
 	protected void logUnknownElement(IConfigurationElement element) {
-		logError(element, "Unknown extension tag found: " + element.getName()); //$NON-NLS-1$
+		logError(element, "Unknown extension tag found: " + element.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 	/**
 	 * Apply a reproducible order to the list of extensions provided, such that
 	 * the order will not change as extensions are added or removed.
 	 */
-	protected IExtension[] orderExtensions(IExtension[] extensions) {
+	protected IExtension[] orderExtensions(IExtension[] extensions) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// By default, the order is based on plugin id sorted
 		// in ascending order. The order for a plugin providing
 		// more than one extension for an extension point is
@@ -175,7 +175,7 @@ public abstract class RegistryReader {
 	 * Logs an error if the element was not recognized.
 	 */
 	protected void readElements(IConfigurationElement[] elements) {
-		for (IConfigurationElement element : elements) {
+		for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!readElement(element)) {
 				logUnknownElement(element);
 			}
@@ -195,7 +195,7 @@ public abstract class RegistryReader {
 	 * @param extensionPoint the extension point
 	 */
 	public void readRegistry(IExtensionRegistry registry, String pluginId, String extensionPoint) {
-		String pointId = pluginId + "-" + extensionPoint; //$NON-NLS-1$
+		String pointId = pluginId + "-" + extensionPoint; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IExtension[] extensions = extensionPoints.get(pointId);
 		if (extensions == null) {
 			IExtensionPoint point = registry.getExtensionPoint(pluginId, extensionPoint);
@@ -205,7 +205,7 @@ public abstract class RegistryReader {
 			extensions = point.getExtensions();
 			extensionPoints.put(pointId, extensions);
 		}
-		for (IExtension extension : extensions) {
+		for (IExtension extension : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			readExtension(extension);
 		}
 	}

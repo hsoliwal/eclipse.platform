@@ -114,12 +114,12 @@ public final class ElementTreeSerializationTestHelper implements ArgumentsProvid
 	 */
 	@Override
 	public Stream<Arguments> provideArguments(ExtensionContext context) {
-		List<Arguments> arguments = new ArrayList<>();
+		List<Arguments> arguments = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IPath[] paths = TestUtil.getTreePaths();
 		int[] depths = getTreeDepths();
 
-		for (IPath path : paths) {
-			for (int depth : depths) {
+		for (IPath path : paths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (int depth : depths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				arguments.add(Arguments.of(path, depth));
 			}
 		}
@@ -137,7 +137,7 @@ public final class ElementTreeSerializationTestHelper implements ArgumentsProvid
 	/**
 	 * Write a flattened element tree to a file and read it back.
 	 */
-	public static Object doFileTest(Path tempDir, StreamReader reading, StreamWriter writing) throws IOException {
+	public static Object doFileTest(Path tempDir, StreamReader reading, StreamWriter writing) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IElementInfoFlattener fac = getFlattener();
 
 		Object newTree = null;
@@ -145,15 +145,15 @@ public final class ElementTreeSerializationTestHelper implements ArgumentsProvid
 		ElementTreeReader reader = new ElementTreeReader(fac);
 
 		/* Write the element tree. */
-		Files.createDirectories(tempDir);
+		Files.createDirectories(tempDir); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		Path tempFile = tempDir.resolve("TestFlattening");
-		try (OutputStream fos = Files.newOutputStream(tempFile)) {
+		try (OutputStream fos = Files.newOutputStream(tempFile)) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			DataOutputStream dos = new DataOutputStream(fos);
 			writing.doWrite(writer, dos);
 		}
 
 		/* Read the element tree. */
-		try (InputStream fis = Files.newInputStream(tempFile); DataInputStream dis = new DataInputStream(fis)) {
+		try (InputStream fis = Files.newInputStream(tempFile); DataInputStream dis = new DataInputStream(fis)) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			newTree = reading.doRead(reader, dis);
 		}
 		return newTree;
@@ -161,7 +161,7 @@ public final class ElementTreeSerializationTestHelper implements ArgumentsProvid
 
 	/** Pipe a flattened element tree from writer to reader threads.
 	 */
-	public static Object doPipeTest(StreamWriter streamWriter, StreamReader streamReader) throws IOException {
+	public static Object doPipeTest(StreamWriter streamWriter, StreamReader streamReader) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IElementInfoFlattener fac = getFlattener();
 		Object refried = null;
 		ElementTreeWriter w = new ElementTreeWriter(fac);
@@ -178,7 +178,7 @@ public final class ElementTreeSerializationTestHelper implements ArgumentsProvid
 			Thread thread2 = new Thread(readerThread, "testreader");
 			thread1.start();
 			thread2.start();
-			while (thread2.isAlive()) {
+			while (thread2.isAlive()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					thread2.join();
 				} catch (InterruptedException excp) {
@@ -195,7 +195,7 @@ public final class ElementTreeSerializationTestHelper implements ArgumentsProvid
 	/**
 	 * Tests the reading and writing of element deltas
 	 */
-	private static IElementInfoFlattener getFlattener() {
+	private static IElementInfoFlattener getFlattener() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		return new IElementInfoFlattener() {
 			@Override
 			public void writeElement(Object data, DataOutput output) throws IOException {

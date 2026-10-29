@@ -98,7 +98,7 @@ public class StorageMergerRegistry {
 
 		// collect all IStreamMergers
 		IConfigurationElement[] elements= registry.getConfigurationElementsFor(TeamPlugin.ID, STORAGE_MERGER_EXTENSION_POINT);
-		for (IConfigurationElement element : elements) {
+		for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (STORAGE_MERGER.equals(element.getName())) {
 				register(element, new StorageMergerDescriptor(element));
 			} else if (CONTENT_TYPE_BINDING.equals(element.getName())) {
@@ -114,11 +114,11 @@ public class StorageMergerRegistry {
 		return s;
 	}
 
-	void register(IConfigurationElement element, Object data) {
+	void register(IConfigurationElement element, Object data) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String id = element.getAttribute(ID_ATTRIBUTE);
 		if (id != null) {
 			if (fIdMap == null) {
-				fIdMap = new HashMap<>();
+				fIdMap = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			}
 			fIdMap.put(id, data);
 		}
@@ -126,17 +126,17 @@ public class StorageMergerRegistry {
 		String types = element.getAttribute(EXTENSIONS_ATTRIBUTE);
 		if (types != null) {
 			if (fExtensionMap == null) {
-				fExtensionMap = new HashMap<>();
+				fExtensionMap = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			}
 			StringTokenizer tokenizer = new StringTokenizer(types, ","); //$NON-NLS-1$
-			while (tokenizer.hasMoreElements()) {
+			while (tokenizer.hasMoreElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String extension = tokenizer.nextToken().trim();
 				fExtensionMap.put(normalizeCase(extension), data);
 			}
 		}
 	}
 
-	void createBinding(IConfigurationElement element, String idAttributeName) {
+	void createBinding(IConfigurationElement element, String idAttributeName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String type = element.getAttribute(CONTENT_TYPE_ID_ATTRIBUTE);
 		String id = element.getAttribute(idAttributeName);
 		if (id == null) {
@@ -148,7 +148,7 @@ public class StorageMergerRegistry {
 				IContentType ct = Platform.getContentTypeManager().getContentType(type);
 				if (ct != null) {
 					if (fContentTypeBindings == null) {
-						fContentTypeBindings = new HashMap<>();
+						fContentTypeBindings = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 					}
 					fContentTypeBindings.put(ct, o);
 				} else {
@@ -166,7 +166,7 @@ public class StorageMergerRegistry {
 
 	Object search(IContentType type) {
 		if (fContentTypeBindings != null) {
-			for (; type != null; type = type.getBaseType()) {
+			for (; type != null; type = type.getBaseType()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Object data = fContentTypeBindings.get(type);
 				if (data != null) {
 					return data;

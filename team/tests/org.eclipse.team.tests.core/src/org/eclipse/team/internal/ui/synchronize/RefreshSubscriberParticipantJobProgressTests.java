@@ -82,10 +82,10 @@ public class RefreshSubscriberParticipantJobProgressTests {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void doRefreshDoesNotOverConsumeParentMonitor() throws Exception {
 		ConsumingSubscriber subscriber = new ConsumingSubscriber();
-		SubscriberParticipant participant = new SubscriberParticipant() {
+		SubscriberParticipant participant = new SubscriberParticipant() { //FLLDCIM: MARK — T06  ANONYMOUS
 			@Override
 			public Subscriber getSubscriber() {
 				return subscriber;
@@ -108,6 +108,6 @@ public class RefreshSubscriberParticipantJobProgressTests {
 		// Without the fix, both consumers receive the same monitor and parent.total ~= 2000.
 		// With the fix, doRefresh splits the parent 80/20 and parent.total ~= 1000.
 		assertTrue(parent.total <= 1500,
-				"Parent monitor over-consumed: total=" + parent.total + " (expected <= 1500)");
+				"Parent monitor over-consumed: total=" + parent.total + " (expected <= 1500)"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

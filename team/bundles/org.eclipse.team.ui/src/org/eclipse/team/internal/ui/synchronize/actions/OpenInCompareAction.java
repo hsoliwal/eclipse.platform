@@ -62,7 +62,7 @@ public class OpenInCompareAction extends Action {
 		Utils.initAction(this, "action.openInCompareEditor."); //$NON-NLS-1$
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run() {
 		ISelection selection = configuration.getSite().getSelectionProvider().getSelection();
 		if(selection instanceof IStructuredSelection) {
@@ -71,7 +71,7 @@ public class OpenInCompareAction extends Action {
 			}
 
 			boolean reuseEditorIfPossible = ((IStructuredSelection) selection).size()==1;
-			for (Object obj : ((IStructuredSelection) selection)) {
+			for (Object obj : ((IStructuredSelection) selection)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (obj instanceof SyncInfoModelElement) {
 					SyncInfo info = ((SyncInfoModelElement) obj).getSyncInfo();
 					if (info != null) {
@@ -85,14 +85,14 @@ public class OpenInCompareAction extends Action {
 		}
 	}
 
-	private boolean isOkToRun(ISelection selection) {
+	private boolean isOkToRun(ISelection selection) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// do not open Compare Editor unless all elements have input
 		Object[] elements = ((IStructuredSelection) selection).toArray();
 		ISynchronizeParticipant participant = configuration
 				.getParticipant();
 		// model synchronize
 		if (participant instanceof ModelSynchronizeParticipant msp) {
-			for (Object element : elements) {
+			for (Object element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				// TODO: This is inefficient
 				if (!msp.hasCompareInputFor(element)) {
 					return false;
@@ -101,7 +101,7 @@ public class OpenInCompareAction extends Action {
 		} else {
 			// all files
 			IResource resources[] = Utils.getResources(elements);
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (resource.getType() != IResource.FILE) {
 					// Only supported if all the items are files.
 					return false;
@@ -111,7 +111,7 @@ public class OpenInCompareAction extends Action {
 		return true;
 	}
 
-	public static IEditorInput openCompareEditor(ISynchronizePageConfiguration configuration, Object object, boolean keepFocus, boolean reuseEditorIfPossible) {
+	public static IEditorInput openCompareEditor(ISynchronizePageConfiguration configuration, Object object, boolean keepFocus, boolean reuseEditorIfPossible) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isNotNull(object);
 		Assert.isNotNull(configuration);
 		ISynchronizeParticipant participant = configuration.getParticipant();
@@ -142,11 +142,11 @@ public class OpenInCompareAction extends Action {
 		return object instanceof ApplyPatchSubscriberMergeContext;
 	}
 
-	private static boolean isOkToOpen(final ISynchronizePageSite site, final ISynchronizeParticipant participant, final ICompareInput input) {
+	private static boolean isOkToOpen(final ISynchronizePageSite site, final ISynchronizeParticipant participant, final ICompareInput input) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (participant instanceof final ModelSynchronizeParticipant msp && input instanceof ISynchronizationCompareInput) {
 			final boolean[] result = new boolean[] { false };
 			try {
-				PlatformUI.getWorkbench().getProgressService().run(true, true, monitor -> {
+				PlatformUI.getWorkbench().getProgressService().run(true, true, monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 					try {
 						result[0] = msp.checkForBufferChange(site.getShell(), (ISynchronizationCompareInput) input,
 								true, monitor);
@@ -219,7 +219,7 @@ public class OpenInCompareAction extends Action {
 		openCompareEditor(input, page, true);
 	}
 
-	public static void openCompareEditor(CompareEditorInput input, IWorkbenchPage page, boolean reuseEditorIfPossible) {
+	public static void openCompareEditor(CompareEditorInput input, IWorkbenchPage page, boolean reuseEditorIfPossible) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (page == null || input == null) {
 			return;
 		}
@@ -253,7 +253,7 @@ public class OpenInCompareAction extends Action {
 	public static IEditorPart findOpenCompareEditor(IWorkbenchPartSite site, IResource resource) {
 		IWorkbenchPage page = site.getPage();
 		IEditorReference[] editorRefs = page.getEditorReferences();
-		for (IEditorReference editorRef : editorRefs) {
+		for (IEditorReference editorRef : editorRefs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final IEditorPart part = editorRef.getEditor(false /* don't restore editor */);
 			if(part != null) {
 				IEditorInput input = part.getEditorInput();
@@ -275,14 +275,14 @@ public class OpenInCompareAction extends Action {
 	 * @param object the object to use to find the compare editor
 	 * @return an editor handle if found and <code>null</code> otherwise
 	 */
-	public static IEditorPart findOpenCompareEditor(IWorkbenchPartSite site, Object object, ISynchronizeParticipant participant) {
+	public static IEditorPart findOpenCompareEditor(IWorkbenchPartSite site, Object object, ISynchronizeParticipant participant) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (object instanceof SyncInfoModelElement element) {
 			SyncInfo info = element.getSyncInfo();
 			return findOpenCompareEditor(site, info.getLocal());
 		}
 		IWorkbenchPage page = site.getPage();
 		IEditorReference[] editorRefs = page.getEditorReferences();
-		for (IEditorReference editorRef : editorRefs) {
+		for (IEditorReference editorRef : editorRefs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final IEditorPart part = editorRef.getEditor(false /* don't restore editor */);
 			if(part != null) {
 				IEditorInput input = part.getEditorInput();

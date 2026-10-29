@@ -81,16 +81,16 @@ public class ContributedClasspathEntriesEntry extends AbstractRuntimeClasspathEn
 		return TYPE_ID;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IRuntimeClasspathEntry[] getRuntimeClasspathEntries(ILaunchConfiguration configuration) throws CoreException {
 		boolean separateVM = AntLaunchingUtil.isSeparateJREAntBuild(configuration);
 		boolean setInputHandler = configuration.getAttribute(AntLaunching.SET_INPUTHANDLER, true);
 		AntCorePreferences prefs = AntCorePlugin.getPlugin().getPreferences();
 		IAntClasspathEntry[] antClasspathEntries = prefs.getContributedClasspathEntries();
 		IAntClasspathEntry[] userEntries = prefs.getAdditionalClasspathEntries();
-		List<IRuntimeClasspathEntry> rtes = new ArrayList<>(antClasspathEntries.length + userEntries.length);
+		List<IRuntimeClasspathEntry> rtes = new ArrayList<>(antClasspathEntries.length + userEntries.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IAntClasspathEntry entry;
-		for (IAntClasspathEntry antClasspathEntry : antClasspathEntries) {
+		for (IAntClasspathEntry antClasspathEntry : antClasspathEntries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			entry = antClasspathEntry;
 			if (!separateVM || (separateVM && !entry.isEclipseRuntimeRequired())) {
 				rtes.add(JavaRuntime.newStringVariableClasspathEntry(entry.getLabel()));
@@ -98,7 +98,7 @@ public class ContributedClasspathEntriesEntry extends AbstractRuntimeClasspathEn
 		}
 		boolean haveToolsEntry = false;
 		String path;
-		for (IAntClasspathEntry userEntry : userEntries) {
+		for (IAntClasspathEntry userEntry : userEntries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			entry = userEntry;
 			path = entry.getLabel();
 			IPath toolsPath = IPath.fromOSString(path);
@@ -122,7 +122,7 @@ public class ContributedClasspathEntriesEntry extends AbstractRuntimeClasspathEn
 		return rtes.toArray(new IRuntimeClasspathEntry[rtes.size()]);
 	}
 
-	private void addToolsJar(ILaunchConfiguration configuration, List<IRuntimeClasspathEntry> rtes, String path) {
+	private void addToolsJar(ILaunchConfiguration configuration, List<IRuntimeClasspathEntry> rtes, String path) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IRuntimeClasspathEntry tools = getToolsJar(configuration);
 		if (tools == null) {
 			if (path != null) {
@@ -152,14 +152,14 @@ public class ContributedClasspathEntriesEntry extends AbstractRuntimeClasspathEn
 		}
 	}
 
-	private void addSWTJars(List<IRuntimeClasspathEntry> rtes) {
+	private void addSWTJars(List<IRuntimeClasspathEntry> rtes) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fgSWTEntries == null) {
-			fgSWTEntries = new ArrayList<>();
+			fgSWTEntries = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			Bundle bundle = Platform.getBundle("org.eclipse.swt"); //$NON-NLS-1$
 			BundleWiring wiring = bundle.adapt(BundleWiring.class);
 			List<BundleWire> fragmentWires = wiring == null ? Collections.<BundleWire> emptyList()
 					: wiring.getProvidedWires(HostNamespace.HOST_NAMESPACE);
-			for (BundleWire fragmentWire : fragmentWires) {
+			for (BundleWire fragmentWire : fragmentWires) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Bundle fragmentBundle = fragmentWire.getRequirer().getBundle();
 				URL bundleURL;
 				try {
@@ -182,11 +182,11 @@ public class ContributedClasspathEntriesEntry extends AbstractRuntimeClasspathEn
 					fgSWTEntries.add(JavaRuntime.newArchiveRuntimeClasspathEntry(fragmentPath));
 				} else { // folder
 					File bundleFolder = fragmentPath.toFile();
-					if (!bundleFolder.isDirectory()) {
+					if (!bundleFolder.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						continue;
 					}
-					String[] names = bundleFolder.list((unused, name) -> name.endsWith(".jar")); //$NON-NLS-1$
-					for (String jarName : names) {
+					String[] names = bundleFolder.list((unused, name) -> name.endsWith(".jar")); //$NON-NLS-1$ //FLLDCIM: MARK — M31 M3FILE_IO CALL
+					for (String jarName : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						fgSWTEntries.add(JavaRuntime.newArchiveRuntimeClasspathEntry(fragmentPath.append(jarName)));
 					}
 				}
@@ -195,7 +195,7 @@ public class ContributedClasspathEntriesEntry extends AbstractRuntimeClasspathEn
 		rtes.addAll(fgSWTEntries);
 	}
 
-	private String resolveFileFromUrl(String urlFileName) throws MalformedURLException {
+	private String resolveFileFromUrl(String urlFileName) throws MalformedURLException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!urlFileName.startsWith(IAntCoreConstants.FILE_PROTOCOL)) {
 			return urlFileName;
 		}

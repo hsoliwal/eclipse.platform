@@ -136,18 +136,18 @@ public class ActiveChangeSet extends DiffChangeSet {
 			prefs.put(CTX_COMMENT, comment);
 		}
 		if (!isEmpty()) {
-			StringBuilder buffer = new StringBuilder();
+			StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 			IResource[] resources = getResources();
-			for (IResource resource : resources) {
-				buffer.append(resource.getFullPath().toString());
-				buffer.append('\n');
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				buffer.append(resource.getFullPath().toString()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				buffer.append('\n'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 			prefs.put(CTX_RESOURCES, buffer.toString());
 		}
 		prefs.putBoolean(CTX_USER_CREATED, isUserCreated());
 	}
 
-	public void init(Preferences prefs) {
+	public void init(Preferences prefs) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		setName(prefs.get(CTX_TITLE, "")); //$NON-NLS-1$
 		comment = prefs.get(CTX_COMMENT, null);
 		String resourcePaths = prefs.get(CTX_RESOURCES, null);
@@ -157,7 +157,7 @@ public class ActiveChangeSet extends DiffChangeSet {
 				tree.beginInput();
 				IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 				StringTokenizer tokenizer = new StringTokenizer(resourcePaths, "\n"); //$NON-NLS-1$
-				while (tokenizer.hasMoreTokens()) {
+				while (tokenizer.hasMoreTokens()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String next = tokenizer.nextToken();
 					if (next.trim().length() > 0) {
 						IResource resource = getResource(root, next);
@@ -178,7 +178,7 @@ public class ActiveChangeSet extends DiffChangeSet {
 		userCreated = prefs.getBoolean(CTX_USER_CREATED, true);
 	}
 
-	private IResource getResource(IWorkspaceRoot root, String next) {
+	private IResource getResource(IWorkspaceRoot root, String next) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource resource = root.findMember(next);
 		if (resource == null) {
 			// May be an outgoing deletion
@@ -204,8 +204,8 @@ public class ActiveChangeSet extends DiffChangeSet {
 	 * @param resources the resources to add.
 	 */
 	public void add(IResource[] resources) throws CoreException {
-		List<IDiff> toAdd = new ArrayList<>();
-		for (IResource resource : resources) {
+		List<IDiff> toAdd = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IDiff diff = getManager().getDiff(resource);
 			if (diff != null) {
 				toAdd.add(diff);

@@ -86,7 +86,7 @@ public class ProjectPathVariableManager implements IPathVariableManager, IManage
 	/**
 	 * @see org.eclipse.core.resources.IPathVariableManager#getPathVariableNames()
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String[] getPathVariableNames() {
 		List<String> result = new LinkedList<>();
 		HashMap<String, VariableDescription> map;
@@ -95,10 +95,10 @@ public class ProjectPathVariableManager implements IPathVariableManager, IManage
 		} catch (CoreException e) {
 			return new String[0];
 		}
-		for (Descriptor variableProvider : variableProviders) {
+		for (Descriptor variableProvider : variableProviders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String[] variableHints = variableProvider.getVariableNames(variableProvider.getName(), resource);
 			if (variableHints != null && variableHints.length > 0) {
-				for (int k = 0; k < variableHints.length; k++) {
+				for (int k = 0; k < variableHints.length; k++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					result.add(variableProvider.getVariableNames(variableProvider.getName(), resource)[k]);
 				}
 			}
@@ -129,7 +129,7 @@ public class ProjectPathVariableManager implements IPathVariableManager, IManage
 	 *
 	 * @see org.eclipse.core.resources.IPathVariableManager#getURIValue(String)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public URI getURIValue(String varName) {
 		String value = internalGetValue(varName);
 		if (value != null) {
@@ -155,7 +155,7 @@ public class ProjectPathVariableManager implements IPathVariableManager, IManage
 		return getWorkspaceManager().getURIValue(varName);
 	}
 
-	public String internalGetValue(String varName) {
+	public String internalGetValue(String varName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		HashMap<String, VariableDescription> map;
 		try {
 			map = ((ProjectDescription) resource.getProject().getDescription()).getVariables();
@@ -173,12 +173,12 @@ public class ProjectPathVariableManager implements IPathVariableManager, IManage
 		} else {
 			name = varName;
 		}
-		for (Descriptor variableProvider : variableProviders) {
+		for (Descriptor variableProvider : variableProviders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (variableProvider.getName().equals(name)) {
 				return variableProvider.getValue(varName, resource);
 			}
 		}
-		for (Descriptor variableProvider : variableProviders) {
+		for (Descriptor variableProvider : variableProviders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (name.startsWith(variableProvider.getName())) {
 				return variableProvider.getValue(varName, resource);
 			}
@@ -189,9 +189,9 @@ public class ProjectPathVariableManager implements IPathVariableManager, IManage
 	/**
 	 * @see org.eclipse.core.resources.IPathVariableManager#isDefined(String)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean isDefined(String varName) {
-		for (Descriptor variableProvider : variableProviders) {
+		for (Descriptor variableProvider : variableProviders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (varName.startsWith(variableProvider.getName())) {
 				return true;
 			}
@@ -200,7 +200,7 @@ public class ProjectPathVariableManager implements IPathVariableManager, IManage
 		try {
 			HashMap<String, VariableDescription> map = ((ProjectDescription) resource.getProject().getDescription()).getVariables();
 			if (map != null) {
-				for (String name : map.keySet()) {
+				for (String name : map.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (name.equals(varName)) {
 						return true;
 					}
@@ -248,7 +248,7 @@ public class ProjectPathVariableManager implements IPathVariableManager, IManage
 		return null;
 	}
 
-	public String resolveVariable(String value, LinkedList<String> variableStack) {
+	public String resolveVariable(String value, LinkedList<String> variableStack) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (variableStack == null) {
 			variableStack = new LinkedList<>();
 		}
@@ -263,7 +263,7 @@ public class ProjectPathVariableManager implements IPathVariableManager, IManage
 			value = tmp;
 		}
 
-		while (true) {
+		while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String stringValue;
 			try {
 				URI uri = URI.create(value);
@@ -294,7 +294,7 @@ public class ProjectPathVariableManager implements IPathVariableManager, IManage
 					}
 				}
 				if (stringValue.length() > endIndex) {
-					stringValue = stringValue.substring(0, index) + resolvedMacro + stringValue.substring(endIndex + 1);
+					stringValue = stringValue.substring(0, index) + resolvedMacro + stringValue.substring(endIndex + 1); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				} else {
 					stringValue = resolvedMacro;
 				}
@@ -306,7 +306,7 @@ public class ProjectPathVariableManager implements IPathVariableManager, IManage
 		return value;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public URI resolveURI(URI uri) {
 		if (uri == null || uri.isAbsolute()) {
 			return uri;
@@ -355,7 +355,7 @@ public class ProjectPathVariableManager implements IPathVariableManager, IManage
 	 * @see org.eclipse.core.resources.IPathVariableManager#setValue(String,
 	 *      IPath)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setURIValue(String varName, URI newValue) throws CoreException {
 		checkIsValidName(varName);
 		checkIsValidValue(newValue);
@@ -381,7 +381,7 @@ public class ProjectPathVariableManager implements IPathVariableManager, IManage
 				return;
 			}
 
-			for (Descriptor variableProvider : variableProviders) {
+			for (Descriptor variableProvider : variableProviders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				//				if (variableProviders[i].getName().equals(varName))
 				//					return;
 
@@ -440,7 +440,7 @@ public class ProjectPathVariableManager implements IPathVariableManager, IManage
 	/**
 	 * @see org.eclipse.core.resources.IPathVariableManager#validateName(String)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus validateName(String name) {
 		String message = null;
 		if (name.length() == 0) {
@@ -454,7 +454,7 @@ public class ProjectPathVariableManager implements IPathVariableManager, IManage
 			return new ResourceStatus(IResourceStatus.INVALID_VALUE, null, message);
 		}
 
-		for (int i = 1; i < name.length(); i++) {
+		for (int i = 1; i < name.length(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char following = name.charAt(i);
 			if (Character.isWhitespace(following)) {
 				return new ResourceStatus(IResourceStatus.INVALID_VALUE, null, Messages.pathvar_whitespace);

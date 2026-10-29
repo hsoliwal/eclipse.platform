@@ -87,51 +87,51 @@ public class ModelSynchronizeParticipant extends
 	 * <code>null</code> or <code>ALL_MODEL_PROVIDERS_ACTIVE</code> is
 	 * returned, all model providers are considered active and are visible.
 	 */
-	public static final String P_VISIBLE_MODEL_PROVIDER = TeamUIPlugin.ID + ".activeModelProvider"; //$NON-NLS-1$
+	public static final String P_VISIBLE_MODEL_PROVIDER = TeamUIPlugin.ID + ".activeModelProvider"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Constant used with the <code>P_ACTIVE_MODEL_PROVIDER</code> property to indicate
 	 * that all enabled model providers are active.
 	 */
-	public static final String ALL_MODEL_PROVIDERS_VISIBLE = TeamUIPlugin.ID + ".activeModelProvider"; //$NON-NLS-1$
+	public static final String ALL_MODEL_PROVIDERS_VISIBLE = TeamUIPlugin.ID + ".activeModelProvider"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant used during property change notification to indicate
 	 * that the enabled model providers for this participant have changed.
 	 */
-	public static final String PROP_ENABLED_MODEL_PROVIDERS = TeamUIPlugin.ID + ".ENABLED_MODEL_PROVIDERS"; //$NON-NLS-1$
+	public static final String PROP_ENABLED_MODEL_PROVIDERS = TeamUIPlugin.ID + ".ENABLED_MODEL_PROVIDERS"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant used during property change notification to indicate
 	 * that the active model of this participant has changed.
 	 */
-	public static final String PROP_ACTIVE_SAVEABLE = TeamUIPlugin.ID + ".ACTIVE_SAVEABLE"; //$NON-NLS-1$
+	public static final String PROP_ACTIVE_SAVEABLE = TeamUIPlugin.ID + ".ACTIVE_SAVEABLE"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Property constant used during property change notification to indicate
 	 * that the dirty state for the active saveable model of this participant has changed.
 	 */
-	public static final String PROP_DIRTY = TeamUIPlugin.ID + ".DIRTY"; //$NON-NLS-1$
+	public static final String PROP_DIRTY = TeamUIPlugin.ID + ".DIRTY"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/*
 	 * Key for settings in memento
 	 */
-	private static final String CTX_PARTICIPANT_SETTINGS = TeamUIPlugin.ID + ".MODEL_PARTICIPANT_SETTINGS"; //$NON-NLS-1$
+	private static final String CTX_PARTICIPANT_SETTINGS = TeamUIPlugin.ID + ".MODEL_PARTICIPANT_SETTINGS"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/*
 	 * Key for schedule in memento
 	 */
-	private static final String CTX_REFRESH_SCHEDULE_SETTINGS = TeamUIPlugin.ID + ".MODEL_PARTICIPANT_REFRESH_SCHEDULE"; //$NON-NLS-1$
+	private static final String CTX_REFRESH_SCHEDULE_SETTINGS = TeamUIPlugin.ID + ".MODEL_PARTICIPANT_REFRESH_SCHEDULE"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/*
 	 * Key for description in memento
 	 */
-	private static final String CTX_DESCRIPTION = TeamUIPlugin.ID + ".MODEL_PARTICIPANT_DESCRIPTION"; //$NON-NLS-1$
+	private static final String CTX_DESCRIPTION = TeamUIPlugin.ID + ".MODEL_PARTICIPANT_DESCRIPTION"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/*
 	 * Constants used to save and restore this scope
 	 */
-	private static final String CTX_PARTICIPANT_MAPPINGS = TeamUIPlugin.ID + ".MODEL_PARTICIPANT_MAPPINGS"; //$NON-NLS-1$
+	private static final String CTX_PARTICIPANT_MAPPINGS = TeamUIPlugin.ID + ".MODEL_PARTICIPANT_MAPPINGS"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	private static final String CTX_MODEL_PROVIDER_ID = "modelProviderId"; //$NON-NLS-1$
 	private static final String CTX_MODEL_PROVIDER_MAPPINGS = "mappings"; //$NON-NLS-1$
 	private static final String CTX_STARTUP_ACTION = "startupAction"; //$NON-NLS-1$
@@ -148,7 +148,7 @@ public class ModelSynchronizeParticipant extends
 		}
 	};
 
-	private final IPropertyListener dirtyListener = (source, propId) -> {
+	private final IPropertyListener dirtyListener = (source, propId) -> { //FLLDCIM: MARK — T06  LAMBDA
 		if (source instanceof SaveableComparison scm && propId == SaveableComparison.PROP_DIRTY) {
 			boolean isDirty = scm.isDirty();
 			firePropertyChange(ModelSynchronizeParticipant.this, PROP_DIRTY, Boolean.valueOf(!isDirty), Boolean.valueOf(isDirty));
@@ -407,7 +407,7 @@ public class ModelSynchronizeParticipant extends
 	 * @return the long task name
 	 * @since 3.1
 	 */
-	protected String getLongTaskName(ResourceMapping[] mappings) {
+	protected String getLongTaskName(ResourceMapping[] mappings) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (mappings == null) {
 			// If the mappings are null, assume we are refreshing everything
 			mappings = getContext().getScope().getMappings();
@@ -426,7 +426,7 @@ public class ModelSynchronizeParticipant extends
 				Integer.toString(mappingCount));
 	}
 
-	private IRefreshable createRefreshable() {
+	private IRefreshable createRefreshable() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		return new IRefreshable() {
 
 			@Override
@@ -482,7 +482,7 @@ public class ModelSynchronizeParticipant extends
 	private void saveMappings(IMemento settings) {
 		ISynchronizationScope inputScope = getContext().getScope().asInputScope();
 		ModelProvider[] providers = inputScope.getModelProviders();
-		for (ModelProvider provider : providers) {
+		for (ModelProvider provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ISynchronizationCompareAdapter adapter = Utils.getCompareAdapter(provider);
 			if (adapter != null) {
 				IMemento child = settings.createChild(CTX_PARTICIPANT_MAPPINGS);
@@ -493,7 +493,7 @@ public class ModelSynchronizeParticipant extends
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void init(String secondaryId, IMemento memento) throws PartInitException {
 		super.init(secondaryId, memento);
 		if(memento != null) {
@@ -518,10 +518,10 @@ public class ModelSynchronizeParticipant extends
 		}
 	}
 
-	private ResourceMapping[] loadMappings(IMemento settings) throws PartInitException {
-		List<ResourceMapping> result = new ArrayList<>();
+	private ResourceMapping[] loadMappings(IMemento settings) throws PartInitException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<ResourceMapping> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IMemento[] children = settings.getChildren(CTX_PARTICIPANT_MAPPINGS);
-		for (IMemento memento : children) {
+		for (IMemento memento : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String id = memento.getString(CTX_MODEL_PROVIDER_ID);
 			if (id != null) {
 				IModelProviderDescriptor desc = ModelProvider.getModelProviderDescriptor(id);
@@ -603,7 +603,7 @@ public class ModelSynchronizeParticipant extends
 	 * Set the active saveable of this participant.
 	 * @param activeSaveable the active saveable (may be <code>null</code>)
 	 */
-	public void setActiveSaveable(SaveableComparison activeSaveable) {
+	public void setActiveSaveable(SaveableComparison activeSaveable) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean wasDirty = false;
 		SaveableComparison oldModel = this.activeSaveable;
 		if (oldModel != null) {
@@ -614,7 +614,7 @@ public class ModelSynchronizeParticipant extends
 		firePropertyChange(this, PROP_ACTIVE_SAVEABLE, oldModel, activeSaveable);
 		boolean isDirty = false;
 		if (activeSaveable != null) {
-			activeSaveable.addPropertyListener(dirtyListener);
+			activeSaveable.addPropertyListener(dirtyListener); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 			isDirty = activeSaveable.isDirty();
 		}
 		if (isDirty != wasDirty) {
@@ -657,15 +657,15 @@ public class ModelSynchronizeParticipant extends
 		return getContext().getScope().getModelProviders();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public PreferencePage[] getPreferencePages() {
-		List<PreferencePage> pages = new ArrayList<>();
+		List<PreferencePage> pages = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		SyncViewerPreferencePage syncViewerPreferencePage = new SyncViewerPreferencePage();
 		syncViewerPreferencePage.setIncludeDefaultLayout(false);
 		pages.add(syncViewerPreferencePage);
 		pages.add(new ModelEnablementPreferencePage());
 		ITeamContentProviderDescriptor[] descriptors = TeamUI.getTeamContentProviderManager().getDescriptors();
-		for (ITeamContentProviderDescriptor descriptor : descriptors) {
+		for (ITeamContentProviderDescriptor descriptor : descriptors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isIncluded(descriptor)) {
 				try {
 					PreferencePage page = (PreferencePage)descriptor.createPreferencePage();
@@ -685,7 +685,7 @@ public class ModelSynchronizeParticipant extends
 
 	private boolean isIncluded(ITeamContentProviderDescriptor descriptor) {
 		ModelProvider[] providers = getEnabledModelProviders();
-		for (ModelProvider provider : providers) {
+		for (ModelProvider provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (provider.getId().equals(descriptor.getModelProviderId())) {
 				return true;
 			}

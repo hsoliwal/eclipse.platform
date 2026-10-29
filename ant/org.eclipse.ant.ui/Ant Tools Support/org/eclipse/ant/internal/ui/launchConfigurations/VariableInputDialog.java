@@ -42,7 +42,7 @@ public class VariableInputDialog extends Dialog {
 		setShellStyle(SWT.RESIZE | getShellStyle());
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createDialogArea(Composite parent) {
 		Composite inner = (Composite) super.createDialogArea(parent);
 		((GridLayout) inner.getLayout()).numColumns = 2;
@@ -61,7 +61,7 @@ public class VariableInputDialog extends Dialog {
 
 		Button button = new Button(inner, SWT.PUSH);
 		button.setText(AntLaunchConfigurationMessages.AddVariableStringAction_3);
-		button.addSelectionListener(new SelectionAdapter() {
+		button.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent se) {
 				getVariable();

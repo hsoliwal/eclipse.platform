@@ -49,7 +49,7 @@ import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 /**
  * Resource label provider that can decorate using sync state.
  */
-public class ResourceModelLabelProvider extends
+public class ResourceModelLabelProvider extends //FLLDCIM: MARK — T07  IMPLEMENTS
 		SynchronizationLabelProvider implements IFontProvider, IResourceChangeListener, ITreePathLabelProvider {
 
 	public static final FastDiffFilter CONFLICT_FILTER = new FastDiffFilter() {
@@ -159,18 +159,18 @@ public class ResourceModelLabelProvider extends
 		return null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void resourceChanged(IResourceChangeEvent event) {
 		String[] markerTypes = new String[] {IMarker.PROBLEM};
-		final Set<IResource> handledResources = new HashSet<>();
+		final Set<IResource> handledResources = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 		// Accumulate all distinct resources that have had problem marker
 		// changes
-		for (String markerType : markerTypes) {
+		for (String markerType : markerTypes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IMarkerDelta[] markerDeltas = event.findMarkerDeltas(markerType, true);
-			for (IMarkerDelta delta : markerDeltas) {
+			for (IMarkerDelta delta : markerDeltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource resource = delta.getResource();
-				while (resource != null && resource.getType() != IResource.ROOT && !handledResources.contains(resource)) {
+				while (resource != null && resource.getType() != IResource.ROOT && !handledResources.contains(resource)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					handledResources.add(resource);
 					resource = resource.getParent();
 				}

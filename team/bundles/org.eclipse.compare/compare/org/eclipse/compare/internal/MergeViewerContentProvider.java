@@ -125,7 +125,7 @@ public class MergeViewerContentProvider implements IMergeViewerContentProvider {
 		return null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean isLeftEditable(Object element) {
 		if (hasError()) {
 			return false;
@@ -145,7 +145,7 @@ public class MergeViewerContentProvider implements IMergeViewerContentProvider {
 		return false;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void saveLeftContent(Object element, byte[] bytes) {
 		if (element instanceof ICompareInput node) {
 			if (bytes != null) {
@@ -197,7 +197,7 @@ public class MergeViewerContentProvider implements IMergeViewerContentProvider {
 		return null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean isRightEditable(Object element) {
 		if (hasError()) {
 			return false;
@@ -217,7 +217,7 @@ public class MergeViewerContentProvider implements IMergeViewerContentProvider {
 		return false;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void saveRightContent(Object element, byte[] bytes) {
 		if (element instanceof ICompareInput node) {
 			if (bytes != null) {

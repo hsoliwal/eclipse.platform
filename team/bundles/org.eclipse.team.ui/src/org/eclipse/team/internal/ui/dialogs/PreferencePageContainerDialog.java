@@ -89,7 +89,7 @@ public class PreferencePageContainerDialog extends TrayDialog
 	 */
 	private final Point fMinimumPageSize = new Point(200,200);
 	private CTabFolder tabFolder;
-	private final Map<CTabItem, PreferencePage> pageMap = new HashMap<>();
+	private final Map<CTabItem, PreferencePage> pageMap = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/**
 	 * Must declare our own images as the JFaceResource images will not be created unless
@@ -110,7 +110,7 @@ public class PreferencePageContainerDialog extends TrayDialog
 
 	@Override
 	protected void okPressed() {
-		for (PreferencePage page : pages) {
+		for (PreferencePage page : pages) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			page.performOk();
 		}
 
@@ -130,7 +130,7 @@ public class PreferencePageContainerDialog extends TrayDialog
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = (Composite)super.createDialogArea(parent);
 		((GridLayout) composite.getLayout()).numColumns = 1;
@@ -152,17 +152,17 @@ public class PreferencePageContainerDialog extends TrayDialog
 		setTitle(TeamUIMessages.PreferencePageContainerDialog_6);
 		applyDialogFont(parent);
 
-		composite.addHelpListener(unused -> currentPage.performHelp());
+		composite.addHelpListener(unused -> currentPage.performHelp()); //FLLDCIM: MARK — T14 HELP CALL
 
 		return composite;
 	}
 
-	private void createMultiplePageArea(Composite composite) {
+	private void createMultiplePageArea(Composite composite) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// create a tab folder for the page
 		tabFolder = new CTabFolder(composite, SWT.NONE);
 		tabFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		for (PreferencePage page : pages) {
+		for (PreferencePage page : pages) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// text decoration options
 			CTabItem tabItem = new CTabItem(tabFolder, SWT.NONE);
 			tabItem.setText(page.getTitle());//
@@ -171,7 +171,7 @@ public class PreferencePageContainerDialog extends TrayDialog
 		}
 		tabFolder.setSelection(0);
 
-		tabFolder.addSelectionListener(new SelectionAdapter() {
+		tabFolder.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				updatePageSelection();
@@ -236,7 +236,7 @@ public class PreferencePageContainerDialog extends TrayDialog
 	 * @param parent the SWT parent for the title area composite
 	 * @return the created title area composite
 	 */
-	private Composite createMessageArea(Composite parent) {
+	private Composite createMessageArea(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// Create the title area which will contain
 		// a title, message, and image.
@@ -265,16 +265,16 @@ public class PreferencePageContainerDialog extends TrayDialog
 		fMessageLabel.setText(" ");//$NON-NLS-1$
 		fMessageLabel.setFont(JFaceResources.getBannerFont());
 
-		final IPropertyChangeListener fontListener = event -> {
+		final IPropertyChangeListener fontListener = event -> { //FLLDCIM: MARK — T06  LAMBDA
 			if(JFaceResources.BANNER_FONT.equals(event.getProperty()) ||
 				JFaceResources.DIALOG_FONT.equals(event.getProperty())) {
 				updateMessage();
 			}
 		};
 
-		fMessageLabel.addDisposeListener(unused -> JFaceResources.getFontRegistry().removeListener(fontListener));
+		fMessageLabel.addDisposeListener(unused -> JFaceResources.getFontRegistry().removeListener(fontListener)); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 
-		JFaceResources.getFontRegistry().addListener(fontListener);
+		JFaceResources.getFontRegistry().addListener(fontListener); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 
 		GridData gd = new GridData(GridData.FILL_BOTH);
 		fMessageLabel.setLayoutData(gd);
@@ -320,7 +320,7 @@ public class PreferencePageContainerDialog extends TrayDialog
 	 *
 	 * @param errorMessage the errorMessage to display or <code>null</code>
 	 */
-	public void setErrorMessage(String errorMessage) {
+	public void setErrorMessage(String errorMessage) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (errorMessage == null) {
 			if (fMessageLabel.getImage() != null) {
 				// we were previously showing an error
@@ -367,7 +367,7 @@ public class PreferencePageContainerDialog extends TrayDialog
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void updateMessage() {
 		if (currentPage != null) {
 			String pageMessage = currentPage.getMessage();
@@ -387,7 +387,7 @@ public class PreferencePageContainerDialog extends TrayDialog
 				} else {
 					//remove mnemonic see bug 75886
 					String title = currentPage.getTitle();
-					title = title.replaceAll("&", "");//$NON-NLS-1$ //$NON-NLS-2$
+					title = title.replaceAll("&", "");//$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 					setMessage(title);
 				}
 			} else {
@@ -406,7 +406,7 @@ public class PreferencePageContainerDialog extends TrayDialog
 	public void updateButtons() {
 		if (fOkButton != null) {
 			boolean isValid = true;
-			for (PreferencePage page : pages) {
+			for (PreferencePage page : pages) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!page.isValid()) {
 					isValid = false;
 					break;
@@ -440,7 +440,7 @@ public class PreferencePageContainerDialog extends TrayDialog
 	 */
 	protected void handleSave() {
 		// Save now in case tbe workbench does not shutdown cleanly
-		for (PreferencePage page : pages) {
+		for (PreferencePage page : pages) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IPreferenceStore store = page.getPreferenceStore();
 			if (store != null
 					&& store.needsSaving()
@@ -472,7 +472,7 @@ public class PreferencePageContainerDialog extends TrayDialog
 
 	private void firePageChanged(final PageChangedEvent event) {
 		Object[] listeners = pageChangedListeners.getListeners();
-		for (Object listener : listeners) {
+		for (Object listener : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final IPageChangedListener l = (IPageChangedListener) listener;
 			SafeRunnable.run(new SafeRunnable() {
 				@Override

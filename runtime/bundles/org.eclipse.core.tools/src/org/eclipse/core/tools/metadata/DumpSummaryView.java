@@ -43,7 +43,7 @@ public class DumpSummaryView extends SpyView {
 	 * @see org.eclipse.ui.IWorkbenchPart#createPartControl
 	 * (org.eclipse.swt.widgets.Composite)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createPartControl(final Composite parent) {
 
 		// creates a read-only text viewer
@@ -73,7 +73,7 @@ public class DumpSummaryView extends SpyView {
 	 *
 	 * @param dump a dump object describing the result of a dumping process.
 	 */
-	void load(IDump dump) {
+	void load(IDump dump) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// now is safe to get the part title
 		if (initialTitle == null) {
@@ -82,20 +82,20 @@ public class DumpSummaryView extends SpyView {
 
 		// sets title and tool tip
 		File file = dump.getFile();
-		this.setContentDescription(initialTitle + " : " + file.getName()); //$NON-NLS-1$
-		this.setTitleToolTip("Dump summary for file " + file.getAbsolutePath()); //$NON-NLS-1$
+		this.setContentDescription(initialTitle + " : " + file.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		this.setTitleToolTip("Dump summary for file " + file.getAbsolutePath()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		// generates text to be shown on this view
-		StringBuilder output = new StringBuilder();
+		StringBuilder output = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		if (dump.isFailed()) {
-			output.append(dump.getFailureReason().toString());
+			output.append(dump.getFailureReason().toString()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		} else {
-			output.append("No errors. "); //$NON-NLS-1$
+			output.append("No errors. "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		output.append(dump.getOffset());
-		output.append('/');
-		output.append(dump.getFile().length());
-		output.append(" byte(s) read"); //$NON-NLS-1$
+		output.append(dump.getOffset()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		output.append('/'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		output.append(dump.getFile().length()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		output.append(" byte(s) read"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 		// updates the view contents
 		viewer.getDocument().set(output.toString());

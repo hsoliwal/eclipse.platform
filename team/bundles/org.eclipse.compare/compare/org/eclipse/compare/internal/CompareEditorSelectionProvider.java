@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Widget;
  */
 public class CompareEditorSelectionProvider implements IPostSelectionProvider {
 
-	private class InternalListener implements ISelectionChangedListener, FocusListener {
+	private class InternalListener implements ISelectionChangedListener, FocusListener { //FLLDCIM: MARK — T04  IMPLEMENTS
 		@Override
 		public void selectionChanged(SelectionChangedEvent event) {
 			doSelectionChanged(event);
@@ -58,7 +58,7 @@ public class CompareEditorSelectionProvider implements IPostSelectionProvider {
 		}
 	}
 
-	private class InternalPostSelectionListener implements ISelectionChangedListener {
+	private class InternalPostSelectionListener implements ISelectionChangedListener { //FLLDCIM: MARK — T04  IMPLEMENTS
 		@Override
 		public void selectionChanged(SelectionChangedEvent event) {
 			doPostSelectionChanged(event);
@@ -88,16 +88,16 @@ public class CompareEditorSelectionProvider implements IPostSelectionProvider {
 		InternalListener listener= new InternalListener();
 		fViewerInFocus= viewerInFocus;
 
-		for (TextViewer viewer : fViewers) {
-			viewer.addSelectionChangedListener(listener);
-			viewer.addPostSelectionChangedListener(new InternalPostSelectionListener());
+		for (TextViewer viewer : fViewers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			viewer.addSelectionChangedListener(listener); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
+			viewer.addPostSelectionChangedListener(new InternalPostSelectionListener()); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 			StyledText textWidget = viewer.getTextWidget();
-			textWidget.addFocusListener(listener);
+			textWidget.addFocusListener(listener); //FLLDCIM: MARK — T15 FOCUS CALL
 		}
 	}
 
 	private void doFocusChanged(Widget control) {
-		for (TextViewer viewer : fViewers) {
+		for (TextViewer viewer : fViewers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (viewer.getTextWidget() == control) {
 				propagateFocusChanged(viewer);
 				return;
@@ -131,7 +131,7 @@ public class CompareEditorSelectionProvider implements IPostSelectionProvider {
 		if (fSelectionChangedListeners != null) {
 			SelectionChangedEvent event= new SelectionChangedEvent(this, getSelection());
 
-			for (ISelectionChangedListener listener : fSelectionChangedListeners) {
+			for (ISelectionChangedListener listener : fSelectionChangedListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				listener.selectionChanged(event);
 			}
 		}
@@ -141,7 +141,7 @@ public class CompareEditorSelectionProvider implements IPostSelectionProvider {
 		if (fPostSelectionChangedListeners != null) {
 			SelectionChangedEvent event= new SelectionChangedEvent(this, getSelection());
 
-			for (ISelectionChangedListener listener: fPostSelectionChangedListeners) {
+			for (ISelectionChangedListener listener: fPostSelectionChangedListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				listener.selectionChanged(event);
 			}
 		}
@@ -199,7 +199,7 @@ public class CompareEditorSelectionProvider implements IPostSelectionProvider {
 			return;
 		}
 
-		for (TextViewer viewer : fViewers) {
+		for (TextViewer viewer : fViewers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			viewer.setVisibleRegion(0, viewer.getDocument().getLength());
 		}
 	}

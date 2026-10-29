@@ -18,7 +18,7 @@ package org.eclipse.debug.tests.launching;
  */
 public class ArgumentsPrinter {
 	public static void main(String[] args) {
-		for (String arg : args) {
+		for (String arg : args) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			System.out.println(arg);
 		}
 	}

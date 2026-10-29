@@ -237,7 +237,7 @@ public class ParallelBuildChainTest {
 		});
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWorkspaceBuild_DependentProjects() throws Exception {
 		int numberOfParallelBuilds = 3;
 		setWorkspaceMaxNumberOfConcurrentBuilds(numberOfParallelBuilds);
@@ -258,7 +258,7 @@ public class ParallelBuildChainTest {
 		});
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWorkspaceBuild_DependentProjects_ProjectSubset() throws Exception {
 		int numberOfParallelBuilds = 3;
 		setWorkspaceMaxNumberOfConcurrentBuilds(numberOfParallelBuilds);
@@ -282,7 +282,7 @@ public class ParallelBuildChainTest {
 		});
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWorkspaceBuild_DependentProjectBuildConfigurations() throws Exception {
 		int numberOfParallelBuilds = 3;
 		setWorkspaceMaxNumberOfConcurrentBuilds(numberOfParallelBuilds);
@@ -303,7 +303,7 @@ public class ParallelBuildChainTest {
 		});
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWorkspaceBuild_DependentProjectBuildConfigurations_ProjectSubset() throws Exception {
 		int numberOfParallelBuilds = 3;
 		setWorkspaceMaxNumberOfConcurrentBuilds(numberOfParallelBuilds);
@@ -333,7 +333,7 @@ public class ParallelBuildChainTest {
 
 	private static IBuildConfiguration[] getBuildConfigurations(List<IProject> projects) throws CoreException {
 		IBuildConfiguration[] buildConfigurations = new IBuildConfiguration[projects.size()];
-		for (int projectNumber = 0; projectNumber < projects.size(); projectNumber++) {
+		for (int projectNumber = 0; projectNumber < projects.size(); projectNumber++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			buildConfigurations[projectNumber] = projects.get(projectNumber).getActiveBuildConfig();
 		}
 		return buildConfigurations;
@@ -342,8 +342,8 @@ public class ParallelBuildChainTest {
 	private List<IProject> createMultipleTestProjects(int numberOfProjects, BuildDurationType buildDurationType,
 			RuleType ruleType)
 			throws CoreException {
-		List<IProject> result = new ArrayList<>();
-		for (int projectNumber = 0; projectNumber < numberOfProjects; projectNumber++) {
+		List<IProject> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (int projectNumber = 0; projectNumber < numberOfProjects; projectNumber++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result.add(createTestProject(buildDurationType, ruleType));
 		}
 		return result;
@@ -361,10 +361,10 @@ public class ParallelBuildChainTest {
 	private String createUniqueProjectName(String projectPrefix) {
 		int suffix = 0;
 		IWorkspaceRoot root = getWorkspace().getRoot();
-		while (root.getProject(projectPrefix + "Project" + suffix).exists()) {
+		while (root.getProject(projectPrefix + "Project" + suffix).exists()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			suffix++;
 		}
-		return projectPrefix + "Project" + suffix;
+		return projectPrefix + "Project" + suffix; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private void configureTimerBuilder(IProject project, int duration, RuleType ruleType) throws CoreException {
@@ -374,7 +374,7 @@ public class ParallelBuildChainTest {
 	}
 
 	private void makeProjectsDependOnEachOther(List<IProject> projects) throws CoreException {
-		for (int projectNumber = 1; projectNumber < projects.size(); projectNumber++) {
+		for (int projectNumber = 1; projectNumber < projects.size(); projectNumber++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProject project = projects.get(projectNumber);
 			IProjectDescription desc = project.getDescription();
 			desc.setReferencedProjects(new IProject[] { projects.get(projectNumber - 1) });
@@ -383,7 +383,7 @@ public class ParallelBuildChainTest {
 	}
 
 	private void makeProjectBuildConfigurationsDependOnEachOther(List<IProject> projects) throws CoreException {
-		for (int projectNumber = 1; projectNumber < projects.size(); projectNumber++) {
+		for (int projectNumber = 1; projectNumber < projects.size(); projectNumber++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IProject project = projects.get(projectNumber);
 			IProjectDescription description = project.getDescription();
 			description.setBuildConfigReferences(project.getActiveBuildConfig().getName(),
@@ -396,7 +396,7 @@ public class ParallelBuildChainTest {
 		executeIncrementalWorkspaceBuild(null, executeWhileRunningBuild);
 	}
 
-	private void executeIncrementalWorkspaceBuild(IBuildConfiguration[] buildConfigurations,
+	private void executeIncrementalWorkspaceBuild(IBuildConfiguration[] buildConfigurations, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			Runnable executeWhileRunningBuild) throws Exception {
 		int expectedNumberOfBuilds = buildConfigurations != null ? buildConfigurations.length : getAllProjects().size();
 		TimerBuilder.setExpectedNumberOfBuilds(expectedNumberOfBuilds);
@@ -431,15 +431,15 @@ public class ParallelBuildChainTest {
 		}
 	}
 
-	private void executeIndividualFullProjectBuilds(int numberOfParallelBuilds, Runnable executeWhileRunningBuild)
+	private void executeIndividualFullProjectBuilds(int numberOfParallelBuilds, Runnable executeWhileRunningBuild) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws Exception {
 		List<IProject> projects = getAllProjects();
 		TimerBuilder.setExpectedNumberOfBuilds(projects.size());
 		JobGroup jobGroup = new JobGroup("Build Group", numberOfParallelBuilds, projects.size());
 		Map<IProject, TestBarrier2> waitForRunningJobBarriers = new Hashtable<>();
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			waitForRunningJobBarriers.put(project, new TestBarrier2());
-			Job job = new Job("Building " + project.getName()) {
+			Job job = new Job("Building " + project.getName()) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 					try {
@@ -528,8 +528,8 @@ public class ParallelBuildChainTest {
 	}
 
 	private Iterable<Object> getExpectedSequentialBuildEvents(Iterable<IProject> projects) {
-		List<Object> res = new ArrayList<>();
-		for (IProject project : projects) {
+		List<Object> res = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			res.add(TimerBuilder.createStartEvent(project));
 			res.add(TimerBuilder.createCompleteEvent(project));
 		}

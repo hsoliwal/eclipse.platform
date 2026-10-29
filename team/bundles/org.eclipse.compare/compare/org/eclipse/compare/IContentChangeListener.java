@@ -22,7 +22,7 @@ package org.eclipse.compare;
  *
  * @see IContentChangeNotifier
  */
-public interface IContentChangeListener {
+public interface IContentChangeListener { //FLLDCIM: MARK — T37  IMPLEMENTS
 
 	/**
 	 * Called whenever the content of the given source has changed.

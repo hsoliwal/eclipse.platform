@@ -54,12 +54,12 @@ public class RefreshBuildFilesAction extends Action implements IUpdate {
 	/**
 	 * Refreshes the selected buildfiles (or all buildfiles if none selected) in the Ant view
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run() {
 		final Set<AntProjectNode> projects = getSelectedProjects();
 		if (projects.isEmpty()) {
 			// If no selection, add all
-			for (AntProjectNode antproject : fView.getProjects()) {
+			for (AntProjectNode antproject : fView.getProjects()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				projects.add(antproject);
 			}
 		}
@@ -69,10 +69,10 @@ public class RefreshBuildFilesAction extends Action implements IUpdate {
 		}
 
 		try {
-			PlatformUI.getWorkbench().getProgressService().busyCursorWhile(monitor -> {
+			PlatformUI.getWorkbench().getProgressService().busyCursorWhile(monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 				monitor.beginTask(AntViewActionMessages.RefreshBuildFilesAction_Refreshing_buildfiles_3, projects.size());
 				AntProjectNodeProxy project;
-				while (iter.hasNext()) {
+				while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					project = (AntProjectNodeProxy) iter.next();
 					monitor.subTask(MessageFormat.format(AntViewActionMessages.RefreshBuildFilesAction_Refreshing__0__4, project.getBuildFileName()));
 					project.parseBuildFile(true);
@@ -86,7 +86,7 @@ public class RefreshBuildFilesAction extends Action implements IUpdate {
 		catch (InterruptedException e) {
 			// do nothing
 		}
-		fView.getViewer().refresh();
+		fView.getViewer().refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 	}
 
 	/**
@@ -96,10 +96,10 @@ public class RefreshBuildFilesAction extends Action implements IUpdate {
 	 */
 	private Set<AntProjectNode> getSelectedProjects() {
 		IStructuredSelection selection = (IStructuredSelection) fView.getViewer().getSelection();
-		HashSet<AntProjectNode> set = new HashSet<>();
+		HashSet<AntProjectNode> set = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		Iterator<?> iter = selection.iterator();
 		Object data;
-		while (iter.hasNext()) {
+		while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			data = iter.next();
 			if (data instanceof AntProjectNode) {
 				set.add((AntProjectNode) data);

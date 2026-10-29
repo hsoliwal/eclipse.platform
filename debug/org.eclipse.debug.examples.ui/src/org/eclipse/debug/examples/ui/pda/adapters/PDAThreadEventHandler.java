@@ -125,7 +125,7 @@ public class PDAThreadEventHandler extends DebugEventHandler {
 		fireDelta(delta);
 	}
 
-	private void fireDeltaUpdatingTopFrame(IThread thread, int flags) {
+	private void fireDeltaUpdatingTopFrame(IThread thread, int flags) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ModelDelta delta = buildRootDelta();
 		ModelDelta node = addTarget(delta, thread);
 		synchronized (this) {

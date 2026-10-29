@@ -62,7 +62,7 @@ public class CompareFilterDescriptor {
 
 	}
 
-	public CompareFilterDescriptor(IConfigurationElement config) {
+	public CompareFilterDescriptor(IConfigurationElement config) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fConfiguration = config;
 		fResourceBundle = new ResourceBundle() {
 			@Override

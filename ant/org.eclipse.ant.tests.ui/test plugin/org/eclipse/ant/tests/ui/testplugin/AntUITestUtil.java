@@ -70,9 +70,9 @@ public final class AntUITestUtil {
 	 *            build file to launch
 	 */
 	public static ILaunchConfiguration getLaunchConfiguration(String buildFileName) {
-		IFile file = getJavaProject().getProject().getFolder("launchConfigurations").getFile(buildFileName + ".launch"); //$NON-NLS-1$ //$NON-NLS-2$
+		IFile file = getJavaProject().getProject().getFolder("launchConfigurations").getFile(buildFileName + ".launch"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		ILaunchConfiguration config = getLaunchManager().getLaunchConfiguration(file);
-		assertTrue(config.exists(), "Could not find launch configuration for " + buildFileName); //$NON-NLS-1$
+		assertTrue(config.exists(), "Could not find launch configuration for " + buildFileName); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return config;
 	}
 
@@ -86,7 +86,7 @@ public final class AntUITestUtil {
 	 *            the event waiter to use
 	 * @return Object the source of the event
 	 */
-	public static Object launchAndWait(ILaunchConfiguration configuration, DebugEventWaiter waiter)
+	public static Object launchAndWait(ILaunchConfiguration configuration, DebugEventWaiter waiter) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws CoreException {
 		ILaunch launch = configuration.launch(ILaunchManager.RUN_MODE, null);
 		Object suspendee = waiter.waitForEvent();
@@ -98,7 +98,7 @@ public final class AntUITestUtil {
 			catch (CoreException e) {
 				e.printStackTrace();
 			}
-			throw new TestAgainException("Retest - Program did not suspend launching: " + configuration.getName()); //$NON-NLS-1$
+			throw new TestAgainException("Retest - Program did not suspend launching: " + configuration.getName()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		boolean terminated = launch.isTerminated();
 		assertTrue(terminated, "launch did not terminate"); //$NON-NLS-1$
@@ -140,7 +140,7 @@ public final class AntUITestUtil {
 	 *
 	 * @since 3.5
 	 */
-	public static void assertProject() throws Exception {
+	public static void assertProject() throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IProject pro = ResourcesPlugin.getWorkspace().getRoot().getProject(ProjectHelper.PROJECT_NAME);
 		if (!pro.exists()) {
 			// create project and import build files and support files
@@ -170,7 +170,7 @@ public final class AntUITestUtil {
 			ProjectHelper.createLaunchConfigurationForBoth("macrodef"); //$NON-NLS-1$
 			ProjectHelper.createLaunchConfigurationForBoth("85769"); //$NON-NLS-1$
 
-			ProjectHelper.createLaunchConfiguration("big", ProjectHelper.PROJECT_NAME + "/buildfiles/performance/build.xml"); //$NON-NLS-1$ //$NON-NLS-2$
+			ProjectHelper.createLaunchConfiguration("big", ProjectHelper.PROJECT_NAME + "/buildfiles/performance/build.xml"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 			// do not show the Ant build failed error dialog
 			AntUIPlugin.getDefault().getPreferenceStore().setValue(IAntUIPreferenceConstants.ANT_ERROR_DIALOG, false);
@@ -180,7 +180,7 @@ public final class AntUITestUtil {
 	private static File getFileInPlugin(IPath path) {
 		try {
 			Bundle bundle = FrameworkUtil.getBundle(AntUITestUtil.class);
-			URL installURL = bundle.getEntry("/" + path.toString()); //$NON-NLS-1$
+			URL installURL = bundle.getEntry("/" + path.toString()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			URL localURL = FileLocator.toFileURL(installURL);
 			return new File(localURL.getFile());
 		} catch (IOException e) {
@@ -225,7 +225,7 @@ public final class AntUITestUtil {
 	 */
 	public static void launch(String buildFileName, String arguments) throws CoreException {
 		ILaunchConfiguration config = getLaunchConfiguration(buildFileName);
-		assertNotNull(config, "Could not locate launch configuration for " + buildFileName); //$NON-NLS-1$
+		assertNotNull(config, "Could not locate launch configuration for " + buildFileName); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		ILaunchConfigurationWorkingCopy copy = config.getWorkingCopy();
 		copy.setAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, arguments);
 		launchAndTerminate(copy, 20000);
@@ -239,7 +239,7 @@ public final class AntUITestUtil {
 	 */
 	public static void launch(String buildFileName) throws CoreException {
 		ILaunchConfiguration config = getLaunchConfiguration(buildFileName);
-		assertNotNull(config, "Could not locate launch configuration for " + buildFileName); //$NON-NLS-1$
+		assertNotNull(config, "Could not locate launch configuration for " + buildFileName); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		launchAndTerminate(config, 20000);
 	}
 
@@ -259,7 +259,7 @@ public final class AntUITestUtil {
 	 */
 	public static File getBuildFile(String buildFileName) {
 		IFile file = getIFile(buildFileName);
-		assertTrue(file.exists(), "Could not find build file named: " + buildFileName); //$NON-NLS-1$
+		assertTrue(file.exists(), "Could not find build file named: " + buildFileName); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return file.getLocation().toFile();
 	}
 
@@ -268,16 +268,16 @@ public final class AntUITestUtil {
 	 *
 	 * @return the contents of the given {@link BufferedReader} as a {@link String}
 	 */
-	public static String getReaderContentAsString(BufferedReader bufferedReader) {
-		StringBuilder result = new StringBuilder();
+	public static String getReaderContentAsString(BufferedReader bufferedReader) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		StringBuilder result = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		try {
 			String line = bufferedReader.readLine();
 
-			while (line != null) {
+			while (line != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (result.length() != 0) {
-					result.append(System.lineSeparator());
+					result.append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
-				result.append(line);
+				result.append(line); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				line = bufferedReader.readLine();
 			}
 		}
@@ -329,7 +329,7 @@ public final class AntUITestUtil {
 				// no links have been added
 				return null;
 			}
-			for (Position position : positions) {
+			for (Position position : positions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (offset >= position.getOffset() && offset <= (position.getOffset() + position.getLength())) {
 					return ((ConsoleHyperlinkPosition) position).getHyperLink();
 				}
@@ -339,22 +339,22 @@ public final class AntUITestUtil {
 	}
 
 	public static void activateLink(final IHyperlink link) {
-		Display.getDefault().asyncExec(() -> link.linkActivated());
+		Display.getDefault().asyncExec(() -> link.linkActivated()); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 	}
 
-	public static void logProcessConsoleContents() {
+	public static void logProcessConsoleContents() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
-			StringBuilder buf = new StringBuilder();
+			StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 			IConsoleManager manager = ConsolePlugin.getDefault().getConsoleManager();
-			for (IConsole console : manager.getConsoles()) {
+			for (IConsole console : manager.getConsoles()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (console instanceof ProcessConsole) {
 					ProcessConsole processConsole = (ProcessConsole) console;
 					String string = processConsole.getDocument().get();
-					buf.append("Console output for \"" + processConsole.getName() + "\" follows:\n"); //$NON-NLS-1$ //$NON-NLS-2$
-					buf.append(string);
+					buf.append("Console output for \"" + processConsole.getName() + "\" follows:\n"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					buf.append(string); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			}
-			buf.append("\n"); //$NON-NLS-1$
+			buf.append("\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			AntUIPlugin.log(new Status(IStatus.INFO, "org.eclipse.jdt.debug.ui.tests", buf.toString())); //$NON-NLS-1$
 		} catch (Throwable t) {
 			AntUIPlugin.log(t);

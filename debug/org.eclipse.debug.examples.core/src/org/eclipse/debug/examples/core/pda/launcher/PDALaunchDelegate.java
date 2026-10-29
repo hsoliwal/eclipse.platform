@@ -44,25 +44,25 @@ import org.eclipse.debug.examples.core.pda.model.PDADebugTarget;
  * Launches PDA program on a PDA interpreter written in Perl
  */
 public class PDALaunchDelegate extends LaunchConfigurationDelegate {
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void launch(ILaunchConfiguration configuration, String mode, ILaunch launch, IProgressMonitor monitor) throws CoreException {
 
-		List<String> commandList = new ArrayList<>();
+		List<String> commandList = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		// Get Java VM path
 		String javaVMHome = System.getProperty("java.home"); //$NON-NLS-1$
-		String javaVMExec = javaVMHome + File.separatorChar + "bin" + File.separatorChar + "java"; //$NON-NLS-1$ //$NON-NLS-2$
+		String javaVMExec = javaVMHome + File.separatorChar + "bin" + File.separatorChar + "java"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		if (File.separatorChar == '\\') {
 			javaVMExec += ".exe"; //$NON-NLS-1$
 		}
 		File exe = new File(javaVMExec);
-		if (!exe.exists()) {
+		if (!exe.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			abort(MessageFormat.format("Specified java VM executable {0} does not exist.", javaVMExec), null); //$NON-NLS-1$
 		}
 		commandList.add(javaVMExec);
 
 		commandList.add("-cp"); //$NON-NLS-1$
-		commandList.add(File.pathSeparator + DebugCorePlugin.getFileInPlugin(IPath.fromOSString("bin"))); //$NON-NLS-1$
+		commandList.add(File.pathSeparator + DebugCorePlugin.getFileInPlugin(IPath.fromOSString("bin"))); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		commandList.add("org.eclipse.debug.examples.pdavm.PDAVirtualMachine"); //$NON-NLS-1$
 
@@ -89,8 +89,8 @@ public class PDALaunchDelegate extends LaunchConfigurationDelegate {
 				abort("Unable to find free port", null); //$NON-NLS-1$
 			}
 			commandList.add("-debug"); //$NON-NLS-1$
-			commandList.add("" + requestPort); //$NON-NLS-1$
-			commandList.add("" + eventPort); //$NON-NLS-1$
+			commandList.add("" + requestPort); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			commandList.add("" + eventPort); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		String[] commandLine = commandList.toArray(new String[commandList.size()]);

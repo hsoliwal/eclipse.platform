@@ -88,9 +88,9 @@ public class FileSystemSubscriber extends ThreeWaySubscriber {
 
 	@Override
 	public IResource[] roots() {
-		List<IProject> result = new ArrayList<>();
+		List<IProject> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if(project.isAccessible()) {
 				RepositoryProvider provider = RepositoryProvider.getProvider(project, FileSystemPlugin.PROVIDER_ID);
 				if(provider != null) {

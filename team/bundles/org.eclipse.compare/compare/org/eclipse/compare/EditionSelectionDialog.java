@@ -131,7 +131,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 		/*
 		 * The content is lazily loaded
 		 */
-		private String getContent() {
+		private String getContent() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			if (fContent == null) {
 				if (fStructureCreator != null) {
 					fContent= fStructureCreator.getContents(fItem, false);
@@ -170,7 +170,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 
 	// Configuration options
 	private CompareConfiguration fCompareConfiguration;
-	private final ArrayList<Object> fArrayList= new ArrayList<>();
+	private final ArrayList<Object> fArrayList= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	/** show target on right hand side */
 	private boolean fTargetIsRight= false;
 	/** hide entries which have identical content */
@@ -242,7 +242,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 		super(parent, bundle);
 	}
 
-	private CompareConfiguration getCompareConfiguration() {
+	private CompareConfiguration getCompareConfiguration() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fCompareConfiguration == null) {
 			fCompareConfiguration= new CompareConfiguration();
 			fCompareConfiguration.setLeftEditable(false);
@@ -309,7 +309,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 	 * it is an <code>ITypedElement</code> returned from <code>IStructureCreator.locate(path, item)</code>
 	 * @since 2.0
 	 */
-	@Deprecated
+	@Deprecated //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ITypedElement selectPreviousEdition(final ITypedElement target, ITypedElement[] inputEditions, Object ppath) {
 		Assert.isNotNull(target);
 		fTargetPair= new Pair(null, target);
@@ -317,7 +317,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 		// sort input editions
 		final int count= inputEditions.length;
 		final IModificationDate[] editions= new IModificationDate[count];
-		for (int i= 0; i < count; i++) {
+		for (int i= 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			editions[i]= (IModificationDate) inputEditions[i];
 		}
 		if (count > 1) {
@@ -349,7 +349,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 		}
 
 		// from front (newest) to back (oldest)
-		for (int i= 0; i < count; i++) {
+		for (int i= 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 
 			ITypedElement edition= (ITypedElement) editions[i];
 			Pair pair= null;
@@ -385,7 +385,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 	 * if <code>path</code> was <code>null</code>; otherwise
 	 * it is an <code>ITypedElement</code> returned from <code>IStructureCreator.locate(path, item)</code>
 	 */
-	@Deprecated
+	@Deprecated //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ITypedElement selectEdition(final ITypedElement target, ITypedElement[] inputEditions, Object ppath) {
 
 		Assert.isNotNull(target);
@@ -394,7 +394,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 		// sort input editions
 		final int count= inputEditions.length;
 		final IModificationDate[] editions= new IModificationDate[count];
-		for (int i= 0; i < count; i++) {
+		for (int i= 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			editions[i]= (IModificationDate) inputEditions[i];
 		}
 		if (count > 1) {
@@ -439,11 +439,11 @@ public class EditionSelectionDialog extends ResizableDialog {
 				// construct the comparer thread
 				// and perform the background extract
 				fThread= new Thread() {
-					@Override
+					@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 					public void run() {
 
 						// from front (newest) to back (oldest)
-						for (int i= 0; i < count; i++) {
+						for (int i= 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 
 							if (fEditionTree == null || fEditionTree.isDisposed()) {
 								break;
@@ -464,7 +464,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 				create();
 
 				// from front (newest) to back (oldest)
-				for (int i= 0; i < count; i++) {
+				for (int i= 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					addMemberEdition(new Pair(null, (ITypedElement) editions[i]));
 				}
 			}
@@ -479,7 +479,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 			}
 
 			// extract all elements of container
-			final HashSet<Object> current= new HashSet<>();
+			final HashSet<Object> current= new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			IStructureComparator sco= structureCreator.locate(container, target);
 			if (sco != null) {
 				Object[] children= sco.getChildren();
@@ -493,11 +493,11 @@ public class EditionSelectionDialog extends ResizableDialog {
 			// construct the comparer thread
 			// and perform the background extract
 			fThread= new Thread() {
-				@Override
+				@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 				public void run() {
 
 					// from front (newest) to back (oldest)
-					for (int i= 0; i < count; i++) {
+					for (int i= 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 
 						if (fEditionTree == null || fEditionTree.isDisposed()) {
 							break;
@@ -508,7 +508,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 						if (sco2 != null) {
 							Object[] children= sco2.getChildren();
 							if (children != null) {
-								for (Object c : children) {
+								for (Object c : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 									ITypedElement child = (ITypedElement) c;
 									if (!current.contains(child)) {
 										sendPair(new Pair(sc, edition, child));
@@ -617,10 +617,10 @@ public class EditionSelectionDialog extends ResizableDialog {
 	 */
 	@Deprecated
 	public ITypedElement[] getSelection() {
-		ArrayList<ITypedElement> result= new ArrayList<>();
+		ArrayList<ITypedElement> result= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (fMemberSelection != null) {
 			Iterator<Object> iter= fArrayList.iterator();
-			while (iter.hasNext()) {
+			while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Object edition= iter.next();
 				Object item= fMemberSelection.get(edition);
 				if (item != null) {
@@ -693,7 +693,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 	 * @param item if a path has been specified in <code>selectEdition</code> a sub element of the given selectedEdition; otherwise the same as selectedEdition
 	 * @return a label for the edition side of a compare viewer
 	 */
-	@Deprecated
+	@Deprecated //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected String getEditionLabel(ITypedElement selectedEdition, ITypedElement item) {
 		String format= null;
 		if (selectedEdition instanceof ResourceNode) {
@@ -785,7 +785,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 		return null;
 	}
 
-	@Deprecated
+	@Deprecated //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Override
 	protected synchronized Control createDialogArea(Composite parent2) {
 
@@ -797,8 +797,8 @@ public class EditionSelectionDialog extends ResizableDialog {
 		vsplitter.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL | GridData.GRAB_HORIZONTAL
 					| GridData.VERTICAL_ALIGN_FILL | GridData.GRAB_VERTICAL));
 
-		vsplitter.addDisposeListener(
-			unused -> {
+		vsplitter.addDisposeListener( //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
+			unused -> { //FLLDCIM: MARK — T01  LAMBDA
 				if (fCompareConfiguration != null) {
 					fCompareConfiguration.dispose();
 					fCompareConfiguration= null;
@@ -826,9 +826,9 @@ public class EditionSelectionDialog extends ResizableDialog {
 				flags|= SWT.CHECK;
 			}
 			fMemberTable= new Table(fMemberPane, flags);
-			fMemberTable.addSelectionListener(
+			fMemberTable.addSelectionListener( //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 				new SelectionAdapter() {
-					@Override
+					@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 					public void widgetSelected(SelectionEvent e) {
 						if (e.detail == SWT.CHECK) {
 							if (e.item instanceof TableItem ti) {
@@ -860,7 +860,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 				Splitter hsplitter= new Splitter(vsplitter,  SWT.HORIZONTAL);
 
 				fEditionPane= new CompareViewerPane(hsplitter, SWT.BORDER | SWT.FLAT);
-				fStructuredComparePane= new CompareViewerSwitchingPane(hsplitter, SWT.BORDER | SWT.FLAT, true) {
+				fStructuredComparePane= new CompareViewerSwitchingPane(hsplitter, SWT.BORDER | SWT.FLAT, true) { //FLLDCIM: MARK — T05  ANONYMOUS
 					@Override
 					protected Viewer getViewer(Viewer oldViewer, Object input) {
 						if (input instanceof ICompareInput) {
@@ -869,8 +869,8 @@ public class EditionSelectionDialog extends ResizableDialog {
 						return null;
 					}
 				};
-				fStructuredComparePane.addSelectionChangedListener(
-					e -> feedInput2(e.getSelection())
+				fStructuredComparePane.addSelectionChangedListener( //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
+					e -> feedInput2(e.getSelection()) //FLLDCIM: MARK — T04  LAMBDA
 				);
 			} else {
 				// only a single pane showing the editions
@@ -888,7 +888,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 		}
 
 		fEditionTree= new Tree(fEditionPane, SWT.H_SCROLL | SWT.V_SCROLL);
-		fEditionTree.addSelectionListener(
+		fEditionTree.addSelectionListener( //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			new SelectionAdapter() {
 //				public void widgetDefaultSelected(SelectionEvent e) {
 //					handleDefaultSelected();
@@ -907,7 +907,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 			fThread= null;
 		}
 
-		fContentPane= new CompareViewerSwitchingPane(vsplitter, SWT.BORDER | SWT.FLAT) {
+		fContentPane= new CompareViewerSwitchingPane(vsplitter, SWT.BORDER | SWT.FLAT) { //FLLDCIM: MARK — T05  ANONYMOUS
 			@Override
 			protected Viewer getViewer(Viewer oldViewer, Object input) {
 				return CompareUI.findContentViewer(oldViewer, input, this, getCompareConfiguration());
@@ -959,7 +959,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 	private void sendPair(final Pair pair) {
 		if (fEditionTree != null && !fEditionTree.isDisposed()) {
 			Display display= fEditionTree.getDisplay();
-			display.asyncExec(
+			display.asyncExec( //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				() -> addMemberEdition(pair)
 			);
 		}
@@ -985,7 +985,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 	 * If the argument is <code>null</code> the message "No Editions found" is shown
 	 * in the member or edition viewer.
 	 */
-	private void addMemberEdition(Pair pair) {
+	private void addMemberEdition(Pair pair) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (pair == null) {	// end of list of pairs
 			if (fMemberTable != null) {
@@ -1008,16 +1008,16 @@ public class EditionSelectionDialog extends ResizableDialog {
 		}
 
 		if (fMemberEditions == null) {
-			fMemberEditions= new HashMap<>();
+			fMemberEditions= new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 		if (fMultiSelect && fMemberSelection == null) {
-			fMemberSelection= new HashMap<>();
+			fMemberSelection= new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 
 		ITypedElement item= pair.getItem();
 		List<Pair> editions= fMemberEditions.get(item);
 		if (editions == null) {
-			editions= new ArrayList<>();
+			editions= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			fMemberEditions.put(item, editions);
 			if (fMemberTable != null && !fMemberTable.isDisposed()) {
 				ITypedElement te= item;
@@ -1026,7 +1026,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 				// find position
 				TableItem[] items= fMemberTable.getItems();
 				int where= items.length;
-				for (int i= 0; i < where; i++) {
+				for (int i= 0; i < where; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String n= items[i].getText();
 					if (n.compareTo(name) > 0) {
 						where= i;
@@ -1074,7 +1074,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 	 * Adds the given Pair to the edition tree.
 	 * It takes care of creating tree nodes for different dates.
 	 */
-	private void addEdition(Pair pair) {
+	private void addEdition(Pair pair) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fEditionTree == null || fEditionTree.isDisposed()) {
 			return;
 		}
@@ -1162,7 +1162,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 	/*
 	 * Feeds selection from member viewer to edition viewer.
 	 */
-	private void handleMemberSelect(Widget w) {
+	private void handleMemberSelect(Widget w) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Object data= w.getData();
 		if (data instanceof List) {
 			@SuppressWarnings("unchecked")
@@ -1176,7 +1176,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 				fEditionPane.setText(title);
 
 				Iterator<Object> iter= editions.iterator();
-				while (iter.hasNext()) {
+				while (iter.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Object item= iter.next();
 					if (item instanceof Pair) {
 						addEdition((Pair) item);
@@ -1196,7 +1196,7 @@ public class EditionSelectionDialog extends ResizableDialog {
 	/*
 	 * Feeds selection from edition viewer to content (and structure) viewer.
 	 */
-	private void feedInput(Widget w) {
+	private void feedInput(Widget w) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Object input= w.getData();
 		boolean isOK= false;
 		if (input instanceof Pair pair) {

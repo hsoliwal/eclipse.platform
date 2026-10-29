@@ -43,7 +43,7 @@ public class ResourceDeltaFactory {
 	 * @param markerGeneration the start generation for which deltas should be computed, or -1
 	 * if marker deltas should not be provided.
 	 */
-	public static ResourceDelta computeDelta(Workspace workspace, ElementTree oldTree, ElementTree newTree, IPath root, long markerGeneration) {
+	public static ResourceDelta computeDelta(Workspace workspace, ElementTree oldTree, ElementTree newTree, IPath root, long markerGeneration) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//compute the underlying delta tree.
 		ResourceComparator comparator = markerGeneration >= 0 ? ResourceComparator.getNotificationComparator() : ResourceComparator.getBuildComparator();
 		newTree.immutable();
@@ -98,7 +98,7 @@ public class ResourceDeltaFactory {
 		}
 		// recurse for ROOT
 		IResourceDelta[] children = delta.children;
-		for (IResourceDelta element : children) {
+		for (IResourceDelta element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			checkForOpen((ResourceDelta) element, 1);
 		}
 	}
@@ -107,9 +107,9 @@ public class ResourceDeltaFactory {
 	 * Creates the map from node id to element id for the old and new states.
 	 * Used for recognizing moves.  Returns the map.
 	 */
-	protected static NodeIDMap computeNodeIDMap(ResourceDelta delta, NodeIDMap nodeIDMap) {
+	protected static NodeIDMap computeNodeIDMap(ResourceDelta delta, NodeIDMap nodeIDMap) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResourceDelta[] children = delta.children;
-		for (IResourceDelta element : children) {
+		for (IResourceDelta element : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ResourceDelta child = (ResourceDelta) element;
 			IPath path = child.getFullPath();
 			switch (child.getKind()) {
@@ -139,7 +139,7 @@ public class ResourceDeltaFactory {
 	 * Recursively creates the tree of ResourceDelta objects rooted at
 	 * the given path.
 	 */
-	protected static ResourceDelta createDelta(Workspace workspace, DeltaDataTree delta, ResourceDeltaInfo deltaInfo, IPath pathInTree, IPath pathInDelta) {
+	protected static ResourceDelta createDelta(Workspace workspace, DeltaDataTree delta, ResourceDeltaInfo deltaInfo, IPath pathInTree, IPath pathInDelta) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// create the delta and fill it with information
 		ResourceDelta result = new ResourceDelta(pathInTree, deltaInfo);
 
@@ -162,7 +162,7 @@ public class ResourceDeltaFactory {
 			result.setChildren(NO_CHILDREN);
 		} else {
 			ResourceDelta[] children = new ResourceDelta[numChildren];
-			for (int i = 0; i < numChildren; i++) {
+			for (int i = 0; i < numChildren; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				//reuse the delta path if tree-relative and delta-relative are the same
 				IPath newTreePath = pathInTree == pathInDelta ? childKeys[i] : pathInTree.append(childKeys[i].lastSegment());
 				children[i] = createDelta(workspace, delta, deltaInfo, newTreePath, childKeys[i]);

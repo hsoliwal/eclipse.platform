@@ -29,7 +29,7 @@ public class ValidateProjectEncoding extends InternalWorkspaceJob {
 
 	public static final String MARKER_ID = "noExplicitEncoding"; //$NON-NLS-1$
 
-	public static final String MARKER_TYPE = ResourcesPlugin.getPlugin().getBundle().getSymbolicName() + "." //$NON-NLS-1$
+	public static final String MARKER_TYPE = ResourcesPlugin.getPlugin().getBundle().getSymbolicName() + "." //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			+ MARKER_ID;
 
 	/**
@@ -95,7 +95,7 @@ public class ValidateProjectEncoding extends InternalWorkspaceJob {
 		}
 		IProject[] projects = takePendingProjects();
 		SubMonitor subMonitor = SubMonitor.convert(monitor, projects.length);
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			subMonitor.checkCanceled();
 			subMonitor.setTaskName(NLS.bind(Messages.resources_checkExplicitEncoding_taskName, project.getName()));
 			updateMissingEncodingMarker(project);
@@ -139,7 +139,7 @@ public class ValidateProjectEncoding extends InternalWorkspaceJob {
 		return severity;
 	}
 
-	private static boolean shouldScheduleValidation(IProject project) {
+	private static boolean shouldScheduleValidation(IProject project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean shouldScheduleValidation = true;
 		try {
 			if (project.isHidden()) {
@@ -169,14 +169,14 @@ public class ValidateProjectEncoding extends InternalWorkspaceJob {
 		return defaultCharset;
 	}
 
-	private static void createOrUpdateMissingEncodingMarker(IProject project, int severity) throws CoreException {
+	private static void createOrUpdateMissingEncodingMarker(IProject project, int severity) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String message = NLS.bind(Messages.resources_checkExplicitEncoding_problemText, project.getName());
 
 		String[] attributeNames = { IMarker.MESSAGE, IMarker.LOCATION };
 		Object[] attributevalues = { message, project.getFullPath().toString() };
 
 		IMarker[] existing = project.findMarkers(MARKER_TYPE, false, IResource.DEPTH_ONE);
-		for (IMarker marker : existing) {
+		for (IMarker marker : existing) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object[] markerValues = marker.getAttributes(attributeNames);
 			if (Arrays.equals(attributevalues, markerValues)) {
 				updateMarkerSeverity(marker, severity);
@@ -184,8 +184,8 @@ public class ValidateProjectEncoding extends InternalWorkspaceJob {
 			}
 		}
 
-		Map<String, Object> attributes = new HashMap<>();
-		for (int i = 0; i < attributeNames.length; i++) {
+		Map<String, Object> attributes = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (int i = 0; i < attributeNames.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			attributes.put(attributeNames[i], attributevalues[i]);
 		}
 		attributes.put(IMarker.SEVERITY, severity);
@@ -202,7 +202,7 @@ public class ValidateProjectEncoding extends InternalWorkspaceJob {
 
 	private static void deleteEncodingMarkers(IProject project) throws CoreException {
 		IMarker[] existing = getEncodingMarkers(project);
-		for (IMarker marker : existing) {
+		for (IMarker marker : existing) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			marker.delete();
 		}
 	}

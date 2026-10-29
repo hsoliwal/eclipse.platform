@@ -40,7 +40,7 @@ public class TextConsoleViewerTest {
 	 * Test override of existing styles with a new style. Typically used to
 	 * apply link styling on already styled console document.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testStyleOverride() throws Throwable {
 		Color colorR = null;
 		Color colorG = null;
@@ -52,7 +52,7 @@ public class TextConsoleViewerTest {
 			method.setAccessible(true);
 			assertTrue(Modifier.isStatic(method.getModifiers()), "Required method <\" + method + \"> is not static.\"");
 
-			final List<StyleRange> styles = new ArrayList<>();
+			final List<StyleRange> styles = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			colorR = new Color(255, 0, 0);
 			colorG = new Color(0, 255, 0);
 			colorB = new Color(0, 0, 255);
@@ -243,10 +243,10 @@ public class TextConsoleViewerTest {
 	 */
 	private static void assertStyle(List<StyleRange> styles, int offset, int end, Color foregroundColor) {
 		int o = offset;
-		while (o < end) {
+		while (o < end) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final StyleRange expected = foregroundColor != null ? new StyleRange(0, 0, foregroundColor, null) : null;
 			final StyleRange actual = getStyleAtOffset(styles, o);
-			assertEquals(generalizeStyle(expected), generalizeStyle(actual), "Got wrong style at offset " + o);
+			assertEquals(generalizeStyle(expected), generalizeStyle(actual), "Got wrong style at offset " + o); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			final int step = actual != null ? actual.length : 1;
 			o += Math.min(step, 1);
 		}
@@ -264,7 +264,7 @@ public class TextConsoleViewerTest {
 	 */
 	private static StyleRange getStyleAtOffset(List<StyleRange> styles, int offset) {
 		if (styles != null) {
-			for (StyleRange style : styles) {
+			for (StyleRange style : styles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (style.start <= offset && style.start + style.length >= offset + 1) {
 					return style;
 				}
@@ -299,7 +299,7 @@ public class TextConsoleViewerTest {
 			return;
 		}
 		int lastEnd = Integer.MIN_VALUE;
-		for (StyleRange s : styles) {
+		for (StyleRange s : styles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertTrue(lastEnd <= s.start, "Styles overlap or not sorted.");
 			assertTrue(s.length > 0, "Empty style.");
 			lastEnd = s.start + s.length;

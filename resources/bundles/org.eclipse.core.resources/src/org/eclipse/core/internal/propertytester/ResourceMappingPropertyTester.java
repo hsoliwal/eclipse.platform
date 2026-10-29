@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.QualifiedName;
  * @since 3.2
  */
 public class ResourceMappingPropertyTester extends ResourcePropertyTester {
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean test(Object receiver, String method, Object[] args, Object expectedValue) {
 		if (!(receiver instanceof ResourceMapping)) {
 			return false;
@@ -56,7 +56,7 @@ public class ResourceMappingPropertyTester extends ResourcePropertyTester {
 		}
 		QualifiedName key = toQualifedName(propertyName);
 		boolean found = false;
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				Object actualVal = project.getPersistentProperty(key);
 				//the value is not set, so keep looking on other projects

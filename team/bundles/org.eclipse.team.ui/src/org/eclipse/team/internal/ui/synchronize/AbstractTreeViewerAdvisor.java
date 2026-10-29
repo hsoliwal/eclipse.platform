@@ -66,7 +66,7 @@ public abstract class AbstractTreeViewerAdvisor extends StructuredViewerAdvisor 
 			return new INavigatable[] { navigatable };
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public boolean selectChange(boolean next) {
 			if (getSubNavigator() != null) {
 				if (getSubNavigator().hasChange(next)) {
@@ -116,7 +116,7 @@ public abstract class AbstractTreeViewerAdvisor extends StructuredViewerAdvisor 
 			return super.hasChange(next);
 		}
 
-		private CompareNavigator getSubNavigator() {
+		private CompareNavigator getSubNavigator() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IWorkbenchSite ws = AbstractTreeViewerAdvisor.this.getConfiguration().getSite().getWorkbenchSite();
 			if (ws instanceof IWorkbenchPartSite) {
 				Object selectedObject = AbstractTreeViewerAdvisor.this.getFirstElement(getViewer().getStructuredSelection());
@@ -141,7 +141,7 @@ public abstract class AbstractTreeViewerAdvisor extends StructuredViewerAdvisor 
 
 	}
 
-	private static boolean hasNextPrev(TreeViewer viewer, TreeItem item, boolean next) {
+	private static boolean hasNextPrev(TreeViewer viewer, TreeItem item, boolean next) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (item == null || !(viewer instanceof ITreeViewerAccessor)) {
 			return false;
 		}
@@ -150,7 +150,7 @@ public abstract class AbstractTreeViewerAdvisor extends StructuredViewerAdvisor 
 			if (viewer.isExpandable(item.getData())) {
 				return true;
 			}
-			while(item != null) {
+			while(item != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				TreeItem parent = item.getParentItem();
 				if (parent != null) {
 					children = parent.getItems();
@@ -168,7 +168,7 @@ public abstract class AbstractTreeViewerAdvisor extends StructuredViewerAdvisor 
 				}
 			}
 		} else {
-			while(item != null) {
+			while(item != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				TreeItem parent = item.getParentItem();
 				if (parent != null) {
 					children = parent.getItems();
@@ -189,7 +189,7 @@ public abstract class AbstractTreeViewerAdvisor extends StructuredViewerAdvisor 
 		return false;
 	}
 
-	private static TreeItem findNextPrev(TreeViewer viewer, TreeItem item, boolean next) {
+	private static TreeItem findNextPrev(TreeViewer viewer, TreeItem item, boolean next) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (item == null || !(viewer instanceof ITreeViewerAccessor)) {
 			return null;
 		}
@@ -205,14 +205,14 @@ public abstract class AbstractTreeViewerAdvisor extends StructuredViewerAdvisor 
 			if (children != null && children.length > 0) {
 				// goto previous child
 				int index = 0;
-				for (; index < children.length; index++) {
+				for (; index < children.length; index++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (children[index] == item) {
 						break;
 					}
 				}
 				if (index > 0) {
 					item = children[index - 1];
-					while (true) {
+					while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						treeAccessor.createChildren(item);
 						int n = item.getItemCount();
 						if (n <= 0) {
@@ -235,7 +235,7 @@ public abstract class AbstractTreeViewerAdvisor extends StructuredViewerAdvisor 
 				children = item.getItems();
 				return children[0];
 			}
-			while (item != null) {
+			while (item != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				children = null;
 				TreeItem parent = item.getParentItem();
 				if (parent != null) {
@@ -246,7 +246,7 @@ public abstract class AbstractTreeViewerAdvisor extends StructuredViewerAdvisor 
 				if (children != null && children.length > 0) {
 					// goto next child
 					int index = 0;
-					for (; index < children.length; index++) {
+					for (; index < children.length; index++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (children[index] == item) {
 							break;
 						}
@@ -263,7 +263,7 @@ public abstract class AbstractTreeViewerAdvisor extends StructuredViewerAdvisor 
 		return item;
 	}
 
-	private static void setSelection(TreeViewer viewer, TreeItem ti, boolean fireOpen, boolean expandOnly) {
+	private static void setSelection(TreeViewer viewer, TreeItem ti, boolean fireOpen, boolean expandOnly) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (ti != null) {
 			Object data= ti.getData();
 			if (data != null) {
@@ -309,7 +309,7 @@ public abstract class AbstractTreeViewerAdvisor extends StructuredViewerAdvisor 
 	private static TreeItem getNextItem(TreeViewer viewer, boolean next) {
 		TreeItem item = getCurrentItem(viewer);
 		if (item != null) {
-			while (true) {
+			while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				item = findNextPrev(viewer, item, next);
 				if (item == null) {
 					break;
@@ -322,7 +322,7 @@ public abstract class AbstractTreeViewerAdvisor extends StructuredViewerAdvisor 
 		return item;
 	}
 
-	private static TreeItem getCurrentItem(TreeViewer viewer) {
+	private static TreeItem getCurrentItem(TreeViewer viewer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Tree tree = viewer.getTree();
 		if (tree == null) {
 			return null;
@@ -392,7 +392,7 @@ public abstract class AbstractTreeViewerAdvisor extends StructuredViewerAdvisor 
 		return null;
 	}
 
-	private synchronized INavigatable getNavigatable() {
+	private synchronized INavigatable getNavigatable() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if(navigatable == null) {
 			navigatable = new INavigatable() {
 				@Override

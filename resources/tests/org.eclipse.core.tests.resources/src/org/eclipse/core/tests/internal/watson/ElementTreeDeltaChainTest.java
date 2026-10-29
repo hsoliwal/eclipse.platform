@@ -31,7 +31,7 @@ public class ElementTreeDeltaChainTest implements IPathConstants {
 	/**
 	 * Tries some bogus merges and makes sure an exception is thrown.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIllegalMerges() {
 		ElementTree tree = TestUtil.createTestElementTree().newEmptyDelta();
 
@@ -63,7 +63,7 @@ public class ElementTreeDeltaChainTest implements IPathConstants {
 	/**
 	 * Tests the mergeDeltaChain method
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMergeDeltaChain() {
 		ElementTree tree = TestUtil.createTestElementTree();
 		/* create a tree with a whole bunch of operations in project3 */
@@ -91,8 +91,8 @@ public class ElementTreeDeltaChainTest implements IPathConstants {
 		assertFalse(newTree.isImmutable());
 
 		/* make sure old and new trees have same structure */
-		for (int i = 0; i < trees.length; i++) {
-			TestUtil.assertEqualTrees("testMergeDeltaChain: " + i, copies[i].getSubtree(project3), trees[i].getSubtree(project3));
+		for (int i = 0; i < trees.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			TestUtil.assertEqualTrees("testMergeDeltaChain: " + i, copies[i].getSubtree(project3), trees[i].getSubtree(project3)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		TestUtil.assertHasPaths(newTree, TestUtil.getTreePaths());
@@ -103,7 +103,7 @@ public class ElementTreeDeltaChainTest implements IPathConstants {
 	 * Performs merge on trees that have nodes in common.  The chain
 	 * being merged should overwrite the receiver.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMergeOverwrite() {
 		ElementTree tree = TestUtil.createTestElementTree();
 		/* create a tree with a whole bunch of operations in project3 */

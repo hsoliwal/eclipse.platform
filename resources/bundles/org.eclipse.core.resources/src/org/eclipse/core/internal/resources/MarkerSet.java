@@ -32,14 +32,14 @@ public class MarkerSet implements Cloneable, IStringPoolParticipant {
 		this.elements = new IMarkerSetElement[Math.max(MINIMUM_SIZE, capacity * 2)];
 	}
 
-	public void add(IMarkerSetElement element) {
+	public void add(IMarkerSetElement element) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (element == null) {
 			return;
 		}
 		int hash = hashFor(element.getId()) % elements.length;
 
 		// search for an empty slot at the end of the array
-		for (int i = hash; i < elements.length; i++) {
+		for (int i = hash; i < elements.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (elements[i] == null) {
 				elements[i] = element;
 				elementCount++;
@@ -52,7 +52,7 @@ public class MarkerSet implements Cloneable, IStringPoolParticipant {
 		}
 
 		// search for an empty slot at the beginning of the array
-		for (int i = 0; i < hash - 1; i++) {
+		for (int i = 0; i < hash - 1; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (elements[i] == null) {
 				elements[i] = element;
 				elementCount++;
@@ -70,7 +70,7 @@ public class MarkerSet implements Cloneable, IStringPoolParticipant {
 	}
 
 	public void addAll(IMarkerSetElement[] toAdd) {
-		for (IMarkerSetElement element : toAdd) {
+		for (IMarkerSetElement element : toAdd) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			add(element);
 		}
 	}
@@ -95,7 +95,7 @@ public class MarkerSet implements Cloneable, IStringPoolParticipant {
 	public IMarkerSetElement[] elements() {
 		IMarkerSetElement[] result = new IMarkerSetElement[elementCount];
 		int j = 0;
-		for (IMarkerSetElement element : elements) {
+		for (IMarkerSetElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element != null) {
 				result[j++] = element;
 			}
@@ -110,10 +110,10 @@ public class MarkerSet implements Cloneable, IStringPoolParticipant {
 	protected void expand() {
 		IMarkerSetElement[] array = new IMarkerSetElement[elements.length * 2];
 		int maxArrayIndex = array.length - 1;
-		for (IMarkerSetElement element : elements) {
+		for (IMarkerSetElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element != null) {
 				int hash = hashFor(element.getId()) % array.length;
-				while (array[hash] != null) {
+				while (array[hash] != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					hash++;
 					if (hash > maxArrayIndex) {
 						hash = 0;
@@ -129,14 +129,14 @@ public class MarkerSet implements Cloneable, IStringPoolParticipant {
 	 * Returns the set element with the given id, or null
 	 * if not found.
 	 */
-	public IMarkerSetElement get(long id) {
+	public IMarkerSetElement get(long id) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (elementCount == 0) {
 			return null;
 		}
 		int hash = hashFor(id) % elements.length;
 
 		// search the last half of the array
-		for (int i = hash; i < elements.length; i++) {
+		for (int i = hash; i < elements.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IMarkerSetElement element = elements[i];
 			if (element == null) {
 				return null;
@@ -147,7 +147,7 @@ public class MarkerSet implements Cloneable, IStringPoolParticipant {
 		}
 
 		// search the beginning of the array
-		for (int i = 0; i < hash - 1; i++) {
+		for (int i = 0; i < hash - 1; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IMarkerSetElement element = elements[i];
 			if (element == null) {
 				return null;
@@ -173,7 +173,7 @@ public class MarkerSet implements Cloneable, IStringPoolParticipant {
 	 * The element at the given index has been removed so move
 	 * elements to keep the set properly hashed.
 	 */
-	protected void rehashTo(int anIndex) {
+	protected void rehashTo(int anIndex) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		int target = anIndex;
 		int index = anIndex + 1;
@@ -181,7 +181,7 @@ public class MarkerSet implements Cloneable, IStringPoolParticipant {
 			index = 0;
 		}
 		IMarkerSetElement element = elements[index];
-		while (element != null) {
+		while (element != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int hashIndex = hashFor(element.getId()) % elements.length;
 			boolean match;
 			if (index < target) {
@@ -202,10 +202,10 @@ public class MarkerSet implements Cloneable, IStringPoolParticipant {
 		elements[target] = null;
 	}
 
-	public void remove(long id) {
+	public void remove(long id) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int hash = hashFor(id) % elements.length;
 
-		for (int i = hash; i < elements.length; i++) {
+		for (int i = hash; i < elements.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IMarkerSetElement element = elements[i];
 			if (element == null) {
 				return;
@@ -216,7 +216,7 @@ public class MarkerSet implements Cloneable, IStringPoolParticipant {
 			}
 		}
 
-		for (int i = 0; i < hash - 1; i++) {
+		for (int i = 0; i < hash - 1; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IMarkerSetElement element = elements[i];
 			if (element == null) {
 				return;
@@ -233,7 +233,7 @@ public class MarkerSet implements Cloneable, IStringPoolParticipant {
 	}
 
 	public void removeAll(IMarkerSetElement[] toRemove) {
-		for (IMarkerSetElement element : toRemove) {
+		for (IMarkerSetElement element : toRemove) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			remove(element);
 		}
 	}
@@ -256,7 +256,7 @@ public class MarkerSet implements Cloneable, IStringPoolParticipant {
 		if (array == null) {
 			return;
 		}
-		for (IMarkerSetElement o : array) {
+		for (IMarkerSetElement o : array) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (o instanceof IStringPoolParticipant) {
 				((IStringPoolParticipant) o).shareStrings(set);
 			}

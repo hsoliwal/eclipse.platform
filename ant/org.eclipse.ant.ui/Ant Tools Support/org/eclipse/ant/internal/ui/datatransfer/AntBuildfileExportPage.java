@@ -61,7 +61,7 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 public class AntBuildfileExportPage extends WizardPage {
 
 	private CheckboxTableViewer fTableViewer;
-	private final List<IJavaProject> fSelectedJavaProjects = new ArrayList<>();
+	private final List<IJavaProject> fSelectedJavaProjects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private Button compatibilityCheckbox;
 	private Button compilerCheckbox;
 	private Text buildfilenameText;
@@ -74,7 +74,7 @@ public class AntBuildfileExportPage extends WizardPage {
 		setDescription(DataTransferMessages.AntBuildfileExportPage_1);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createControl(Composite parent) {
 
 		initializeDialogUnits(parent);
@@ -105,7 +105,7 @@ public class AntBuildfileExportPage extends WizardPage {
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data.heightHint = 300;
 		table.setLayoutData(data);
-		fTableViewer.setContentProvider(new WorkbenchContentProvider() {
+		fTableViewer.setContentProvider(new WorkbenchContentProvider() { //FLLDCIM: MARK — M22  ANONYMOUS
 			@Override
 			public Object[] getElements(Object element) {
 				if (element instanceof IJavaProject[]) {
@@ -114,8 +114,8 @@ public class AntBuildfileExportPage extends WizardPage {
 				return null;
 			}
 		});
-		fTableViewer.setLabelProvider(new WorkbenchLabelProvider());
-		fTableViewer.addCheckStateListener(event -> {
+		fTableViewer.setLabelProvider(new WorkbenchLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
+		fTableViewer.addCheckStateListener(event -> { //FLLDCIM: MARK — T21 CHECK_STATE_LANE CALL
 			if (event.getChecked()) {
 				fSelectedJavaProjects.add((IJavaProject) event.getElement());
 			} else {
@@ -133,7 +133,7 @@ public class AntBuildfileExportPage extends WizardPage {
 		Dialog.applyDialogFont(parent);
 	}
 
-	private void createSelectionButtons(Composite composite) {
+	private void createSelectionButtons(Composite composite) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		Composite buttonsComposite = new Composite(composite, SWT.NONE);
 		GridLayout layout = new GridLayout();
@@ -145,10 +145,10 @@ public class AntBuildfileExportPage extends WizardPage {
 
 		Button selectAll = new Button(buttonsComposite, SWT.PUSH);
 		selectAll.setText(DataTransferMessages.AntBuildfileExportPage_11);
-		selectAll.addSelectionListener(new SelectionAdapter() {
+		selectAll.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				for (int i = 0; i < fTableViewer.getTable().getItemCount(); i++) {
+				for (int i = 0; i < fTableViewer.getTable().getItemCount(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					fSelectedJavaProjects.add((IJavaProject) fTableViewer.getElementAt(i));
 				}
 				fTableViewer.setAllChecked(true);
@@ -159,7 +159,7 @@ public class AntBuildfileExportPage extends WizardPage {
 
 		Button deselectAll = new Button(buttonsComposite, SWT.PUSH);
 		deselectAll.setText(DataTransferMessages.AntBuildfileExportPage_12);
-		deselectAll.addSelectionListener(new SelectionAdapter() {
+		deselectAll.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				fSelectedJavaProjects.clear();
@@ -182,7 +182,7 @@ public class AntBuildfileExportPage extends WizardPage {
 		compilerCheckbox.setText(DataTransferMessages.AntBuildfileExportPage_15);
 	}
 
-	private void createTextFields(Composite composite) {
+	private void createTextFields(Composite composite) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// buildfilename and junitdir group
 		Composite containerGroup = new Composite(composite, SWT.NONE);
@@ -210,9 +210,9 @@ public class AntBuildfileExportPage extends WizardPage {
 		junitdirText.setText("junit"); //$NON-NLS-1$
 		junitdirText.setLayoutData(data);
 
-		ModifyListener listener = unused -> updateEnablement();
-		buildfilenameText.addModifyListener(listener);
-		junitdirText.addModifyListener(listener);
+		ModifyListener listener = unused -> updateEnablement(); //FLLDCIM: MARK — T02  LAMBDA
+		buildfilenameText.addModifyListener(listener); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
+		junitdirText.addModifyListener(listener); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 	}
 
 	private void initializeProjects() {
@@ -225,22 +225,22 @@ public class AntBuildfileExportPage extends WizardPage {
 		catch (JavaModelException e) {
 			javaProjects = new IJavaProject[0];
 		}
-		fTableViewer.setInput(javaProjects);
+		fTableViewer.setInput(javaProjects); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		// Check any necessary projects
 		if (fSelectedJavaProjects != null) {
 			fTableViewer.setCheckedElements(fSelectedJavaProjects.toArray(new IJavaProject[fSelectedJavaProjects.size()]));
 		}
 	}
 
-	private void updateEnablement() {
+	private void updateEnablement() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean complete = true;
 		if (fSelectedJavaProjects.isEmpty()) {
 			setErrorMessage(DataTransferMessages.AntBuildfileExportPage_18);
 			complete = false;
 		}
 		try {
-			List<String> projectsWithErrors = new ArrayList<>();
-			List<String> projectsWithWarnings = new ArrayList<>();
+			List<String> projectsWithErrors = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			List<String> projectsWithWarnings = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			findCyclicProjects(getProjects(false), projectsWithErrors, projectsWithWarnings);
 			if (projectsWithErrors.size() > 0) {
 				String message = DataTransferMessages.AntBuildfileExportPage_cycle_error_in_projects;
@@ -291,9 +291,9 @@ public class AntBuildfileExportPage extends WizardPage {
 	/**
 	 * Convert Eclipse Java projects to Ant build files. Displays error dialogs.
 	 */
-	public boolean generateBuildfiles() {
+	public boolean generateBuildfiles() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		setErrorMessage(null);
-		final List<String> projectNames = new ArrayList<>();
+		final List<String> projectNames = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		final Set<IJavaProject> projects;
 		try {
 			projects = getProjects(true);
@@ -306,7 +306,7 @@ public class AntBuildfileExportPage extends WizardPage {
 			setErrorMessage(MessageFormat.format(DataTransferMessages.AntBuildfileExportPage_10, e.toString()));
 			return false;
 		}
-		IRunnableWithProgress runnable = pm -> {
+		IRunnableWithProgress runnable = pm -> { //FLLDCIM: MARK — T09  LAMBDA
 			SubMonitor localmonitor = SubMonitor.convert(pm, DataTransferMessages.AntBuildfileExportPage_creating_build_files, projects.size());
 			Exception problem = null;
 			try {
@@ -362,11 +362,11 @@ public class AntBuildfileExportPage extends WizardPage {
 	 *            if set to true a dialog prompts for confirmation before overwriting files
 	 * @return set of project names
 	 */
-	private Set<IJavaProject> getProjects(boolean displayConfirmation) throws JavaModelException {
+	private Set<IJavaProject> getProjects(boolean displayConfirmation) throws JavaModelException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// collect all projects to create buildfiles for
 		Set<IJavaProject> projects = new TreeSet<>(ExportUtil.getJavaProjectComparator());
 		Iterator<IJavaProject> javaProjects = fSelectedJavaProjects.iterator();
-		while (javaProjects.hasNext()) {
+		while (javaProjects.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IJavaProject javaProject = javaProjects.next();
 			projects.addAll(ExportUtil.getClasspathProjectsRecursive(javaProject));
 			projects.add(javaProject);
@@ -375,7 +375,7 @@ public class AntBuildfileExportPage extends WizardPage {
 		// confirm overwrite
 		List<String> confirmOverwrite = getConfirmOverwriteSet(projects);
 		if (displayConfirmation && confirmOverwrite.size() > 0) {
-			String message = DataTransferMessages.AntBuildfileExportPage_3 + ExportUtil.NEWLINE
+			String message = DataTransferMessages.AntBuildfileExportPage_3 + ExportUtil.NEWLINE //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					+ ExportUtil.toString(confirmOverwrite, ExportUtil.NEWLINE);
 			if (!MessageDialog.openQuestion(getShell(), DataTransferMessages.AntBuildfileExportPage_4, message)) {
 				return new TreeSet<>(ExportUtil.getJavaProjectComparator());
@@ -388,8 +388,8 @@ public class AntBuildfileExportPage extends WizardPage {
 	 * Splits a set of given projects into a list of projects that have cyclic dependency errors and a list of projects that have cyclic dependency
 	 * warnings.
 	 */
-	private void findCyclicProjects(Set<IJavaProject> projects, List<String> errors, List<String> warnings) throws CoreException {
-		for (IJavaProject javaProject : projects) {
+	private void findCyclicProjects(Set<IJavaProject> projects, List<String> errors, List<String> warnings) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		for (IJavaProject javaProject : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IMarker marker = ExportUtil.getCyclicDependencyMarker(javaProject);
 			if (marker != null) {
 				Integer severityAttr = (Integer) marker.getAttribute(IMarker.SEVERITY);
@@ -417,10 +417,10 @@ public class AntBuildfileExportPage extends WizardPage {
 	 * @return set of project names
 	 */
 	private List<String> getConfirmOverwriteSet(Set<IJavaProject> javaProjects) {
-		List<String> result = new ArrayList<>(javaProjects.size());
-		for (IJavaProject project : javaProjects) {
+		List<String> result = new ArrayList<>(javaProjects.size()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IJavaProject project : javaProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String projectRoot = ExportUtil.getProjectRoot(project);
-			if (ExportUtil.existsUserFile(projectRoot + buildfilenameText.getText())) {
+			if (ExportUtil.existsUserFile(projectRoot + buildfilenameText.getText())) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				result.add(project.getProject().getName());
 			}
 		}

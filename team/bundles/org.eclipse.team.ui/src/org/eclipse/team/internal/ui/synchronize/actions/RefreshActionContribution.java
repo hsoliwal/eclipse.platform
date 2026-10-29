@@ -33,7 +33,7 @@ public class RefreshActionContribution extends SynchronizePageActionGroup {
 	private org.eclipse.team.internal.ui.mapping.RemoveFromViewAction removeFromViewAction;
 	private org.eclipse.team.internal.ui.mapping.RestoreRemovedItemsAction restoreRemovedItemsAction;
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void initialize(final ISynchronizePageConfiguration configuration) {
 		super.initialize(configuration);
 		final ISynchronizePageSite site = configuration.getSite();

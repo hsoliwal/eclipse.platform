@@ -72,7 +72,7 @@ public class TestBuilderDeltaSerialization {
 	/**
 	 * Create projects, setup a builder, and do an initial build.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(1)
 	public void test1() throws CoreException {
 		IResource[] resources = {project1, project2, unsorted1, unsorted2, sorted1, sorted2, unsortedFile1, unsortedFile2};

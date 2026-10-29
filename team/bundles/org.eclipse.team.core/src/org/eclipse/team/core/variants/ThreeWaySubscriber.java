@@ -52,7 +52,7 @@ public abstract class ThreeWaySubscriber extends ResourceVariantTreeSubscriber i
 	protected ThreeWaySubscriber(ThreeWaySynchronizer synchronizer) {
 		this.synchronizer = synchronizer;
 		baseTree = new ThreeWayBaseTree(this);
-		getSynchronizer().addListener(this);
+		getSynchronizer().addListener(this); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 	}
 
 	@Override
@@ -165,7 +165,7 @@ public abstract class ThreeWaySubscriber extends ResourceVariantTreeSubscriber i
 	private boolean isChildOfRoot(IResource resource) {
 		IResource[] roots = roots();
 		IPath fullPath = resource.getFullPath();
-		for (IResource root : roots) {
+		for (IResource root : roots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (root.getFullPath().isPrefixOf(fullPath)) {
 				return true;
 			}

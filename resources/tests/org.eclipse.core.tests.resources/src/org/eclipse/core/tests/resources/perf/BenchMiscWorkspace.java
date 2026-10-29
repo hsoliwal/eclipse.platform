@@ -43,7 +43,7 @@ public class BenchMiscWorkspace {
 	@Test
 	public void testNoOp() throws Exception {
 		final IWorkspace ws = ResourcesPlugin.getWorkspace();
-		final IWorkspaceRunnable noop = unused -> {
+		final IWorkspaceRunnable noop = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 		};
 		//run a first operation to make sure no other jobs are running before starting timer
 		ws.run(noop, null);
@@ -63,7 +63,7 @@ public class BenchMiscWorkspace {
 			@Override
 			protected void test() {
 				IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-				for (int i = 0; i < 2000; i++) {
+				for (int i = 0; i < 2000; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					root.getProject(Integer.toString(i));
 				}
 			}

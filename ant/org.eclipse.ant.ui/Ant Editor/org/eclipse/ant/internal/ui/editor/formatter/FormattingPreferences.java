@@ -30,7 +30,7 @@ public class FormattingPreferences {
 			canonicalIndent = "\t"; //$NON-NLS-1$
 		} else {
 			String tab = IAntCoreConstants.EMPTY_STRING;
-			for (int i = 0; i < getTabWidth(); i++) {
+			for (int i = 0; i < getTabWidth(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				tab = tab.concat(" "); //$NON-NLS-1$
 			}
 			canonicalIndent = tab;

@@ -47,25 +47,25 @@ public abstract class MultiStrategyDumper extends AbstractDumper {
 	 * @see IStringDumpingStrategy#dumpStringContents(DataInputStream)
 	 * @see #openInputStream(File)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected final void dumpContents(PushbackInputStream input, StringBuilder contents) throws IOException, Exception, DumpException {
 		DataInputStream dataInput = new DataInputStream(input);
 		int c;
-		while ((c = input.read()) != -1) {
+		while ((c = input.read()) != -1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			input.unread(c);
 			IStringDumpingStrategy strategy = getStringDumpingStrategy(dataInput);
 			String dumpedContents = strategy.dumpStringContents(dataInput);
 			if (dumpedContents == null) {
 				break;
 			}
-			contents.append("Format: "); //$NON-NLS-1$
-			contents.append(strategy.getFormatDescription());
-			contents.append("\n\n"); //$NON-NLS-1$
-			contents.append(dumpedContents);
-			contents.append("\n"); //$NON-NLS-1$
+			contents.append("Format: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			contents.append(strategy.getFormatDescription()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			contents.append("\n\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			contents.append(dumpedContents); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			contents.append("\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		if (contents.length() == 0) {
-			contents.append("No contents\n"); //$NON-NLS-1$
+			contents.append("No contents\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 	}
 
@@ -94,7 +94,7 @@ public abstract class MultiStrategyDumper extends AbstractDumper {
 	 */
 	@Override
 	protected InputStream openInputStream(File file) throws IOException {
-		return new FileInputStream(file);
+		return new FileInputStream(file); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 	}
 
 }

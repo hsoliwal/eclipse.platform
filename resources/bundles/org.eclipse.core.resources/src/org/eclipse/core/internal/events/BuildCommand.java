@@ -51,7 +51,7 @@ public class BuildCommand extends ModelObject implements ICommand {
 
 	private static final int ALL_TRIGGERS = MASK_AUTO | MASK_CLEAN | MASK_FULL | MASK_INCREMENTAL;
 
-	protected HashMap<String, String> arguments = new HashMap<>(0);
+	protected HashMap<String, String> arguments = new HashMap<>(0); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/** Have we checked the supports configurations flag */
 	private boolean supportsConfigurationsCalculated;
@@ -159,7 +159,7 @@ public class BuildCommand extends ModelObject implements ICommand {
 	public Object getBuilders() {
 		synchronized (builderLock) {
 			if (supportsConfigs()) {
-				return builders == null ? null : new HashMap<>(builders);
+				return builders == null ? null : new HashMap<>(builders); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			}
 			return builder;
 		}
@@ -224,7 +224,7 @@ public class BuildCommand extends ModelObject implements ICommand {
 	@Override
 	public void setArguments(Map<String, String> value) {
 		// copy parameter for safety's sake
-		arguments = value == null ? null : new HashMap<>(value);
+		arguments = value == null ? null : new HashMap<>(value); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	}
 
 	/**
@@ -244,7 +244,7 @@ public class BuildCommand extends ModelObject implements ICommand {
 				if (value instanceof IncrementalProjectBuilder) {
 					builder = (IncrementalProjectBuilder) value;
 				} else {
-					builders = new HashMap<>((Map<IBuildConfiguration, IncrementalProjectBuilder>) value);
+					builders = new HashMap<>((Map<IBuildConfiguration, IncrementalProjectBuilder>) value); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 				}
 			}
 		}
@@ -266,7 +266,7 @@ public class BuildCommand extends ModelObject implements ICommand {
 			if (configBuilder == null && builder == null) {
 				if (supportsConfigs()) {
 					if (builders == null) {
-						builders = new HashMap<>(1);
+						builders = new HashMap<>(1); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 					}
 					builders.put(config, newBuilder);
 				} else {
@@ -314,6 +314,6 @@ public class BuildCommand extends ModelObject implements ICommand {
 	 */
 	@Override
 	public String toString() {
-		return "BuildCommand(" + getName() + ")";//$NON-NLS-1$ //$NON-NLS-2$
+		return "BuildCommand(" + getName() + ")";//$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

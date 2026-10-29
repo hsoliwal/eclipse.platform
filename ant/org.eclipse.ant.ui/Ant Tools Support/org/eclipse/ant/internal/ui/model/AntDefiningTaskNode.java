@@ -46,7 +46,7 @@ import org.xml.sax.Attributes;
 public class AntDefiningTaskNode extends AntTaskNode {
 	private String fIdentifier = null;
 
-	public AntDefiningTaskNode(Task task, Attributes attributes) {
+	public AntDefiningTaskNode(Task task, Attributes attributes) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super(task);
 		String label = attributes.getValue(IAntCoreConstants.NAME);
 		if (label == null) {
@@ -54,12 +54,12 @@ public class AntDefiningTaskNode extends AntTaskNode {
 
 			String file = attributes.getValue(IAntCoreConstants.FILE);
 			if (file != null) {
-				label = label + " " + file; //$NON-NLS-1$
+				label = label + " " + file; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				fIdentifier = file;
 			} else {
 				String resource = attributes.getValue(IAntModelConstants.ATTR_RESOURCE);
 				if (resource != null) {
-					label = label + " " + resource; //$NON-NLS-1$
+					label = label + " " + resource; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					fIdentifier = resource;
 				}
 			}
@@ -82,7 +82,7 @@ public class AntDefiningTaskNode extends AntTaskNode {
 	/**
 	 * Execute the defining task.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean configure(boolean validateFully) {
 		if (fConfigured) {
 			return false;
@@ -95,8 +95,8 @@ public class AntDefiningTaskNode extends AntTaskNode {
 				getTask().maybeConfigure();
 				getTask().execute();
 				Iterator<String> newNames = helper.getAntTypeTable().keySet().iterator();
-				List<String> defined = new ArrayList<>();
-				while (newNames.hasNext()) {
+				List<String> defined = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+				while (newNames.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String name = newNames.next();
 					if (old.get(name) == null) {
 						defined.add(name);
@@ -154,11 +154,11 @@ public class AntDefiningTaskNode extends AntTaskNode {
 	 * Sets the Java class path in org.apache.tools.ant.types.Path so that the classloaders defined by these "definer" tasks will have the correct
 	 * classpath.
 	 */
-	public static void setJavaClassPath(URL[] antClasspath) {
+	public static void setJavaClassPath(URL[] antClasspath) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
-		StringBuilder buff = new StringBuilder();
+		StringBuilder buff = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		File file = null;
-		for (URL url : antClasspath) {
+		for (URL url : antClasspath) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				try {
 					URL thisURL = URIUtil.toURI(url).toURL();
@@ -173,8 +173,8 @@ public class AntDefiningTaskNode extends AntTaskNode {
 			catch (IOException e) {
 				continue;
 			}
-			buff.append(file.getAbsolutePath());
-			buff.append("; "); //$NON-NLS-1$
+			buff.append(file.getAbsolutePath()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buff.append("; "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 
 		org.apache.tools.ant.types.Path systemClasspath = new org.apache.tools.ant.types.Path(null, buff.substring(0, buff.length() - 2));

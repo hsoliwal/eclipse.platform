@@ -92,7 +92,7 @@ public class RefactorActionGroup extends ActionGroup {
 		renameAction.selectionChanged(getObjectSelection());
 	}
 
-	protected void makeActions() {
+	protected void makeActions() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final IShellProvider shellProvider = site.getWorkbenchSite();
 		final ISharedImages images = PlatformUI.getWorkbench()
 				.getSharedImages();
@@ -104,7 +104,7 @@ public class RefactorActionGroup extends ActionGroup {
 		copyAction.setDisabledImageDescriptor(images
 				.getImageDescriptor(ISharedImages.IMG_TOOL_COPY_DISABLED));
 
-		deleteAction = new DeleteResourceAction(shellProvider) {
+		deleteAction = new DeleteResourceAction(shellProvider) { //FLLDCIM: MARK — T04  ANONYMOUS
 			@Override
 			protected List getSelectedResources() {
 				return getSelection().toList();// Arrays.asList(Utils.getResources(getSelection().toArray()));
@@ -124,7 +124,7 @@ public class RefactorActionGroup extends ActionGroup {
 		deleteAction.setDisabledImageDescriptor(images
 				.getImageDescriptor(ISharedImages.IMG_TOOL_DELETE_DISABLED));
 
-		moveAction = new MoveResourceAction(shellProvider) {
+		moveAction = new MoveResourceAction(shellProvider) { //FLLDCIM: MARK — T04  ANONYMOUS
 			@Override
 			protected boolean updateSelection(IStructuredSelection selection) {
 				return super.updateSelection(selection)
@@ -134,7 +134,7 @@ public class RefactorActionGroup extends ActionGroup {
 		};
 		moveAction.setActionDefinitionId(IWorkbenchCommandConstants.FILE_MOVE);
 
-		renameAction = new RenameResourceAction(shellProvider) {
+		renameAction = new RenameResourceAction(shellProvider) { //FLLDCIM: MARK — T04  ANONYMOUS
 			@Override
 			protected boolean updateSelection(IStructuredSelection selection) {
 				return super.updateSelection(selection)
@@ -166,9 +166,9 @@ public class RefactorActionGroup extends ActionGroup {
 		return (IStructuredSelection)selection;
 	}
 
-	private boolean allResourcesAreOfType(IStructuredSelection selection, int resourceMask) {
+	private boolean allResourcesAreOfType(IStructuredSelection selection, int resourceMask) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Iterator resources = selection.iterator();
-		while (resources.hasNext()) {
+		while (resources.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object next = resources.next();
 			IResource resource = null;
 			if (next instanceof IResource) {

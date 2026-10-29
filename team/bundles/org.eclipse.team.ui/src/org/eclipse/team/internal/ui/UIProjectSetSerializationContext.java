@@ -83,14 +83,14 @@ public class UIProjectSetSerializationContext extends ProjectSetSerializationCon
 	 *
 	 * @see org.eclipse.team.core.ProjectSetSerializationContext#confirmOverwrite(org.eclipse.core.resources.IProject[])
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IProject[] confirmOverwrite(final IProject[] projects) throws TeamException {
 		IPromptCondition prompt = new IPromptCondition() {
 			List resources = Arrays.asList(projects);
 			@Override
 			public boolean needsPrompt(IResource resource) {
 				if (resource instanceof IProject project) {
-					return (project.exists() || getTargetFile(project).exists()) && resources.contains(resource);
+					return (project.exists() || getTargetFile(project).exists()) && resources.contains(resource); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				}
 				return false;
 			}

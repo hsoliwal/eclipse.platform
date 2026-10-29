@@ -75,21 +75,21 @@ public class ProjectSelectionPage extends WizardPage {
 		projectViewer.getControl().setLayoutData(SWTUtils.createHVFillGridData());
 		projectList = new AdaptableList(projects);
 		projectViewer.setContentProvider(new WorkbenchContentProvider());
-		projectViewer.setLabelProvider(new WorkbenchLabelProvider());
+		projectViewer.setLabelProvider(new WorkbenchLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 		projectViewer.setComparator(new ResourceComparator(ResourceComparator.NAME));
-		projectViewer.setInput(projectList);
+		projectViewer.setInput(projectList); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		projectViewer.getTable().select(0);
-		projectViewer.addSelectionChangedListener(unused -> updateEnablements());
+		projectViewer.addSelectionChangedListener(unused -> updateEnablements()); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 	}
 
-	private void createShareButton(Composite composite) {
+	private void createShareButton(Composite composite) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		shareButton = new Button(composite, SWT.PUSH);
 		GridData gridData = new GridData();
 		gridData.horizontalAlignment = SWT.END;
 		gridData.verticalAlignment = SWT.TOP;
 		shareButton.setLayoutData(gridData);
 		shareButton.setText(TeamUIMessages.ProjectSelectionPage_2);
-		shareButton.addSelectionListener(new SelectionListener() {
+		shareButton.addSelectionListener(new SelectionListener() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				shareSelectedProject();
@@ -121,7 +121,7 @@ public class ProjectSelectionPage extends WizardPage {
 	private void updateProjectList(IProject project) {
 		if (RepositoryProvider.isShared(project)) {
 			projectList.remove(project);
-			projectViewer.refresh();
+			projectViewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 			if (hasUnsharedProjects()) {
 				projectViewer.getTable().select(0);
 			}

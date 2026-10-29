@@ -63,15 +63,15 @@ public class ScopeChangeEvent {
 		return contracted;
 	}
 
-	public ResourceMapping[] getChangedMappings() {
+	public ResourceMapping[] getChangedMappings() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourceMapping[] currentMappings = scope.getMappings();
 		ResourceMapping[] changedMappings;
 		if (currentMappings.length > originalMappings.length) {
 			// The number of mappings has increased so we should report the new mappings
-			Set<ResourceMapping> originalSet = new HashSet<>();
-			List<ResourceMapping> result = new ArrayList<>();
+			Set<ResourceMapping> originalSet = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+			List<ResourceMapping> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			Collections.addAll(originalSet, originalMappings);
-			for (ResourceMapping mapping : currentMappings) {
+			for (ResourceMapping mapping : currentMappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!originalSet.contains(mapping)) {
 					result.add(mapping);
 				}
@@ -79,10 +79,10 @@ public class ScopeChangeEvent {
 			changedMappings = result.toArray(new ResourceMapping[result.size()]);
 		} else if (isContracted()) {
 			// The number of mappings may be smaller so report the removed mappings
-			Set<ResourceMapping> finalSet = new HashSet<>();
-			List<ResourceMapping> result = new ArrayList<>();
+			Set<ResourceMapping> finalSet = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+			List<ResourceMapping> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			Collections.addAll(finalSet, currentMappings);
-			for (ResourceMapping mapping : originalMappings) {
+			for (ResourceMapping mapping : originalMappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!finalSet.contains(mapping)) {
 					result.add(mapping);
 				}

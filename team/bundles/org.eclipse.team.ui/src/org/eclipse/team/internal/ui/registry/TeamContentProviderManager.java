@@ -60,9 +60,9 @@ public class TeamContentProviderManager implements ITeamContentProviderManager {
 
 	@Override
 	public String[] getContentProviderIds(ISynchronizationScope scope) {
-		List<String> result = new ArrayList<>();
+		List<String> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		ITeamContentProviderDescriptor[] descriptors = getDescriptors();
-		for (ITeamContentProviderDescriptor descriptor : descriptors) {
+		for (ITeamContentProviderDescriptor descriptor : descriptors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (descriptor.isEnabled() && scope.getMappings(descriptor.getModelProviderId()).length > 0) {
 				result.add(descriptor.getContentExtensionId());
 			}
@@ -76,14 +76,14 @@ public class TeamContentProviderManager implements ITeamContentProviderManager {
 		return descriptors.get(modelProviderId);
 	}
 
-	protected void lazyInitialize() {
+	protected void lazyInitialize() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (descriptors != null) {
 			return;
 		}
 		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(TeamUIPlugin.ID, PT_TEAM_CONTENT_PROVIDERS);
 		IExtension[] extensions = point.getExtensions();
-		descriptors = new HashMap<>(extensions.length * 2);
-		for (IExtension extension : extensions) {
+		descriptors = new HashMap<>(extensions.length * 2); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (IExtension extension : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ITeamContentProviderDescriptor desc = null;
 			try {
 				desc = new TeamContentProviderDescriptor(extension);
@@ -108,7 +108,7 @@ public class TeamContentProviderManager implements ITeamContentProviderManager {
 
 	private void firePropertyChange(final PropertyChangeEvent event) {
 		Object[] allListeners = listeners.getListeners();
-		for (Object l : allListeners) {
+		for (Object l : allListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final IPropertyChangeListener listener = (IPropertyChangeListener) l;
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
@@ -129,15 +129,15 @@ public class TeamContentProviderManager implements ITeamContentProviderManager {
 
 	@Override
 	public void setEnabledDescriptors(ITeamContentProviderDescriptor[] descriptors) {
-		List<ITeamContentProviderDescriptor> previouslyEnabled = new ArrayList<>();
-		for (ITeamContentProviderDescriptor element : this.descriptors.values()) {
+		List<ITeamContentProviderDescriptor> previouslyEnabled = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ITeamContentProviderDescriptor element : this.descriptors.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			TeamContentProviderDescriptor descriptor = (TeamContentProviderDescriptor) element;
 			if (descriptor.isEnabled()) {
 				previouslyEnabled.add(descriptor);
 				descriptor.setEnabled(false);
 			}
 		}
-		for (ITeamContentProviderDescriptor d : descriptors) {
+		for (ITeamContentProviderDescriptor d : descriptors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			TeamContentProviderDescriptor descriptor = (TeamContentProviderDescriptor) d;
 			descriptor.setEnabled(true);
 		}

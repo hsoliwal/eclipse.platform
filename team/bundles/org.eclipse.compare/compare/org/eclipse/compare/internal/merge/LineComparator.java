@@ -32,8 +32,8 @@ class LineComparator implements IRangeComparator {
 
 		BufferedReader br = new BufferedReader(new InputStreamReader(is, encoding));
 		String line;
-		ArrayList<String> ar = new ArrayList<>();
-		while ((line = br.readLine()) != null) {
+		ArrayList<String> ar = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		while ((line = br.readLine()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ar.add(line);
 		}
 		// It is the responsibility of the caller to close the stream

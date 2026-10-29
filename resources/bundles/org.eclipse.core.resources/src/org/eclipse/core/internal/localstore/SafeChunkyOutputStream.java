@@ -49,7 +49,7 @@ public class SafeChunkyOutputStream extends FilterOutputStream {
 	}
 
 	public SafeChunkyOutputStream(String filePath) throws IOException {
-		super(new BufferedOutputStream(new FileOutputStream(filePath, true)));
+		super(new BufferedOutputStream(new FileOutputStream(filePath, true))); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 		this.filePath = filePath;
 		isOpen = true;
 		beginChunk();
@@ -64,7 +64,7 @@ public class SafeChunkyOutputStream extends FilterOutputStream {
 	}
 
 	protected void open() throws IOException {
-		out = new BufferedOutputStream(new FileOutputStream(filePath, true));
+		out = new BufferedOutputStream(new FileOutputStream(filePath, true)); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 		isOpen = true;
 		beginChunk();
 	}

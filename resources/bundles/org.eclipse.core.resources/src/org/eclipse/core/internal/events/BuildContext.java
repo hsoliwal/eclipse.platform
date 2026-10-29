@@ -53,7 +53,7 @@ public class BuildContext implements IBuildContext {
 
 	private int findBuildConfigurationIndex() {
 		int position = -1;
-		for (int i = 0; i < buildOrder.length; i++) {
+		for (int i = 0; i < buildOrder.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (buildOrder[i].equals(buildConfiguration)) {
 				position = i;
 				break;

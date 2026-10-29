@@ -37,14 +37,14 @@ public class ConvertMessageBundleAction implements IObjectActionDelegate {
 		fPart = part;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run(IAction action) {
 		if (fAccessorUnit == null) {
 			return;
 		}
 		try {
 			final GotoResourceAction pAction = new GotoResourceAction(fPart);
-			IRunnableWithProgress runnable = unused -> pAction.run();
+			IRunnableWithProgress runnable = unused -> pAction.run(); //FLLDCIM: MARK — T09  LAMBDA
 			PlatformUI.getWorkbench().getProgressService().run(false, false, runnable);
 			IFile propertiesFile = (IFile) pAction.getResource();
 			if (propertiesFile == null) {

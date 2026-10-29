@@ -37,9 +37,9 @@ public class PDAArray extends PDAValue {
 	@Override
 	public IVariable[] getVariables() throws DebugException {
 		String string = getValueString();
-		String[] words = string.split("\\W+"); //$NON-NLS-1$
+		String[] words = string.split("\\W+"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		IVariable[] variables = new IVariable[words.length];
-		for (int i = 0; i < words.length; i++) {
+		for (int i = 0; i < words.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String word = words[i];
 			variables[i] = new PDAArrayEntry(getPDADebugTarget(), i, new PDAValue(getVariable(), word));
 		}

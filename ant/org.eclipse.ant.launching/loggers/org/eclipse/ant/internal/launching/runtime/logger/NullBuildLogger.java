@@ -138,24 +138,24 @@ public class NullBuildLogger extends AbstractEclipseBuildLogger implements Build
 		}
 	}
 
-	protected String handleException(BuildEvent event) {
+	protected String handleException(BuildEvent event) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Throwable exception = event.getException();
 		if (exception == null || exception == fHandledException || exception instanceof OperationCanceledException
 				|| exception instanceof AntSecurityException) {
 			return null;
 		}
 		fHandledException = exception;
-		StringBuilder message = new StringBuilder();
-		message.append(System.lineSeparator());
-		message.append(RuntimeMessages.NullBuildLogger_1);
-		message.append(System.lineSeparator());
+		StringBuilder message = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		message.append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		message.append(RuntimeMessages.NullBuildLogger_1); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		message.append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		if (Project.MSG_VERBOSE <= fMessageOutputLevel || !(exception instanceof BuildException)) {
-			message.append(StringUtils.getStackTrace(exception));
+			message.append(StringUtils.getStackTrace(exception)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		} else {
 			if (exception instanceof BuildException) {
-				message.append(exception.toString()).append(System.lineSeparator());
+				message.append(exception.toString()).append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			} else {
-				message.append(exception.getMessage()).append(System.lineSeparator());
+				message.append(exception.getMessage()).append(System.lineSeparator()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 

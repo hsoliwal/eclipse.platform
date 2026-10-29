@@ -29,9 +29,9 @@ import org.eclipse.team.ui.mapping.ITeamStateChangeEvent;
  */
 public class TeamStateChangeEvent implements ITeamStateChangeEvent {
 
-	private final Set<IResource> changes = new HashSet<>();
-	private final Set<IResource> addedRoots = new HashSet<>();
-	private final Set<IResource> removedRoots = new HashSet<>();
+	private final Set<IResource> changes = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<IResource> addedRoots = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<IResource> removedRoots = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	public TeamStateChangeEvent() {
 		super();
@@ -41,8 +41,8 @@ public class TeamStateChangeEvent implements ITeamStateChangeEvent {
 	 * Convenience constructor for creating an event from a subscriber change.
 	 * @param deltas the set of subscriber changes
 	 */
-	public TeamStateChangeEvent(ISubscriberChangeEvent[] deltas) {
-		for (ISubscriberChangeEvent event : deltas) {
+	public TeamStateChangeEvent(ISubscriberChangeEvent[] deltas) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		for (ISubscriberChangeEvent event : deltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource resource = event.getResource();
 			if ((event.getFlags() & ISubscriberChangeEvent.ROOT_ADDED) != 0) {
 				rootAdded(resource);
@@ -54,7 +54,7 @@ public class TeamStateChangeEvent implements ITeamStateChangeEvent {
 				changed(resource);
 			}
 			// Indicate that the ancestors may have changed as well
-			while (resource.getType() != IResource.PROJECT) {
+			while (resource.getType() != IResource.PROJECT) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				resource = resource.getParent();
 				changed(resource);
 			}

@@ -77,7 +77,7 @@ import org.eclipse.ui.services.IDisposable;
  * </p>
  * @since 3.3
  */
-public abstract class SaveableCompareEditorInput extends CompareEditorInput implements ISaveablesSource {
+public abstract class SaveableCompareEditorInput extends CompareEditorInput implements ISaveablesSource { //FLLDCIM: MARK — T09  IMPLEMENTS
 	private ICompareInputChangeListener compareInputChangeListener;
 	private final IWorkbenchPage page;
 	private final ListenerList<ICompareInputChangeListener> inputChangeListeners =
@@ -108,7 +108,7 @@ public abstract class SaveableCompareEditorInput extends CompareEditorInput impl
 		return null;
 	}
 
-	private class InternalResourceSaveableComparison extends LocalResourceSaveableComparison implements ISharedDocumentAdapterListener {
+	private class InternalResourceSaveableComparison extends LocalResourceSaveableComparison implements ISharedDocumentAdapterListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 		private LocalResourceTypedElement lrte;
 		private boolean connected;
 
@@ -206,14 +206,14 @@ public abstract class SaveableCompareEditorInput extends CompareEditorInput impl
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void contentsCreated() {
 		super.contentsCreated();
 		if (Policy.DEBUG_COMPARE_EDITOR_INPUT) {
 			logTrace("compareInputChangeListener assigned"); //$NON-NLS-1$
 			logStackTrace();
 		}
-		compareInputChangeListener = source -> {
+		compareInputChangeListener = source -> { //FLLDCIM: MARK — T37  LAMBDA
 			if (source == getCompareResult()) {
 				boolean closed = false;
 				if (source.getKind() == Differencer.NO_CHANGE) {
@@ -231,12 +231,12 @@ public abstract class SaveableCompareEditorInput extends CompareEditorInput impl
 
 		if (getSaveable() instanceof SaveableComparison) {
 			SaveableComparison scm = (SaveableComparison) saveable;
-			propertyListener = (unused, propId) -> {
+			propertyListener = (unused, propId) -> { //FLLDCIM: MARK — T06  LAMBDA
 				if (propId == SaveableComparison.PROP_DIRTY) {
 					setDirty(saveable.isDirty());
 				}
 			};
-			scm.addPropertyListener(propertyListener);
+			scm.addPropertyListener(propertyListener); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		}
 		setDirty(saveable.isDirty());
 	}
@@ -249,7 +249,7 @@ public abstract class SaveableCompareEditorInput extends CompareEditorInput impl
 		return listener;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void handleDispose() {
 		if (Policy.DEBUG_COMPARE_EDITOR_INPUT) {
 			logTrace("handleDispose()"); //$NON-NLS-1$
@@ -282,11 +282,11 @@ public abstract class SaveableCompareEditorInput extends CompareEditorInput impl
 	}
 
 	private void logStackTrace() {
-		new Exception("<Fake exception> in " + getClass().getName()).printStackTrace(System.out); //$NON-NLS-1$
+		new Exception("<Fake exception> in " + getClass().getName()).printStackTrace(System.out); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private void logTrace(String string) {
-		System.out.println("SaveableCompareEditorInput " + System.identityHashCode(this) + ": " + string);  //$NON-NLS-1$//$NON-NLS-2$
+		System.out.println("SaveableCompareEditorInput " + System.identityHashCode(this) + ": " + string);  //$NON-NLS-1$//$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -344,7 +344,7 @@ public abstract class SaveableCompareEditorInput extends CompareEditorInput impl
 	 * @return <code>true</code> if the editor was closed (note that the
 	 * close may be asynchronous)
 	 */
-	protected boolean closeEditor(boolean checkForUnsavedChanges) {
+	protected boolean closeEditor(boolean checkForUnsavedChanges) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (isSaveNeeded() && checkForUnsavedChanges) {
 			return false;
 		}
@@ -371,7 +371,7 @@ public abstract class SaveableCompareEditorInput extends CompareEditorInput impl
 				return false;
 			}
 			Display display= shell.getDisplay();
-			display.asyncExec(runnable);
+			display.asyncExec(runnable); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		}
 		return true;
 	}
@@ -383,10 +383,10 @@ public abstract class SaveableCompareEditorInput extends CompareEditorInput impl
 		return page;
 	}
 
-	void propogateInputChange() {
+	void propogateInputChange() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!inputChangeListeners.isEmpty()) {
 			Object[] allListeners = inputChangeListeners.getListeners();
-			for (Object l : allListeners) {
+			for (Object l : allListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				final ICompareInputChangeListener listener = (ICompareInputChangeListener) l;
 				SafeRunner.run(new ISafeRunnable() {
 					@Override
@@ -448,7 +448,7 @@ public abstract class SaveableCompareEditorInput extends CompareEditorInput impl
 		if (input == getCompareResult()) {
 			inputChangeListeners.add(listener);
 		} else {
-			super.addCompareInputChangeListener(input, listener);
+			super.addCompareInputChangeListener(input, listener); //FLLDCIM: MARK — T37 COMPARE_DELTA CALL
 		}
 	}
 
@@ -496,8 +496,8 @@ public abstract class SaveableCompareEditorInput extends CompareEditorInput impl
 			// Register the model for change events if appropriate.
 			dsp.addPropertyChangeListener(pcl);
 			Control c= newViewer.getControl();
-			c.addDisposeListener(
-				unused -> dsp.removePropertyChangeListener(pcl)
+			c.addDisposeListener( //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
+				unused -> dsp.removePropertyChangeListener(pcl) //FLLDCIM: MARK — T01  LAMBDA
 			);
 		}
 		return newViewer;
@@ -522,7 +522,7 @@ public abstract class SaveableCompareEditorInput extends CompareEditorInput impl
 		final Saveable saveable = getSaveable();
 		if (saveable instanceof LocalResourceSaveableComparison) {
 			final ITypedElement element= getFileElement(getCompareInput(), this);
-			menu.addMenuListener(manager -> SaveablesCompareEditorInput.handleMenuAboutToShow(manager, getContainer(), saveable, element, selectionProvider));
+			menu.addMenuListener(manager -> SaveablesCompareEditorInput.handleMenuAboutToShow(manager, getContainer(), saveable, element, selectionProvider)); //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 		}
 	}
 }

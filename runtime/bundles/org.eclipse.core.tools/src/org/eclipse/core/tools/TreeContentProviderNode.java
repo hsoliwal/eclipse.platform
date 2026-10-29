@@ -81,7 +81,7 @@ public class TreeContentProviderNode implements Comparable<TreeContentProviderNo
 	public void addChild(TreeContentProviderNode child) {
 		// lazilly instantiates the children's list
 		if (this.children == null) {
-			this.children = new ArrayList<>();
+			this.children = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 		this.children.add(child);
 		child.setParent(this);
@@ -114,7 +114,7 @@ public class TreeContentProviderNode implements Comparable<TreeContentProviderNo
 		if (value == null) {
 			return name;
 		}
-		return name + " = " + value; //$NON-NLS-1$
+		return name + " = " + value; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -182,7 +182,7 @@ public class TreeContentProviderNode implements Comparable<TreeContentProviderNo
 		if (children == null) {
 			return;
 		}
-		for (TreeContentProviderNode child : children) {
+		for (TreeContentProviderNode child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			child.accept(visitor);
 		}
 	}
@@ -208,7 +208,7 @@ public class TreeContentProviderNode implements Comparable<TreeContentProviderNo
 		if (children == null || children.isEmpty()) {
 			return null;
 		}
-		for (TreeContentProviderNode child : children) {
+		for (TreeContentProviderNode child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			TreeContentProviderNode found = child.findNode(obj);
 			if (found != null) {
 				return found;

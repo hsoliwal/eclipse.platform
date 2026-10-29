@@ -35,7 +35,7 @@ public class PR_1GHOM0N_Test {
 	 * Ensure that we get ADDED and OPEN in the delta when we create and open
 	 * a project in a workspace runnable.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test_1GEAB3C() throws CoreException {
 		// setup the project
 		final IProject project = getWorkspace().getRoot().getProject("MyProject");
@@ -48,7 +48,7 @@ public class PR_1GHOM0N_Test {
 
 		// try and reproduce the error (there are problems when calling an incremental
 		// build from within an operation...it leaves the tree immutable)
-		IWorkspaceRunnable body = unused -> {
+		IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, createTestMonitor());
 			IFile file = project.getFile("test.txt");
 			file.create(createRandomContentsStream(), true, createTestMonitor());

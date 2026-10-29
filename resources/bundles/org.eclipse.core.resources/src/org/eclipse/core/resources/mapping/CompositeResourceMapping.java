@@ -46,7 +46,7 @@ public final class CompositeResourceMapping extends ResourceMapping {
 
 	@Override
 	public boolean contains(ResourceMapping mapping) {
-		for (ResourceMapping childMapping : mappings) {
+		for (ResourceMapping childMapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (childMapping.contains(mapping)) {
 				return true;
 			}
@@ -75,8 +75,8 @@ public final class CompositeResourceMapping extends ResourceMapping {
 	@Override
 	public IProject[] getProjects() {
 		if (projects == null) {
-			Set<IProject> result = new HashSet<>();
-			for (ResourceMapping mapping : mappings) {
+			Set<IProject> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+			for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				result.addAll(Arrays.asList(mapping.getProjects()));
 			}
 			projects = result.toArray(new IProject[result.size()]);
@@ -87,8 +87,8 @@ public final class CompositeResourceMapping extends ResourceMapping {
 	@Override
 	public ResourceTraversal[] getTraversals(ResourceMappingContext context, IProgressMonitor monitor) throws CoreException {
 		SubMonitor subMonitor = SubMonitor.convert(monitor, mappings.length);
-		List<ResourceTraversal> result = new ArrayList<>();
-		for (ResourceMapping mapping : mappings) {
+		List<ResourceTraversal> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Collections.addAll(result, mapping.getTraversals(context, subMonitor.newChild(1)));
 		}
 		return result.toArray(new ResourceTraversal[result.size()]);

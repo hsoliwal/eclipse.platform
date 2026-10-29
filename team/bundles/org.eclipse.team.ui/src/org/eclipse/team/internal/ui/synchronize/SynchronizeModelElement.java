@@ -153,7 +153,7 @@ public abstract class SynchronizeModelElement extends DiffNode implements IAdapt
 		}
 	}
 
-	private void firePropertyChange(String propertyName) {
+	private void firePropertyChange(String propertyName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Object[] allListeners;
 		synchronized(this) {
 			if (listeners == null) {
@@ -163,7 +163,7 @@ public abstract class SynchronizeModelElement extends DiffNode implements IAdapt
 		}
 		boolean set = getProperty(propertyName);
 		final PropertyChangeEvent event = new PropertyChangeEvent(this, propertyName, Boolean.valueOf(!set), Boolean.valueOf(set));
-		for (Object object : allListeners) {
+		for (Object object : allListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (object instanceof final IPropertyChangeListener listener) {
 				SafeRunner.run(new ISafeRunnable() {
 					@Override
@@ -179,7 +179,7 @@ public abstract class SynchronizeModelElement extends DiffNode implements IAdapt
 		}
 	}
 
-	private int getFlag(String propertyName) {
+	private int getFlag(String propertyName) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (propertyName == null) {
 			return 0;
 		}
@@ -205,7 +205,7 @@ public abstract class SynchronizeModelElement extends DiffNode implements IAdapt
 
 	private boolean hasChildWithFlag(String flag) {
 		IDiffElement[] childen = getChildren();
-		for (IDiffElement element : childen) {
+		for (IDiffElement element : childen) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (((SynchronizeModelElement)element).getProperty(flag)) {
 				return true;
 			}

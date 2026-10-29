@@ -28,7 +28,7 @@ import org.eclipse.jface.viewers.ViewerComparator;
  * Content provider that maintains a generic list of objects which are shown in a table viewer.
  */
 public class AntContentProvider implements IStructuredContentProvider {
-	protected List<Object> elements = new ArrayList<>();
+	protected List<Object> elements = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	protected TableViewer tableViewer;
 	private ViewerComparator fComparator = null;
 	/**

@@ -25,7 +25,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * Action that toggles pinned state of a participant
  */
-public class PinParticipantAction extends Action implements IPropertyChangeListener {
+public class PinParticipantAction extends Action implements IPropertyChangeListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	private ISynchronizeParticipant participant;
 
@@ -41,7 +41,7 @@ public class PinParticipantAction extends Action implements IPropertyChangeListe
 		this.participant = participant;
 		setEnabled(participant != null);
 		if (participant != null) {
-			participant.addPropertyChangeListener(this);
+			participant.addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		}
 		updateState();
 	}
@@ -54,7 +54,7 @@ public class PinParticipantAction extends Action implements IPropertyChangeListe
 	public void run() {
 		if (participant != null) {
 			try {
-				PlatformUI.getWorkbench().getProgressService().busyCursorWhile(unused -> {
+				PlatformUI.getWorkbench().getProgressService().busyCursorWhile(unused -> { //FLLDCIM: MARK — T09  LAMBDA
 					participant.setPinned(!participant.isPinned());
 					updateState();
 				});

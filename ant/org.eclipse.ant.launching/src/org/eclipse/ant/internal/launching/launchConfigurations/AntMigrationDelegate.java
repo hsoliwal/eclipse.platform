@@ -39,7 +39,7 @@ public class AntMigrationDelegate implements ILaunchConfigurationMigrationDelega
 	 *            the launch configuration that the file will be mapped to.
 	 * @return the buildfile or <code>null</code> if not in the workspace
 	 */
-	protected IFile getFileForCandidate(ILaunchConfiguration candidate) {
+	protected IFile getFileForCandidate(ILaunchConfiguration candidate) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IFile file = null;
 		String expandedLocation = null;
 		String location = null;

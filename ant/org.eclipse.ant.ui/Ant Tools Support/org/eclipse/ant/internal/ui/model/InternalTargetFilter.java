@@ -18,7 +18,7 @@ import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 
-public class InternalTargetFilter extends ViewerFilter {
+public class InternalTargetFilter extends ViewerFilter { //FLLDCIM: MARK — T23  IMPLEMENTS
 
 	private int fFiltered = 0;
 

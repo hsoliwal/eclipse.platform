@@ -38,17 +38,17 @@ public class FileSystemFileRevision extends FileRevision {
 
 	@Override
 	public long getTimestamp() {
-		return remoteFile.lastModified();
+		return remoteFile.lastModified(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStorage getStorage(IProgressMonitor monitor) {
 		return new IStorage() {
 
 			@Override
 			public InputStream getContents() {
 				try {
-					return Files.newInputStream(remoteFile.toPath());
+					return Files.newInputStream(remoteFile.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				} catch (IOException e) {
 					// ignore
 				}

@@ -54,10 +54,10 @@ public class LocalSyncTest implements ICoreConstants {
 
 	private boolean existsInFileSystemWithNoContent(IResource resource) {
 		IPath path = resource.getLocation();
-		return path.toFile().exists() && path.toFile().length() == 0;
+		return path.toFile().exists() && path.toFile().length() == 0; //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDeletion() throws CoreException {
 		// create resources
 		IResource[] resources = buildResources(project, "/File1", "/Folder1/", "/Folder1/File1", "/Folder1/Folder2/");
@@ -75,8 +75,8 @@ public class LocalSyncTest implements ICoreConstants {
 		assertFalse(project.isOpen());
 
 		/* resources should not exist anymore */
-		for (int i = 1; i < resources.length; i++) {
-			assertFalse(resources[i].exists(), "Resource does unexpectedly exist: " + resources[i]);
+		for (int i = 1; i < resources.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			assertFalse(resources[i].exists(), "Resource does unexpectedly exist: " + resources[i]); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -90,7 +90,7 @@ public class LocalSyncTest implements ICoreConstants {
 	/**
 	 * Simple synchronization test. Uses one solution and one project.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSimpleSync() throws Exception {
 		// create resource handles
 		IResource index = project.getFile(IPath.fromOSString("index.html"));

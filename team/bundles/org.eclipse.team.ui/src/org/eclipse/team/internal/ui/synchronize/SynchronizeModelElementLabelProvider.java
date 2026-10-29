@@ -81,7 +81,7 @@ public class SynchronizeModelElementLabelProvider extends LabelProvider implemen
 				if (busyFont == null) {
 					Font defaultFont = JFaceResources.getDefaultFont();
 					FontData[] data = defaultFont.getFontData();
-					for (FontData d : data) {
+					for (FontData d : data) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						d.setStyle(SWT.ITALIC);
 					}
 					busyFont = new Font(TeamUIPlugin.getStandardDisplay(), data);
@@ -140,7 +140,7 @@ public class SynchronizeModelElementLabelProvider extends LabelProvider implemen
 		return compareConfig.getImage(base, kind);
 	}
 
-	private Image propagateConflicts(Image base, ISynchronizeModelElement element) {
+	private Image propagateConflicts(Image base, ISynchronizeModelElement element) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		ImageDescriptor[] overlayImages = new ImageDescriptor[4];
 		boolean hasOverlay = false;
@@ -170,7 +170,7 @@ public class SynchronizeModelElementLabelProvider extends LabelProvider implemen
 		if (hasOverlay) {
 			ImageDescriptor overlay = new DecorationOverlayIcon(base, overlayImages, new Point(base.getBounds().width, base.getBounds().height));
 			if (fgImageCache == null) {
-				fgImageCache = new HashMap<>(10);
+				fgImageCache = new HashMap<>(10); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			}
 			Image conflictDecoratedImage = fgImageCache.get(overlay);
 			if (conflictDecoratedImage == null) {
@@ -215,7 +215,7 @@ public class SynchronizeModelElementLabelProvider extends LabelProvider implemen
 		}
 		compareConfig.dispose();
 		if (fgImageCache != null) {
-			for (Image element : fgImageCache.values()) {
+			for (Image element : fgImageCache.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				element.dispose();
 			}
 		}

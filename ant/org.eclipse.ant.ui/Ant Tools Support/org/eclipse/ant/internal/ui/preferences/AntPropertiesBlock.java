@@ -149,7 +149,7 @@ public class AntPropertiesBlock {
 	/**
 	 * Selection changed listener that delegates selection events.
 	 */
-	private final ISelectionChangedListener tableListener = event -> {
+	private final ISelectionChangedListener tableListener = event -> { //FLLDCIM: MARK — T04  LAMBDA
 		if (tablesEnabled) {
 			if (event.getSource() == propertyTableViewer) {
 				propertyTableSelectionChanged((IStructuredSelection) event.getSelection());
@@ -163,15 +163,15 @@ public class AntPropertiesBlock {
 		this.container = container;
 	}
 
-	private void addPropertyFile() {
+	private void addPropertyFile() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String title = AntPreferencesMessages.AntPropertiesFileSelectionDialog_12;
 		String message = AntPreferencesMessages.AntPropertiesFileSelectionDialog_13;
 		String filterExtension = "properties"; //$NON-NLS-1$
 		String filterMessage = AntPreferencesMessages.AntPropertiesFileSelectionDialog_14;
 
 		Object[] existingFiles = getPropertyFiles();
-		List<IFile> propFiles = new ArrayList<>(existingFiles.length);
-		for (Object existingFile : existingFiles) {
+		List<IFile> propFiles = new ArrayList<>(existingFiles.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Object existingFile : existingFiles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String file = (String) existingFile;
 			try {
 				propFiles.add(AntUtil.getFileForLocation(VariablesPlugin.getDefault().getStringVariableManager().performStringSubstitution(file), null));
@@ -183,7 +183,7 @@ public class AntPropertiesBlock {
 
 		FileSelectionDialog dialog = new FileSelectionDialog(propertyTableViewer.getControl().getShell(), propFiles, title, message, filterExtension, filterMessage);
 		if (dialog.open() == Window.OK) {
-			for (Object element : dialog.getResult()) {
+			for (Object element : dialog.getResult()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IFile file = (IFile) element;
 				String varExpression = VariablesPlugin.getDefault().getStringVariableManager().generateVariableExpression("workspace_loc", file.getFullPath().toString()); //$NON-NLS-1$
 				((AntContentProvider) fileTableViewer.getContentProvider()).add(varExpression);
@@ -192,7 +192,7 @@ public class AntPropertiesBlock {
 		}
 	}
 
-	public void createControl(Composite top, String propertyLabel, String propertyFileLabel) {
+	public void createControl(Composite top, String propertyLabel, String propertyFileLabel) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Font font = top.getFont();
 		dialogSettings = PlatformUI.getDialogSettingsProvider(FrameworkUtil.getBundle(AntPropertiesBlock.class)).getDialogSettings();
 
@@ -213,13 +213,13 @@ public class AntPropertiesBlock {
 			// do nothing
 		}
 		propertyTableViewer = createTableViewer(top, true, false, idx, direction);
-		propertyTableViewer.addDoubleClickListener(event -> {
+		propertyTableViewer.addDoubleClickListener(event -> { //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
 			if (!event.getSelection().isEmpty() && editButton.isEnabled()) {
 				edit();
 			}
 		});
 
-		propertyTableViewer.getTable().addKeyListener(keyListener);
+		propertyTableViewer.getTable().addKeyListener(keyListener); //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 
 		createButtonGroup(top);
 
@@ -231,7 +231,7 @@ public class AntPropertiesBlock {
 		label.setText(propertyFileLabel);
 
 		fileTableViewer = createTableViewer(top, false, true, 0, SWT.DOWN);
-		fileTableViewer.getTable().addKeyListener(keyListener);
+		fileTableViewer.getTable().addKeyListener(keyListener); //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 
 		createButtonGroup(top);
 	}
@@ -254,7 +254,7 @@ public class AntPropertiesBlock {
 	/**
 	 * Creates and returns a configured table viewer in the given parent
 	 */
-	private TableViewer createTableViewer(Composite parent, boolean setColumns, boolean defaultsorting, int sortcolumnidx, int sortdirection) {
+	private TableViewer createTableViewer(Composite parent, boolean setColumns, boolean defaultsorting, int sortcolumnidx, int sortdirection) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Table table = new Table(parent, SWT.MULTI | SWT.FULL_SELECTION | SWT.BORDER);
 		GridData data = new GridData(GridData.FILL_BOTH);
 		int availableRows = availableRows(parent);
@@ -267,8 +267,8 @@ public class AntPropertiesBlock {
 
 		TableViewer tableViewer = new TableViewer(table);
 		tableViewer.setContentProvider(new AntContentProvider(defaultsorting));
-		tableViewer.setLabelProvider(labelProvider);
-		tableViewer.addSelectionChangedListener(tableListener);
+		tableViewer.setLabelProvider(labelProvider); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
+		tableViewer.addSelectionChangedListener(tableListener); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 
 		if (setColumns) {
 			TableLayout tableLayout = new TableLayout();
@@ -276,7 +276,7 @@ public class AntPropertiesBlock {
 			table.setHeaderVisible(true);
 			table.setLinesVisible(true);
 			ColumnSorter sorter = null;
-			for (int i = 0; i < fTableColumnHeaders.length; i++) {
+			for (int i = 0; i < fTableColumnHeaders.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				tableLayout.addColumnData(fTableColumnLayouts[i]);
 				TableColumn column = new TableColumn(table, SWT.NONE, i);
 				column.setResizable(fTableColumnLayouts[i].resizable);
@@ -314,8 +314,8 @@ public class AntPropertiesBlock {
 	private void saveColumnSettings() {
 		Table table = this.propertyTableViewer.getTable();
 		int columnCount = table.getColumnCount();
-		for (int i = 0; i < columnCount; i++) {
-			dialogSettings.put(PROPERTY_COLUMN_WIDTH + i, table.getColumn(i).getWidth());
+		for (int i = 0; i < columnCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			dialogSettings.put(PROPERTY_COLUMN_WIDTH + i, table.getColumn(i).getWidth()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		TableColumn column = table.getSortColumn();
 		if (column != null) {
@@ -341,13 +341,13 @@ public class AntPropertiesBlock {
 	 *
 	 * @since 3.5
 	 */
-	private void restoreColumnWidths() {
+	private void restoreColumnWidths() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Table table = this.propertyTableViewer.getTable();
 		int columnCount = table.getColumnCount();
-		for (int i = 0; i < columnCount; i++) {
+		for (int i = 0; i < columnCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int width = -1;
 			try {
-				width = dialogSettings.getInt(PROPERTY_COLUMN_WIDTH + i);
+				width = dialogSettings.getInt(PROPERTY_COLUMN_WIDTH + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			catch (NumberFormatException e) {
 				// do nothing
@@ -395,7 +395,7 @@ public class AntPropertiesBlock {
 	 */
 	private Button createPushButton(Composite parent, String label) {
 		Button button = container.createPushButton(parent, label);
-		button.addSelectionListener(buttonListener);
+		button.addSelectionListener(buttonListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 		GridData gridData = new GridData(GridData.VERTICAL_ALIGN_BEGINNING | GridData.FILL_HORIZONTAL);
 		button.setLayoutData(gridData);
 		return button;
@@ -404,7 +404,7 @@ public class AntPropertiesBlock {
 	/**
 	 * Allows the user to enter external property files
 	 */
-	private void addExternalPropertyFile() {
+	private void addExternalPropertyFile() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String lastUsedPath;
 		lastUsedPath = dialogSettings.get(IAntUIConstants.DIALOGSTORE_LASTEXTFILE);
 		if (lastUsedPath == null) {
@@ -419,7 +419,7 @@ public class AntPropertiesBlock {
 			return;
 		}
 		IPath filterPath = IPath.fromOSString(dialog.getFilterPath());
-		for (String fileName : dialog.getFileNames()) {
+		for (String fileName : dialog.getFileNames()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IPath path = filterPath.append(fileName).makeAbsolute();
 			((AntContentProvider) fileTableViewer.getContentProvider()).add(path.toOSString());
 		}
@@ -438,7 +438,7 @@ public class AntPropertiesBlock {
 	/**
 	 * Allows the user to enter a user property
 	 */
-	private void addProperty() {
+	private void addProperty() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String title = AntPreferencesMessages.AntPropertiesBlock_Add_Property_2;
 		AddPropertyDialog dialog = new AddPropertyDialog(propertyTableViewer.getControl().getShell(), title, new String[] {
 				IAntCoreConstants.EMPTY_STRING, IAntCoreConstants.EMPTY_STRING });
@@ -458,7 +458,7 @@ public class AntPropertiesBlock {
 		container.update();
 	}
 
-	private void edit() {
+	private void edit() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IStructuredSelection selection = (IStructuredSelection) propertyTableViewer.getSelection();
 		Property prop = (Property) selection.getFirstElement();
 
@@ -481,12 +481,12 @@ public class AntPropertiesBlock {
 		prop.setName(name);
 		prop.setValue(pair[1]);
 		// trigger a resort
-		propertyTableViewer.refresh();
+		propertyTableViewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		container.update();
 	}
 
-	private boolean overwrite(String name) {
-		for (Object prop : getProperties()) {
+	private boolean overwrite(String name) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		for (Object prop : getProperties()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Property property = (Property) prop;
 			String propertyName = property.getName();
 			if (propertyName.equals(name)) {
@@ -515,12 +515,12 @@ public class AntPropertiesBlock {
 	/**
 	 * Handles selection changes in the Property table viewer.
 	 */
-	private void propertyTableSelectionChanged(IStructuredSelection newSelection) {
+	private void propertyTableSelectionChanged(IStructuredSelection newSelection) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int size = newSelection.size();
 		boolean enabled = true;
 
 		Iterator<Object> itr = newSelection.iterator();
-		while (itr.hasNext()) {
+		while (itr.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object element = itr.next();
 			if (element instanceof Property property) {
 				if (property.isDefault()) {
@@ -534,15 +534,15 @@ public class AntPropertiesBlock {
 
 	}
 
-	public void populatePropertyViewer(Map<String, String> properties) {
+	public void populatePropertyViewer(Map<String, String> properties) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (properties == null) {
-			propertyTableViewer.setInput(new Property[0]);
+			propertyTableViewer.setInput(new Property[0]); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 			return;
 		}
 		Property[] result = new Property[properties.size()];
 		Iterator<Map.Entry<String, String>> entries = properties.entrySet().iterator();
 		int i = 0;
-		while (entries.hasNext()) {
+		while (entries.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Entry<String, String> element = entries.next();
 			Property property = new Property();
 			property.setName(element.getKey());
@@ -550,16 +550,16 @@ public class AntPropertiesBlock {
 			result[i] = property;
 			i++;
 		}
-		propertyTableViewer.setInput(result);
+		propertyTableViewer.setInput(result); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		restoreColumnSettings();
 	}
 
 	public void setPropertiesInput(Property[] properties) {
-		propertyTableViewer.setInput(properties);
+		propertyTableViewer.setInput(properties); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 	}
 
 	public void setPropertyFilesInput(String[] files) {
-		fileTableViewer.setInput(files);
+		fileTableViewer.setInput(files); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 	}
 
 	public void update() {

@@ -88,10 +88,10 @@ public class Patcher implements IHunkFilter {
 	private FilePatch2[] fDiffs;
 	private IResource fTarget;
 	// patch options
-	private final Set<Object> disabledElements = new HashSet<>();
-	private final Map<FilePatch2, FileDiffResult> diffResults = new HashMap<>();
-	private final Map<FilePatch2, byte[]> contentCache = new HashMap<>();
-	private final Set<Hunk> mergedHunks = new HashSet<>();
+	private final Set<Object> disabledElements = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Map<FilePatch2, FileDiffResult> diffResults = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	private final Map<FilePatch2, byte[]> contentCache = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+	private final Set<Hunk> mergedHunks = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	private final PatchConfiguration configuration;
 	private boolean fGenerateRejectFile = false;
@@ -200,15 +200,15 @@ public class Patcher implements IHunkFilter {
 		fDiffs = patchReader.getDiffs();
 	}
 
-	public void countLines() {
+	public void countLines() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		FilePatch2[] fileDiffs = getDiffs();
-		for (FilePatch2 fileDiff : fileDiffs) {
+		for (FilePatch2 fileDiff : fileDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int addedLines = 0;
 			int removedLines = 0;
-			for (int j = 0; j < fileDiff.getHunkCount(); j++) {
+			for (int j = 0; j < fileDiff.getHunkCount(); j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IHunk hunk = fileDiff.getHunks()[j];
 				String[] lines = ((Hunk) hunk).getLines();
-				for (String line : lines) {
+				for (String line : lines) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					char c = line.charAt(0);
 					switch (c) {
 					case '+':
@@ -229,7 +229,7 @@ public class Patcher implements IHunkFilter {
 
 	//---- applying a patch file
 
-	public void applyAll(IProgressMonitor pm, IFileValidator validator) throws CoreException {
+	public void applyAll(IProgressMonitor pm, IFileValidator validator) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		int i;
 
@@ -245,11 +245,11 @@ public class Patcher implements IHunkFilter {
 		}
 
 		// get all files to be modified in order to call validateEdit
-		List<IFile> list= new ArrayList<>();
+		List<IFile> list= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		if (singleFile != null) {
 			list.add(singleFile);
 		} else {
-			for (i= 0; i < fDiffs.length; i++) {
+			for (i= 0; i < fDiffs.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				FilePatch2 diff= fDiffs[i];
 				if (isEnabled(diff)) {
 					if (diff.getDiffType(isReversed()) == FilePatch2.CHANGE) {
@@ -268,7 +268,7 @@ public class Patcher implements IHunkFilter {
 			pm.beginTask(message, fDiffs.length*WORK_UNIT);
 		}
 
-		for (i= 0; i < fDiffs.length; i++) {
+		for (i= 0; i < fDiffs.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 
 			int workTicks= WORK_UNIT;
 
@@ -284,7 +284,7 @@ public class Patcher implements IHunkFilter {
 								? singleFile
 								: createPath(container, path);
 
-				List<Hunk> failed= new ArrayList<>();
+				List<Hunk> failed= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 				int type= diff.getDiffType(isReversed());
 				switch (type) {
@@ -343,9 +343,9 @@ public class Patcher implements IHunkFilter {
 		IPath pp= null;
 		if (path.segmentCount() > 1) {
 			pp= path.removeLastSegments(1);
-			pp= pp.append(path.lastSegment() + REJECT_FILE_EXTENSION);
+			pp= pp.append(path.lastSegment() + REJECT_FILE_EXTENSION); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} else {
-			pp= IPath.fromOSString(path.lastSegment() + REJECT_FILE_EXTENSION);
+			pp= IPath.fromOSString(path.lastSegment() + REJECT_FILE_EXTENSION); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return pp;
 	}
@@ -368,7 +368,7 @@ public class Patcher implements IHunkFilter {
 	/*
 	 * Converts the string into bytes and stores them in the given file.
 	 */
-	protected void store(String contents, IFile file, IProgressMonitor pm) throws CoreException {
+	protected void store(String contents, IFile file, IProgressMonitor pm) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (!file.exists()) {
 			if (FileBuffers.getTextFileBufferManager().isTextFileLocation(file.getFullPath(), true)) {
@@ -377,7 +377,7 @@ public class Patcher implements IHunkFilter {
 				if (expectedLD != null) {
 					String patchLD= TextUtilities.determineLineDelimiter(contents, expectedLD);
 					if (!expectedLD.equals(patchLD)) {
-						contents= contents.replaceAll(patchLD, expectedLD);
+						contents= contents.replaceAll(patchLD, expectedLD); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 					}
 				}
 			}
@@ -431,11 +431,11 @@ public class Patcher implements IHunkFilter {
 		}
 
 		String lineSeparator = System.lineSeparator();
-		StringBuilder sb= new StringBuilder();
-		for (Hunk hunk : failedHunks) {
-			sb.append(hunk.getRejectedDescription());
-			sb.append(lineSeparator);
-			sb.append(hunk.getContent());
+		StringBuilder sb= new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (Hunk hunk : failedHunks) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			sb.append(hunk.getRejectedDescription()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(lineSeparator); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			sb.append(hunk.getContent()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return sb.toString();
 	}
@@ -444,7 +444,7 @@ public class Patcher implements IHunkFilter {
 	 * Ensures that a file with the given path exists in
 	 * the given container. Folder are created as necessary.
 	 */
-	protected IFile createPath(IContainer container, IPath path) throws CoreException {
+	protected IFile createPath(IContainer container, IPath path) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (path.segmentCount() > 1) {
 			IContainer childContainer;
 			if (container instanceof IWorkspaceRoot) {
@@ -506,7 +506,7 @@ public class Patcher implements IHunkFilter {
 	 * @return true if path matches, false otherwise
 	 */
 	private boolean matches(IPath fullpath, IPath path) {
-		for (IPath p= fullpath; path.segmentCount()<=p.segmentCount(); p= p.removeFirstSegments(1)) {
+		for (IPath p= fullpath; path.segmentCount()<=p.segmentCount(); p= p.removeFirstSegments(1)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (p.equals(path)) {
 				return true;
 			}
@@ -519,7 +519,7 @@ public class Patcher implements IHunkFilter {
 		//path segment contained in all diffs.
 		int length= 99;
 		if (fDiffs!=null) {
-			for (FilePatch2 diff : fDiffs) {
+			for (FilePatch2 diff : fDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				length= Math.min(length, diff.segmentCount());
 			}
 			if (ResourcesPlugin.getWorkspace().getRoot().equals(fTarget)) {
@@ -539,7 +539,7 @@ public class Patcher implements IHunkFilter {
 	public void removeDiff(FilePatch2 diffToRemove){
 		FilePatch2[] temp = new FilePatch2[fDiffs.length - 1];
 		int counter = 0;
-		for (FilePatch2 diff : fDiffs) {
+		for (FilePatch2 diff : fDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (diff != diffToRemove) {
 				temp[counter++] = diff;
 			}
@@ -561,19 +561,19 @@ public class Patcher implements IHunkFilter {
 
 	private void setEnabledProject(DiffProject projectDiff, boolean enabled) {
 		FilePatch2[] diffFiles = projectDiff.getFileDiffs();
-		for (FilePatch2 diffFile : diffFiles) {
+		for (FilePatch2 diffFile : diffFiles) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			setEnabledFile(diffFile, enabled);
 		}
 	}
 
 	private void setEnabledFile(FilePatch2 fileDiff, boolean enabled) {
 		IHunk[] hunks = fileDiff.getHunks();
-		for (IHunk hunk : hunks) {
+		for (IHunk hunk : hunks) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			setEnabledHunk((Hunk) hunk, enabled);
 		}
 	}
 
-	private void setEnabledHunk(Hunk hunk, boolean enabled) {
+	private void setEnabledHunk(Hunk hunk, boolean enabled) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (enabled) {
 			disabledElements.remove(hunk);
 			FilePatch2 file = hunk.getParent();
@@ -620,7 +620,7 @@ public class Patcher implements IHunkFilter {
 	 * @param monitor a progress monitor
 	 * @return the fuzz factor or <code>-1</code> if no hunks could be matched
 	 */
-	public int guessFuzzFactor(IProgressMonitor monitor) {
+	public int guessFuzzFactor(IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			monitor.beginTask(Messages.Patcher_2, IProgressMonitor.UNKNOWN);
 			FilePatch2[] diffs= getDiffs();
@@ -628,7 +628,7 @@ public class Patcher implements IHunkFilter {
 				return -1;
 			}
 			int fuzz= -1;
-			for (FilePatch2 d : diffs) {
+			for (FilePatch2 d : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IFile file= getTargetFile(d);
 				if (file != null && file.exists()) {
 					List<String> lines= LineReader.load(file, false);
@@ -651,7 +651,7 @@ public class Patcher implements IHunkFilter {
 	}
 
 	public void refresh(FilePatch2[] diffs) {
-		for (FilePatch2 diff : diffs) {
+		for (FilePatch2 diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			FileDiffResult result = getDiffResult(diff);
 			((WorkspaceFileDiffResult)result).refresh();
 		}
@@ -798,7 +798,7 @@ public class Patcher implements IHunkFilter {
 	}
 
 	public boolean hasRejects() {
-		for (FileDiffResult result : diffResults.values()) {
+		for (FileDiffResult result : diffResults.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (result.hasRejects()) {
 				return true;
 			}

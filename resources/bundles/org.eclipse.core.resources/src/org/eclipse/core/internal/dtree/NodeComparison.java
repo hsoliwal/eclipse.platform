@@ -54,7 +54,7 @@ public final class NodeComparison {
 	/**
 	 * Reverse the nature of the comparison.
 	 */
-	NodeComparison asReverseComparison(IComparator comparator) {
+	NodeComparison asReverseComparison(IComparator comparator) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		/* switch the data */
 		Object tempData = oldData;
 		oldData = newData;
@@ -113,27 +113,27 @@ public final class NodeComparison {
 	/**
 	 * For debugging
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String toString() {
-		StringBuilder buf = new StringBuilder("NodeComparison("); //$NON-NLS-1$
+		StringBuilder buf = new StringBuilder("NodeComparison("); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		switch (comparison) {
 			case K_ADDED :
-				buf.append("Added, "); //$NON-NLS-1$
+				buf.append("Added, "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case K_REMOVED :
-				buf.append("Removed, "); //$NON-NLS-1$
+				buf.append("Removed, "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case K_CHANGED :
-				buf.append("Changed, "); //$NON-NLS-1$
+				buf.append("Changed, "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			case 0 :
-				buf.append("No change, "); //$NON-NLS-1$
+				buf.append("No change, "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				break;
 			default :
-				buf.append("Corrupt(" + comparison + "), "); //$NON-NLS-1$ //$NON-NLS-2$
+				buf.append("Corrupt(" + comparison + "), "); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		buf.append(userInt);
-		buf.append(")"); //$NON-NLS-1$
+		buf.append(userInt); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buf.append(")"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return buf.toString();
 	}
 }

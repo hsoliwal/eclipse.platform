@@ -85,8 +85,8 @@ public abstract class MergeContext extends SynchronizationContext implements IMe
 
 	@Override
 	public void reject(final IDiff[] diffs, IProgressMonitor monitor) throws CoreException {
-		run(monitor1 -> {
-			for (IDiff node : diffs) {
+		run(monitor1 -> { //FLLDCIM: MARK — T09  LAMBDA
+			for (IDiff node : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				reject(node, monitor1);
 			}
 		}, getMergeRule(diffs), IResource.NONE, monitor);
@@ -94,20 +94,20 @@ public abstract class MergeContext extends SynchronizationContext implements IMe
 
 	@Override
 	public void markAsMerged(final IDiff[] nodes, final boolean inSyncHint, IProgressMonitor monitor) throws CoreException {
-		run(monitor1 -> {
-			for (IDiff node : nodes) {
+		run(monitor1 -> { //FLLDCIM: MARK — T09  LAMBDA
+			for (IDiff node : nodes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				markAsMerged(node, inSyncHint, monitor1);
 			}
 		}, getMergeRule(nodes), IResource.NONE, monitor);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus merge(final IDiff[] deltas, final boolean force, IProgressMonitor monitor) throws CoreException {
-		final List<IFile> failedFiles = new ArrayList<>();
-		run(monitor1 -> {
+		final List<IFile> failedFiles = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		run(monitor1 -> { //FLLDCIM: MARK — T09  LAMBDA
 			try {
 				monitor1.beginTask(null, deltas.length * 100);
-				for (IDiff delta : deltas) {
+				for (IDiff delta : deltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IStatus s = merge(delta, force, Policy.subMonitorFor(monitor1, 100));
 					if (!s.isOK()) {
 						if (s.getCode() == IMergeStatus.CONFLICTS) {
@@ -128,7 +128,7 @@ public abstract class MergeContext extends SynchronizationContext implements IMe
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus merge(IDiff diff, boolean ignoreLocalChanges, IProgressMonitor monitor) throws CoreException {
 		Policy.checkCanceled(monitor);
 		IResource resource = getDiffTree().getResource(diff);
@@ -202,9 +202,9 @@ public abstract class MergeContext extends SynchronizationContext implements IMe
 	 * @param monitor a progress monitor
 	 * @return a status indicating the results of the merge
 	 */
-	protected IStatus performThreeWayMerge(final IThreeWayDiff diff, IProgressMonitor monitor) throws CoreException {
+	protected IStatus performThreeWayMerge(final IThreeWayDiff diff, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final IStatus[] result = new IStatus[] { Status.OK_STATUS };
-		run(monitor1 -> {
+		run(monitor1 -> { //FLLDCIM: MARK — T09  LAMBDA
 			monitor1.beginTask(null, 100);
 			IResourceDiff localDiff = (IResourceDiff)diff.getLocalChange();
 			IResourceDiff remoteDiff = (IResourceDiff)diff.getRemoteChange();
@@ -242,7 +242,7 @@ public abstract class MergeContext extends SynchronizationContext implements IMe
 		return result[0];
 	}
 
-	private void disposeTempOutputStream(IFile file, OutputStream output) {
+	private void disposeTempOutputStream(IFile file, OutputStream output) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (output instanceof ByteArrayOutputStream) {
 			return;
 		}
@@ -257,22 +257,22 @@ public abstract class MergeContext extends SynchronizationContext implements IMe
 			// Ignore
 		}
 		File tmpFile = getTempFile(file);
-		if (tmpFile.exists()) {
-			tmpFile.delete();
+		if (tmpFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			tmpFile.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 	}
 
 	private OutputStream getTempOutputStream(IFile file) throws CoreException {
 		File tmpFile = getTempFile(file);
-		if (tmpFile.exists()) {
-			tmpFile.delete();
+		if (tmpFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			tmpFile.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		File parent = tmpFile.getParentFile();
-		if (!parent.exists()) {
-			parent.mkdirs();
+		if (!parent.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			parent.mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		try {
-			return new BufferedOutputStream(new FileOutputStream(tmpFile));
+			return new BufferedOutputStream(new FileOutputStream(tmpFile)); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 		} catch (FileNotFoundException e) {
 			TeamPlugin.log(IStatus.ERROR, NLS.bind("Could not open temporary file {0} for writing: {1}", //$NON-NLS-1$
 					tmpFile.getAbsolutePath(), e.getMessage()), e);
@@ -280,7 +280,7 @@ public abstract class MergeContext extends SynchronizationContext implements IMe
 		}
 	}
 
-	private InputStream getTempInputStream(IFile file, OutputStream output) throws CoreException {
+	private InputStream getTempInputStream(IFile file, OutputStream output) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (output instanceof ByteArrayOutputStream baos) {
 			return new ByteArrayInputStream(baos.toByteArray());
 		}
@@ -295,7 +295,7 @@ public abstract class MergeContext extends SynchronizationContext implements IMe
 		}
 		File tmpFile = getTempFile(file);
 		try {
-			return new BufferedInputStream(new FileInputStream(tmpFile));
+			return new BufferedInputStream(new FileInputStream(tmpFile)); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 		} catch (FileNotFoundException e) {
 			throw new CoreException(new Status(IStatus.ERROR, TeamPlugin.ID, IMergeStatus.INTERNAL_ERROR,
 					NLS.bind(Messages.MergeContext_4, tmpFile.getAbsolutePath(), e.getMessage()), e));
@@ -303,7 +303,7 @@ public abstract class MergeContext extends SynchronizationContext implements IMe
 	}
 
 	private File getTempFile(IFile file) {
-		return TeamPlugin.getPlugin().getStateLocation().append(".tmp").append(file.getName() + ".tmp").toFile(); //$NON-NLS-1$ //$NON-NLS-2$
+		return TeamPlugin.getPlugin().getStateLocation().append(".tmp").append(file.getName() + ".tmp").toFile(); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private IFile getLocalFile(IDiff delta) {
@@ -326,7 +326,7 @@ public abstract class MergeContext extends SynchronizationContext implements IMe
 	 *            a progress monitor
 	 * @throws CoreException if an error occurs
 	 */
-	protected void performReplace(final IDiff diff, IProgressMonitor monitor) throws CoreException {
+	protected void performReplace(final IDiff diff, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResourceDiff d;
 		IFile file = getLocalFile(diff);
 		IFileRevision remote = null;
@@ -370,8 +370,8 @@ public abstract class MergeContext extends SynchronizationContext implements IMe
 	 */
 	protected abstract void makeInSync(IDiff diff, IProgressMonitor monitor) throws CoreException;
 
-	private void performReplace(final IDiff diff, final IFile file, final IFileRevision remote, IProgressMonitor monitor) throws CoreException {
-		run(monitor1 -> {
+	private void performReplace(final IDiff diff, final IFile file, final IFileRevision remote, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		run(monitor1 -> { //FLLDCIM: MARK — T09  LAMBDA
 			try {
 				monitor1.beginTask(null, 100);
 				monitor1.subTask(NLS.bind(Messages.MergeContext_6, file.getFullPath().toString()));
@@ -436,7 +436,7 @@ public abstract class MergeContext extends SynchronizationContext implements IMe
 	 * Subclass should override to provide the appropriate rule.
 	 * @see org.eclipse.team.core.mapping.IMergeContext#getMergeRule(IDiff)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ISchedulingRule getMergeRule(IDiff diff) {
 		IResource resource = getDiffTree().getResource(diff);
 		IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
@@ -444,7 +444,7 @@ public abstract class MergeContext extends SynchronizationContext implements IMe
 		if (!resource.exists()) {
 			// for additions return rule for all parents that need to be created
 			IContainer parent = resource.getParent();
-			while (!parent.exists()) {
+			while (!parent.exists()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				resource = parent;
 				parent = parent.getParent();
 			}
@@ -460,7 +460,7 @@ public abstract class MergeContext extends SynchronizationContext implements IMe
 	@Override
 	public ISchedulingRule getMergeRule(IDiff[] deltas) {
 		ISchedulingRule result = null;
-		for (IDiff node : deltas) {
+		for (IDiff node : deltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ISchedulingRule rule = getMergeRule(node);
 			if (result == null) {
 				result = rule;

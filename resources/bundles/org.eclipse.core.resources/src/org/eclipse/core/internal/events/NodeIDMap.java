@@ -46,7 +46,7 @@ public class NodeIDMap {
 	 * The array isn't large enough so double its size and rehash
 	 * all its current values.
 	 */
-	protected void expand() {
+	protected void expand() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int newLength;
 		try {
 			newLength = SIZES[++sizeOffset];
@@ -58,11 +58,11 @@ public class NodeIDMap {
 		IPath[] grownOldPaths = new IPath[newLength];
 		IPath[] grownNewPaths = new IPath[newLength];
 		int maxArrayIndex = newLength - 1;
-		for (int i = 0; i < ids.length; i++) {
+		for (int i = 0; i < ids.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			long id = ids[i];
 			if (id != 0) {
 				int hash = hashFor(id, newLength);
-				while (grownIds[hash] != 0) {
+				while (grownIds[hash] != 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					hash++;
 					if (hash > maxArrayIndex) {
 						hash = 0;
@@ -82,12 +82,12 @@ public class NodeIDMap {
 	 * Returns the index of the given element in the map.  If not
 	 * found, returns -1.
 	 */
-	private int getIndex(long searchID) {
+	private int getIndex(long searchID) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final int len = ids.length;
 		int hash = hashFor(searchID, len);
 
 		// search the last half of the array
-		for (int i = hash; i < len; i++) {
+		for (int i = hash; i < len; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (ids[i] == searchID) {
 				return i;
 			}
@@ -98,7 +98,7 @@ public class NodeIDMap {
 		}
 
 		// search the beginning of the array
-		for (int i = 0; i < hash - 1; i++) {
+		for (int i = 0; i < hash - 1; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (ids[i] == searchID) {
 				return i;
 			}
@@ -152,14 +152,14 @@ public class NodeIDMap {
 	 * Adds the given path mappings to the map.  If either oldPath
 	 * or newPath is null, they are ignored (old map values are not overwritten).
 	 */
-	private void put(long id, IPath oldPath, IPath newPath) {
+	private void put(long id, IPath oldPath, IPath newPath) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (oldPath == null && newPath == null) {
 			return;
 		}
 		int hash = hashFor(id, ids.length);
 
 		// search for an empty slot at the end of the array
-		for (int i = hash; i < ids.length; i++) {
+		for (int i = hash; i < ids.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (ids[i] == id) {
 				//replace value for existing entry
 				if (oldPath != null) {
@@ -189,7 +189,7 @@ public class NodeIDMap {
 		}
 
 		// search for an empty slot at the beginning of the array
-		for (int i = 0; i < hash - 1; i++) {
+		for (int i = 0; i < hash - 1; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (ids[i] == id) {
 				//replace value for existing entry
 				if (oldPath != null) {

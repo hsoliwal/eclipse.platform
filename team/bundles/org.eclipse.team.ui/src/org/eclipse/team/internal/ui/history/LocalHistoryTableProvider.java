@@ -66,13 +66,13 @@ public class LocalHistoryTableProvider {
 		private Image dateImage;
 		private Font currentRevisionFont;
 
-		private final IPropertyChangeListener themeListener = unused -> LocalHistoryTableProvider.this.viewer.refresh();
+		private final IPropertyChangeListener themeListener = unused -> LocalHistoryTableProvider.this.viewer.refresh(); //FLLDCIM: MARK — T06  LAMBDA
 
 		public LocalHistoryLabelProvider() {
 			PlatformUI.getWorkbench().getThemeManager().addPropertyChangeListener(themeListener);
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void dispose() {
 			if (dateImage != null){
 				dateImage.dispose();
@@ -163,7 +163,7 @@ public class LocalHistoryTableProvider {
 			if (currentRevisionFont == null) {
 				Font defaultFont = JFaceResources.getDefaultFont();
 				FontData[] data = defaultFont.getFontData();
-				for (FontData d : data) {
+				for (FontData d : data) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					d.setStyle(SWT.BOLD);
 				}
 				currentRevisionFont = new Font(viewer.getTree().getDisplay(), data);
@@ -195,7 +195,7 @@ public class LocalHistoryTableProvider {
 		 * Compares two log entries, sorting first by the main column of this sorter,
 		 * then by subsequent columns, depending on the column sort order.
 		 */
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public int compare(Viewer compareViewer, Object o1, Object o2) {
 			/*if (o1 instanceof AbstractCVSHistoryCategory || o2 instanceof AbstractCVSHistoryCategory)
 				return 0;*/
@@ -206,7 +206,7 @@ public class LocalHistoryTableProvider {
 			if (date1 == -1 || date2 == -1) {
 				result = super.compare(compareViewer, o1, o2);
 			} else {
-				for (int columnSortOrder : SORT_ORDERS_BY_COLUMN[columnNumber]) {
+				for (int columnSortOrder : SORT_ORDERS_BY_COLUMN[columnNumber]) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					result = compareColumnValue(columnSortOrder, date1, date2);
 					if (result != 0) {
 						break;
@@ -264,7 +264,7 @@ public class LocalHistoryTableProvider {
 	/**
 	 * Creates the columns for the history table.
 	 */
-	private void createColumns(Tree tree, TableLayout layout) {
+	private void createColumns(Tree tree, TableLayout layout) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		SelectionListener headerListener = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -273,7 +273,7 @@ public class LocalHistoryTableProvider {
 				HistoryComparator oldSorter = (HistoryComparator) viewer.getComparator();
 				if (oldSorter != null && column == oldSorter.getColumnNumber()) {
 					oldSorter.setReversed(!oldSorter.isReversed());
-					viewer.refresh();
+					viewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 				} else {
 					viewer.setComparator(new HistoryComparator(column));
 				}
@@ -283,7 +283,7 @@ public class LocalHistoryTableProvider {
 		TreeColumn col = new TreeColumn(tree, SWT.NONE);
 		col.setResizable(true);
 		col.setText(TeamUIMessages.GenericHistoryTableProvider_RevisionTime);
-		col.addSelectionListener(headerListener);
+		col.addSelectionListener(headerListener); //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 		layout.addColumnData(new ColumnWeightData(20, true));
 	}
 
@@ -297,7 +297,7 @@ public class LocalHistoryTableProvider {
 		return createTree(parent, true);
 	}
 
-	public TreeViewer createTree(Composite parent, boolean allowMultiSelection) {
+	public TreeViewer createTree(Composite parent, boolean allowMultiSelection) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int style = SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION;
 		if (allowMultiSelection) {
 			style = style | SWT.MULTI;
@@ -316,7 +316,7 @@ public class LocalHistoryTableProvider {
 
 		createColumns(tree, layout);
 
-		viewer.setLabelProvider(new LocalHistoryLabelProvider());
+		viewer.setLabelProvider(new LocalHistoryLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 
 		// By default, reverse sort by revision.
 		// If local filter is on sort by date

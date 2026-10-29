@@ -257,7 +257,7 @@ public class ResourceRuleFactory implements IResourceRuleFactory {
 	 * @see org.eclipse.core.runtime.jobs.ISchedulingRule#contains(org.eclipse.core.runtime.jobs.ISchedulingRule)
 	 * @see org.eclipse.core.resources.IResourceRuleFactory#validateEditRule(IResource[])
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ISchedulingRule validateEditRule(IResource[] resources) {
 		if (resources.length == 0) {
 			return null;
@@ -267,8 +267,8 @@ public class ResourceRuleFactory implements IResourceRuleFactory {
 			return isReadOnly(resources[0]) ? parent(resources[0]) : null;
 		}
 		//need a lock on the parents of all read-only files
-		HashSet<ISchedulingRule> rules = new HashSet<>();
-		for (IResource resource : resources) {
+		HashSet<ISchedulingRule> rules = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isReadOnly(resource)) {
 				rules.add(parent(resource));
 			}

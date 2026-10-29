@@ -157,7 +157,7 @@ public class Win32Natives {
 	 */
 	public static long FindFirstChangeNotification(String lpPathName, boolean bWatchSubtree, int dwNotifyFilter) {
 		WString wPathName = WindowsH
-				.fromString(!lpPathName.startsWith(LONG_PATH_PREFIX) ? LONG_PATH_PREFIX + lpPathName : lpPathName);
+				.fromString(!lpPathName.startsWith(LONG_PATH_PREFIX) ? LONG_PATH_PREFIX + lpPathName : lpPathName); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return WindowsH.FindFirstChangeNotificationW(wPathName, WindowsH.fromBoolean(bWatchSubtree), dwNotifyFilter);
 	}
 

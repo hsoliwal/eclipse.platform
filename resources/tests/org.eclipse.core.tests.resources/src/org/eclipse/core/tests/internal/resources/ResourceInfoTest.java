@@ -47,7 +47,7 @@ public class ResourceInfoTest {
 		assertFalse(different);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSerialization() throws IOException {
 		ByteArrayInputStream input = null;
 		ByteArrayOutputStream output = null;

@@ -68,7 +68,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 public class SaveableCompareEditorInputTest {
 
 
-	private static final String COMPARE_EDITOR = CompareUIPlugin.PLUGIN_ID
+	private static final String COMPARE_EDITOR = CompareUIPlugin.PLUGIN_ID //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			+ ".CompareEditor"; //$NON-NLS-1$
 
 	private IFile file1;
@@ -77,7 +77,7 @@ public class SaveableCompareEditorInputTest {
 	private final String fileContents1 = "FileContents";
 	private final String fileContents2 = "FileContents2";
 	private final TestLogListener logListener = new TestLogListener();
-	private List<IStatus> errorsInListener = synchronizedList(new ArrayList<>());
+	private List<IStatus> errorsInListener = synchronizedList(new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private IProject project;
 
 	@BeforeEach
@@ -141,7 +141,7 @@ public class SaveableCompareEditorInputTest {
 
 	private class TestDiffNode extends AbstractCompareInput {
 
-		private final CompareInputChangeNotifier notifier = new CompareInputChangeNotifier() {
+		private final CompareInputChangeNotifier notifier = new CompareInputChangeNotifier() { //FLLDCIM: MARK — T07  ANONYMOUS
 
 			private IResource getResource(ITypedElement el) {
 				if (el instanceof LocalResourceTypedElement) {
@@ -156,7 +156,7 @@ public class SaveableCompareEditorInputTest {
 			@Override
 			protected IResource[] getResources(ICompareInput input) {
 
-				List resources = new ArrayList();
+				List resources = new ArrayList(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				if (getResource(getLeft()) != null) {
 					resources.add(getResource(getLeft()));
 				}
@@ -193,7 +193,7 @@ public class SaveableCompareEditorInputTest {
 		}
 	}
 
-	private class TestSaveableEditorInput extends SaveableCompareEditorInput {
+	private class TestSaveableEditorInput extends SaveableCompareEditorInput { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 		protected ITypedElement left;
 		protected ITypedElement right;
@@ -240,7 +240,7 @@ public class SaveableCompareEditorInputTest {
 		return !rightIsChanged();
 	}
 
-	private void verifyDirtyStateChanges(
+	private void verifyDirtyStateChanges( //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			TestSaveableEditorInput compareEditorInput)
 			throws IllegalArgumentException, SecurityException,
 			IllegalAccessException, NoSuchFieldException {
@@ -271,7 +271,7 @@ public class SaveableCompareEditorInputTest {
 		assertFalse(compareEditorInput.isDirty());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDirtyFlagOnLocalResourceTypedElement()
 			throws CoreException, InvocationTargetException,
 			InterruptedException, IllegalArgumentException, SecurityException,
@@ -293,10 +293,10 @@ public class SaveableCompareEditorInputTest {
 		verifyDirtyStateChanges(compareEditorInput);
 
 		// check whether file was saved
-		assertEquals(fileContents1 + appendFileContents, file1.readString());
+		assertEquals(fileContents1 + appendFileContents, file1.readString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDirtyFlagOnCustomTypedElement() throws CoreException,
 			InvocationTargetException, InterruptedException,
 			IllegalArgumentException, SecurityException,
@@ -320,7 +320,7 @@ public class SaveableCompareEditorInputTest {
 		 */
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDirtyFlagOnLocalResourceTypedElementAndEmptyRight()
 			throws CoreException, InvocationTargetException,
 			InterruptedException, IllegalArgumentException, SecurityException,
@@ -342,10 +342,10 @@ public class SaveableCompareEditorInputTest {
 		verifyDirtyStateChanges(compareEditorInput);
 
 		// check whether file was saved
-		assertEquals(fileContents1 + appendFileContents, file1.readString());
+		assertEquals(fileContents1 + appendFileContents, file1.readString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDirtyFlagOnCustomTypedElementAndEmptyRight()
 			throws CoreException, InvocationTargetException,
 			InterruptedException, IllegalArgumentException, SecurityException,
@@ -369,14 +369,14 @@ public class SaveableCompareEditorInputTest {
 		 */
 	}
 
-	private void verifyModifyAndSaveBothSidesOfCompareEditor(String extention)
+	private void verifyModifyAndSaveBothSidesOfCompareEditor(String extention) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws InterruptedException, InvocationTargetException,
 			IllegalArgumentException, SecurityException,
 			IllegalAccessException, NoSuchFieldException, CoreException, IOException {
 
 		// create files to compare
-		IFile file1 = project.getFile("CompareFile1." + extention);
-		IFile file2 = project.getFile("CompareFile2." + extention);
+		IFile file1 = project.getFile("CompareFile1." + extention); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IFile file2 = project.getFile("CompareFile2." + extention); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		file1.create(new ByteArrayInputStream(fileContents1.getBytes()), true,
 				null);
 		file2.create(new ByteArrayInputStream(fileContents2.getBytes()), true,
@@ -420,8 +420,8 @@ public class SaveableCompareEditorInputTest {
 				.closeEditor(editor, false);
 
 		// validate if both sides where saved
-		assertEquals(fileContents1 + appendFileContents, file1.readString());
-		assertEquals(fileContents2 + appendFileContents, file2.readString());
+		assertEquals(fileContents1 + appendFileContents, file1.readString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		assertEquals(fileContents2 + appendFileContents, file2.readString()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Test

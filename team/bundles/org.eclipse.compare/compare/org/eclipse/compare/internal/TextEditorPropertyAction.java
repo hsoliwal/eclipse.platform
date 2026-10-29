@@ -20,7 +20,7 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.ui.editors.text.EditorsUI;
 
-public class TextEditorPropertyAction extends Action implements IPropertyChangeListener {
+public class TextEditorPropertyAction extends Action implements IPropertyChangeListener { //FLLDCIM: MARK — T06  IMPLEMENTS
 
 	private final MergeSourceViewer[] viewers;
 	private final String preferenceKey;
@@ -39,7 +39,7 @@ public class TextEditorPropertyAction extends Action implements IPropertyChangeL
 	}
 
 	private void addActionToViewers() {
-		for (MergeSourceViewer viewer : viewers) {
+		for (MergeSourceViewer viewer : viewers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			viewer.addTextAction(this);
 		}
 	}
@@ -81,7 +81,7 @@ public class TextEditorPropertyAction extends Action implements IPropertyChangeL
 
 	public void dispose() {
 		if (viewers != null) {
-			for (int i = 0; i < viewers.length; i++) {
+			for (int i = 0; i < viewers.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				viewers[i] = null;
 			}
 		}

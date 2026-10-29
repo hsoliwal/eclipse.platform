@@ -65,7 +65,7 @@ abstract public class PopupTests extends AbstractViewerModelTest implements ITes
 	/**
 	 * This test verifies that content updates are still being performed.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefreshStruct() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 
@@ -99,7 +99,7 @@ abstract public class PopupTests extends AbstractViewerModelTest implements ITes
 	/**
 	 * This test verifies that expand and select updates are being ignored.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testExpandAndSelect() throws Exception {
 		TestModel model = TestModel.simpleMultiLevel();
 
@@ -151,7 +151,7 @@ abstract public class PopupTests extends AbstractViewerModelTest implements ITes
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreserveExpandedOnSubTreeContent() throws Exception {
 		//TreeModelViewerAutopopulateAgent autopopulateAgent = new TreeModelViewerAutopopulateAgent(fViewer);
 		TestModel model = TestModel.simpleMultiLevel();
@@ -203,10 +203,10 @@ abstract public class PopupTests extends AbstractViewerModelTest implements ITes
 	}
 
 	private boolean areTreeSelectionsEqual(ITreeSelection sel1, ITreeSelection sel2) {
-		Set<TreePath> sel1Set = new HashSet<>();
+		Set<TreePath> sel1Set = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		sel1Set.addAll( Arrays.asList(sel1.getPaths()) );
 
-		Set<TreePath> sel2Set = new HashSet<>();
+		Set<TreePath> sel2Set = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		sel2Set.addAll( Arrays.asList(sel2.getPaths()) );
 
 		return sel1Set.equals(sel2Set);

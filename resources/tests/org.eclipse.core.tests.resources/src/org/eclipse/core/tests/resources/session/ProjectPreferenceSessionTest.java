@@ -73,11 +73,11 @@ public class ProjectPreferenceSessionTest {
 		waitForRefresh();
 		IFile file = project.getFile(IPath.fromOSString(DIR_NAME).append(qualifier).addFileExtension(FILE_EXTENSION));
 		assertTrue(file.exists());
-		assertTrue(file.getLocation().toFile().exists());
+		assertTrue(file.getLocation().toFile().exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		saveWorkspace();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(2)
 	public void testDeleteFileBeforeLoad2() throws Exception {
 		IProject project = getProject("testDeleteFileBeforeLoad");

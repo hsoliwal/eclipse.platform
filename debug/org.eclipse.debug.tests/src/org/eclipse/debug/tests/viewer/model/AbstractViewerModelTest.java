@@ -61,7 +61,7 @@ public abstract class AbstractViewerModelTest {
 	abstract protected TestModelUpdatesListener createListener(IInternalTreeModelViewer viewer);
 
 	protected Supplier<String> createListenerErrorMessage() {
-		return () -> "Listener not finished: " + fListener;
+		return () -> "Listener not finished: " + fListener; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 }

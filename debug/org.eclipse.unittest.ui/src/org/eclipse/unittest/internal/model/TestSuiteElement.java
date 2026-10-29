@@ -47,7 +47,7 @@ public class TestSuiteElement extends TestElement implements ITestSuiteElement {
 			String displayName, String data) {
 		super(parent, id, testName, displayName, data);
 		this.expectedTestCount = expectedChildrenCount;
-		fChildren = new ArrayList<>(expectedChildrenCount == null ? 0 : expectedChildrenCount.intValue());
+		fChildren = new ArrayList<>(expectedChildrenCount == null ? 0 : expectedChildrenCount.intValue()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class TestSuiteElement extends TestElement implements ITestSuiteElement {
 		}
 	}
 
-	private Status getCumulatedStatus() {
+	private Status getCumulatedStatus() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		TestElement[] children = fChildren.toArray(new TestElement[fChildren.size()]); // copy list to avoid concurreny
 																						// problems
 		if (children.length == 0) {
@@ -103,7 +103,7 @@ public class TestSuiteElement extends TestElement implements ITestSuiteElement {
 
 		Status cumulated = children[0].getStatus();
 
-		for (int i = 1; i < children.length; i++) {
+		for (int i = 1; i < children.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Status childStatus = children[i].getStatus();
 			cumulated = combineStatus(cumulated, childStatus);
 		}
@@ -129,7 +129,7 @@ public class TestSuiteElement extends TestElement implements ITestSuiteElement {
 	 * @param child       a child {@link ITestElement} element
 	 * @param childStatus a new status value
 	 */
-	public void childChangedStatus(ITestElement child, Status childStatus) {
+	public void childChangedStatus(ITestElement child, Status childStatus) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int childCount = fChildren.size();
 		if (child == fChildren.get(0) && childStatus.isRunning()) {
 			// is first child, and is running -> copy status
@@ -167,7 +167,7 @@ public class TestSuiteElement extends TestElement implements ITestSuiteElement {
 		}
 	}
 
-	private void internalSetChildrenStatus(Status status) {
+	private void internalSetChildrenStatus(Status status) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fChildrenStatus == status) {
 			return;
 		}
@@ -193,7 +193,7 @@ public class TestSuiteElement extends TestElement implements ITestSuiteElement {
 
 	@Override
 	public String toString() {
-		return "TestSuite: " + getTestName() + " : " + super.toString() + " (" + fChildren.size() + ")"; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		return "TestSuite: " + getTestName() + " : " + super.toString() + " (" + fChildren.size() + ")"; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private static Status combineStatus(Status one, Status two) {
@@ -225,7 +225,7 @@ public class TestSuiteElement extends TestElement implements ITestSuiteElement {
 		return Status.OK;
 	}
 
-	private static Status combineProgressAndErrorStatus(Status progress, Status error) {
+	private static Status combineProgressAndErrorStatus(Status progress, Status error) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (progress.isDone()) {
 			if (error.isError()) {
 				return Status.ERROR;

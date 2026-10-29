@@ -41,7 +41,7 @@ import org.eclipse.ui.IReusableEditor;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.actions.BaseSelectionListenerAction;
 
-public class CompareRevisionAction extends BaseSelectionListenerAction {
+public class CompareRevisionAction extends BaseSelectionListenerAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 	HistoryPage page;
 	IStructuredSelection selection;
 	IFileRevision currentFileRevision;
@@ -55,7 +55,7 @@ public class CompareRevisionAction extends BaseSelectionListenerAction {
 		this(TeamUIMessages.LocalHistoryPage_CompareAction, page);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run() {
 		IStructuredSelection structSel = selection;
 
@@ -130,7 +130,7 @@ public class CompareRevisionAction extends BaseSelectionListenerAction {
 		return SaveableCompareEditorInput.createFileElement((IFile)resource);
 	}
 
-	private void openInCompare(ITypedElement left, ITypedElement right) {
+	private void openInCompare(ITypedElement left, ITypedElement right) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		CompareEditorInput input = createCompareEditorInput(left, right, page.getSite().getPage());
 		IWorkbenchPage workBenchPage = page.getSite().getPage();
 		IEditorPart editor = Utils.findReusableCompareEditor(input,
@@ -193,7 +193,7 @@ public class CompareRevisionAction extends BaseSelectionListenerAction {
 				new Class[] { CompareFileRevisionEditorInput.class });
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected boolean updateSelection(IStructuredSelection selection) {
 		this.selection = selection;
 		if (selection.size() == 1){
@@ -216,7 +216,7 @@ public class CompareRevisionAction extends BaseSelectionListenerAction {
 		return false;
 	}
 
-	private boolean shouldShow() {
+	private boolean shouldShow() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IStructuredSelection structSel = selection;
 		Object[] objArray = structSel.toArray();
 
@@ -224,7 +224,7 @@ public class CompareRevisionAction extends BaseSelectionListenerAction {
 			return false;
 		}
 
-		for (Object obj : objArray) {
+		for (Object obj : objArray) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			//Don't bother showing if this a category
 			if (obj instanceof AbstractHistoryCategory) {
 				return false;

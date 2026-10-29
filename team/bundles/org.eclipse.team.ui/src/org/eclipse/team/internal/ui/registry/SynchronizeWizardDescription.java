@@ -58,7 +58,7 @@ public class SynchronizeWizardDescription {
 
 		// Sanity check.
 		if ((label == null) || (className == null) || (identifier == null) || (description == null)) {
-			throw new CoreException(new Status(IStatus.ERROR, configElement.getContributor().getName(), 0, "Invalid extension (missing label or class name): " + identifier, //$NON-NLS-1$
+			throw new CoreException(new Status(IStatus.ERROR, configElement.getContributor().getName(), 0, "Invalid extension (missing label or class name): " + identifier, //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					null));
 		}
 
@@ -91,6 +91,6 @@ public class SynchronizeWizardDescription {
 
 	@Override
 	public String toString() {
-		return "Synchronize Participant Creation Wizard(" + getId() + ")"; //$NON-NLS-2$//$NON-NLS-1$
+		return "Synchronize Participant Creation Wizard(" + getId() + ")"; //$NON-NLS-2$//$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

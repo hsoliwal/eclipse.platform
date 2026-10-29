@@ -31,7 +31,7 @@ import org.eclipse.ui.PlatformUI;
 public class UITestRunListener extends TestRunListener {
 	@Override
 	public void sessionLaunched(ITestRunSession session) {
-		getDisplay().asyncExec(this::showTestRunnerViewPartInActivePage);
+		getDisplay().asyncExec(this::showTestRunnerViewPartInActivePage); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 	}
 
 	/**
@@ -40,7 +40,7 @@ public class UITestRunListener extends TestRunListener {
 	 *
 	 * @return a {@link TestRunnerViewPart} instance
 	 */
-	private TestRunnerViewPart showTestRunnerViewPartInActivePage() {
+	private TestRunnerViewPart showTestRunnerViewPartInActivePage() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			// Have to force the creation of view part contents
 			// otherwise the UI will not be updated

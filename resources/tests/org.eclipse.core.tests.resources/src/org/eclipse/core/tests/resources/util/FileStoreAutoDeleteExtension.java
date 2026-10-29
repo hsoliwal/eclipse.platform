@@ -31,7 +31,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
  */
 public class FileStoreAutoDeleteExtension implements AfterEachCallback {
 
-	private final Set<IFileStore> storesToDelete = new HashSet<>();
+	private final Set<IFileStore> storesToDelete = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 
 	/**
 	 * {@return a temporary file store backed by storage in a temporary location
@@ -67,10 +67,10 @@ public class FileStoreAutoDeleteExtension implements AfterEachCallback {
 
 	@Override
 	public void afterEach(ExtensionContext context) throws Exception {
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			getWorkspace().getRoot().delete(true, true, createTestMonitor());
 			// clear stores in workspace runnable to avoid interaction with resource jobs
-			for (IFileStore element : storesToDelete) {
+			for (IFileStore element : storesToDelete) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				element.delete(EFS.NONE, null);
 			}
 			storesToDelete.clear();

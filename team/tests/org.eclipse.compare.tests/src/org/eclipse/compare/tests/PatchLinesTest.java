@@ -105,7 +105,7 @@ public class PatchLinesTest {
 		assertEquals(2, lines[1]);
 	}
 
-	private int[] parsePatch(String patch)
+	private int[] parsePatch(String patch) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException {
 		WorkspacePatcher patcher = new WorkspacePatcher();
 		try {
@@ -120,9 +120,9 @@ public class PatchLinesTest {
 		int fileDiffSum = 0;
 
 		FilePatch2[] diffs = patcher.getDiffs();
-		for (FilePatch2 fileDiff : diffs) {
+		for (FilePatch2 fileDiff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IHunk[] hunks = fileDiff.getHunks();
-			for (IHunk hunk : hunks) {
+			for (IHunk hunk : hunks) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				hunksLengthSum += getNewLength(hunk);
 				hunksLengthSum -= getOldLength(hunk);
 			}

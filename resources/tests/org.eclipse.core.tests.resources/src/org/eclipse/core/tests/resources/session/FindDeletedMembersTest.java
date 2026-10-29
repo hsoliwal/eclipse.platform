@@ -91,7 +91,7 @@ public class FindDeletedMembersTest {
 		saveWorkspace();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(2)
 	public void test2() throws Exception {
 		// the deleted file should show up as a deleted member of project
@@ -113,7 +113,7 @@ public class FindDeletedMembersTest {
 		saveWorkspace();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(3)
 	public void test3() throws Exception {
 		// the deleted file should no longer show up as a deleted member of project
@@ -142,7 +142,7 @@ public class FindDeletedMembersTest {
 		saveWorkspace();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(4)
 	public void test4() throws Exception {
 		// the deleted file should show up as a deleted member
@@ -165,7 +165,7 @@ public class FindDeletedMembersTest {
 		saveWorkspace();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(5)
 	public void test5() throws Exception {
 		// the deleted file should show up as a deleted member of project
@@ -206,7 +206,7 @@ public class FindDeletedMembersTest {
 		saveWorkspace();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(6)
 	public void test6() throws Exception {
 		// under root
@@ -236,7 +236,7 @@ public class FindDeletedMembersTest {
 		saveWorkspace();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(7)
 	public void test7() throws Exception {
 		// once the project is gone, so is all the history for that project

@@ -234,7 +234,7 @@ public class Nfm implements FactoryObject {
 			return getPlus(x);
 		}
 		Nfm last1 = nfm(x), last2 = nfm(x);
-		for (int i = 2; i < min; i++) {
+		for (int i = 2; i < min; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			last1 = getComma(last1, last2);
 			free(last2);
 			last2 = nfm(x);
@@ -246,7 +246,7 @@ public class Nfm implements FactoryObject {
 	/**
 	 * "{min,max}" an existing nfm x -&gt; x[0],x[1],...,x[min-1],x[min]?,...,x[max-1]? Frees or returns x.
 	 */
-	public static Nfm getMinMax(Nfm x, int min, int max) {
+	public static Nfm getMinMax(Nfm x, int min, int max) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (max == Integer.MAX_VALUE) {
 			return getUnbounded(x, min);
 		}
@@ -262,7 +262,7 @@ public class Nfm implements FactoryObject {
 		}
 		Nfm last = null;
 		int i = 0;
-		for (; i < min; i++) {
+		for (; i < min; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (last == null) {
 				last = nfm(x);
 			} else {
@@ -271,7 +271,7 @@ public class Nfm implements FactoryObject {
 				free(tmp);
 			}
 		}
-		for (; i < max; i++) {
+		for (; i < max; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (last == null) {
 				last = getQuestion(x);
 			} else {

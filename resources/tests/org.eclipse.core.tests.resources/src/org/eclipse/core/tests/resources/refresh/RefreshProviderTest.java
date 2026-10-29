@@ -75,7 +75,7 @@ public class RefreshProviderTest {
 	 * Test to ensure that a refresh provider is given the correct events when a linked
 	 * file is created and deleted.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testLinkedFile(@TempDir Path tempDirectory) throws Exception {
 		IPath location = IPath.fromPath(tempDirectory).append("test");
 		String name = "testUnmonitorLinkedResource";
@@ -104,7 +104,7 @@ public class RefreshProviderTest {
 	 * Test to ensure that a refresh provider is given the correct events when a project
 	 * is closed or opened.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectCloseOpen() throws Exception {
 		String name = "testProjectCloseOpen";
 		IProject project = getWorkspace().getRoot().getProject(name);
@@ -131,13 +131,13 @@ public class RefreshProviderTest {
 	 * Test to ensure that a refresh provider is given the correct events when a project
 	 * is closed or opened.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectCreateDelete(TestInfo testInfo) throws Exception {
 		String name = "testProjectCreateDelete";
 		final int maxRuns = 1000;
 		int i = 0;
-		Map<Integer, Throwable> fails = new HashMap<>();
-		for (; i < maxRuns; i++) {
+		Map<Integer, Throwable> fails = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
+		for (; i < maxRuns; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (i % 50 == 0) {
 				TestUtil.waitForJobs(testInfo.getDisplayName(), 5, 100);
 			}

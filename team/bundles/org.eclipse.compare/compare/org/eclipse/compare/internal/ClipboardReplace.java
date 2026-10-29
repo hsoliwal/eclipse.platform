@@ -36,10 +36,10 @@ import org.eclipse.ui.texteditor.ITextEditor;
 
 public class ClipboardReplace extends BaseCompareAction {
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void run(ISelection selection) {
 		IFile[] files = Utilities.getFiles(selection);
-		for (IFile file : files) {
+		for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 				IEditorPart editor = page.getActiveEditor();

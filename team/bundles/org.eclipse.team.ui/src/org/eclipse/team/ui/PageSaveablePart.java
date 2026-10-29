@@ -62,7 +62,7 @@ import org.eclipse.ui.progress.IProgressService;
  * @deprecated Clients should use a subclass of {@link CompareEditorInput}
  *      and {@link CompareUI#openCompareDialog(org.eclipse.compare.CompareEditorInput)}
  */
-@Deprecated
+@Deprecated //FLLDCIM: MARK — T37  IMPLEMENTS
 public abstract class PageSaveablePart extends SaveablePartAdapter implements IContentChangeListener{
 
 	private final CompareConfiguration cc;
@@ -71,7 +71,7 @@ public abstract class PageSaveablePart extends SaveablePartAdapter implements IC
 
 	// Tracking of dirty state
 	private boolean fDirty= false;
-	private final ArrayList<Object> fDirtyViewers= new ArrayList<>();
+	private final ArrayList<Object> fDirtyViewers= new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	private final IPropertyChangeListener fDirtyStateListener;
 
 	//	 SWT controls
@@ -93,7 +93,7 @@ public abstract class PageSaveablePart extends SaveablePartAdapter implements IC
 		this.shell = shell;
 		this.cc = compareConfiguration;
 
-		fDirtyStateListener= e -> {
+		fDirtyStateListener= e -> { //FLLDCIM: MARK — T06  LAMBDA
 			String propertyName= e.getProperty();
 			if (CompareEditorInput.DIRTY_STATE.equals(propertyName)) {
 				boolean changed= false;
@@ -112,7 +112,7 @@ public abstract class PageSaveablePart extends SaveablePartAdapter implements IC
 		return fDirty || fDirtyViewers.size() > 0;
 	}
 
-	@Deprecated
+	@Deprecated //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Override
 	public void createPartControl(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
@@ -132,7 +132,7 @@ public abstract class PageSaveablePart extends SaveablePartAdapter implements IC
 		// we need two panes: the left for the elements, the right one for the structured diff
 		Splitter hsplitter = new Splitter(vsplitter, SWT.HORIZONTAL);
 		fEditionPane = new CompareViewerPane(hsplitter, SWT.BORDER | SWT.FLAT);
-		fStructuredComparePane = new CompareViewerSwitchingPane(hsplitter, SWT.BORDER | SWT.FLAT, true) {
+		fStructuredComparePane = new CompareViewerSwitchingPane(hsplitter, SWT.BORDER | SWT.FLAT, true) { //FLLDCIM: MARK — T05  ANONYMOUS
 			@Override
 			protected Viewer getViewer(Viewer oldViewer, Object input) {
 				if (input instanceof ICompareInput) {
@@ -141,9 +141,9 @@ public abstract class PageSaveablePart extends SaveablePartAdapter implements IC
 				return null;
 			}
 		};
-		fStructuredComparePane.addSelectionChangedListener(e -> feedInput2(e.getSelection()));
+		fStructuredComparePane.addSelectionChangedListener(e -> feedInput2(e.getSelection())); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 		fEditionPane.setText(TeamUIMessages.ParticipantPageSaveablePart_0);
-		fContentPane = new CompareViewerSwitchingPane(vsplitter, SWT.BORDER | SWT.FLAT) {
+		fContentPane = new CompareViewerSwitchingPane(vsplitter, SWT.BORDER | SWT.FLAT) { //FLLDCIM: MARK — T05  ANONYMOUS
 			@Override
 			protected Viewer getViewer(Viewer oldViewer, Object input) {
 				if (!(input instanceof ICompareInput)) {
@@ -154,8 +154,8 @@ public abstract class PageSaveablePart extends SaveablePartAdapter implements IC
 				if (isNewViewer && newViewer instanceof final IPropertyChangeNotifier dsp) {
 					dsp.addPropertyChangeListener(fDirtyStateListener);
 					Control c= newViewer.getControl();
-					c.addDisposeListener(
-						unused -> dsp.removePropertyChangeListener(fDirtyStateListener)
+					c.addDisposeListener( //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
+						unused -> dsp.removePropertyChangeListener(fDirtyStateListener) //FLLDCIM: MARK — T01  LAMBDA
 					);
 					hookContentChangeListener((ICompareInput)input);
 				}
@@ -174,7 +174,7 @@ public abstract class PageSaveablePart extends SaveablePartAdapter implements IC
 			hsplitter.setMaximizedControl(fEditionPane);
 		}
 
-		getSelectionProvider().addSelectionChangedListener(event -> {
+		getSelectionProvider().addSelectionChangedListener(event -> { //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 			ICompareInput input = getCompareInput(event.getSelection());
 			if (input != null) {
 				prepareCompareInput(input);
@@ -271,7 +271,7 @@ public abstract class PageSaveablePart extends SaveablePartAdapter implements IC
 	 * with a progress monitor.
 	 * @param input the compare input to be prepared
 	 */
-	@Deprecated
+	@Deprecated //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void prepareCompareInput(final ICompareInput input) {
 		if (input == null) {
 			return;
@@ -284,7 +284,7 @@ public abstract class PageSaveablePart extends SaveablePartAdapter implements IC
 		IProgressService manager = PlatformUI.getWorkbench().getProgressService();
 		try {
 			// TODO: we need a better progress story here (i.e. support for cancellation) bug 127075
-			manager.busyCursorWhile(monitor -> {
+			manager.busyCursorWhile(monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 				prepareInput(input, getCompareConfiguration(), monitor);
 				hookContentChangeListener(input);
 			});
@@ -435,7 +435,7 @@ public abstract class PageSaveablePart extends SaveablePartAdapter implements IC
 	}
 
 	private void flushViewers(IProgressMonitor monitor) {
-		for (Object element : fDirtyViewers) {
+		for (Object element : fDirtyViewers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IFlushable flushable = Adapters.adapt(element, IFlushable.class);
 			if (flushable != null) {
 				flushable.flush(monitor);

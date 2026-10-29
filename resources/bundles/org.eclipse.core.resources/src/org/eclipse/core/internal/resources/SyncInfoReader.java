@@ -57,8 +57,8 @@ public class SyncInfoReader {
 	public void readPartners(DataInputStream input) throws CoreException {
 		try {
 			int size = input.readInt();
-			Set<QualifiedName> registry = new HashSet<>(size);
-			for (int i = 0; i < size; i++) {
+			Set<QualifiedName> registry = new HashSet<>(size); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+			for (int i = 0; i < size; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String qualifier = input.readUTF();
 				String local = input.readUTF();
 				registry.add(new QualifiedName(qualifier, local));

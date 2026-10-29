@@ -52,9 +52,9 @@ public class DeltaVerifierBuilder extends TestBuilder {
 	 */
 	protected boolean deltaWasEmpty = false;
 	/** The empty deltas that were received */
-	protected ArrayList<IProject> emptyDeltas = new ArrayList<>();
+	protected ArrayList<IProject> emptyDeltas = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	/** The deltas that were actually received */
-	protected ArrayList<IProject> receivedDeltas = new ArrayList<>();
+	protected ArrayList<IProject> receivedDeltas = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	/** The projects to request deltas for (may be null) */
 	protected IProject[] requestedDeltas;
 	/**
@@ -163,12 +163,12 @@ public class DeltaVerifierBuilder extends TestBuilder {
 	 * Asks the platform for the deltas for a set of projects, and notes which
 	 * deltas were actually returned.
 	 */
-	protected void doCheckDeltas() {
+	protected void doCheckDeltas() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (checkDeltas == null) {
 			return;
 		}
 		receivedDeltas.clear();
-		for (IProject checkDelta : checkDeltas) {
+		for (IProject checkDelta : checkDeltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResourceDelta delta = getDelta(checkDelta);
 			if (delta != null) {
 				receivedDeltas.add(checkDelta);

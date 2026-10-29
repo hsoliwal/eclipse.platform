@@ -56,15 +56,15 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
  *
  * @since 3.0
  */
-public class GlobalRefreshWizardSelectionPage extends WizardPage implements IDoubleClickListener, ISelectionChangedListener {
+public class GlobalRefreshWizardSelectionPage extends WizardPage implements IDoubleClickListener, ISelectionChangedListener { //FLLDCIM: MARK — T05  IMPLEMENTS
 
-	private final static String DEFAULT_SELECTION= TeamUIPlugin.ID + "GlobalRefreshWizardSelectionPage.default_selection"; //$NON-NLS-1$
+	private final static String DEFAULT_SELECTION= TeamUIPlugin.ID + "GlobalRefreshWizardSelectionPage.default_selection"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	private TableViewer fViewer;
 	private IWizard wizard;
 	private List<Image> createdImages;
 
-	class MyContentProvider extends BaseWorkbenchContentProvider {
+	class MyContentProvider extends BaseWorkbenchContentProvider { //FLLDCIM: MARK — M22  IMPLEMENTS
 		@Override
 		public Object[] getChildren(Object element) {
 			if(element instanceof SynchronizeManager manager) {
@@ -88,7 +88,7 @@ public class GlobalRefreshWizardSelectionPage extends WizardPage implements IDou
 			if(element instanceof SynchronizeWizardDescription descriptor) {
 				ImageDescriptor d = descriptor.getImageDescriptor();
 				if(createdImages == null) {
-					createdImages = new ArrayList<>(3);
+					createdImages = new ArrayList<>(3); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 				}
 				Image image = d.createImage();
 				createdImages.add(image);
@@ -107,7 +107,7 @@ public class GlobalRefreshWizardSelectionPage extends WizardPage implements IDou
 	@Override
 	public void dispose() {
 		if (createdImages != null) {
-			for (Image image : createdImages) {
+			for (Image image : createdImages) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				image.dispose();
 			}
 		}
@@ -129,7 +129,7 @@ public class GlobalRefreshWizardSelectionPage extends WizardPage implements IDou
 		getDialogSettings().put(DEFAULT_SELECTION, ((SynchronizeWizardDescription)selected).getId());
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createControl(Composite parent2) {
 		Composite top = new Composite(parent2, SWT.NULL);
 		top.setLayout(new GridLayout());
@@ -142,11 +142,11 @@ public class GlobalRefreshWizardSelectionPage extends WizardPage implements IDou
 		GridData data = new GridData(GridData.FILL_BOTH);
 		fViewer.getControl().setLayoutData(data);
 		fViewer.setContentProvider(new MyContentProvider());
-		fViewer.addDoubleClickListener(this);
-		fViewer.setLabelProvider(new MyLabelProvider());
+		fViewer.addDoubleClickListener(this); //FLLDCIM: MARK — T05 VIEWER_OPEN CALL
+		fViewer.setLabelProvider(new MyLabelProvider()); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 		fViewer.setComparator(new ResourceComparator(ResourceComparator.NAME));
-		fViewer.setInput(TeamUI.getSynchronizeManager());
-		fViewer.addSelectionChangedListener(this);
+		fViewer.setInput(TeamUI.getSynchronizeManager()); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
+		fViewer.addSelectionChangedListener(this); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
 
 		Object toSelect= getDefaultSelection();
 		if (toSelect == null) {
@@ -159,7 +159,7 @@ public class GlobalRefreshWizardSelectionPage extends WizardPage implements IDou
 		Dialog.applyDialogFont(parent2);
 	}
 
-	private SynchronizeWizardDescription getDefaultSelection() {
+	private SynchronizeWizardDescription getDefaultSelection() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		if (!(TeamUI.getSynchronizeManager() instanceof SynchronizeManager)) {
 			return null;
@@ -172,7 +172,7 @@ public class GlobalRefreshWizardSelectionPage extends WizardPage implements IDou
 
 		final SynchronizeManager syncManager= (SynchronizeManager)TeamUI.getSynchronizeManager();
 		final SynchronizeWizardDescription [] wizards= syncManager.getWizardDescriptors();
-		for (SynchronizeWizardDescription w : wizards) {
+		for (SynchronizeWizardDescription w : wizards) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (defaultSelection.equals(w.getId())) {
 				return w;
 			}
@@ -189,7 +189,7 @@ public class GlobalRefreshWizardSelectionPage extends WizardPage implements IDou
 		getContainer().showPage(getNextPage());
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void selectionChanged(SelectionChangedEvent event) {
 		// Initialize the wizard so we can tell whether to enable the
 		// Next button

@@ -71,7 +71,7 @@ public class FolderSnapshot extends ContainerSnapshot<IFolder> {
 		return workspaceRoot.getFolder(folderPath);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void createExistentResourceFromHandle(IProgressMonitor mon) throws CoreException {
 		IFolder folderHandle = createResourceHandle();
 		if (folderHandle.exists()) {
@@ -81,7 +81,7 @@ public class FolderSnapshot extends ContainerSnapshot<IFolder> {
 		subMonitor.setTaskName(ResourceSnapshotMessages.FolderDescription_NewFolderProgress);
 		if (filters != null) {
 			SubMonitor loopMonitor = subMonitor.split(100).setWorkRemaining(filters.length);
-			for (IResourceFilterDescription filter : filters) {
+			for (IResourceFilterDescription filter : filters) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				folderHandle.createFilter(filter.getType(), filter.getFileInfoMatcherDescription(), 0,
 						loopMonitor.split(1));
 			}

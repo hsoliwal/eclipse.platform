@@ -60,7 +60,7 @@ public class ProjectInfo extends ResourceInfo {
 		propertyStore = null;
 		if (description != null) {
 			ICommand[] buildSpec = description.getBuildSpec(false);
-			for (ICommand element : buildSpec) {
+			for (ICommand element : buildSpec) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				((BuildCommand) element).setBuilders(null);
 			}
 		}
@@ -120,7 +120,7 @@ public class ProjectInfo extends ResourceInfo {
 		this.matcher = matcher;
 	}
 
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings({"unchecked"}) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public synchronized void setNature(String natureId, IProjectNature value) {
 		// thread safety: (Concurrency001)
 		if (value == null) {
@@ -137,7 +137,7 @@ public class ProjectInfo extends ResourceInfo {
 		} else {
 			HashMap<String, IProjectNature> temp = natures;
 			if (temp == null) {
-				temp = new HashMap<>(5);
+				temp = new HashMap<>(5); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			} else {
 				temp = (HashMap<String, IProjectNature>) natures.clone();
 			}

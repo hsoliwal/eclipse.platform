@@ -38,7 +38,7 @@ public class OpenOutputStreamTest {
 	@RegisterExtension
 	public final FileStoreCreationExtension fileStoreExtension = new FileStoreCreationExtension(FileSystemType.IN_MEMORY);
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAppend() throws Exception {
 		IFileStore baseStore = fileStoreExtension.getFileStore();
 		IFileStore file = baseStore.getChild("file");
@@ -80,7 +80,7 @@ public class OpenOutputStreamTest {
 
 	private static void assertExists(IFileStore store) throws CoreException {
 		IFileInfo info = store.fetchInfo();
-		assertTrue(info.exists(), "store has no file info: " + store);
+		assertTrue(info.exists(), "store has no file info: " + store); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		// check that the parent knows about it
 		IFileInfo[] children = store.getParent().childInfos(EFS.NONE, getMonitor());
 		List<String> childrenNames = Stream.of(children).map(IFileInfo::getName).collect(Collectors.toList());

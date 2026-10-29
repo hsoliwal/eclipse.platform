@@ -71,20 +71,20 @@ public class CopyFailureListAction extends Action {
 	 *
 	 * @return a failure traces string
 	 */
-	public String getAllFailureTraces() {
-		StringBuilder buf = new StringBuilder();
+	public String getAllFailureTraces() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		String lineDelim = System.lineSeparator();
-		for (TestElement failure : fRunner.getCurrentTestRunSession().getAllFailedTestElements()) {
-			buf.append(failure.getTestName()).append(lineDelim);
+		for (TestElement failure : fRunner.getCurrentTestRunSession().getAllFailedTestElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			buf.append(failure.getTestName()).append(lineDelim); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			FailureTrace failureTrace = failure.getFailureTrace();
 			String trace = failureTrace != null ? failureTrace.getTrace() : null;
 			if (trace != null) {
 				int start = 0;
-				while (start < trace.length()) {
+				while (start < trace.length()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					int idx = trace.indexOf('\n', start);
 					if (idx != -1) {
 						String line = trace.substring(start, idx);
-						buf.append(line).append(lineDelim);
+						buf.append(line).append(lineDelim); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 						start = idx + 1;
 					} else {
 						start = Integer.MAX_VALUE;

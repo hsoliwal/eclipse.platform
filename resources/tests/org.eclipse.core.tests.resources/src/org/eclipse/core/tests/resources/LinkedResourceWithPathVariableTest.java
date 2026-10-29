@@ -106,7 +106,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 	 * @param inStore handle to an existing text file to convert
 	 * @param outStore handle to non-existing file which will be written
 	 */
-	protected void convertLineEndings(IFileStore inStore, IFileStore outStore, IProgressMonitor mon) throws CoreException, IOException {
+	protected void convertLineEndings(IFileStore inStore, IFileStore outStore, IProgressMonitor mon) throws CoreException, IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		InputStream is = null;
 		OutputStream os = null;
 		try {
@@ -114,7 +114,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 			os = outStore.openOutputStream(EFS.NONE, new NullProgressMonitor());
 			int prevb = 0;
 			int ib = is.read();
-			while (ib >= 0) {
+			while (ib >= 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				switch (ib) {
 					case '\r' :
 						os.write('\n');
@@ -147,7 +147,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 		//low order bits are current time, high order bits are static counter
 		IPath parent = IPath.fromOSString(VARIABLE_NAME);
 		IPath path = FileSystemHelper.computeRandomLocation(parent);
-		while (pathVars.resolvePath(path).toFile().exists()) {
+		while (pathVars.resolvePath(path).toFile().exists()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -164,7 +164,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 		// low order bits are current time, high order bits are static counter
 		IPath parent = IPath.fromOSString(PROJECT_VARIABLE_NAME);
 		IPath path = FileSystemHelper.computeRandomLocation(parent);
-		while (pathVars.resolvePath(path).toFile().exists()) {
+		while (pathVars.resolvePath(path).toFile().exists()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -181,7 +181,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 		// low order bits are current time, high order bits are static counter
 		IPath parent = IPath.fromOSString(PROJECT_RELATIVE_VARIABLE_NAME);
 		IPath path = FileSystemHelper.computeRandomLocation(parent);
-		while (pathVars.resolvePath(path).toFile().exists()) {
+		while (pathVars.resolvePath(path).toFile().exists()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
@@ -224,7 +224,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 	 * Tests a scenario where a variable used in a linked file location is
 	 * removed.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileVariableRemoved() throws Exception {
 		final IPathVariableManager manager = getWorkspace().getPathVariableManager();
 
@@ -280,7 +280,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 	 * Tests a scenario where a variable used in a linked file location is
 	 * removed.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileProjectVariableRemoved() throws Exception {
 		final IPathVariableManager manager = existingProject.getPathVariableManager();
 
@@ -338,15 +338,15 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 	 * moved to a new project.
 	 * This is a regression test for bug 266679
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveFileToDifferentProject() throws Exception {
 		IFile file = existingProjectInSubDirectory.getFile("my_link");
 
 		// creates a variable-based location
 		IPath variableBasedLocation = null;
 		IPath targetPath = existingProjectInSubDirectory.getLocation().removeLastSegments(1).append("outside.txt");
-		if (!targetPath.toFile().exists()) {
-			targetPath.toFile().createNewFile();
+		if (!targetPath.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			targetPath.toFile().createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		fileStoreExtension.deleteOnTearDown(targetPath);
 
@@ -377,11 +377,11 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 	 * relative to PROJECT_LOC is moved to a different project.
 	 * This is a regression test for bug 266679
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPROJECT_LOC_MoveFileToDifferentProject() throws Exception {
 
 		String[] existingVariables = nonExistingFileInExistingFolder.getProject().getPathVariableManager().getPathVariableNames();
-		for (String existingVariable : existingVariables) {
+		for (String existingVariable : existingVariables) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				nonExistingFileInExistingFolder.getProject().getPathVariableManager().setURIValue(existingVariable,
 						null);
@@ -393,8 +393,8 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 		// creates a variable-based location
 		URI variableBasedLocation = null;
 		IPath targetPath = existingProjectInSubDirectory.getLocation().removeLastSegments(3).append("outside.txt");
-		if (!targetPath.toFile().exists()) {
-			targetPath.toFile().createNewFile();
+		if (!targetPath.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			targetPath.toFile().createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		fileStoreExtension.deleteOnTearDown(targetPath);
 
@@ -429,7 +429,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 	 * Tests a scenario where a linked file location is
 	 * is moved to a new project.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveFileProjectVariable() throws CoreException {
 		final IPathVariableManager manager = existingProject.getPathVariableManager();
 
@@ -463,7 +463,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 	 * Tests a scenario where a variable used in a linked file location is
 	 * removed.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveFileToNewProjectProjectVariable() throws CoreException {
 		final IPathVariableManager manager = existingProject.getPathVariableManager();
 
@@ -496,7 +496,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 	 * Tests a scenario where a variable used in a linked file location is
 	 * removed.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileProjectRelativeVariableRemoved() throws Exception {
 		final IPathVariableManager manager = existingProject.getPathVariableManager();
 
@@ -553,7 +553,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 	 * Tests a scenario where a variable used in a linked folder location is
 	 * removed.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFolderVariableRemoved() throws CoreException {
 		final IPathVariableManager manager = getWorkspace().getPathVariableManager();
 
@@ -632,7 +632,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 	 * is marked read-only.
 	 * See <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=210664">Bug 210664</a>.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testImportWrongLineEndings_Bug210664() throws Exception {
 		// Choose a project to work on
 		IProject proj = existingProject;
@@ -671,7 +671,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 	 * Tests a scenario where a variable used in a linked folder location is
 	 * removed.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFolderProjectVariableRemoved() throws CoreException {
 		final IPathVariableManager manager = existingProject.getPathVariableManager();
 
@@ -746,7 +746,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 	/**
 	 * Tests scenario where links are relative to undefined variables
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testUndefinedVariable() throws CoreException {
 		IPath folderLocation = IPath.fromOSString("NOVAR/folder");
 		IPath fileLocation = IPath.fromOSString("NOVAR/abc.txt");
@@ -801,7 +801,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 	 * Tests a scenario where a variable used in a linked file location is
 	 * changed.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testVariableChanged() throws Exception {
 		final IPathVariableManager manager = getWorkspace().getPathVariableManager();
 
@@ -867,7 +867,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 	 * Tests a scenario where a variable used in a linked file location is
 	 * changed.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectVariableChanged() throws Exception {
 		final IPathVariableManager manager = existingProject.getPathVariableManager();
 
@@ -932,7 +932,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 	/**
 	 * Test Bug 288880 - Redundant path variables generated when converting some linked resources to path variable-relative
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNonRedundentPathVariablesGenerated() throws Exception {
 		IFile file = existingProjectInSubDirectory.getFile("my_link");
 
@@ -941,8 +941,8 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 		// creates a variable-based location
 		IPath variableBasedLocation = null;
 		IPath targetPath = existingProjectInSubDirectory.getLocation().removeLastSegments(1).append("outside.txt");
-		if (!targetPath.toFile().exists()) {
-			targetPath.toFile().createNewFile();
+		if (!targetPath.toFile().exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			targetPath.toFile().createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		fileStoreExtension.deleteOnTearDown(targetPath);
 
@@ -960,7 +960,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 		assertEquals(targetPath, resolvedPath);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testConvertToUserEditableFormat() {
 		IPathVariableManager pathVariableManager = existingProject.getPathVariableManager();
 
@@ -982,11 +982,11 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 				{"${PARENT-2-VAR}/f${PARENT-4-BAR}/oo", "${VAR}/../../f${BAR}/../../../../oo"} //
 		};
 
-		for (int i = 0; i < table.length; i++) {
+		for (int i = 0; i < table.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String result = pathVariableManager.convertToUserEditableFormat(toOS(table[i][0]), false);
-			assertEquals(toOS(table[i][1]), result, i + "");
+			assertEquals(toOS(table[i][1]), result, i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			String original = pathVariableManager.convertFromUserEditableFormat(result, false);
-			assertEquals(toOS(table[i].length == 2 ? table[i][0] : table[i][2]), original, i + "");
+			assertEquals(toOS(table[i].length == 2 ? table[i][0] : table[i][2]), original, i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		String[][] tableLocationFormat = { // format: {internal-format, user-editable-format [, internal-format-reconverted]
@@ -1007,13 +1007,13 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 				{"/foo/bar", "/foo/bar"}, //
 		};
 
-		for (int i = 0; i < table.length; i++) {
+		for (int i = 0; i < table.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String result = pathVariableManager.convertToUserEditableFormat(toOS(tableLocationFormat[i][0]), true);
-			assertEquals(toOS(tableLocationFormat[i][1]), result, i + "");
+			assertEquals(toOS(tableLocationFormat[i][1]), result, i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			String original = pathVariableManager.convertFromUserEditableFormat(result, true);
 			assertEquals(
 					toOS(tableLocationFormat[i].length == 2 ? tableLocationFormat[i][0] : tableLocationFormat[i][2]),
-					original, i + "");
+					original, i + ""); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -1041,7 +1041,7 @@ public class LinkedResourceWithPathVariableTest extends LinkedResourceTest {
 		String[] variables = manager.getPathVariableNames();
 		boolean found = false;
 
-		for (String variable : variables) {
+		for (String variable : variables) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (variable.equals("Test338185")) {
 				found = true;
 			}

@@ -79,7 +79,7 @@ public class GlobalRefreshAction extends Action implements IMenuCreator, IWorkbe
 		}
 
 		public RefreshParticipantAction(int prefix, ISynchronizeParticipantReference participant) {
-			super("&" + prefix + " " + Utils.shortenText(SynchronizeView.MAX_NAME_LENGTH, participant.getDisplayName())); //$NON-NLS-1$ //$NON-NLS-2$
+			super("&" + prefix + " " + Utils.shortenText(SynchronizeView.MAX_NAME_LENGTH, participant.getDisplayName())); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			this.participant = participant;
 			setImageDescriptor(participant.getDescriptor().getImageDescriptor());
 		}
@@ -89,7 +89,7 @@ public class GlobalRefreshAction extends Action implements IMenuCreator, IWorkbe
 		// Nothing to do
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void dispose() {
 		if(menuManager != null) {
 			menuManager.dispose();
@@ -117,7 +117,7 @@ public class GlobalRefreshAction extends Action implements IMenuCreator, IWorkbe
 		return null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Menu getMenu(Control parent) {
 		Menu fMenu = null;
 		if (menuManager == null) {
@@ -125,7 +125,7 @@ public class GlobalRefreshAction extends Action implements IMenuCreator, IWorkbe
 			fMenu = menuManager.createContextMenu(parent);
 			menuManager.removeAll();
 			ISynchronizeParticipantReference[] participants = TeamUI.getSynchronizeManager().getSynchronizeParticipants();
-			for (int i = 0; i < participants.length; i++) {
+			for (int i = 0; i < participants.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ISynchronizeParticipantReference description = participants[i];
 				Action action = new RefreshParticipantAction(i + 1, description);
 				menuManager.add(action);
@@ -140,7 +140,7 @@ public class GlobalRefreshAction extends Action implements IMenuCreator, IWorkbe
 		return fMenu;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void init(IWorkbenchWindow window) {
 		this.window = window;
 
@@ -215,7 +215,7 @@ public class GlobalRefreshAction extends Action implements IMenuCreator, IWorkbe
 	@Override
 	public void participantsAdded(ISynchronizeParticipant[] consoles) {
 		Display display = TeamUIPlugin.getStandardDisplay();
-		display.asyncExec(() -> {
+		display.asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			if(menuManager != null) {
 				menuManager.dispose();
 				menuManager = null;
@@ -227,7 +227,7 @@ public class GlobalRefreshAction extends Action implements IMenuCreator, IWorkbe
 	@Override
 	public void participantsRemoved(ISynchronizeParticipant[] consoles) {
 		Display display = TeamUIPlugin.getStandardDisplay();
-		display.asyncExec(() -> {
+		display.asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			if(menuManager != null) {
 				menuManager.dispose();
 				menuManager = null;

@@ -48,8 +48,8 @@ public class SubscriberResourceMappingContext extends RemoteResourceMappingConte
 	private final Subscriber subscriber;
 
 	// Lists used to keep track of resources that have been refreshed
-	private final Set<IResource> shallowRefresh = new HashSet<>();
-	private final Set<IResource> deepRefresh = new HashSet<>();
+	private final Set<IResource> shallowRefresh = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+	private final Set<IResource> deepRefresh = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 	private boolean autoRefresh;
 
 	/**
@@ -152,7 +152,7 @@ public class SubscriberResourceMappingContext extends RemoteResourceMappingConte
 	@Override
 	public final void refresh(ResourceTraversal[] traversals, int flags, IProgressMonitor monitor) throws CoreException {
 		subscriber.refresh(traversals, monitor);
-		for (ResourceTraversal traversal : traversals) {
+		for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			refreshed(traversal.getResources(), traversal.getDepth());
 		}
 	}
@@ -184,7 +184,7 @@ public class SubscriberResourceMappingContext extends RemoteResourceMappingConte
 	 * @param depth the depth to which the resources were refreshed
 	 */
 	protected final void refreshed(IResource[] resources, int depth) {
-		for (IResource resource : resources) {
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// Include files and depth-one folders as shallow
 			if (depth == IResource.DEPTH_ONE || resource.getType() == IResource.FILE) {
 				shallowRefresh.add(resource);
@@ -198,7 +198,7 @@ public class SubscriberResourceMappingContext extends RemoteResourceMappingConte
 	 * Ensure that the given resource has been refreshed to the specified depth
 	 * since the context has been created.
 	 */
-	private void ensureRefreshed(IResource resource, int depth, int flags, IProgressMonitor monitor) throws TeamException {
+	private void ensureRefreshed(IResource resource, int depth, int flags, IProgressMonitor monitor) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (autoRefresh) {
 			if (depth == IResource.DEPTH_INFINITE) {
 				// If the resource or a parent was refreshed deeply, no need to do it again
@@ -267,9 +267,9 @@ public class SubscriberResourceMappingContext extends RemoteResourceMappingConte
 	private IResourceVariant validateRemote(IResource resource, IResourceVariant remote) throws CoreException {
 		boolean containerExpected = resource.getType() != IResource.FILE;
 		if (remote.isContainer() && !containerExpected) {
-			throw new CoreException(new Status(IStatus.ERROR, TeamPlugin.ID, IResourceStatus.RESOURCE_WRONG_TYPE, Messages.SubscriberResourceMappingContext_0 + resource.getFullPath().toString(), null));
+			throw new CoreException(new Status(IStatus.ERROR, TeamPlugin.ID, IResourceStatus.RESOURCE_WRONG_TYPE, Messages.SubscriberResourceMappingContext_0 + resource.getFullPath().toString(), null)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} else if (!remote.isContainer() && containerExpected) {
-			throw new CoreException(new Status(IStatus.ERROR, TeamPlugin.ID, IResourceStatus.RESOURCE_WRONG_TYPE, Messages.SubscriberResourceMappingContext_1 + resource.getFullPath().toString(), null));
+			throw new CoreException(new Status(IStatus.ERROR, TeamPlugin.ID, IResourceStatus.RESOURCE_WRONG_TYPE, Messages.SubscriberResourceMappingContext_1 + resource.getFullPath().toString(), null)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return remote;
 	}
@@ -312,9 +312,9 @@ public class SubscriberResourceMappingContext extends RemoteResourceMappingConte
 
 	@Override
 	public IProject[] getProjects() {
-		Set<IProject> projects = new HashSet<>();
+		Set<IProject> projects = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		IResource[] roots = subscriber.roots();
-		for (IResource resource : roots) {
+		for (IResource resource : roots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			projects.add(resource.getProject());
 		}
 		return projects.toArray(new IProject[projects.size()]);

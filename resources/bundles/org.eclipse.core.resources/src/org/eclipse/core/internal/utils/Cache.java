@@ -52,7 +52,7 @@ public class Cache<K, V> {
 	private void cleanup(){
 		// remove keys of Entries that have been Garbage collected:
 		EntryRef<K, V> e = null;
-		while ((e = (EntryRef<K, V>) referenceQueue.poll()) != null) {
+		while ((e = (EntryRef<K, V>) referenceQueue.poll()) != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
             map.remove(e.key);
         }
 	}

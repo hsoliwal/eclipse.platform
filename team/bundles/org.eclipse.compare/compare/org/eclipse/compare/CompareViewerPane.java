@@ -52,7 +52,7 @@ import org.eclipse.swt.widgets.ToolItem;
  *
  * @since 2.0
  */
-public class CompareViewerPane extends ViewForm implements ISelectionProvider,
+public class CompareViewerPane extends ViewForm implements ISelectionProvider, //FLLDCIM: MARK — T05  IMPLEMENTS
 		IDoubleClickListener, ISelectionChangedListener, IOpenListener, IAdaptable {
 	private ToolBarManager fToolBarManager;
 	private Object fInput;
@@ -74,7 +74,7 @@ public class CompareViewerPane extends ViewForm implements ISelectionProvider,
 	 *    <li>ERROR_THREAD_INVALID_ACCESS - if not called from the thread that created the parent</li>
 	 * </ul>
 	 */
-	public CompareViewerPane(Composite container, int style) {
+	public CompareViewerPane(Composite container, int style) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super(container, style);
 
 		marginWidth= 0;
@@ -97,10 +97,10 @@ public class CompareViewerPane extends ViewForm implements ISelectionProvider,
 			}
 		};
 
-		addMouseListener(ml);
-		getTopLeft().addMouseListener(ml);
+		addMouseListener(ml); //FLLDCIM: MARK — T12 INPUT_EVENT CALL
+		getTopLeft().addMouseListener(ml); //FLLDCIM: MARK — T12 INPUT_EVENT CALL
 
-		addDisposeListener(unused -> {
+		addDisposeListener(unused -> { //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 			if (fToolBarManager != null) {
 				fToolBarManager.removeAll();
 				fToolBarManager.dispose();
@@ -185,7 +185,7 @@ public class CompareViewerPane extends ViewForm implements ISelectionProvider,
 
 	//---- private stuff
 
-	private ToolBarManager getToolBarManager() {
+	private ToolBarManager getToolBarManager() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fToolBarManager != null && fToolBarManager.getControl() == null) {
 			return null;
 		}
@@ -256,14 +256,14 @@ public class CompareViewerPane extends ViewForm implements ISelectionProvider,
 
 	@Override
 	public void selectionChanged(SelectionChangedEvent ev) {
-		for (ISelectionChangedListener listener : fSelectionListeners) {
+		for (ISelectionChangedListener listener : fSelectionListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			listener.selectionChanged(ev);
 		}
 	}
 
 	@Override
 	public void doubleClick(DoubleClickEvent event) {
-		for (IDoubleClickListener listener : fDoubleClickListener) {
+		for (IDoubleClickListener listener : fDoubleClickListener) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			listener.doubleClick(event);
 		}
 	}
@@ -313,7 +313,7 @@ public class CompareViewerPane extends ViewForm implements ISelectionProvider,
 	@Override
 	public void open(OpenEvent event) {
 		Object[] listeners= fOpenListener.getListeners();
-		for (Object listener : listeners) {
+		for (Object listener : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			((IOpenListener) listener).open(event);
 		}
 	}

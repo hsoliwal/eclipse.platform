@@ -63,7 +63,7 @@ public class ModelMerger extends ResourceMappingMerger {
 		return provider;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus merge(IMergeContext mergeContext, IProgressMonitor monitor) throws CoreException {
 		try {
 			IStatus status;
@@ -96,12 +96,12 @@ public class ModelMerger extends ResourceMappingMerger {
 	/*
 	 * Merge all the model element changes in the context
 	 */
-	private IStatus mergeModelElements(IMergeContext mergeContext, IProgressMonitor monitor) throws CoreException {
+	private IStatus mergeModelElements(IMergeContext mergeContext, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			IDiff[] modeDiffs = getModDiffs(mergeContext);
-			List<IDiff> failures = new ArrayList<>();
+			List<IDiff> failures = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			monitor.beginTask(null, 100 * modeDiffs.length);
-			for (IDiff diff : modeDiffs) {
+			for (IDiff diff : modeDiffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!mergeModelElement(mergeContext, diff, SubMonitor.convert(monitor, 100))) {
 					failures.add(diff);
 				}
@@ -116,8 +116,8 @@ public class ModelMerger extends ResourceMappingMerger {
 	}
 
 	private ResourceMapping[] getMappings(List failures) {
-		List<ResourceMapping> mappings = new ArrayList<>();
-		for (Iterator iter = failures.iterator(); iter.hasNext();) {
+		List<ResourceMapping> mappings = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Iterator iter = failures.iterator(); iter.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IDiff diff = (IDiff) iter.next();
 			IResource resource = ResourceDiffTree.getResourceFor(diff);
 			ModelObjectDefinitionFile file = (ModelObjectDefinitionFile)ModelObject.create(resource);
@@ -130,7 +130,7 @@ public class ModelMerger extends ResourceMappingMerger {
 	 * Return all the diffs for MOD files.
 	 */
 	private IDiff[] getModDiffs(IMergeContext mergeContext) {
-		final List<IDiff> result = new ArrayList<>();
+		final List<IDiff> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		mergeContext.getDiffTree().accept(getModelProjectTraversals(mergeContext), diff -> {
 			IResource resource = ResourceDiffTree.getResourceFor(diff);
 			if (ModelObjectDefinitionFile.isModFile(resource)) {
@@ -144,10 +144,10 @@ public class ModelMerger extends ResourceMappingMerger {
 	/*
 	 * Return a traversal that covers all the model projects in the scope of the merge.
 	 */
-	private ResourceTraversal[] getModelProjectTraversals(IMergeContext mergeContext) {
+	private ResourceTraversal[] getModelProjectTraversals(IMergeContext mergeContext) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IProject[] scopeProjects = mergeContext.getScope().getProjects();
-		List<IResource> modelProjects = new ArrayList<>();
-		for (IProject project : scopeProjects) {
+		List<IResource> modelProjects = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IProject project : scopeProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				if (ModelProject.isModProject(project)) {
 					modelProjects.add(project);
@@ -167,7 +167,7 @@ public class ModelMerger extends ResourceMappingMerger {
 	/*
 	 * Merge the model definition file and all the element files it contains.
 	 */
-	private boolean mergeModelElement(IMergeContext mergeContext, IDiff diff, IProgressMonitor monitor) throws CoreException {
+	private boolean mergeModelElement(IMergeContext mergeContext, IDiff diff, IProgressMonitor monitor) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (diff instanceof IThreeWayDiff) {
 			IThreeWayDiff twd = (IThreeWayDiff) diff;
 			if (twd.getDirection() == IThreeWayDiff.INCOMING
@@ -197,7 +197,7 @@ public class ModelMerger extends ResourceMappingMerger {
 				}
 
 				// Now try to merge all the element files involved
-				Set<IResource> elementFiles = new HashSet<>();
+				Set<IResource> elementFiles = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 				elementFiles.addAll(Arrays.asList(baseElements));
 				elementFiles.addAll(Arrays.asList(localElements));
 				elementFiles.addAll(Arrays.asList(remoteElements));
@@ -214,7 +214,7 @@ public class ModelMerger extends ResourceMappingMerger {
 				} else {
 					// Update the contents of the model definition file
 					ModelObjectDefinitionFile file = (ModelObjectDefinitionFile)ModelObject.create(resource);
-					elementFiles = new HashSet<>();
+					elementFiles = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 					elementFiles.addAll(Arrays.asList(localElements));
 					elementFiles.addAll(Arrays.asList(addedElements));
 					elementFiles.removeAll(Arrays.asList(removedElements));
@@ -234,8 +234,8 @@ public class ModelMerger extends ResourceMappingMerger {
 	}
 
 	private IDiff[] getDiffs(IMergeContext mergeContext, IResource[] resources) {
-		Set<IDiff> diffSet = new HashSet<>();
-		for (IResource resource : resources) {
+		Set<IDiff> diffSet = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IDiff[] diffs = mergeContext.getDiffTree().getDiffs(resource, IResource.DEPTH_ZERO);
 			diffSet.addAll(Arrays.asList(diffs));
 		}
@@ -253,7 +253,7 @@ public class ModelMerger extends ResourceMappingMerger {
 				return false;
 			}
 		};
-		for (IResource resource : removedElements) {
+		for (IResource resource : removedElements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if  (mergeContext.getDiffTree().hasMatchingDiffs(resource.getFullPath(), fastDiffFilter))
 				return true;
 		}
@@ -261,10 +261,10 @@ public class ModelMerger extends ResourceMappingMerger {
 	}
 
 	private IResource[] getAddedElements(IResource[] baseElements, IResource[] remoteElements) {
-		List<IResource> result = new ArrayList<>();
-		Set<IResource> base = new HashSet<>();
+		List<IResource> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		Set<IResource> base = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		Collections.addAll(base, baseElements);
-		for (IResource resource : remoteElements) {
+		for (IResource resource : remoteElements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!base.contains(resource))
 				result.add(resource);
 		}

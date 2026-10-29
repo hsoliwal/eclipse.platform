@@ -48,7 +48,7 @@ public class LocalLauncherHandler extends AbstractHandler {
 		return null;
 	}
 
-	private ISelection selection(ExecutionEvent event) {
+	private ISelection selection(ExecutionEvent event) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ISelection selection = HandlerUtil.getCurrentSelection(event);
 		// If the selection is not a structured selection, check if there is an active
 		// editor and get the path from the editor input
@@ -57,10 +57,10 @@ public class LocalLauncherHandler extends AbstractHandler {
 			if (input instanceof IPathEditorInput) {
 				IPath path = ((IPathEditorInput) input).getPath();
 				if (path != null) {
-					if (path.toFile().isFile()) {
+					if (path.toFile().isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						path = path.removeLastSegments(1);
 					}
-					if (path.toFile().isDirectory() && path.toFile().canRead()) {
+					if (path.toFile().isDirectory() && path.toFile().canRead()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						selection = new StructuredSelection(path);
 					}
 				}
@@ -70,7 +70,7 @@ public class LocalLauncherHandler extends AbstractHandler {
 	}
 
 	private void executeDelegate(ISelection selection, ILauncherDelegate delegate) throws ExecutionException {
-		Map<String, Object> properties = new HashMap<>();
+		Map<String, Object> properties = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		properties.put(ITerminalsConnectorConstants.PROP_DELEGATE_ID, delegate.getId());
 		properties.put(ITerminalsConnectorConstants.PROP_SELECTION, selection);
 		delegate.execute(properties).whenComplete((unused, e) -> {

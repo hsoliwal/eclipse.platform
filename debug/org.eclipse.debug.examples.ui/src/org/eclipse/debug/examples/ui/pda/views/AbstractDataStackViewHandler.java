@@ -30,7 +30,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
  */
 abstract public class AbstractDataStackViewHandler extends AbstractHandler {
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IWorkbenchPart part = HandlerUtil.getActivePartChecked(event);
 		if (part instanceof DataStackView view) {

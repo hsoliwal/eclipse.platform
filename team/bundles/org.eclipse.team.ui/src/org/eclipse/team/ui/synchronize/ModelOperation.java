@@ -49,7 +49,7 @@ import org.eclipse.ui.IWorkbenchPart;
  *
  * @since 3.2
  */
-public abstract class ModelOperation extends TeamOperation {
+public abstract class ModelOperation extends TeamOperation { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	private boolean previewRequested;
 	private final ISynchronizationScopeManager manager;
@@ -63,10 +63,10 @@ public abstract class ModelOperation extends TeamOperation {
 	 * @return the list of provides sorted by their extends relationship
 	 */
 	public static ModelProvider[] sortByExtension(ModelProvider[] providers) {
-		List<ModelProvider> result = new ArrayList<>();
-		for (ModelProvider providerToInsert : providers) {
+		List<ModelProvider> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ModelProvider providerToInsert : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int index = result.size();
-			for (int j = 0; j < result.size(); j++) {
+			for (int j = 0; j < result.size(); j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ModelProvider provider = result.get(j);
 				if (extendsProvider(providerToInsert, provider)) {
 					index = j;
@@ -81,7 +81,7 @@ public abstract class ModelOperation extends TeamOperation {
 	private static boolean extendsProvider(ModelProvider providerToInsert, ModelProvider provider) {
 		String[] extended = providerToInsert.getDescriptor().getExtendedModels();
 		// First search immediate dependents
-		for (String id : extended) {
+		for (String id : extended) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (id.equals(provider.getDescriptor().getId())) {
 				return true;
 			}
@@ -181,7 +181,7 @@ public abstract class ModelOperation extends TeamOperation {
 	 * {@link #initializeScope(IProgressMonitor)}).
 	 * @param monitor a progress monitor
 	 */
-	protected void promptIfInputChange(IProgressMonitor monitor) {
+	protected void promptIfInputChange(IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ISynchronizationScope inputScope = getScope().asInputScope();
 		if (getScope().hasAdditionalMappings()) {
 			boolean prompt = false;
@@ -200,7 +200,7 @@ public abstract class ModelOperation extends TeamOperation {
 				// the input or if they are from a model that has no relationship to the input model
 				String modelProviderId = inputModelProviders[0].getDescriptor().getId();
 				ResourceMapping[] mappings = getScope().getMappings();
-				for (ResourceMapping mapping : mappings) {
+				for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (inputScope.getTraversals(mapping) == null) {
 						// This mapping was not in the input
 						String id = mapping.getModelProviderId();
@@ -216,14 +216,14 @@ public abstract class ModelOperation extends TeamOperation {
 			} else {
 				// We need to prompt if there are additional mappings from an input
 				// provider whose traversals overlap those of the input mappings.
-				for (ModelProvider provider : inputModelProviders) {
+				for (ModelProvider provider : inputModelProviders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					String id = provider.getDescriptor().getId();
 					ResourceMapping[] inputMappings = inputScope.getMappings(id);
 					ResourceMapping[] scopeMappings = getScope().getMappings(id);
 					if (inputMappings.length != scopeMappings.length) {
 						// There are more mappings for this provider.
 						// We need to see if any of the new ones overlap the old ones.
-						for (ResourceMapping mapping : scopeMappings) {
+						for (ResourceMapping mapping : scopeMappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							ResourceTraversal[] inputTraversals = inputScope.getTraversals(mapping);
 							if (inputTraversals == null) {
 								// This mapping was not in the input.
@@ -261,10 +261,10 @@ public abstract class ModelOperation extends TeamOperation {
 
 	private boolean hasAdditionalMappingsFromIndependantModel(ModelProvider[] inputModelProviders, ModelProvider[] modelProviders) {
 		ModelProvider[] additionalProviders = getAdditionalProviders(inputModelProviders, modelProviders);
-		for (ModelProvider additionalProvider : additionalProviders) {
+		for (ModelProvider additionalProvider : additionalProviders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			boolean independant = true;
 			// Return true if the new provider is independant of all input providers
-			for (ModelProvider inputProvider : inputModelProviders) {
+			for (ModelProvider inputProvider : inputModelProviders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!isIndependantModel(additionalProvider.getDescriptor().getId(), inputProvider.getDescriptor().getId())) {
 					independant = false;
 				}
@@ -277,10 +277,10 @@ public abstract class ModelOperation extends TeamOperation {
 	}
 
 	private ModelProvider[] getAdditionalProviders(ModelProvider[] inputModelProviders, ModelProvider[] modelProviders) {
-		Set<ModelProvider> input = new HashSet<>();
-		List<ModelProvider> result = new ArrayList<>();
+		Set<ModelProvider> input = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		List<ModelProvider> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		input.addAll(Arrays.asList(inputModelProviders));
-		for (ModelProvider provider : modelProviders) {
+		for (ModelProvider provider : modelProviders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!input.contains(provider)) {
 				result.add(provider);
 			}
@@ -289,8 +289,8 @@ public abstract class ModelOperation extends TeamOperation {
 	}
 
 	private boolean overlaps(ResourceTraversal[] scopeTraversals, ResourceTraversal[] inputModelTraversals) {
-		for (ResourceTraversal inputTraversal : inputModelTraversals) {
-			for (ResourceTraversal scopeTraversal : scopeTraversals) {
+		for (ResourceTraversal inputTraversal : inputModelTraversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (ResourceTraversal scopeTraversal : scopeTraversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (overlaps(inputTraversal, scopeTraversal)) {
 					return true;
 				}
@@ -302,8 +302,8 @@ public abstract class ModelOperation extends TeamOperation {
 	private boolean overlaps(ResourceTraversal inputTraversal, ResourceTraversal scopeTraversal) {
 		IResource[] inputRoots = inputTraversal.getResources();
 		IResource[] scopeRoots = scopeTraversal.getResources();
-		for (IResource scopeResource : scopeRoots) {
-			for (IResource inputResource : inputRoots) {
+		for (IResource scopeResource : scopeRoots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (IResource inputResource : inputRoots) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (overlaps(scopeResource, scopeTraversal.getDepth(), inputResource, inputTraversal.getDepth())) {
 					return true;
 				}
@@ -312,7 +312,7 @@ public abstract class ModelOperation extends TeamOperation {
 		return false;
 	}
 
-	private boolean overlaps(IResource scopeResource, int scopeDepth, IResource inputResource, int inputDepth) {
+	private boolean overlaps(IResource scopeResource, int scopeDepth, IResource inputResource, int inputDepth) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (scopeResource.equals(inputResource)) {
 			return true;
 		}
@@ -333,7 +333,7 @@ public abstract class ModelOperation extends TeamOperation {
 
 	private ResourceTraversal[] getTraversals(ISynchronizationScope inputScope, ResourceMapping[] inputMappings) {
 		CompoundResourceTraversal result = new CompoundResourceTraversal();
-		for (ResourceMapping mapping : inputMappings) {
+		for (ResourceMapping mapping : inputMappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result.addTraversals(inputScope.getTraversals(mapping));
 		}
 		return result.asTraversals();
@@ -354,13 +354,13 @@ public abstract class ModelOperation extends TeamOperation {
 	private boolean isExtension(IModelProviderDescriptor desc1, IModelProviderDescriptor desc2) {
 		String[] ids = desc1.getExtendedModels();
 		// First check direct extension
-		for (String id : ids) {
+		for (String id : ids) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (id.equals(desc2.getId())) {
 				return true;
 			}
 		}
 		// Now check for indirect extension
-		for (String id : ids) {
+		for (String id : ids) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IModelProviderDescriptor desc3 = ModelProvider.getModelProviderDescriptor(id);
 			if (isExtension(desc3, desc2)) {
 				return true;
@@ -382,10 +382,10 @@ public abstract class ModelOperation extends TeamOperation {
 		return showAllMappings(requestPreviewMessage);
 	}
 
-	private boolean showAllMappings(final String requestPreviewMessage) {
+	private boolean showAllMappings(final String requestPreviewMessage) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final boolean[] canceled = new boolean[] { false };
 		final boolean[] forcePreview = new boolean[] { false };
-		Display.getDefault().syncExec(() -> {
+		Display.getDefault().syncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			AdditionalMappingsDialog dialog = new AdditionalMappingsDialog(getShell(), TeamUIMessages.ResourceMappingOperation_0, getScope(), getContext());
 			dialog.setPreviewMessage(requestPreviewMessage);
 			int result = dialog.open();

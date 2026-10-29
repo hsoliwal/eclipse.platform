@@ -25,17 +25,17 @@ import org.eclipse.team.ui.synchronize.ISynchronizePageConfiguration;
 import org.eclipse.team.ui.synchronize.SynchronizeModelAction;
 import org.eclipse.team.ui.synchronize.SynchronizeModelOperation;
 
-public class RestoreRemovedItemsAction extends SynchronizeModelAction {
+public class RestoreRemovedItemsAction extends SynchronizeModelAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 	public RestoreRemovedItemsAction(ISynchronizePageConfiguration configuration) {
 		super(null, configuration);
 		Utils.initAction(this, "action.restoreRemovedFromView."); //$NON-NLS-1$
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected SynchronizeModelOperation getSubscriberOperation(
 			ISynchronizePageConfiguration configuration, IDiffElement[] elements) {
-		return new SynchronizeModelOperation(configuration, elements) {
+		return new SynchronizeModelOperation(configuration, elements) { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 				restoreRemovedItems();

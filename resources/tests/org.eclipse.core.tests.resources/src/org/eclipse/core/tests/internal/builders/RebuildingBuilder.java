@@ -26,7 +26,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public class RebuildingBuilder extends TestBuilder {
 	public static final String BUILDER_NAME = "org.eclipse.core.tests.resources.rebuildingbuilder";
 
-	static List<RebuildingBuilder> instances = new ArrayList<>();
+	static List<RebuildingBuilder> instances = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	public static List<RebuildingBuilder> getInstances() {
 		return instances;
@@ -35,22 +35,22 @@ public class RebuildingBuilder extends TestBuilder {
 	private boolean propagateRebuild;
 	private boolean processOtherBuilders;
 
-	Map<IProject, Integer> projectToRebuild = new HashMap<>();
+	Map<IProject, Integer> projectToRebuild = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
-	List<IProject> projectsBuilt = new ArrayList<>();
+	List<IProject> projectsBuilt = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
-	List<Integer> buildKinds = new ArrayList<>();
+	List<Integer> buildKinds = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	BuilderRuleCallback callback = new BuilderRuleCallback() {
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
 			projectsBuilt.add(getProject());
 			buildKinds.add(kind);
 			if (projectToRebuild.size() > 1 || projectToRebuild.get(getProject()) == null) {
-				Set<IProject> toRebuild = new HashSet<>();
-				Set<IProject> toRemove = new HashSet<>();
+				Set<IProject> toRebuild = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+				Set<IProject> toRemove = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 				Set<Entry<IProject, Integer>> entries = projectToRebuild.entrySet();
-				for (Entry<IProject, Integer> entry : entries) {
+				for (Entry<IProject, Integer> entry : entries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IProject project = entry.getKey();
 					Integer rebuild = entry.getValue();
 					if (rebuild.intValue() > 0) {
@@ -97,7 +97,7 @@ public class RebuildingBuilder extends TestBuilder {
 	}
 
 	public void setRequestProjectRebuild(IProject... projects) {
-		for (IProject project : projects) {
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			projectToRebuild.put(project, 1);
 		}
 	}

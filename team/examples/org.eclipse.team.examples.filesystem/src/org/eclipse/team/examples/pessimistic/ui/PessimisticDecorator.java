@@ -35,7 +35,7 @@ public class PessimisticDecorator extends LabelProvider implements ILabelDecorat
 		PessimisticFilesystemProviderPlugin.getInstance().addProviderListener(this);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String decorateText(String text, Object element) {
 		IResource resource= getResource(element);
 		if (resource == null)
@@ -46,14 +46,14 @@ public class PessimisticDecorator extends LabelProvider implements ILabelDecorat
 		}
 		if (provider.isControlled(resource)) {
 			if (provider.isCheckedout(resource)) {
-				return ">" + text;
+				return ">" + text; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			return text;
 		}
 		if (provider.isIgnored(resource)) {
-			return "[ignored] " + text;
+			return "[ignored] " + text; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
-		return "(not controlled) " + text;
+		return "(not controlled) " + text; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override
@@ -90,8 +90,8 @@ public class PessimisticDecorator extends LabelProvider implements ILabelDecorat
 	 */
 	private void postLabelEvents(final LabelProviderChangedEvent[] events) {
 		if (events != null && events.length > 0) {
-			Display.getDefault().asyncExec(() -> {
-				for (LabelProviderChangedEvent event : events) {
+			Display.getDefault().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
+				for (LabelProviderChangedEvent event : events) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					fireLabelProviderChanged(event);
 				}
 			});
@@ -108,7 +108,7 @@ public class PessimisticDecorator extends LabelProvider implements ILabelDecorat
 	public void stateChanged(IResource[] resources) {
 		if (resources.length > 0) {
 			LabelProviderChangedEvent[] events= new LabelProviderChangedEvent[resources.length];
-			for (int i= 0; i < resources.length; i++) {
+			for (int i= 0; i < resources.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				events[i]= new LabelProviderChangedEvent(this, resources[i]);
 			}
 			postLabelEvents(events);

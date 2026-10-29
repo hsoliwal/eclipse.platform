@@ -41,6 +41,6 @@ public class PDAUnimplementedInstructionEvent extends PDAEvent {
 		if (isEventMessage(message)) {
 			return "unimplemented instruction"; //$NON-NLS-1$
 		}
-		throw new IllegalArgumentException("Invalid event: " + message); //$NON-NLS-1$
+		throw new IllegalArgumentException("Invalid event: " + message); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 }

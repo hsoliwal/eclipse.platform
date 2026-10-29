@@ -87,7 +87,7 @@ public class LocalFile extends FileStore {
 	private URI uri;
 
 	private static int attributes(File aFile) {
-		if (!aFile.exists() || aFile.canWrite()) {
+		if (!aFile.exists() || aFile.canWrite()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return EFS.NONE;
 		}
 		return EFS.ATTRIBUTE_READ_ONLY;
@@ -130,7 +130,7 @@ public class LocalFile extends FileStore {
 	 * @throws CoreException A more specific exception if the target is not writable
 	 */
 	private void checkTargetIsNotWritable(File target, Throwable exception) throws CoreException {
-		if (!target.canWrite()) {
+		if (!target.canWrite()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			String message = NLS.bind(Messages.couldNotWrite, target.getAbsolutePath());
 			Policy.error(EFS.ERROR_WRITE, message, exception);
 		}
@@ -146,7 +146,7 @@ public class LocalFile extends FileStore {
 		return LocalFileNativesManager.listDirectoryNames(filePath);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void copy(IFileStore destFile, int options, IProgressMonitor monitor) throws CoreException {
 		if (destFile instanceof LocalFile destination) {
 			//handle case variants on a case-insensitive OS, or copying between
@@ -170,13 +170,13 @@ public class LocalFile extends FileStore {
 	private static final CopyOption[] OVERWRITE_EXISTING = {StandardCopyOption.REPLACE_EXISTING};
 	public static final int LARGE_FILE_SIZE_THRESHOLD = 1024 * 1024; // 1 MiB experimentally determined
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void copyFile(IFileInfo sourceInfo, IFileStore destination, int options, IProgressMonitor monitor) throws CoreException {
 		if (sourceInfo.getLength() > LARGE_FILE_SIZE_THRESHOLD && destination instanceof LocalFile target) {
 			SubMonitor subMonitor = SubMonitor.convert(monitor, NLS.bind(Messages.copying, this), 100);
 			try {
 				boolean overwrite = (options & EFS.OVERWRITE) != 0;
-				Files.copy(this.file.toPath(), target.file.toPath(), overwrite ? OVERWRITE_EXISTING : NO_OVERWRITE);
+				Files.copy(this.file.toPath(), target.file.toPath(), overwrite ? OVERWRITE_EXISTING : NO_OVERWRITE); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				subMonitor.worked(93);
 				transferAttributes(sourceInfo, destination);
 				subMonitor.worked(5);
@@ -316,16 +316,16 @@ public class LocalFile extends FileStore {
 	* the provided status object.  The filePath is passed as a parameter
 	* to optimize java.io.File object creation.
 	*/
-	private IStatus internalDelete(File target, InfiniteProgress infMonitor, ExecutorService executorService) {
+	private IStatus internalDelete(File target, InfiniteProgress infMonitor, ExecutorService executorService) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		infMonitor.subTask(NLS.bind(Messages.deleting, target));
 		if (infMonitor.isCanceled()) {
 			throw new OperationCanceledException();
 		}
-		List<Future<IStatus>> futures = new ArrayList<>();
+		List<Future<IStatus>> futures = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		try {
 			try {
 				// First try to delete - this should succeed for files and symbolic links to directories.
-				Files.deleteIfExists(target.toPath());
+				Files.deleteIfExists(target.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				infMonitor.worked();
 				return Status.OK_STATUS;
 			} catch (AccessDeniedException e) {
@@ -333,7 +333,7 @@ public class LocalFile extends FileStore {
 				// since Java 25 File#delete() no longer clears the flag on Windows (JDK-8355954).
 				// Clear it on the path itself, File#setWritable() would follow symbolic links.
 				clearWindowsReadOnlyAttribute(target.toPath());
-				if (target.delete()) {
+				if (target.delete()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					infMonitor.worked();
 					return Status.OK_STATUS;
 				}
@@ -342,7 +342,7 @@ public class LocalFile extends FileStore {
 		} catch (DirectoryNotEmptyException dne) {
 			// The target is a directory and it's not empty
 			// Try to delete all children.
-			try (DirectoryStream<Path> ds = Files.newDirectoryStream(target.toPath())) {
+			try (DirectoryStream<Path> ds = Files.newDirectoryStream(target.toPath())) { //FLLDCIM: MARK — M24 M3FILE_STREAMS CALL
 				ds.forEach(p -> {
 					Future<IStatus> future = executorService.submit(() -> internalDelete(p.toFile(), infMonitor, executorService));
 					futures.add(future);
@@ -352,7 +352,7 @@ public class LocalFile extends FileStore {
 			}
 			MultiStatus deleteChildrenStatus = new MultiStatus(Policy.PI_FILE_SYSTEM, EFS.ERROR_DELETE, Messages.deleteProblem, null);
 
-			for (Future<IStatus> f : futures) {
+			for (Future<IStatus> f : futures) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					deleteChildrenStatus.add(f.get());
 				} catch (InterruptedException | ExecutionException ee) {
@@ -366,7 +366,7 @@ public class LocalFile extends FileStore {
 
 			// Try to delete the root directory
 			try {
-				if (Files.deleteIfExists(target.toPath())) {
+				if (Files.deleteIfExists(target.toPath())) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					infMonitor.worked();
 					return Status.OK_STATUS;
 				}
@@ -395,7 +395,7 @@ public class LocalFile extends FileStore {
 		return new Status(IStatus.ERROR, Policy.PI_FILE_SYSTEM, EFS.ERROR_DELETE, message, e);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean isParentOf(IFileStore other) {
 		if (!(other instanceof LocalFile otherFile)) {
 			return false;
@@ -421,7 +421,7 @@ public class LocalFile extends FileStore {
 		return thisPath.charAt(thisLength - 1) == File.separatorChar || thatPath.charAt(thisLength) == File.separatorChar;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IFileStore mkdir(int options, IProgressMonitor monitor) throws CoreException {
 		boolean shallow = (options & EFS.SHALLOW) != 0;
 		//must be a directory
@@ -429,27 +429,27 @@ public class LocalFile extends FileStore {
 			if (shallow) {
 				Files.createDirectory(file.toPath());
 			} else {
-				Files.createDirectories(file.toPath());
+				Files.createDirectories(file.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			}
 		} catch (FileAlreadyExistsException e) {
-			if (!file.isDirectory()) {
+			if (!file.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				String message = NLS.bind(Messages.failedCreateWrongType, filePath);
 				Policy.error(EFS.ERROR_WRONG_TYPE, message, e);
 			}
 		} catch (AccessDeniedException e) {
-			if (!file.isDirectory()) {
+			if (!file.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				checkReadOnlyParent(file, e);
 				String message = NLS.bind(Messages.failedCreateAccessDenied, filePath);
 				Policy.error(EFS.ERROR_AUTH_FAILED, message, e);
 			}
 		} catch (NoSuchFileException e) {
-			if (!file.isDirectory()) {
+			if (!file.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				String parentPath = file.getParent();
 				String message = NLS.bind(Messages.fileNotFound, parentPath != null ? parentPath : filePath);
 				Policy.error(EFS.ERROR_NOT_EXISTS, message, e);
 			}
 		} catch (IOException e) {
-			if (!file.isDirectory()) {
+			if (!file.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				checkReadOnlyParent(file, e);
 				checkTargetIsNotWritable(file, e);
 				String message = NLS.bind(Messages.couldNotWrite, filePath);
@@ -459,7 +459,7 @@ public class LocalFile extends FileStore {
 		return this;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void move(IFileStore destFile, int options, IProgressMonitor monitor) throws CoreException {
 		if (!(destFile instanceof LocalFile destinationFile)) {
 			super.move(destFile, options, monitor);
@@ -480,16 +480,16 @@ public class LocalFile extends FileStore {
 				String message = NLS.bind(Messages.couldNotMove, source.getAbsolutePath());
 				Policy.error(EFS.ERROR_WRITE, message, e);
 			}
-			if (!sourceEqualsDest && !overwrite && destination.exists()) {
+			if (!sourceEqualsDest && !overwrite && destination.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				String message = NLS.bind(Messages.fileExists, destination.getAbsolutePath());
 				Policy.error(EFS.ERROR_EXISTS, message);
 			}
-			if (source.renameTo(destination)) {
+			if (source.renameTo(destination)) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				// double-check to ensure we really did move
 				// since java.io.File#renameTo sometimes lies
-				if (!sourceEqualsDest && source.exists()) {
+				if (!sourceEqualsDest && source.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					// XXX: document when this occurs
-					if (destination.exists()) {
+					if (destination.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						// couldn't delete the source so remove the destination and throw an error
 						// XXX: if we fail deleting the destination, the destination (root) may still exist
 						new LocalFile(destination).delete(EFS.NONE, null);
@@ -499,7 +499,7 @@ public class LocalFile extends FileStore {
 					// source exists but destination doesn't so try to copy below
 				} else {
 					// destination.exists() returns false for broken links, this has to be handled explicitly
-					if (!destination.exists() && !destinationFile.fetchInfo(EFS.IGNORE_NAME_CASE, null).getAttribute(EFS.ATTRIBUTE_SYMLINK)) {
+					if (!destination.exists() && !destinationFile.fetchInfo(EFS.IGNORE_NAME_CASE, null).getAttribute(EFS.ATTRIBUTE_SYMLINK)) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						// neither the source nor the destination exist. this is REALLY bad
 						String message = NLS.bind(Messages.failedMove, source.getAbsolutePath(), destination.getAbsolutePath());
 						Policy.error(EFS.ERROR_WRITE, message);
@@ -522,7 +522,7 @@ public class LocalFile extends FileStore {
 
 	private boolean isSameFile(File source, File destination) throws IOException {
 		try {
-			if (!destination.exists()) {
+			if (!destination.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				// avoid NoSuchFileException for performance reasons
 				return false;
 			}
@@ -539,7 +539,7 @@ public class LocalFile extends FileStore {
 	@Override
 	public InputStream openInputStream(int options, IProgressMonitor monitor) throws CoreException {
 		try {
-			return new FileInputStream(file);
+			return new FileInputStream(file); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 		} catch (FileNotFoundException e) {
 			handleReadIOException(e);
 			return null;
@@ -550,7 +550,7 @@ public class LocalFile extends FileStore {
 	@Override
 	public byte[] readAllBytes(int options, IProgressMonitor monitor) throws CoreException {
 		try {
-			return Files.readAllBytes(file.toPath());
+			return Files.readAllBytes(file.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		} catch (IOException e) {
 			handleReadIOException(e);
 			return null;
@@ -558,10 +558,10 @@ public class LocalFile extends FileStore {
 	}
 
 	private void handleReadIOException(IOException e) throws CoreException {
-		if (!file.exists()) {
+		if (!file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			String message = NLS.bind(Messages.fileNotFound, filePath);
 			Policy.error(EFS.ERROR_NOT_EXISTS, message, e);
-		} else if (file.isDirectory()) {
+		} else if (file.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			String message = NLS.bind(Messages.notAFile, filePath);
 			Policy.error(EFS.ERROR_WRONG_TYPE, message, e);
 		} else {
@@ -574,7 +574,7 @@ public class LocalFile extends FileStore {
 	@Override
 	public OutputStream openOutputStream(int options, IProgressMonitor monitor) throws CoreException {
 		try {
-			return new FileOutputStream(file, (options & EFS.APPEND) != 0);
+			return new FileOutputStream(file, (options & EFS.APPEND) != 0); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 		} catch (FileNotFoundException e) {
 			handleWriteIOException(e);
 			return null;
@@ -587,9 +587,9 @@ public class LocalFile extends FileStore {
 		try {
 			boolean append = (options & EFS.APPEND) != 0;
 			if (append) {
-				Files.write(file.toPath(), content, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+				Files.write(file.toPath(), content, StandardOpenOption.CREATE, StandardOpenOption.WRITE); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			} else {
-				Files.write(file.toPath(), content); // default uses StandardOpenOption.TRUNCATE_EXISTING
+				Files.write(file.toPath(), content); // default uses StandardOpenOption.TRUNCATE_EXISTING //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			}
 		} catch (IOException e) {
 			handleWriteIOException(e);
@@ -598,7 +598,7 @@ public class LocalFile extends FileStore {
 
 	private void handleWriteIOException(IOException e) throws CoreException {
 		checkReadOnlyParent(file, e);
-		if (file.isDirectory()) {
+		if (file.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			String message = NLS.bind(Messages.notAFile, filePath);
 			Policy.error(EFS.ERROR_WRONG_TYPE, message, e);
 		} else {
@@ -617,7 +617,7 @@ public class LocalFile extends FileStore {
 		if ((options & EFS.SET_LAST_MODIFIED) != 0) {
 			success &= file.setLastModified(info.getLastModified());
 		}
-		if (!success && !file.exists()) {
+		if (!success && !file.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			Policy.error(EFS.ERROR_NOT_EXISTS, NLS.bind(Messages.fileNotFound, filePath));
 		}
 	}

@@ -21,13 +21,13 @@ public class SubsetSelectionPolicy implements ISelectionPolicy {
 	private final Set<IContentType> subset;
 
 	public SubsetSelectionPolicy(IContentType[] subset) {
-		this.subset = new HashSet<>(Arrays.asList(subset));
+		this.subset = new HashSet<>(Arrays.asList(subset)); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 	}
 
 	@Override
 	public IContentType[] select(IContentType[] candidates, boolean fileName, boolean content) {
-		List<IContentType> result = new ArrayList<>(candidates.length);
-		for (IContentType candidate : candidates) {
+		List<IContentType> result = new ArrayList<>(candidates.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IContentType candidate : candidates) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (subset.contains(candidate)) {
 				result.add(candidate);
 			}

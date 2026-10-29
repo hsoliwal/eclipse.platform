@@ -36,7 +36,7 @@ import org.eclipse.ui.IWorkbenchPart;
  * @see SynchronizeModelAction
  * @since 3.0
  */
-public abstract class SynchronizeModelOperation extends TeamOperation {
+public abstract class SynchronizeModelOperation extends TeamOperation { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	private final IDiffElement[] elements;
 
@@ -99,7 +99,7 @@ public abstract class SynchronizeModelOperation extends TeamOperation {
 	}
 
 	private void markBusy(IDiffElement[] elements, boolean isBusy) {
-		for (IDiffElement element : elements) {
+		for (IDiffElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element instanceof ISynchronizeModelElement) {
 				((ISynchronizeModelElement)element).setPropertyToRoot(ISynchronizeModelElement.BUSY_PROPERTY, isBusy);
 			}
@@ -112,8 +112,8 @@ public abstract class SynchronizeModelOperation extends TeamOperation {
 	 * @return the selected SyncInfo for which this action is enabled.
 	 */
 	private SyncInfo[] getSyncInfos() {
-		List<SyncInfo> filtered = new ArrayList<>();
-		for (IDiffElement e : elements) {
+		List<SyncInfo> filtered = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IDiffElement e : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (e instanceof SyncInfoModelElement) {
 				filtered.add(((SyncInfoModelElement)e).getSyncInfo());
 			}

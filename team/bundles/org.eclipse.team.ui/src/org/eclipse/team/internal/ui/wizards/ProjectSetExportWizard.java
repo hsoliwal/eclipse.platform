@@ -75,28 +75,28 @@ public class ProjectSetExportWizard extends Wizard implements IExportWizard {
 		addPage(locationPage);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean performFinish() {
 		final boolean[] result = new boolean[] {false};
 		try {
-			getContainer().run(false, false, new IRunnableWithProgress() {
-				@Override
+			getContainer().run(false, false, new IRunnableWithProgress() { //FLLDCIM: MARK — T09  ANONYMOUS
+				@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 				public void run(IProgressMonitor monitor) throws InvocationTargetException {
 					String filename = locationPage.getFileName();
 					IPath path = IPath.fromOSString(filename);
 					if (path.getFileExtension() == null) {
-						filename = filename + ".psf"; //$NON-NLS-1$
+						filename = filename + ".psf"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 					PsfFilenameStore.getInstance().remember(filename);
 					File file = new File(filename);
 					File parentFile = file.getParentFile();
-					if (parentFile != null && !parentFile.exists()) {
+					if (parentFile != null && !parentFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						boolean r = MessageDialog.openQuestion(getShell(), TeamUIMessages.ProjectSetExportWizard_Question_4, TeamUIMessages.ProjectSetExportWizard_Target_directory_does_not_exist__Would_you_like_to_create_it__5); //
 						if (!r) {
 							result[0] = false;
 							return;
 						}
-						r = parentFile.mkdirs();
+						r = parentFile.mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 						if (!r) {
 							MessageDialog.openError(getShell(), TeamUIMessages.ProjectSetExportWizard_Export_Problems_6, TeamUIMessages.ProjectSetExportWizard_An_error_occurred_creating_the_target_directory_7); //
 							result[0] = false;
@@ -117,8 +117,8 @@ public class ProjectSetExportWizard extends Wizard implements IExportWizard {
 					}
 					// Hash the projects by provider
 					IProject[] projects = mainPage.getSelectedProjects();
-					Map<String, Set<IProject>> map = new HashMap<>();
-					for (IProject project : projects) {
+					Map<String, Set<IProject>> map = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+					for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						RepositoryProvider provider = RepositoryProvider.getProvider(project);
 						if (provider != null) {
 							String id = provider.getID();
@@ -135,7 +135,7 @@ public class ProjectSetExportWizard extends Wizard implements IExportWizard {
 					UIProjectSetSerializationContext context = new UIProjectSetSerializationContext(getShell(), filename);
 
 					try (BufferedWriter writer = new BufferedWriter(
-							new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) {
+							new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8))) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 						// if file was written to the workspace, perform the validateEdit
 						if (!locationPage.isSaveToFileSystem()) {
 							locationPage.validateEditWorkspaceFile(getShell());
@@ -145,7 +145,7 @@ public class ProjectSetExportWizard extends Wizard implements IExportWizard {
 						XMLMemento xmlMemento = getXMLMementoRoot();
 						Iterator it = map.keySet().iterator();
 						monitor.beginTask(null, 1000 * map.size());
-						while (it.hasNext()) {
+						while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							String id = (String)it.next();
 							IMemento memento = xmlMemento.createChild("provider"); //$NON-NLS-1$
 							memento.putString("id", id); //$NON-NLS-1$
@@ -156,14 +156,14 @@ public class ProjectSetExportWizard extends Wizard implements IExportWizard {
 							ProjectSetCapability.ensureBackwardsCompatible(providerType, serializer);
 							if (serializer != null) {
 								String[] references = serializer.asReference(projectArray, context, SubMonitor.convert(monitor, 990));
-								for (String reference : references) {
+								for (String reference : references) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 									IMemento proj = memento.createChild("project"); //$NON-NLS-1$
 									proj.putString("reference", reference); //$NON-NLS-1$
 								}
 							}
 						}
 						if (workingSets != null){
-							for (IWorkingSet workingSet : workingSets) {
+							for (IWorkingSet workingSet : workingSets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 								IMemento memento =xmlMemento.createChild("workingSets"); //$NON-NLS-1$
 								workingSet.saveState(memento);
 							}
@@ -186,7 +186,7 @@ public class ProjectSetExportWizard extends Wizard implements IExportWizard {
 					}
 
 					// notify provider types of the project set write
-					for (String id : map.keySet()) {
+					for (String id : map.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						RepositoryProviderType type = RepositoryProviderType.getProviderType(id);
 						if (type != null) {
 							ProjectSetCapability capability = type.getProjectSetCapability();

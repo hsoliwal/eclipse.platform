@@ -66,7 +66,7 @@ public class DataTreeNode extends AbstractDataTreeNode {
 	 * the comparison for this node and all children.  Returns null
 	 * if this node should no longer be included in the comparison tree.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	AbstractDataTreeNode asReverseComparisonNode(IComparator comparator) {
 		NodeComparison comparison = null;
 		try {
@@ -76,7 +76,7 @@ public class DataTreeNode extends AbstractDataTreeNode {
 		}
 
 		int nextChild = 0;
-		for (AbstractDataTreeNode c : children) {
+		for (AbstractDataTreeNode c : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			AbstractDataTreeNode child = c.asReverseComparisonNode(comparator);
 			if (child != null) {
 				children[nextChild++] = child;
@@ -146,11 +146,11 @@ public class DataTreeNode extends AbstractDataTreeNode {
 	 * @param childNode
 	 *	new child node
 	 */
-	DataTreeNode copyWithNewChild(String localName, DataTreeNode childNode) {
+	DataTreeNode copyWithNewChild(String localName, DataTreeNode childNode) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		AbstractDataTreeNode[] oldChildren = this.children;
 		int left = 0;
 		int right = oldChildren.length - 1;
-		while (left <= right) {
+		while (left <= right) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int mid = (left + right) / 2;
 			int compare = localName.compareTo(oldChildren[mid].name);
 			if (compare < 0) {
@@ -200,7 +200,7 @@ public class DataTreeNode extends AbstractDataTreeNode {
 	 * the given two lists of nodes.
 	 * The given nodes must all be complete nodes.
 	 */
-	protected static AbstractDataTreeNode[] forwardDeltaWith(AbstractDataTreeNode[] oldNodes, AbstractDataTreeNode[] newNodes, IComparator comparer) {
+	protected static AbstractDataTreeNode[] forwardDeltaWith(AbstractDataTreeNode[] oldNodes, AbstractDataTreeNode[] newNodes, IComparator comparer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (oldNodes.length == 0 && newNodes.length == 0) {
 			return NO_CHILDREN;
 		}
@@ -212,7 +212,7 @@ public class DataTreeNode extends AbstractDataTreeNode {
 		// do a merge
 		int oldIndex = 0;
 		int newIndex = 0;
-		while (oldIndex < oldNodes.length && newIndex < newNodes.length) {
+		while (oldIndex < oldNodes.length && newIndex < newNodes.length) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String oldName = oldNodes[oldIndex].name;
 			String newName = newNodes[newIndex].name;
 			int compare = oldName.compareTo(newName);
@@ -249,7 +249,7 @@ public class DataTreeNode extends AbstractDataTreeNode {
 				childDeltas[numChildDeltas++] = newNodes[newIndex++];
 			}
 		}
-		while (oldIndex < oldNodes.length) {
+		while (oldIndex < oldNodes.length) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (numChildDeltas >= childDeltaMax) {
 				if (childDeltas == null) {
 					childDeltas = new AbstractDataTreeNode[childDeltaMax = 5];
@@ -259,7 +259,7 @@ public class DataTreeNode extends AbstractDataTreeNode {
 			}
 			childDeltas[numChildDeltas++] = new DeletedNode(oldNodes[oldIndex++].name);
 		}
-		while (newIndex < newNodes.length) {
+		while (newIndex < newNodes.length) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (numChildDeltas >= childDeltaMax) {
 				if (childDeltas == null) {
 					childDeltas = new AbstractDataTreeNode[childDeltaMax = 5];

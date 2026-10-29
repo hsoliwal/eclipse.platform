@@ -62,7 +62,7 @@ public class ModelSelectionDropDownAction extends Action implements ISynchroniza
 				menuManager = null;
 			}
 		}
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public Menu getMenu(Control parent) {
 			Menu fMenu = null;
 			if (menuManager == null) {
@@ -92,10 +92,10 @@ public class ModelSelectionDropDownAction extends Action implements ISynchroniza
 		}
 	}
 
-	public ModelSelectionDropDownAction(ISynchronizePageConfiguration configuration) {
+	public ModelSelectionDropDownAction(ISynchronizePageConfiguration configuration) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Utils.initAction(this, "action.pickModels."); //$NON-NLS-1$
 		this.configuration = configuration;
-		listener = event -> {
+		listener = event -> { //FLLDCIM: MARK — T06  LAMBDA
 			if (event.getProperty() == ModelSynchronizeParticipant.P_VISIBLE_MODEL_PROVIDER) {
 				update();
 			}
@@ -103,9 +103,9 @@ public class ModelSelectionDropDownAction extends Action implements ISynchroniza
 				rebuildMenu();
 			}
 		};
-		this.configuration.addPropertyChangeListener(listener);
-		TeamUI.getTeamContentProviderManager().addPropertyChangeListener(listener);
-		getSynchronizationContext().getScope().addScopeChangeListener(this);
+		this.configuration.addPropertyChangeListener(listener); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
+		TeamUI.getTeamContentProviderManager().addPropertyChangeListener(listener); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
+		getSynchronizationContext().getScope().addScopeChangeListener(this); //FLLDCIM: MARK — T38 TEAM_SYNC_ADAPTER CALL
 		showAllAction = new Action(TeamUIMessages.ModelSelectionDropDownAction_0, IAction.AS_RADIO_BUTTON) {
 			@Override
 			public void run() {
@@ -146,10 +146,10 @@ public class ModelSelectionDropDownAction extends Action implements ISynchroniza
 	}
 
 	private ModelProvider[] getEnabledModelProviders() {
-		Set<ModelProvider> result = new HashSet<>();
+		Set<ModelProvider> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		ModelProvider[] providers = ((ModelSynchronizeParticipant)configuration.getParticipant()).getEnabledModelProviders();
 		providers = ModelOperation.sortByExtension(providers);
-		for (ModelProvider provider : providers) {
+		for (ModelProvider provider : providers) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			ITeamContentProviderDescriptor desc = TeamUI.getTeamContentProviderManager().getDescriptor(provider.getId());
 			if (desc != null && desc.isEnabled()) {
 				result.add(provider);
@@ -160,7 +160,7 @@ public class ModelSelectionDropDownAction extends Action implements ISynchroniza
 
 	private void addModelsToMenu(ModelProvider[] modelProviders) {
 		String id = getActiveProviderId();
-		for (ModelProvider provider : modelProviders) {
+		for (ModelProvider provider : modelProviders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Action action = new ShowModelProviderAction(configuration, provider);
 			action.setChecked(provider.getDescriptor().getId().equals(id));
 			menuManager.add(action);
@@ -175,7 +175,7 @@ public class ModelSelectionDropDownAction extends Action implements ISynchroniza
 		return id;
 	}
 
-	private ModelProvider getNextProvider() {
+	private ModelProvider getNextProvider() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ModelProvider[] providers = getSynchronizationContext().getScope().getModelProviders();
 		if (providers.length == 0) {
 			return null;
@@ -184,7 +184,7 @@ public class ModelSelectionDropDownAction extends Action implements ISynchroniza
 		String id = getActiveProviderId();
 		int index = 0;
 		if (id != null) {
-			for (int i = 0; i < providers.length; i++) {
+			for (int i = 0; i < providers.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				ModelProvider provider = providers[i];
 				if (provider.getDescriptor().getId().equals(id)) {
 					index = i + 1;
@@ -198,7 +198,7 @@ public class ModelSelectionDropDownAction extends Action implements ISynchroniza
 		return providers[index];
 	}
 
-	public void update() {
+	public void update() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ModelProvider next = getNextProvider();
 		if (next == null) {
 			return;
@@ -210,7 +210,7 @@ public class ModelSelectionDropDownAction extends Action implements ISynchroniza
 			showAllAction.setChecked(getActiveProviderId().equals(ModelSynchronizeParticipant.ALL_MODEL_PROVIDERS_VISIBLE));
 			showAllFlatAction.setChecked(isFlatEnabled());
 			IContributionItem[] items = menuManager.getItems();
-			for (IContributionItem item : items) {
+			for (IContributionItem item : items) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (item instanceof ActionContributionItem aci) {
 					IAction a = aci.getAction();
 					if (a instanceof ShowModelProviderAction action) {
@@ -246,7 +246,7 @@ public class ModelSelectionDropDownAction extends Action implements ISynchroniza
 
 	private void rebuildMenu() {
 		Display display = TeamUIPlugin.getStandardDisplay();
-		display.asyncExec(() -> {
+		display.asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			if(menuManager != null) {
 				menuManager.dispose();
 				menuManager = null;

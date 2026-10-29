@@ -66,10 +66,10 @@ public abstract class AbstractCompareInput implements ICompareInput {
 	 * Fire a compare input change event.
 	 * This method must be called from the UI thread.
 	 */
-	protected void fireChange() {
+	protected void fireChange() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!listeners.isEmpty()) {
 			Object[] allListeners = listeners.getListeners();
-			for (Object l : allListeners) {
+			for (Object l : allListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				final ICompareInputChangeListener listener = (ICompareInputChangeListener) l;
 				SafeRunner.run(new ISafeRunnable() {
 					@Override
@@ -90,7 +90,7 @@ public abstract class AbstractCompareInput implements ICompareInput {
 			return false;
 		}
 		Object[] allListeners = listeners.getListeners();
-		for (Object object : allListeners) {
+		for (Object object : allListeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (object == listener) {
 				return true;
 			}

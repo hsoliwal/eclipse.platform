@@ -57,7 +57,7 @@ public class ResourceVariantCacheEntry {
 		registerHit();
 	}
 
-	public InputStream getContents() throws TeamException {
+	public InputStream getContents() throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (state != READY) {
 			return null;
 		}
@@ -65,8 +65,8 @@ public class ResourceVariantCacheEntry {
 		File ioFile = getFile();
 		try {
 			try {
-				if (ioFile.exists()) {
-					return new FileInputStream(ioFile);
+				if (ioFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+					return new FileInputStream(ioFile); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 				}
 			} catch (IOException e) {
 				// Try to purge the cache and continue
@@ -111,7 +111,7 @@ public class ResourceVariantCacheEntry {
 		lock.acquire();
 	}
 
-	private void internalSetContents(InputStream stream, IProgressMonitor monitor) throws TeamException {
+	private void internalSetContents(InputStream stream, IProgressMonitor monitor) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// if the state is DISPOSED then there is a problem
 		if (state == DISPOSED) {
 			throw new TeamException(NLS.bind(Messages.RemoteContentsCacheEntry_3, cache.getName(), id));
@@ -122,7 +122,7 @@ public class ResourceVariantCacheEntry {
 		try {
 
 			// Open the cache file for writing
-			try (OutputStream out = (state == UNINITIALIZED) ? new BufferedOutputStream(new FileOutputStream(ioFile))
+			try (OutputStream out = (state == UNINITIALIZED) ? new BufferedOutputStream(new FileOutputStream(ioFile)) //FLLDCIM: MARK — M31 M3FILE_IO NEW
 					// If the entry is READY, the contents must have been read in another thread.
 					// We still need to red the contents but they can be ignored since presumably they are the same
 					: new ByteArrayOutputStream()) {
@@ -130,7 +130,7 @@ public class ResourceVariantCacheEntry {
 				// Transfer the contents
 				byte[] buffer = new byte[1024];
 				int read;
-				while ((read = stream.read(buffer)) >= 0) {
+				while ((read = stream.read(buffer)) >= 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Policy.checkCanceled(monitor);
 					out.write(buffer, 0, read);
 				}
@@ -173,8 +173,8 @@ public class ResourceVariantCacheEntry {
 			return 0;
 		}
 		File ioFile = getFile();
-		if (ioFile.exists()) {
-			return ioFile.length();
+		if (ioFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			return ioFile.length(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		return 0;
 	}

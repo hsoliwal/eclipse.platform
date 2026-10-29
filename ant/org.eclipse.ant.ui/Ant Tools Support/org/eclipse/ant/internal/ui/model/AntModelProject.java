@@ -55,7 +55,7 @@ public class AntModelProject extends Project {
 	}
 
 	private AntPropertyNode fCurrentConfiguringPropertyNode;
-	private final Map<String, Object> idrefs = Collections.synchronizedMap(new HashMap<>());
+	private final Map<String, Object> idrefs = Collections.synchronizedMap(new HashMap<>()); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	private static Object loaderLock = new Object();
 	private Hashtable<String, AntClassLoader> loaders = null;
 
@@ -89,7 +89,7 @@ public class AntModelProject extends Project {
 	public void fireBuildFinished(Throwable exception) {
 		super.fireBuildFinished(exception);
 		Enumeration<BuildListener> e = getBuildListeners().elements();
-		while (e.hasMoreElements()) {
+		while (e.hasMoreElements()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			BuildListener listener = e.nextElement();
 			removeBuildListener(listener);
 		}
@@ -98,7 +98,7 @@ public class AntModelProject extends Project {
 	/**
 	 * Reset the project
 	 */
-	public void reset() {
+	public void reset() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		getTargets().clear();
 		setDefault(null);
 		setDescription(null);
@@ -107,7 +107,7 @@ public class AntModelProject extends Project {
 			if (loaders != null) {
 				Iterator<Entry<String, AntClassLoader>> i = loaders.entrySet().iterator();
 				Entry<String, AntClassLoader> e = null;
-				while (i.hasNext()) {
+				while (i.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					e = i.next();
 					AntClassLoader acl = e.getValue();
 					acl.cleanup();
@@ -171,7 +171,7 @@ public class AntModelProject extends Project {
 		fCurrentConfiguringPropertyNode = node;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public AntClassLoader createClassLoader(Path path) {
 		synchronized (loaderLock) {
 			if (loaders == null) {

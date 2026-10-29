@@ -36,7 +36,7 @@ import org.eclipse.ui.actions.BaseSelectionListenerAction;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.progress.IProgressService;
 
-public class OpenFileSystemRevisionAction extends BaseSelectionListenerAction {
+public class OpenFileSystemRevisionAction extends BaseSelectionListenerAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 	private IStructuredSelection selection;
 	HistoryPage page;
@@ -45,18 +45,18 @@ public class OpenFileSystemRevisionAction extends BaseSelectionListenerAction {
 		super(text);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void run() {
 		IStructuredSelection structSel = selection;
 
 		Object[] objArray = structSel.toArray();
 
-		for (Object tempRevision : objArray) {
+		for (Object tempRevision : objArray) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final IFileRevision revision = (IFileRevision) tempRevision;
 			if (revision == null || !revision.exists()) {
 				MessageDialog.openError(page.getSite().getShell(), "Deleted Revision", "Can't open a deleted revision");
 			} else {
-				IRunnableWithProgress runnable = monitor -> {
+				IRunnableWithProgress runnable = monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 					IStorage file;
 					try {
 						file = revision.getStorage(monitor);
@@ -88,7 +88,7 @@ public class OpenFileSystemRevisionAction extends BaseSelectionListenerAction {
 		}
 	}
 
-	/* private */String getEditorID(String fileName, InputStream contents) {
+	/* private */String getEditorID(String fileName, InputStream contents) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IEditorRegistry registry = PlatformUI.getWorkbench().getEditorRegistry();
 		IContentType type = null;
 		if (contents != null) {
@@ -129,7 +129,7 @@ public class OpenFileSystemRevisionAction extends BaseSelectionListenerAction {
 		if (objArray.length == 0)
 			return false;
 
-		for (Object obj : objArray) {
+		for (Object obj : objArray) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IFileRevision revision = (IFileRevision) obj;
 			//check to see if any of the selected revisions are deleted revisions
 			if (revision != null && !revision.exists())
@@ -141,7 +141,7 @@ public class OpenFileSystemRevisionAction extends BaseSelectionListenerAction {
 
 	boolean editorAlreadyOpenOnContents(FileSystemRevisionEditorInput input) {
 		IEditorReference[] editorRefs = page.getSite().getPage().getEditorReferences();
-		for (IEditorReference editorRef : editorRefs) {
+		for (IEditorReference editorRef : editorRefs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IEditorPart part = editorRef.getEditor(false);
 			if (part != null && part.getEditorInput() instanceof FileSystemRevisionEditorInput) {
 				IFileRevision inputRevision = input.getAdapter(IFileRevision.class);

@@ -45,7 +45,7 @@ public class ResourceModelPersistenceAdapter extends SynchronizationCompareAdapt
 
 	@Override
 	public void save(ResourceMapping[] mappings, IMemento memento) {
-		for (ResourceMapping mapping : mappings) {
+		for (ResourceMapping mapping : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Object object = mapping.getModelObject();
 			if (object instanceof IResource resource) {
 				IMemento child = memento.createChild(RESOURCES);
@@ -61,11 +61,11 @@ public class ResourceModelPersistenceAdapter extends SynchronizationCompareAdapt
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ResourceMapping[] restore(IMemento memento) {
 		IMemento[] children = memento.getChildren(RESOURCES);
-		List<ResourceMapping> result = new ArrayList<>();
-		for (IMemento child : children) {
+		List<ResourceMapping> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IMemento child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			Integer typeInt = child.getInteger(RESOURCE_TYPE);
 			if (typeInt == null) {
 				continue;
@@ -102,7 +102,7 @@ public class ResourceModelPersistenceAdapter extends SynchronizationCompareAdapt
 			}
 		}
 		children = memento.getChildren(WORKING_SETS);
-		for (IMemento child : children) {
+		for (IMemento child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String name = child.getString(WORKING_SET_NAME);
 			if (name == null) {
 				continue;
@@ -116,7 +116,7 @@ public class ResourceModelPersistenceAdapter extends SynchronizationCompareAdapt
 			}
 		}
 		children = memento.getChildren(MODEL_PROVIDERS);
-		for (IMemento child : children) {
+		for (IMemento child : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String id = child.getString(MODEL_PROVIDER_ID);
 			if (id == null) {
 				continue;

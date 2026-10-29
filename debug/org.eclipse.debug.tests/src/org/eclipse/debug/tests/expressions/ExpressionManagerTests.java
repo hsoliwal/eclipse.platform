@@ -42,9 +42,9 @@ public class ExpressionManagerTests {
 
 	static class SinlgeListener implements IExpressionListener {
 
-		List<IExpression> added = new ArrayList<>();
-		List<IExpression> removed = new ArrayList<>();
-		List<IExpression> changed = new ArrayList<>();
+		List<IExpression> added = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<IExpression> removed = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<IExpression> changed = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		int addedCallbacks = 0;
 		int removedCallbacks = 0;
 		int changedCallbacks = 0;
@@ -71,9 +71,9 @@ public class ExpressionManagerTests {
 
 	static class MultiListener implements IExpressionsListener {
 
-		List<IExpression> added = new ArrayList<>();
-		List<IExpression> removed = new ArrayList<>();
-		List<IExpression> changed = new ArrayList<>();
+		List<IExpression> added = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<IExpression> removed = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<IExpression> changed = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		int addedCallbacks = 0;
 		int removedCallbacks = 0;
 		int changedCallbacks = 0;
@@ -100,8 +100,8 @@ public class ExpressionManagerTests {
 
 	static class InsertMoveListener extends MultiListener implements IExpressionsListener2 {
 
-		List<IExpression> moved = new ArrayList<>();
-		List<IExpression> inserted = new ArrayList<>();
+		List<IExpression> moved = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		List<IExpression> inserted = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		int insertIndex = -1;
 		int movedCallbacks = 0;
 		int insertedCallbacks = 0;
@@ -140,7 +140,7 @@ public class ExpressionManagerTests {
 	/**
 	 * Add expressions and ensure proper call backs are received.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAddExpressions() {
 		IExpressionManager manager = getManager();
 		SinlgeListener single = new SinlgeListener();
@@ -173,7 +173,7 @@ public class ExpressionManagerTests {
 	/**
 	 * Remove expressions and ensure proper call backs are received.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRemoveExpressions() {
 		IExpressionManager manager = getManager();
 		SinlgeListener single = new SinlgeListener();
@@ -211,7 +211,7 @@ public class ExpressionManagerTests {
 	/**
 	 * Change expressions and ensure proper call backs are received.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testChangeExpressions() {
 		IExpressionManager manager = getManager();
 		SinlgeListener single = new SinlgeListener();
@@ -250,7 +250,7 @@ public class ExpressionManagerTests {
 	/**
 	 * Insert expressions and ensure proper call backs are received.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInsertBeforeExpressions() {
 		ExpressionManager manager = (ExpressionManager) getManager();
 		SinlgeListener single = new SinlgeListener();
@@ -300,7 +300,7 @@ public class ExpressionManagerTests {
 	/**
 	 * Insert expressions and ensure proper call backs are received.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testInsertAfterExpressions() {
 		ExpressionManager manager = (ExpressionManager) getManager();
 		SinlgeListener single = new SinlgeListener();
@@ -350,7 +350,7 @@ public class ExpressionManagerTests {
 	/**
 	 * Move expressions and ensure proper call backs are received.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveBeforeExpressions() {
 		ExpressionManager manager = (ExpressionManager) getManager();
 		SinlgeListener single = new SinlgeListener();
@@ -396,7 +396,7 @@ public class ExpressionManagerTests {
 	/**
 	 * Move expressions and ensure proper call backs are received.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveAfterExpressions() {
 		ExpressionManager manager = (ExpressionManager) getManager();
 		SinlgeListener single = new SinlgeListener();
@@ -463,13 +463,13 @@ public class ExpressionManagerTests {
 	/**
 	 * Tests concurrent access to expressions.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testConcurrentAccess() throws InterruptedException {
 		final boolean[] done = new boolean[]{false};
 		final Exception[] ex = new Exception[]{null};
 		Runnable add = () -> {
 			try {
-				for (int i = 0; i < 1000; i++) {
+				for (int i = 0; i < 1000; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					getManager().addExpression(getManager().newWatchExpression(Integer.toHexString(i)));
 				}
 				done[0] = true;
@@ -479,7 +479,7 @@ public class ExpressionManagerTests {
 		};
 		Runnable remove = () -> {
 			try {
-				do {
+				do { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					getManager().removeExpressions(getManager().getExpressions());
 				} while (!done[0] || getManager().getExpressions().length > 0);
 			} catch (Exception e) {

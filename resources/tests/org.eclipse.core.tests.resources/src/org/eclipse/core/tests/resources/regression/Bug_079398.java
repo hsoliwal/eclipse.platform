@@ -36,7 +36,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(WorkspaceResetExtension.class)
 public class Bug_079398 {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Disabled("Bug 78398 needs to be fixed")
 	public void testBug79398() throws Exception {
 		IProject project = getWorkspace().getRoot().getProject("myproject");
@@ -53,7 +53,7 @@ public class Bug_079398 {
 		description.setMaxFileStateSize(1024 * 1024);
 		getWorkspace().setDescription(description);
 		createInWorkspace(file1, createRandomString());
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 10; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			file1.setContents(createRandomContentsStream(), IResource.FORCE | IResource.KEEP_HISTORY, createTestMonitor());
 		}
 
@@ -74,7 +74,7 @@ public class Bug_079398 {
 		assertThat(destinationStates).hasSize(description.getMaxFileStates());
 
 		// now cause the destination to have many more states
-		for (int i = 0; i <= description.getMaxFileStates(); i++) {
+		for (int i = 0; i <= description.getMaxFileStates(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			file2.setContents(createRandomContentsStream(), IResource.FORCE | IResource.KEEP_HISTORY, createTestMonitor());
 		}
 		IHistoryStore history = ((Workspace) getWorkspace()).getFileSystemManager().getHistoryStore();

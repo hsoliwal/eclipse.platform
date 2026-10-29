@@ -37,7 +37,7 @@ public class NavigationActionGroup extends SynchronizePageActionGroup {
 	private NavigateAction gotoNext;
 	private NavigateAction gotoPrevious;
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void initialize(ISynchronizePageConfiguration configuration) {
 		super.initialize(configuration);
 		final Viewer viewer = configuration.getPage().getViewer();

@@ -41,7 +41,7 @@ public class DeltaChainFlatteningTest implements IPathConstants {
 		StreamReader streamReader = ElementTreeReader::readDeltaChain;
 		ElementTree[] refried = (ElementTree[]) doPipeTest(streamWriter, streamReader);
 
-		for (int j = 0; j < refried.length; j++) {
+		for (int j = 0; j < refried.length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			TestUtil.assertEqualTrees("Same after delta chain serialize", fDeltaChain[j], refried[j], path, depth);
 		}
 	}

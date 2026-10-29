@@ -59,7 +59,7 @@ public class DocLineComparatorTest {
 		assertTrue(comp1.rangesEqual(0, comp2, 0));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testOneCompareFilter() {
 		IDocument doc1 = new Document();
 		doc1.set("if (s.strip))"); //$NON-NLS-1$
@@ -106,7 +106,7 @@ public class DocLineComparatorTest {
 		assertFalse(comp5.rangesEqual(0, comp6, 0));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultipleCompareFilters() {
 		IDocument doc1 = new Document();
 		doc1.set("if (s.strip))"); //$NON-NLS-1$
@@ -196,7 +196,7 @@ public class DocLineComparatorTest {
 		assertFalse(comp3.rangesEqual(0, comp4, 0));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWhitespace() {
 		IDocument[] docs = new IDocument[6];
 		docs[0] = new Document();
@@ -262,9 +262,9 @@ public class DocLineComparatorTest {
 		} };
 
 		IRangeComparator l, r;
-		for (int i = 0; i < docs.length; i++)
-			for (int j = i + 1; j < docs.length; j++)
-				for (ICompareFilter[] filter : filters) {
+		for (int i = 0; i < docs.length; i++) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (int j = i + 1; j < docs.length; j++) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				for (ICompareFilter[] filter : filters) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					l = new DocLineComparator(docs[i], null, false, filter, 'L', Optional.empty());
 					r = new DocLineComparator(docs[j], null, false, filter, 'R', Optional.empty());
 					assertFalse(l.rangesEqual(0, r, 0));
@@ -284,7 +284,7 @@ public class DocLineComparatorTest {
 				.as("whitespace in left document between 'Hello' and 'World' not ignored").isTrue();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void simpleWhitespaceContributorSupplied_whitespaceInStringLiteralNotIgnored() {
 		assertRangesEqualWithSimpleIgnoreWhitespaceContrbutor(//
 				"DocLineComparator#rangesEqual returns unexpectedly false for two identical documents", //

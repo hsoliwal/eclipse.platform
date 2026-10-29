@@ -79,7 +79,7 @@ public class TestBug202384 {
 		workspace.save(true, createTestMonitor());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(3)
 	public void testStartWithOpenProject() throws CoreException {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -91,7 +91,7 @@ public class TestBug202384 {
 		// check with a timeout, in case some initialize operation is slow
 		long timeout = 10_000;
 		long start = System.currentTimeMillis();
-		while (!expectedEncoding.equals(project.getDefaultCharset(false))
+		while (!expectedEncoding.equals(project.getDefaultCharset(false)) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				&& System.currentTimeMillis() - start < timeout) {
 			TestUtil.dumpRunnigOrWaitingJobs(testName);
 			TestUtil.waitForJobs(testName, 500, 1000);

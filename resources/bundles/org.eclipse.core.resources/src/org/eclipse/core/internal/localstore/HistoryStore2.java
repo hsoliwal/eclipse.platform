@@ -48,7 +48,7 @@ import org.eclipse.core.runtime.Status;
 public class HistoryStore2 implements IHistoryStore {
 
 	class HistoryCopyVisitor extends Bucket.Visitor {
-		private final List<HistoryEntry> changes = new ArrayList<>();
+		private final List<HistoryEntry> changes = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		private final IPath destination;
 		private final IPath source;
 
@@ -73,7 +73,7 @@ public class HistoryStore2 implements IHistoryStore {
 			tree.loadBucketFor(entry.getPath());
 			HistoryBucket bucket = (HistoryBucket) tree.getCurrent();
 			bucket.addBlobs(entry);
-			while (i.hasNext()) {
+			while (i.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				bucket.addBlobs(i.next());
 			}
 			bucket.save();
@@ -91,7 +91,7 @@ public class HistoryStore2 implements IHistoryStore {
 	}
 
 	private final BlobStore blobStore;
-	private Set<UniversalUniqueIdentifier> blobsToRemove = new HashSet<>();
+	private Set<UniversalUniqueIdentifier> blobsToRemove = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 	final BucketTree tree;
 	private final Workspace workspace;
 
@@ -110,11 +110,11 @@ public class HistoryStore2 implements IHistoryStore {
 	/**
 	 * @see IHistoryStore#addState(IPath, IFileStore, IFileInfo, boolean)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public synchronized IFileState addState(IPath key, IFileStore localFile, IFileInfo info, boolean moveContents) {
 		long lastModified = info.getLastModified();
 		if (Policy.DEBUG_HISTORY) {
-			Policy.debug("History: Adding state for key: " + key + ", file: " + localFile + ", timestamp: " //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+			Policy.debug("History: Adding state for key: " + key + ", file: " + localFile + ", timestamp: " //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					+ lastModified + ", size: " + info.getLength()); //$NON-NLS-1$
 		}
 		if (!isValid(localFile, info)) {
@@ -135,7 +135,7 @@ public class HistoryStore2 implements IHistoryStore {
 
 	@Override
 	public synchronized Set<IPath> allFiles(IPath root, int depth, IProgressMonitor monitor) {
-		final Set<IPath> allFiles = new HashSet<>();
+		final Set<IPath> allFiles = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		try {
 			tree.accept(new Bucket.Visitor() {
 				@Override
@@ -154,7 +154,7 @@ public class HistoryStore2 implements IHistoryStore {
 	 * Applies the clean-up policy to an entry.
 	 */
 	protected void applyPolicy(HistoryEntry fileEntry, int maxStates, long minTimeStamp) {
-		for (int i = 0; i < fileEntry.getOccurrences(); i++) {
+		for (int i = 0; i < fileEntry.getOccurrences(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (i < maxStates && fileEntry.getTimestamp(i) >= minTimeStamp) {
 				continue;
 			}
@@ -182,7 +182,7 @@ public class HistoryStore2 implements IHistoryStore {
 		tree.getCurrent().save();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public synchronized void clean(final IProgressMonitor monitor) {
 		long start = System.currentTimeMillis();
 		try {
@@ -207,8 +207,8 @@ public class HistoryStore2 implements IHistoryStore {
 				}, IPath.ROOT, BucketTree.DEPTH_INFINITE);
 			}
 			if (Policy.DEBUG_HISTORY) {
-				Policy.debug("Time to apply history store policies: " + (System.currentTimeMillis() - start) + "ms."); //$NON-NLS-1$ //$NON-NLS-2$
-				Policy.debug("Total number of history store entries: " + entryCount[0]); //$NON-NLS-1$
+				Policy.debug("Time to apply history store policies: " + (System.currentTimeMillis() - start) + "ms."); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				Policy.debug("Total number of history store entries: " + entryCount[0]); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			// remove all remaining unreferenced blobs
 			removeUnreferencedBlobs(0);
@@ -232,9 +232,9 @@ public class HistoryStore2 implements IHistoryStore {
 			// remove unreferenced blobs
 			blobStore.deleteBlobs(blobsToRemove);
 			if (Policy.DEBUG_HISTORY) {
-				Policy.debug("Time to remove " + blobsToRemove.size() + " unreferenced blobs: " + (System.currentTimeMillis() - start) + "ms."); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+				Policy.debug("Time to remove " + blobsToRemove.size() + " unreferenced blobs: " + (System.currentTimeMillis() - start) + "ms."); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
-			blobsToRemove = new HashSet<>();
+			blobsToRemove = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		}
 	}
 
@@ -248,7 +248,7 @@ public class HistoryStore2 implements IHistoryStore {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public synchronized void copyHistory(IResource sourceResource, IResource destinationResource, boolean moving) {
 		// return early if either of the paths are null or if the source and
 		// destination are the same.
@@ -304,7 +304,7 @@ public class HistoryStore2 implements IHistoryStore {
 		return blobStore.getBlob(((FileState) target).getUUID());
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public synchronized IFileState[] getStates(IPath filePath, IProgressMonitor monitor) {
 		try {
 			tree.loadBucketFor(filePath);
@@ -314,7 +314,7 @@ public class HistoryStore2 implements IHistoryStore {
 				return new IFileState[0];
 			}
 			IFileState[] states = new IFileState[fileEntry.getOccurrences()];
-			for (int i = 0; i < states.length; i++) {
+			for (int i = 0; i < states.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				states[i] = new FileState(this, fileEntry.getPath(), fileEntry.getTimestamp(i), fileEntry.getUUID(i));
 			}
 			return states;
@@ -345,7 +345,7 @@ public class HistoryStore2 implements IHistoryStore {
 		long length = info.getLength();
 		boolean result = length <= description.getMaxFileStateSize();
 		if (Policy.DEBUG_HISTORY && !result) {
-			Policy.debug("History: Ignoring file (too large). File: " + localFile.toString() + //$NON-NLS-1$
+			Policy.debug("History: Ignoring file (too large). File: " + localFile.toString() + //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					", size: " + length + //$NON-NLS-1$
 					", max: " + description.getMaxFileStateSize()); //$NON-NLS-1$
 		}
@@ -364,14 +364,14 @@ public class HistoryStore2 implements IHistoryStore {
 		Policy.log(status);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public synchronized void remove(IPath root, IProgressMonitor monitor) {
 		try {
 			final Set<UniversalUniqueIdentifier> tmpBlobsToRemove = blobsToRemove;
 			tree.accept(new Bucket.Visitor() {
 				@Override
 				public int visit(Entry fileEntry) {
-					for (int i = 0; i < fileEntry.getOccurrences(); i++) {
+					for (int i = 0; i < fileEntry.getOccurrences(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						// remember we need to delete the files later
 						tmpBlobsToRemove.add(((HistoryEntry) fileEntry).getUUID(i));
 					}
@@ -387,14 +387,14 @@ public class HistoryStore2 implements IHistoryStore {
 	/**
 	 * @see IHistoryStore#removeGarbage()
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public synchronized void removeGarbage() {
 		try {
 			final Set<UniversalUniqueIdentifier> tmpBlobsToRemove = blobsToRemove;
 			tree.accept(new Bucket.Visitor() {
 				@Override
 				public int visit(Entry fileEntry) {
-					for (int i = 0; i < fileEntry.getOccurrences(); i++) {
+					for (int i = 0; i < fileEntry.getOccurrences(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						// remember we need to delete the files later
 						tmpBlobsToRemove.remove(((HistoryEntry) fileEntry).getUUID(i));
 					}
@@ -402,7 +402,7 @@ public class HistoryStore2 implements IHistoryStore {
 				}
 			}, IPath.ROOT, BucketTree.DEPTH_INFINITE);
 			blobStore.deleteBlobs(blobsToRemove);
-			blobsToRemove = new HashSet<>();
+			blobsToRemove = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		} catch (Exception e) {
 			String message = Messages.history_problemsCleaning;
 			ResourceStatus status = new ResourceStatus(IResourceStatus.FAILED_DELETE_LOCAL, null, message, e);

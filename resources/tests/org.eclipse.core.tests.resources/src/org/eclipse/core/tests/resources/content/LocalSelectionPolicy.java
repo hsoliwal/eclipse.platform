@@ -28,8 +28,8 @@ import org.eclipse.core.runtime.content.IContentTypeManager.ISelectionPolicy;
 public class LocalSelectionPolicy implements ISelectionPolicy {
 	@Override
 	public IContentType[] select(IContentType[] candidates, boolean fileName, boolean content) {
-		List<IContentType> result = new ArrayList<>(candidates.length);
-		for (IContentType candidate : candidates) {
+		List<IContentType> result = new ArrayList<>(candidates.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IContentType candidate : candidates) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String namespace = getNamespace(candidate.getId());
 			if (namespace.equals(PI_RESOURCES_TESTS)
 					|| namespace.equals(Platform.PI_RUNTIME)) {
@@ -42,7 +42,7 @@ public class LocalSelectionPolicy implements ISelectionPolicy {
 	private static String getNamespace(String id) {
 		int lastDot = id.lastIndexOf('.');
 		if (lastDot <= 1) {
-			throw new IllegalArgumentException("lastDot ==" + lastDot);
+			throw new IllegalArgumentException("lastDot ==" + lastDot); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return id.substring(0, lastDot);
 	}

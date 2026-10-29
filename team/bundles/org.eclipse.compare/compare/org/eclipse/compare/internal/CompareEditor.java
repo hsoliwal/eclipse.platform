@@ -76,7 +76,7 @@ import org.eclipse.ui.views.contentoutline.IContentOutlinePage;
  * A CompareEditor takes a ICompareEditorInput as input.
  * Most functionality is delegated to the ICompareEditorInput.
  */
-public class CompareEditor extends EditorPart
+public class CompareEditor extends EditorPart //FLLDCIM: MARK — T06  IMPLEMENTS
 		implements IReusableEditor, ISaveablesSource, IPropertyChangeListener,
 		ISaveablesLifecycleListener {
 	public final static String CONFIRM_SAVE_PROPERTY= "org.eclipse.compare.internal.CONFIRM_SAVE_PROPERTY"; //$NON-NLS-1$
@@ -171,7 +171,7 @@ public class CompareEditor extends EditorPart
 		// empty default implementation
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@SuppressWarnings("unchecked")
 	public <T> T getAdapter(Class<T> key) {
 		if (key.equals(IContentOutlinePage.class)) {
@@ -259,7 +259,7 @@ public class CompareEditor extends EditorPart
 		}
 	}
 
-	private void doSetInput(IEditorInput input) {
+	private void doSetInput(IEditorInput input) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IEditorInput oldInput= getEditorInput();
 		disconnectFromInput(oldInput);
 		Point oldSize = null;
@@ -337,10 +337,10 @@ public class CompareEditor extends EditorPart
 		}
 	}
 
-	protected void initializeInBackground(final CompareEditorInput cei, final boolean hadPreviousInput) {
+	protected void initializeInBackground(final CompareEditorInput cei, final boolean hadPreviousInput) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Need to cancel any running jobs associated with the oldInput
 		Job job = new Job(NLS.bind(CompareMessages.CompareEditor_0, cei.getTitle())) {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			protected IStatus run(final IProgressMonitor monitor) {
 				final int[] newState = new int[] { ERROR };
 				try {
@@ -363,7 +363,7 @@ public class CompareEditor extends EditorPart
 					if (monitor.isCanceled()) {
 						newState[0] = CANCELED;
 					}
-					Display.getDefault().syncExec(() -> {
+					Display.getDefault().syncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 						if (fPageBook.isDisposed()) {
 							return;
 						}
@@ -417,7 +417,7 @@ public class CompareEditor extends EditorPart
 		}
 	}
 
-	private void createCompareControl() {
+	private void createCompareControl() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fPageBook.isDisposed()) {
 			return;
 		}
@@ -485,7 +485,7 @@ public class CompareEditor extends EditorPart
 	}
 
 	private void setPageLater() {
-		Display.getCurrent().timerExec(1000, () -> {
+		Display.getCurrent().timerExec(1000, () -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			synchronized(CompareEditor.this) {
 				if (getState() == INITIALIZING) {
 					setState(STILL_INITIALIZING);
@@ -524,11 +524,11 @@ public class CompareEditor extends EditorPart
 		Assert.isTrue(false); // Save As not supported for CompareEditor
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void doSave(IProgressMonitor progressMonitor) {
 		final IEditorInput input= getEditorInput();
 
-		WorkspaceModifyOperation operation= new WorkspaceModifyOperation() {
+		WorkspaceModifyOperation operation= new WorkspaceModifyOperation() { //FLLDCIM: MARK — T09  ANONYMOUS
 			@Override
 			public void execute(IProgressMonitor pm) throws CoreException {
 				if (input instanceof CompareEditorInput) {
@@ -581,13 +581,13 @@ public class CompareEditor extends EditorPart
 		return internalGetSaveables(knownSaveables == null);
 	}
 
-	private Saveable[] internalGetSaveables(boolean init) {
+	private Saveable[] internalGetSaveables(boolean init) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IEditorInput input= getEditorInput();
 		Saveable[] sourceSaveables = getSaveables(input);
 		if (init || knownSaveables == null) {
 			recordSaveables(sourceSaveables);
 		} else {
-			for (Saveable saveable : sourceSaveables) {
+			for (Saveable saveable : sourceSaveables) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (!knownSaveables.contains(saveable)) {
 					CompareUIPlugin.logErrorMessage(NLS.bind("Saveable {0} was not added using a saveables lifecycle event.", saveable.getName())); //$NON-NLS-1$
 					knownSaveables.add(saveable);
@@ -611,7 +611,7 @@ public class CompareEditor extends EditorPart
 		if (sourceSaveables.length != knownSaveables.size()) {
 			return false;
 		}
-		for (Saveable saveable : sourceSaveables) {
+		for (Saveable saveable : sourceSaveables) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!knownSaveables.contains(saveable)) {
 				return false;
 			}
@@ -621,7 +621,7 @@ public class CompareEditor extends EditorPart
 
 	private void recordSaveables(Saveable[] sourceSaveables) {
 		if (knownSaveables == null) {
-			knownSaveables = new HashSet<>();
+			knownSaveables = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		}
 		Collections.addAll(knownSaveables, sourceSaveables);
 	}
@@ -724,7 +724,7 @@ public class CompareEditor extends EditorPart
 		return state;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void handleLifecycleEvent(SaveablesLifecycleEvent event) {
 		ISaveablesLifecycleListener lifecycleListener=
 				getSite().getService(ISaveablesLifecycleListener.class);
@@ -734,9 +734,9 @@ public class CompareEditor extends EditorPart
 			if (knownSaveables == null || knownSaveables.isEmpty()) {
 				return;
 			}
-			java.util.List<Saveable> result = new ArrayList<>();
+			java.util.List<Saveable> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 			Saveable[] all = event.getSaveables();
-			for (Saveable saveable : all) {
+			for (Saveable saveable : all) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (knownSaveables.contains(saveable)) {
 					result.add(saveable);
 				}

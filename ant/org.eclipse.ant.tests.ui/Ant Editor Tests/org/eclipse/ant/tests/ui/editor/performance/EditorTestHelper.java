@@ -63,14 +63,14 @@ public class EditorTestHelper {
 	}
 
 	public static void runEventQueue(Shell shell) {
-		while (shell.getDisplay().readAndDispatch()) {
+		while (shell.getDisplay().readAndDispatch()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// XXX do nothing, just spin the loop
 		}
 	}
 
 	public static void runEventQueue(long minTime) {
 		long nextCheck = System.currentTimeMillis() + minTime;
-		while (System.currentTimeMillis() < nextCheck) {
+		while (System.currentTimeMillis() < nextCheck) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			runEventQueue();
 			sleep(1);
 		}

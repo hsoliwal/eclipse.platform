@@ -135,18 +135,18 @@ public class ConsoleOutputLineWrapTest {
 	@MethodSource("tests")
 	public void test(Parameters p) {
 		ConsoleOutputLineWrap lineBreak = new ConsoleOutputLineWrap(p.limit, p.nl);
-		StringBuilder c = new StringBuilder();
-		for (int i = 0; i < p.chunks; ++i) {
-			StringBuilder s = new StringBuilder(p.input);
+		StringBuilder c = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < p.chunks; ++i) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			StringBuilder s = new StringBuilder(p.input); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 			CharSequence text = lineBreak.modify(s);
-			c.append(text);
+			c.append(text); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		String expected = repeat(p.output, p.repeat, p.nl[0]);
 		assertEquals(expected, c.toString());
 	}
 
 	private static String repeat(String s, int r, String nl) {
-		return (nl + s).repeat(r).substring(nl.length());
+		return (nl + s).repeat(r).substring(nl.length()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private static Arguments named(Parameters p) {

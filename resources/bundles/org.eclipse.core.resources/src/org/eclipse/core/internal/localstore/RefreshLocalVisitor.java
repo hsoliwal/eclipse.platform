@@ -95,7 +95,7 @@ public class RefreshLocalVisitor implements IUnifiedTreeVisitor, ILocalStoreCons
 		target.getLocalManager().updateLocalSync(info, node.getLastModified());
 	}
 
-	protected void deleteResource(UnifiedTreeNode node, Resource target) throws CoreException {
+	protected void deleteResource(UnifiedTreeNode node, Resource target) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ResourceInfo info = target.getResourceInfo(false, false);
 		int flags = target.getFlags(info);
 		//don't delete linked resources
@@ -162,7 +162,7 @@ public class RefreshLocalVisitor implements IUnifiedTreeVisitor, ILocalStoreCons
 	 * than recreating the file. Failures are added to the error status.
 	 */
 	public void closeProjectsWithoutDescription() {
-		for (Project project : projectsWithoutDescription) {
+		for (Project project : projectsWithoutDescription) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			closeProjectWithoutDescription(project);
 		}
 	}
@@ -225,7 +225,7 @@ public class RefreshLocalVisitor implements IUnifiedTreeVisitor, ILocalStoreCons
 	 * 	- RL_NOT_IN_SYNC - the resource is not in-sync with file system
 	 * 	- RL_UNKNOWN - couldn't determine the sync status for this resource
 	 */
-	protected int synchronizeExistence(UnifiedTreeNode node, Resource target) throws CoreException {
+	protected int synchronizeExistence(UnifiedTreeNode node, Resource target) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (node.existsInWorkspace()) {
 			if (!node.existsInFileSystem()) {
 				// 1. non-local files are always in sync
@@ -275,7 +275,7 @@ public class RefreshLocalVisitor implements IUnifiedTreeVisitor, ILocalStoreCons
 	/**
 	 * gender change -- Returns true if gender was in sync.
 	 */
-	protected boolean synchronizeGender(UnifiedTreeNode node, Resource target) throws CoreException {
+	protected boolean synchronizeGender(UnifiedTreeNode node, Resource target) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!node.existsInWorkspace()) {
 			//may be an existing resource in the workspace of different gender
 			IResource genderVariant = workspace.getRoot().findMember(target.getFullPath());
@@ -311,7 +311,7 @@ public class RefreshLocalVisitor implements IUnifiedTreeVisitor, ILocalStoreCons
 		resourceChanged = true;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean visit(UnifiedTreeNode node) throws CoreException {
 		Policy.checkCanceled(monitor);
 		try {

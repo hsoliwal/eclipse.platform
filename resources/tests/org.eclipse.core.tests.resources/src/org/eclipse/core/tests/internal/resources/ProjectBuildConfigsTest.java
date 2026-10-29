@@ -53,7 +53,7 @@ public class ProjectBuildConfigsTest {
 		defaultVariant = new BuildConfiguration(project, IBuildConfiguration.DEFAULT_CONFIG_NAME);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBasics() throws CoreException {
 		IProjectDescription desc = project.getDescription();
 		String[] configs = new String[] {variantId0, variantId1};
@@ -132,7 +132,7 @@ public class ProjectBuildConfigsTest {
 	/**
 	 * Tests that build configuration references are correct after moving a project
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectMove() throws CoreException {
 		IProjectDescription desc = project.getDescription();
 		IBuildConfiguration[] configs = new IBuildConfiguration[] {variant0, variant1};
@@ -149,7 +149,7 @@ public class ProjectBuildConfigsTest {
 		assertThat(newProject).matches(IProject::exists, "exists");
 
 		IBuildConfiguration[] newConfigs = newProject.getBuildConfigs();
-		for (int i = 0; i < configs.length; i++) {
+		for (int i = 0; i < configs.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertThat(newConfigs[i].getProject()).as("project at index %s", i).isEqualTo(newProject);
 			assertThat(newConfigs[i].getName()).as("project name at index %s", i).isEqualTo(configs[i].getName());
 		}

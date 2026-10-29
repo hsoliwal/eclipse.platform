@@ -64,7 +64,7 @@ public class Bug_032076 {
 	private static final Predicate<IResource> isSynchronizedDepthZero = resource -> resource
 			.isSynchronized(IResource.DEPTH_ZERO);
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFileBugOnWindows() throws Exception {
 		assumeTrue(OS.isWindows(), "only relevant on Windows");
 
@@ -115,7 +115,7 @@ public class Bug_032076 {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFolderBugOnWindows() throws Exception {
 		assumeTrue(OS.isWindows(), "only relevant on Windows");
 
@@ -175,13 +175,13 @@ public class Bug_032076 {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectBugOnWindows() throws Exception {
 		assumeTrue(OS.isWindows(), "only relevant on Windows");
 
 		IWorkspace workspace = getWorkspace();
-		IProject sourceProject = workspace.getRoot().getProject(createUniqueString() + ".source");
-		IProject destinationProject = workspace.getRoot().getProject(createUniqueString() + ".dest");
+		IProject sourceProject = workspace.getRoot().getProject(createUniqueString() + ".source"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		IProject destinationProject = workspace.getRoot().getProject(createUniqueString() + ".dest"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		// this file will be made un-removable
 		IFile file1 = sourceProject.getFile("file1.txt");
 		// but not this one
@@ -223,7 +223,7 @@ public class Bug_032076 {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Disabled("test is currently failing and needs further investigation (bug 203078)")
 	public void testFileBugOnLinux() throws CoreException {
 		assumeTrue(OS.isLinux() && isReadOnlySupported(), "only relevant on Linux");
@@ -280,7 +280,7 @@ public class Bug_032076 {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Disabled("test is currently failing and needs further investigation (bug 203078)")
 	public void testFolderBugOnLinux() throws CoreException {
 		assumeTrue(OS.isLinux() && isReadOnlySupported(), "only relevant on Linux");
@@ -353,19 +353,19 @@ public class Bug_032076 {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Disabled("test is currently failing and needs further investigation (bug 203078)")
 	public void testProjectBugOnLinux(@TempDir Path tempDirectory) throws CoreException, IOException {
 		assumeTrue(OS.isLinux() && isReadOnlySupported(), "only relevant on Linux");
 
 		IWorkspace workspace = getWorkspace();
-		IProject sourceProject = workspace.getRoot().getProject(createUniqueString() + ".source");
+		IProject sourceProject = workspace.getRoot().getProject(createUniqueString() + ".source"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IFileStore projectParentStore = getFileStore(tempDirectory);
 		IFileStore projectStore = projectParentStore.getChild(sourceProject.getName());
 		IProjectDescription sourceDescription = workspace.newProjectDescription(sourceProject.getName());
 		sourceDescription.setLocationURI(projectStore.toURI());
 
-		IProject destinationProject = workspace.getRoot().getProject(createUniqueString() + ".dest");
+		IProject destinationProject = workspace.getRoot().getProject(createUniqueString() + ".dest"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IProjectDescription destinationDescription = workspace.newProjectDescription(destinationProject.getName());
 
 		// create and open the source project at a non-default location

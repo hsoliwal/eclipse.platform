@@ -39,7 +39,7 @@ package org.eclipse.debug.examples.core.pda.protocol;
 public class PDADropFrameCommand extends PDACommand {
 
 	public PDADropFrameCommand(int threadId) {
-		super("drop " + threadId); //$NON-NLS-1$
+		super("drop " + threadId); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override

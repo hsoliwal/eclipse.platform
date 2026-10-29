@@ -104,20 +104,20 @@ public class BucketTreeTests {
 		@Override
 		protected Object readEntryValue(DataInputStream source) throws IOException {
 			int length = source.readUnsignedShort();
-			Map<String, String> value = new HashMap<>(length);
-			for (int j = 0; j < length; j++) {
+			Map<String, String> value = new HashMap<>(length); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+			for (int j = 0; j < length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				value.put(source.readUTF(), source.readUTF());
 			}
 			return value;
 		}
 
-		public void set(IPath path, String key, String value) {
+		public void set(IPath path, String key, String value) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			String pathAsString = path.toString();
 			@SuppressWarnings("unchecked")
 			Map<String, String> existing = (Map<String, String>) getEntryValue(pathAsString);
 			if (existing == null) {
 				if (value != null) {
-					existing = new HashMap<>();
+					existing = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 					existing.put(key, value);
 					setEntryValue(pathAsString, existing);
 				}
@@ -140,14 +140,14 @@ public class BucketTreeTests {
 			Map<String, String> value = (Map<String, String>) entryValue;
 			int length = value.size();
 			destination.writeShort(length);
-			for (Map.Entry<String, String> entry : value.entrySet()) {
+			for (Map.Entry<String, String> entry : value.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				destination.writeUTF(entry.getKey());
 				destination.writeUTF(entry.getValue());
 			}
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testVisitor() throws CoreException {
 		IPath baseLocation = getRandomLocation();
 		fileStoreExtension.deleteOnTearDown(baseLocation);
@@ -163,7 +163,7 @@ public class BucketTreeTests {
 		createInWorkspace(new IResource[] { file1, file2, proj2 });
 		IPath[] paths = { IPath.ROOT, proj1.getFullPath(), file1.getFullPath(), folder1.getFullPath(),
 				file2.getFullPath(), proj2.getFullPath() };
-		for (IPath path : paths) {
+		for (IPath path : paths) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			tree.loadBucketFor(path);
 			bucket.set(path, "path", path.toString());
 			bucket.set(path, "segments", Integer.toString(path.segmentCount()));
@@ -195,9 +195,9 @@ public class BucketTreeTests {
 		verify(tree, proj2.getFullPath(), BucketTree.DEPTH_INFINITE, Arrays.asList(proj2.getFullPath()));
 	}
 
-	public void verify(BucketTree tree, IPath root, int depth, final Collection<IPath> expected)
+	public void verify(BucketTree tree, IPath root, int depth, final Collection<IPath> expected) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws CoreException {
-		final Set<IPath> visited = new HashSet<>();
+		final Set<IPath> visited = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		SimpleBucket.Visitor verifier = new SimpleBucket.Visitor() {
 			@Override
 			public int visit(org.eclipse.core.internal.localstore.Bucket.Entry entry) {
@@ -212,7 +212,7 @@ public class BucketTreeTests {
 		};
 		tree.accept(verifier, root, depth);
 		assertEquals(expected.size(), visited.size());
-		for (IPath path : expected) {
+		for (IPath path : expected) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			assertTrue(visited.contains(path), path.toString());
 		}
 	}

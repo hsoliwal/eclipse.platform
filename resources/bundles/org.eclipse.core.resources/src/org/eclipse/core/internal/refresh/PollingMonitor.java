@@ -90,8 +90,8 @@ public class PollingMonitor extends Job implements IRefreshMonitor {
 		this.refreshManager = manager;
 		setPriority(Job.DECORATE);
 		setSystem(true);
-		resourceRoots = new ArrayList<>();
-		toRefresh = new ArrayList<>();
+		resourceRoots = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		toRefresh = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 	}
 
 	/**
@@ -105,14 +105,14 @@ public class PollingMonitor extends Job implements IRefreshMonitor {
 	/**
 	 * Polls the file system under the root containers for changes.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected IStatus run(IProgressMonitor monitor) {
 		//sleep until resources plugin has finished starting
 		if (firstRun) {
 			firstRun = false;
 			Bundle bundle = Platform.getBundle(ResourcesPlugin.PI_RESOURCES);
 			long waitStart = System.currentTimeMillis();
-			while (bundle.getState() == Bundle.STARTING) {
+			while (bundle.getState() == Bundle.STARTING) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					Thread.sleep(10000);
 				} catch (InterruptedException e) {
@@ -129,12 +129,12 @@ public class PollingMonitor extends Job implements IRefreshMonitor {
 		if (toRefresh.isEmpty()) {
 			beginIteration();
 			if (Policy.DEBUG_AUTO_REFRESH) {
-				Policy.debug(RefreshManager.DEBUG_PREFIX + "New polling iteration on " + toRefresh.size() + " roots"); //$NON-NLS-1$ //$NON-NLS-2$
+				Policy.debug(RefreshManager.DEBUG_PREFIX + "New polling iteration on " + toRefresh.size() + " roots"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		final int oldSize = toRefresh.size();
 		if (Policy.DEBUG_AUTO_REFRESH) {
-			Policy.debug(RefreshManager.DEBUG_PREFIX + "started polling"); //$NON-NLS-1$
+			Policy.debug(RefreshManager.DEBUG_PREFIX + "started polling"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		//refresh the hot root if applicable
 		if (time - hotRootTime > HOT_ROOT_DECAY) {
@@ -144,7 +144,7 @@ public class PollingMonitor extends Job implements IRefreshMonitor {
 		}
 		//process roots that have not yet been refreshed this iteration
 		final long loopStart = System.currentTimeMillis();
-		while (!toRefresh.isEmpty()) {
+		while (!toRefresh.isEmpty()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (monitor.isCanceled()) {
 				break;
 			}
@@ -156,7 +156,7 @@ public class PollingMonitor extends Job implements IRefreshMonitor {
 		}
 		time = System.currentTimeMillis() - time;
 		if (Policy.DEBUG_AUTO_REFRESH) {
-			Policy.debug(RefreshManager.DEBUG_PREFIX + "polled " + (oldSize - toRefresh.size()) + " roots in " + time + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+			Policy.debug(RefreshManager.DEBUG_PREFIX + "polled " + (oldSize - toRefresh.size()) + " roots in " + time + "ms"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		//reschedule automatically - shouldRun will cancel if not needed
 		//make sure it doesn't run more than 5% of the time
@@ -166,7 +166,7 @@ public class PollingMonitor extends Job implements IRefreshMonitor {
 			delay *= 2;
 		}
 		if (Policy.DEBUG_AUTO_REFRESH) {
-			Policy.debug(RefreshManager.DEBUG_PREFIX + "rescheduling polling job in: " + delay / 1000 + " seconds"); //$NON-NLS-1$ //$NON-NLS-2$
+			Policy.debug(RefreshManager.DEBUG_PREFIX + "rescheduling polling job in: " + delay / 1000 + " seconds"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		//don't reschedule the job if the resources plugin has been shut down
 		Bundle bundle = Platform.getBundle(ResourcesPlugin.PI_RESOURCES);
@@ -206,7 +206,7 @@ public class PollingMonitor extends Job implements IRefreshMonitor {
 		hotRoot = resource;
 		hotRootTime = System.currentTimeMillis();
 		if (Policy.DEBUG_AUTO_REFRESH) {
-			Policy.debug(RefreshManager.DEBUG_PREFIX + "new hot root: " + resource); //$NON-NLS-1$
+			Policy.debug(RefreshManager.DEBUG_PREFIX + "new hot root: " + resource); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 

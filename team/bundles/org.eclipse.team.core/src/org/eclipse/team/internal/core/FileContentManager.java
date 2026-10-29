@@ -74,7 +74,7 @@ public class FileContentManager implements IFileContentManager {
 
 		@Override
 		protected Map<String, Integer> loadMappingsFromPreferences() {
-			final Map<String, Integer> result= super.loadMappingsFromPreferences();
+			final Map<String, Integer> result= super.loadMappingsFromPreferences(); //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 			if (loadMappingsFromOldWorkspace(result)) {
 				try {
 					InstanceScope.INSTANCE.getNode(TeamPlugin.ID).flush();
@@ -93,23 +93,23 @@ public class FileContentManager implements IFileContentManager {
 		 * @return true if the workspace was a 2.0 one and the old mappings have
 		 * been added to the map, false otherwise.
 		 */
-		private boolean loadMappingsFromOldWorkspace(Map<String, Integer> map) {
+		private boolean loadMappingsFromOldWorkspace(Map<String, Integer> map) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES PARAMETER
 			// File name of the persisted file type information
 			String STATE_FILE = ".fileTypes"; //$NON-NLS-1$
 			IPath pluginStateLocation = TeamPlugin.getPlugin().getStateLocation().append(STATE_FILE);
 			File f = pluginStateLocation.toFile();
 
-			if (!f.exists()) {
+			if (!f.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 				return false;
 			}
 
-			try (DataInputStream input = new DataInputStream(new FileInputStream(f))) {
+			try (DataInputStream input = new DataInputStream(new FileInputStream(f))) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 					map.putAll(readOldFormatExtensionMappings(input));
 			} catch (IOException ex) {
 				TeamPlugin.log(IStatus.ERROR, ex.getMessage(), ex);
 				return false;
 			} finally {
-				f.delete();
+				f.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			}
 
 			return true;
@@ -122,7 +122,7 @@ public class FileContentManager implements IFileContentManager {
 		 * @throws IOException if an I/O problem occurs
 		 */
 		private Map<String, Integer> readOldFormatExtensionMappings(DataInputStream input) throws IOException {
-			final Map<String, Integer> result= new TreeMap<>();
+			final Map<String, Integer> result= new TreeMap<>(); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 			int numberOfMappings = 0;
 			try {
 				numberOfMappings = input.readInt();
@@ -131,7 +131,7 @@ public class FileContentManager implements IFileContentManager {
 				// patterns stored in the state file.
 				return Collections.emptyMap();
 			}
-			for (int i = 0; i < numberOfMappings; i++) {
+			for (int i = 0; i < numberOfMappings; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				final String extension = input.readUTF();
 				final int type = input.readInt();
 				result.put(extension, Integer.valueOf(type));
@@ -195,7 +195,7 @@ public class FileContentManager implements IFileContentManager {
 		return getMappings(fUserExtensionMappings, fPluginExtensionMappings);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public int getType(IStorage storage) {
 		int type;
 
@@ -267,7 +267,7 @@ public class FileContentManager implements IFileContentManager {
 	private static IStringMapping [] getStringMappings(Map map) {
 		final IStringMapping [] result= new IStringMapping [map.size()];
 		int index= 0;
-		for (Object element : map.entrySet()) {
+		for (Object element : map.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final Map.Entry entry= (Map.Entry)element;
 			result[index++]= new StringMapping((String)entry.getKey(), ((Integer)entry.getValue()).intValue());
 		}
@@ -275,7 +275,7 @@ public class FileContentManager implements IFileContentManager {
 	}
 
 	private IStringMapping [] getMappings(UserStringMappings userMappings, PluginStringMappings pluginMappings) {
-		final Map<String, Integer> mappings= new HashMap<>();
+		final Map<String, Integer> mappings= new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		if (pluginMappings != null) {
 			mappings.putAll(pluginMappings.referenceMap());
 		}

@@ -82,12 +82,12 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 	protected IProject[] staticRefs = EMPTY_PROJECT_ARRAY;
 	protected IProject[] dynamicRefs = EMPTY_PROJECT_ARRAY;
 	/** Map from config name in this project -&gt; build configurations in other projects */
-	protected HashMap<String, IBuildConfiguration[]> dynamicConfigRefs = new HashMap<>(1);
+	protected HashMap<String, IBuildConfiguration[]> dynamicConfigRefs = new HashMap<>(1); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	// Cache of the build configurations
 	protected volatile IBuildConfiguration[] cachedBuildConfigs;
 	// Cached build configuration references. Not persisted.
-	protected Map<String, IBuildConfiguration[]> cachedConfigRefs = Collections.synchronizedMap(new HashMap<>(1));
+	protected Map<String, IBuildConfiguration[]> cachedConfigRefs = Collections.synchronizedMap(new HashMap<>(1)); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	/**
 	 * Cached project level references. Synchronize on {@link #cachedRefsMutex} before reading or writing. Increment
 	 * {@link #cachedRefsDirtyCount} whenever this is dirtied.
@@ -143,7 +143,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 		}
 		clone.buildSpec = getBuildSpec(true);
 		clone.dynamicConfigRefs = (HashMap<String, IBuildConfiguration[]>) dynamicConfigRefs.clone();
-		clone.cachedConfigRefs = Collections.synchronizedMap(new HashMap<>(1));
+		clone.cachedConfigRefs = Collections.synchronizedMap(new HashMap<>(1)); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		clone.clearCachedDynamicReferences(null);
 		return clone;
 	}
@@ -175,12 +175,12 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 	/**
 	 * Returns a copy of the given array with all duplicates removed
 	 */
-	private IProject[] copyAndRemoveDuplicates(IProject[] projects) {
+	private IProject[] copyAndRemoveDuplicates(IProject[] projects) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IProject[] result = new IProject[projects.length];
 		int count = 0;
-		next: for (IProject project : projects) {
+		next: for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// scan to see if there are any other projects by the same name
-			for (int j = 0; j < count; j++) {
+			for (int j = 0; j < count; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (project.equals(result[j])) {
 					continue next;
 				}
@@ -206,8 +206,8 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 	 * @return collection of build config references
 	 */
 	private Collection<BuildConfiguration> getBuildConfigReferencesFromProjects(IProject[] projects) {
-		List<BuildConfiguration> refs = new ArrayList<>(projects.length);
-		for (IProject project : projects) {
+		List<BuildConfiguration> refs = new ArrayList<>(projects.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			refs.add(new BuildConfiguration(project, null));
 		}
 		return refs;
@@ -219,7 +219,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 	 */
 	private Collection<IProject> getProjectsFromBuildConfigRefs(IBuildConfiguration[] refs) {
 		LinkedHashSet<IProject> projects = new LinkedHashSet<>(refs.length);
-		for (IBuildConfiguration ref : refs) {
+		for (IBuildConfiguration ref : refs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			projects.add(ref.getProject());
 		}
 		return projects;
@@ -235,7 +235,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 	 * Call the configuration based implementation.
 	 * @see #getAllBuildConfigReferences(IProject, String, boolean)
 	 */
-	public IProject[] getAllReferences(IProject project, boolean makeCopy) {
+	public IProject[] getAllReferences(IProject project, boolean makeCopy) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int dirtyCount;
 		IProject[] projRefs;
 
@@ -246,7 +246,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 		// Retry this computation until we're able to proceed to the end without someone dirtying the cache.
 		// This loop is here to prevent us from caching a stale result if someone dirties the cache between
 		// the time we invoke getAllBuildConfigReferences and the time we can write to cachedRefs.
-		while (projRefs == null) {
+		while (projRefs == null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IBuildConfiguration[] refs;
 			if (hasBuildConfig(activeConfiguration)) {
 				refs = getAllBuildConfigReferences(project, activeConfiguration, false);
@@ -283,7 +283,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 	 * be resolved using {@link BuildConfiguration#getBuildConfig()} before use.
 	 * Returns an empty array if the given configName does not exist in the description.
 	 */
-	public IBuildConfiguration[] getAllBuildConfigReferences(IProject project, String configName, boolean makeCopy) {
+	public IBuildConfiguration[] getAllBuildConfigReferences(IProject project, String configName, boolean makeCopy) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!hasBuildConfig(configName)) {
 			return EMPTY_BUILD_CONFIG_REFERENCE_ARRAY;
 		}
@@ -318,7 +318,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 	 * Used by Project to get the buildConfigs on the description.
 	 * @return the project configurations
 	 */
-	public IBuildConfiguration[] getBuildConfigs(IProject project, boolean makeCopy) {
+	public IBuildConfiguration[] getBuildConfigs(IProject project, boolean makeCopy) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IBuildConfiguration[] configs = cachedBuildConfigs;
 		// Ensure project is up to date in the cache
 		if (configs != null && !project.equals(configs[0].getProject())) {
@@ -329,7 +329,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 				configs = new IBuildConfiguration[] {new BuildConfiguration(project)};
 			} else {
 				configs = new IBuildConfiguration[configNames.length];
-				for (int i = 0; i < configs.length; i++) {
+				for (int i = 0; i < configs.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					configs[i] = new BuildConfiguration(project, configNames[i]);
 				}
 			}
@@ -374,7 +374,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 			return oldCommands;
 		}
 		ICommand[] result = new ICommand[oldCommands.length];
-		for (int i = 0; i < result.length; i++) {
+		for (int i = 0; i < result.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result[i] = (ICommand) ((BuildCommand) oldCommands[i]).clone();
 		}
 		return result;
@@ -510,7 +510,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 	@Override
 	public boolean hasNature(String natureID) {
 		String[] natureIDs = getNatureIds(false);
-		for (String natureID2 : natureIDs) {
+		for (String natureID2 : natureIDs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (natureID2.equals(natureID)) {
 				return true;
 			}
@@ -526,7 +526,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 		if (m1.size() != m2.size()) {
 			return true;
 		}
-		for (Entry<String, IBuildConfiguration[]> e : m1.entrySet()) {
+		for (Entry<String, IBuildConfiguration[]> e : m1.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!m2.containsKey(e.getKey())) {
 				return true;
 			}
@@ -545,7 +545,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 		if (configNames.length == 0) {
 			return IBuildConfiguration.DEFAULT_CONFIG_NAME.equals(buildConfigName);
 		}
-		for (String configName : configNames) {
+		for (String configName : configNames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (configName.equals(buildConfigName)) {
 				return true;
 			}
@@ -558,7 +558,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 	 * Private attributes are those that are not stored in the project description
 	 * file (.project).
 	 */
-	public boolean hasPrivateChanges(ProjectDescription description) {
+	public boolean hasPrivateChanges(ProjectDescription description) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (location == null) {
 			if (description.location != null) {
 				return true;
@@ -583,7 +583,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 			return true;
 		}
 		// has natures changed?
-		if (!new HashSet<>(Arrays.asList(natures)).equals(new HashSet<>(Arrays.asList(description.natures)))) {
+		if (!new HashSet<>(Arrays.asList(natures)).equals(new HashSet<>(Arrays.asList(description.natures)))) { //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			return true;
 		}
 		// has buildspec changed?
@@ -599,7 +599,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 	 * Public attributes are those that are stored in the project description
 	 * file (.project).
 	 */
-	public boolean hasPublicChanges(ProjectDescription description) {
+	public boolean hasPublicChanges(ProjectDescription description) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!getName().equals(description.getName())) {
 			return true;
 		}
@@ -668,11 +668,11 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 		Assert.isLegal(value != null);
 		//perform a deep copy in case clients perform further changes to the command
 		ICommand[] result = new ICommand[value.length];
-		for (int i = 0; i < result.length; i++) {
+		for (int i = 0; i < result.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			result[i] = (ICommand) ((BuildCommand) value[i]).clone();
 			//copy the reference to any builder instance from the old build spec
 			//to preserve builder states if possible.
-			for (ICommand element : buildSpec) {
+			for (ICommand element : buildSpec) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (result[i].equals(element)) {
 					((BuildCommand) result[i]).setBuilders(((BuildCommand) element).getBuilders());
 					break;
@@ -696,7 +696,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 	}
 
 	public void setBuildConfigReferences(HashMap<String, IBuildConfiguration[]> refs) {
-		dynamicConfigRefs = new HashMap<>(refs);
+		dynamicConfigRefs = new HashMap<>(refs); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		clearCachedDynamicReferences(null);
 	}
 
@@ -711,7 +711,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 		clearCachedDynamicReferences(configName);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setBuildConfigs(String[] names) {
 		// Remove references for deleted buildConfigs
 		LinkedHashSet<String> buildConfigNames = new LinkedHashSet<>();
@@ -721,7 +721,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 			buildConfigNames.add(IBuildConfiguration.DEFAULT_CONFIG_NAME);
 		} else {
 			// Filter out duplicates
-			for (String n : names) {
+			for (String n : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Assert.isLegal(n != null);
 				buildConfigNames.add(n);
 			}
@@ -776,13 +776,13 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 	 *     <code>false</code> otherwise.
 	 * @since 3.5 returns boolean (was void before)
 	 */
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings({"unchecked"}) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean setLinkLocation(IPath path, LinkDescription description) {
 		HashMap<IPath, LinkDescription> tempMap = linkDescriptions;
 		if (description != null) {
 			//addition or modification
 			if (tempMap == null) {
-				tempMap = new HashMap<>(10);
+				tempMap = new HashMap<>(10); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			} else {
 				//copy on write to protect against concurrent read
 				tempMap = (HashMap<IPath, LinkDescription>) tempMap.clone();
@@ -817,7 +817,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 	synchronized public void addFilter(IPath path, FilterDescription description) {
 		Assert.isNotNull(description);
 		if (filterDescriptions == null) {
-			filterDescriptions = new HashMap<>(10);
+			filterDescriptions = new HashMap<>(10); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 		LinkedList<FilterDescription> descList = filterDescriptions.get(path);
 		if (descList == null) {
@@ -853,13 +853,13 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 	 *     <code>false</code> otherwise.
 	 * @since 3.5
 	 */
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings({"unchecked"}) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean setVariableDescription(String name, VariableDescription description) {
 		HashMap<String, VariableDescription> tempMap = variableDescriptions;
 		if (description != null) {
 			// addition or modification
 			if (tempMap == null) {
-				tempMap = new HashMap<>(10);
+				tempMap = new HashMap<>(10); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			} else {
 				// copy on write to protect against concurrent read
 				tempMap = (HashMap<String, VariableDescription>) tempMap.clone();
@@ -893,11 +893,11 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 	 * @return <code>true</code> if the description was actually changed,
 	 *     <code>false</code> otherwise.
 	 */
-	synchronized public boolean setFilters(IPath path, LinkedList<FilterDescription> descriptions) {
+	synchronized public boolean setFilters(IPath path, LinkedList<FilterDescription> descriptions) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (descriptions != null) {
 			// addition
 			if (filterDescriptions == null) {
-				filterDescriptions = new HashMap<>(10);
+				filterDescriptions = new HashMap<>(10); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 			}
 			Object oldValue = filterDescriptions.put(path, descriptions);
 			if (oldValue != null && descriptions.equals(oldValue)) {
@@ -985,7 +985,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 	 * @param description Project description to copy dynamic state from
 	 * @return boolean indicating if anything changed requing re-calculation of WS build order
 	 */
-	public boolean updateDynamicState(ProjectDescription description) {
+	public boolean updateDynamicState(ProjectDescription description) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		boolean changed = false;
 		if (!activeConfiguration.equals(description.activeConfiguration)) {
 			changed = true;
@@ -1001,7 +1001,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 		}
 		if (configRefsHaveChanges(dynamicConfigRefs, description.dynamicConfigRefs)) {
 			changed = true;
-			dynamicConfigRefs = new HashMap<>(description.dynamicConfigRefs);
+			dynamicConfigRefs = new HashMap<>(description.dynamicConfigRefs); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 		if (changed) {
 			clearCachedDynamicReferences(null);
@@ -1012,9 +1012,9 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 	/**
 	 * Computes the dynamic references for the given project + configuration.
 	 */
-	private static IProject[] computeDynamicReferencesForProject(IBuildConfiguration buildConfig, ICommand[] buildSpec) {
-		List<IProject> result = new ArrayList<>();
-		for (ICommand command : buildSpec) {
+	private static IProject[] computeDynamicReferencesForProject(IBuildConfiguration buildConfig, ICommand[] buildSpec) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		List<IProject> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (ICommand command : buildSpec) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IExtension extension = Platform.getExtensionRegistry().getExtension(ResourcesPlugin.PI_RESOURCES, ResourcesPlugin.PT_BUILDERS, command.getBuilderName());
 
 			if (extension == null) {
@@ -1040,7 +1040,7 @@ public class ProjectDescription extends ModelObject implements IProjectDescripti
 				}
 			} catch (CoreException e) {
 				String problemElement = element.toString();
-				ResourcesPlugin.getPlugin().getLog().log(new Status(IStatus.ERROR, ResourcesPlugin.PI_RESOURCES, "Unable to load dynamic reference provider: " + problemElement, e)); //$NON-NLS-1$
+				ResourcesPlugin.getPlugin().getLog().log(new Status(IStatus.ERROR, ResourcesPlugin.PI_RESOURCES, "Unable to load dynamic reference provider: " + problemElement, e)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		return result.toArray(new IProject[0]);

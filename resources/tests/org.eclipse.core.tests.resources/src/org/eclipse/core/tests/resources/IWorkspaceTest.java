@@ -95,7 +95,7 @@ public class IWorkspaceTest {
 	 * Returns the nature descriptor with the given Id, or null if not found
 	 */
 	protected IProjectNatureDescriptor findNature(IProjectNatureDescriptor[] descriptors, String id) {
-		for (IProjectNatureDescriptor descriptor : descriptors) {
+		for (IProjectNatureDescriptor descriptor : descriptors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (descriptor.getNatureId().equals(id)) {
 				return descriptor;
 			}
@@ -108,7 +108,7 @@ public class IWorkspaceTest {
 	 */
 	@Test
 	public void testCancelRunnable() {
-		assertThrows(OperationCanceledException.class, () -> getWorkspace().run((IWorkspaceRunnable) unused -> {
+		assertThrows(OperationCanceledException.class, () -> getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			throw new OperationCanceledException();
 		}, createTestMonitor()));
 	}
@@ -118,7 +118,7 @@ public class IWorkspaceTest {
 	 * 		IStatus copy([IResource, IPath, boolean, IProgressMonitor)
 	 * See also testMultiCopy()
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopy() throws Exception {
 		IResource[] resources = buildResourceHierarchy();
 		IProject project = (IProject) resources[1];
@@ -235,7 +235,7 @@ public class IWorkspaceTest {
 	 * Performs black box testing of the following method:
 	 * 		IStatus delete([IResource, boolean, IProgressMonitor)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDelete() throws CoreException {
 		IResource[] resources = buildResourceHierarchy();
 		IProject project = (IProject) resources[1];
@@ -299,7 +299,7 @@ public class IWorkspaceTest {
 	 * Performs black box testing of the following method:
 	 *     IProjectNatureDescriptor[] getNatureDescriptors()
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetNatureDescriptors() {
 		//NOTE: see static fields for description of available test natures
 		IProjectNatureDescriptor[] descriptors = getWorkspace().getNatureDescriptors();
@@ -389,7 +389,7 @@ public class IWorkspaceTest {
 	 * Performs black box testing of the following method:
 	 *     IProjectNatureDescriptor getNatureDescriptor(String)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetNatureDescriptor() {
 		//NOTE: see static fields for description of available test natures
 		IWorkspace ws = getWorkspace();
@@ -478,7 +478,7 @@ public class IWorkspaceTest {
 	 * Performs black box testing of the following method:
 	 *     IStatus move([IResource, IPath, boolean, IProgressMonitor)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMove() throws CoreException {
 		/* create folders and files */
 		IProject project = getWorkspace().getRoot().getProject("Project");
@@ -540,7 +540,7 @@ public class IWorkspaceTest {
 	/**
 	 * Another test method for IWorkspace.copy().  See also testCopy
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultiCopy() throws Exception {
 		/* create common objects */
 		IResource[] resources = buildResourceHierarchy();
@@ -634,15 +634,15 @@ public class IWorkspaceTest {
 		assertThat(status.getChildren()).hasSize(1);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultiCreation() throws Throwable {
 		final IProject project = getWorkspace().getRoot().getProject("bar");
 		final IResource[] resources = buildResources(project, "a/", "a/b");
-		IWorkspaceRunnable body = unused -> {
+		IWorkspaceRunnable body = unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			project.create(null);
 			project.open(null);
 			// define an operation which will create a bunch of resources including a project.
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				switch (resource.getType()) {
 					case IResource.FILE :
 						((IFile) resource).create(null, false, createTestMonitor());
@@ -675,16 +675,16 @@ public class IWorkspaceTest {
 	/**
 	 * Test thread safety of the API method IWorkspace.setDescription.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMultiSetDescription() throws CoreException {
 		final int THREAD_COUNT = 2;
 		final CoreException[] errorPointer = new CoreException[1];
 		Thread[] threads = new Thread[THREAD_COUNT];
-		for (int i = 0; i < THREAD_COUNT; i++) {
+		for (int i = 0; i < THREAD_COUNT; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			threads[i] = new Thread((Runnable) () -> {
 				IWorkspace workspace = ResourcesPlugin.getWorkspace();
 				IWorkspaceDescription description = workspace.getDescription();
-				for (int j = 0; j < 100; j++) {
+				for (int j = 0; j < 100; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					description.setAutoBuilding(false);
 					try {
 						workspace.setDescription(description);
@@ -700,10 +700,10 @@ public class IWorkspaceTest {
 						return;
 					}
 				}
-			}, "Autobuild " + i);
+			}, "Autobuild " + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			threads[i].start();
 		}
-		for (Thread thread : threads) {
+		for (Thread thread : threads) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				thread.join();
 			} catch (InterruptedException e) {
@@ -736,14 +736,14 @@ public class IWorkspaceTest {
 	 * Performs black box testing of the following method:
 	 *     String[] sortNatureSet(String[])
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSortNatureSet() {
 		//NOTE: see static fields for description of available test natures
 		IWorkspace ws = getWorkspace();
 
 		//invalid sets shouldn't fail
 		String[][] invalid = getInvalidNatureSets();
-		for (String[] element : invalid) {
+		for (String[] element : invalid) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String[] sorted = ws.sortNatureSet(element);
 			//set may grow if it contained duplicates
 			assertThat(sorted).hasSizeLessThanOrEqualTo(element.length);
@@ -763,7 +763,7 @@ public class IWorkspaceTest {
 				order -> assertThat(order).containsExactly(NATURE_SIMPLE, NATURE_WATER, NATURE_SNOW));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testValidateEdit() throws CoreException {
 		// We need to know whether or not we can unset the read-only flag
 		// in order to perform this test.
@@ -793,7 +793,7 @@ public class IWorkspaceTest {
 	 * Performs black box testing of the following method:
 	 *     IStatus validateName(String, int)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testValidateName() {
 		/* normal name */
 		assertTrue(getWorkspace().validateName("abcdef", IResource.FILE).isOK());
@@ -810,12 +810,12 @@ public class IWorkspaceTest {
 			assertFalse(getWorkspace().validateName("\\dsasf", IResource.FILE).isOK());
 			assertFalse(getWorkspace().validateName("...", IResource.PROJECT).isOK());
 			assertFalse(getWorkspace().validateName("foo.", IResource.FILE).isOK());
-			for (int i = 0; i <= 31; i++) {
-				assertFalse(getWorkspace().validateName("anything" + ((char) i) + "something", IResource.FILE).isOK(),
-						"Windows should NOT accept character #" + i);
+			for (int i = 0; i <= 31; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				assertFalse(getWorkspace().validateName("anything" + ((char) i) + "something", IResource.FILE).isOK(), //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+						"Windows should NOT accept character #" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
-			assertTrue(getWorkspace().validateName("anything" + ((char) 32) + "something", IResource.FILE).isOK(),
-					"Windows should accept character #" + 32);
+			assertTrue(getWorkspace().validateName("anything" + ((char) 32) + "something", IResource.FILE).isOK(), //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+					"Windows should accept character #" + 32); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			assertFalse(getWorkspace().validateName("foo ", IResource.FILE).isOK(),
 					"Windows should NOT accept space at the end");
 			assertTrue(getWorkspace().validateName("fo o", IResource.FILE).isOK(),
@@ -827,9 +827,9 @@ public class IWorkspaceTest {
 			assertTrue(getWorkspace().validateName("...", IResource.FILE).isOK());
 			assertTrue(getWorkspace().validateName("....", IResource.PROJECT).isOK());
 			assertTrue(getWorkspace().validateName("abc.", IResource.FILE).isOK());
-			for (int i = 1; i <= 32; i++) {
-				assertTrue(getWorkspace().validateName("anything" + ((char) i) + "something", IResource.FILE).isOK(),
-						"Unix-style filesystems should accept character #" + i);
+			for (int i = 1; i <= 32; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				assertTrue(getWorkspace().validateName("anything" + ((char) i) + "something", IResource.FILE).isOK(), //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+						"Unix-style filesystems should accept character #" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			assertTrue(getWorkspace().validateName("foo ", IResource.FILE).isOK(),
 					"Unix-style filesystems should accept space at the end");
@@ -858,16 +858,16 @@ public class IWorkspaceTest {
 		IWorkspace ws = getWorkspace();
 
 		String[][] invalid = getInvalidNatureSets();
-		for (int i = 0; i < invalid.length; i++) {
+		for (int i = 0; i < invalid.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IStatus result = ws.validateNatureSet(invalid[i]);
-			assertFalse(result.isOK(), "invalid (severity): " + i);
-			assertNotEquals(IStatus.OK, result.getCode(), "invalid (code): " + i);
+			assertFalse(result.isOK(), "invalid (severity): " + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertNotEquals(IStatus.OK, result.getCode(), "invalid (code): " + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		String[][] valid = getValidNatureSets();
-		for (int i = 0; i < valid.length; i++) {
+		for (int i = 0; i < valid.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IStatus result = ws.validateNatureSet(valid[i]);
-			assertTrue(result.isOK(), "valid (severity): " + i);
-			assertEquals(IStatus.OK, result.getCode(), "valid (code): " + i);
+			assertTrue(result.isOK(), "valid (severity): " + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			assertEquals(IStatus.OK, result.getCode(), "valid (code): " + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -875,7 +875,7 @@ public class IWorkspaceTest {
 	 * Performs black box testing of the following method:
 	 *     IStatus validatePath(String, int)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testValidatePath() {
 		/* normal path */
 		assertTrue(getWorkspace().validatePath("/one/two/three/four/", IResource.FILE | IResource.FOLDER).isOK());
@@ -933,7 +933,7 @@ public class IWorkspaceTest {
 	 * Performs black box testing of the following method:
 	 *     IStatus validateProjectLocation(IProject, IPath)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testValidateProjectLocation() throws CoreException {
 		IWorkspace workspace = getWorkspace();
 		IProject project = workspace.getRoot().getProject("Project");
@@ -1037,7 +1037,7 @@ public class IWorkspaceTest {
 			assertFalse(workspace.validateProjectLocation(open, openProjectLocation.append("sub")).isOK());
 
 			//an existing project cannot overlap the location of any linked resource in that project
-			linkLocation.toFile().mkdirs();
+			linkLocation.toFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			assertTrue(workspace.validateProjectLocation(open, linkLocation).isOK());
 			IFolder link = open.getFolder("link");
 			link.createLink(linkLocation, IResource.NONE, createTestMonitor());

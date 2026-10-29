@@ -61,7 +61,7 @@ public class DumperFactory {
 		IExtensionPoint dumpersPoint = Platform.getExtensionRegistry().getExtensionPoint(TOOLS_EXTENSION_POINT,
 				PT_METADATA_DUMPERS);
 		IConfigurationElement[] dumperDefinitions = dumpersPoint.getConfigurationElements();
-		for (IConfigurationElement dumperDefinition : dumperDefinitions) {
+		for (IConfigurationElement dumperDefinition : dumperDefinitions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (dumperDefinition.getName().equals(ELEM_DUMPER)) {
 				configuration.put(dumperDefinition.getAttribute(ATTR_FILE_NAME), dumperDefinition);
 			}
@@ -88,13 +88,13 @@ public class DumperFactory {
 	 * @throws DumpException if there is no dumper class registered for the
 	 * provided file name of if we cannot instanciate the dumper class
 	 */
-	public IDumper getDumper(String fileName) throws DumpException {
+	public IDumper getDumper(String fileName) throws DumpException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fileName = fileName.substring(fileName.lastIndexOf(File.separator) + 1);
 
 		Object dumper = configuration.get(fileName);
 
 		if (dumper == null) {
-			String NO_DUMPER_MSG = "There is no dumper class for <" + fileName + "> files"; //$NON-NLS-1$ //$NON-NLS-2$
+			String NO_DUMPER_MSG = "There is no dumper class for <" + fileName + "> files"; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			NO_DUMPER_MSG += getListOfDumperClass(configuration);
 			throw new DumpException(NO_DUMPER_MSG);
 		}
@@ -103,22 +103,22 @@ public class DumperFactory {
 			try {
 				return (IDumper) Class.forName((String) dumper).getDeclaredConstructor().newInstance();
 			} catch (Exception e) {
-				throw new DumpException("Error instantiating dumper named " + dumper + " for <" + fileName + "> file", e); //$NON-NLS-1$ //$NON-NLS-2$
+				throw new DumpException("Error instantiating dumper named " + dumper + " for <" + fileName + "> file", e); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		// dumper defined through extension mechanism
 		try {
 			return (IDumper) ((IConfigurationElement) dumper).createExecutableExtension("class"); //$NON-NLS-1$
 		} catch (CoreException ce) {
-			throw new DumpException("Error instantiating dumper for <" + fileName + "> file", ce); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new DumpException("Error instantiating dumper for <" + fileName + "> file", ce); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
 	private String getListOfDumperClass(Properties cfg) {
-		StringBuilder buf = new StringBuilder("\r\nList of files who have a dumper class");
-		for (String element : cfg.stringPropertyNames()) {
-			buf.append("\r\n");
-			buf.append(element);
+		StringBuilder buf = new StringBuilder("\r\nList of files who have a dumper class"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (String element : cfg.stringPropertyNames()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			buf.append("\r\n"); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			buf.append(element); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return buf.toString();
 	}

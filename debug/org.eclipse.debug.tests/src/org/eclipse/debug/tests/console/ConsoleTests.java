@@ -60,13 +60,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith({ DebugTestExtension.class, ConsoleExtension.class })
 public class ConsoleTests {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testConsoleOutputStreamEncoding(TestInfo testInfo) throws IOException {
 		String testString = "abc\u00e4\u00f6\u00fcdef";
 		// abcdef need 1 byte in UTF-8 each
 		// Ã¤Ã¶Ã¼ (\u00e4\u00f6\u00fc) need 2 bytes each
 		byte[] testStringBuffer = testString.getBytes(StandardCharsets.UTF_8);
-		assertThat(testStringBuffer).as("Test string \"" + testString + "\" should consist of 12 UTF-8 bytes").hasSize(12);
+		assertThat(testStringBuffer).as("Test string \"" + testString + "\" should consist of 12 UTF-8 bytes").hasSize(12); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		MessageConsole console = new MessageConsole("Test Console",
 				IConsoleConstants.MESSAGE_CONSOLE_TYPE, null, StandardCharsets.UTF_8.name(), true);
 		IDocument document = console.getDocument();
@@ -90,11 +90,11 @@ public class ConsoleTests {
 		assertEquals(testString, document.get(), "closing the stream should not alter the document");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testConsoleOutputStreamLastR(TestInfo testInfo) throws IOException {
 		String testString = "a\r";
 		byte[] testStringBuffer = testString.getBytes(StandardCharsets.UTF_8);
-		assertThat(testStringBuffer).as("Test string \"" + testString + "\" should consist of 2 UTF-8 bytes").hasSize(2);
+		assertThat(testStringBuffer).as("Test string \"" + testString + "\" should consist of 2 UTF-8 bytes").hasSize(2); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		MessageConsole console = new MessageConsole("Test Console 2",
 				IConsoleConstants.MESSAGE_CONSOLE_TYPE, null, StandardCharsets.UTF_8.name(), true);
 		IDocument document = console.getDocument();
@@ -145,7 +145,7 @@ public class ConsoleTests {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testConsoleOutputStreamDocumentStreamClosed() throws IOException {
 		MessageConsole console = new MessageConsole("Test Console 5",
 				IConsoleConstants.MESSAGE_CONSOLE_TYPE, null, StandardCharsets.UTF_8.name(), true);
@@ -183,7 +183,7 @@ public class ConsoleTests {
 	 * @see <a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=268608">bug
 	 *      268608</a>
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFindCommandsAreEnabledOnConsoleOpen(TestInfo testInfo) throws Exception {
 		IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		IViewPart consoleView = activePage.showView(IConsoleConstants.ID_CONSOLE_VIEW);
@@ -217,7 +217,7 @@ public class ConsoleTests {
 	 *
 	 * @throws Exception if test fails
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIOConsoleAvailable() throws Exception {
 		IOConsole console = new IOConsole("", null);
 		try (InputStream consoleInput = console.getInputStream()) {
@@ -252,7 +252,7 @@ public class ConsoleTests {
 	 * type, with its own natural font) that was already open must not be
 	 * affected.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testZoomOnlyAffectsActiveConsoleType(TestInfo testInfo) throws Exception {
 		IConsoleView consoleView = showConsoleView();
 		MessageConsole activeConsole = createConsole("Zoom Active Console", uniqueConsoleType("active"));
@@ -288,7 +288,7 @@ public class ConsoleTests {
 	 * before confirming that a second, later change is genuinely honored.
 	 * </p>
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreferenceFontChangeOverridesZoom(TestInfo testInfo) throws Exception {
 		IConsoleView consoleView = showConsoleView();
 		MessageConsole console = createConsole("Zoom Preference Console", uniqueConsoleType("pref"));
@@ -333,7 +333,7 @@ public class ConsoleTests {
 	 * The current zoom level (base font height and delta) must be persisted
 	 * to the console plug-in's preferences as soon as a zoom step is applied.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testZoomLevelIsPersisted(TestInfo testInfo) throws Exception {
 		String type = uniqueConsoleType("persist");
 
@@ -347,7 +347,7 @@ public class ConsoleTests {
 			ConsoleZoomHandler.applyZoom(consoleView, 1);
 			TestUtil.processUIEvents();
 
-			String expectedEntry = type + "=" + naturalHeight + "|" + 1;
+			String expectedEntry = type + "=" + naturalHeight + "|" + 1; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			assertThat(getPersistedZoomState())
 					.as("persisted zoom state should contain an entry for the zoomed console type")
 					.contains(expectedEntry);
@@ -362,7 +362,7 @@ public class ConsoleTests {
 	 * immediately start at the current zoom level for that type - even
 	 * though it was never itself shown in the active console view.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNewConsoleOfAlreadyZoomedTypeInheritsZoom(TestInfo testInfo) throws Exception {
 		String type = uniqueConsoleType("inherit");
 
@@ -393,7 +393,7 @@ public class ConsoleTests {
 	/**
 	 * Zooming out must decrease the font size, mirroring zoom in.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testZoomOutDecreasesFontSize(TestInfo testInfo) throws Exception {
 		IConsoleView consoleView = showConsoleView();
 		MessageConsole console = createConsole("Zoom Out Console", uniqueConsoleType("zoomOut"));
@@ -428,7 +428,7 @@ public class ConsoleTests {
 	 * The font height must never go below the minimum, nor above the maximum
 	 * supported font size, regardless of how large a zoom delta is applied.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testZoomClampsAtMinimumAndMaximumFontSize(TestInfo testInfo) throws Exception {
 		IConsoleView consoleView = showConsoleView();
 		MessageConsole console = createConsole("Zoom Clamp Console", uniqueConsoleType("clamp"));
@@ -455,7 +455,7 @@ public class ConsoleTests {
 	 * is not leaked (see also the {@code SWT Resource was not properly
 	 * disposed} regression this guards against).
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRemovingConsoleDisposesZoomFont(TestInfo testInfo) throws Exception {
 		IConsoleView consoleView = showConsoleView();
 		MessageConsole console = createConsole("Zoom Dispose Console", uniqueConsoleType("disposeOnRemove"));
@@ -470,7 +470,7 @@ public class ConsoleTests {
 
 			removeConsoles(console);
 			TestUtil.waitWhile(() -> getConsoleManager().getConsoles().length > 0, 60_000,
-					() -> "Should have no consoles after removal, but some are still present: "
+					() -> "Should have no consoles after removal, but some are still present: " //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							+ Arrays.toString(getConsoleManager().getConsoles()));
 			// the zoom fonts are disposed a UI cycle later, see ConsoleZoomHandler
 			TestUtil.waitWhile(() -> !zoomFont.isDisposed(), 10_000,
@@ -486,7 +486,7 @@ public class ConsoleTests {
 	 * while the console view is the active part must zoom the console it is
 	 * currently showing.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testZoomCommandExecutesWhileConsoleViewActive(TestInfo testInfo) throws Exception {
 		IConsoleView consoleView = showConsoleView();
 		MessageConsole console = createConsole("Zoom Command Console", uniqueConsoleType("command"));
@@ -574,7 +574,7 @@ public class ConsoleTests {
 	}
 
 	private static void dispose(Font... fonts) {
-		for (Font font : fonts) {
+		for (Font font : fonts) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (font != null && !font.isDisposed()) {
 				font.dispose();
 			}
@@ -582,7 +582,7 @@ public class ConsoleTests {
 	}
 
 	private static String uniqueConsoleType(String suffix) {
-		return "org.eclipse.debug.tests.console.zoomTest." + suffix + "." + System.nanoTime();
+		return "org.eclipse.debug.tests.console.zoomTest." + suffix + "." + System.nanoTime(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private static int getFontHeight(TextConsole console) {

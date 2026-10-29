@@ -51,17 +51,17 @@ public class SafeFileOutputStream extends OutputStream {
 		failed = false;
 		target = new File(targetPath);
 		createTempFile(tempPath);
-		if (!target.exists()) {
-			if (!temp.exists()) {
-				output = new BufferedOutputStream(new FileOutputStream(target));
+		if (!target.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			if (!temp.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+				output = new BufferedOutputStream(new FileOutputStream(target)); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 				return;
 			}
 			// If we do not have a file at target location, but we do have at temp location,
 			// it probably means something wrong happened the last time we tried to write it.
 			// So, try to recover the backup file. And, if successful, write the new one.
-			Files.copy(temp.toPath(), target.toPath());
+			Files.copy(temp.toPath(), target.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
-		output = new BufferedOutputStream(new FileOutputStream(temp));
+		output = new BufferedOutputStream(new FileOutputStream(temp)); //FLLDCIM: MARK — M31 M3FILE_IO NEW
 	}
 
 	@Override
@@ -73,28 +73,28 @@ public class SafeFileOutputStream extends OutputStream {
 			throw e; // rethrow
 		}
 		if (failed) {
-			temp.delete();
+			temp.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		} else {
 			commit();
 		}
 	}
 
 	protected void commit() throws IOException {
-		if (!temp.exists()) {
+		if (!temp.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			return;
 		}
 		try {
 			// a rename does not rewrite the bytes and never leaves a partially written target
-			Files.move(temp.toPath(), target.toPath(), StandardCopyOption.ATOMIC_MOVE);
+			Files.move(temp.toPath(), target.toPath(), StandardCopyOption.ATOMIC_MOVE); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		} catch (AtomicMoveNotSupportedException e) {
-			Files.copy(temp.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
-			temp.delete();
+			Files.copy(temp.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			temp.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 	}
 
 	protected void createTempFile(String tempPath) {
 		if (tempPath == null) {
-			tempPath = target.getAbsolutePath() + EXTENSION;
+			tempPath = target.getAbsolutePath() + EXTENSION; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		temp = new File(tempPath);
 	}

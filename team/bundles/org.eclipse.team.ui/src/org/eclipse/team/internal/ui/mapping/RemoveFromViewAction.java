@@ -37,7 +37,7 @@ import org.eclipse.ui.PlatformUI;
 /**
  * Remove the selected elements from the page
  */
-public class RemoveFromViewAction extends ResourceModelParticipantAction {
+public class RemoveFromViewAction extends ResourceModelParticipantAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 	public RemoveFromViewAction(ISynchronizePageConfiguration configuration) {
 		super(null, configuration);
@@ -49,7 +49,7 @@ public class RemoveFromViewAction extends ResourceModelParticipantAction {
 	public void run() {
 		if (confirmRemove()) {
 			try {
-				PlatformUI.getWorkbench().getProgressService().run(true, true, monitor -> {
+				PlatformUI.getWorkbench().getProgressService().run(true, true, monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 					try {
 						performRemove(monitor);
 					} catch (CoreException e) {
@@ -72,7 +72,7 @@ public class RemoveFromViewAction extends ResourceModelParticipantAction {
 		ResourceDiffTree tree = (ResourceDiffTree)getSynchronizationContext().getDiffTree();
 		try {
 			tree.beginInput();
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				tree.remove(resource);
 			}
 		} finally {
@@ -83,8 +83,8 @@ public class RemoveFromViewAction extends ResourceModelParticipantAction {
 	private IResource[] getVisibleResources(IProgressMonitor monitor) throws CoreException {
 		ResourceTraversal[] traversals = getResourceTraversals(getStructuredSelection(), monitor);
 		IDiff[] diffs = getSynchronizationContext().getDiffTree().getDiffs(traversals);
-		List<IResource> result = new ArrayList<>();
-		for (IDiff diff : diffs) {
+		List<IResource> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IDiff diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isVisible(diff)) {
 				result.add(ResourceDiffTree.getResourceFor(diff));
 			}
@@ -116,7 +116,7 @@ public class RemoveFromViewAction extends ResourceModelParticipantAction {
 		if (selection.isEmpty()) {
 			return false;
 		}
-		for (Object element : selection) {
+		for (Object element : selection) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (Utils.getResource(element) == null) {
 				return false;
 			}

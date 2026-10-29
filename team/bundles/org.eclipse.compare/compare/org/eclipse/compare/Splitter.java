@@ -71,7 +71,7 @@ public class Splitter extends SashForm {
 	 * @param child the child control for which the visibility is changed
 	 * @param visible the new visibility state
 	 */
-	public void setVisible(Control child, boolean visible) {
+	public void setVisible(Control child, boolean visible) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		boolean wasEmpty= isEmpty();
 
@@ -116,7 +116,7 @@ public class Splitter extends SashForm {
 	 */
 	private boolean isEmpty() {
 		Control[] controls= getChildren();
-		for (Control control : controls) {
+		for (Control control : controls) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isVisible(control)) {
 				return false;
 			}

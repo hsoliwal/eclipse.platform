@@ -44,7 +44,7 @@ import org.eclipse.team.internal.core.Policy;
 public abstract class SubscriberEventHandler extends BackgroundEventHandler {
 
 	// Changes accumulated by the event handler
-	private final List<Event> resultCache = new ArrayList<>();
+	private final List<Event> resultCache = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	private boolean started = false;
 	private boolean initializing = true;
@@ -100,7 +100,7 @@ public abstract class SubscriberEventHandler extends BackgroundEventHandler {
 		this.subscriber = subscriber;
 		this.scope = scope;
 		scopeChangeListener = (scope1, unused, unused2) -> reset(new ResourceTraversal[0], scope1.getTraversals());
-		this.scope.addScopeChangeListener(scopeChangeListener);
+		this.scope.addScopeChangeListener(scopeChangeListener); //FLLDCIM: MARK — T38 TEAM_SYNC_ADAPTER CALL
 	}
 
 	/**
@@ -184,7 +184,7 @@ public abstract class SubscriberEventHandler extends BackgroundEventHandler {
 	 * Collect the calculated synchronization information for the given resource at the given depth. The
 	 * results are added to the provided list.
 	 */
-	private void collect(
+	private void collect( //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IResource resource,
 		int depth,
 		IProgressMonitor monitor) {
@@ -199,7 +199,7 @@ public abstract class SubscriberEventHandler extends BackgroundEventHandler {
 			try {
 				IResource[] members =
 					getSubscriber().members(resource);
-				for (IResource member : members) {
+				for (IResource member : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					collect(member, depth == IResource.DEPTH_INFINITE
 							? IResource.DEPTH_INFINITE
 							: IResource.DEPTH_ZERO, monitor);
@@ -284,15 +284,15 @@ public abstract class SubscriberEventHandler extends BackgroundEventHandler {
 	 *   optimized recalculation if supported by the subscriber.
 	 */
 	protected void reset(ResourceTraversal[] traversals, int type) {
-		for (ResourceTraversal traversal : traversals) {
+		for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource[] resources = traversal.getResources();
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				queueEvent(new SubscriberEvent(resource, type, traversal.getDepth()), false);
 			}
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void processEvent(Event event, IProgressMonitor monitor) {
 		try {
 			// Cancellation is dangerous because this will leave the sync info in a bad state.

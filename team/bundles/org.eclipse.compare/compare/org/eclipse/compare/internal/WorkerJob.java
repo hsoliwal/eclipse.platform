@@ -49,8 +49,8 @@ public class WorkerJob extends Job {
 		if (errors.length == 1) {
 			return new Status(IStatus.ERROR, CompareUIPlugin.PLUGIN_ID, 0, errors[0].getMessage(), errors[0]);
 		}
-		List<IStatus> statii = new ArrayList<>();
-		for (Throwable throwable : errors) {
+		List<IStatus> statii = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Throwable throwable : errors) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			statii.add(new Status(IStatus.ERROR, CompareUIPlugin.PLUGIN_ID, 0, errors[0].getMessage(), throwable));
 		}
 		return new MultiStatus(CompareUIPlugin.PLUGIN_ID, 0, statii.toArray(new IStatus[statii.size()]), CompareMessages.WorkerJob_0, null);

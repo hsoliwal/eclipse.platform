@@ -65,7 +65,7 @@ public class StreamsProxyTests {
 	 * @param numTwoByteCharacters number of two byte UTF-8 characters to output
 	 */
 	private void receiveUTF8Test(String prefix, int numTwoByteCharacters) throws Exception {
-		final String s = prefix + String.join("", Collections.nCopies(numTwoByteCharacters, "\u00F8"));
+		final String s = prefix + String.join("", Collections.nCopies(numTwoByteCharacters, "\u00F8")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		final ByteArrayInputStream stdout = new ByteArrayInputStream(s.getBytes(StandardCharsets.UTF_8));
 		final Process mockProcess = new MockProcess(stdout, null, 0);
 		final StreamsProxy streamProxy = new StreamsProxy(mockProcess, StandardCharsets.UTF_8, "");

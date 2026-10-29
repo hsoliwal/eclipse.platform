@@ -54,7 +54,7 @@ public class CounterPanel extends Composite {
 		fNumberOfErrors = createLabel(Messages.CounterPanel_label_errors, fErrorIcon, " 0 "); //$NON-NLS-1$
 		fNumberOfFailures = createLabel(Messages.CounterPanel_label_failures, fFailureIcon, " 0 "); //$NON-NLS-1$
 
-		addDisposeListener(unused -> disposeIcons());
+		addDisposeListener(unused -> disposeIcons()); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 	}
 
 	private void disposeIcons() {
@@ -62,7 +62,7 @@ public class CounterPanel extends Composite {
 		fFailureIcon.dispose();
 	}
 
-	private Text createLabel(String name, Image image, String init) {
+	private Text createLabel(String name, Image image, String init) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Label label = new Label(this, SWT.NONE);
 		if (image != null) {
 			image.setBackground(label.getBackground());
@@ -108,7 +108,7 @@ public class CounterPanel extends Composite {
 	 * @param ignoredCount           an ignored tests counter value
 	 * @param assumptionFailureCount a number of assumption failure counter value
 	 */
-	public void setRunValue(int value, int ignoredCount, int assumptionFailureCount) {
+	public void setRunValue(int value, int ignoredCount, int assumptionFailureCount) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String runString;
 		String runStringTooltip;
 		String totalString = fTotal == null ? "?" : fTotal.toString(); //$NON-NLS-1$

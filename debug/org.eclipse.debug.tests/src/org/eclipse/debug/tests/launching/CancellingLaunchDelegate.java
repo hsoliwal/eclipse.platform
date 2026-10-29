@@ -28,7 +28,7 @@ import org.eclipse.debug.core.model.ISourceLocator;
  */
 public class CancellingLaunchDelegate implements ILaunchConfigurationDelegate2 {
 
-	class CancellingLaunch extends Launch {
+	class CancellingLaunch extends Launch { //FLLDCIM: MARK — T27  IMPLEMENTS
 
 		public CancellingLaunch(ILaunchConfiguration launchConfiguration, String mode, ISourceLocator locator) {
 			super(launchConfiguration, mode, locator);

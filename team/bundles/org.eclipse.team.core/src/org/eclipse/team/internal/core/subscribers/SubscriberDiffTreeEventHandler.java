@@ -76,7 +76,7 @@ public class SubscriberDiffTreeEventHandler extends SubscriberEventHandler {
 	/*
 	 * Collects resource and subscriber changes
 	 */
-	private class SubscriberDiffCollector extends SubscriberResourceCollector {
+	private class SubscriberDiffCollector extends SubscriberResourceCollector { //FLLDCIM: MARK — T07  IMPLEMENTS
 
 		public SubscriberDiffCollector(Subscriber subscriber) {
 			super(subscriber);
@@ -113,13 +113,13 @@ public class SubscriberDiffTreeEventHandler extends SubscriberEventHandler {
 		this.filter = filter;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void reset(ResourceTraversal[] traversals, int type) {
 		// Reset the exception state since we are reseting
 		exceptionState = EXCEPTION_NONE;
 		if (!manager.isInitialized() && state == STATE_OK_TO_INITIALIZE) {
 			// This means the scope has not been initialized
-			queueEvent(new RunnableEvent(monitor -> {
+			queueEvent(new RunnableEvent(monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 				// Only initialize the scope if we are in the STARTED state
 				if (state == STATE_OK_TO_INITIALIZE) {
 					try {
@@ -178,7 +178,7 @@ public class SubscriberDiffTreeEventHandler extends SubscriberEventHandler {
 		return manager.getScope().contains(resource);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void collectAll(IResource resource, int depth,
 			final IProgressMonitor monitor) {
 		Policy.checkCanceled(monitor);
@@ -205,12 +205,12 @@ public class SubscriberDiffTreeEventHandler extends SubscriberEventHandler {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void dispatchEvents(SubscriberEvent[] events,
 			IProgressMonitor monitor) {
 		try {
 			tree.beginInput();
-			for (SubscriberEvent event : events) {
+			for (SubscriberEvent event : events) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				switch (event.getType()) {
 					case SubscriberEvent.CHANGE :
 						if (event instanceof SubscriberDiffChangedEvent se) {
@@ -224,7 +224,7 @@ public class SubscriberDiffTreeEventHandler extends SubscriberEventHandler {
 						break;
 					case SubscriberEvent.REMOVAL:
 						IDiff[] nodesToRemove = tree.getDiffs(new ResourceTraversal[] { event.asTraversal() });
-						for (IDiff node : nodesToRemove) {
+						for (IDiff node : nodesToRemove) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 							tree.remove(node.getPath());
 						}
 						break;

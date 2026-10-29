@@ -38,7 +38,7 @@ package org.eclipse.debug.examples.core.pda.protocol;
 public class PDAEvalCommand extends PDACommand {
 
 	public PDAEvalCommand(int threadId, String operation) {
-		super("eval " + threadId + " " + operation); //$NON-NLS-1$ //$NON-NLS-2$
+		super("eval " + threadId + " " + operation); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Override

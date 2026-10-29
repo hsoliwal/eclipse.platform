@@ -111,7 +111,7 @@ public class FileTypeTable implements ICellModifier, IStructuredContentProvider,
 	private final List fItems;
 	private final boolean fShowSaveColumn;
 
-	public FileTypeTable(Composite composite, List items, boolean showSaveColumn) {
+	public FileTypeTable(Composite composite, List items, boolean showSaveColumn) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		fShowSaveColumn= showSaveColumn;
 		fItems= items;
@@ -178,7 +178,7 @@ public class FileTypeTable implements ICellModifier, IStructuredContentProvider,
 		 */
 		fTableViewer = new TableViewer(table);
 		fTableViewer.setContentProvider(this);
-		fTableViewer.setLabelProvider(this);
+		fTableViewer.setLabelProvider(this); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
 		fTableViewer.setComparator(new FileTypeComparator());
 
 		/**
@@ -199,10 +199,10 @@ public class FileTypeTable implements ICellModifier, IStructuredContentProvider,
 
 		fTableViewer.setCellModifier(this);
 
-		fTableViewer.setInput(fItems);
+		fTableViewer.setInput(fItems); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 
 
-		ViewerFilter tableFilter = new ViewerFilter() {
+		ViewerFilter tableFilter = new ViewerFilter() { //FLLDCIM: MARK — T23  ANONYMOUS
 			@Override
 			public boolean select(Viewer viewer, Object parentElement, Object element) {
 				String inputText = filterText.getText().toLowerCase().trim();
@@ -216,12 +216,12 @@ public class FileTypeTable implements ICellModifier, IStructuredContentProvider,
 			}
 		};
 
-		fTableViewer.addFilter(tableFilter);
-		filterText.addModifyListener(unused -> fTableViewer.refresh());
+		fTableViewer.addFilter(tableFilter); //FLLDCIM: MARK — T23 FILTER_LANE CALL
+		filterText.addModifyListener(unused -> fTableViewer.refresh()); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 	}
 
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Object getValue(Object element, String property) {
 
 		final Item item= (Item)element;
@@ -246,7 +246,7 @@ public class FileTypeTable implements ICellModifier, IStructuredContentProvider,
 		return PROPERTY_MODE.equals(property) || (fShowSaveColumn && PROPERTY_SAVE.equals(property));
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void modify(Object element, String property, Object value) {
 
 		final IStructuredSelection selection = fTableViewer.getStructuredSelection();
@@ -269,7 +269,7 @@ public class FileTypeTable implements ICellModifier, IStructuredContentProvider,
 		if (fShowSaveColumn && PROPERTY_SAVE.equals(property)) {
 			item.save= COMBO_INDEX_SAVE == comboIndex;
 		}
-		fTableViewer.refresh(item);
+		fTableViewer.refresh(item); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 	}
 
 	@Override
@@ -277,13 +277,13 @@ public class FileTypeTable implements ICellModifier, IStructuredContentProvider,
 		return null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String getColumnText(Object element, int columnIndex) {
 
 		final Item item = (Item) element;
 
 		if (columnIndex == 0) {
-			String label = (item instanceof Extension ? "*." : "") + item.name; //$NON-NLS-1$ //$NON-NLS-2$
+			String label = (item instanceof Extension ? "*." : "") + item.name; //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			label = TextProcessor.process(label, ".*"); //$NON-NLS-1$
 			return label;
 		}
@@ -334,7 +334,7 @@ public class FileTypeTable implements ICellModifier, IStructuredContentProvider,
 	public void setInput(List items) {
 		fItems.clear();
 		fItems.addAll(items);
-		fTableViewer.refresh();
+		fTableViewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 	}
 
 	public TableViewer getViewer() {

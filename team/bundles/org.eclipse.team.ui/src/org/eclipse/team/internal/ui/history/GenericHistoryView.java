@@ -75,7 +75,7 @@ import org.eclipse.ui.part.PluginTransfer;
 import org.eclipse.ui.part.ResourceTransfer;
 import org.eclipse.ui.part.ShowInContext;
 
-public class GenericHistoryView extends PageBookView implements IHistoryView, IPropertyChangeListener, IShowInTarget {
+public class GenericHistoryView extends PageBookView implements IHistoryView, IPropertyChangeListener, IShowInTarget { //FLLDCIM: MARK — T20  IMPLEMENTS
 	private static final String HISTORY_VIEW_GROUP = "org.eclipse.team.ui.historyView"; //$NON-NLS-1$
 	private static final String NAVIGATION_GROUP = "org.eclipse.team.ui.navigation"; //$NON-NLS-1$
 	private static final int MAX_NAVIGATION_HISTORY_ENTRIES = 15;
@@ -107,7 +107,7 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 	 * The history adds the MRU to the end so basic navigation goes backwards.
 	 */
 	class NavigationHistory {
-		List<NavigationHistoryEntry> history = new ArrayList<>();
+		List<NavigationHistoryEntry> history = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		int position;
 		private boolean navigating;
 
@@ -178,7 +178,7 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 		public void updateName(IHistoryPage historyPage,
 				IHistoryPageSource pageSource) {
 			NavigationHistoryEntry[] historyEntries = getEntries();
-			for (NavigationHistoryEntry historyEntry : historyEntries) {
+			for (NavigationHistoryEntry historyEntry : historyEntries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (historyEntry.matches(historyPage, pageSource)) {
 					historyEntry.name = historyPage.getName();
 				}
@@ -236,7 +236,7 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 				menuManager = new MenuManager();
 				fMenu = menuManager.createContextMenu(parent);
 				IAction[] actions = getDropDownActions();
-				for (int i = actions.length - 1; i >= 0 ; i--) {
+				for (int i = actions.length - 1; i >= 0 ; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IAction action = actions[i];
 					menuManager.add(action);
 				}
@@ -285,8 +285,8 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 
 		private IAction[] createActions() {
 			NavigationHistoryEntry[] entries = getDropDownEntries();
-			List<NavigationHistoryEntryAction> actions = new ArrayList<>();
-			for (NavigationHistoryEntry navigationHistoryEntry : entries) {
+			List<NavigationHistoryEntryAction> actions = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (NavigationHistoryEntry navigationHistoryEntry : entries) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				actions.add(new NavigationHistoryEntryAction(navigationHistoryEntry));
 			}
 			return actions.toArray(new IAction[actions.size()]);
@@ -316,7 +316,7 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 
 		private void updateCheckState() {
 			IAction[] actions = getActions();
-			for (IAction action : actions) {
+			for (IAction action : actions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (action instanceof NavigationHistoryEntryAction a) {
 					a.update();
 				}
@@ -387,7 +387,7 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 	private final ISelectionListener selectionListener = new ISelectionListener() {
 		private boolean isUpdatingSelection = false;
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 			if (isUpdatingSelection) {
 				return;
@@ -454,7 +454,7 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 		getSite().getPage().addPostSelectionListener(selectionListener);
 	}
 
-	private void configureToolbars(IActionBars actionBars) {
+	private void configureToolbars(IActionBars actionBars) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		pinAction = new Action(TeamUIMessages.GenericHistoryView_PinCurrentHistory, TeamUIPlugin.getImageDescriptor(ITeamUIImages.IMG_PINNED)) {
 			@Override
 			public void run() {
@@ -543,7 +543,7 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 		dropTarget = new DropTarget(getPageBook(), ops);
 		dropTarget.setTransfer(transfers);
 		dropAdapter = new GenericHistoryDropAdapter(this);
-		dropTarget.addDropListener(dropAdapter);
+		dropTarget.addDropListener(dropAdapter); //FLLDCIM: MARK — T25 DND CALL
 	}
 
 	@Override
@@ -554,7 +554,7 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 		getCurrentPage().setFocus();
 	}
 
-	private void showLastSelectedElement() {
+	private void showLastSelectedElement() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (lastSelectedElement != null) {
 			if (lastSelectedElement instanceof IEditorPart) {
 				editorActivated((IEditorPart)lastSelectedElement);
@@ -597,11 +597,11 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 		return showHistoryPageFor(object, true, force, null);
 	}
 
-	public IHistoryPage showHistoryPageFor(Object object, boolean refresh, boolean force, IHistoryPageSource pageSource) {
+	public IHistoryPage showHistoryPageFor(Object object, boolean refresh, boolean force, IHistoryPageSource pageSource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		lastSelectedElement= null;
 		if (Policy.DEBUG_HISTORY) {
 			String time = new SimpleDateFormat("m:ss.SSS").format(new Date(System.currentTimeMillis())); //$NON-NLS-1$
-			System.out.println(time + ": GenericHistoryView#showHistoryPageFor, the object to show is: " + object); //$NON-NLS-1$
+			System.out.println(time + ": GenericHistoryView#showHistoryPageFor, the object to show is: " + object); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		// Check to see if history view is visible - if it's not, don't bother
@@ -635,13 +635,13 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 
 		if (Policy.DEBUG_HISTORY) {
 			String time = new SimpleDateFormat("m:ss.SSS").format(new Date(System.currentTimeMillis())); //$NON-NLS-1$
-			System.out.println(time + ": GenericHistoryView#showHistoryPageFor, the page showing the history is: " + getHistoryPage()); //$NON-NLS-1$
+			System.out.println(time + ": GenericHistoryView#showHistoryPageFor, the page showing the history is: " + getHistoryPage()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		return getHistoryPage();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected PageRec getPageRec(IWorkbenchPart part) {
 		PageRec rec = super.getPageRec(part);
 		if (rec != null) {
@@ -665,7 +665,7 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 		return rec;
 	}
 
-	private IHistoryPageSource getPageSourceFor(Object object, IHistoryPageSource pageSource) {
+	private IHistoryPageSource getPageSourceFor(Object object, IHistoryPageSource pageSource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (object == null || pageSource != null) {
 			return pageSource;
 		}
@@ -694,7 +694,7 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 		}
 	}
 
-	private IHistoryPage handlePinnedView(Object object, boolean refresh, IHistoryPageSource source) {
+	private IHistoryPage handlePinnedView(Object object, boolean refresh, IHistoryPageSource source) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		try {
 			// Check to see if an unpinned version of the history view exists
 			GenericHistoryView historyView = findUnpinnedHistoryView();
@@ -703,7 +703,7 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 				return historyView.showHistoryPageFor(object, refresh, true, source);
 			}
 			// Otherwise, open another instance of the view
-			String id = VIEW_ID + System.currentTimeMillis();
+			String id = VIEW_ID + System.currentTimeMillis(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			IViewPart view = getSite().getPage().showView(VIEW_ID, id, IWorkbenchPage.VIEW_CREATE);
 			getSite().getPage().activate(view);
 			if (view instanceof GenericHistoryView) {
@@ -746,7 +746,7 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 	private IHistoryPage searchHistoryViewsForObject(Object object, boolean  refresh, IHistoryPageSource pageSource) {
 		IWorkbenchPage page = getSite().getPage();
 		IViewReference[] historyViews = page.getViewReferences();
-		for (IViewReference h : historyViews) {
+		for (IViewReference h : historyViews) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (h.getId().equals(VIEW_ID)) {
 				IViewPart historyView = h.getView(true);
 				if (historyView instanceof GenericHistoryView ghv) {
@@ -763,7 +763,7 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 	public GenericHistoryView findUnpinnedHistoryView(){
 		IWorkbenchPage page = getSite().getPage();
 		IViewReference[] historyViews = page.getViewReferences();
-		for (IViewReference h : historyViews) {
+		for (IViewReference h : historyViews) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (h.getId().equals(VIEW_ID)) {
 				IViewPart historyView = h.getView(false);
 				if (!((GenericHistoryView)historyView).isViewPinned()) {
@@ -786,7 +786,7 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 		if (page != null) {
 			initPage(page);
 			IHistoryPage historyPage = (IHistoryPage) page;
-			historyPage.addPropertyChangeListener(this);
+			historyPage.addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 			historyPage.setSite(new WorkbenchHistoryPageSite(this, page.getSite()));
 			page.createControl(getPageBook());
 			historyPage.setInput(p.getObject());
@@ -835,7 +835,7 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 	 *
 	 * @param editor the active editor
 	 */
-	protected void editorActivated(IEditorPart editor) {
+	protected void editorActivated(IEditorPart editor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		lastSelectedElement= editor;
 
 		// Only fetch contents if the view is shown in the current page.
@@ -887,7 +887,7 @@ public class GenericHistoryView extends PageBookView implements IHistoryView, IP
 	public void propertyChange(PropertyChangeEvent event) {
 		if (event.getSource() == getCurrentPage()) {
 			if (event.getProperty().equals(IHistoryPage.P_NAME)) {
-				Display.getDefault().asyncExec(() -> {
+				Display.getDefault().asyncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 					IHistoryPage historyPage = getHistoryPage();
 					setContentDescription(historyPage.getName());
 					navigationHistory.updateName(historyPage, getPageSourceFor(historyPage.getInput(), null));

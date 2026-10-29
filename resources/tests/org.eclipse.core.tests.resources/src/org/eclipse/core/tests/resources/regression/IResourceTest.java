@@ -104,7 +104,7 @@ public class IResourceTest {
 		assertThat(destination).matches(IFile::exists, "exists");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug28790() throws CoreException {
 		assumeTrue(isAttributeSupported(EFS.ATTRIBUTE_ARCHIVE),
 				"only relevant for platforms supporting archive attribute");
@@ -130,7 +130,7 @@ public class IResourceTest {
 	 */
 	@Test
 	public void testBug31750() {
-		IResourceProxyVisitor visitor = unused -> {
+		IResourceProxyVisitor visitor = unused -> { //FLLDCIM: MARK — T07  LAMBDA
 			throw new OperationCanceledException();
 		};
 		assertThrows(OperationCanceledException.class, () -> getWorkspace().getRoot().accept(visitor, IResource.NONE));
@@ -141,7 +141,7 @@ public class IResourceTest {
 	 * all in one operation should not appear in the resource delta for
 	 * clients that are not interested in phantoms.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug35991() throws Throwable {
 		IProject project = getWorkspace().getRoot().getProject("MyProject");
 		final IFile file = project.getFile("file1");
@@ -152,7 +152,7 @@ public class IResourceTest {
 		getWorkspace().getSynchronizer().setSyncInfo(name, file, new byte[] { 1 });
 		final boolean[] seen = new boolean[] {false};
 		final boolean[] phantomSeen = new boolean[] {false};
-		class DeltaVisitor implements IResourceDeltaVisitor {
+		class DeltaVisitor implements IResourceDeltaVisitor { //FLLDCIM: MARK — T07  IMPLEMENTS
 			private final boolean[] mySeen;
 
 			DeltaVisitor(boolean[] mySeen) {
@@ -170,7 +170,7 @@ public class IResourceTest {
 
 		final AtomicReference<Executable> listenerInMainThreadCallback = new AtomicReference<>(() -> {
 		});
-		IResourceChangeListener listener = event -> {
+		IResourceChangeListener listener = event -> { //FLLDCIM: MARK — T07  LAMBDA
 			IResourceDelta delta = event.getDelta();
 			if (delta == null) {
 				return;
@@ -188,7 +188,7 @@ public class IResourceTest {
 			getWorkspace().addResourceChangeListener(listener, IResourceChangeEvent.POST_CHANGE);
 
 			// removing and adding sync info causes phantom to be deleted and recreated
-			getWorkspace().run((IWorkspaceRunnable) unused -> {
+			getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 				ISynchronizer synchronizer = getWorkspace().getSynchronizer();
 				synchronizer.flushSyncInfo(name, file, IResource.DEPTH_INFINITE);
 				synchronizer.setSyncInfo(name, file, new byte[] { 1 });
@@ -233,7 +233,7 @@ public class IResourceTest {
 	/**
 	 * 1GA6QJP: ITPCORE:ALL - Copying a resource does not copy its lastmodified time
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCopy_1GA6QJP() throws CoreException, InterruptedException {
 		IProject project = getWorkspace().getRoot().getProject("MyProject");
 		IFile source = project.getFile("file1");
@@ -247,17 +247,17 @@ public class IResourceTest {
 		source.copy(destinationPath, true, createTestMonitor());
 
 		IFile destination = project.getFile(destinationPath);
-		long expected = source.getLocation().toFile().lastModified();
-		long actual = destination.getLocation().toFile().lastModified();
+		long expected = source.getLocation().toFile().lastModified(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		long actual = destination.getLocation().toFile().lastModified(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		// java.io.File.lastModified() has only second accuracy on some OSes
 		long difference = Math.abs(expected - actual);
-		assertTrue(difference <= 1000, "time difference>1000ms: " + difference);
+		assertTrue(difference <= 1000, "time difference>1000ms: " + difference); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
 	 * 1FW87XF: ITPUI:WIN2000 - Can create 2 files with same name
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreate_1FW87XF() throws Throwable {
 		assumeTrue(OS.isLinux(), "only relevant on Linux");
 
@@ -304,17 +304,17 @@ public class IResourceTest {
 	/**
 	 * 1FWYTKT: ITPCORE:WINNT - Error creating folder with long name
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCreate_1FWYTKT() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("MyProject");
 		project.create(null);
 		project.open(null);
 
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < 260; i++) {
-			sb.append('a');
+		StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < 260; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			sb.append('a'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		sb.append('b');
+		sb.append('b'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		IFolder folder = project.getFolder(sb.toString());
 		assertThrows(CoreException.class, () -> folder.create(true, true, null));
 		assertThat(folder).matches(not(IFolder::exists), "not exists");
@@ -354,7 +354,7 @@ public class IResourceTest {
 	 * when we try to delete a read-only resource. It will depend on the
 	 * OS and file system.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Disabled("This test cannot be done automatically because we don't know in that file system we are running. Will leave test here in case it needs to be run it in a special environment.")
 	public void testDelete_1GD3ZUZ() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("MyProject");
@@ -378,7 +378,7 @@ public class IResourceTest {
 		removeFromWorkspace(new IResource[] {project, file});
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDelete_Bug8754() throws Exception {
 		//In this test, we delete with force false on a file that does not exist in the file system,
 		//and ensure that the returned exception is of type OUT_OF_SYNC_LOCAL
@@ -424,7 +424,7 @@ public class IResourceTest {
 	/**
 	 * 1GA6QYV: ITPCORE:ALL - IContainer.findMember( Path, boolean ) breaking API
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFindMember_1GA6QYV() throws CoreException {
 		IProject project = getWorkspace().getRoot().getProject("MyProject");
 		project.create(createTestMonitor());
@@ -449,7 +449,7 @@ public class IResourceTest {
 	/**
 	 * 1GBZD4S: ITPCORE:API - IFile.getContents(true) fails if performed during delta notification
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetContents_1GBZD4S() throws Throwable {
 		IProject project = getWorkspace().getRoot().getProject("MyProject");
 		project.create(null);
@@ -465,13 +465,13 @@ public class IResourceTest {
 
 		final String newContents = "some other contents";
 		Thread.sleep(5000);
-		try (FileOutputStream output = new FileOutputStream(target.getLocation().toFile())) {
+		try (FileOutputStream output = new FileOutputStream(target.getLocation().toFile())) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			createInputStream(newContents).transferTo(output);
 		}
 
 		final AtomicReference<Executable> listenerInMainThreadCallback = new AtomicReference<>(() -> {
 		});
-		IResourceChangeListener listener = unused -> {
+		IResourceChangeListener listener = unused -> { //FLLDCIM: MARK — T07  LAMBDA
 			listenerInMainThreadCallback.set(() -> {
 				assertEquals(newContents, target.readString());
 			});
@@ -518,7 +518,7 @@ public class IResourceTest {
 	 * 553269: Eclipse sends unexpected ENCODING change after closing/opening
 	 * project with explicit encoding settings changed in the same session
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBug553269() throws Exception {
 		IWorkspace workspace = getWorkspace();
 		IProject project = workspace.getRoot().getProject("MyProject");

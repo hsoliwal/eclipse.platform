@@ -72,7 +72,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests the code completion for attributes of tasks.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAttributeProposals() {
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor();
 
@@ -125,7 +125,7 @@ public class CodeCompletionTest {
 	/**
 	 * Test the code completion for properties, including unquoted (bug 40871)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPropertyProposals() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("buildtest1.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -155,7 +155,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests the code completion for nested elements that no templates are presented Bug 76414
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPropertyTemplateProposals() throws BadLocationException, PartInitException {
 		try {
 			IFile file = getIFile("buildtest1.xml"); //$NON-NLS-1$
@@ -199,7 +199,7 @@ public class CodeCompletionTest {
 	/**
 	 * Test the code completion for "built-in" properties
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBuiltInPropertyProposals() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("buildtest1.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -225,7 +225,7 @@ public class CodeCompletionTest {
 	/**
 	 * Test the code completion for extension point / preference properties
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPreferencePropertyProposals() throws BadLocationException {
 		AntCorePreferences prefs = AntCorePlugin.getPlugin().getPreferences();
 		try {
@@ -258,7 +258,7 @@ public class CodeCompletionTest {
 	/**
 	 * Test the code completion for the depend attribute of a target.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTargetDependProposals() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("buildtest1.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -296,7 +296,7 @@ public class CodeCompletionTest {
 	/**
 	 * Test the image for a code completion proposal for the depend attribute of a target.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTargetDependProposalImages() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("buildtest3.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -315,7 +315,7 @@ public class CodeCompletionTest {
 		assertContains("pretest", proposals); //$NON-NLS-1$
 		assertContains("test2", proposals); //$NON-NLS-1$
 
-		for (ICompletionProposal proposal : proposals) {
+		for (ICompletionProposal proposal : proposals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String displayString = proposal.getDisplayString();
 			if (displayString.equals("main")) { //$NON-NLS-1$
 				assertEquals(AntUIImages.getImage(IAntUIConstants.IMG_ANT_DEFAULT_TARGET), proposal.getImage());
@@ -324,7 +324,7 @@ public class CodeCompletionTest {
 			} else if (displayString.equals("test2")) { //$NON-NLS-1$
 				assertEquals(AntUIImages.getImage(IAntUIConstants.IMG_ANT_TARGET_INTERNAL), proposal.getImage());
 			} else {
-				fail("Unknown completion proposal detected: " + displayString); //$NON-NLS-1$
+				fail("Unknown completion proposal detected: " + displayString); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 	}
@@ -332,7 +332,7 @@ public class CodeCompletionTest {
 	/**
 	 * Test the image for a code completion proposal for the default attribute of a project.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDefaultProposalImages() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("buildtest4.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -351,7 +351,7 @@ public class CodeCompletionTest {
 		assertContains("task2", proposals); //$NON-NLS-1$
 		assertContains("task3", proposals); //$NON-NLS-1$
 
-		for (ICompletionProposal proposal : proposals) {
+		for (ICompletionProposal proposal : proposals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String displayString = proposal.getDisplayString();
 			if (displayString.equals("task3")) { //$NON-NLS-1$
 				assertEquals(AntUIImages.getImage(IAntUIConstants.IMG_ANT_DEFAULT_TARGET), proposal.getImage());
@@ -360,7 +360,7 @@ public class CodeCompletionTest {
 			} else if (displayString.equals("task2")) { //$NON-NLS-1$
 				assertEquals(AntUIImages.getImage(IAntUIConstants.IMG_ANT_TARGET_INTERNAL), proposal.getImage());
 			} else {
-				fail("Unknown completion proposal detected: " + displayString); //$NON-NLS-1$
+				fail("Unknown completion proposal detected: " + displayString); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 	}
@@ -368,7 +368,7 @@ public class CodeCompletionTest {
 	/**
 	 * Test the image for a code completion proposal for the target attribute of an antcall task.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAntcallTargetProposalImages() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("buildtest4.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -385,14 +385,14 @@ public class CodeCompletionTest {
 		assertContains("task", proposals); //$NON-NLS-1$
 		assertContains("task3", proposals); //$NON-NLS-1$
 
-		for (ICompletionProposal proposal : proposals) {
+		for (ICompletionProposal proposal : proposals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String displayString = proposal.getDisplayString();
 			if (displayString.equals("task3")) { //$NON-NLS-1$
 				assertEquals(AntUIImages.getImage(IAntUIConstants.IMG_ANT_DEFAULT_TARGET), proposal.getImage());
 			} else if (displayString.equals("task")) { //$NON-NLS-1$
 				assertEquals(AntUIImages.getImage(IAntUIConstants.IMG_ANT_TARGET), proposal.getImage());
 			} else {
-				fail("Unknown completion proposal detected: " + displayString); //$NON-NLS-1$
+				fail("Unknown completion proposal detected: " + displayString); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 	}
@@ -422,7 +422,7 @@ public class CodeCompletionTest {
 	/**
 	 * Test the code completion for the unless attribute of a target.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTargetUnlessProposals() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("buildtest1.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -468,14 +468,14 @@ public class CodeCompletionTest {
 	 */
 	private void assertContains(String displayString, ICompletionProposal[] proposalArray) {
 		boolean found = false;
-		for (ICompletionProposal proposal : proposalArray) {
+		for (ICompletionProposal proposal : proposalArray) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String proposalDisplayString = proposal.getDisplayString();
 			if (displayString.equals(proposalDisplayString)) {
 				found = true;
 				break;
 			}
 		}
-		assertTrue(found, "Did not find displayString: " + displayString); //$NON-NLS-1$
+		assertTrue(found, "Did not find displayString: " + displayString); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
@@ -483,27 +483,27 @@ public class CodeCompletionTest {
 	 */
 	private void assertDoesNotContain(String displayString, ICompletionProposal[] proposalArray) {
 		boolean found = false;
-		for (ICompletionProposal proposal : proposalArray) {
+		for (ICompletionProposal proposal : proposalArray) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String proposalDisplayString = proposal.getDisplayString();
 			if (displayString.equals(proposalDisplayString)) {
 				found = true;
 				break;
 			}
 		}
-		assertFalse(found, "Found displayString: " + displayString); //$NON-NLS-1$
+		assertFalse(found, "Found displayString: " + displayString); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**
 	 * Tests the property proposals for the case that they are defined in a dependent targets.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPropertyProposalDefinedInDependantTargets() throws IOException {
 		AntModelForDocument model = new AntModelForDocument("dependencytest.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
 
 		File file = getBuildFile("dependencytest.xml"); //$NON-NLS-1$
 		processor.setEditedFile(file);
-		String documentText = Files.readString(file.toPath());
+		String documentText = Files.readString(file.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		processor.setLineNumber(35);
 		processor.setColumnNumber(41);
@@ -582,7 +582,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests the code completion for nested element attributes
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMacrodefNestedElementAttributeProposals() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("macrodef.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -605,7 +605,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests the code completion for tasks that have been defined via macrodef in the buildfile
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMacrodefAttributeProposals() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("macrodef.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -650,7 +650,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests the code completion for elements that have been defined via macrodef in the buildfile
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMacrodefElementProposals() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("macrodef.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -673,7 +673,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests the code completion for tasks having parent tasks.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTaskProposals() {
 		AntModelForDocument model = new AntModelForDocument("buildtest1.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -699,7 +699,7 @@ public class CodeCompletionTest {
 		processor.dispose();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testTargetTemplateProposals() throws BadLocationException, PartInitException {
 		try {
 			IFile file = getIFile("buildtest1.xml"); //$NON-NLS-1$
@@ -756,7 +756,7 @@ public class CodeCompletionTest {
 	/**
 	 * Test for bug 40951
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMixedElements() {
 		AntModelForDocument model = new AntModelForDocument("mixed.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -780,7 +780,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests the algorithm for finding a child as used by the processor.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testFindChildElement() throws ParserConfigurationException {
 
 		// Create the test data
@@ -863,7 +863,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests how the processor determines the proposal mode.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeterminingTaskProposalMode() {
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor();
 
@@ -911,7 +911,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests how the prefix will be determined.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDeterminingPrefix() {
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor();
 
@@ -973,7 +973,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests the code completion for refids (Bug 49830)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testRefidProposals() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("refid.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -997,7 +997,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests the code completion for custom task that has a boolean attribute
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCustomBooleanProposals() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("customBoolean.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -1020,7 +1020,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests the code completion for custom task that has an enumerated attribute
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testCustomEnumeratedProposals() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("extensionPointTaskSepVM.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -1107,7 +1107,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests the code completion for nested elements that no templates are presented Bug 76414
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNestedElementTemplateProposals() throws BadLocationException, PartInitException {
 		try {
 			IFile file = getIFile("nestedElementAttributes.xml"); //$NON-NLS-1$
@@ -1172,7 +1172,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests the code completion for attribute value proposals both with and without leading whitespace
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testAttributeValueProposals() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("javac.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -1213,7 +1213,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests the code completion for an empty buildfile
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testEmptyBuildfileProposals() throws PartInitException {
 		try {
 			IFile file = getIFile("empty.xml"); //$NON-NLS-1$
@@ -1236,7 +1236,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests the code completion for refids (Bug 65480)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testJavacReferencesProposals() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("refid.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -1283,7 +1283,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests the code completion for the default target of a project (Bug 78030)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectDefaultProposals() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("buildtest1.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());
@@ -1306,7 +1306,7 @@ public class CodeCompletionTest {
 	/**
 	 * Tests the code completion for project attributes (bug 82031)
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testProjectAttributeProposals() throws BadLocationException {
 		AntModelForDocument model = new AntModelForDocument("buildtest1.xml"); //$NON-NLS-1$
 		TestTextCompletionProcessor processor = new TestTextCompletionProcessor(model.getAntModel());

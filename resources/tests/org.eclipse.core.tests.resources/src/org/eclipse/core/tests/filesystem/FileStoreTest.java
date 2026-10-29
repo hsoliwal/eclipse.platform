@@ -89,7 +89,7 @@ public class FileStoreTest {
 	private static final AtomicInteger PATH_INDEX = new AtomicInteger();
 
 	private static Path randomUniqueNotExistingPath() {
-		return tempDirectory.resolve(System.currentTimeMillis() + "-" + PATH_INDEX.incrementAndGet());
+		return tempDirectory.resolve(System.currentTimeMillis() + "-" + PATH_INDEX.incrementAndGet()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private static IFileStore randomUniqueNotExistingFileStore() throws IOException {
@@ -121,17 +121,17 @@ public class FileStoreTest {
 
 	private IFileStore getDirFileStore(String path) throws CoreException {
 		IFileStore store = EFS.getLocalFileSystem().getStore(IPath.fromOSString(path));
-		if (!store.toLocalFile(EFS.NONE, createTestMonitor()).exists()) {
+		if (!store.toLocalFile(EFS.NONE, createTestMonitor()).exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			store.mkdir(EFS.NONE, null);
 		}
 		return store;
 	}
 
-	private IFileStore[] getFileStoresOnTwoVolumes() {
+	private IFileStore[] getFileStoresOnTwoVolumes() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IFileStore[] tempDirs = new IFileStore[2];
-		for (char c = 'c'; c <= 'z'; c++) {
+		for (char c = 'c'; c <= 'z'; c++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
-				IFileStore store = getDirFileStore(c + ":/temp");
+				IFileStore store = getDirFileStore(c + ":/temp"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				IFileInfo info = store.fetchInfo();
 				if (info.exists() && info.isDirectory() && !info.getAttribute(EFS.ATTRIBUTE_READ_ONLY)) {
 					if (tempDirs[0] == null) {
@@ -151,7 +151,7 @@ public class FileStoreTest {
 	/**
 	 * Basically this is a test for the Windows Platform.
 	 */
-	@ParameterizedTest(name = "File size {0} bytes")
+	@ParameterizedTest(name = "File size {0} bytes") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@ValueSource(ints = { 10, LocalFile.LARGE_FILE_SIZE_THRESHOLD + 10 })
 	public void testCopyAcrossVolumes(int fileSize) throws Throwable {
 		IFileStore[] tempDirectories = getFileStoresOnTwoVolumes();
@@ -167,7 +167,7 @@ public class FileStoreTest {
 		IFileStore tempDest = tempDirectories[1];
 
 		// create tree
-		String subfolderName = "target_" + System.currentTimeMillis();
+		String subfolderName = "target_" + System.currentTimeMillis(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		IFileStore target = tempSrc.getChild(subfolderName);
 		createDir(target, true);
@@ -180,7 +180,7 @@ public class FileStoreTest {
 		destination.delete(EFS.NONE, null);
 
 		/* c:\temp\target -> d:\temp\copy of target */
-		String copyOfSubfolderName = "copy of " + subfolderName;
+		String copyOfSubfolderName = "copy of " + subfolderName; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		destination = tempDest.getChild(copyOfSubfolderName);
 		target.copy(destination, EFS.NONE, null);
 		assertTrue(verifyTree(getTree(destination)));
@@ -233,7 +233,7 @@ public class FileStoreTest {
 		assertTrue(!child.exists());
 	}
 
-	@ParameterizedTest(name = "File size {0} bytes")
+	@ParameterizedTest(name = "File size {0} bytes") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@ValueSource(ints = { 10, LocalFile.LARGE_FILE_SIZE_THRESHOLD + 10 })
 	public void testCaseInsensitive(int fileSize) throws Throwable {
 	IFileStore temp = createDir(randomUniqueNotExistingFileStore(), true);
@@ -269,7 +269,7 @@ public class FileStoreTest {
 		assertEquals(message, exception.getMessage());
 	}
 
-	@ParameterizedTest(name = "File size {0} bytes")
+	@ParameterizedTest(name = "File size {0} bytes") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@ValueSource(ints = { 10, LocalFile.LARGE_FILE_SIZE_THRESHOLD + 10 })
 	public void testCopyFile(int fileSize) throws Throwable {
 		/* build scenario */
@@ -311,7 +311,7 @@ public class FileStoreTest {
 	/**
 	 * Basically this is a test for the Windows Platform.
 	 */
-	@ParameterizedTest(name = "File size {0} bytes")
+	@ParameterizedTest(name = "File size {0} bytes") //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@ValueSource(ints = { 10, LocalFile.LARGE_FILE_SIZE_THRESHOLD + 10 })
 	public void testCopyFileAcrossVolumes(int fileSize) throws Throwable {
 		IFileStore[] tempDirectories = getFileStoresOnTwoVolumes();
@@ -328,7 +328,7 @@ public class FileStoreTest {
 		// create target
 		byte[] content = new byte[fileSize];
 		RANDOM.nextBytes(content);
-		String subfolderName = "target_" + System.currentTimeMillis();
+		String subfolderName = "target_" + System.currentTimeMillis(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		IFileStore target = tempSrc.getChild(subfolderName);
 		target.delete(EFS.NONE, null);
@@ -343,7 +343,7 @@ public class FileStoreTest {
 		destination.delete(EFS.NONE, null);
 
 		/* c:\temp\target -> d:\temp\copy of target */
-		String copyOfSubfoldername = "copy of " + subfolderName;
+		String copyOfSubfoldername = "copy of " + subfolderName; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		destination = tempDest.getChild(copyOfSubfoldername);
 		target.copy(destination, IResource.DEPTH_INFINITE, null);
 		assertTrue(Arrays.equals(content, destination.readAllBytes(EFS.NONE, null)));
@@ -373,7 +373,7 @@ public class FileStoreTest {
 
 	@Test
 	public void testFileAttributeCopyForSmallFiles() throws CoreException, IOException {
-		Path root = Files.createDirectories(randomUniqueNotExistingPath());
+		Path root = Files.createDirectories(randomUniqueNotExistingPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		Path sourceFile = root.resolve("source.txt");
 		Files.writeString(sourceFile, "This is a test file.");
 		Path targetFile = root.resolve("target.txt");
@@ -383,12 +383,12 @@ public class FileStoreTest {
 
 		sourceStore.copy(targetStore, EFS.NONE, new NullProgressMonitor());
 
-		String sourceContent = Files.readString(sourceFile);
-		String targetContent = Files.readString(targetFile);
+		String sourceContent = Files.readString(sourceFile); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		String targetContent = Files.readString(targetFile); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		assertEquals(sourceContent, targetContent);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetLength() throws Exception {
 		// evaluate test environment
 		IFileStore temp = createDir(randomUniqueNotExistingFileStore(), true);
@@ -428,16 +428,16 @@ public class FileStoreTest {
 		assertTrue(EFS.NONE != stat);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testDelete() throws Throwable {
 		IFileStore tempC = createDir(randomUniqueNotExistingFileStore(), true);
-		System.out.println("Threadcount=" + Runtime.getRuntime().availableProcessors());
+		System.out.println("Threadcount=" + Runtime.getRuntime().availableProcessors()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		{
 			IFileStore singleDirectory = tempC.getChild("tree");
 			createDir(singleDirectory, true);
-			List<IFileStore> treeItems = new ArrayList<>();
-			for (int i = 0; i < 2300; i++) {
-				treeItems.add(singleDirectory.getChild("file" + i));
+			List<IFileStore> treeItems = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (int i = 0; i < 2300; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				treeItems.add(singleDirectory.getChild("file" + i)); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 
 			createTree(treeItems.toArray(IFileStore[]::new));
@@ -445,7 +445,7 @@ public class FileStoreTest {
 			long n0 = System.nanoTime();
 			singleDirectory.delete(EFS.NONE, null);
 			long n1 = System.nanoTime();
-			System.out.println("delete singleDirectory took ms:" + (n1 - n0) / 1_000_000);
+			System.out.println("delete singleDirectory took ms:" + (n1 - n0) / 1_000_000); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			assertFalse(singleDirectory.exists());
 		}
 
@@ -457,7 +457,7 @@ public class FileStoreTest {
 			long n0 = System.nanoTime();
 			binaryTree.delete(EFS.NONE, null);
 			long n1 = System.nanoTime();
-			System.out.println("delete binaryTree took ms:" + (n1 - n0) / 1_000_000);
+			System.out.println("delete binaryTree took ms:" + (n1 - n0) / 1_000_000); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			assertFalse(binaryTree.exists());
 		}
 	}
@@ -466,14 +466,14 @@ public class FileStoreTest {
 		if (depth <= 0) {
 			return;
 		}
-		for (int i = 0; i < count; i++) {
-			IFileStore child = parent.getChild("dir-" + depth + "-" + i);
+		for (int i = 0; i < count; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			IFileStore child = parent.getChild("dir-" + depth + "-" + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			child.mkdir(EFS.NONE, null);
 			createChildDirs(child, count, depth - 1);
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMove() throws Throwable {
 		/* build scenario */
 		IFileStore tempC = createDir(randomUniqueNotExistingFileStore(), true);
@@ -523,7 +523,7 @@ public class FileStoreTest {
 		assertTrue(!destination.exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMoveAcrossVolumes() throws Throwable {
 		IFileStore[] tempDirectories = getFileStoresOnTwoVolumes();
 
@@ -537,7 +537,7 @@ public class FileStoreTest {
 		/* get the destination folder */
 		IFileStore tempDest = tempDirectories[1];
 		// create target file
-		String subfolderName = "target_" + System.currentTimeMillis();
+		String subfolderName = "target_" + System.currentTimeMillis(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		IFileStore target = tempSrc.getChild(subfolderName);
 		String content = "just a content.....tnetnoc a tsuj";
@@ -601,7 +601,7 @@ public class FileStoreTest {
 		testAttribute(EFS.ATTRIBUTE_READ_ONLY);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testPermissionsEnabled() {
 		String os = Platform.getOS();
 		if (Platform.OS_LINUX.equals(os) || Platform.OS_MACOSX.equals(os)) {
@@ -640,8 +640,8 @@ public class FileStoreTest {
 		testAttribute(EFS.ATTRIBUTE_OTHER_EXECUTE);
 	}
 
-	private void testAttribute(int attribute) throws Exception {
-		assumeTrue(isAttributeSupported(attribute), "only relevant for platforms supporting attribute: " + attribute);
+	private void testAttribute(int attribute) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		assumeTrue(isAttributeSupported(attribute), "only relevant for platforms supporting attribute: " + attribute); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		IFileStore targetFolder = createDir(randomUniqueNotExistingFileStore(), true);
 		IFileStore targetFile = targetFolder.getChild("targetFile");
@@ -669,20 +669,20 @@ public class FileStoreTest {
 		target.putInfo(fileInfo, EFS.SET_ATTRIBUTES, null);
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testGetFileStore() throws Exception {
 		// create files
-		Path root = Files.createDirectories(randomUniqueNotExistingPath());
+		Path root = Files.createDirectories(randomUniqueNotExistingPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		File file = root.resolve("test.txt").toFile();
-		file.createNewFile();
-		assertTrue(file.exists());
+		file.createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(file.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		IFileStore tempStore = createDir(getFileStore(root.resolve("temp")), true);
 		createDir(getFileStore(root.resolve("temp/temp2")), true);
 
 		file = root.resolve("temp/temp2/test.txt").toFile();
-		file.createNewFile();
-		assertTrue(file.exists());
+		file.createNewFile(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		assertTrue(file.exists()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		// check the parent reference
 		IPath relativePath = IPath.fromOSString("../test.txt");
@@ -712,7 +712,7 @@ public class FileStoreTest {
 		assertTrue(info.exists());
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSortOrder() {
 		IFileSystem nullfs = NullFileSystem.getInstance();
 		if (nullfs == null) {
@@ -739,7 +739,7 @@ public class FileStoreTest {
 		assertEquals(1, nabc.compareTo(null));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testSortOrderPaths() {
 		IFileSystem lfs = LocalFileSystem.getInstance();
 		boolean isWindows = java.io.File.separatorChar == '\\';
@@ -752,13 +752,13 @@ public class FileStoreTest {
 				"/a/e/../c", //
 				"/a/d", //
 				"/aa", //
-				"/b").stream().map(s -> prefix + s).toList();
-		List<String> pathsTrimmed = paths.stream().map(s -> s //
+				"/b").stream().map(s -> prefix + s).toList(); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		List<String> pathsTrimmed = paths.stream().map(s -> s // //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 				.replaceAll("/$", "") // remove trailing slashes
 				.replaceAll("/[^/]+/\\.\\./", "/") // collapse /a/../ to /
 				.replaceAll("/\\./", "/") // collapse /./ to /
 		).toList();
-		paths = new ArrayList<>(paths); // to get a mutable copy for shuffling
+		paths = new ArrayList<>(paths); // to get a mutable copy for shuffling //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		Collections.shuffle(paths);
 		// Test with IPath.fromOSString(string).getStore()
 		Stream<IFileStore> pathStores = paths.stream().map(IPath::fromOSString).map(lfs::getStore);
@@ -779,7 +779,7 @@ public class FileStoreTest {
 	}
 
 	private boolean verifyTree(IFileStore[] tree) {
-		for (IFileStore t : tree) {
+		for (IFileStore t : tree) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (!verifyNode(t)) {
 				return false;
 			}

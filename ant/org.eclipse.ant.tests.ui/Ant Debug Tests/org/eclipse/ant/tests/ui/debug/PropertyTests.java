@@ -46,7 +46,7 @@ public class PropertyTests {
 
 	static {
 		Version antVersion = Platform.getBundle("org.apache.ant").getVersion(); //$NON-NLS-1$
-		ANT_VERSION = "Apache Ant(TM) version " + antVersion.getMajor() + '.' + antVersion.getMinor() + '.' //$NON-NLS-1$
+		ANT_VERSION = "Apache Ant(TM) version " + antVersion.getMajor() + '.' + antVersion.getMinor() + '.' //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ antVersion.getMicro();
 	}
 
@@ -60,7 +60,7 @@ public class PropertyTests {
 		systemProperties(true);
 	}
 
-	private void systemProperties(boolean sepVM) throws Exception, CoreException {
+	private void systemProperties(boolean sepVM) throws Exception, CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String fileName = "breakpoints"; //$NON-NLS-1$
 		ILineBreakpoint bp = createLineBreakpoint(30, "breakpoints" + ".xml"); //$NON-NLS-1$ //$NON-NLS-2$
 		AntThread thread = null;
@@ -96,7 +96,7 @@ public class PropertyTests {
 		userProperties(true);
 	}
 
-	private void userProperties(boolean sepVM) throws Exception {
+	private void userProperties(boolean sepVM) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String fileName = "breakpoints"; //$NON-NLS-1$
 		ILineBreakpoint bp = createLineBreakpoint(30, "breakpoints" + ".xml"); //$NON-NLS-1$ //$NON-NLS-2$
 		AntThread thread = null;
@@ -128,9 +128,9 @@ public class PropertyTests {
 		runtimeProperties(false);
 	}
 
-	private void runtimeProperties(boolean sepVM) throws Exception, CoreException {
+	private void runtimeProperties(boolean sepVM) throws Exception, CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String fileName = "breakpoints"; //$NON-NLS-1$
-		ILineBreakpoint bp = createLineBreakpoint(30, fileName + ".xml"); //$NON-NLS-1$
+		ILineBreakpoint bp = createLineBreakpoint(30, fileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		AntThread thread = null;
 		try {
 			if (sepVM) {
@@ -165,9 +165,9 @@ public class PropertyTests {
 			throws DebugException {
 		AntStackFrame frame = (AntStackFrame) thread.getTopStackFrame();
 		AntProperty property = frame.findProperty(propertyName);
-		assertNotNull(property, "Did not find property: " + propertyName); //$NON-NLS-1$
+		assertNotNull(property, "Did not find property: " + propertyName); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		AntValue value = (AntValue) property.getValue();
-		assertEquals(propertyValue, value.getValueString(), "Value of property " + propertyName + " incorrect"); //$NON-NLS-1$ //$NON-NLS-2$
+		assertEquals(propertyValue, value.getValueString(), "Value of property " + propertyName + " incorrect"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return frame;
 	}
 
@@ -175,9 +175,9 @@ public class PropertyTests {
 			throws DebugException {
 		AntStackFrame frame = (AntStackFrame) thread.getTopStackFrame();
 		AntProperty property = frame.findProperty(propertyName);
-		assertNotNull(property, "Did not find property: " + propertyName); //$NON-NLS-1$
+		assertNotNull(property, "Did not find property: " + propertyName); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		AntValue value = (AntValue) property.getValue();
-		assertTrue(value.getValueString().startsWith(propertyValue), "Value of property" + propertyName + " incorrect: " //$NON-NLS-1$ //$NON-NLS-2$
+		assertTrue(value.getValueString().startsWith(propertyValue), "Value of property" + propertyName + " incorrect: " //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				+ value.getValueString() + " should start with " + propertyValue); //$NON-NLS-1$
 		return frame;
 	}

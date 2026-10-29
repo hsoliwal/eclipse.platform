@@ -46,80 +46,80 @@ public class StreamMergerTest {
 	@Test
 	public void testIncomingAddition() {
 
-		String a = ABC + SEPARATOR + DEF + SEPARATOR + XYZ;
-		String t = ABC + SEPARATOR + DEF + SEPARATOR + XYZ;
-		String o = ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ;
+		String a = ABC + SEPARATOR + DEF + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String t = ABC + SEPARATOR + DEF + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String o = ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-		StringBuilder output = new StringBuilder();
+		StringBuilder output = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 		IStatus status = merge(output, a, t, o);
 
 		assertEquals(status.getSeverity(), IStatus.OK);
 		assertEquals(status.getCode(), IStatus.OK);
-		assertEquals(output.toString(), ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ + SEPARATOR);
+		assertEquals(output.toString(), ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ + SEPARATOR); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Deprecated
 	@Test
 	public void testIncomingDeletion() {
 
-		String a = ABC + SEPARATOR + DEF + SEPARATOR + XYZ;
-		String t = ABC + SEPARATOR + DEF + SEPARATOR + XYZ;
-		String o = ABC + SEPARATOR + XYZ;
+		String a = ABC + SEPARATOR + DEF + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String t = ABC + SEPARATOR + DEF + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String o = ABC + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-		StringBuilder output = new StringBuilder();
+		StringBuilder output = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 		IStatus status = merge(output, a, t, o);
 
 		assertEquals(status.getSeverity(), IStatus.OK);
 		assertEquals(status.getCode(), IStatus.OK);
-		assertEquals(output.toString(), ABC + SEPARATOR + XYZ + SEPARATOR);
+		assertEquals(output.toString(), ABC + SEPARATOR + XYZ + SEPARATOR); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Deprecated
 	@Test
 	public void testIncomingReplacement() {
 
-		String a = ABC + SEPARATOR + DEF + SEPARATOR + XYZ;
-		String t = ABC + SEPARATOR + DEF + SEPARATOR + XYZ;
-		String o = ABC + SEPARATOR + _123 + SEPARATOR + XYZ;
+		String a = ABC + SEPARATOR + DEF + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String t = ABC + SEPARATOR + DEF + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String o = ABC + SEPARATOR + _123 + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-		StringBuilder output = new StringBuilder();
+		StringBuilder output = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 		IStatus status = merge(output, a, t, o);
 
 		assertEquals(status.getSeverity(), IStatus.OK);
 		assertEquals(status.getCode(), IStatus.OK);
-		assertEquals(output.toString(), ABC + SEPARATOR + _123 + SEPARATOR + XYZ + SEPARATOR);
+		assertEquals(output.toString(), ABC + SEPARATOR + _123 + SEPARATOR + XYZ + SEPARATOR); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Deprecated
 	@Test
 	public void testNonConflictingMerge() {
 
-		String a = ABC + SEPARATOR + DEF + SEPARATOR + XYZ;
-		String t = ABC + SEPARATOR + DEF + SEPARATOR + XYZ + SEPARATOR + FOO;
-		String o = ABC + SEPARATOR + _123 + SEPARATOR + _456 + SEPARATOR + XYZ;
+		String a = ABC + SEPARATOR + DEF + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String t = ABC + SEPARATOR + DEF + SEPARATOR + XYZ + SEPARATOR + FOO; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String o = ABC + SEPARATOR + _123 + SEPARATOR + _456 + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-		StringBuilder output = new StringBuilder();
+		StringBuilder output = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 		IStatus status = merge(output, a, t, o);
 
 		assertEquals(status.getSeverity(), IStatus.OK);
 		assertEquals(status.getCode(), IStatus.OK);
 		assertEquals(output.toString(),
-				ABC + SEPARATOR + _123 + SEPARATOR + _456 + SEPARATOR + XYZ + SEPARATOR + FOO + SEPARATOR);
+				ABC + SEPARATOR + _123 + SEPARATOR + _456 + SEPARATOR + XYZ + SEPARATOR + FOO + SEPARATOR); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Deprecated
 	@Test
 	public void testConflictingReplacement() {
 
-		String a = ABC + SEPARATOR + DEF + SEPARATOR + XYZ;
-		String t = ABC + SEPARATOR + FOO + SEPARATOR + XYZ;
-		String o = ABC + SEPARATOR + BAR + SEPARATOR + XYZ;
+		String a = ABC + SEPARATOR + DEF + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String t = ABC + SEPARATOR + FOO + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String o = ABC + SEPARATOR + BAR + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-		StringBuilder output = new StringBuilder();
+		StringBuilder output = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 		IStatus status = merge(output, a, t, o);
 
@@ -131,34 +131,34 @@ public class StreamMergerTest {
 	@Test
 	public void testConflictingAddition() {
 
-		String a = ABC + SEPARATOR + DEF + SEPARATOR + XYZ;
-		String t = ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ;
-		String o = ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ;
+		String a = ABC + SEPARATOR + DEF + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String t = ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String o = ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-		StringBuilder output = new StringBuilder();
+		StringBuilder output = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 		IStatus status = merge(output, a, t, o);
 
 		assertEquals(status.getSeverity(), IStatus.OK);
 		assertEquals(status.getCode(), IStatus.OK);
-		assertEquals(output.toString(), ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ + SEPARATOR);
+		assertEquals(output.toString(), ABC + SEPARATOR + DEF + SEPARATOR + _123 + SEPARATOR + XYZ + SEPARATOR); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	@Deprecated
 	@Test
 	public void testConflictingDeletion() {
 
-		String a = ABC + SEPARATOR + DEF + SEPARATOR + XYZ;
-		String t = ABC + SEPARATOR + XYZ;
-		String o = ABC + SEPARATOR + XYZ;
+		String a = ABC + SEPARATOR + DEF + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String t = ABC + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		String o = ABC + SEPARATOR + XYZ; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-		StringBuilder output = new StringBuilder();
+		StringBuilder output = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 		IStatus status = merge(output, a, t, o);
 
 		assertEquals(status.getSeverity(), IStatus.OK);
 		assertEquals(status.getCode(), IStatus.OK);
-		assertEquals(output.toString(), ABC + SEPARATOR + XYZ + SEPARATOR);
+		assertEquals(output.toString(), ABC + SEPARATOR + XYZ + SEPARATOR); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private IStatus merge(StringBuilder output, String a, String m, String y) {
@@ -176,7 +176,7 @@ public class StreamMergerTest {
 		IStatus status = merger.merge(os, encoding, ancestor, encoding, target, encoding, other, encoding,
 				(IProgressMonitor) null);
 
-		output.append(new String(os.toByteArray(), StandardCharsets.UTF_8));
+		output.append(new String(os.toByteArray(), StandardCharsets.UTF_8)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 		return status;
 	}

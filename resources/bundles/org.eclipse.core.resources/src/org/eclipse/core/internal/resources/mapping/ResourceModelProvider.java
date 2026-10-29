@@ -35,13 +35,13 @@ public final class ResourceModelProvider extends ModelProvider {
 		return new ResourceMapping[] {new SimpleResourceMapping(resource)};
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ResourceMapping[] getMappings(ResourceTraversal[] traversals, ResourceMappingContext context, IProgressMonitor monitor) {
-		Set<IAdaptable> result = new HashSet<>();
-		for (ResourceTraversal traversal : traversals) {
+		Set<IAdaptable> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (ResourceTraversal traversal : traversals) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IResource[] resources = traversal.getResources();
 			int depth = traversal.getDepth();
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				switch (depth) {
 					case IResource.DEPTH_INFINITE :
 						result.add(resource);
@@ -63,7 +63,7 @@ public final class ResourceModelProvider extends ModelProvider {
 		}
 		ResourceMapping[] mappings = new ResourceMapping[result.size()];
 		int i = 0;
-		for (IAdaptable element : result) {
+		for (IAdaptable element : result) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (element instanceof IResource) {
 				mappings[i++] = new SimpleResourceMapping((IResource) element);
 			} else {

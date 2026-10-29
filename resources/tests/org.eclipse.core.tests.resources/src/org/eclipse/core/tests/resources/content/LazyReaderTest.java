@@ -84,7 +84,7 @@ public class LazyReaderTest {
 		stream.close();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testReadBlock() throws IOException {
 		CharArrayReader underlying = new CharArrayReader(DATA.toCharArray());
 		OpenLazyReader stream = new OpenLazyReader(underlying, 7);
@@ -123,7 +123,7 @@ public class LazyReaderTest {
 		stream.close();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testMarkAndReset() throws IOException {
 		CharArrayReader underlying = new CharArrayReader(DATA.toCharArray());
 		OpenLazyReader stream = new OpenLazyReader(underlying, 7);
@@ -152,7 +152,7 @@ public class LazyReaderTest {
 		stream.close();
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testEnsureAvailable_BufferSizeDoesNotOverflow() throws IOException {
 		Reader infinitelyEmpty = new Reader() {
 

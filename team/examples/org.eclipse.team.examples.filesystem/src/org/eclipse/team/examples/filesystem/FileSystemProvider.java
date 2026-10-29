@@ -124,14 +124,14 @@ public class FileSystemProvider extends RepositoryProvider {
 	 *
 	 * @param location the path representing the location where the project contents will be stored.
 	 */
-	public void setTargetLocation(String location) throws TeamException {
+	public void setTargetLocation(String location) throws TeamException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// set the instance variable to the provided path
 		root = IPath.fromOSString(location);
 
 		// ensure that the location is a folder (if it exists)
 		File file = new File(location);
-		if (file.exists() && !file.isDirectory()) {
+		if (file.exists() && !file.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			throw new TeamException(Policy.bind("FileSystemProvider.mustBeFolder", location)); //$NON-NLS-1$
 		}
 
@@ -206,7 +206,7 @@ public class FileSystemProvider extends RepositoryProvider {
 	 */
 	public IResourceVariant getResourceVariant(IResource resource) {
 		File file = getFile(resource);
-		if (file == null || !file.exists()) return null;
+		if (file == null || !file.exists()) return null; //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		return new FileSystemResourceVariant(file);
 	}
 

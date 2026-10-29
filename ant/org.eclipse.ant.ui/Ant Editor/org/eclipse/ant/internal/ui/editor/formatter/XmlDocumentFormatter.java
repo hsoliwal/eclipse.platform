@@ -48,12 +48,12 @@ public class XmlDocumentFormatter {
 		protected String readTag() throws IOException {
 			int intChar;
 			char c;
-			StringBuilder node = new StringBuilder();
+			StringBuilder node = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
-			while (!complete && (intChar = reader.read()) != -1) {
+			while (!complete && (intChar = reader.read()) != -1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				c = (char) intChar;
 
-				node.append(c);
+				node.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 				if (c == '>' && node.toString().endsWith("-->")) { //$NON-NLS-1$
 					complete = true;
@@ -81,12 +81,12 @@ public class XmlDocumentFormatter {
 		protected String readTag() throws IOException {
 			int intChar;
 			char c;
-			StringBuilder node = new StringBuilder();
+			StringBuilder node = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
-			while (!complete && (intChar = reader.read()) != -1) {
+			while (!complete && (intChar = reader.read()) != -1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				c = (char) intChar;
 
-				node.append(c);
+				node.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 				if (c == '>') {
 					complete = true;
@@ -115,12 +115,12 @@ public class XmlDocumentFormatter {
 		protected String readTag() throws IOException {
 			int intChar;
 			char c;
-			StringBuilder node = new StringBuilder();
+			StringBuilder node = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
-			while (!complete && (intChar = reader.read()) != -1) {
+			while (!complete && (intChar = reader.read()) != -1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				c = (char) intChar;
 
-				node.append(c);
+				node.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 				if (c == '>' && node.toString().endsWith("?>")) { //$NON-NLS-1$
 					complete = true;
@@ -181,7 +181,7 @@ public class XmlDocumentFormatter {
 
 		private static TagReader textNodeReader = new TextReader();
 
-		public static TagReader createTagReaderFor(Reader reader) throws IOException {
+		public static TagReader createTagReaderFor(Reader reader) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 			char[] buf = new char[10];
 			reader.mark(10);
@@ -190,7 +190,7 @@ public class XmlDocumentFormatter {
 
 			String startOfTag = String.valueOf(buf);
 
-			for (TagReader tagReader : tagReaders) {
+			for (TagReader tagReader : tagReaders) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (startOfTag.startsWith(tagReader.getStartOfTag())) {
 					tagReader.setReader(reader);
 					return tagReader;
@@ -223,12 +223,12 @@ public class XmlDocumentFormatter {
 			return this.isTextNode;
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		protected String readTag() throws IOException {
 
-			StringBuilder node = new StringBuilder();
+			StringBuilder node = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
-			while (!complete) {
+			while (!complete) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 
 				reader.mark(1);
 				int intChar = reader.read();
@@ -241,7 +241,7 @@ public class XmlDocumentFormatter {
 					reader.reset();
 					complete = true;
 				} else {
-					node.append(c);
+					node.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			}
 
@@ -252,11 +252,11 @@ public class XmlDocumentFormatter {
 
 			} else if (node.toString().trim().length() == 0) {
 				String whitespace = node.toString();
-				node = new StringBuilder();
-				for (int i = 0; i < whitespace.length(); i++) {
+				node = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+				for (int i = 0; i < whitespace.length(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					char whitespaceCharacter = whitespace.charAt(i);
 					if (whitespaceCharacter == '\n' || whitespaceCharacter == '\r') {
-						node.append(whitespaceCharacter);
+						node.append(whitespaceCharacter); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
 				}
 				this.isTextNode = false;
@@ -311,18 +311,18 @@ public class XmlDocumentFormatter {
 			return "<"; //$NON-NLS-1$
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		protected String readTag() throws IOException {
 
-			StringBuilder node = new StringBuilder();
+			StringBuilder node = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 			boolean insideQuote = false;
 			int intChar;
 
-			while (!complete && (intChar = reader.read()) != -1) {
+			while (!complete && (intChar = reader.read()) != -1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				char c = (char) intChar;
 
-				node.append(c);
+				node.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				// TODO logic incorrectly assumes that " is quote character
 				// when it could also be '
 				if (c == '"') {
@@ -346,7 +346,7 @@ public class XmlDocumentFormatter {
 		depth = -1;
 	}
 
-	private void copyNode(Reader reader, StringBuffer out, FormattingPreferences prefs) throws IOException {
+	private void copyNode(Reader reader, StringBuffer out, FormattingPreferences prefs) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		TagReader tag = TagReaderFactory.createTagReaderFor(reader);
 
@@ -379,11 +379,11 @@ public class XmlDocumentFormatter {
 	 * @param tabWidth
 	 *            the width of the '\t' character.
 	 */
-	public static int computeIndent(String line, int tabWidth) {
+	public static int computeIndent(String line, int tabWidth) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int result = 0;
 		int blanks = 0;
 		int size = line.length();
-		for (int i = 0; i < size; i++) {
+		for (int i = 0; i < size; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c = line.charAt(i);
 			if (c == '\t') {
 				result++;
@@ -415,7 +415,7 @@ public class XmlDocumentFormatter {
 		return ch == '\n' || ch == '\r';
 	}
 
-	public String format(String documentText, FormattingPreferences prefs) {
+	public String format(String documentText, FormattingPreferences prefs) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		Assert.isNotNull(documentText);
 		Assert.isNotNull(prefs);
@@ -428,7 +428,7 @@ public class XmlDocumentFormatter {
 		}
 		lastNodeWasText = false;
 		try {
-			while (true) {
+			while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				reader.mark(1);
 				int intChar = reader.read();
 				reader.reset();
@@ -453,9 +453,9 @@ public class XmlDocumentFormatter {
 	}
 
 	private String indent(String canonicalIndent) {
-		StringBuilder indent = new StringBuilder(30);
-		for (int i = 0; i < depth; i++) {
-			indent.append(canonicalIndent);
+		StringBuilder indent = new StringBuilder(30); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < depth; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			indent.append(canonicalIndent); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		return indent.toString();
 	}
@@ -501,7 +501,7 @@ public class XmlDocumentFormatter {
 	 *                if position is an invalid range in the given document
 	 */
 	public static int findEndOfWhiteSpace(IDocument document, int offset, int end) throws BadLocationException {
-		while (offset < end) {
+		while (offset < end) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c = document.getChar(offset);
 			if (c != ' ' && c != '\t') {
 				return offset;
@@ -523,7 +523,7 @@ public class XmlDocumentFormatter {
 
 		if (!pluginPrefs.getBoolean(AntEditorPreferenceConstants.FORMATTER_TAB_CHAR)) {
 			int tabLen = pluginPrefs.getInt(AntEditorPreferenceConstants.FORMATTER_TAB_SIZE);
-			for (int i = 0; i < tabLen; i++) {
+			for (int i = 0; i < tabLen; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				oneIndent.append(' ');
 			}
 		} else {

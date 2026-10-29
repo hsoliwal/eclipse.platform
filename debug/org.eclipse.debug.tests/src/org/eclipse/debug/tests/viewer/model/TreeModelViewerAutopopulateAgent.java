@@ -49,10 +49,10 @@ public class TreeModelViewerAutopopulateAgent implements IViewerUpdateListener {
 			ILazyTreePathContentProvider contentProvider = (ILazyTreePathContentProvider) fViewer.getContentProvider();
 
 			Widget[] items = fViewer.testFindItems(update.getElement());
-			for (int i = 0; i < items.length; i++) {
+			for (int i = 0; i < items.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if ( path.equals(getTreePath(items[i])) ) {
 					int itemCount = getItemChildCount(items[i]);
-					for (int j = 0; j < itemCount; j++) {
+					for (int j = 0; j < itemCount; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						contentProvider.updateElement(path, j);
 					}
 				}
@@ -81,7 +81,7 @@ public class TreeModelViewerAutopopulateAgent implements IViewerUpdateListener {
 	private TreePath getTreePath(Widget w) {
 		if (w instanceof TreeItem item) {
 			LinkedList<Object> segments = new LinkedList<>();
-			while (item != null) {
+			while (item != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Object segment = item.getData();
 				Assert.isNotNull(segment);
 				segments.addFirst(segment);

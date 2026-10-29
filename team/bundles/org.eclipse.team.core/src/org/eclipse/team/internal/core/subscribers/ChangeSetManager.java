@@ -44,13 +44,13 @@ public abstract class ChangeSetManager {
 	 * a managed change set changes.
 	 * @param set the set whose title has changed
 	 */
-	protected void fireNameChangedEvent(final ChangeSet set) {
+	protected void fireNameChangedEvent(final ChangeSet set) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (initializing) {
 			return;
 		}
 		if (contains(set)) {
 			Object[] listeners = getListeners();
-			for (Object l : listeners) {
+			for (Object l : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				final IChangeSetChangeListener listener = (IChangeSetChangeListener) l;
 				SafeRunner.run(new ISafeRunnable() {
 					@Override
@@ -72,12 +72,12 @@ public abstract class ChangeSetManager {
 	 * @param oldSet the previous default
 	 * @param defaultSet the new default
 	 */
-	protected void fireDefaultChangedEvent(final ChangeSet oldSet, final ChangeSet defaultSet) {
+	protected void fireDefaultChangedEvent(final ChangeSet oldSet, final ChangeSet defaultSet) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (initializing) {
 			return;
 		}
 		Object[] listeners = getListeners();
-		for (Object l : listeners) {
+		for (Object l : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final IChangeSetChangeListener listener = (IChangeSetChangeListener) l;
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
@@ -107,12 +107,12 @@ public abstract class ChangeSetManager {
 	 * Handle the set addition by notifying listeners.
 	 * @param set the added set
 	 */
-	protected void handleSetAdded(final ChangeSet set) {
+	protected void handleSetAdded(final ChangeSet set) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (initializing) {
 			return;
 		}
 		Object[] listeners = getListeners();
-		for (Object l : listeners) {
+		for (Object l : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final IChangeSetChangeListener listener = (IChangeSetChangeListener) l;
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
@@ -142,12 +142,12 @@ public abstract class ChangeSetManager {
 	 * Handle the set removal by notifying listeners.
 	 * @param set the removed set
 	 */
-	protected void handleSetRemoved(final ChangeSet set) {
+	protected void handleSetRemoved(final ChangeSet set) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (initializing) {
 			return;
 		}
 		Object[] listeners = getListeners();
-		for (Object l : listeners) {
+		for (Object l : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final IChangeSetChangeListener listener = (IChangeSetChangeListener) l;
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
@@ -206,12 +206,12 @@ public abstract class ChangeSetManager {
 	/**
 	 * Fire resource change notifications to the listeners.
 	 */
-	protected void fireResourcesChangedEvent(final ChangeSet changeSet, final IPath[] allAffectedResources) {
+	protected void fireResourcesChangedEvent(final ChangeSet changeSet, final IPath[] allAffectedResources) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (initializing) {
 			return;
 		}
 		Object[] listeners = getListeners();
-		for (Object l : listeners) {
+		for (Object l : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			final IChangeSetChangeListener listener = (IChangeSetChangeListener) l;
 			SafeRunner.run(new ISafeRunnable() {
 				@Override
@@ -228,7 +228,7 @@ public abstract class ChangeSetManager {
 
 	private Set<ChangeSet> internalGetSets() {
 		if (sets == null) {
-			sets = Collections.synchronizedSet(new HashSet<>());
+			sets = Collections.synchronizedSet(new HashSet<>()); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			try {
 				initializing = true;
 				initializeSets();

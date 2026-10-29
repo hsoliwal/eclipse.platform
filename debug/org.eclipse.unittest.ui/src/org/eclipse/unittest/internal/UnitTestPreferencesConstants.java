@@ -28,18 +28,18 @@ public class UnitTestPreferencesConstants {
 	/**
 	 * Boolean preference controlling whether the failure stack should be filtered.
 	 */
-	public static final String DO_FILTER_STACK = UnitTestPlugin.PLUGIN_ID + ".do_filter_stack"; //$NON-NLS-1$
+	public static final String DO_FILTER_STACK = UnitTestPlugin.PLUGIN_ID + ".do_filter_stack"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Boolean preference controlling whether the Unit Test view should be shown on
 	 * errors only.
 	 */
-	public static final String SHOW_ON_ERROR_ONLY = UnitTestPlugin.PLUGIN_ID + ".show_on_error"; //$NON-NLS-1$
+	public static final String SHOW_ON_ERROR_ONLY = UnitTestPlugin.PLUGIN_ID + ".show_on_error"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	/**
 	 * Maximum number of remembered test runs.
 	 */
-	public static final String MAX_TEST_RUNS = UnitTestPlugin.PLUGIN_ID + ".max_test_runs"; //$NON-NLS-1$
+	public static final String MAX_TEST_RUNS = UnitTestPlugin.PLUGIN_ID + ".max_test_runs"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 	private UnitTestPreferencesConstants() {
 		// no instance
@@ -66,9 +66,9 @@ public class UnitTestPreferencesConstants {
 	 * @return an array of strings
 	 */
 	public static String[] parseList(String listString) {
-		List<String> list = new ArrayList<>(10);
+		List<String> list = new ArrayList<>(10); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		StringTokenizer tokenizer = new StringTokenizer(listString, ","); //$NON-NLS-1$
-		while (tokenizer.hasMoreTokens()) {
+		while (tokenizer.hasMoreTokens()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			list.add(tokenizer.nextToken());
 		}
 		return list.toArray(new String[list.size()]);

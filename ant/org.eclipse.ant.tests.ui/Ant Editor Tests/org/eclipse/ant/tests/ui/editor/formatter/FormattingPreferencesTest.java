@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 @AntUITest
 public class FormattingPreferencesTest {
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public final void testGetCanonicalIndent() {
 
 		FormattingPreferences prefs;

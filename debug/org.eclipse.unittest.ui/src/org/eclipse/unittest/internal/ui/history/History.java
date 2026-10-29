@@ -40,7 +40,7 @@ public class History implements ITestRunSessionListener {
 	}
 
 	private boolean wasRead = false;
-	private final List<HistoryItem> items = new ArrayList<>();
+	private final List<HistoryItem> items = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 	/**
 	 * Creates and returns a directory to store the History information
@@ -51,8 +51,8 @@ public class History implements ITestRunSessionListener {
 	 */
 	public File getDirectory() throws IllegalStateException {
 		File historyDir = UnitTestPlugin.getDefault().getStateLocation().append(HISTORY_DIR_NAME).toFile();
-		if (!historyDir.isDirectory()) {
-			historyDir.mkdir();
+		if (!historyDir.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+			historyDir.mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		}
 		return historyDir;
 	}
@@ -64,7 +64,7 @@ public class History implements ITestRunSessionListener {
 	 */
 	public List<HistoryItem> getHistory() {
 		if (!wasRead) {
-			Arrays.stream(getDirectory().listFiles()).map(HistoryItem::new).forEach(items::add);
+			Arrays.stream(getDirectory().listFiles()).map(HistoryItem::new).forEach(items::add); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			wasRead = true;
 		}
 		return Collections.unmodifiableList(items);
@@ -74,7 +74,7 @@ public class History implements ITestRunSessionListener {
 	 * Clears the history
 	 */
 	public void clear() {
-		for (HistoryItem item : items) {
+		for (HistoryItem item : items) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				item.removeSwapFile();
 			} catch (IOException e) {
@@ -107,7 +107,7 @@ public class History implements ITestRunSessionListener {
 	 * @param testRunSession a test run session object
 	 */
 	public void watch(TestRunSession testRunSession) {
-		for (HistoryItem item : items) {
+		for (HistoryItem item : items) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (testRunSession == null || item.getCurrentTestRunSession().filter(testRunSession::equals).isEmpty()) {
 				try {
 					item.swapOut();

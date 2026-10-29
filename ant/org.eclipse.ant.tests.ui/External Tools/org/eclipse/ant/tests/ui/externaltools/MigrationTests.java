@@ -45,7 +45,7 @@ public class MigrationTests {
 	/**
 	 * Tests migration of arguments from an Eclipse 2.0 Ant buildfile configuration to a current launch configuration.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test20AntMigration() throws CoreException {
 		Map<String, String> argumentMap = get20AntArgumentMap();
 		ILaunchConfigurationWorkingCopy config = ExternalToolMigration.configFromArgumentMap(argumentMap);
@@ -87,7 +87,7 @@ public class MigrationTests {
 	/**
 	 * Tests migration of arguments from an Eclipse 2.1 Ant buildfile configuration to a current launch configuration.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test21AntMigration() throws CoreException {
 		Map<String, String> argumentMap = get21AntArgumentMap();
 		ILaunchConfigurationWorkingCopy config = ExternalToolMigration.configFromArgumentMap(argumentMap);
@@ -113,7 +113,7 @@ public class MigrationTests {
 	/**
 	 * Tests migration of arguments from an Eclipse 2.1 program configuration to a current launch configuration.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void test21ProgramMigration() throws CoreException {
 		Map<String, String> argumentMap = get21ProgramArgumentMap();
 		ILaunchConfigurationWorkingCopy config = ExternalToolMigration.configFromArgumentMap(argumentMap);

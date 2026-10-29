@@ -71,7 +71,7 @@ public class SynchronizationActionProvider extends CommonActionProvider {
 	 */
 	public static final String MARK_AS_MERGE_ACTION_ID = "org.eclipse.team.ui.markAsMergeAction"; //$NON-NLS-1$
 
-	private final Map<String, IHandler> handlers = new HashMap<>();
+	private final Map<String, IHandler> handlers = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	private OpenWithActionGroup openWithActions;
 
 	@Override
@@ -157,7 +157,7 @@ public class SynchronizationActionProvider extends CommonActionProvider {
 	public void fillContextMenu(IMenuManager menu) {
 		super.fillContextMenu(menu);
 		if (menu instanceof CommonMenuManager manager) {
-			for (String actionId : handlers.keySet()) {
+			for (String actionId : handlers.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				manager.registerHandler(actionId, handlers.get(actionId));
 			}
 		}
@@ -197,7 +197,7 @@ public class SynchronizationActionProvider extends CommonActionProvider {
 		if (openWithActions != null) {
 			openWithActions.dispose();
 		}
-		for (IHandler handler : handlers.values()) {
+		for (IHandler handler : handlers.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (handler instanceof MergeActionHandler mah) {
 				mah.dispose();
 			}

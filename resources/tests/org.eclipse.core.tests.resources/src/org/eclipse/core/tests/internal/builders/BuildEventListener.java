@@ -19,7 +19,7 @@ import org.eclipse.core.resources.IResourceChangeListener;
 /**
  * An event listener that tracks what events were received.
  */
-public class BuildEventListener implements IResourceChangeListener {
+public class BuildEventListener implements IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 
 	private int buildKind;
 	private boolean postBuild;

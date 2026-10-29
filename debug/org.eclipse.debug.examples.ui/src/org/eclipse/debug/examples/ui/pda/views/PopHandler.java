@@ -31,7 +31,7 @@ import org.eclipse.jface.viewers.TreeViewer;
  */
 public class PopHandler extends AbstractDataStackViewHandler {
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void doExecute(DataStackView view, PDAThread thread, ISelection selection) throws ExecutionException {
 		TreeViewer viewer = (TreeViewer)view.getViewer();
 		Object popee = selection instanceof IStructuredSelection i2
@@ -39,8 +39,8 @@ public class PopHandler extends AbstractDataStackViewHandler {
 		if (popee != null) {
 			try {
 				IValue[] stack = thread.getDataStack();
-				List<IValue> restore = new ArrayList<>();
-				for (int i = 0; i < stack.length; i++) {
+				List<IValue> restore = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+				for (int i = 0; i < stack.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Object value = stack[i];
 					if (popee.equals(value)) {
 						// pop & stop
@@ -51,14 +51,14 @@ public class PopHandler extends AbstractDataStackViewHandler {
 						restore.add(thread.popData());
 					}
 				}
-				while (!restore.isEmpty()) {
+				while (!restore.isEmpty()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					IValue value = restore.remove(restore.size() - 1);
 					thread.pushData(value.getValueString());
 				}
 			} catch (DebugException e) {
 				throw new ExecutionException("Failed to execute push command", e); //$NON-NLS-1$
 			}
-			viewer.refresh();
+			viewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		}
 	}
 

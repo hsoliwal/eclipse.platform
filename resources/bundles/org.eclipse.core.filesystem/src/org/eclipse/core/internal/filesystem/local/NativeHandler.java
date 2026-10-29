@@ -31,15 +31,15 @@ public abstract class NativeHandler {
 	protected static final String[] EMPTY_STRING_ARRAY = {};
 
 	public String[] listDirectoryNames(String fileName) {
-		String[] names = new File(fileName).list();
+		String[] names = new File(fileName).list(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		return names == null ? EMPTY_STRING_ARRAY : names;
 	}
 
 	public IFileInfo[] listDirectoryAndGetFileInfos(String fileName) {
 		var directoryContents = listDirectoryNames(fileName);
 		var result = new IFileInfo[directoryContents.length];
-		for (int i = 0; i < directoryContents.length; i++) {
-			result[i] = fetchFileInfo(fileName + File.separator + directoryContents[i], EFS.NONE);
+		for (int i = 0; i < directoryContents.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			result[i] = fetchFileInfo(fileName + File.separator + directoryContents[i], EFS.NONE); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return result;
 	}

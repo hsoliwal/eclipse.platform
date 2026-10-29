@@ -39,7 +39,7 @@ import org.eclipse.ui.actions.BaseSelectionListenerAction;
  *
  * @since 3.2
  */
-public abstract class ModelParticipantAction extends BaseSelectionListenerAction {
+public abstract class ModelParticipantAction extends BaseSelectionListenerAction { //FLLDCIM: MARK — T04  IMPLEMENTS
 
 	private final ISynchronizePageConfiguration configuration;
 
@@ -55,8 +55,8 @@ public abstract class ModelParticipantAction extends BaseSelectionListenerAction
 	}
 
 	private void initialize(ISynchronizePageConfiguration configuration) {
-		configuration.getSite().getSelectionProvider().addSelectionChangedListener(this);
-		configuration.getPage().getViewer().getControl().addDisposeListener(unused -> getConfiguration().getSite().getSelectionProvider().removeSelectionChangedListener(ModelParticipantAction.this));
+		configuration.getSite().getSelectionProvider().addSelectionChangedListener(this); //FLLDCIM: MARK — T04 VIEWER_SELECTION_DELTA CALL
+		configuration.getPage().getViewer().getControl().addDisposeListener(unused -> getConfiguration().getSite().getSelectionProvider().removeSelectionChangedListener(ModelParticipantAction.this)); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 	}
 
 	/**
@@ -108,7 +108,7 @@ public abstract class ModelParticipantAction extends BaseSelectionListenerAction
 	 * @param node a diff node
 	 * @return whether the given node is visible in the page
 	 */
-	protected boolean isVisible(IDiff node) {
+	protected boolean isVisible(IDiff node) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ISynchronizePageConfiguration configuration = getConfiguration();
 		if (configuration.getComparisonType() == ISynchronizePageConfiguration.THREE_WAY
 				&& node instanceof IThreeWayDiff twd) {
@@ -152,7 +152,7 @@ public abstract class ModelParticipantAction extends BaseSelectionListenerAction
 		final SaveableComparison targetSaveable = getTargetSaveable();
 		final SaveableComparison  activeSaveable = getActiveSaveable();
 		if (activeSaveable != null && activeSaveable.isDirty()) {
-			PlatformUI.getWorkbench().getProgressService().run(true, true, monitor -> {
+			PlatformUI.getWorkbench().getProgressService().run(true, true, monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 				try {
 					handleTargetSaveableChange(configuration.getSite().getShell(), targetSaveable, activeSaveable, true,
 							monitor);
@@ -195,7 +195,7 @@ public abstract class ModelParticipantAction extends BaseSelectionListenerAction
 	 * @return whether the user choose to save (<code>true</code>) or revert (<code>false</code>() the model
 	 * @throws InterruptedException thrown if the user choose to cancel
 	 */
-	public static boolean promptToSaveChanges(final Shell shell, final SaveableComparison saveable, final boolean allowCancel) throws InterruptedException {
+	public static boolean promptToSaveChanges(final Shell shell, final SaveableComparison saveable, final boolean allowCancel) throws InterruptedException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final int[] result = new int[] { 0 };
 		Runnable runnable = () -> {
 			String[] options;
@@ -213,7 +213,7 @@ public abstract class ModelParticipantAction extends BaseSelectionListenerAction
 					result[0]);
 			result[0] = dialog.open();
 		};
-		shell.getDisplay().syncExec(runnable);
+		shell.getDisplay().syncExec(runnable); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		if (result[0] == 2) {
 			throw new InterruptedException();
 		}

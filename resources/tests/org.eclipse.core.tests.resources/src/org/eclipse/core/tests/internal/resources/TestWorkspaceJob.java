@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.*;
 /**
  * A simple workspace job that runs for a defined amount of time.
  */
-public class TestWorkspaceJob extends WorkspaceJob {
+public class TestWorkspaceJob extends WorkspaceJob { //FLLDCIM: MARK — T09  IMPLEMENTS
 	private static final int tickLength = 10;
 	private final long duration;
 	private boolean touch = false;
@@ -32,23 +32,23 @@ public class TestWorkspaceJob extends WorkspaceJob {
 		this.duration = duration;
 		//only allow durations that are a multiple of the tick length for simplicity
 		if (duration % tickLength > 0) {
-			throw new IllegalArgumentException("Use a job duration that it is a multiple of " + tickLength);
+			throw new IllegalArgumentException("Use a job duration that it is a multiple of " + tickLength); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 		int ticks = (int) (duration / tickLength);
 		monitor.beginTask(getName(), ticks <= 0 ? 1 : ticks);
 		if (touch) {
 			IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-			for (IProject project : projects) {
+			for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				project.touch(null);
 			}
 		}
 		try {
-			for (int i = 0; i < ticks; i++) {
-				monitor.subTask("Tick: " + i);
+			for (int i = 0; i < ticks; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				monitor.subTask("Tick: " + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				if (monitor.isCanceled()) {
 					return Status.CANCEL_STATUS;
 				}

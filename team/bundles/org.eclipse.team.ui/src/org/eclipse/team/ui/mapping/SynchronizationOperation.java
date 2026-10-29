@@ -47,7 +47,7 @@ import org.eclipse.ui.IWorkbenchPart;
  *
  * @since 3.2
  */
-public abstract class SynchronizationOperation extends TeamOperation {
+public abstract class SynchronizationOperation extends TeamOperation { //FLLDCIM: MARK — T09  IMPLEMENTS
 
 	private final ISynchronizePageConfiguration configuration;
 	private final Object[] elements;

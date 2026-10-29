@@ -107,7 +107,7 @@ public class DelegatingStorageMerger implements IStorageMerger {
 	 * @return a merger for the given storage or <code>null</code>
 	 * @throws CoreException no merger found
 	 */
-	protected IStorageMerger createDelegateMerger(IStorage target) throws CoreException {
+	protected IStorageMerger createDelegateMerger(IStorage target) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IStorageMerger merger = null;
 		CoreException exception = null;
 		try {
@@ -203,7 +203,7 @@ public class DelegatingStorageMerger implements IStorageMerger {
 	 * @return the content type of the storage or <code>null</code>
 	 * @throws CoreException if an exception occurs
 	 */
-	public static IContentType getContentType(IStorage target) throws CoreException {
+	public static IContentType getContentType(IStorage target) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (target instanceof IFile file) {
 			IContentDescription contentDescription = file.getContentDescription();
 			if (contentDescription != null) {

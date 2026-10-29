@@ -53,7 +53,7 @@ import org.eclipse.ui.navigator.ICommonContentProvider;
  *
  * @since 3.2
  */
-public abstract class SynchronizationContentProvider implements ICommonContentProvider, IDiffChangeListener, IPropertyChangeListener {
+public abstract class SynchronizationContentProvider implements ICommonContentProvider, IDiffChangeListener, IPropertyChangeListener { //FLLDCIM: MARK — M22  IMPLEMENTS
 
 	private Viewer viewer;
 	private boolean empty;
@@ -90,7 +90,7 @@ public abstract class SynchronizationContentProvider implements ICommonContentPr
 		return internalHasChildren(element);
 	}
 
-	private Object[] internalGetChildren(Object parent, boolean isElement) {
+	private Object[] internalGetChildren(Object parent, boolean isElement) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Object element = internalGetElement(parent);
 		if (element instanceof ISynchronizationScope rms) {
 			// If the root is a scope, we want to include all models in the scope
@@ -189,7 +189,7 @@ public abstract class SynchronizationContentProvider implements ICommonContentPr
 		return getDelegateChildren(parent);
 	}
 
-	private boolean internalHasChildren(Object elementOrPath) {
+	private boolean internalHasChildren(Object elementOrPath) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		//TODO: What about the context and scope
 		Object element = internalGetElement(elementOrPath);
 		if (element instanceof ModelProvider) {
@@ -232,7 +232,7 @@ public abstract class SynchronizationContentProvider implements ICommonContentPr
 		ResourceMapping mapping = Utils.getResourceMapping(internalGetElement(element));
 		if (mapping != null) {
 			ResourceMapping[] mappings = scope.getMappings(mapping.getModelProviderId());
-			for (ResourceMapping sm : mappings) {
+			for (ResourceMapping sm : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (mapping.contains(sm)) {
 					return true;
 				}
@@ -284,7 +284,7 @@ public abstract class SynchronizationContentProvider implements ICommonContentPr
 		getDelegateContentProvider().inputChanged(viewer, oldInput, newInput);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void init(ICommonContentExtensionSite site) {
 		// Set the site
 		this.site = site;
@@ -292,7 +292,7 @@ public abstract class SynchronizationContentProvider implements ICommonContentPr
 		site.getExtensionStateModel().addPropertyChangeListener(this);
 		ISynchronizePageConfiguration configuration = getConfiguration();
 		if (configuration != null) {
-			configuration.addPropertyChangeListener(this);
+			configuration.addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		}
 		ITreeContentProvider provider = getDelegateContentProvider();
 		if (provider instanceof ICommonContentProvider) {
@@ -421,9 +421,9 @@ public abstract class SynchronizationContentProvider implements ICommonContentPr
 			TreeViewer treeViewer = ((TreeViewer)getViewer());
 			// TODO: Need to know if the model root is present in order to refresh properly
 			if (empty) {
-				treeViewer.refresh();
+				treeViewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 			} else {
-				treeViewer.refresh(getModelProvider());
+				treeViewer.refresh(getModelProvider()); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 			}
 		}, getViewer().getControl());
 	}
@@ -479,8 +479,8 @@ public abstract class SynchronizationContentProvider implements ICommonContentPr
 	 * scope of the content provider
 	 */
 	protected Object[] getChildrenInScope(ISynchronizationScope scope, Object parent, Object[] children) {
-		List<Object> result = new ArrayList<>();
-		for (Object object : children) {
+		List<Object> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Object object : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (object != null && isInScope(scope, parent, object)) {
 				result.add(object);
 			}
@@ -521,15 +521,15 @@ public abstract class SynchronizationContentProvider implements ICommonContentPr
 		if (children.length == 0) {
 			return setChildren;
 		}
-		Set<Object> result = new HashSet<>(children.length);
+		Set<Object> result = new HashSet<>(children.length); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		Collections.addAll(result, children);
 		Collections.addAll(result, setChildren);
 		return result.toArray();
 	}
 
 	private Object[] internalGetChildren(ISynchronizationContext context, Object parent, Object[] children) {
-		List<Object> result = new ArrayList<>(children.length);
-		for (Object object : children) {
+		List<Object> result = new ArrayList<>(children.length); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (Object object : children) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// If the parent is a TreePath then the subclass is
 			// TreePath aware and we can send a TrePath to the
 			// isVisible method
@@ -570,7 +570,7 @@ public abstract class SynchronizationContentProvider implements ICommonContentPr
 
 	private boolean isVisible(IDiff[] diffs) {
 		if (diffs.length > 0) {
-			for (IDiff diff : diffs) {
+			for (IDiff diff : diffs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (isVisible(diff)) {
 					return true;
 				}
@@ -637,7 +637,7 @@ public abstract class SynchronizationContentProvider implements ICommonContentPr
 		ResourceMapping mapping = Utils.getResourceMapping(internalGetElement(element));
 		if (mapping != null) {
 			ResourceMapping[] mappings = scope.getMappings(mapping.getModelProviderId());
-			for (ResourceMapping sm : mappings) {
+			for (ResourceMapping sm : mappings) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (mapping.contains(sm)) {
 					return true;
 				}

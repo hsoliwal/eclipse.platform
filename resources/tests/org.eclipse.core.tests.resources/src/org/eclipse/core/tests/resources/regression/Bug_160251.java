@@ -55,7 +55,7 @@ public class Bug_160251 {
 	/**
 	 * The destination directory does not exist.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testNonExistentDestination() throws CoreException, IOException {
 		IProject source = getWorkspace().getRoot().getProject("project");
 		IFile sourceFile = source.getFile("Important.txt");
@@ -80,7 +80,7 @@ public class Bug_160251 {
 	/**
 	 * The destination directory exists, but is empty
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testEmptyDestination() throws CoreException, IOException {
 		IProject source = getWorkspace().getRoot().getProject("project");
 		IFile sourceFile = source.getFile("Important.txt");
@@ -106,7 +106,7 @@ public class Bug_160251 {
 	/**
 	 * The destination directory exists, and contains an overlapping file. This should fail.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testOccupiedDestination() throws Exception {
 		IProject source = getWorkspace().getRoot().getProject("project");
 		IFile sourceFile = source.getFile("Important.txt");

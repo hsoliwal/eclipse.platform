@@ -82,7 +82,7 @@ public class Model implements IModel {
 
 	private static final String[] fOps = { "?", ",", "|", "&", "!!!" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
 
-	private Nfm qualifyNfm(Nfm nfm) {
+	private Nfm qualifyNfm(Nfm nfm) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (nfm == null) {
 			return null;
 		}
@@ -109,19 +109,19 @@ public class Model implements IModel {
 		return Nfm.getMinMax(nfm, fMin, fMax);
 	}
 
-	public Model shallowCopy() {
+	public Model shallowCopy() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Model copy = new Model(getKind());
 		copy.fMixed = fMixed;
 		copy.fLeaf = fLeaf;
 		if (fContents != null) {
 			copy.fContentsList = new LinkedList<>();
-			for (IModel content : fContents) {
+			for (IModel content : fContents) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				copy.fContentsList.add(content);
 			}
 		} else if (fContentsList != null) {
 			copy.fContentsList = new LinkedList<>();
 			Iterator<IModel> it = fContentsList.iterator();
-			while (it.hasNext()) {
+			while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				copy.fContentsList.add(it.next());
 			}
 		}
@@ -175,13 +175,13 @@ public class Model implements IModel {
 		return buf.toString();
 	}
 
-	private void stringRep(StringBuffer buf) {
+	private void stringRep(StringBuffer buf) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		switch (getKind()) {
 			case IModel.CHOICE:
 			case IModel.SEQUENCE:
 				buf.append('(');
 				Iterator<IModel> it = fContentsList.iterator();
-				while (it.hasNext()) {
+				while (it.hasNext()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Model model = (Model) it.next();
 					model.stringRep(buf);
 					if (it.hasNext()) {
@@ -206,7 +206,7 @@ public class Model implements IModel {
 		return fMin == 1 ? (fMax == UNBOUNDED ? "+" : IAntCoreConstants.EMPTY_STRING) : (fMax == UNBOUNDED ? "*" : "?"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Nfm toNfm() {
 		Nfm nfm = null;
 		switch (fKind) {
@@ -218,7 +218,7 @@ public class Model implements IModel {
 				}
 
 				nfm = contents[0].toNfm();
-				for (int i = 1; i < contents.length; i++) {
+				for (int i = 1; i < contents.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					Nfm tmp = contents[i].toNfm();
 					if (fKind == SEQUENCE) {
 						nfm = Nfm.getComma(nfm, tmp);

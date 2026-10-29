@@ -67,7 +67,7 @@ import org.osgi.service.prefs.Preferences;
  */
 public class ProjectPreferences extends EclipsePreferences {
 	static final String PREFS_REGULAR_QUALIFIER = ResourcesPlugin.PI_RESOURCES;
-	static final String PREFS_DERIVED_QUALIFIER = PREFS_REGULAR_QUALIFIER + ".derived"; //$NON-NLS-1$
+	static final String PREFS_DERIVED_QUALIFIER = PREFS_REGULAR_QUALIFIER + ".derived"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	static final String PLACEHOLDER = "<temporary_value_placeholder>"; //$NON-NLS-1$
 
 	/**
@@ -94,7 +94,7 @@ public class ProjectPreferences extends EclipsePreferences {
 	private final int segmentCount;
 	private volatile Workspace workspace;
 
-	static void deleted(IFile file) throws CoreException {
+	static void deleted(IFile file) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath path = file.getFullPath();
 		int count = path.segmentCount();
 		if (count != 3) {
@@ -126,7 +126,7 @@ public class ProjectPreferences extends EclipsePreferences {
 		}
 	}
 
-	static void deleted(IFolder folder) throws CoreException {
+	static void deleted(IFolder folder) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath path = folder.getFullPath();
 		int count = path.segmentCount();
 		if (count != 2) {
@@ -200,9 +200,9 @@ public class ProjectPreferences extends EclipsePreferences {
 		return project.getFile(IPath.fromOSString(DEFAULT_PREFERENCES_DIRNAME).append(qualifier).addFileExtension(PREFS_FILE_EXTENSION));
 	}
 
-	private static Properties loadProperties(IFile file) throws BackingStoreException {
+	private static Properties loadProperties(IFile file) throws BackingStoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (Policy.DEBUG_PREFERENCES) {
-			Policy.debug("Loading preferences from file: " + file.getFullPath()); //$NON-NLS-1$
+			Policy.debug("Loading preferences from file: " + file.getFullPath()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		Properties result = new Properties();
 		try (
@@ -233,10 +233,10 @@ public class ProjectPreferences extends EclipsePreferences {
 		workspace.getContentDescriptionManager().projectPreferencesChanged(project);
 	}
 
-	private static void read(ProjectPreferences node, IFile file) throws BackingStoreException, CoreException {
+	private static void read(ProjectPreferences node, IFile file) throws BackingStoreException, CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (file == null || !file.exists()) {
 			if (Policy.DEBUG_PREFERENCES) {
-				Policy.debug("Unable to determine preference file or file does not exist for node: " + node.absolutePath()); //$NON-NLS-1$
+				Policy.debug("Unable to determine preference file or file does not exist for node: " + node.absolutePath()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			return;
 		}
@@ -263,7 +263,7 @@ public class ProjectPreferences extends EclipsePreferences {
 	 * @return new node that contains everything required to apply new state
 	 * @see PreferencesService#applyPreferences(IExportedPreferences)
 	 */
-	private static ExportedPreferences overridingPreferences(ProjectPreferences current, IFile file)
+	private static ExportedPreferences overridingPreferences(ProjectPreferences current, IFile file) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws BackingStoreException {
 		Properties fromDisk = loadProperties(file);
 
@@ -274,7 +274,7 @@ public class ProjectPreferences extends EclipsePreferences {
 		// in the node to be applied to preferences, so we can delete previously
 		// existing node values
 		Set<Entry<Object, Object>> set = fromMemory.entrySet();
-		for (Entry<Object, Object> entry : set) {
+		for (Entry<Object, Object> entry : set) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String key = (String) entry.getKey();
 			// Only touch nodes that are not in the file
 			if (!fromDisk.containsKey(key)) {
@@ -297,7 +297,7 @@ public class ProjectPreferences extends EclipsePreferences {
 			String[] keys = child.keys();
 			boolean nodeShouldBeRemoved = false;
 			// Remove our placeholders, we don't need them, only nodes
-			for (String key : keys) {
+			for (String key : keys) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (PLACEHOLDER.equals(child.get(key, null))) {
 					child.remove(key);
 					nodeShouldBeRemoved = true;
@@ -340,7 +340,7 @@ public class ProjectPreferences extends EclipsePreferences {
 	private static void clearAll(Preferences node) throws BackingStoreException {
 		node.clear();
 		String[] names = node.childrenNames();
-		for (String name2 : names) {
+		for (String name2 : names) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			clearAll(node.node(name2));
 		}
 	}
@@ -350,7 +350,7 @@ public class ProjectPreferences extends EclipsePreferences {
 		loadedNodes.removeIf(key -> key.startsWith(path));
 	}
 
-	public static void updatePreferences(IFile file) throws CoreException {
+	public static void updatePreferences(IFile file) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath path = file.getFullPath();
 		// if we made it this far we are inside /project/.settings and might
 		// have a change to a preference file
@@ -398,7 +398,7 @@ public class ProjectPreferences extends EclipsePreferences {
 		segmentCount = 0;
 	}
 
-	private ProjectPreferences(EclipsePreferences parent, String name, Workspace workspace) {
+	private ProjectPreferences(EclipsePreferences parent, String name, Workspace workspace) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		super(parent, name);
 		setWorkspace(workspace);
 
@@ -417,7 +417,7 @@ public class ProjectPreferences extends EclipsePreferences {
 		project = (projectName != null) ? getWorkspace().getRoot().getProject(projectName) : null;
 
 		// cache the qualifier
-		qualifier = (segmentCount > 2) ? getSegment(path, 2).intern() : null;
+		qualifier = (segmentCount > 2) ? getSegment(path, 2).intern() : null; //FLLDCIM: MARK — M13 TOKEN_INTERNER CALL
 	}
 
 	@Override
@@ -441,7 +441,7 @@ public class ProjectPreferences extends EclipsePreferences {
 	 * Figure out what the children of this node are based on the resources
 	 * that are in the workspace.
 	 */
-	private List<String> computeChildren() {
+	private List<String> computeChildren() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (project == null) {
 			return List.of();
 		}
@@ -455,8 +455,8 @@ public class ProjectPreferences extends EclipsePreferences {
 		} catch (CoreException e) {
 			return List.of();
 		}
-		List<String> result = new ArrayList<>();
-		for (IResource resource : members) {
+		List<String> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (IResource resource : members) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (resource.getType() == IResource.FILE && PREFS_FILE_EXTENSION.equals(resource.getFullPath().getFileExtension())) {
 				result.add(resource.getFullPath().removeFileExtension().lastSegment());
 			}
@@ -505,7 +505,7 @@ public class ProjectPreferences extends EclipsePreferences {
 			// Walk backwards up the tree starting at this node.
 			// This is important to avoid a chicken/egg thing on startup.
 			EclipsePreferences node = this;
-			for (int i = 3; i < segmentCount; i++) {
+			for (int i = 3; i < segmentCount; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				node = (EclipsePreferences) node.parent();
 			}
 			loadLevel = node;
@@ -565,7 +565,7 @@ public class ProjectPreferences extends EclipsePreferences {
 		return super.internalPut(key, newValue);
 	}
 
-	private void initialize() {
+	private void initialize() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (segmentCount != 2) {
 			return;
 		}
@@ -581,7 +581,7 @@ public class ProjectPreferences extends EclipsePreferences {
 				synchronized (this) {
 					Set<String> addedNames = Set.of(internalChildNames());
 					// add names only for nodes that were not added previously
-					for (String child : computeChildren()) {
+					for (String child : computeChildren()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (!addedNames.contains(child)) {
 							addChild(child, null);
 						}
@@ -612,16 +612,16 @@ public class ProjectPreferences extends EclipsePreferences {
 		load(true);
 	}
 
-	private void load(boolean reportProblems) throws BackingStoreException {
+	private void load(boolean reportProblems) throws BackingStoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IFile localFile = getFile();
 		if (localFile == null || !localFile.exists()) {
 			if (Policy.DEBUG_PREFERENCES) {
-				Policy.debug("Unable to determine preference file or file does not exist for node: " + absolutePath()); //$NON-NLS-1$
+				Policy.debug("Unable to determine preference file or file does not exist for node: " + absolutePath()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			return;
 		}
 		if (Policy.DEBUG_PREFERENCES) {
-			Policy.debug("Loading preferences from file: " + localFile.getFullPath()); //$NON-NLS-1$
+			Policy.debug("Loading preferences from file: " + localFile.getFullPath()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		Properties fromDisk = new Properties();
 		try (InputStream input = localFile.getContents(true)) {
@@ -631,7 +631,7 @@ public class ProjectPreferences extends EclipsePreferences {
 		} catch (CoreException e) {
 			if (e.getStatus().getCode() == IResourceStatus.RESOURCE_NOT_FOUND) {
 				if (Policy.DEBUG_PREFERENCES) {
-					Policy.debug("Preference file does not exist for node: " + absolutePath()); //$NON-NLS-1$
+					Policy.debug("Preference file does not exist for node: " + absolutePath()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 				return;
 			}
@@ -654,7 +654,7 @@ public class ProjectPreferences extends EclipsePreferences {
 	 * want special behaviour. If the child is a single segment name, then we want to
 	 * return true if the node exists OR if a project with that name exists in the workspace.
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean nodeExists(String path) throws BackingStoreException {
 		// short circuit for checking this node
 		if (path.length() == 0) {
@@ -700,12 +700,12 @@ public class ProjectPreferences extends EclipsePreferences {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void save() throws BackingStoreException {
 		final IFile fileInWorkspace = getFile();
 		if (fileInWorkspace == null) {
 			if (Policy.DEBUG_PREFERENCES) {
-				Policy.debug("Not saving preferences since there is no file for node: " + absolutePath()); //$NON-NLS-1$
+				Policy.debug("Not saving preferences since there is no file for node: " + absolutePath()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			return;
 		}
@@ -719,7 +719,7 @@ public class ProjectPreferences extends EclipsePreferences {
 					if (table.isEmpty()) {
 						if (fileInWorkspace.exists()) {
 							if (Policy.DEBUG_PREFERENCES) {
-								Policy.debug("Deleting preference file: " + fileInWorkspace.getFullPath()); //$NON-NLS-1$
+								Policy.debug("Deleting preference file: " + fileInWorkspace.getFullPath()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							}
 							if (fileInWorkspace.isReadOnly()) {
 								IStatus status1 = fileInWorkspace.getWorkspace().validateEdit(new IFile[] {fileInWorkspace}, IWorkspace.VALIDATE_PROMPT);
@@ -742,7 +742,7 @@ public class ProjectPreferences extends EclipsePreferences {
 					String systemLineSeparator = System.lineSeparator();
 					String fileLineSeparator = fileInWorkspace.getLineSeparator(true);
 					if (!systemLineSeparator.equals(fileLineSeparator)) {
-						s = s.replaceAll(systemLineSeparator, fileLineSeparator);
+						s = s.replaceAll(systemLineSeparator, fileLineSeparator); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 					}
 					byte[] input = s.getBytes(StandardCharsets.UTF_8);
 					// make sure that preference folder and file are in sync
@@ -750,7 +750,7 @@ public class ProjectPreferences extends EclipsePreferences {
 					fileInWorkspace.refreshLocal(IResource.DEPTH_ZERO, null);
 					if (fileInWorkspace.exists()) {
 						if (Policy.DEBUG_PREFERENCES) {
-							Policy.debug("Setting preference file contents for: " + fileInWorkspace.getFullPath()); //$NON-NLS-1$
+							Policy.debug("Setting preference file contents for: " + fileInWorkspace.getFullPath()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						}
 						if (fileInWorkspace.isReadOnly()) {
 							IStatus status2 = fileInWorkspace.getWorkspace().validateEdit(new IFile[] {fileInWorkspace}, IWorkspace.VALIDATE_PROMPT);
@@ -765,12 +765,12 @@ public class ProjectPreferences extends EclipsePreferences {
 						IFolder folder = (IFolder) fileInWorkspace.getParent();
 						if (!folder.exists()) {
 							if (Policy.DEBUG_PREFERENCES) {
-								Policy.debug("Creating parent preference directory: " + folder.getFullPath()); //$NON-NLS-1$
+								Policy.debug("Creating parent preference directory: " + folder.getFullPath()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							}
 							folder.create(IResource.NONE, true, null);
 						}
 						if (Policy.DEBUG_PREFERENCES) {
-							Policy.debug("Creating preference file: " + fileInWorkspace.getLocation()); //$NON-NLS-1$
+							Policy.debug("Creating preference file: " + fileInWorkspace.getLocation()); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						}
 						fileInWorkspace.create(input, IResource.NONE, null);
 					}

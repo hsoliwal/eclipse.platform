@@ -42,25 +42,25 @@ import org.eclipse.team.internal.core.TeamPlugin;
  */
 public abstract class ChangeTracker {
 
-	private final Map<IProject, IChangeGroupingRequestor> trackedProjects = new HashMap<>(); // Map IProject->IChangeGroupingRequestor
+	private final Map<IProject, IChangeGroupingRequestor> trackedProjects = new HashMap<>(); // Map IProject->IChangeGroupingRequestor //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	private boolean disposed;
 	private final ChangeListener changeListener = new ChangeListener();
 
-	private class ChangeListener implements IResourceChangeListener, IRepositoryProviderListener {
+	private class ChangeListener implements IResourceChangeListener, IRepositoryProviderListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 		/**
 		 * Handle a resource change event.
 		 * Update the set of projects for which we can track changes
 		 * by listening for project changes and project description changes.
 		 * @param event the change event
 		 */
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void resourceChanged(IResourceChangeEvent event) {
 			if (disposed) {
 				return;
 			}
 			IResourceDelta delta = event.getDelta();
 			IResourceDelta[] projectDeltas = delta.getAffectedChildren(IResourceDelta.ADDED | IResourceDelta.CHANGED | IResourceDelta.REMOVED);
-			for (IResourceDelta projectDelta : projectDeltas) {
+			for (IResourceDelta projectDelta : projectDeltas) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IResource resource = projectDelta.getResource();
 				if (resource.getType() == IResource.PROJECT) {
 					IProject project = (IProject)resource;
@@ -122,7 +122,7 @@ public abstract class ChangeTracker {
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(changeListener, IResourceChangeEvent.POST_CHANGE);
 		RepositoryProviderManager.getInstance().addListener(changeListener);
 		IProject[] allProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
-		for (IProject project : allProjects) {
+		for (IProject project : allProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isProjectOfInterest(project)) {
 				trackProject(project);
 			}
@@ -140,9 +140,9 @@ public abstract class ChangeTracker {
 	}
 
 	private IResource[] getProjectChanges(IProject project, IResourceDelta projectDelta) {
-		final List<IResource> result = new ArrayList<>();
+		final List<IResource> result = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		try {
-			projectDelta.accept(delta -> {
+			projectDelta.accept(delta -> { //FLLDCIM: MARK — T07  LAMBDA
 				if (isResourceOfInterest(delta.getResource()) && isChangeOfInterest(delta)) {
 					result.add(delta.getResource());
 				}
@@ -224,7 +224,7 @@ public abstract class ChangeTracker {
 	 * @param project the project
 	 * @return whether the project is being tracked
 	 */
-	protected final boolean trackProject(IProject project) {
+	protected final boolean trackProject(IProject project) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (RepositoryProvider.isShared(project)) {
 			try {
 				String currentId = project.getPersistentProperty(TeamPlugin.PROVIDER_PROP_KEY);

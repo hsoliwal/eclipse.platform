@@ -62,7 +62,7 @@ public class TestCreateLinkedResourceInHiddenProject {
 	@Order(2)
 	public void test2() throws CoreException {
 		IPath path = getTempDir().addTrailingSeparator().append(createUniqueString());
-		path.toFile().mkdir();
+		path.toFile().mkdir(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(PROJECT);
 		IFolder folder = project.getFolder(createUniqueString());

@@ -35,21 +35,21 @@ public class PathVariableUtil {
 	static public String getUniqueVariableName(String variable, IResource resource) {
 		int index = 1;
 		variable = getValidVariableName(variable);
-		StringBuilder destVariable = new StringBuilder(variable);
+		StringBuilder destVariable = new StringBuilder(variable); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 		IPathVariableManager pathVariableManager = resource.getPathVariableManager();
 		if (variable.startsWith(ParentVariableResolver.NAME) || variable.startsWith(ProjectLocationVariableResolver.NAME)) {
 			destVariable.insert(0, "copy_"); //$NON-NLS-1$
 		}
 
-		while (pathVariableManager.isDefined(destVariable.toString())) {
-			destVariable.append(index);
+		while (pathVariableManager.isDefined(destVariable.toString())) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			destVariable.append(index); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			index++;
 		}
 		return destVariable.toString();
 	}
 
-	public static String getValidVariableName(String variable) {
+	public static String getValidVariableName(String variable) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// remove the argument part if the variable is of the form ${VAR-ARG}
 		int argumentIndex = variable.indexOf('-');
 		if (argumentIndex != -1) {
@@ -59,14 +59,14 @@ public class PathVariableUtil {
 		variable = variable.trim();
 		char first = variable.charAt(0);
 		if (!Character.isLetter(first) && first != '_') {
-			variable = 'A' + variable;
+			variable = 'A' + variable; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
-		StringBuilder builder = new StringBuilder();
-		for (int i = 0; i < variable.length(); i++) {
+		StringBuilder builder = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < variable.length(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c = variable.charAt(i);
 			if ((Character.isLetter(c) || Character.isDigit(c) || c == '_') && !Character.isWhitespace(c)) {
-				builder.append(c);
+				builder.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 		variable = builder.toString();
@@ -89,7 +89,7 @@ public class PathVariableUtil {
 		return URIUtil.toURI(convertToRelative(pathVariableManager, URIUtil.toPath(originalPath), resource, force, variableHint));
 	}
 
-	static private IPath convertToRelative(IPathVariableManager pathVariableManager, IPath originalPath, IResource resource, boolean force, String variableHint, boolean skipWorkspace, boolean generateMacro) throws CoreException {
+	static private IPath convertToRelative(IPathVariableManager pathVariableManager, IPath originalPath, IResource resource, boolean force, String variableHint, boolean skipWorkspace, boolean generateMacro) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (variableHint != null && pathVariableManager.isDefined(variableHint)) {
 			IPath value = URIUtil.toPath(pathVariableManager.getURIValue(variableHint));
 			if (value != null) {
@@ -100,7 +100,7 @@ public class PathVariableUtil {
 		IPath newPath = null;
 		int maxMatchLength = -1;
 		String[] existingVariables = pathVariableManager.getPathVariableNames();
-		for (String variable : existingVariables) {
+		for (String variable : existingVariables) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (skipWorkspace) {
 				// Variables relative to the workspace are not portable, and defeat the purpose of having linked resource locations,
 				// so they should not automatically be created relative to the workspace.
@@ -133,10 +133,10 @@ public class PathVariableUtil {
 
 		if (force) {
 			int originalSegmentCount = originalPath.segmentCount();
-			for (int j = 0; j <= originalSegmentCount; j++) {
+			for (int j = 0; j <= originalSegmentCount; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IPath matchingPath = path.removeLastSegments(j);
 				int minDifference = Integer.MAX_VALUE;
-				for (String variable : existingVariables) {
+				for (String variable : existingVariables) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (skipWorkspace) {
 						if (variable.equals(WorkspaceLocationVariableResolver.NAME)) {
 							continue;
@@ -190,7 +190,7 @@ public class PathVariableUtil {
 		return newPath;
 	}
 
-	private static IPath makeRelativeToVariable(IPathVariableManager pathVariableManager, IPath originalPath, boolean force, String variableHint) {
+	private static IPath makeRelativeToVariable(IPathVariableManager pathVariableManager, IPath originalPath, boolean force, String variableHint) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IPath path = convertToProperCase(originalPath);
 		IPath value = URIUtil.toPath(pathVariableManager.getURIValue(variableHint));
 		value = convertToProperCase(URIUtil.toPath(pathVariableManager.resolveURI(URIUtil.toURI(value))));
@@ -198,7 +198,7 @@ public class PathVariableUtil {
 		if (value.isPrefixOf(path)) {
 			// transform "c:/foo/bar" into "FOO/bar"
 			IPath tmp = IPath.fromOSString(variableHint);
-			for (int j = valueSegmentCount; j < originalPath.segmentCount(); j++) {
+			for (int j = valueSegmentCount; j < originalPath.segmentCount(); j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				tmp = tmp.append(originalPath.segment(j));
 			}
 			return tmp;
@@ -211,7 +211,7 @@ public class PathVariableUtil {
 				if (matchingFirstSegments >= 0) {
 					String originalName = buildParentPathVariable(variableHint, valueSegmentCount - matchingFirstSegments, true);
 					IPath tmp = IPath.fromOSString(originalName);
-					for (int j = matchingFirstSegments; j < originalPath.segmentCount(); j++) {
+					for (int j = matchingFirstSegments; j < originalPath.segmentCount(); j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						tmp = tmp.append(originalPath.segment(j));
 					}
 					return tmp;
@@ -233,12 +233,12 @@ public class PathVariableUtil {
 	}
 
 	static public boolean isParentVariable(String variableString) {
-		return variableString.startsWith(ParentVariableResolver.NAME + '-');
+		return variableString.startsWith(ParentVariableResolver.NAME + '-'); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	// the format is PARENT-COUNT-ARGUMENT
 	static public int getParentVariableCount(String variableString) {
-		String items[] = variableString.split("-"); //$NON-NLS-1$
+		String items[] = variableString.split("-"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		if (items.length == 3) {
 			try {
 				int count = Integer.parseInt(items[1]);
@@ -252,7 +252,7 @@ public class PathVariableUtil {
 
 	// the format is PARENT-COUNT-ARGUMENT
 	static public String getParentVariableArgument(String variableString) {
-		String items[] = variableString.split("-"); //$NON-NLS-1$
+		String items[] = variableString.split("-"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		if (items.length == 3) {
 			return items[2];
 		}
@@ -260,34 +260,34 @@ public class PathVariableUtil {
 	}
 
 	static public String buildParentPathVariable(String variable, int difference, boolean generateMacro) {
-		String newString = ParentVariableResolver.NAME + "-" + difference + "-" + variable; //$NON-NLS-1$//$NON-NLS-2$
+		String newString = ParentVariableResolver.NAME + "-" + difference + "-" + variable; //$NON-NLS-1$//$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		if (!generateMacro) {
-			newString = "${" + newString + "}"; //$NON-NLS-1$//$NON-NLS-2$
+			newString = "${" + newString + "}"; //$NON-NLS-1$//$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return newString;
 	}
 
 	public static IPath buildVariableMacro(IPath relativeSrcValue) {
 		String variable = relativeSrcValue.segment(0);
-		variable = "${" + variable + "}"; //$NON-NLS-1$//$NON-NLS-2$
+		variable = "${" + variable + "}"; //$NON-NLS-1$//$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return IPath.fromOSString(variable).append(relativeSrcValue.removeFirstSegments(1));
 	}
 
-	public static String convertFromUserEditableFormatInternal(IPathVariableManager manager, String userFormat, boolean locationFormat) {
+	public static String convertFromUserEditableFormatInternal(IPathVariableManager manager, String userFormat, boolean locationFormat) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		char pathPrefix = 0;
 		if ((userFormat.length() > 0) && (userFormat.charAt(0) == '/' || userFormat.charAt(0) == '\\')) {
 			pathPrefix = userFormat.charAt(0);
 		}
 		String components[] = splitPathComponents(userFormat);
-		for (int i = 0; i < components.length; i++) {
+		for (int i = 0; i < components.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (components[i] == null) {
 				continue;
 			}
 			if (isDotDot(components[i])) {
 				int parentCount = 1;
 				components[i] = null;
-				for (int j = i + 1; j < components.length; j++) {
+				for (int j = i + 1; j < components.length; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (components[j] != null) {
 						if (isDotDot(components[j])) {
 							parentCount++;
@@ -300,7 +300,7 @@ public class PathVariableUtil {
 				if (i == 0) { // this means the value is implicitly relative to the project location
 					components[0] = PathVariableUtil.buildParentPathVariable(ProjectLocationVariableResolver.NAME, parentCount, false);
 				} else {
-					for (int j = i - 1; j >= 0; j--) {
+					for (int j = i - 1; j >= 0; j--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (parentCount == 0) {
 							break;
 						}
@@ -327,16 +327,16 @@ public class PathVariableUtil {
 										// can't be converted to a "${PARENT-1-VAR}foo" variable.
 										// So instead, an intermediate variable "VARFOO" will be created of value
 										// "${VAR}foo", and the string "${PARENT-1-VARFOO}" will be inserted.
-										String intermediateVariable = PathVariableUtil.getValidVariableName(variable + suffix);
+										String intermediateVariable = PathVariableUtil.getValidVariableName(variable + suffix); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 										IPath intermediateValue = IPath.fromPortableString(components[j]);
 										int intermediateVariableIndex = 1;
 										String originalIntermediateVariableName = intermediateVariable;
-										while (manager.isDefined(intermediateVariable)) {
+										while (manager.isDefined(intermediateVariable)) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 											IPath tmpValue = URIUtil.toPath(manager.getURIValue(intermediateVariable));
 											if (tmpValue.equals(intermediateValue)) {
 												break;
 											}
-											intermediateVariable = originalIntermediateVariableName + intermediateVariableIndex;
+											intermediateVariable = originalIntermediateVariableName + intermediateVariableIndex; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 										}
 										if (!manager.isDefined(intermediateVariable)) {
 											manager.setURIValue(intermediateVariable, URIUtil.toURI(intermediateValue));
@@ -357,7 +357,7 @@ public class PathVariableUtil {
 								} else {
 									newVariable = PathVariableUtil.buildParentPathVariable(variable, parentCount, locationFormat);
 								}
-								components[j] = prefix + newVariable;
+								components[j] = prefix + newVariable; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 								break;
 							}
 							components[j] = null;
@@ -370,16 +370,16 @@ public class PathVariableUtil {
 				}
 			}
 		}
-		StringBuilder buffer = new StringBuilder();
+		StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		if (pathPrefix != 0) {
-			buffer.append(pathPrefix);
+			buffer.append(pathPrefix); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		for (int i = 0; i < components.length; i++) {
+		for (int i = 0; i < components.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (components[i] != null) {
 				if (i > 0) {
-					buffer.append(java.io.File.separator);
+					buffer.append(java.io.File.separator); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
-				buffer.append(components[i]);
+				buffer.append(components[i]); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 		return buffer.toString();
@@ -389,18 +389,18 @@ public class PathVariableUtil {
 		return component.equals(".."); //$NON-NLS-1$
 	}
 
-	private static String[] splitPathComponents(String userFormat) {
-		ArrayList<String> list = new ArrayList<>();
-		StringBuilder buffer = new StringBuilder();
-		for (int i = 0; i < userFormat.length(); i++) {
+	private static String[] splitPathComponents(String userFormat) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		ArrayList<String> list = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (int i = 0; i < userFormat.length(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c = userFormat.charAt(i);
 			if (c == '/' || c == '\\') {
 				if (buffer.length() > 0) {
 					list.add(buffer.toString());
 				}
-				buffer = new StringBuilder();
+				buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 			} else {
-				buffer.append(c);
+				buffer.append(c); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 		if (buffer.length() > 0) {
@@ -409,8 +409,8 @@ public class PathVariableUtil {
 		return list.toArray(new String[0]);
 	}
 
-	public static String convertToUserEditableFormatInternal(String value, boolean locationFormat) {
-		StringBuilder buffer = new StringBuilder();
+	public static String convertToUserEditableFormatInternal(String value, boolean locationFormat) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		if (locationFormat) {
 			IPath path = IPath.fromOSString(value);
 			if (path.isAbsolute()) {
@@ -420,11 +420,11 @@ public class PathVariableUtil {
 			String variable = index != -1 ? value.substring(0, index) : value;
 			convertVariableToUserFormat(buffer, variable, variable, false);
 			if (index != -1) {
-				buffer.append(value.substring(index));
+				buffer.append(value.substring(index)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		} else {
 			String components[] = splitVariablesAndContent(value);
-			for (String component : components) {
+			for (String component : components) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String variable = extractVariable(component);
 				convertVariableToUserFormat(buffer, component, variable, true);
 			}
@@ -437,16 +437,16 @@ public class PathVariableUtil {
 			String argument = PathVariableUtil.getParentVariableArgument(variable);
 			int count = PathVariableUtil.getParentVariableCount(variable);
 			if (argument != null && count != -1) {
-				buffer.append(generateMacro ? PathVariableUtil.buildVariableMacro(IPath.fromOSString(argument))
+				buffer.append(generateMacro ? PathVariableUtil.buildVariableMacro(IPath.fromOSString(argument)) //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 						: IPath.fromOSString(argument));
-				for (int j = 0; j < count; j++) {
-					buffer.append(java.io.File.separator + ".."); //$NON-NLS-1$
+				for (int j = 0; j < count; j++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					buffer.append(java.io.File.separator + ".."); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 			} else {
-				buffer.append(component);
+				buffer.append(component); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		} else {
-			buffer.append(component);
+			buffer.append(component); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 	}
 
@@ -458,9 +458,9 @@ public class PathVariableUtil {
 	 * For example, if the value is "${ECLIPSE_HOME}/plugins", the value
 	 * returned will be {"${ECLIPSE_HOME}" "/plugins"}
 	 */
-	static String[] splitVariablesAndContent(String value) {
+	static String[] splitVariablesAndContent(String value) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		LinkedList<String> result = new LinkedList<>();
-		while (true) {
+		while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// we check if the value contains referenced variables with ${VAR}
 			int index = value.indexOf("${"); //$NON-NLS-1$
 			if (index != -1) {
@@ -491,7 +491,7 @@ public class PathVariableUtil {
 	 */
 	static String[] splitVariableNames(String value) {
 		LinkedList<String> result = new LinkedList<>();
-		while (true) {
+		while (true) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int index = value.indexOf("${"); //$NON-NLS-1$
 			if (index != -1) {
 				int endIndex = getMatchingBrace(value, index);
@@ -523,9 +523,9 @@ public class PathVariableUtil {
 	// getMatchingBrace("${FOO}/something") returns 5
 	// getMatchingBrace("${${OTHER}}/something") returns 10
 	// getMatchingBrace("${FOO") returns 5
-	static int getMatchingBrace(String value, int index) {
+	static int getMatchingBrace(String value, int index) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int scope = 0;
-		for (int i = index + 1; i < value.length(); i++) {
+		for (int i = index + 1; i < value.length(); i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			char c = value.charAt(i);
 			if (c == '}') {
 				if (scope == 0) {

@@ -37,7 +37,7 @@ import org.junit.jupiter.api.Test;
 
 public class StructureCreatorTest {
 
-@Test
+@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIgnoreWhitespace() {
 		IDocument[] docs = new IDocument[15];
 		docs[0] = new Document();
@@ -133,7 +133,7 @@ public class StructureCreatorTest {
 		} };
 
 		StructureCreator creator = new StructureCreator() {
-			private final Pattern whitespace = Pattern.compile("\\s+");
+			private final Pattern whitespace = Pattern.compile("\\s+"); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			private Matcher matcher = null;
 
 			@Override
@@ -141,7 +141,7 @@ public class StructureCreatorTest {
 				return "NAME";
 			}
 
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public String getContents(Object node, boolean ignoreWhitespace) {
 				DocumentRangeNode drn = (DocumentRangeNode) node;
 				String retval = null;
@@ -150,7 +150,7 @@ public class StructureCreatorTest {
 							drn.getRange().getLength());
 					if (ignoreWhitespace) {
 						if (matcher == null)
-							matcher = whitespace.matcher(retval);
+							matcher = whitespace.matcher(retval); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 						else
 							matcher.reset(retval);
 						retval = matcher.replaceAll("");
@@ -172,9 +172,9 @@ public class StructureCreatorTest {
 
 		};
 		DocumentRangeNode l, r;
-		for (int i = 0; i < docs.length; i++)
-			for (int j = i + 1; j < docs.length; j++)
-				for (ICompareFilter[] filter : filters) {
+		for (int i = 0; i < docs.length; i++) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			for (int j = i + 1; j < docs.length; j++) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+				for (ICompareFilter[] filter : filters) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					l = new DocumentRangeNode(1, "ID", docs[i], 0,
 							docs[i].getLength());
 					r = new DocumentRangeNode(1, "ID", docs[j], 0,

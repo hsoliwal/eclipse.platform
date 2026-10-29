@@ -27,7 +27,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class WorkbenchAntRunner implements IApplication {
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Object start(IApplicationContext context) throws Exception {
 		Display display = PlatformUI.createDisplay();
 		try {

@@ -132,7 +132,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 
 	private IFileRevision currentSelection;
 
-	private static final class LocalHistoryContentProvider implements ITreeContentProvider {
+	private static final class LocalHistoryContentProvider implements ITreeContentProvider { //FLLDCIM: MARK — M22  IMPLEMENTS
 		@Override
 		public Object[] getElements(Object inputElement) {
 			if (inputElement instanceof IFileHistory fileHistory) {
@@ -235,7 +235,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 		public RefreshFileHistory() {
 			super(TeamUIMessages.LocalHistoryPage_FetchLocalHistoryMessage);
 		}
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public IStatus run(IProgressMonitor monitor)  {
 			try {
 				IStatus status = Status.OK_STATUS;
@@ -259,7 +259,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 
 				if (Policy.DEBUG_HISTORY) {
 					String time = new SimpleDateFormat("m:ss.SSS").format(new Date(System.currentTimeMillis())); //$NON-NLS-1$
-					System.out.println(time + ": RefreshFileHistoryJob#run finished, status: " + status); //$NON-NLS-1$
+					System.out.println(time + ": RefreshFileHistoryJob#run finished, status: " + status); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 
 				return status;
@@ -269,7 +269,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 		}
 	}
 
-	private class HistoryResourceListener implements IResourceChangeListener {
+	private class HistoryResourceListener implements IResourceChangeListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 		@Override
 		public void resourceChanged(IResourceChangeEvent event) {
 			IResourceDelta root = event.getDelta();
@@ -280,7 +280,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 
 			IResourceDelta resourceDelta = root.findMember(file.getFullPath());
 			if (resourceDelta != null){
-				Display.getDefault().asyncExec(() -> refresh());
+				Display.getDefault().asyncExec(() -> refresh()); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			}
 		}
 	}
@@ -294,7 +294,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 		super();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean inputSet() {
 		currentFileRevision = null;
 		IFile tempFile = getFile();
@@ -305,7 +305,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 
 		//blank current input only after we're sure that we have a file
 		//to fetch history for
-		this.treeViewer.setInput(null);
+		this.treeViewer.setInput(null); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 
 		localFileHistory = new LocalFileHistory(file, !getHistoryPageSite().isModal());
 
@@ -325,7 +325,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 	private void refreshHistory(boolean refetch) {
 		if (Policy.DEBUG_HISTORY) {
 			String time = new SimpleDateFormat("m:ss.SSS").format(new Date(System.currentTimeMillis())); //$NON-NLS-1$
-			System.out.println(time + ": LocalHistoryPage#refreshHistory, refetch = " + refetch); //$NON-NLS-1$
+			System.out.println(time + ": LocalHistoryPage#refreshHistory, refetch = " + refetch); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		if (refreshFileHistoryJob.getState() != Job.NONE){
@@ -343,7 +343,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 		return null;
 	}
 
-	public final void createControl(Composite parent, boolean allowMultiSelection) {
+	public final void createControl(Composite parent, boolean allowMultiSelection) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		localComposite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
 		layout.marginHeight = 0;
@@ -373,7 +373,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 		createControl(parent, true);
 	}
 
-	private void contributeActions() {
+	private void contributeActions() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		final IPreferenceStore store = TeamUIPlugin.getPlugin().getPreferenceStore();
 		//Group by Date
 		groupByDateMode = new Action(TeamUIMessages.LocalHistoryPage_GroupRevisionsByDateAction, TeamUIPlugin.getImageDescriptor(ITeamUIImages.IMG_DATES_CATEGORY)){
@@ -415,7 +415,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 				compareModeAction.setDisabledImageDescriptor(TeamUIPlugin.getImageDescriptor(ITeamUIImages.IMG_COMPARE_VIEW));
 				compareModeAction.setChecked(compareMode == ON);
 
-				getContentsAction = getContextMenuAction(TeamUIMessages.LocalHistoryPage_GetContents, true /* needs progress */, monitor -> {
+				getContentsAction = getContextMenuAction(TeamUIMessages.LocalHistoryPage_GetContents, true /* needs progress */, monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 					SubMonitor progress = SubMonitor.convert(monitor, 2);
 					try {
 						if (confirmOverwrite()) {
@@ -437,7 +437,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 			// Click Compare action
 			compareAction = createCompareAction();
 			compareAction.setEnabled(!treeViewer.getSelection().isEmpty());
-			treeViewer.getTree().addSelectionListener(new SelectionAdapter(){
+			treeViewer.getTree().addSelectionListener(new SelectionAdapter(){ //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					compareAction.setCurrentFileRevision(getCurrentFileRevision());
@@ -449,7 +449,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 			if (!((compareMode & (ALWAYS | ON)) == (ALWAYS | ON))) {
 				openAction = new OpenRevisionAction(TeamUIMessages.LocalHistoryPage_OpenAction, this);
 				openAction.setEnabled(!treeViewer.getSelection().isEmpty());
-				treeViewer.getTree().addSelectionListener(new SelectionAdapter(){
+				treeViewer.getTree().addSelectionListener(new SelectionAdapter(){ //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						openAction.selectionChanged(treeViewer.getStructuredSelection());
@@ -458,7 +458,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 
 				// Add 'Open With...'  sub-menu
 				openWithMenu = new OpenWithMenu(this);
-				treeViewer.getTree().addSelectionListener(new SelectionAdapter(){
+				treeViewer.getTree().addSelectionListener(new SelectionAdapter(){ //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						openWithMenu.selectionChanged(treeViewer.getStructuredSelection());
@@ -504,7 +504,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 			//Contribute actions to popup menu
 			MenuManager menuMgr = new MenuManager();
 			Menu menu = menuMgr.createContextMenu(treeViewer.getTree());
-			menuMgr.addMenuListener(this::fillTableMenu);
+			menuMgr.addMenuListener(this::fillTableMenu); //FLLDCIM: MARK — T16 MENU_TRAVERSE CALL
 			menuMgr.setRemoveAllWhenShown(true);
 			treeViewer.getTree().setMenu(menu);
 
@@ -531,12 +531,12 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 		if (tbm != null) {
 			String fileNameQualifier = getFileNameQualifier();
 			//Add groups
-			tbm.add(new Separator(fileNameQualifier+"grouping"));	//$NON-NLS-1$
-			tbm.appendToGroup(fileNameQualifier+"grouping", groupByDateMode); //$NON-NLS-1$
-			tbm.add(new Separator(fileNameQualifier+"collapse")); //$NON-NLS-1$
-			tbm.appendToGroup(fileNameQualifier+"collapse", collapseAll); //$NON-NLS-1$
+			tbm.add(new Separator(fileNameQualifier+"grouping"));	//$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			tbm.appendToGroup(fileNameQualifier+"grouping", groupByDateMode); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			tbm.add(new Separator(fileNameQualifier+"collapse")); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			tbm.appendToGroup(fileNameQualifier+"collapse", collapseAll); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			if (compareModeAction != null) {
-				tbm.appendToGroup(fileNameQualifier+"collapse", compareModeAction);  //$NON-NLS-1$
+				tbm.appendToGroup(fileNameQualifier+"collapse", compareModeAction);  //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			tbm.update(false);
 		}
@@ -555,7 +555,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 		return ""; //$NON-NLS-1$
 	}
 
-	protected void fillTableMenu(IMenuManager manager) {
+	protected void fillTableMenu(IMenuManager manager) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// file actions go first (view file)
 		IHistoryPageSite parentSite = getHistoryPageSite();
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -693,9 +693,9 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 		return currentFileRevision;
 	}
 
-	private Action getContextMenuAction(String title, final boolean needsProgressDialog, final IWorkspaceRunnable action) {
+	private Action getContextMenuAction(String title, final boolean needsProgressDialog, final IWorkspaceRunnable action) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		return new Action(title) {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			public void run() {
 				try {
 					if (file == null) {
@@ -713,7 +713,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 
 					currentSelection = (IFileRevision)o;
 					if(needsProgressDialog) {
-						PlatformUI.getWorkbench().getProgressService().run(true, true, monitor -> {
+						PlatformUI.getWorkbench().getProgressService().run(true, true, monitor -> { //FLLDCIM: MARK — T09  LAMBDA
 							try {
 								action.run(monitor);
 							} catch (CoreException e) {
@@ -756,7 +756,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 			IHistoryPageSite parentSite = getHistoryPageSite();
 			final MessageDialog dialog = new MessageDialog(parentSite.getShell(), title, null, msg, MessageDialog.QUESTION, new String[] {IDialogConstants.YES_LABEL, IDialogConstants.CANCEL_LABEL}, 0);
 			final int[] result = new int[1];
-			parentSite.getShell().getDisplay().syncExec(() -> result[0] = dialog.open());
+			parentSite.getShell().getDisplay().syncExec(() -> result[0] = dialog.open()); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			if (result[0] != 0) {
 				// cancel
 				return false;
@@ -783,7 +783,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 		return null;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void prepareInput(ICompareInput input, CompareConfiguration configuration, IProgressMonitor monitor) {
 		Object right = input.getRight();
 		if (right != null) {
@@ -840,19 +840,19 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 	 * @param revisions the revisions for the file
 	 * @param monitor a progress monitor
 	 */
-	protected void update(final IFileRevision[] revisions, IProgressMonitor monitor) {
+	protected void update(final IFileRevision[] revisions, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Group the revisions (if appropriate) before running in the UI thread
 		final AbstractHistoryCategory[] categories = groupRevisions(revisions, monitor);
 		// Update the tree in the UI thread
 		Utils.asyncExec((Runnable) () -> {
 			if (Policy.DEBUG_HISTORY) {
 				String time = new SimpleDateFormat("m:ss.SSS").format(new Date(System.currentTimeMillis())); //$NON-NLS-1$
-				System.out.println(time + ": LocalHistoryPage#update, the tree is being updated in the UI thread"); //$NON-NLS-1$
+				System.out.println(time + ": LocalHistoryPage#update, the tree is being updated in the UI thread"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 			if (categories != null) {
 				Object[] elementsToExpand = mapExpandedElements(categories, treeViewer.getExpandedElements());
 				treeViewer.getTree().setRedraw(false);
-				treeViewer.setInput(categories);
+				treeViewer.setInput(categories); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 				//if user is switching modes and already has expanded elements
 				//selected try to expand those, else expand all
 				if (elementsToExpand.length > 0) {
@@ -868,9 +868,9 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 				treeViewer.getTree().setRedraw(true);
 			} else {
 				if (revisions.length > 0) {
-					treeViewer.setInput(revisions);
+					treeViewer.setInput(revisions); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 				} else {
-					treeViewer.setInput(new AbstractHistoryCategory[] {getErrorMessage()});
+					treeViewer.setInput(new AbstractHistoryCategory[] {getErrorMessage()}); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 				}
 			}
 		}, treeViewer);
@@ -885,14 +885,14 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 
 	private Object[] mapExpandedElements(AbstractHistoryCategory[] categories, Object[] expandedElements) {
 		// Store the names of the currently expanded categories in a set.
-		HashSet<String> names = new HashSet<>();
-		for (Object expandedElement : expandedElements) {
+		HashSet<String> names = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (Object expandedElement : expandedElements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			names.add(((DateHistoryCategory) expandedElement).getName());
 		}
 
 		//Go through the new categories and keep track of the previously expanded ones
-		ArrayList<AbstractHistoryCategory> expandable = new ArrayList<>();
-		for (AbstractHistoryCategory category : categories) {
+		ArrayList<AbstractHistoryCategory> expandable = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (AbstractHistoryCategory category : categories) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			// Check to see if this category is currently expanded.
 			if (names.contains(category.getName())) {
 				expandable.add(category);
@@ -901,7 +901,7 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 		return expandable.toArray(new Object[expandable.size()]);
 	}
 
-	private AbstractHistoryCategory[] sortRevisions(IFileRevision[] revisions, IProgressMonitor monitor) {
+	private AbstractHistoryCategory[] sortRevisions(IFileRevision[] revisions, IProgressMonitor monitor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		try {
 			monitor.beginTask(null, 100);
@@ -921,8 +921,8 @@ public class LocalHistoryPage extends HistoryPage implements IHistoryCompareAdap
 			//Everything before after week is previous
 			tempCategories[3] = new DateHistoryCategory(TeamUIMessages.HistoryPage_Previous, null, monthCal);
 
-			ArrayList<AbstractHistoryCategory> finalCategories = new ArrayList<>();
-			for (DateHistoryCategory tempCategory : tempCategories) {
+			ArrayList<AbstractHistoryCategory> finalCategories = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (DateHistoryCategory tempCategory : tempCategories) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				tempCategory.collectFileRevisions(revisions, false);
 				if (tempCategory.hasRevisions()) {
 					finalCategories.add(tempCategory);

@@ -77,7 +77,7 @@ public class ImageMergeViewer extends ContentMergeViewer {
 		fRight= new ImageCanvas(composite, SWT.NO_FOCUS);
 	}
 
-	private static void setInput(ImageCanvas canvas, Object input) {
+	private static void setInput(ImageCanvas canvas, Object input) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (canvas != null) {
 			InputStream stream= null;
 			try {
@@ -104,7 +104,7 @@ public class ImageMergeViewer extends ContentMergeViewer {
 				if (image != null) {
 					Image nonNullImage = image;
 					canvas.setImage(nonNullImage);
-					canvas.addDisposeListener(unused -> nonNullImage.dispose());
+					canvas.addDisposeListener(unused -> nonNullImage.dispose()); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 					canvas.setBackground(display.getSystemColor(SWT.COLOR_LIST_BACKGROUND));
 				} else {
 					canvas.setBackground(null);

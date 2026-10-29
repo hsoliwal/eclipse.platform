@@ -65,7 +65,7 @@ public class PDAVirtualMachine {
 		String fName;
 		String fGroup = "<no_group>"; //$NON-NLS-1$
 		boolean fIsWriteable = true;
-		Map<String, BitField> fBitFields = new LinkedHashMap<>(0);
+		Map<String, BitField> fBitFields = new LinkedHashMap<>(0); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW
 		int fValue;
 	}
 
@@ -76,10 +76,10 @@ public class PDAVirtualMachine {
 		String fName;
 		int fBitOffset;
 		int fBitCount;
-		Map<String, Integer> fMnemonics = new LinkedHashMap<>(0);
+		Map<String, Integer> fMnemonics = new LinkedHashMap<>(0); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 	}
 
-	Map<String, Register> fRegisters = new LinkedHashMap<>(0);
+	Map<String, Register> fRegisters = new LinkedHashMap<>(0); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW
 
 	class Args {
 		final String[] fArgs;
@@ -147,7 +147,7 @@ public class PDAVirtualMachine {
 		String[] fThreadCode;
 
 		/** PDAThread copy of the labels. */
-		Map<String, Integer> fThreadLabels;
+		Map<String, Integer> fThreadLabels; //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 		/** The stack of stack frames (the control stack) */
 		final List<Frame> fFrames = new LinkedList<>();
@@ -179,7 +179,7 @@ public class PDAVirtualMachine {
 		}
 	}
 
-	final Map<Integer, PDAThread> fThreads = new LinkedHashMap<>();
+	final Map<Integer, PDAThread> fThreads = new LinkedHashMap<>(); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	int fNextThreadId = 1;
 
@@ -191,11 +191,11 @@ public class PDAVirtualMachine {
 	final String[] fCode;
 
 	/** A mapping of labels to indicies in the code array */
-	final Map<String, Integer> fLabels;
+	final Map<String, Integer> fLabels; //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	/** Each stack frame is a mapping of variable names to values. */
 	class Frame {
-		final Map<String, Object> fLocalVariables = new LinkedHashMap<>();
+		final Map<String, Object> fLocalVariables = new LinkedHashMap<>(); //FLLDCIM: MARK — M04 M3_ORDERED_LANES NEW
 
 		/**
 		 * The name of the function in this frame
@@ -230,7 +230,7 @@ public class PDAVirtualMachine {
 		}
 	}
 
-	void setRegisterValue(String name, Object value) {
+	void setRegisterValue(String name, Object value) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Register reg = fRegisters.get(getRegisterPartOfName(name));
 		if (reg == null) {
 			return;
@@ -258,7 +258,7 @@ public class PDAVirtualMachine {
 		}
 	}
 
-	Object getRegisterValue(String name) {
+	Object getRegisterValue(String name) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Register reg = fRegisters.get(getRegisterPartOfName(name));
 		if (reg == null) {
 			return null;
@@ -281,7 +281,7 @@ public class PDAVirtualMachine {
 	 * Breakpoints are stored per each each line of code.  The boolean indicates
 	 * whether the whole VM should suspend or just the triggering thread.
 	 */
-	final Map<Integer, Boolean> fBreakpoints = new HashMap<>();
+	final Map<Integer, Boolean> fBreakpoints = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
 	/**
 	 * The suspend flag is true if the VM should suspend running the program and
@@ -327,7 +327,7 @@ public class PDAVirtualMachine {
 	OutputStream fEventStream;
 
 	/** The eventstops table holds which events cause suspends and which do not. */
-	final Map<String, Boolean> fEventStops = new HashMap<>();
+	final Map<String, Boolean> fEventStops = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 	{
 		fEventStops.put("unimpinstr", Boolean.FALSE); //$NON-NLS-1$
 		fEventStops.put("nosuchlabel", Boolean.FALSE); //$NON-NLS-1$
@@ -343,9 +343,9 @@ public class PDAVirtualMachine {
 	 * <li>N = 2 is write watch</li>
 	 * <li>N = 3 is both, etc.</li>
 	 */
-	final Map<String, Integer> fWatchpoints = new HashMap<>();
+	final Map<String, Integer> fWatchpoints = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES FIELD
 
-	public static void main(String[] args) {
+	public static void main(String[] args) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String programFile = args.length >= 1 ? args[0] : null;
 		if (programFile == null) {
 			System.err.println("Error: No program specified"); //$NON-NLS-1$
@@ -380,21 +380,21 @@ public class PDAVirtualMachine {
 			pdaVM = new PDAVirtualMachine(programFile, debug, commandPort, eventPort);
 			pdaVM.startDebugger();
 		} catch (IOException e) {
-			System.err.println("Error: " + e); //$NON-NLS-1$
+			System.err.println("Error: " + e); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			return;
 		}
 		pdaVM.run();
 	}
 
-	PDAVirtualMachine(String inputFile, boolean debug, int commandPort, int eventPort) throws IOException {
+	PDAVirtualMachine(String inputFile, boolean debug, int commandPort, int eventPort) throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fFilename = inputFile;
 
 		// Load all the code into memory
 		StringWriter stringWriter = new StringWriter();
 		List<String> code = new LinkedList<>();
-		try (FileReader fileReader = new FileReader(inputFile)) {
+		try (FileReader fileReader = new FileReader(inputFile)) { //FLLDCIM: MARK — M31 M3FILE_IO NEW
 			int c = fileReader.read();
-			while (c != -1) {
+			while (c != -1) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (c == '\n') {
 					code.add(stringWriter.toString().trim());
 					stringWriter = new StringWriter();
@@ -419,8 +419,8 @@ public class PDAVirtualMachine {
 	 * Initializes the labels map
 	 */
 	Map<String, Integer> mapLabels(String[] code) {
-		Map<String, Integer> labels = new HashMap<>();
-		for (int i = 0; i < code.length; i++) {
+		Map<String, Integer> labels = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
+		for (int i = 0; i < code.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (code[i].length() != 0 && code[i].charAt(0) == ':') {
 				labels.put(code[i].substring(1), Integer.valueOf(i));
 			}
@@ -443,17 +443,17 @@ public class PDAVirtualMachine {
 				fEventStream.write('\n');
 				fEventStream.flush();
 			} catch (IOException e) {
-				System.err.println("Error: " + e); //$NON-NLS-1$
+				System.err.println("Error: " + e); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				System.exit(1);
 			}
 		} else if (error) {
-			System.err.println("Error: " + event); //$NON-NLS-1$
+			System.err.println("Error: " + event); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
-	void startDebugger() throws IOException {
+	void startDebugger() throws IOException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fDebug) {
-			System.out.println("-debug " + fCommandPort + " " + fEventPort); //$NON-NLS-1$ //$NON-NLS-2$
+			System.out.println("-debug " + fCommandPort + " " + fEventPort); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		try (ServerSocket commandServerSocket = new ServerSocket(fCommandPort)) {
@@ -472,16 +472,16 @@ public class PDAVirtualMachine {
 		fSuspendVM = "client"; //$NON-NLS-1$
 	}
 
-	void run() {
+	void run() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int id = fNextThreadId++;
 		sendDebugEvent("vmstarted", false); //$NON-NLS-1$
 		fThreads.put(Integer.valueOf(id), new PDAThread(id, "main", 0)); //$NON-NLS-1$
 		if (fDebug) {
-			sendDebugEvent("started " + id, false); //$NON-NLS-1$
+			sendDebugEvent("started " + id, false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		boolean allThreadsSuspended = false;
-		while (!fThreads.isEmpty()) {
+		while (!fThreads.isEmpty()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			checkForBreakpoint();
 
 			if (fSuspendVM != null) {
@@ -496,7 +496,7 @@ public class PDAVirtualMachine {
 
 			PDAThread[] threadsCopy = fThreads.values().toArray(new PDAThread[fThreads.size()]);
 			allThreadsSuspended = true;
-			for (PDAThread element : threadsCopy) {
+			for (PDAThread element : threadsCopy) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				PDAThread thread = element;
 				if (thread.fSuspend == null) {
 					allThreadsSuspended = false;
@@ -515,17 +515,17 @@ public class PDAVirtualMachine {
 							// Note: this will only be triggered if the current
 							// thread also has the fStepReturn flag set.
 							if (fStepReturnVM) {
-								fSuspendVM = thread.fID + " step"; //$NON-NLS-1$
+								fSuspendVM = thread.fID + " step"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							} else {
 								thread.fSuspend = "step"; //$NON-NLS-1$
 							}
 						}
 					}
 					if (!thread.fRun) {
-						sendDebugEvent("exited " + thread.fID, false); //$NON-NLS-1$
+						sendDebugEvent("exited " + thread.fID, false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						fThreads.remove(Integer.valueOf(thread.fID));
 					} else if (thread.fSuspend != null) {
-						sendDebugEvent("suspended " + thread.fID + " " + thread.fSuspend, false); //$NON-NLS-1$ //$NON-NLS-2$
+						sendDebugEvent("suspended " + thread.fID + " " + thread.fSuspend, false); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						thread.fStep = thread.fStepReturn = thread.fPerformingEval = false;
 					}
 				}
@@ -545,17 +545,17 @@ public class PDAVirtualMachine {
 				fEventStream.close();
 				fEventSocket.close();
 			} catch (IOException e) {
-				System.out.println("Error: " + e); //$NON-NLS-1$
+				System.out.println("Error: " + e); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 
 	}
 
-	void doOneInstruction(PDAThread thread, String instr) {
+	void doOneInstruction(PDAThread thread, String instr) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		StringTokenizer tokenizer = new StringTokenizer(instr);
 		String op = tokenizer.nextToken();
 		List<String> tokens = new LinkedList<>();
-		while (tokenizer.hasMoreTokens()) {
+		while (tokenizer.hasMoreTokens()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			tokens.add(tokenizer.nextToken());
 		}
 		Args args = new Args( tokens.toArray(new String[tokens.size()]) );
@@ -596,14 +596,14 @@ public class PDAVirtualMachine {
 		}
 
 		if (!opValid) {
-			sendDebugEvent("unimplemented instruction " + op, true); //$NON-NLS-1$
+			sendDebugEvent("unimplemented instruction " + op, true); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			if ( fEventStops.get("unimpinstr").booleanValue() ) { //$NON-NLS-1$
-				fSuspendVM = thread.fID + " event unimpinstr"; //$NON-NLS-1$
+				fSuspendVM = thread.fID + " event unimpinstr"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				thread.fCurrentFrame.fPC--;
 			}
 		} else if (thread.fStep) {
 			if (fStepVM) {
-				fSuspendVM = thread.fID + " step"; //$NON-NLS-1$
+				fSuspendVM = thread.fID + " step"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				fStepVM = false;
 			} else {
 				thread.fSuspend = "step"; //$NON-NLS-1$
@@ -612,9 +612,9 @@ public class PDAVirtualMachine {
 		}
 	}
 
-	void checkForBreakpoint() {
+	void checkForBreakpoint() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fDebug) {
-			for (PDAThread thread : fThreads.values()) {
+			for (PDAThread thread : fThreads.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Integer pc = Integer.valueOf(thread.fCurrentFrame.fPC);
 				// Suspend for breakpoint if:
 				// - the VM is not yet set to suspend, for e.g. as a result of step end,
@@ -625,11 +625,11 @@ public class PDAVirtualMachine {
 					fBreakpoints.containsKey(pc))
 				{
 					if ( fBreakpoints.get(pc).booleanValue() ) {
-						fSuspendVM = thread.fID + " breakpoint " + pc; //$NON-NLS-1$
+						fSuspendVM = thread.fID + " breakpoint " + pc; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					} else {
-						thread.fSuspend = "breakpoint " + pc; //$NON-NLS-1$
+						thread.fSuspend = "breakpoint " + pc; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 						thread.fStep = thread.fStepReturn = false;
-						sendDebugEvent("suspended " + thread.fID + " " + thread.fSuspend, false); //$NON-NLS-1$ //$NON-NLS-2$
+						sendDebugEvent("suspended " + thread.fID + " " + thread.fSuspend, false); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 				}
 			}
@@ -649,7 +649,7 @@ public class PDAVirtualMachine {
 					processDebugCommand(line);
 				}
 			} catch (IOException e) {
-				System.err.println("Error: " + e); //$NON-NLS-1$
+				System.err.println("Error: " + e); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				System.exit(1);
 			}
 		}
@@ -658,9 +658,9 @@ public class PDAVirtualMachine {
 	/**
 	 *  Service the debugger commands while the VM is suspended
 	 */
-	void debugUI() {
+	void debugUI() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!fStarted) {
-			sendDebugEvent("vmsuspended " + fSuspendVM, false); //$NON-NLS-1$
+			sendDebugEvent("vmsuspended " + fSuspendVM, false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} else {
 			fStarted = false;
 		}
@@ -668,17 +668,17 @@ public class PDAVirtualMachine {
 		// Clear all stepping flags.  In case the VM suspended while
 		// a step operation was being performed for the VM or some thread.
 		fStepVM = fStepReturnVM = false;
-		for (PDAThread thread : fThreads.values()) {
+		for (PDAThread thread : fThreads.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			thread.fSuspend = null;
 			thread.fStep = thread.fStepReturn = thread.fPerformingEval = false;
 		}
 
-		while (fSuspendVM != null) {
+		while (fSuspendVM != null) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String line = ""; //$NON-NLS-1$
 			try {
 				line = fCommandReceiveStream.readLine();
 			} catch (IOException e) {
-				System.err.println("Error: " + e); //$NON-NLS-1$
+				System.err.println("Error: " + e); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				System.exit(1);
 				return;
 			}
@@ -692,7 +692,7 @@ public class PDAVirtualMachine {
 		}
 	}
 
-	void processDebugCommand(String line) {
+	void processDebugCommand(String line) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		StringTokenizer tokenizer = new StringTokenizer(line.trim());
 		if (line.length() == 0) {
 			return;
@@ -700,7 +700,7 @@ public class PDAVirtualMachine {
 
 		String command = tokenizer.nextToken();
 		List<String> tokens = new LinkedList<>();
-		while (tokenizer.hasMoreTokens()) {
+		while (tokenizer.hasMoreTokens()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			tokens.add(tokenizer.nextToken());
 		}
 		Args args = new Args( tokens.toArray(new String[tokens.size()]));
@@ -766,7 +766,7 @@ public class PDAVirtualMachine {
 		}
 	}
 
-	void debugChildren(Args args) {
+	void debugChildren(Args args) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		PDAThread thread = args.getThreadArg();
 		if (thread == null) {
 			sendCommandResponse("error: invalid thread\n"); //$NON-NLS-1$
@@ -779,20 +779,20 @@ public class PDAVirtualMachine {
 		Frame frame = sfnumber >= thread.fFrames.size()
 			? thread.fCurrentFrame : (Frame)thread.fFrames.get(sfnumber);
 
-		String varDot = var + "."; //$NON-NLS-1$
-		List<String> children = new ArrayList<>();
-		for (String localVar : frame.fLocalVariables.keySet()) {
+		String varDot = var + "."; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		List<String> children = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+		for (String localVar : frame.fLocalVariables.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (localVar.startsWith(varDot) && localVar.indexOf('.', varDot.length() + 1) == -1) {
 				children.add(localVar);
 			}
 		}
 
-		StringBuilder result = new StringBuilder();
-		for (Iterator<String> itr = children.iterator(); itr.hasNext();) {
-			result.append(itr.next());
-			result.append('|');
+		StringBuilder result = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (Iterator<String> itr = children.iterator(); itr.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			result.append(itr.next()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			result.append('|'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		result.append('\n');
+		result.append('\n'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 
 		sendCommandResponse(result.toString());
 	}
@@ -804,7 +804,7 @@ public class PDAVirtualMachine {
 		sendCommandResponse("ok\n"); //$NON-NLS-1$
 	}
 
-	private static Pattern fPackPattern = Pattern.compile("%([a-fA-F0-9][a-fA-F0-9])"); //$NON-NLS-1$
+	private static Pattern fPackPattern = Pattern.compile("%([a-fA-F0-9][a-fA-F0-9])"); //$NON-NLS-1$ //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 
 	void debugData(Args args) {
 		PDAThread thread = args.getThreadArg();
@@ -813,16 +813,16 @@ public class PDAVirtualMachine {
 			return;
 		}
 
-		StringBuilder result = new StringBuilder();
-		for (Iterator<?> itr = thread.fStack.iterator(); itr.hasNext();) {
-			result.append(itr.next());
-			result.append('|');
+		StringBuilder result = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (Iterator<?> itr = thread.fStack.iterator(); itr.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			result.append(itr.next()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			result.append('|'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		result.append('\n');
+		result.append('\n'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		sendCommandResponse(result.toString());
 	}
 
-	void debugDropFrame(Args args) {
+	void debugDropFrame(Args args) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		PDAThread thread = args.getThreadArg();
 		if (thread == null) {
 			sendCommandResponse("error: invalid thread\n"); //$NON-NLS-1$
@@ -836,14 +836,14 @@ public class PDAVirtualMachine {
 		sendCommandResponse("ok\n"); //$NON-NLS-1$
 		if (fSuspendVM != null) {
 			sendDebugEvent("vmresumed drop", false); //$NON-NLS-1$
-			sendDebugEvent("vmsuspended " + thread.fID + " drop", false); //$NON-NLS-1$ //$NON-NLS-2$
+			sendDebugEvent("vmsuspended " + thread.fID + " drop", false); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} else {
-			sendDebugEvent("resumed " + thread.fID + " drop", false); //$NON-NLS-1$ //$NON-NLS-2$
-			sendDebugEvent("suspended " + thread.fID + " drop", false); //$NON-NLS-1$ //$NON-NLS-2$
+			sendDebugEvent("resumed " + thread.fID + " drop", false); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+			sendDebugEvent("suspended " + thread.fID + " drop", false); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
-	void debugEval(Args args) {
+	void debugEval(Args args) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fSuspendVM != null) {
 			sendCommandResponse("error: cannot evaluate while vm is suspended\n");         //$NON-NLS-1$
 			return;
@@ -866,22 +866,22 @@ public class PDAVirtualMachine {
 		int numEvalLines = tokenizer.countTokens();
 		thread.fThreadCode = new String[fCode.length + numEvalLines + 1];
 		System.arraycopy(fCode, 0, thread.fThreadCode, 0, fCode.length);
-		for (int i = 0; i < numEvalLines; i++) {
+		for (int i = 0; i < numEvalLines; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			String line = tokenizer.nextToken();
-			StringBuilder lineBuf = new StringBuilder(line.length());
-			Matcher matcher = fPackPattern.matcher(line);
+			StringBuilder lineBuf = new StringBuilder(line.length()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+			Matcher matcher = fPackPattern.matcher(line); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			int lastMatchEnd = 0;
-			while (matcher.find()) {
-				lineBuf.append(line.substring(lastMatchEnd, matcher.start()));
+			while (matcher.find()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
+				lineBuf.append(line.substring(lastMatchEnd, matcher.start())); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				String charCode = line.substring(matcher.start() + 1, matcher.start() + 3);
 				try {
-					lineBuf.append((char) Integer.parseInt(charCode, 16));
+					lineBuf.append((char) Integer.parseInt(charCode, 16)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				} catch (NumberFormatException e) {
 				}
 				lastMatchEnd = matcher.end();
 			}
 			if (lastMatchEnd < line.length()) {
-				lineBuf.append(line.substring(lastMatchEnd));
+				lineBuf.append(line.substring(lastMatchEnd)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 			thread.fThreadCode[fCode.length + i] = lineBuf.toString();
 		}
@@ -896,7 +896,7 @@ public class PDAVirtualMachine {
 
 		sendCommandResponse("ok\n"); //$NON-NLS-1$
 
-		sendDebugEvent("resumed " + thread.fID + " eval", false); //$NON-NLS-1$ //$NON-NLS-2$
+		sendDebugEvent("resumed " + thread.fID + " eval", false); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	void debugEventStop(Args args) {
@@ -926,20 +926,20 @@ public class PDAVirtualMachine {
 		} else {
 			frame = thread.fFrames.get(sfnumber);
 		}
-		sendCommandResponse(printFrame(frame) + "\n"); //$NON-NLS-1$
+		sendCommandResponse(printFrame(frame) + "\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	void debugGroups() {
 		TreeSet<String> groups = new TreeSet<>();
-		for (Register reg : fRegisters.values()) {
+		for (Register reg : fRegisters.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			groups.add(reg.fGroup);
 		}
-		StringBuilder response = new StringBuilder();
-		for (Iterator<String> itr = groups.iterator(); itr.hasNext();) {
-			response.append(itr.next());
-			response.append('|');
+		StringBuilder response = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (Iterator<String> itr = groups.iterator(); itr.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			response.append(itr.next()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			response.append('|'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		response.append('\n');
+		response.append('\n'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		sendCommandResponse(response.toString());
 	}
 
@@ -966,56 +966,56 @@ public class PDAVirtualMachine {
 		sendCommandResponse("ok\n"); //$NON-NLS-1$
 	}
 
-	void debugRegisters(Args args) {
+	void debugRegisters(Args args) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String group = args.getNextStringArg();
 
-		StringBuilder response = new StringBuilder();
-		for (Register reg : fRegisters.values()) {
+		StringBuilder response = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (Register reg : fRegisters.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (group.equals(reg.fGroup)) {
-				response.append(reg.fName);
-				response.append(' ');
-				response.append(reg.fIsWriteable);
-				for (BitField bitField : reg.fBitFields.values()) {
-					response.append('|');
-					response.append(bitField.fName);
-					response.append(' ');
-					response.append(bitField.fBitOffset);
-					response.append(' ');
-					response.append(bitField.fBitCount);
-					response.append(' ');
-					for (Entry<String, Integer> mnemonicEntry : bitField.fMnemonics.entrySet()) {
-						response.append(mnemonicEntry.getKey());
-						response.append(' ');
-						response.append(mnemonicEntry.getValue());
-						response.append(' ');
+				response.append(reg.fName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				response.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				response.append(reg.fIsWriteable); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				for (BitField bitField : reg.fBitFields.values()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					response.append('|'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					response.append(bitField.fName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					response.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					response.append(bitField.fBitOffset); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					response.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					response.append(bitField.fBitCount); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					response.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+					for (Entry<String, Integer> mnemonicEntry : bitField.fMnemonics.entrySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+						response.append(mnemonicEntry.getKey()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+						response.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+						response.append(mnemonicEntry.getValue()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+						response.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
 				}
 
-				response.append('#');
+				response.append('#'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
-		response.append('\n');
+		response.append('\n'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		sendCommandResponse(response.toString());
 	}
 
 	void debugRestart() {
 		fSuspendVM = "restart"; //$NON-NLS-1$
 
-		for (Integer id : fThreads.keySet()) {
-			sendDebugEvent("exited " + id, false);             //$NON-NLS-1$
+		for (Integer id : fThreads.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			sendDebugEvent("exited " + id, false);             //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		fThreads.clear();
 
 		int id = fNextThreadId++;
 		fThreads.put(Integer.valueOf(id), new PDAThread(id, "main", 0)); //$NON-NLS-1$
-		sendDebugEvent("started " + id, false);             //$NON-NLS-1$
+		sendDebugEvent("started " + id, false);             //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		fRegisters.clear();
 
 		sendCommandResponse("ok\n"); //$NON-NLS-1$
 	}
 
-	void debugResume(Args args) {
+	void debugResume(Args args) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		PDAThread thread = args.getThreadArg();
 		if (thread == null) {
 			sendCommandResponse("error: invalid thread\n"); //$NON-NLS-1$
@@ -1031,7 +1031,7 @@ public class PDAVirtualMachine {
 		}
 
 		thread.fSuspend = null;
-		sendDebugEvent("resumed " + thread.fID + " client", false); //$NON-NLS-1$ //$NON-NLS-2$
+		sendDebugEvent("resumed " + thread.fID + " client", false); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 		sendCommandResponse("ok\n"); //$NON-NLS-1$
 	}
@@ -1062,7 +1062,7 @@ public class PDAVirtualMachine {
 		sendCommandResponse("ok\n"); //$NON-NLS-1$
 	}
 
-	void debugSetVariable(Args args) {
+	void debugSetVariable(Args args) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		PDAThread thread = args.getThreadArg();
 		if (thread == null) {
 			sendCommandResponse("error: invalid thread\n"); //$NON-NLS-1$
@@ -1072,8 +1072,8 @@ public class PDAVirtualMachine {
 		int sfnumber = args.getNextIntArg();
 		String var = args.getNextStringArg();
 		Object val = args.getNextIntOrStringArg();
-		while (args.hasNextArg()) {
-			val = val + " " + args.getNextStringArg(); //$NON-NLS-1$
+		while (args.hasNextArg()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			val = val + " " + args.getNextStringArg(); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 
 		if (sfnumber >= thread.fFrames.size()) {
@@ -1091,14 +1091,14 @@ public class PDAVirtualMachine {
 			return;
 		}
 
-		StringBuilder result = new StringBuilder();
+		StringBuilder result = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
-		for (Frame frame : thread.fFrames) {
-			result.append(printFrame(frame));
-			result.append('#');
+		for (Frame frame : thread.fFrames) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			result.append(printFrame(frame)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			result.append('#'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		result.append(printFrame(thread.fCurrentFrame));
-		result.append('\n');
+		result.append(printFrame(thread.fCurrentFrame)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		result.append('\n'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		sendCommandResponse(result.toString());
 	}
 
@@ -1108,7 +1108,7 @@ public class PDAVirtualMachine {
 			sendCommandResponse("error: invalid thread\n"); //$NON-NLS-1$
 			return;
 		}
-		sendCommandResponse( (thread.fFrames.size() + 1) + "\n" ); //$NON-NLS-1$
+		sendCommandResponse( (thread.fFrames.size() + 1) + "\n" ); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 
@@ -1117,16 +1117,16 @@ public class PDAVirtualMachine {
 	 * filename | line number | function name | var | var | var | var ...
 	 */
 	private String printFrame(Frame frame) {
-		StringBuilder buf = new StringBuilder();
-		buf.append(fFilename);
-		buf.append('|');
-		buf.append(frame.fPC);
-		buf.append('|');
-		buf.append(frame.fFunction);
-		for (String var : frame.fLocalVariables.keySet()) {
+		StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		buf.append(fFilename); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buf.append('|'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buf.append(frame.fPC); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buf.append('|'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		buf.append(frame.fFunction); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		for (String var : frame.fLocalVariables.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (var.indexOf('.') == -1) {
-				buf.append('|');
-				buf.append(var);
+				buf.append('|'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				buf.append(var); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 		return buf.toString();
@@ -1142,10 +1142,10 @@ public class PDAVirtualMachine {
 		} else {
 			response = thread.fSuspend == null ? "running" : thread.fSuspend; //$NON-NLS-1$
 		}
-		sendCommandResponse(response + "\n"); //$NON-NLS-1$
+		sendCommandResponse(response + "\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	void debugStep(Args args) {
+	void debugStep(Args args) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		PDAThread thread = args.getThreadArg();
 		if (thread == null) {
 			sendCommandResponse("error: invalid thread\n"); //$NON-NLS-1$
@@ -1172,12 +1172,12 @@ public class PDAVirtualMachine {
 			}
 			thread.fSuspend = null;
 			thread.fStep = true;
-			sendDebugEvent("resumed " + thread.fID + " step", false); //$NON-NLS-1$ //$NON-NLS-2$
+			sendDebugEvent("resumed " + thread.fID + " step", false); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		sendCommandResponse("ok\n"); //$NON-NLS-1$
 	}
 
-	void debugStepReturn(Args args) {
+	void debugStepReturn(Args args) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		PDAThread thread = args.getThreadArg();
 		if (thread == null) {
 			sendCommandResponse("error: invalid thread\n"); //$NON-NLS-1$
@@ -1195,12 +1195,12 @@ public class PDAVirtualMachine {
 			}
 			thread.fSuspend = null;
 			thread.fStepReturn = true;
-			sendDebugEvent("resumed " + thread.fID + " step", false); //$NON-NLS-1$ //$NON-NLS-2$
+			sendDebugEvent("resumed " + thread.fID + " step", false); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		sendCommandResponse("ok\n"); //$NON-NLS-1$
 	}
 
-	void debugSuspend(Args args) {
+	void debugSuspend(Args args) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		PDAThread thread = args.getThreadArg();
 		if (thread == null) {
 			sendCommandResponse("error: invalid thread\n"); //$NON-NLS-1$
@@ -1216,20 +1216,20 @@ public class PDAVirtualMachine {
 		}
 
 		thread.fSuspend = "client"; //$NON-NLS-1$
-		sendDebugEvent("suspended " + thread.fID + " client", false); //$NON-NLS-1$ //$NON-NLS-2$
+		sendDebugEvent("suspended " + thread.fID + " client", false); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		sendCommandResponse("ok\n"); //$NON-NLS-1$
 	}
 
 	void debugThreads() {
-		StringBuilder response = new StringBuilder();
-		for (Iterator<Integer> itr = fThreads.keySet().iterator(); itr.hasNext();) {
-			response.append(itr.next());
-			response.append(' ');
+		StringBuilder response = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (Iterator<Integer> itr = fThreads.keySet().iterator(); itr.hasNext();) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			response.append(itr.next()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			response.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		sendCommandResponse(response.toString().trim() + "\n"); //$NON-NLS-1$
+		sendCommandResponse(response.toString().trim() + "\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	void debugVar(Args args) {
+	void debugVar(Args args) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		PDAThread thread = args.getThreadArg();
 		if (thread == null) {
 			sendCommandResponse("error: invalid thread\n"); //$NON-NLS-1$
@@ -1246,7 +1246,7 @@ public class PDAVirtualMachine {
 		if (val == null) {
 			sendCommandResponse("error: variable undefined\n"); //$NON-NLS-1$
 		} else {
-			sendCommandResponse(val + "\n"); //$NON-NLS-1$
+			sendCommandResponse(val + "\n"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -1296,9 +1296,9 @@ public class PDAVirtualMachine {
 			if (thread.fThreadLabels.containsKey(label)) {
 				thread.fCurrentFrame.fPC = thread.fThreadLabels.get(label).intValue();
 			} else {
-				sendDebugEvent("no such label " + label, true); //$NON-NLS-1$
+				sendDebugEvent("no such label " + label, true); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				if ( fEventStops.get("nosuchlabel").booleanValue() ) { //$NON-NLS-1$
-					fSuspendVM = thread.fID + " event nosuchlabel"; //$NON-NLS-1$
+					fSuspendVM = thread.fID + " event nosuchlabel"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					thread.fStack.push(val);
 					thread.fCurrentFrame.fPC--;
 				}
@@ -1312,9 +1312,9 @@ public class PDAVirtualMachine {
 			thread.fFrames.add(thread.fCurrentFrame);
 			thread.fCurrentFrame = new Frame(label, thread.fThreadLabels.get(label).intValue());
 		} else {
-			sendDebugEvent("no such label " + label, true); //$NON-NLS-1$
+			sendDebugEvent("no such label " + label, true); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			if ( fEventStops.get("nosuchlabel").booleanValue() ) { //$NON-NLS-1$
-				fSuspendVM = thread.fID + " event nosuchlabel"; //$NON-NLS-1$
+				fSuspendVM = thread.fID + " event nosuchlabel"; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				thread.fCurrentFrame.fPC--;
 			}
 		}
@@ -1328,7 +1328,7 @@ public class PDAVirtualMachine {
 		thread.fStack.push(val);
 	}
 
-	void iDef(Args args) {
+	void iDef(Args args) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String type = args.getNextStringArg();
 
 		String name = args.getNextStringArg();
@@ -1391,9 +1391,9 @@ public class PDAVirtualMachine {
 		if (fLabels.containsKey(label)) {
 			int id = fNextThreadId++;
 			fThreads.put( Integer.valueOf(id), new PDAThread(id, label, fLabels.get(label).intValue()) );
-			sendDebugEvent("started " + id, false); //$NON-NLS-1$
+			sendDebugEvent("started " + id, false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} else {
-			sendDebugEvent("no such label " + label, true); //$NON-NLS-1$
+			sendDebugEvent("no such label " + label, true); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			if ( fEventStops.get("nosuchlabel").booleanValue() ) { //$NON-NLS-1$
 				thread.fSuspend = "event nosuchlabel"; //$NON-NLS-1$
 				thread.fCurrentFrame.fPC--;
@@ -1414,18 +1414,18 @@ public class PDAVirtualMachine {
 		if (arg.startsWith("$")) { //$NON-NLS-1$
 			String var = arg.substring(1);
 			thread.fCurrentFrame.set(var, thread.fStack.pop());
-			String key = thread.fCurrentFrame.fFunction + "::" + var; //$NON-NLS-1$
+			String key = thread.fCurrentFrame.fFunction + "::" + var; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			if ( fWatchpoints.containsKey(key) && (fWatchpoints.get(key).intValue() & 2) != 0 ) {
-				fSuspendVM = thread.fID + " watch write " + key; //$NON-NLS-1$
+				fSuspendVM = thread.fID + " watch write " + key; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		} else {
 			thread.fStack.pop();
 		}
 	}
 
-	void iPush(PDAThread thread, Args args) {
+	void iPush(PDAThread thread, Args args) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String arg = args.getNextStringArg();
-		while (arg.length() != 0) {
+		while (arg.length() != 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (arg.startsWith("$")) { //$NON-NLS-1$
 				String var = arg.substring(1);
 				Object val = thread.fCurrentFrame.get(var);
@@ -1434,15 +1434,15 @@ public class PDAVirtualMachine {
 					val = "<undefined>"; //$NON-NLS-1$
 				}
 				thread.fStack.push(val);
-				String key = thread.fCurrentFrame.fFunction + "::" + var; //$NON-NLS-1$
+				String key = thread.fCurrentFrame.fFunction + "::" + var; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				if (fWatchpoints.containsKey(key) && (fWatchpoints.get(key).intValue() & 1) != 0) {
-					fSuspendVM = thread.fID + " watch read " + key; //$NON-NLS-1$
+					fSuspendVM = thread.fID + " watch read " + key; //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				}
 			} else {
 				Object val = arg;
 				if (args.hasNextArg()) {
-					while (args.hasNextArg()) {
-						val = val + " " + args.getNextStringArg(); //$NON-NLS-1$
+					while (args.hasNextArg()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+						val = val + " " + args.getNextStringArg(); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					}
 				} else {
 					try {
@@ -1477,7 +1477,7 @@ public class PDAVirtualMachine {
 		thread.fThreadCode = fCode;
 		thread.fThreadLabels = fLabels;
 		thread.fCurrentFrame.fPC = thread.fSavedPC;
-		sendDebugEvent("evalresult " + result, false); //$NON-NLS-1$
+		sendDebugEvent("evalresult " + result, false); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		thread.fSuspend = "eval"; //$NON-NLS-1$
 		thread.fPerformingEval = false;
 	}

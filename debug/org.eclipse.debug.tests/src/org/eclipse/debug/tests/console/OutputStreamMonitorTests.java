@@ -57,7 +57,7 @@ public class OutputStreamMonitorTests {
 		/** The bytes received through listener. */
 		private volatile ByteArrayOutputStream recordedBytes = new ByteArrayOutputStream();
 
-		private final List<IOException> exceptions = Collections.synchronizedList(new ArrayList<>());
+		private final List<IOException> exceptions = Collections.synchronizedList(new ArrayList<>()); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		@Override
 		public void streamAppended(byte[] data, IBinaryStreamMonitor mon) {
@@ -85,12 +85,12 @@ public class OutputStreamMonitorTests {
 
 	private class StreamListener implements IStreamListener {
 		/** The strings received through listener. */
-		private volatile StringBuilder recordedChars = new StringBuilder();
+		private volatile StringBuilder recordedChars = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 
 		@Override
 		public void streamAppended(String text, IStreamMonitor mon) {
 			if (monitor == mon) {
-				recordedChars.append(text);
+				recordedChars.append(text); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
 
@@ -120,7 +120,7 @@ public class OutputStreamMonitorTests {
 	/**
 	 * Simple test for output stream monitor. Test buffering and listeners.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testBufferedOutputStreamMonitor() throws Exception {
 		String input = "o\u00F6O";
 		byte[] byteInput = input.getBytes(StandardCharsets.UTF_8);
@@ -172,7 +172,7 @@ public class OutputStreamMonitorTests {
 	/**
 	 * Simple test for output stream monitor. Test listeners without buffering.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testUnbufferedOutputStreamMonitor() throws Exception {
 		String input = "o\u00F6O";
 		byte[] byteInput = input.getBytes(StandardCharsets.UTF_8);
@@ -209,7 +209,7 @@ public class OutputStreamMonitorTests {
 	/**
 	 * Test that passing <code>null</code> as charset does not raise exceptions.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@SuppressWarnings("resource")
 	public void testNullCharset() throws Exception {
 		String input = "o\u00F6O\u00EFiI\u00D6\u00D8\u00F8";

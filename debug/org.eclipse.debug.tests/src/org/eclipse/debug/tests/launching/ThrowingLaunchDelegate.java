@@ -24,7 +24,7 @@ import org.eclipse.debug.core.model.ISourceLocator;
 
 public class ThrowingLaunchDelegate implements ILaunchConfigurationDelegate2 {
 
-	class ThrowingLaunch extends Launch {
+	class ThrowingLaunch extends Launch { //FLLDCIM: MARK — T27  IMPLEMENTS
 		public ThrowingLaunch(ILaunchConfiguration launchConfiguration, String mode, ISourceLocator locator) {
 			super(launchConfiguration, mode, locator);
 		}

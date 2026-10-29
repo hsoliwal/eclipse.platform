@@ -99,13 +99,13 @@ public class ProjectVariableProviderManager {
 		return descriptorsArray;
 	}
 
-	private static Map<String, Descriptor> getDescriptorMap() {
+	private static Map<String, Descriptor> getDescriptorMap() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IExtensionPoint point = Platform.getExtensionRegistry().getExtensionPoint(ResourcesPlugin.PI_RESOURCES, ResourcesPlugin.PT_VARIABLE_PROVIDERS);
 		IExtension[] extensions = point.getExtensions();
-		Map<String, Descriptor> d = new HashMap<>(extensions.length * 2 + 1);
-		for (IExtension extension : extensions) {
+		Map<String, Descriptor> d = new HashMap<>(extensions.length * 2 + 1); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		for (IExtension extension : extensions) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IConfigurationElement[] elements = extension.getConfigurationElements();
-			for (IConfigurationElement element : elements) {
+			for (IConfigurationElement element : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				String elementName = element.getName();
 				if (elementName.equalsIgnoreCase("variableResolver")) { //$NON-NLS-1$
 					Descriptor desc = null;

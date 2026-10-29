@@ -116,14 +116,14 @@ public class SteppingTests {
 	@Test
 	public void testStepOverAntCallHitBreakpoint() throws Exception {
 		String fileName = "debugAntCall"; //$NON-NLS-1$
-		createLineBreakpoint(12, fileName + ".xml"); //$NON-NLS-1$
+		createLineBreakpoint(12, fileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		antCallStack(false, 5, DebugEvent.BREAKPOINT, "call: sleep", 12); //$NON-NLS-1$
 	}
 
 	@Test
 	public void testStepOverAntCallHitBreakpointSepVM() throws Exception {
 		String fileName = "debugAntCall"; //$NON-NLS-1$
-		createLineBreakpoint(12, fileName + ".xml"); //$NON-NLS-1$
+		createLineBreakpoint(12, fileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		antCallStack(true, 5, DebugEvent.BREAKPOINT, "call: sleep", 12); //$NON-NLS-1$
 	}
 
@@ -136,8 +136,8 @@ public class SteppingTests {
 		return debugStack(sepVM, lineNumber, kind, frameName, frameLineNumber, fileName, terminate);
 	}
 
-	private AntThread debugStack(boolean sepVM, int lineNumber, int kind, String frameName, int frameLineNumber, String fileName, boolean terminate) throws CoreException, DebugException {
-		ILineBreakpoint bp = createLineBreakpoint(lineNumber, fileName + ".xml"); //$NON-NLS-1$
+	private AntThread debugStack(boolean sepVM, int lineNumber, int kind, String frameName, int frameLineNumber, String fileName, boolean terminate) throws CoreException, DebugException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		ILineBreakpoint bp = createLineBreakpoint(lineNumber, fileName + ".xml"); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		AntThread thread = null;
 		try {
 			if (sepVM) {
@@ -156,7 +156,7 @@ public class SteppingTests {
 		}
 	}
 
-	private void debugFrame(int kind, String frameName, int frameLineNumber, AntThread thread) throws DebugException {
+	private void debugFrame(int kind, String frameName, int frameLineNumber, AntThread thread) throws DebugException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		AntStackFrame frame = (AntStackFrame) thread.getTopStackFrame();
 		assertNotNull(frame);
 		switch (kind) {
@@ -184,9 +184,9 @@ public class SteppingTests {
 		String actualFrameName = frame.getName();
 		int actualLineNumber = frame.getLineNumber();
 		assertTrue(frameName.equals(actualFrameName),
-				"Name of stack frame incorrect. Expected " + frameName + " was: " + actualFrameName); //$NON-NLS-1$ //$NON-NLS-2$
+				"Name of stack frame incorrect. Expected " + frameName + " was: " + actualFrameName); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertTrue(lineNumber == actualLineNumber,
-				"Line number of stack frame incorrect. Expected " + lineNumber + " was: " + actualLineNumber); //$NON-NLS-1$ //$NON-NLS-2$
+				"Line number of stack frame incorrect. Expected " + lineNumber + " was: " + actualLineNumber); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return frame;
 	}
 

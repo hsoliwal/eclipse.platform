@@ -47,7 +47,7 @@ public class RefreshSubscriberParticipantJob extends RefreshParticipantJob {
 		SubscriberSyncInfoCollector collector = getCollector();
 		if (collector != null) {
 			SyncInfoTree set = collector.getSyncInfoSet();
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				SyncInfo[] infos = set.getSyncInfos(resource, IResource.DEPTH_INFINITE);
 				if(infos != null && infos.length > 0) {
 					numChanges += infos.length;
@@ -67,15 +67,15 @@ public class RefreshSubscriberParticipantJob extends RefreshParticipantJob {
 		return getChangesInMode(SyncInfo.OUTGOING);
 	}
 
-	private int getChangesInMode(int kind) {
+	private int getChangesInMode(int kind) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		int numChanges = 0;
 		SubscriberSyncInfoCollector collector = getCollector();
 		if (collector != null) {
 			SyncInfoTree set = collector.getSyncInfoSet();
-			for (IResource resource : resources) {
+			for (IResource resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				SyncInfo[] infos = set.getSyncInfos(resource, IResource.DEPTH_INFINITE);
 				if (infos != null && infos.length > 0) {
-					for (SyncInfo info : infos) {
+					for (SyncInfo info : infos) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if ((info.getKind() & kind) > 0) {
 							numChanges++;
 						}
@@ -119,7 +119,7 @@ public class RefreshSubscriberParticipantJob extends RefreshParticipantJob {
 		Subscriber subscriber = getSubscriber();
 		if (subscriber != null) {
 			try {
-				subscriber.addListener((RefreshChangeListener)changeListener);
+				subscriber.addListener((RefreshChangeListener)changeListener); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 				SubMonitor sub = SubMonitor.convert(monitor, 100);
 				subscriber.refresh(resources, IResource.DEPTH_INFINITE, sub.split(80));
 				waitForCollector(sub.split(20));

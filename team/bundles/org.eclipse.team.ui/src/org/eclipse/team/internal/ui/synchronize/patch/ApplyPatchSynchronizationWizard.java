@@ -58,7 +58,7 @@ public class ApplyPatchSynchronizationWizard extends PatchWizard implements
 		setNeedsProgressMonitor(true);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean performFinish() {
 		if (fPatchInaccessibleProjectsPage != null) {
 			IProject[] projects = fPatchInaccessibleProjectsPage
@@ -103,7 +103,7 @@ public class ApplyPatchSynchronizationWizard extends PatchWizard implements
 		// nothing to do here
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void addPages() {
 		if (getPatch() == null) {
 			addPage(fPatchWizardPage = new InputPatchPage(this));
@@ -138,7 +138,7 @@ public class ApplyPatchSynchronizationWizard extends PatchWizard implements
 	private boolean isTargetingInaccessibleProjects() {
 		DiffProject[] diffProjects = getPatcher().getDiffProjects();
 		if (diffProjects != null) {
-			for (DiffProject diffProject : diffProjects) {
+			for (DiffProject diffProject : diffProjects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(diffProject.getName());
 				if (!project.isAccessible()) {
 					return true;
@@ -168,10 +168,10 @@ public class ApplyPatchSynchronizationWizard extends PatchWizard implements
 		return super.getPatcher();
 	}
 
-	private void openSelectedProjects(final IProject projects[]) {
+	private void openSelectedProjects(final IProject projects[]) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Job openProjectsJob = new Job(
 				TeamUIMessages.PatchInaccessibleProjectsPage_openingProjects) {
-			@Override
+			@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			protected IStatus run(IProgressMonitor monitor) {
 				monitor.beginTask(
 						TeamUIMessages.PatchInaccessibleProjectsPage_openingProjects,
@@ -181,7 +181,7 @@ public class ApplyPatchSynchronizationWizard extends PatchWizard implements
 						IStatus.ERROR,
 						TeamUIMessages.PatchInaccessibleProjectsPage_openingProjects,
 						null);
-				for (IProject project : projects) {
+				for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					try {
 						project.open(SubMonitor.convert(monitor, 1));
 					} catch (CoreException e) {

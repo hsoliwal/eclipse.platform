@@ -41,9 +41,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 
-public class FixDotProjectPathResourceListener implements IResourceChangeListener, ILifecycleListener {
+public class FixDotProjectPathResourceListener implements IResourceChangeListener, ILifecycleListener { //FLLDCIM: MARK — T07  IMPLEMENTS
 
-	private final Map<IProject, Instant> createdProjects = new HashMap<>();
+	private final Map<IProject, Instant> createdProjects = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 	private boolean enabled;
 	private final File tmpDir = createTmpDir();
 
@@ -55,13 +55,13 @@ public class FixDotProjectPathResourceListener implements IResourceChangeListene
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void resourceChanged(IResourceChangeEvent event) {
 		if (!enabled || event.getDelta() == null) {
 			return;
 		}
 		try {
-			event.getDelta().accept(delta -> {
+			event.getDelta().accept(delta -> { //FLLDCIM: MARK — T07  LAMBDA
 				if (delta.getResource() instanceof IProject project && //
 					project.isOpen() && //
 					createdProjects.containsKey(project)) {
@@ -71,7 +71,7 @@ public class FixDotProjectPathResourceListener implements IResourceChangeListene
 						BasicFileAttributes attributes = Files.getFileAttributeView(dotProjectOnDisk, BasicFileAttributeView.class).readAttributes();
 						if (attributes.creationTime().toInstant().isAfter(projectCreation)) {
 							// cannot link to resource in current workspace task, plan it next
-							Job job = new Job("Link .project for " + project.getName()) {
+							Job job = new Job("Link .project for " + project.getName()) { //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 								@Override
 								public IStatus run(IProgressMonitor monitor) {
 									try {
@@ -101,7 +101,7 @@ public class FixDotProjectPathResourceListener implements IResourceChangeListene
 		}
 	}
 
-	private void linkDotProject(IProject project) throws CoreException {
+	private void linkDotProject(IProject project) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!enabled) {
 			return;
 		}
@@ -110,17 +110,17 @@ public class FixDotProjectPathResourceListener implements IResourceChangeListene
 			return;
 		}
 		File targetDiskFile = getMetaDataFilePath(project.getName(), dotProject.getProjectRelativePath()).toFile();
-		if (!targetDiskFile.exists()) {
+		if (!targetDiskFile.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			try {
-				targetDiskFile.getParentFile().mkdirs();
-				Files.copy(dotProject.getLocation().toPath(), targetDiskFile.toPath());
+				targetDiskFile.getParentFile().mkdirs(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
+				Files.copy(dotProject.getLocation().toPath(), targetDiskFile.toPath()); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			} catch (Exception ex) {
-				throw new CoreException(Status.error(targetDiskFile + " cannot be created", ex)); //$NON-NLS-1$
+				throw new CoreException(Status.error(targetDiskFile + " cannot be created", ex)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		File sourceDiskFile = dotProject.getLocation().toFile();
 		dotProject.createLink(IPath.fromFile(targetDiskFile), IResource.FORCE | IResource.REPLACE, null);
-		sourceDiskFile.delete();
+		sourceDiskFile.delete(); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 	}
 
 	private IPath getMetaDataFilePath(String name, IPath projectRelativePath) {
@@ -152,20 +152,20 @@ public class FixDotProjectPathResourceListener implements IResourceChangeListene
 			return;
 		}
 		try (InputStream contents = file.getContents()) {
-			Files.copy(contents, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			Files.copy(contents, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING); //FLLDCIM: MARK — M31 M3FILE_IO CALL
 		} catch (IOException | CoreException ex) {
 			ex.printStackTrace();
 		}
 	}
 
-	private void unlinkIfLocal(IResource resource) {
+	private void unlinkIfLocal(IResource resource) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (resource instanceof IProject project && project.isOpen()) {
 			try {
 				Arrays.stream(project.members())
 					.filter(IFile.class::isInstance)
 					.map(IFile.class::cast)
 					.filter(IFile::isLinked)
-					.filter(file -> file.getProject().getLocation().append(file.getProjectRelativePath()).toFile().isFile())
+					.filter(file -> file.getProject().getLocation().append(file.getProjectRelativePath()).toFile().isFile()) //FLLDCIM: MARK — M31 M3FILE_IO CALL
 					.forEach(file -> {
 						try {
 							file.delete(false, false, null);

@@ -262,7 +262,7 @@ public class Marker extends PlatformObject implements IMarker {
 	/**
 	 * @see IMarker#setAttribute(String, Object)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setAttribute(String attributeName, Object value) throws CoreException {
 		Assert.isNotNull(attributeName);
 		Workspace workspace = getWorkspace();
@@ -302,7 +302,7 @@ public class Marker extends PlatformObject implements IMarker {
 	 * adds all Entries
 	 * @see IMarker#setAttributes(String[], Object[])
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setAttributes(String[] attributeNames, Object[] values) throws CoreException {
 		Assert.isNotNull(attributeNames);
 		Assert.isNotNull(values);
@@ -335,7 +335,7 @@ public class Marker extends PlatformObject implements IMarker {
 	 * clears current map and puts entries
 	 * @see IMarker#setAttributes(Map)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void setAttributes(Map<String, ? extends Object> values) throws CoreException {
 		Workspace workspace = getWorkspace();
 		MarkerManager manager = workspace.getMarkerManager();
@@ -363,51 +363,51 @@ public class Marker extends PlatformObject implements IMarker {
 	}
 
 	/** For debugging only */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public String toString() {
-		StringBuilder sb = new StringBuilder("Marker ["); //$NON-NLS-1$
-		sb.append("on: ").append(resource.getFullPath()); //$NON-NLS-1$
+		StringBuilder sb = new StringBuilder("Marker ["); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		sb.append("on: ").append(resource.getFullPath()); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		MarkerInfo info = getInfo();
 		if (info == null) {
-			sb.append(", not found]"); //$NON-NLS-1$
+			sb.append(", not found]"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			return sb.toString();
 		}
-		sb.append(", id: ").append(info.getId()); //$NON-NLS-1$
-		sb.append(", type: ").append(info.getType()); //$NON-NLS-1$
+		sb.append(", id: ").append(info.getId()); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(", type: ").append(info.getType()); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		Map<String, Object> attributes = info.getAttributes();
 		if (attributes != null) {
-			TreeMap<String, Object> tm = new TreeMap<>(attributes);
+			TreeMap<String, Object> tm = new TreeMap<>(attributes); //FLLDCIM: MARK — M05 M3_SORTED_LANES NEW
 			Object severity = tm.remove(SEVERITY);
 			if (severity instanceof Integer s) {
 				switch (s.intValue()) {
 				case SEVERITY_ERROR:
-					sb.append(", severity: ERROR(").append(s).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
+					sb.append(", severity: ERROR(").append(s).append(")"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					break;
 				case SEVERITY_WARNING:
-					sb.append(", severity: WARNING(").append(s).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
+					sb.append(", severity: WARNING(").append(s).append(")"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					break;
 				case SEVERITY_INFO:
-					sb.append(", severity: INFO(").append(s).append(")"); //$NON-NLS-1$ //$NON-NLS-2$
+					sb.append(", severity: INFO(").append(s).append(")"); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					break;
 
 				default:
-					sb.append(", unknown severity: " + s); //$NON-NLS-1$
+					sb.append(", unknown severity: " + s); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					break;
 				}
 			}
 
 			Set<Entry<String, Object>> set = tm.entrySet();
 			if (!set.isEmpty()) {
-				sb.append(", attributes: ["); //$NON-NLS-1$
-				for (Entry<String, Object> entry : set) {
-					sb.append(entry.getKey()).append(": ").append(entry.getValue()).append(", "); //$NON-NLS-1$ //$NON-NLS-2$
+				sb.append(", attributes: ["); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				for (Entry<String, Object> entry : set) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					sb.append(entry.getKey()).append(": ").append(entry.getValue()).append(", "); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 				}
 				sb.setLength(sb.length() - 2);
-				sb.append(']');
+				sb.append(']'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 			}
 		}
-		sb.append(", created: ").append(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date(info.getCreationTime()))); //$NON-NLS-1$
-		sb.append(']');
+		sb.append(", created: ").append(DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(new Date(info.getCreationTime()))); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		sb.append(']'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return sb.toString();
 	}
 }

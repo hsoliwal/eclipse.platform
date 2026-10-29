@@ -24,12 +24,12 @@ import org.eclipse.core.runtime.Adapters;
  * @since 3.3
  */
 public abstract class CompareNavigator implements ICompareNavigator {
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean selectChange(boolean next) {
 		// find most down stream CompareViewerPane
 		INavigatable[] navigators= getNavigatables();
 		Object downStreamInput = null;
-		for (int i = navigators.length - 1; i >=0; i--) {
+		for (int i = navigators.length - 1; i >=0; i--) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			INavigatable navigatable = navigators[i];
 			if (navigatable.getInput() == downStreamInput) {
 				// Skip to up stream pane if it has the same input
@@ -82,7 +82,7 @@ public abstract class CompareNavigator implements ICompareNavigator {
 	public boolean hasChange(boolean next) {
 		INavigatable[] navigators= getNavigatables();
 		Object downStreamInput = null;
-		for (int i = navigators.length; --i >= 0;) {
+		for (int i = navigators.length; --i >= 0;) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			INavigatable navigatable = navigators[i];
 			if (navigatable.getInput() == downStreamInput) {
 				// Skip to up stream pane if it has the same input

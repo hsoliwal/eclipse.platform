@@ -27,13 +27,13 @@ import org.eclipse.jface.viewers.Viewer;
 /**
  * Content provider that maintains a list of classpath entries which are shown in a tree viewer.
  */
-public class AntClasspathContentProvider implements ITreeContentProvider {
+public class AntClasspathContentProvider implements ITreeContentProvider { //FLLDCIM: MARK — M22  IMPLEMENTS
 	private TreeViewer treeViewer;
 	private ClasspathModel model = null;
 	private boolean refreshEnabled = false;
 	private boolean refreshRequested = false;
 
-	public void add(IClasspathEntry parent, Object child) {
+	public void add(IClasspathEntry parent, Object child) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Object newEntry = null;
 		boolean added = false;
 		if (parent == null || parent == model) {
@@ -78,7 +78,7 @@ public class AntClasspathContentProvider implements ITreeContentProvider {
 
 	private void refresh() {
 		if (refreshEnabled) {
-			treeViewer.refresh();
+			treeViewer.refresh(); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 			refreshRequested = false;
 		} else {
 			refreshRequested = true;
@@ -143,7 +143,7 @@ public class AntClasspathContentProvider implements ITreeContentProvider {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof GlobalClasspathEntries) {
 			return ((GlobalClasspathEntries) parentElement).getEntries();
@@ -152,8 +152,8 @@ public class AntClasspathContentProvider implements ITreeContentProvider {
 			return ((ClasspathModel) parentElement).getEntries();
 		}
 		if (parentElement == null) {
-			List<Object> all = new ArrayList<>();
-			for (IAntClasspathEntry object : model.getEntries()) {
+			List<Object> all = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
+			for (IAntClasspathEntry object : model.getEntries()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (object instanceof ClasspathEntry) {
 					all.add(object);
 				} else if (object instanceof GlobalClasspathEntries) {

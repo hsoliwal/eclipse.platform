@@ -100,7 +100,7 @@ public class TestInterestingProjectPersistence {
 	/**
 	 * Check that "no interesting builders" case suceeded, then ask for more projects.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(2)
 	public void test2() throws CoreException {
 		DeltaVerifierBuilder builder = DeltaVerifierBuilder.getInstance();
@@ -125,7 +125,7 @@ public class TestInterestingProjectPersistence {
 	/**
 	 * Check that interesting projects (1, 2, and 4) were stored and retrieved
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Order(3)
 	public void test3() throws CoreException {
 		DeltaVerifierBuilder builder = DeltaVerifierBuilder.getInstance();

@@ -55,7 +55,7 @@ public class GlobalRefreshResourceSelectionPage extends GlobalRefreshElementSele
 	 * Content provider that accepts a <code>SubscriberParticipant</code> as input and
 	 * returns the participants root resources.
 	 */
-	class MyContentProvider extends BaseWorkbenchContentProvider {
+	class MyContentProvider extends BaseWorkbenchContentProvider { //FLLDCIM: MARK — M22  IMPLEMENTS
 		@Override
 		public Object[] getChildren(Object element) {
 			if(element instanceof List) {
@@ -108,10 +108,10 @@ public class GlobalRefreshResourceSelectionPage extends GlobalRefreshElementSele
 		data.heightHint = 100;
 		fViewer.getControl().setLayoutData(data);
 		fViewer.setContentProvider(new MyContentProvider());
-		fViewer.setLabelProvider(new DecoratingLabelProvider(new MyLabelProvider(), PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator()));
-		fViewer.addCheckStateListener(unused -> updateOKStatus());
+		fViewer.setLabelProvider(new DecoratingLabelProvider(new MyLabelProvider(), PlatformUI.getWorkbench().getDecoratorManager().getLabelDecorator())); //FLLDCIM: MARK — T24 LABEL_DELTA CALL
+		fViewer.addCheckStateListener(unused -> updateOKStatus()); //FLLDCIM: MARK — T21 CHECK_STATE_LANE CALL
 		fViewer.setComparator(new ResourceComparator(ResourceComparator.NAME));
-		fViewer.setInput(resources);
+		fViewer.setInput(resources); //FLLDCIM: MARK — M21 FULL_REBUILD_TO_DELTA CALL
 		return fViewer;
 	}
 
@@ -122,9 +122,9 @@ public class GlobalRefreshResourceSelectionPage extends GlobalRefreshElementSele
 
 	@Override
 	protected boolean checkWorkingSetElements() {
-		List<IResource> allWorkingSetResources = new ArrayList<>();
+		List<IResource> allWorkingSetResources = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		IWorkingSet[] workingSets = getWorkingSets();
-		for (IWorkingSet set : workingSets) {
+		for (IWorkingSet set : workingSets) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			allWorkingSetResources.addAll(IDE.computeSelectedResources(new StructuredSelection(set.getElements())));
 		}
 		getViewer().setCheckedElements(allWorkingSetResources.toArray(new IResource[allWorkingSetResources.size()]));
@@ -134,7 +134,7 @@ public class GlobalRefreshResourceSelectionPage extends GlobalRefreshElementSele
 	public IResource[] getRootResources() {
 		Object[] objects = getRootElement();
 		IResource[] resources = new IResource[objects.length];
-		for (int i = 0; i < resources.length; i++) {
+		for (int i = 0; i < resources.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			resources[i] = (IResource)objects[i];
 
 		}

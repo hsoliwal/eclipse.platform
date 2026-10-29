@@ -65,34 +65,34 @@ public class SpecificContextTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testContentTypeLookup(TestInfo testInfo) throws CoreException {
 		String testName = testInfo.getDisplayName();
 		IContentTypeManager global = Platform.getContentTypeManager();
 		final SingleNodeScope scope = new SingleNodeScope();
 		IContentTypeMatcher local = global.getMatcher(new LocalSelectionPolicy(), scope);
-		IContentType textContentType = global.getContentType(Platform.PI_RUNTIME + '.' + "text");
+		IContentType textContentType = global.getContentType(Platform.PI_RUNTIME + '.' + "text"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		// added "<test case name>.global" to the text content type as a global file
 		// spec
-		textContentType.addFileSpec(testName + ".global", IContentType.FILE_NAME_SPEC);
+		textContentType.addFileSpec(testName + ".global", IContentType.FILE_NAME_SPEC); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		// added "<test case name>.local" to the text content type as a local
 		// (scope-specific) file spec
-		textContentType.getSettings(scope).addFileSpec(testName + ".local", IContentType.FILE_NAME_SPEC);
+		textContentType.getSettings(scope).addFileSpec(testName + ".local", IContentType.FILE_NAME_SPEC); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		// make ensure associations are properly recognized when doing content type
 		// lookup
-		assertEquals(textContentType, global.findContentTypeFor(testName + ".global"));
-		assertNull(local.findContentTypeFor(testName + ".global"));
-		assertEquals(textContentType, local.findContentTypeFor(testName + ".local"));
-		assertNull(global.findContentTypeFor(testName + ".local"));
+		assertEquals(textContentType, global.findContentTypeFor(testName + ".global")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		assertNull(local.findContentTypeFor(testName + ".global")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		assertEquals(textContentType, local.findContentTypeFor(testName + ".local")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+		assertNull(global.findContentTypeFor(testName + ".local")); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
-		textContentType.removeFileSpec(testName + ".global", IContentType.FILE_NAME_SPEC);
+		textContentType.removeFileSpec(testName + ".global", IContentType.FILE_NAME_SPEC); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testIsAssociatedWith() throws CoreException {
 		IContentTypeManager contentTypeManager = Platform.getContentTypeManager();
 		final SingleNodeScope scope = new SingleNodeScope();
-		IContentType textContentType = contentTypeManager.getContentType(Platform.PI_RUNTIME + '.' + "text");
+		IContentType textContentType = contentTypeManager.getContentType(Platform.PI_RUNTIME + '.' + "text"); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		IContentTypeSettings localSettings = null;
 		localSettings = textContentType.getSettings(scope);
 		// haven't added association yet

@@ -19,7 +19,7 @@ import org.eclipse.debug.core.DebugEvent;
 /**
  * Wait for the specified event with the specified from the specified element.
  */
-public class DebugElementKindEventDetailWaiter extends DebugElementKindEventWaiter {
+public class DebugElementKindEventDetailWaiter extends DebugElementKindEventWaiter { //FLLDCIM: MARK — T27  IMPLEMENTS
 
 	protected int fDetail;
 

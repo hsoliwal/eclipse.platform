@@ -35,7 +35,7 @@ public class DefaultSynchronizePageActions extends SynchronizePageActionGroup {
 	private RefactorActionGroup refactorActions;
 	private SyncViewerShowPreferencesAction showPreferences;
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void initialize(ISynchronizePageConfiguration configuration) {
 		super.initialize(configuration);
 		final ISynchronizePageSite site = configuration.getSite();

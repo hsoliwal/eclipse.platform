@@ -63,7 +63,7 @@ public class Bug_044106 {
 	 * Tests various permutations of the bug.
 	 * @param deleteFlags The option flags to use when deleting the resource.
 	 */
-	private void doTestDeleteLinkedFile(int deleteFlags) throws Exception {
+	private void doTestDeleteLinkedFile(int deleteFlags) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// create the file/folder that we are going to link to
 		IFileStore linkDestFile = getFileStore(tempDirectory).getChild(createUniqueString());
 		createInFileSystem(linkDestFile);
@@ -98,7 +98,7 @@ public class Bug_044106 {
 	 * is deleted
 	 * @param deleteFlags The flags to use on the resource deletion call
 	 */
-	private void doTestDeleteLinkedFolder(IFolder linkedFolder, boolean deleteParent, int deleteFlags)
+	private void doTestDeleteLinkedFolder(IFolder linkedFolder, boolean deleteParent, int deleteFlags) //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			throws Exception {
 		assumeTrue(OS.isLinux(), "only relevant on Linux");
 

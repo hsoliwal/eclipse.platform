@@ -73,9 +73,9 @@ public class BlobStore {
 			hexString = Integer.toHexString(value);
 		}
 		if (hexString.length() == 1) {
-			buffer.append("0"); //$NON-NLS-1$
+			buffer.append("0"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		buffer.append(hexString);
+		buffer.append(hexString); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
 	/**
@@ -84,8 +84,8 @@ public class BlobStore {
 	 * @see UniversalUniqueIdentifier#toString()
 	 */
 	private String bytesToHexString(byte[] b) {
-		StringBuilder buffer = new StringBuilder();
-		for (byte element : b) {
+		StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
+		for (byte element : b) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			appendByteString(buffer, element);
 		}
 		return buffer.toString();
@@ -107,7 +107,7 @@ public class BlobStore {
 	 * Delete all of the blobs in the given set.
 	 */
 	public void deleteBlobs(Set<UniversalUniqueIdentifier> set) {
-		for (UniversalUniqueIdentifier id : set) {
+		for (UniversalUniqueIdentifier id : set) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			deleteBlob(id);
 		}
 	}
@@ -139,7 +139,7 @@ public class BlobStore {
 	protected byte hashUUIDbytes(UniversalUniqueIdentifier uuid) {
 		byte[] bytes = uuid.toBytes();
 		byte hash = 0;
-		for (byte b : bytes) {
+		for (byte b : bytes) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			hash ^= randomArray[b + 128]; // +128 makes sure the index is >0
 		}
 		return hash;

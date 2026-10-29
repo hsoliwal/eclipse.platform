@@ -26,22 +26,22 @@ public class ByteUtil {
 	 * no maximum.
 	 * @return a byte array string representation
 	 */
-	public static String byteArrayToString(byte[] byteArray, int max) {
-		StringBuilder result = new StringBuilder(byteArray.length * 2 + 2);
+	public static String byteArrayToString(byte[] byteArray, int max) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
+		StringBuilder result = new StringBuilder(byteArray.length * 2 + 2); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		int bytesToBeShown = (max > 0) ? (Math.min(max, byteArray.length)) : byteArray.length;
-		result.append('[');
-		for (int i = 0; i < bytesToBeShown; i++) {
-			result.append(byteArray[i]);
-			result.append(',');
+		result.append('['); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+		for (int i = 0; i < bytesToBeShown; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			result.append(byteArray[i]); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+			result.append(','); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		// adds an ellipsis if there is too much bytes to show
 		if (max > 0 && max < byteArray.length) {
-			result.append("..."); //$NON-NLS-1$
+			result.append("..."); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		// or remove the trailing comma
 		} else {
 			result.deleteCharAt(result.length() - 1);
 		}
-		result.append(']');
+		result.append(']'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		return result.toString();
 	}
 }

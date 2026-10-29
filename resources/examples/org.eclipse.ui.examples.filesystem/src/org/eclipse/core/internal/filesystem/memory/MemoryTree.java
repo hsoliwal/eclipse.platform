@@ -25,7 +25,7 @@ import org.eclipse.core.runtime.*;
  */
 public class MemoryTree {
 	static class DirNode extends Node {
-		private final ArrayList<Node> children = new ArrayList<>();
+		private final ArrayList<Node> children = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 
 		DirNode(Node parent, String name) {
 			super(parent, name);
@@ -37,7 +37,7 @@ public class MemoryTree {
 
 		public String[] childNames() {
 			String[] names = new String[children.size()];
-			for (int i = 0, imax = children.size(); i < imax; i++) {
+			for (int i = 0, imax = children.size(); i < imax; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Node child = children.get(i);
 				names[i] = child.getInfo(false).getName();
 			}
@@ -48,7 +48,7 @@ public class MemoryTree {
 		 * Returns the child with the given name, or null if not found.
 		 */
 		Node getChild(String name) {
-			for (int i = 0, imax = children.size(); i < imax; i++) {
+			for (int i = 0, imax = children.size(); i < imax; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				Node child = children.get(i);
 				if (child.getInfo(false).getName().equals(name))
 					return child;
@@ -75,7 +75,7 @@ public class MemoryTree {
 
 		@Override
 		public String toString() {
-			return super.toString() + ' ' + children;
+			return super.toString() + ' ' + children; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 	}
 
@@ -144,7 +144,7 @@ public class MemoryTree {
 
 		void putInfo(IFileInfo newInfo, int options) {
 			if ((options & EFS.SET_ATTRIBUTES) != 0) {
-				for (int i = 0; i < ALL_ATTRIBUTES.length; i++)
+				for (int i = 0; i < ALL_ATTRIBUTES.length; i++) //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					info.setAttribute(ALL_ATTRIBUTES[i], newInfo.getAttribute(ALL_ATTRIBUTES[i]));
 			}
 			if ((options & EFS.SET_LAST_MODIFIED) != 0) {
@@ -215,7 +215,7 @@ public class MemoryTree {
 	 */
 	private Node findNode(IPath path) {
 		Node current = root;
-		for (int i = 0, imax = path.segmentCount(); i < imax; i++) {
+		for (int i = 0, imax = path.segmentCount(); i < imax; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (current == null || current.isFile())
 				return null;
 			current = ((DirNode) current).getChild(path.segment(i));
@@ -223,21 +223,21 @@ public class MemoryTree {
 		return current;
 	}
 
-	public Node mkdir(IPath path, boolean deep) throws CoreException {
+	public Node mkdir(IPath path, boolean deep) throws CoreException { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Node dir = findNode(path);
 		if (dir != null) {
 			if (dir.isFile())
-				Policy.error("A file exists with this name: " + path);
+				Policy.error("A file exists with this name: " + path); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			return dir;
 		}
 		final IPath parentPath = path.removeLastSegments(1);
 		Node parent = findNode(parentPath);
 		if (parent != null) {
 			if (parent.isFile())
-				Policy.error("Parent is a file: " + path);
+				Policy.error("Parent is a file: " + path); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		} else {
 			if (!deep)
-				Policy.error("Parent does not exist: " + parentPath);
+				Policy.error("Parent does not exist: " + parentPath); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			parent = mkdir(parentPath, deep);
 		}
 		//create the child directory
@@ -247,9 +247,9 @@ public class MemoryTree {
 	public InputStream openInputStream(IPath path) throws CoreException {
 		Node node = findNode(path);
 		if (node == null)
-			Policy.error("File not found: " + path);
+			Policy.error("File not found: " + path); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		if (!node.isFile())
-			Policy.error("Cannot open stream on directory: " + path);
+			Policy.error("Cannot open stream on directory: " + path); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		return ((FileNode) node).openInputStream();
 	}
 
@@ -257,13 +257,13 @@ public class MemoryTree {
 		Node node = findNode(path);
 		//if we already have such a file, just open a stream on it
 		if (node instanceof DirNode)
-			Policy.error("Could not create file: " + path);
+			Policy.error("Could not create file: " + path); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		if (node instanceof FileNode)
 			return ((FileNode) node).openOutputStream(options);
 		//if the parent exists we can create the file
 		Node parent = findNode(path.removeLastSegments(1));
 		if (!(parent instanceof DirNode))
-			Policy.error("Could not create file: " + path);
+			Policy.error("Could not create file: " + path); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		node = new FileNode(parent, path.lastSegment());
 		return ((FileNode) node).openOutputStream(options);
 	}
@@ -271,7 +271,7 @@ public class MemoryTree {
 	public void putInfo(IPath path, IFileInfo info, int options) throws CoreException {
 		Node node = findNode(path);
 		if (node == null)
-			Policy.error("File not found: " + path);
+			Policy.error("File not found: " + path); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		node.putInfo(info, options);
 	}
 }

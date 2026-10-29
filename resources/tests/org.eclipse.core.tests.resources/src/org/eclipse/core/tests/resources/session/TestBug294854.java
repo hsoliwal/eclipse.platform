@@ -164,7 +164,7 @@ public class TestBug294854 {
 		assertFalse(checkProjectExists(PROJECT_OLD_NAME));
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	@Tag(RESET_WORKSPACE_BEFORE_TAG)
 	@SessionShouldError
 	@Order(31)
@@ -173,7 +173,7 @@ public class TestBug294854 {
 
 		// simulate process kill after deleting project but before persisting the state
 		// in the snapshot job
-		IResourceChangeListener selfDeregisteringExistingChangeListener = new IResourceChangeListener() {
+		IResourceChangeListener selfDeregisteringExistingChangeListener = new IResourceChangeListener() { //FLLDCIM: MARK — T07  ANONYMOUS
 			@Override
 			public void resourceChanged(IResourceChangeEvent event) {
 				getWorkspace().removeResourceChangeListener(this);

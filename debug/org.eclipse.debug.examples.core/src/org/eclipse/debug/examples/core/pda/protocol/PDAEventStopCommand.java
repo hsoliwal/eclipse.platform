@@ -40,7 +40,7 @@ public class PDAEventStopCommand extends PDACommand {
 	public static final int NOSUCHLABEL = 1;
 
 	public PDAEventStopCommand(int event, boolean enable) {
-		super("eventstop " +  //$NON-NLS-1$
+		super("eventstop " +  //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			  (event == UNIMPINSTR ? "unimpinstr " : "nosuchlabel ") +  //$NON-NLS-1$ //$NON-NLS-2$
 			  (enable ? "1" : "0")); //$NON-NLS-1$ //$NON-NLS-2$
 	}

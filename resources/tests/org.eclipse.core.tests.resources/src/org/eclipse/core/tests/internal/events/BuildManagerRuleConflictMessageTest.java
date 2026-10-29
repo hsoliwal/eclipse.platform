@@ -51,11 +51,11 @@ public class BuildManagerRuleConflictMessageTest {
 		IllegalArgumentException result = invokeHandleRuleConflict(true, builder, original);
 
 		assertThat(result.getMessage()) //
-				.startsWith("beginRule failed for builder " + builder.getClass().getName()) //
-				.contains("'" + BUILDER_LABEL + "'") //
-				.contains("plugin " + PLUGIN_ID) //
-				.contains("on project " + PROJECT_PATH) //
-				.endsWith(": " + original.getMessage());
+				.startsWith("beginRule failed for builder " + builder.getClass().getName()) // //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				.contains("'" + BUILDER_LABEL + "'") // //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				.contains("plugin " + PLUGIN_ID) // //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				.contains("on project " + PROJECT_PATH) // //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				.endsWith(": " + original.getMessage()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertSame(original, result.getCause());
 	}
 
@@ -68,11 +68,11 @@ public class BuildManagerRuleConflictMessageTest {
 		IllegalArgumentException result = invokeHandleRuleConflict(false, builder, original);
 
 		assertThat(result.getMessage()) //
-				.startsWith("endRule failed for builder " + builder.getClass().getName()) //
-				.contains("'" + BUILDER_LABEL + "'") //
-				.contains("plugin " + PLUGIN_ID) //
-				.contains("on project " + PROJECT_PATH) //
-				.endsWith(": " + original.getMessage());
+				.startsWith("endRule failed for builder " + builder.getClass().getName()) // //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				.contains("'" + BUILDER_LABEL + "'") // //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				.contains("plugin " + PLUGIN_ID) // //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				.contains("on project " + PROJECT_PATH) // //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
+				.endsWith(": " + original.getMessage()); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		assertSame(original, result.getCause());
 	}
 

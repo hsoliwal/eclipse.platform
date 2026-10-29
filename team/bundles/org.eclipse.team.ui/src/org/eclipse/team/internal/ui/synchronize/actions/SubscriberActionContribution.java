@@ -36,7 +36,7 @@ public final class SubscriberActionContribution extends SynchronizePageActionGro
 	private RemoveFromViewAction removeFromViewAction;
 	private RestoreRemovedItemsAction restoreRemovedItemsAction;
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void initialize(final ISynchronizePageConfiguration configuration) {
 		super.initialize(configuration);
 		final SubscriberParticipant participant = (SubscriberParticipant)configuration.getParticipant();

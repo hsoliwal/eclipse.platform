@@ -44,13 +44,13 @@ public class ResourceVisitorVerifier implements IResourceVisitor {
 		boolean included = expected.remove(resource);
 		if (!included) {
 			success = false;
-			log(resource.getFullPath() + " was not expected.");
+			log(resource.getFullPath() + " was not expected."); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		return true;
 	}
 
 	private void log(String text) {
-		message.append("\n" + text);
+		message.append("\n" + text); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 	}
 
 	private void verify() {
@@ -58,9 +58,9 @@ public class ResourceVisitorVerifier implements IResourceVisitor {
 			return;
 		}
 		// Add messages for the resources which weren't visited but were expected.
-		for (IResource resource : expected) {
+		for (IResource resource : expected) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			success = false;
-			log(resource.getFullPath() + " was not visited.");
+			log(resource.getFullPath() + " was not visited."); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		verified = true;
 	}
@@ -75,8 +75,8 @@ public class ResourceVisitorVerifier implements IResourceVisitor {
 	}
 
 	public void reset() {
-		expected = new HashSet<>();
-		message = new StringBuilder();
+		expected = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		message = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		verified = false;
 	}
 }

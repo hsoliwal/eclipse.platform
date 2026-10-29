@@ -31,7 +31,7 @@ import java.util.HashMap;
  */
 public final class StringPool {
 	private int savings;
-	private final HashMap<String, String> map = new HashMap<>();
+	private final HashMap<String, String> map = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	/**
 	 * Creates a new string pool.

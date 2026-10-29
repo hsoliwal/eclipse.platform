@@ -37,7 +37,7 @@ public class AntContext extends DocumentTemplateContext {
 		fAntModel = model;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public TemplateBuffer evaluate(Template template) throws BadLocationException, TemplateException {
 		if (!canEvaluate(template)) {
 			return null;
@@ -72,7 +72,7 @@ public class AntContext extends DocumentTemplateContext {
 
 	private static void convertLineDelimiters(IDocument document, String defaultLineDelimiter) throws BadLocationException {
 		int lines = document.getNumberOfLines();
-		for (int line = 0; line < lines; line++) {
+		for (int line = 0; line < lines; line++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			IRegion region = document.getLineInformation(line);
 			String lineDelimiter = document.getLineDelimiter(line);
 			if (lineDelimiter != null) {
@@ -88,7 +88,7 @@ public class AntContext extends DocumentTemplateContext {
 		return fAntModel;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public int getEnd() {
 		int start = getCompletionOffset();
 		int length = getCompletionLength();
@@ -101,7 +101,7 @@ public class AntContext extends DocumentTemplateContext {
 		int end = getCompletionOffset() + length;
 
 		try {
-			while (start != end && Character.isWhitespace(document.getChar(end - 1))) {
+			while (start != end && Character.isWhitespace(document.getChar(end - 1))) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				end--;
 			}
 		}

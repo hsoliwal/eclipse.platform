@@ -128,7 +128,7 @@ public class AntProjectNode extends AntElementNode {
 		if (textToSearch == null || textToSearch.length() == 0 || identifier.length() == 0) {
 			return null;
 		}
-		List<Integer> results = new ArrayList<>(1);
+		List<Integer> results = new ArrayList<>(1); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 		String newidentifier = new StringBuffer("\"").append(identifier).append('"').toString(); //$NON-NLS-1$
 		int defaultTargetNameOffset = textToSearch.indexOf(IAntCoreConstants.DEFAULT);
 		defaultTargetNameOffset = textToSearch.indexOf(newidentifier, defaultTargetNameOffset);

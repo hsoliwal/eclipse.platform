@@ -28,7 +28,7 @@ public class IntegerMap {
 	}
 
 	public int get(int key) {
-		for (int i = 0; i < keys.length; i++) {
+		for (int i = 0; i < keys.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int current = keys[i];
 			if (current != 0 && current == key) {
 				return values[i];
@@ -37,11 +37,11 @@ public class IntegerMap {
 		return DEFAULT;
 	}
 
-	public void put(int key, int value) {
+	public void put(int key, int value) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		// replace if exists
 		int emptySlot = -1;
-		for (int i = 0; i < keys.length; i++) {
+		for (int i = 0; i < keys.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int current = keys[i];
 			if (current == 0) {
 				emptySlot = i;

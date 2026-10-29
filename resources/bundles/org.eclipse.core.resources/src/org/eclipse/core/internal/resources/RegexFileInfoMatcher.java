@@ -35,8 +35,8 @@ public class RegexFileInfoMatcher extends AbstractFileInfoMatcher {
 	@Override
 	public boolean matches(IContainer parent, IFileInfo fileInfo) {
 		if (pattern != null) {
-			Matcher m = pattern.matcher(fileInfo.getName());
-			return m.matches();
+			Matcher m = pattern.matcher(fileInfo.getName()); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
+			return m.matches(); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 		}
 		return false;
 	}
@@ -45,7 +45,7 @@ public class RegexFileInfoMatcher extends AbstractFileInfoMatcher {
 	public void initialize(IProject project, Object arguments) throws CoreException {
 		if (arguments != null) {
 			try {
-				pattern = Pattern.compile((String) arguments);
+				pattern = Pattern.compile((String) arguments); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
 			} catch (PatternSyntaxException e) {
 				throw new CoreException(new Status(IStatus.ERROR, ResourcesPlugin.PI_RESOURCES, Platform.PLUGIN_ERROR, e.getMessage(), e));
 			}

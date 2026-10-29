@@ -24,7 +24,7 @@ import org.eclipse.jface.action.MenuManager;
  */
 public class CommonMenuManager extends MenuManager {
 
-	private final Map<String, IHandler> handlers = new HashMap<>();
+	private final Map<String, IHandler> handlers = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 
 	public CommonMenuManager(String id) {
 		super(id);

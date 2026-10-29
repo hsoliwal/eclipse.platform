@@ -38,7 +38,7 @@ public class Cache implements ICache {
 	@Override
 	public synchronized void put(String name, Object value) {
 		if (properties == null) {
-			properties = new HashMap<>();
+			properties = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		}
 		properties.put(name, value);
 	}
@@ -83,9 +83,9 @@ public class Cache implements ICache {
 		}
 	}
 
-	public void dispose() {
+	public void dispose() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (listeners != null) {
-			for (ICacheListener listener : listeners) {
+			for (ICacheListener listener : listeners) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				SafeRunner.run(new ISafeRunnable(){
 					@Override
 					public void run() throws Exception {

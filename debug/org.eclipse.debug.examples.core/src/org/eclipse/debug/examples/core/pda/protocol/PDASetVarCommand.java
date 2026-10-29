@@ -32,7 +32,7 @@ package org.eclipse.debug.examples.core.pda.protocol;
 public class PDASetVarCommand extends PDACommand {
 
 	public PDASetVarCommand(int threadId, int frame, String variable, String value) {
-		super("setvar " + threadId + " " + frame + " " + variable + " " + value); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+		super("setvar " + threadId + " " + frame + " " + variable + " " + value); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 

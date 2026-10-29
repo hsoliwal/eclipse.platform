@@ -42,7 +42,7 @@ public class TimerBuilder extends IncrementalProjectBuilder {
 	 */
 	private static class BuildExecutionState {
 		private final int expectedNumberOfBuilds;
-		private final List<BuildEvent> events = new ArrayList<>();
+		private final List<BuildEvent> events = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		private boolean shallAbort;
 		private int maxSimultaneousBuilds;
 		private int currentlyRunningBuilds;
@@ -60,7 +60,7 @@ public class TimerBuilder extends IncrementalProjectBuilder {
 		}
 
 		private synchronized List<BuildEvent> getEvents() {
-			return new ArrayList<>(events);
+			return new ArrayList<>(events); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		}
 
 		private synchronized List<IProject> getProjectBuilds(BuildEventType eventType) {
@@ -98,7 +98,7 @@ public class TimerBuilder extends IncrementalProjectBuilder {
 		private synchronized void awaitWithTimeout(long timeoutInMillis, BooleanSupplier condition) {
 			long deadlineInNanos = System.nanoTime() + timeoutInMillis * 1_000_000L;
 			long remainingMillis = timeoutInMillis;
-			while (!condition.getAsBoolean() && remainingMillis > 0) {
+			while (!condition.getAsBoolean() && remainingMillis > 0) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				try {
 					wait(remainingMillis);
 				} catch (InterruptedException e) {

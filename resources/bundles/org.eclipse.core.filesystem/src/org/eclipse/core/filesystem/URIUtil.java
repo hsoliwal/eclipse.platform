@@ -61,7 +61,7 @@ public class URIUtil {
 	 * @param uri The URI to convert
 	 * @return The path representing the provided URI, <code>null</code>
 	 */
-	public static IPath toPath(URI uri) {
+	public static IPath toPath(URI uri) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Assert.isNotNull(uri);
 		// Special treatment for LocalFileSystem. For performance only.
 		if (EFS.SCHEME_FILE.equals(uri.getScheme())) {
@@ -137,21 +137,21 @@ public class URIUtil {
 	 * @return The URI representing the provided path string
 	 * @since org.eclipse.core.filesystem 1.2
 	 */
-	public static URI toURI(String pathString, boolean forceAbsolute) {
+	public static URI toURI(String pathString, boolean forceAbsolute) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (File.separatorChar != '/') {
 			pathString = pathString.replace(File.separatorChar, '/');
 		}
 		final int length = pathString.length();
-		StringBuilder pathBuf = new StringBuilder(length + 1);
+		StringBuilder pathBuf = new StringBuilder(length + 1); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
 		//mark if path is relative
 		if (length > 0 && (pathString.charAt(0) != '/') && forceAbsolute) {
-			pathBuf.append('/');
+			pathBuf.append('/'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
 		//additional double-slash for UNC paths to distinguish from host separator
 		if (pathString.startsWith("//")) { //$NON-NLS-1$
-			pathBuf.append('/').append('/');
+			pathBuf.append('/').append('/'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		}
-		pathBuf.append(pathString);
+		pathBuf.append(pathString); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		try {
 			String scheme = null;
 			if (length > 0 && (pathBuf.charAt(0) == '/')) {
@@ -182,7 +182,7 @@ public class URIUtil {
 		if (scheme == null) {
 			return part;
 		}
-		return scheme + ':' + part;
+		return scheme + ':' + part; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	/**

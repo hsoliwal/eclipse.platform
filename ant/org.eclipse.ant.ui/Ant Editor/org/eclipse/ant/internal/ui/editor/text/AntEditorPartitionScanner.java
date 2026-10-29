@@ -50,7 +50,7 @@ public class AntEditorPartitionScanner extends RuleBasedPartitionScanner {
 	/**
 	 * Creates an instance.
 	 */
-	public AntEditorPartitionScanner() {
+	public AntEditorPartitionScanner() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 
 		IPredicateRule[] rules = new IPredicateRule[4];
 

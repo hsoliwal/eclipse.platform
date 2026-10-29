@@ -80,7 +80,7 @@ public class BufferedResourceNode extends ResourceNode {
 		}
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public ITypedElement replace(ITypedElement child, ITypedElement other) {
 
 		if (child == null) {	// add resource

@@ -30,7 +30,7 @@ import org.eclipse.team.internal.core.Messages;
 public class ScopeManagerEventHandler extends BackgroundEventHandler {
 
 	public static final int REFRESH = 10;
-	private final Set<ResourceMapping> toRefresh = new HashSet<>();
+	private final Set<ResourceMapping> toRefresh = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 	private final ISynchronizationScopeManager manager;
 
 	static class ResourceMappingEvent extends Event {

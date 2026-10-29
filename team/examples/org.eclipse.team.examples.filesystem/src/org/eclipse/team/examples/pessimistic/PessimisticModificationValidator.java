@@ -57,19 +57,19 @@ extends FileModificationValidator {
 		fProvider= provider;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus validateEdit(IFile[] files, FileModificationValidationContext context) {
 		if (files.length == 0) {
 			return new Status( IStatus.OK, getUid(), IStatus.OK, "OK", null);
 		}
 
-		Set<IFile> checkOut = new HashSet<>();
+		Set<IFile> checkOut = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		int reloadCount = 0;
 		int checkoutFailCount = 0;
 
-		Map<IFile, Integer> validateEditStatusMap = new HashMap<>(files.length);
+		Map<IFile, Integer> validateEditStatusMap = new HashMap<>(files.length); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES LOCAL_VARIABLE
 
-		for (IFile file : files) {
+		for (IFile file : files) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (fProvider.isControlled(file) ) {
 				if (fProvider.isCheckedout(file)) {
 					setValidateEditStatus(validateEditStatusMap, file,
@@ -103,7 +103,7 @@ extends FileModificationValidator {
 				}
 			}
 
-			for (IFile file : checkOut) {
+			for (IFile file : checkOut) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if ( fProvider.isCheckedout(file) ) {
 					if ( !fProvider.hasContentChanged(file) ) {
 						setValidateEditStatus(validateEditStatusMap, file,
@@ -132,18 +132,18 @@ extends FileModificationValidator {
 		int mask = IPessimisticFilesystemConstants.STATUS_OK_TO_EDIT |
 				IPessimisticFilesystemConstants.STATUS_PROMPT_FOR_RELOAD;
 
-		for (int i = 0; i < files.length; i++) {
+		for (int i = 0; i < files.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			int result = getValidateEditStatus(validateEditStatusMap, files[i]);
 			if ((result & mask) != 0) {
 				children[i] = new Status( IStatus.OK, getUid(), IStatus.OK, "OK", null);
 			} else {
-				children[i] = new Status( IStatus.ERROR, getUid(), IStatus.ERROR, "File " + files[i].getName() + " could not be checked out.", null);
+				children[i] = new Status( IStatus.ERROR, getUid(), IStatus.ERROR, "File " + files[i].getName() + " could not be checked out.", null); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 		return new MultiStatus( getUid(), IStatus.OK, children, "Some files were not successfully checked out", null);
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public IStatus validateSave(IFile file) {
 		int checkedInFilesSaved = getPreferences().getInt(IPessimisticFilesystemConstants.PREF_CHECKED_IN_FILES_SAVED);
 		if (checkedInFilesSaved == IPessimisticFilesystemConstants.OPTION_DO_NOTHING) {
@@ -165,7 +165,7 @@ extends FileModificationValidator {
 		if (fProvider.isCheckedout(file)) {
 			return status;
 		}
-		Set<IFile> files = new HashSet<>(1);
+		Set<IFile> files = new HashSet<>(1); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 		files.add(file);
 
 		checkout(files, IPessimisticFilesystemConstants.PREF_CHECKED_IN_FILES_SAVED, false, null);
@@ -177,7 +177,7 @@ extends FileModificationValidator {
 				IStatus.ERROR,
 				getUid(),
 				IStatus.ERROR,
-				file.getProjectRelativePath() + " could not be checked out",
+				file.getProjectRelativePath() + " could not be checked out", //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 				null);
 	}
 
@@ -207,13 +207,13 @@ extends FileModificationValidator {
 	 * Optionally prompts the user to select which resources should be
 	 * checked out, and then checks the selected resources.
 	 */
-	private int promptAndCheckout(Set<IFile> resources, boolean beQuiet, boolean shouldFail, Object context) {
+	private int promptAndCheckout(Set<IFile> resources, boolean beQuiet, boolean shouldFail, Object context) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (resources.isEmpty()) {
 			return IStatus.OK;
 		}
 
-		Set<IFile> temp = new HashSet<>(resources.size());
-		for (IFile resource : resources) {
+		Set<IFile> temp = new HashSet<>(resources.size()); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IFile resource : resources) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (fProvider.isControlled(resource) && !fProvider.isCheckedout(resource))
 				temp.add(resource);
 		}
@@ -224,7 +224,7 @@ extends FileModificationValidator {
 			if (shell != null && !shell.isDisposed()) {
 				Display display = shell.getDisplay();
 				final Set[] result = {resources};
-				display.syncExec(() -> {
+				display.syncExec(() -> { //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 					ILabelProvider labelProvider= new WorkbenchLabelProvider();
 					Object[] resourceArray= result[0].toArray();
 					ITreeContentProvider contentProvider= new ResourceSetContentProvider(result[0]);
@@ -241,7 +241,7 @@ extends FileModificationValidator {
 					result[0]= null;
 					if (status == Window.OK) {
 						Object[] results= dialog.getResult();
-						result[0] = new HashSet(results.length);
+						result[0] = new HashSet(results.length); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 						Collections.addAll(result[0], results);
 					} else if(status == Window.CANCEL) {
 						statusCode[0] = IStatus.CANCEL;
@@ -250,7 +250,7 @@ extends FileModificationValidator {
 				resources= result[0];
 			} else {
 				resources= null;
-				PessimisticFilesystemProviderPlugin.getInstance().logError(new RuntimeException(), "Context is invalid: " + context);
+				PessimisticFilesystemProviderPlugin.getInstance().logError(new RuntimeException(), "Context is invalid: " + context); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			}
 		}
 
@@ -301,7 +301,7 @@ extends FileModificationValidator {
 	/*
 	 * Convenience method to set the validate edit status for the given resource.
 	 */
-	private static void setValidateEditStatus(Map<IFile, Integer> map, IFile resource, int status) {
+	private static void setValidateEditStatus(Map<IFile, Integer> map, IFile resource, int status) { //FLLDCIM: MARK — M10 M3_PRIMITIVE_LANES PARAMETER
 		map.put(resource, Integer.valueOf(status));
 	}
 
@@ -318,7 +318,7 @@ extends FileModificationValidator {
 	/*
 	 * Convenience method to get a shell from an object.
 	 */
-	private Shell getShell(Object context) {
+	private Shell getShell(Object context) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (context instanceof FileModificationValidationContext) {
 			FileModificationValidationContext fmvc = (FileModificationValidationContext) context;
 			return (Shell)fmvc.getShell();

@@ -34,7 +34,7 @@ public class AntExtraTab extends DoNothingMainTab {
 	@Override
 	public Set<String> getModes() {
 		if (fOptions == null) {
-			fOptions = new HashSet<>();
+			fOptions = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
 			fOptions.add("ant"); //$NON-NLS-1$
 			fOptions.add("test"); //$NON-NLS-1$
 		}

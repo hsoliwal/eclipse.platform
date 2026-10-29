@@ -131,7 +131,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 			return new Point(100, 100);
 		}
 
-		@Override
+		@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		public void layout(Composite composite, boolean force) {
 			if (fLeftLabel == null) {
 				if (composite.isDisposed()) {
@@ -139,14 +139,14 @@ public abstract class ContentMergeViewer extends ContentViewer
 							.log(new IllegalArgumentException("Attempted to perform a layout on a disposed composite")); //$NON-NLS-1$
 				}
 				if (Policy.debugContentMergeViewer) {
-					logTrace("found bad label. Layout = " + System.identityHashCode(this) + ". composite = "  //$NON-NLS-1$//$NON-NLS-2$
+					logTrace("found bad label. Layout = " + System.identityHashCode(this) + ". composite = "  //$NON-NLS-1$//$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 							+ System.identityHashCode(composite) + ". fComposite = " //$NON-NLS-1$
 							+ System.identityHashCode(fComposite) + ". fComposite.isDisposed() = " //$NON-NLS-1$
 							+ fComposite.isDisposed());
 					logStackTrace();
 				}
 				// Help to find out the cause for bug 449558
-				NullPointerException npe= new NullPointerException("fLeftLabel is 'null';fLeftLabelSet is " + fLeftLabelSet + ";fComposite.isDisposed() is " + fComposite.isDisposed()); //$NON-NLS-1$ //$NON-NLS-2$
+				NullPointerException npe= new NullPointerException("fLeftLabel is 'null';fLeftLabelSet is " + fLeftLabelSet + ";fComposite.isDisposed() is " + fComposite.isDisposed()); //$NON-NLS-1$ //$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 
 				// Allow to test whether doing nothing helps
 				if (Boolean.getBoolean("ContentMergeViewer.DEBUG")) { //$NON-NLS-1$
@@ -241,10 +241,10 @@ public abstract class ContentMergeViewer extends ContentViewer
 			fControl= c;
 			fLiveResize= !(fControl instanceof Sash);
 			updateCursor(c, dir);
-			fControl.addMouseListener(this);
-			fControl.addMouseMoveListener(this);
-			fControl.addDisposeListener(
-				unused -> fControl= null
+			fControl.addMouseListener(this); //FLLDCIM: MARK — T12 INPUT_EVENT CALL
+			fControl.addMouseMoveListener(this); //FLLDCIM: MARK — T12 INPUT_EVENT CALL
+			fControl.addDisposeListener( //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
+				unused -> fControl= null //FLLDCIM: MARK — T01  LAMBDA
 			);
 		}
 
@@ -293,7 +293,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 			}
 		}
 
-		private void resize(MouseEvent e) {
+		private void resize(MouseEvent e) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			int dx= e.x-fX;
 			int dy= e.y-fY;
 
@@ -366,9 +366,9 @@ public abstract class ContentMergeViewer extends ContentViewer
 	private Cursor fVSashCursor;
 	private Cursor fHVSashCursor;
 
-	private final ILabelProviderListener labelChangeListener = event -> {
+	private final ILabelProviderListener labelChangeListener = event -> { //FLLDCIM: MARK — T24  LAMBDA
 		Object[] elements = event.getElements();
-		for (Object object : elements) {
+		for (Object object : elements) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (object == getInput()) {
 				updateHeader();
 			}
@@ -385,7 +385,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 	 * @param bundle the resource bundle
 	 * @param cc the configuration object
 	 */
-	protected ContentMergeViewer(int style, ResourceBundle bundle, CompareConfiguration cc) {
+	protected ContentMergeViewer(int style, ResourceBundle bundle, CompareConfiguration cc) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (Policy.debugContentMergeViewer) {
 			logTrace("constructed (fLeftLabel == null)"); //$NON-NLS-1$
 			logStackTrace();
@@ -397,15 +397,15 @@ public abstract class ContentMergeViewer extends ContentViewer
 		fAncestorVisible= Utilities.getBoolean(cc, ICompareUIConstants.PROP_ANCESTOR_VISIBLE, fAncestorVisible);
 		fConfirmSave= Utilities.getBoolean(cc, CompareEditor.CONFIRM_SAVE_PROPERTY, fConfirmSave);
 
-		fCompareInputChangeListener = input -> { if (input == getInput()) {
+		fCompareInputChangeListener = input -> { if (input == getInput()) { //FLLDCIM: MARK — T37  LAMBDA
 			handleCompareInputChange();
 		} };
 
 		// Make sure the compare configuration is not null
 		fCompareConfiguration = cc != null ? cc : new CompareConfiguration();
 		fPropertyChangeListener = this::handlePropertyChangeEvent;
-		fCompareConfiguration.addPropertyChangeListener(fPropertyChangeListener);
-		fPreferenceChangeListener = event -> {
+		fCompareConfiguration.addPropertyChangeListener(fPropertyChangeListener); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
+		fPreferenceChangeListener = event -> { //FLLDCIM: MARK — T06  LAMBDA
 			if (event.getProperty().equals(ComparePreferencePage.SWAPPED)) {
 				getCompareConfiguration().setProperty(CompareConfiguration.MIRRORED, event.getNewValue());
 				updateContentProvider();
@@ -422,11 +422,11 @@ public abstract class ContentMergeViewer extends ContentViewer
 	}
 
 	private void logStackTrace() {
-		new Exception("<Fake exception> in " + getClass().getName()).printStackTrace(System.out); //$NON-NLS-1$
+		new Exception("<Fake exception> in " + getClass().getName()).printStackTrace(System.out); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private void logTrace(String string) {
-		System.out.println("ContentMergeViewer " + System.identityHashCode(this) + ": " + string);   //$NON-NLS-1$//$NON-NLS-2$
+		System.out.println("ContentMergeViewer " + System.identityHashCode(this) + ": " + string);   //$NON-NLS-1$//$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	//---- hooks ---------------------
@@ -588,7 +588,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 	 * @param event the property change event
 	 * @since 3.3
 	 */
-	protected void handlePropertyChangeEvent(PropertyChangeEvent event) {
+	protected void handlePropertyChangeEvent(PropertyChangeEvent event) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String key= event.getProperty();
 
 		if (key.equals(ICompareUIConstants.PROP_ANCESTOR_VISIBLE)) {
@@ -608,7 +608,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 		}
 	}
 
-	void updateCursor(Control c, int dir) {
+	void updateCursor(Control c, int dir) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!(c instanceof Sash)) {
 			Cursor cursor= null;
 			switch (dir) {
@@ -686,7 +686,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 	 * @param input the new input of this viewer, or <code>null</code> if there is no new input
 	 * @param oldInput the old input element, or <code>null</code> if there was previously no input
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected final void inputChanged(Object input, Object oldInput) {
 		if (input != oldInput && oldInput != null) {
 			ICompareInputLabelProvider lp = getCompareConfiguration().getLabelProvider();
@@ -704,13 +704,13 @@ public abstract class ContentMergeViewer extends ContentViewer
 
 		if (input != oldInput && input instanceof ICompareInput) {
 			ICompareContainer container = getCompareConfiguration().getContainer();
-			container.addCompareInputChangeListener((ICompareInput)input, fCompareInputChangeListener);
+			container.addCompareInputChangeListener((ICompareInput)input, fCompareInputChangeListener); //FLLDCIM: MARK — T37 COMPARE_DELTA CALL
 		}
 
 		if (input != oldInput && input != null) {
 			ICompareInputLabelProvider lp = getCompareConfiguration().getLabelProvider();
 			if (lp != null) {
-				lp.addListener(labelChangeListener);
+				lp.addListener(labelChangeListener); //FLLDCIM: MARK — T13 SWT_TYPED_EVENT CALL
 			}
 		}
 
@@ -739,7 +739,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 	 * @return <code>true</code> if saving was successful, or if the user didn't want to save (by pressing 'NO' in the confirmation dialog).
 	 * @since 2.0
 	 */
-	protected boolean doSave(Object newInput, Object oldInput) {
+	protected boolean doSave(Object newInput, Object oldInput) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// before setting the new input we have to save the old
 		if (isLeftDirty() || isRightDirty()) {
 			if (Utilities.RUNNING_TESTS) {
@@ -792,7 +792,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 		internalRefresh(getInput());
 	}
 
-	private void internalRefresh(Object input) {
+	private void internalRefresh(Object input) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IMergeViewerContentProvider content= getMergeContentProvider();
 		if (content != null) {
 			Object ancestor= content.getAncestorContent(input);
@@ -832,7 +832,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 	@Override
 	protected void hookControl(Control control) {
 		if (Policy.debugContentMergeViewer) {
-			logTrace("Attached dispose listener to control " + System.identityHashCode(control)); //$NON-NLS-1$
+			logTrace("Attached dispose listener to control " + System.identityHashCode(control)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 		}
 		super.hookControl(control);
 	}
@@ -851,7 +851,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 	 * @param parent the parent control
 	 * @return the new control
 	 */
-	protected final Control buildControl(Composite parent) {
+	protected final Control buildControl(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fComposite= new Composite(parent, fStyles | SWT.LEFT_TO_RIGHT) { // We force a specific direction
 			@Override
 			public boolean setFocus() {
@@ -864,7 +864,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 
 		fComposite.setLayout(new ContentMergeViewerLayout());
 		if (Policy.debugContentMergeViewer) {
-			logTrace("Created composite " + System.identityHashCode(fComposite) + " with layout "  //$NON-NLS-1$//$NON-NLS-2$
+			logTrace("Created composite " + System.identityHashCode(fComposite) + " with layout "  //$NON-NLS-1$//$NON-NLS-2$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 					+ System.identityHashCode(fComposite.getLayout()));
 			logStackTrace();
 		}
@@ -917,7 +917,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 		return CompareViewerPane.getToolBarManager(parent);
 	}
 
-	private void initializeToolbars(Composite parent) {
+	private void initializeToolbars(Composite parent) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ToolBarManager tbm = (ToolBarManager) getToolBarManager(parent);
 		if (tbm != null) {
 			tbm.removeAll();
@@ -939,7 +939,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 			fHandlerService.registerAction(copyRightToLeftItem.getAction(), "org.eclipse.compare.copyAllRightToLeft"); //$NON-NLS-1$
 
 			fSwitchLeftAndRight = new Action() {
-				@Override
+				@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 				public void run() {
 					/*
 					 * Bug 552352: When comparing .txt files with corresponding .txt file editors
@@ -972,7 +972,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 			fAncestorItem= new ActionContributionItem(a);
 			fAncestorItem.setVisible(false);
 			tbm.appendToGroup("modes", fAncestorItem); //$NON-NLS-1$
-			tbm.getControl().addDisposeListener(a);
+			tbm.getControl().addDisposeListener(a); //FLLDCIM: MARK — T01 LIFECYCLE_RESIDENCY CALL
 
 			createToolItems(tbm);
 			updateToolItems();
@@ -1056,7 +1056,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 	 * Clients may extend if they have to do additional cleanup.
 	 * @see org.eclipse.jface.viewers.ContentViewer#handleDispose(org.eclipse.swt.events.DisposeEvent)
 	 */
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected void handleDispose(DisposeEvent event) {
 		if (fHandlerService != null) {
 			fHandlerService.dispose();
@@ -1087,7 +1087,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 		fAncestorLabel= null;
 		fLeftLabel= null;
 		if (Policy.debugContentMergeViewer) {
-			logTrace("handleDispose(...) - fLeftLabel = null. event.widget = " + System.identityHashCode(event.widget)); //$NON-NLS-1$
+			logTrace("handleDispose(...) - fLeftLabel = null. event.widget = " + System.identityHashCode(event.widget)); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			logStackTrace();
 		}
 		fDirectionLabel= null;
@@ -1117,7 +1117,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 	 * <p>
 	 * Subclasses may extend this method, although this is generally not required.
 	 */
-	protected void updateToolItems() {
+	protected void updateToolItems() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IMergeViewerContentProvider content= getMergeContentProvider();
 
 		Object input= getInput();
@@ -1148,7 +1148,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 	 * <p>
 	 * Subclasses may extend this method, although this is generally not required.
 	 */
-	protected void updateHeader() {
+	protected void updateHeader() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IMergeViewerContentProvider content= getMergeContentProvider();
 		Object input= getInput();
 
@@ -1387,7 +1387,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 	 * the viewer. Subclasses may override.
 	 * @since 3.3
 	 */
-	protected void handleCompareInputChange() {
+	protected void handleCompareInputChange() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		// Before setting the new input we have to save the old.
 		Object input = getInput();
 		if (!isSaving() && (isLeftDirty() || isRightDirty())) {
@@ -1435,7 +1435,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 	/**
 	 * @return true if any of the Saveables is being saved
 	 */
-	private boolean isSaving() {
+	private boolean isSaving() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ICompareContainer container = fCompareConfiguration.getContainer();
 		ISaveablesSource source = null;
 		if (container instanceof ISaveablesSource) {
@@ -1448,7 +1448,7 @@ public abstract class ContentMergeViewer extends ContentViewer
 		}
 		if (source != null) {
 			Saveable[] saveables = source.getSaveables();
-			for (Saveable s : saveables) {
+			for (Saveable s : saveables) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 				if (s instanceof ISavingSaveable saveable) {
 					if (saveable.isSaving()) {
 						return true;

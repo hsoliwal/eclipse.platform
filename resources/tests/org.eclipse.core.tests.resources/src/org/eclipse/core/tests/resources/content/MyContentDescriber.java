@@ -30,14 +30,14 @@ public class MyContentDescriber implements IContentDescriber {
 					"my_option_2"),
 			new QualifiedName(PI_RESOURCES_TESTS, "my_option_3") };
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public int describe(InputStream contents, IContentDescription description) throws IOException {
 		byte[] signature = SIGNATURE.getBytes("US-ASCII");
 		byte[] buffer = new byte[signature.length];
 		if (contents.read(buffer) != buffer.length) {
 			return INVALID;
 		}
-		for (int i = 0; i < signature.length; i++) {
+		for (int i = 0; i < signature.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (signature[i] != buffer[i]) {
 				return INVALID;
 			}
@@ -45,7 +45,7 @@ public class MyContentDescriber implements IContentDescriber {
 		if (description == null) {
 			return VALID;
 		}
-		for (int i = 0; i < MY_OPTIONS.length; i++) {
+		for (int i = 0; i < MY_OPTIONS.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			setIfRequested(description, i);
 		}
 		return VALID;

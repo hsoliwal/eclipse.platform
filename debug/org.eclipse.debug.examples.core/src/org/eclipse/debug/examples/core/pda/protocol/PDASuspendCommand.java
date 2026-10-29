@@ -34,7 +34,7 @@ package org.eclipse.debug.examples.core.pda.protocol;
 public class PDASuspendCommand extends PDACommand {
 
 	public PDASuspendCommand(int threadId) {
-		super("suspend " + threadId); //$NON-NLS-1$
+		super("suspend " + threadId); //$NON-NLS-1$ //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 

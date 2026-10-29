@@ -116,7 +116,7 @@ import org.osgi.framework.FrameworkUtil;
 /**
  * Implements a Synchronize View that contains multiple synchronize participants.
  */
-public class SynchronizeView extends PageBookView implements ISynchronizeView, ISynchronizeParticipantListener, IPropertyChangeListener, ISaveablesSource, ISaveablePart, IShowInTarget {
+public class SynchronizeView extends PageBookView implements ISynchronizeView, ISynchronizeParticipantListener, IPropertyChangeListener, ISaveablesSource, ISaveablePart, IShowInTarget { //FLLDCIM: MARK — T20  IMPLEMENTS
 
 	/**
 	 * Suggested maximum length of participant names when shown in certain menus and dialog.
@@ -184,7 +184,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 	private static final String KEY_SETTINGS_SECTION= "SynchronizeViewSettings"; //$NON-NLS-1$
 
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void propertyChange(PropertyChangeEvent event) {
 		Object source = event.getSource();
 		if (source instanceof ISynchronizeParticipant) {
@@ -193,7 +193,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 					updateTitle();
 				}
 			} else if (event.getProperty().equals(ModelSynchronizeParticipant.PROP_DIRTY)) {
-				Display.getDefault().asyncExec(() -> firePropertyChange(PROP_DIRTY));
+				Display.getDefault().asyncExec(() -> firePropertyChange(PROP_DIRTY)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 			} else if (event.getProperty().equals(ModelSynchronizeParticipant.PROP_ACTIVE_SAVEABLE)) {
 				Saveable oldSaveable = (Saveable)event.getOldValue();
 				Saveable newSaveable = (Saveable)event.getNewValue();
@@ -208,7 +208,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 			} else if (event.getProperty().equals(ISynchronizeParticipant.P_CONTENT)) {
 				final IWorkbenchSiteProgressService ps = getSite().getAdapter(IWorkbenchSiteProgressService.class);
 				if (ps != null) {
-					Display.getDefault().asyncExec(() -> ps.warnOfContentChange());
+					Display.getDefault().asyncExec(() -> ps.warnOfContentChange()); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 				}
 			}
 		}
@@ -291,10 +291,10 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 	protected PageRec doCreatePage(IWorkbenchPart dummyPart) {
 		SynchronizeViewWorkbenchPart part = (SynchronizeViewWorkbenchPart)dummyPart;
 		ISynchronizeParticipant participant = part.getParticipant();
-		participant.addPropertyChangeListener(this);
+		participant.addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		ISynchronizePageConfiguration configuration = participant.createPageConfiguration();
 		part.setConfiguration(configuration);
-		configuration.addPropertyChangeListener(this);
+		configuration.addPropertyChangeListener(this); //FLLDCIM: MARK — T06 PROPERTY_DELTA_SOURCE CALL
 		IPageBookViewPage page = participant.createPage(configuration);
 		if(page != null) {
 			initPage(page);
@@ -359,21 +359,21 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 
 	@Override
 	public void participantsAdded(final ISynchronizeParticipant[] participants) {
-		for (ISynchronizeParticipant participant : participants) {
+		for (ISynchronizeParticipant participant : participants) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (isAvailable() && select(TeamUI.getSynchronizeManager().get(participant.getId(), participant.getSecondaryId()))) {
 				SynchronizeViewWorkbenchPart part = new SynchronizeViewWorkbenchPart(participant, getSite());
 				fParticipantToPart.put(participant, part);
 				fPartToParticipant.put(part, participant);
 			}
 		}
-		Display.getDefault().asyncExec(() -> firePropertyChange(PROP_DIRTY));
+		Display.getDefault().asyncExec(() -> firePropertyChange(PROP_DIRTY)); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void participantsRemoved(final ISynchronizeParticipant[] participants) {
 		if (isAvailable()) {
 			Runnable r = () -> {
-				for (ISynchronizeParticipant participant : participants) {
+				for (ISynchronizeParticipant participant : participants) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 					if (isAvailable()) {
 						SynchronizeViewWorkbenchPart part = (SynchronizeViewWorkbenchPart)fParticipantToPart.get(participant);
 						if (part != null) {
@@ -413,8 +413,8 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 	 */
 	public SynchronizeView() {
 		super();
-		fParticipantToPart = new HashMap<>();
-		fPartToParticipant = new HashMap<>();
+		fParticipantToPart = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
+		fPartToParticipant = new HashMap<>(); //FLLDCIM: MARK — M01 M3_HASH_LANES NEW
 		updateTitle();
 	}
 
@@ -433,7 +433,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 		updateActionEnablements();
 	}
 
-	private void updateActionEnablements() {
+	private void updateActionEnablements() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fPinAction != null) {
 			fPinAction.setParticipant(activeParticipantRef);
 		}
@@ -484,7 +484,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 		}
 	}
 
-	private void createOpenAndLinkWithEditorHelper(StructuredViewer viewer) {
+	private void createOpenAndLinkWithEditorHelper(StructuredViewer viewer) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (fOpenAndLinkWithEditorHelper != null) {
 			fOpenAndLinkWithEditorHelper.dispose();
 		}
@@ -529,7 +529,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 	 */
 	public void asyncExec(Runnable runnable) {
 		if (isAvailable()) {
-			getPageBook().getDisplay().asyncExec(runnable);
+			getPageBook().getDisplay().asyncExec(runnable); //FLLDCIM: MARK — T08 UI_THREAD_SYNCHRONIZER CALL
 		}
 	}
 
@@ -570,11 +570,11 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 	/**
 	 * Initialize for existing participants
 	 */
-	private void updateForExistingParticipants() {
+	private void updateForExistingParticipants() { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		ISynchronizeManager manager = TeamUI.getSynchronizeManager();
 		List participants = Arrays.asList(getParticipants());
 		boolean errorOccurred = false;
-		for (Object participant : participants) {
+		for (Object participant : participants) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				ISynchronizeParticipantReference ref = (ISynchronizeParticipantReference)participant;
 				participantsAdded(new ISynchronizeParticipant[] {ref.getParticipant()});
@@ -613,9 +613,9 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 	private ISynchronizeParticipantReference[] getParticipants() {
 		ISynchronizeManager manager = TeamUI.getSynchronizeManager();
 		// create pages
-		List<ISynchronizeParticipantReference> participants = new ArrayList<>();
+		List<ISynchronizeParticipantReference> participants = new ArrayList<>(); //FLLDCIM: MARK — M02 M3_ARRAY_LANES NEW
 		ISynchronizeParticipantReference[] refs = manager.getSynchronizeParticipants();
-		for (ISynchronizeParticipantReference ref : refs) {
+		for (ISynchronizeParticipantReference ref : refs) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if(select(ref)) {
 				participants.add(ref);
 			}
@@ -663,7 +663,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 	private String getSettingsKey(ISynchronizeParticipant participant) {
 		String id = participant.getId();
 		String secondaryId = participant.getSecondaryId();
-		return secondaryId == null ? id : id + '.' + secondaryId;
+		return secondaryId == null ? id : id + '.' + secondaryId; //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 	}
 
 	private IDialogSettings getDialogSettings(ISynchronizeParticipant participant) {
@@ -688,8 +688,8 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 
 	@Override
 	public Saveable[] getSaveables() {
-		Set<Saveable> result = new HashSet<>();
-		for (IWorkbenchPart element : fPartToParticipant.keySet()) {
+		Set<Saveable> result = new HashSet<>(); //FLLDCIM: MARK — M03 M3_SET_LANES NEW
+		for (IWorkbenchPart element : fPartToParticipant.keySet()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			SynchronizeViewWorkbenchPart part = (SynchronizeViewWorkbenchPart) element;
 			Saveable saveable = getSaveable(part.getParticipant());
 			if (saveable != null) {
@@ -723,7 +723,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 			return;
 		}
 		monitor.beginTask(null, 100* saveables.length);
-		for (Saveable saveable : saveables) {
+		for (Saveable saveable : saveables) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			try {
 				saveable.doSave(Policy.subMonitorFor(monitor, 100));
 			} catch (CoreException e) {
@@ -743,7 +743,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 	@Override
 	public boolean isDirty() {
 		Saveable[] saveables = getSaveables();
-		for (Saveable saveable : saveables) {
+		for (Saveable saveable : saveables) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 			if (saveable.isDirty()) {
 				return true;
 			}
@@ -761,7 +761,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 		return true;
 	}
 
-	private void setStatusLineMessage(String description, int mode) {
+	private void setStatusLineMessage(String description, int mode) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		String syncMode = null;
 		ResourceBundle bundle = Policy.getActionBundle();
 		switch (mode) {
@@ -791,7 +791,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 
 	// copy-pasted from org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart and modified
 
-	private final IPartListener2 fLinkWithEditorListener= new IPartListener2() {
+	private final IPartListener2 fLinkWithEditorListener= new IPartListener2() { //FLLDCIM: MARK — T20  ANONYMOUS
 		@Override
 		public void partVisible(IWorkbenchPartReference partRef) {}
 		@Override
@@ -859,7 +859,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 		}
 	};
 
-	public void setLinkingEnabled(boolean enabled) {
+	public void setLinkingEnabled(boolean enabled) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		fLinkingEnabled= enabled;
 		IDialogSettings dialogSettings = getDialogSettings();
 		dialogSettings.put(KEY_LINK_WITH_EDITOR, fLinkingEnabled);
@@ -903,7 +903,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 	 * to be the editor's input, if linking is enabled.
 	 * @param editor the activated editor
 	 */
-	private void editorActivated(IEditorPart editor) {
+	private void editorActivated(IEditorPart editor) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		if (!isLinkingEnabled()) {
 			return;
 		}
@@ -923,7 +923,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 		}
 	}
 
-	boolean showInput(Object input) {
+	boolean showInput(Object input) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		Object element = input;
 		if (element != null) {
 			IElementComparer previousComparer = getViewer().getComparer();
@@ -935,7 +935,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 				} else {
 					getViewer().setSelection(newSelection, true);
 
-					while (element != null && getViewer().getSelection().isEmpty()) {
+					while (element != null && getViewer().getSelection().isEmpty()) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						// Try to select parent in case element is filtered
 						element = getParent(element);
 						if (element != null) {
@@ -1023,7 +1023,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 
 	// copy-pasted from org.eclipse.jdt.internal.ui.javaeditor.EditorUtility and modified
 
-	private static IEditorPart isOpenInEditor(Object inputElement) {
+	private static IEditorPart isOpenInEditor(Object inputElement) { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		IEditorInput input = getEditorInput(inputElement);
 		if (input != null) {
 			IWorkbenchPage p = TeamUIPlugin.getActivePage();
@@ -1031,7 +1031,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 				IEditorPart editor = p.findEditor(input);
 				if (editor == null) {
 					IEditorReference[] er = p.getEditorReferences();
-					for (IEditorReference e : er) {
+					for (IEditorReference e : er) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						if (e.getId().equals("org.eclipse.compare.CompareEditor") && matches(e, input)) { //$NON-NLS-1$
 							editor = e.getEditor(false);
 						}
@@ -1043,7 +1043,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 		return null;
 	}
 
-	private static boolean matches(IEditorReference editorRef,
+	private static boolean matches(IEditorReference editorRef, //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 			IEditorInput input) {
 		if (input instanceof FileEditorInput) {
 			IFile file = ((FileEditorInput) input).getFile();
@@ -1115,7 +1115,7 @@ public class SynchronizeView extends PageBookView implements ISynchronizeView, I
 		return selection.getFirstElement();
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public boolean show(ShowInContext context) {
 		Object selection = getSingleElement(context.getSelection());
 		if (selection != null) {

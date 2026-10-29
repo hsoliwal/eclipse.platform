@@ -46,7 +46,7 @@ public class BuilderPerformanceTest extends WorkspacePerformanceTest {
 	 */
 	void createAndPopulateProject(final IProject project, final IFolder folder, final int totalResources)
 			throws CoreException {
-		getWorkspace().run((IWorkspaceRunnable) unused -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> { //FLLDCIM: MARK — T09  LAMBDA
 			IProjectDescription desc = project.getWorkspace().newProjectDescription(project.getName());
 			desc.setBuildSpec(new ICommand[] { createCommand(desc, "Builder1"), createCommand(desc, "Builder2"),
 					createCommand(desc, "Builder3"), createCommand(desc, "Builder4"),
@@ -83,8 +83,8 @@ public class BuilderPerformanceTest extends WorkspacePerformanceTest {
 	public void setUp(TestInfo info) throws Exception {
 		super.setUp(info);
 		otherProjects = new IProject[PROJECT_COUNT];
-		for (int i = 0; i < otherProjects.length; i++) {
-			otherProjects[i] = getWorkspace().getRoot().getProject("Project " + i);
+		for (int i = 0; i < otherProjects.length; i++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+			otherProjects[i] = getWorkspace().getRoot().getProject("Project " + i); //FLLDCIM: MARK — M33 M3STRING_COMPOSITE CONCAT
 			IFolder folder = otherProjects[i].getFolder("Folder");
 			createAndPopulateProject(otherProjects[i], folder, 100);
 		}
@@ -94,7 +94,7 @@ public class BuilderPerformanceTest extends WorkspacePerformanceTest {
 	 * Tests performing manual project-level increment builds when autobuild is on.
 	 * See bug 261225 for details.
 	 */
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testManualBuildWithAutobuildOn() throws Exception {
 		PerformanceTestRunner runner = new PerformanceTestRunner() {
 			IProject[] projects;
@@ -111,8 +111,8 @@ public class BuilderPerformanceTest extends WorkspacePerformanceTest {
 
 			@Override
 			protected void test() throws CoreException {
-				for (int repeats = 0; repeats < REPEAT; repeats++) {
-					for (IProject project : projects) {
+				for (int repeats = 0; repeats < REPEAT; repeats++) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
+					for (IProject project : projects) { //FLLDCIM: MARK — M32 LOOP_TO_LANE LOOP
 						project.build(IncrementalProjectBuilder.INCREMENTAL_BUILD, createTestMonitor());
 					}
 				}

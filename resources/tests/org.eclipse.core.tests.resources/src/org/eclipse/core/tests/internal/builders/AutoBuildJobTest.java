@@ -116,7 +116,7 @@ public class AutoBuildJobTest {
 		triggerAutobuildAndCheckNoExtraBuild(true);
 	}
 
-	private void triggerAutobuildAndCheckNoExtraBuild(boolean cancel) throws Exception {
+	private void triggerAutobuildAndCheckNoExtraBuild(boolean cancel) throws Exception { //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 		AtomicBoolean cancelled = new AtomicBoolean();
 		EmptyDeltaBuilder.getInstance().setRuleCallback(new BuilderRuleCallback() {
 			@Override
@@ -141,14 +141,14 @@ public class AutoBuildJobTest {
 		}
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testExtraBuildIfBuildRequestedFromOtherThreadDuringRun() throws Exception {
 		EmptyDeltaBuilder.getInstance().setRuleCallback(new BuilderRuleCallback() {
 			@Override
 			public IProject[] build(int kind, Map<String, String> args, IProgressMonitor monitor) throws CoreException {
 				// Simulate someone requests autobuild in parallel to already running autobuild.
 				// That shouldn't be ignored, otherwise no build may happen
-				Job job = Job.createSystem("", (ICoreRunnable) unused -> requestAutoBuildJobExecution());
+				Job job = Job.createSystem("", (ICoreRunnable) unused -> requestAutoBuildJobExecution()); //FLLDCIM: MARK — T09 BACKGROUND_MODEL_THREAD CALL
 				job.schedule();
 				try {
 					job.join();
@@ -165,7 +165,7 @@ public class AutoBuildJobTest {
 		assertEquals(2, running.get(), "Should see two running() calls");
 	}
 
-	@Test
+	@Test //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	public void testWaitForAutoBuild_JobManagerIsSuspended_ExceptionIsThrown() throws Exception {
 		try {
 			Job.getJobManager().suspend();

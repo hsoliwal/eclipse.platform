@@ -51,7 +51,7 @@ public class FuzzFactorDialog extends Dialog {
 		return fuzzFactor;
 	}
 
-	@Override
+	@Override //FLLDCIM: MARK — ML METHOD_SPLIT METHOD
 	protected Control createDialogArea(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(2, false);
@@ -75,7 +75,7 @@ public class FuzzFactorDialog extends Dialog {
 				| GridData.HORIZONTAL_ALIGN_FILL);
 		data.widthHint = convertHorizontalDLUsToPixels(IDialogConstants.MINIMUM_MESSAGE_AREA_WIDTH);
 		valueText.setLayoutData(data);
-		valueText.addModifyListener(unused -> validateInput());
+		valueText.addModifyListener(unused -> validateInput()); //FLLDCIM: MARK — T02 TEXT_INPUT_DEBOUNCE CALL
 		fuzzFactor = patcher.getFuzz();
 		if (fuzzFactor >= 0) {
 			valueText.setText(Integer.toString(fuzzFactor));
@@ -88,7 +88,7 @@ public class FuzzFactorDialog extends Dialog {
 		Point minSize = guessButton.computeSize(SWT.DEFAULT, SWT.DEFAULT, true);
 		data.widthHint = Math.max(widthHint, minSize.x);
 		guessButton.setLayoutData(data);
-		guessButton.addSelectionListener(new SelectionAdapter() {
+		guessButton.addSelectionListener(new SelectionAdapter() { //FLLDCIM: MARK — T03 SELECTION_LANE CALL
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				patcher.setFuzz(-1);
@@ -153,7 +153,7 @@ public class FuzzFactorDialog extends Dialog {
 		final int[] result = new int[] { -1 };
 		try {
 			PlatformUI.getWorkbench().getProgressService().run(true, true,
-					monitor -> result[0] = patcher.guessFuzzFactor(monitor));
+					monitor -> result[0] = patcher.guessFuzzFactor(monitor)); //FLLDCIM: MARK — T09  LAMBDA
 		} catch (InvocationTargetException ex) {
 			// NeedWork
 		} catch (InterruptedException ex) {
