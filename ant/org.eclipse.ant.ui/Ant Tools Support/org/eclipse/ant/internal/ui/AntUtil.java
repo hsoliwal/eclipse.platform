@@ -738,15 +738,12 @@ public final class AntUtil {
 	 * @since 3.8
 	 */
 	public static boolean isKnownAntFileName(String name) {
-		StringBuilder buf = new StringBuilder(".*.("); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
-		buf.append(getKnownBuildFileExtensionsAsPattern()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		buf.append(")"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 		try {
-			Pattern p = Pattern.compile(buf.toString()); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
-			return p.matcher(name).matches(); //FLLDCIM: MARK — M12 REGEX_PRECOMPUTE CALL
+			Pattern p = Pattern.compile(".*.(" + getKnownBuildFileExtensionsAsPattern() + ")");
+			return p.matcher(name).matches();
 		}
 		catch (PatternSyntaxException pse) {
 			return false;
-		}
+		} //$NON-NLS-1$ //$NON-NLS-2$
 	}
 }

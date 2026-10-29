@@ -110,10 +110,7 @@ public abstract class BackgroundEventHandler {
 		}
 		@Override
 		public String toString() {
-			StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
-			buffer.append("Background Event: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-			buffer.append(getTypeString()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-			return buffer.toString();
+			return "Background Event: " + getTypeString(); //$NON-NLS-1$
 		}
 		public IResource getResource() {
 			return null;
@@ -143,14 +140,7 @@ public abstract class BackgroundEventHandler {
 		}
 		@Override
 		public String toString() {
-			StringBuilder buffer = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
-			buffer.append("resource: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-			buffer.append(resource.getFullPath()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-			buffer.append(" type: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-			buffer.append(getTypeString()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-			buffer.append(" depth: "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-			buffer.append(getDepthString()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-			return buffer.toString();
+			return "resource: " + resource.getFullPath() + " type: " + getTypeString() + " depth: " + getDepthString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		protected String getDepthString() {
 			switch (depth) {

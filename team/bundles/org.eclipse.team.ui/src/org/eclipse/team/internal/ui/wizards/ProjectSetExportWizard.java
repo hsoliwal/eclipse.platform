@@ -103,7 +103,7 @@ public class ProjectSetExportWizard extends Wizard implements IExportWizard {
 							return;
 						}
 					}
-					if (file.exists() && file.isFile()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+					if (file.isFile()) {
 						boolean r = MessageDialog.openQuestion(getShell(), TeamUIMessages.ProjectSetExportWizard_Question_8, TeamUIMessages.ProjectSetExportWizard_Target_already_exists__Would_you_like_to_overwrite_it__9); //
 						if (!r) {
 							result[0] = false;

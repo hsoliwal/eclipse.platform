@@ -107,10 +107,7 @@ public abstract class RegistryReader {
 	 */
 	protected void logError(IConfigurationElement element, String text) {
 		IExtension extension = element.getDeclaringExtension();
-		StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
-		buf.append("Plugin " + extension.getContributor().getName() + ", extension " + extension.getExtensionPointUniqueIdentifier()); //$NON-NLS-2$//$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		buf.append("\n" + text); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		TeamUIPlugin.log(IStatus.ERROR, buf.toString(), null);
+		TeamUIPlugin.log(IStatus.ERROR, ("Plugin " + extension.getContributor().getName() + ", extension " + extension.getExtensionPointUniqueIdentifier()) + ("\n" + text), null); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 	/**
 	 * Logs a very common registry error when a required attribute is missing.

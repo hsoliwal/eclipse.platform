@@ -121,7 +121,7 @@ public class AntHomeClasspathEntry extends AbstractRuntimeClasspathEntry {
 		if (parentDir == null || !parentDir.exists()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
 			abort(MessageFormat.format(AntLaunchConfigurationMessages.AntHomeClasspathEntry_10, antHomeLocation), null);
 		}
-		if (!lib.exists() || !lib.isDirectory()) { //FLLDCIM: MARK — M31 M3FILE_IO CALL
+		if (!lib.isDirectory()) {
 			abort(MessageFormat.format(AntLaunchConfigurationMessages.AntHomeClasspathEntry_11, antHomeLocation), null);
 		}
 		return lib;

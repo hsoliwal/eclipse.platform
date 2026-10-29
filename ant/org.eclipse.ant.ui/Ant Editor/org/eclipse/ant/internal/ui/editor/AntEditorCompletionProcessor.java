@@ -1189,13 +1189,10 @@ public class AntEditorCompletionProcessor extends TemplateCompletionProcessor im
 						replaceString.append('/'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
 					}
 				}
-				replaceString.append(openElementName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-				replaceString.append('>'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-				StringBuilder displayString = new StringBuilder("</"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
-				displayString.append(openElementName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-				displayString.append('>'); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
+				replaceString.append(openElementName);
+				replaceString.append('>');
 				proposal = new AntCompletionProposal(replaceString.toString(), cursorPosition
-						- prefix.length(), prefix.length(), replaceString.length(), null, displayString.toString(), AntEditorMessages.getString("AntEditorCompletionProcessor.39"), AntCompletionProposal.TAG_CLOSING_PROPOSAL); //$NON-NLS-1$
+						- prefix.length(), prefix.length(), replaceString.length(), null, "</" + openElementName + '>', AntEditorMessages.getString("AntEditorCompletionProcessor.39"), AntCompletionProposal.TAG_CLOSING_PROPOSAL); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 		}
 

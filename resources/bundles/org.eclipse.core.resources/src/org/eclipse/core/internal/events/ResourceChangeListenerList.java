@@ -44,13 +44,7 @@ public class ResourceChangeListenerList {
 
 		@Override
 		public String toString() {
-			StringBuilder sb = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
-			sb.append("Listener [eventMask="); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-			sb.append(eventMask); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-			sb.append(", "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-			sb.append(listener); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-			sb.append("]"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-			return sb.toString();
+			return "Listener [eventMask=" + eventMask + ", " + listener + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 

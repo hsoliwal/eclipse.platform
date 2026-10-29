@@ -79,10 +79,7 @@ public class AntTabGroup extends AbstractLaunchConfigurationTabGroup {
 		if (resource != null && resource instanceof IFile file) {
 			if (AntUtil.isKnownAntFile(file)) {
 				String projectName = file.getProject().getName();
-				StringBuilder buffer = new StringBuilder(projectName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
-				buffer.append(' '); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-				buffer.append(file.getName()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-				String name = buffer.toString().trim();
+				String name = (projectName + ' ' + file.getName()).trim();
 				name = DebugPlugin.getDefault().getLaunchManager().generateLaunchConfigurationName(name);
 				configuration.rename(name);
 				// set the project name so that the correct default VM install can be determined

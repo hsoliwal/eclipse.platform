@@ -237,10 +237,7 @@ public class XmlFormatter {
 			return IAntCoreConstants.EMPTY_STRING;
 		}
 
-		StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
-		buf.append(XmlDocumentFormatter.getLeadingWhitespace(node.getOffset(), document)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		buf.append(XmlDocumentFormatter.createIndent()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		return buf.toString();
+		return "" + XmlDocumentFormatter.getLeadingWhitespace(node.getOffset(), document) + XmlDocumentFormatter.createIndent();
 	}
 
 	private static Position[] createPositions(int[] positions) {

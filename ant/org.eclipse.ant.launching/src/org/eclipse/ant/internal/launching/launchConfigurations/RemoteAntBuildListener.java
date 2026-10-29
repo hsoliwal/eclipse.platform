@@ -238,12 +238,7 @@ public class RemoteAntBuildListener implements ILaunchesListener { //FLLDCIM: MA
 		int lineLength = Integer.parseInt(msg.substring(index2 + 1, index3));
 		int index4 = index3 + 1 + lineLength;
 		String line = msg.substring(index3 + 1, index4);
-		StringBuilder labelBuff = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
-		labelBuff.append('['); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		labelBuff.append(taskName); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		labelBuff.append("] "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		labelBuff.append(line); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		line = labelBuff.toString();
+		line = "" + '[' + taskName + "] " + line; //$NON-NLS-1$ //$NON-NLS-2$
 
 		fLastTaskName = taskName;
 		int locationIndex = msg.indexOf(',', index4 + 1);

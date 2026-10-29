@@ -827,11 +827,7 @@ public class Utils {
 		int subStrLen = (maxWidth - ellipsis.length()) / 2;
 		int addtl = (maxWidth - ellipsis.length()) % 2;
 
-		StringBuilder sb = new StringBuilder(maxWidth); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
-		sb.append(textValue.substring(0, subStrLen)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		sb.append(ellipsis); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		sb.append(textValue.substring(length - subStrLen - addtl)); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		return sb.toString();
+		return textValue.substring(0, subStrLen) + ellipsis + textValue.substring(length - subStrLen - addtl);
 	}
 
 	public static String getTypeName(ISynchronizeParticipant participant) {

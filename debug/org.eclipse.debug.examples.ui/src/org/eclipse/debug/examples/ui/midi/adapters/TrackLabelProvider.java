@@ -39,13 +39,7 @@ public class TrackLabelProvider extends ElementLabelProvider {
 				break;
 			}
 		}
-		StringBuilder buf = new StringBuilder(); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE NEW
-		buf.append("Track "); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		buf.append(i); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		buf.append(" ["); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		buf.append(track.size()); //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		buf.append(" events]"); //$NON-NLS-1$ //FLLDCIM: MARK — M14 M3STRING_COMPOSITE CALL
-		return buf.toString();
+		return "Track " + i + " [" + track.size() + " events]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 	}
 
 }
