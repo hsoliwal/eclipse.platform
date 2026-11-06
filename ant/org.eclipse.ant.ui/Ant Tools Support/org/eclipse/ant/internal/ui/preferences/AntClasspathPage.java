@@ -158,7 +158,7 @@ public class AntClasspathPage implements IAntBlockContainer {
 			return urls;
 		}
 
-		File[] matches = location.listFiles((FilenameFilter) (_, name) -> name.toLowerCase().endsWith(extension));
+		File[] matches = location.listFiles((FilenameFilter) (unused, name) -> name.toLowerCase().endsWith(extension));
 
 		urls = new URL[matches.length];
 		for (int i = 0; i < matches.length; ++i) {

@@ -237,10 +237,7 @@ public class XmlFormatter {
 			return IAntCoreConstants.EMPTY_STRING;
 		}
 
-		StringBuilder buf = new StringBuilder();
-		buf.append(XmlDocumentFormatter.getLeadingWhitespace(node.getOffset(), document));
-		buf.append(XmlDocumentFormatter.createIndent());
-		return buf.toString();
+		return "" + XmlDocumentFormatter.getLeadingWhitespace(node.getOffset(), document) + XmlDocumentFormatter.createIndent();
 	}
 
 	private static Position[] createPositions(int[] positions) {

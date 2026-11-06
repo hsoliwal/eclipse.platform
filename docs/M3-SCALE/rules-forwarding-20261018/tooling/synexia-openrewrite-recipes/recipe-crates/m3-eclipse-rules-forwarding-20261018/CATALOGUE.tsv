@@ -1,0 +1,10 @@
+category	eclipse_operation	m3_operation	complexity	locked_contract	selection
+ordered reduction	MultiRule.combine(ISchedulingRule[])	M3Rules.combine(array)	O(n) calls plus predicate costs	left-to-right reduction and exact returned identities	SELECTED; live caller predicates retained
+binary reduction	MultiRule.combine(rule1,rule2)	M3Rules.combine(pair)	up to two predicate calls	identity/null shortcuts and callback direction	SELECTED; exact Eclipse donor
+one-level flattening	MultiRule constructor	M3Rules.flatten	O(n+m) amortized; m emitted children	one getChildren call per nested projection in input order	SELECTED; direct arrays; no retained node per rule
+defensive projection	MultiRule.getChildren	M3Rules.children	O(m)	detached child array and identical child references	SELECTED
+effectful all-any reduction	MultiRule.contains	M3Rules.contains	O(m*k) worst case plus predicate costs	other-major order and self/empty/null short circuit	SELECTED; no predicate cache
+effectful any-any reduction	MultiRule.isConflicting	M3Rules.isConflicting	O(m*k) worst case plus predicate costs	other-major order and live callback failures	SELECTED
+debug representation	MultiRule.toString	M3Rules.describe	O(m) plus child text costs	ordered MultiRule comma format; caller toString behavior	SELECTED
+conflict-sensitive job queue	JobQueue	unchanged	current contract retained	intrusive links; wait stamps; conflict-sensitive overtaking	REFUSED generic heap substitution; requires a separate owner contract
+rule equality normalization	compound rules	unchanged	no additional equality/hash calls	identity and duplicates remain observable	REFUSED deduplication or caching

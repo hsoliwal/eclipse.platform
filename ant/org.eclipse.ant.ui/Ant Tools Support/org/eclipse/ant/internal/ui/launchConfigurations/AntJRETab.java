@@ -110,6 +110,8 @@ public class AntJRETab extends JavaJRETab {
 		setLaunchConfigurationWorkingCopy(configuration);
 	}
 
+	private static final Pattern APPLY_SEPARATE_VMATTRIBUTES_PATTERN = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$
+
 	private void applySeparateVMAttributes(ILaunchConfigurationWorkingCopy configuration) {
 		configuration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, MAIN_TYPE_NAME);
 		// only set to use the remote ant process factory if the user
@@ -118,7 +120,7 @@ public class AntJRETab extends JavaJRETab {
 		try {
 			String args = configuration.getAttribute(IExternalToolConstants.ATTR_TOOL_ARGUMENTS, (String) null);
 			if (args != null) {
-				Pattern pattern = Pattern.compile("\\$\\{.*_prompt.*\\}"); //$NON-NLS-1$
+				Pattern pattern = APPLY_SEPARATE_VMATTRIBUTES_PATTERN;
 				IStringVariableManager manager = VariablesPlugin.getDefault().getStringVariableManager();
 				String[] arguments = ExternalToolsUtil.parseStringIntoList(args);
 				if (arguments != null) {

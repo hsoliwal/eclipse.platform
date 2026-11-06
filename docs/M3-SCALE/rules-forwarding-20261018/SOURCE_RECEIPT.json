@@ -1,0 +1,1437 @@
+{
+  "schema_version": 1,
+  "scope": "Public source-first Rules receiver handoff",
+  "target_repository": "hsoliwal/eclipse.platform",
+  "target_base_revision": "69291c18babd233a94b742798b3d1078979bf78c",
+  "canonical_repository": "hsoliwal/com.synexia",
+  "canonical_rules_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+  "canonical_source_binding_complete": true,
+  "mirror_source_count": 71,
+  "mirrored_source_files": [
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/CATALOGUE.tsv",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/CATALOGUE.tsv",
+      "source_git_blob": "e8dbad89a66a1ef845d7b16d5294ac3c9f4288e9",
+      "git_blob": "e8dbad89a66a1ef845d7b16d5294ac3c9f4288e9",
+      "sha256": "e74d55cc540d55ecafd9975f94089dff3949d89047197046b627cbb3f2797748",
+      "bytes": 1654,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/CONTRACT.md",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/CONTRACT.md",
+      "source_git_blob": "e560e04c834bf4306375858bd9b9d79d43a97d4e",
+      "git_blob": "e560e04c834bf4306375858bd9b9d79d43a97d4e",
+      "sha256": "c8aa681c14d9268f31be584e331c3e6d68920e4ddec469f44a77a7cb189789c7",
+      "bytes": 3878,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/COVERAGE.tsv",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/COVERAGE.tsv",
+      "source_git_blob": "d9b219d19f9b441d7d557dd039b0cdb8512255f2",
+      "git_blob": "d9b219d19f9b441d7d557dd039b0cdb8512255f2",
+      "sha256": "e1841d0a4f99ffe03224f69bc5539beed85ca3fed99523d68c56f62af3f6730f",
+      "bytes": 712,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/LICENSE-APACHE-2.0",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/LICENSE-APACHE-2.0",
+      "source_git_blob": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+      "git_blob": "d645695673349e3947e8e5ae42332d0ac3164cd7",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/LICENSE-EPL-2.0",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/LICENSE-EPL-2.0",
+      "source_git_blob": "d3087e4c54047062ddcc0b6ecd606711bb246ab8",
+      "git_blob": "d3087e4c54047062ddcc0b6ecd606711bb246ab8",
+      "sha256": "721c2da257578bace3332b14d8ea06643d7d26753e7ef25a837b4e904edc0bf5",
+      "bytes": 14199,
+      "license": "EPL-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/NOTICE",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/NOTICE",
+      "source_git_blob": "749e8c2321b8e3b30c56cd2e275b1d409433b73d",
+      "git_blob": "749e8c2321b8e3b30c56cd2e275b1d409433b73d",
+      "sha256": "7bcecd805de993b40443c16e1bcdebbfb73e3fa2f4c1414f1a7a7db6d4d33d13",
+      "bytes": 1183,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/README.md",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/README.md",
+      "source_git_blob": "0c1eafe8a6ace2926098fd515399033c73cc58f5",
+      "git_blob": "0c1eafe8a6ace2926098fd515399033c73cc58f5",
+      "sha256": "016ea04242ba6a8b8add8594bebf905ac6777512f0416b8f8adec8afc2b3394d",
+      "bytes": 4900,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/SOURCE_PINS.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/SOURCE_PINS.json",
+      "source_git_blob": "e3fd48dc7be4594cdca76257d166beb39f4f19d7",
+      "git_blob": "e3fd48dc7be4594cdca76257d166beb39f4f19d7",
+      "sha256": "e1070e068f92a5cc6ec02600e0cebd0aad4e537d8fa1299e55a643a1ba9a2f5a",
+      "bytes": 3370,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-bundle-compile.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-bundle-compile.json",
+      "source_git_blob": "a63ec37e778fd3a0820fd2fb4699ccfc8efad13e",
+      "git_blob": "a63ec37e778fd3a0820fd2fb4699ccfc8efad13e",
+      "sha256": "376f75a73b68a1f28c445aec197f3bb9fb445a88bac4086f5b10500ffd726049",
+      "bytes": 5777,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-bundle-compile.log",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-bundle-compile.log",
+      "source_git_blob": "375889779894044ec5dc87531e7cd767c0fb100b",
+      "git_blob": "375889779894044ec5dc87531e7cd767c0fb100b",
+      "sha256": "79c017e61c1f6e2390d1b31ec675e835498c14fbf3c71544e97ecdd57370035f",
+      "bytes": 2449,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-bytecode.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-bytecode.json",
+      "source_git_blob": "4266f866f5c27eb87b8e24323840930e80ed7268",
+      "git_blob": "4266f866f5c27eb87b8e24323840930e80ed7268",
+      "sha256": "31cd43f891aa641f3deae33ab3938e172e4963e9159bc791de9911e697cd1d5a",
+      "bytes": 373,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-bytecode.log",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-bytecode.log",
+      "source_git_blob": "53bc5dbd048b2d42858a98d56007429316cba6f5",
+      "git_blob": "53bc5dbd048b2d42858a98d56007429316cba6f5",
+      "sha256": "884d322e535de3a2cf33527c3d58d11d6f3c24f17ca4a5ca0bcf8f52c8ef3a97",
+      "bytes": 12803,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.json",
+      "source_git_blob": "4560c92cb4d3beb9f65ef889d659066cfe119d35",
+      "git_blob": "4560c92cb4d3beb9f65ef889d659066cfe119d35",
+      "sha256": "f9a2fc9b5187b0c22d45acc7cef9cc0318756dae0eebcce8724c41d84eacd93f",
+      "bytes": 618,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.log",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.log",
+      "source_git_blob": "98af4818b188599513c3917f902701a203d70f51",
+      "git_blob": "98af4818b188599513c3917f902701a203d70f51",
+      "sha256": "ba5993f50ea84ba283388f5f2ec9124839af0be358bf264a6474f5c9173d6d1c",
+      "bytes": 2401,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-equinox.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-equinox.json",
+      "source_git_blob": "80b7215e3f0d3a179df7e1f8ec19223ec7703508",
+      "git_blob": "80b7215e3f0d3a179df7e1f8ec19223ec7703508",
+      "sha256": "2fe5b8d1c54c4d44afcf085be031e92a8ce874d7f53c0a5bf38130b153c3b4ed",
+      "bytes": 671,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-equinox.log",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-equinox.log",
+      "source_git_blob": "2f1ff90fa3090c5878d3be51cc3d372c23ddec24",
+      "git_blob": "2f1ff90fa3090c5878d3be51cc3d372c23ddec24",
+      "sha256": "41aaeec5d3ec0bc8f15aa371d3e157df3a757b789d6088c6a5d4a51c48acd9ae",
+      "bytes": 179,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-full-bundle-tests.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-full-bundle-tests.json",
+      "source_git_blob": "06bd5e375a594c9da8a4bb07f3262a693c3fe57f",
+      "git_blob": "06bd5e375a594c9da8a4bb07f3262a693c3fe57f",
+      "sha256": "676d049e3b2620322eaf20249e7480084b6f8b2bd88354e37ca3ed216267f01a",
+      "bytes": 1245,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-full-bundle-tests.log",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-full-bundle-tests.log",
+      "source_git_blob": "32487210ce8fbc7ef9fd00535053a29fc6eb5038",
+      "git_blob": "32487210ce8fbc7ef9fd00535053a29fc6eb5038",
+      "sha256": "80c3da2d0b999b27c9834d363c6fadeb59079ae4e6c7542fbe096a19d47a79e2",
+      "bytes": 547,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-junit/TEST-junit-jupiter.xml",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-junit/TEST-junit-jupiter.xml",
+      "source_git_blob": "2155798879049cfcb489737c1330ecb74009c2ed",
+      "git_blob": "2155798879049cfcb489737c1330ecb74009c2ed",
+      "sha256": "9a6f1856cc5a48984a915f4e609169428b4376513ddb96572c773e8344ea078c",
+      "bytes": 10859,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-junit/TEST-junit-platform-suite.xml",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-junit/TEST-junit-platform-suite.xml",
+      "source_git_blob": "48d2305b1210458b24ed98127b61e0782e40b608",
+      "git_blob": "48d2305b1210458b24ed98127b61e0782e40b608",
+      "sha256": "696bee51f1231bd44029f79bc346b14fefb5840575271210ae55fbd22bddf00e",
+      "bytes": 4188,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-junit/TEST-junit-vintage.xml",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-junit/TEST-junit-vintage.xml",
+      "source_git_blob": "0d7a8cefacb19e5c253ad12eab40a39c73007ca7",
+      "git_blob": "0d7a8cefacb19e5c253ad12eab40a39c73007ca7",
+      "sha256": "048cbfc1a0f190c6237929a51d396d7fc4a3dd037d304590fc1fda4d02b499a0",
+      "bytes": 4171,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-public-api.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-public-api.json",
+      "source_git_blob": "350faf01b647020f67c77377fd1582f16369b7c6",
+      "git_blob": "350faf01b647020f67c77377fd1582f16369b7c6",
+      "sha256": "b5214b422ba24ee8dc2e2f3c061a2394e494ce61578ec0b16afb7d73fcf4ec40",
+      "bytes": 374,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-public-api.log",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-public-api.log",
+      "source_git_blob": "ad9dcd613485e78d0654f3bf9295befd2e412a40",
+      "git_blob": "ad9dcd613485e78d0654f3bf9295befd2e412a40",
+      "sha256": "c95d34ee88fc7917162c7cb31db9a43fe28ef90aafcd7c44b30f17a1e0ead3f2",
+      "bytes": 1379,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-upstream-test-compile.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-upstream-test-compile.json",
+      "source_git_blob": "7ea1290712637364cb5a4b4800c1826627341367",
+      "git_blob": "7ea1290712637364cb5a4b4800c1826627341367",
+      "sha256": "b87abd6387a0e89a8b62e1ec5bd13fb0445cc67c61f8b49bf7d3369aaddf2354",
+      "bytes": 1727,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-upstream-test-compile.log",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-upstream-test-compile.log",
+      "source_git_blob": "a3cd874098358cd53eac70afd918a2d567daa7a8",
+      "git_blob": "a3cd874098358cd53eac70afd918a2d567daa7a8",
+      "sha256": "ade6d17c7dbbc44b60baea2e445f52480eac8cc4cd7d239f17c461183e56d705",
+      "bytes": 275,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline/TEST-com.synexia.eclipse.contract.MultiRuleContractTest.xml",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline/TEST-com.synexia.eclipse.contract.MultiRuleContractTest.xml",
+      "source_git_blob": "a01e2a1af851f89a094699ffacd980b2788b4507",
+      "git_blob": "a01e2a1af851f89a094699ffacd980b2788b4507",
+      "sha256": "da682fe8002b453382b6d133231af4125651a98b54769f19db1105aacd9b3bb7",
+      "bytes": 7898,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-bundle-compile.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-bundle-compile.json",
+      "source_git_blob": "ca838157a79449a1badaea83d4096874bec95d02",
+      "git_blob": "ca838157a79449a1badaea83d4096874bec95d02",
+      "sha256": "08eb53000f569d551f8b2a4c0e024aa981694f87f0fa8ef8b55631f8d6dcde51",
+      "bytes": 5964,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-bundle-compile.log",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-bundle-compile.log",
+      "source_git_blob": "68db801298fb8f794e7613fd9df85e84bf710b76",
+      "git_blob": "68db801298fb8f794e7613fd9df85e84bf710b76",
+      "sha256": "d47c43f713c20e0ae371a48f12b215f6887e192f4c6ba1f60a1acca35dddd455",
+      "bytes": 2457,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-bytecode.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-bytecode.json",
+      "source_git_blob": "5440332503558dd4b68aa53fd047a8c5b3d09a43",
+      "git_blob": "5440332503558dd4b68aa53fd047a8c5b3d09a43",
+      "sha256": "6c95171849e3ce3532d8e7c18e85dff24914cf3802bb0c1d8d7fe8ede2d22990",
+      "bytes": 375,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-bytecode.log",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-bytecode.log",
+      "source_git_blob": "e57707491573487a769ad6e20f48c535fbfaa1a2",
+      "git_blob": "e57707491573487a769ad6e20f48c535fbfaa1a2",
+      "sha256": "95576ab0b266d1abfc9fa879e94228415d8fcc018d983831e056521056822856",
+      "bytes": 3468,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.json",
+      "source_git_blob": "49578ac83f3fb536e1be0f0d3f24d5a6975e2959",
+      "git_blob": "49578ac83f3fb536e1be0f0d3f24d5a6975e2959",
+      "sha256": "2e179d122eb9967ea3b19e5fbbb585e80ee7c9de14c5363f4f782b36bb1673dd",
+      "bytes": 621,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.log",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.log",
+      "source_git_blob": "fa3c260d0b4bc68c77ebf40da8b1aca89cfe0ec1",
+      "git_blob": "fa3c260d0b4bc68c77ebf40da8b1aca89cfe0ec1",
+      "sha256": "6c480fa9cf7424ee7fe26ebc48732772adaef893ed83fc41f9d7068751dff110",
+      "bytes": 2403,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-equinox.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-equinox.json",
+      "source_git_blob": "e23d4ef50ab9ed4dda3ea0760f8ece7386fce853",
+      "git_blob": "e23d4ef50ab9ed4dda3ea0760f8ece7386fce853",
+      "sha256": "617a9f4d179bcf94c2492d05992baa4ac72000afc16e2b1c3e2a074f3ed91ecf",
+      "bytes": 673,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-equinox.log",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-equinox.log",
+      "source_git_blob": "c95bd4e9f438512c4fd828aaa219a7ba87879295",
+      "git_blob": "c95bd4e9f438512c4fd828aaa219a7ba87879295",
+      "sha256": "290126479b6977f33dbdc7434428b1a8ccca28fd0f97d73b2df9420f7bcf051e",
+      "bytes": 178,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-full-bundle-tests.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-full-bundle-tests.json",
+      "source_git_blob": "58b895507882cbd2a6869995b9a92d136cb100a2",
+      "git_blob": "58b895507882cbd2a6869995b9a92d136cb100a2",
+      "sha256": "88553dcf23a1e481cd225427c94662fd714dde50c3faf5766e37efa0eef211f8",
+      "bytes": 1250,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-full-bundle-tests.log",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-full-bundle-tests.log",
+      "source_git_blob": "d83a2701180468ee85968401c46366cef21de2f3",
+      "git_blob": "d83a2701180468ee85968401c46366cef21de2f3",
+      "sha256": "6f0da6336228dea4b7729e6ee8f0bb4fe2288530bd664dcdb68e4bbd10eaf328",
+      "bytes": 547,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-junit/TEST-junit-jupiter.xml",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-junit/TEST-junit-jupiter.xml",
+      "source_git_blob": "7093f90012de7f0625d1d66a120cebb7e8780424",
+      "git_blob": "7093f90012de7f0625d1d66a120cebb7e8780424",
+      "sha256": "2e9303543841fa1104eefbbe3e9355dcb3bd248635dac71de4c2d9696054cf10",
+      "bytes": 10863,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-junit/TEST-junit-platform-suite.xml",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-junit/TEST-junit-platform-suite.xml",
+      "source_git_blob": "2e4eb302da455f9fa83e03a64580570012923b12",
+      "git_blob": "2e4eb302da455f9fa83e03a64580570012923b12",
+      "sha256": "d64c5b8adf7d6f16a9e109402ec7c499ffec0c7d498cb8e6c75ce9136b015cd6",
+      "bytes": 4196,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-junit/TEST-junit-vintage.xml",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-junit/TEST-junit-vintage.xml",
+      "source_git_blob": "dc34108e293e142f55a956cd2e0ccbbb06cd0900",
+      "git_blob": "dc34108e293e142f55a956cd2e0ccbbb06cd0900",
+      "sha256": "3a60684a02c29abf9b407d2ea6b49e9d95008eb1df1f2288cbca1503246ed9c0",
+      "bytes": 4175,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-public-api.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-public-api.json",
+      "source_git_blob": "52d149fec0598e66cd1283da0f1067cbbc0e7748",
+      "git_blob": "52d149fec0598e66cd1283da0f1067cbbc0e7748",
+      "sha256": "b344899f96bc578226a949f11d76b1ef12632c7b827b83488cb07c57026d58e3",
+      "bytes": 376,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-public-api.log",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-public-api.log",
+      "source_git_blob": "ad9dcd613485e78d0654f3bf9295befd2e412a40",
+      "git_blob": "ad9dcd613485e78d0654f3bf9295befd2e412a40",
+      "sha256": "c95d34ee88fc7917162c7cb31db9a43fe28ef90aafcd7c44b30f17a1e0ead3f2",
+      "bytes": 1379,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-upstream-test-compile.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-upstream-test-compile.json",
+      "source_git_blob": "cdb7cf51a5a7b4211325e1eab174009c4bb914a3",
+      "git_blob": "cdb7cf51a5a7b4211325e1eab174009c4bb914a3",
+      "sha256": "4b894abcc5c3af7c3704a6d38eab449103c607e93026a1e86278b0a273c60cef",
+      "bytes": 1730,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-upstream-test-compile.log",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-upstream-test-compile.log",
+      "source_git_blob": "a3cd874098358cd53eac70afd918a2d567daa7a8",
+      "git_blob": "a3cd874098358cd53eac70afd918a2d567daa7a8",
+      "sha256": "ade6d17c7dbbc44b60baea2e445f52480eac8cc4cd7d239f17c461183e56d705",
+      "bytes": 275,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate/TEST-com.synexia.eclipse.contract.MultiRuleContractTest.xml",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate/TEST-com.synexia.eclipse.contract.MultiRuleContractTest.xml",
+      "source_git_blob": "19f33ae69bbcaa0273f5439bdda11584eba215cb",
+      "git_blob": "19f33ae69bbcaa0273f5439bdda11584eba215cb",
+      "sha256": "9590df8adc39e0651b45f20ef779b94f4d692d8a954e7088cb4721f7786b7aae",
+      "bytes": 7907,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/osgi-client-compile.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/osgi-client-compile.json",
+      "source_git_blob": "e3374ece919a192c8bf53d47dd1e8fab13909cd5",
+      "git_blob": "e3374ece919a192c8bf53d47dd1e8fab13909cd5",
+      "sha256": "bbd9d8eeef358a3b9f79acc074142ad0b49f42217a9fce381984b9285dfe2c55",
+      "bytes": 664,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/osgi-client-compile.log",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/osgi-client-compile.log",
+      "source_git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/osgi-launcher-compile.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/osgi-launcher-compile.json",
+      "source_git_blob": "3568a65c666c66149b8d636f5b3498ed77fbc415",
+      "git_blob": "3568a65c666c66149b8d636f5b3498ed77fbc415",
+      "sha256": "4cb0c4f072a2b1910dd1d91ae06ac8601db3c7296a7d31a2c7fb0e0d5e4d861d",
+      "bytes": 589,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/osgi-launcher-compile.log",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/osgi-launcher-compile.log",
+      "source_git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/qualification.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/qualification.json",
+      "source_git_blob": "2bfb7ff567db438fdd860bf22ef76decb37cffab",
+      "git_blob": "2bfb7ff567db438fdd860bf22ef76decb37cffab",
+      "sha256": "4a6e164e27b5ba395e5fef1e2e2cbd853dc50d9627a13ff9f4f8cdd7030a58b6",
+      "bytes": 889,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.json",
+      "source_git_blob": "3f4f0fa5a008bec7202db34968814d0a722bf2d7",
+      "git_blob": "3f4f0fa5a008bec7202db34968814d0a722bf2d7",
+      "sha256": "b37130a9dba74b875b238cdc5b7e89180c5455bf39c8911a1aee5d0064d9202a",
+      "bytes": 617,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.log",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.log",
+      "source_git_blob": "4a0726227777573739bae572483dfb6d81529e9d",
+      "git_blob": "4a0726227777573739bae572483dfb6d81529e9d",
+      "sha256": "e30bbaa0391b77c902b00bd6e85412a60430f53203b5e20c94607e7c904acaaa",
+      "bytes": 2430,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe/TEST-com.synexia.rewrite.M3EclipseRulesForwardingRecipeTest.xml",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe/TEST-com.synexia.rewrite.M3EclipseRulesForwardingRecipeTest.xml",
+      "source_git_blob": "64f2bff68061ba490083a6e8c42b9d5eba0eda5a",
+      "git_blob": "64f2bff68061ba490083a6e8c42b9d5eba0eda5a",
+      "sha256": "bac1c8295add886361141aaeba73fd1678f7b67a16556565a06e3fd98ef3a27d",
+      "bytes": 12915,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/pom.xml",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/pom.xml",
+      "source_git_blob": "5de0088589aa48734adba0a9039221108071dd98",
+      "git_blob": "5de0088589aa48734adba0a9039221108071dd98",
+      "sha256": "b166dc2fa4cd0434b62d808ffb344a3760f71dbe9b3cc712e63aeb9ec12f2087",
+      "bytes": 3392,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/JobsEquinoxProof.java",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/JobsEquinoxProof.java",
+      "source_git_blob": "9c1a5c4d5f07dccc64dba35c3dabdf8d4451cc0b",
+      "git_blob": "9c1a5c4d5f07dccc64dba35c3dabdf8d4451cc0b",
+      "sha256": "cc2ac150e7ad4ef93c8c52c665ff3fe991ce77807471ebfe11b5f365967c978d",
+      "bytes": 3653,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/MultiRuleOsgiClient.java",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/MultiRuleOsgiClient.java",
+      "source_git_blob": "f525c2723b810e9d7ff88154aed8cea714d032cd",
+      "git_blob": "f525c2723b810e9d7ff88154aed8cea714d032cd",
+      "sha256": "67f812c57ef6d9179d496ac56ca85836c26bbfc9d4fc6d45f15aa52c29db9b72",
+      "bytes": 2229,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/materialization.json",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/materialization.json",
+      "source_git_blob": "46421044b63bdf7d6e583f7b4bc134dfaa2aecbc",
+      "git_blob": "46421044b63bdf7d6e583f7b4bc134dfaa2aecbc",
+      "sha256": "b4e53ce22778b1457d4570166459349cd0a7c8b9835481462849d9878a1c900a",
+      "bytes": 810,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/pom.xml",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/pom.xml",
+      "source_git_blob": "491cb6a8be50cd26161654012f495360d6c98414",
+      "git_blob": "491cb6a8be50cd26161654012f495360d6c98414",
+      "sha256": "6ab63f489f8dedaa7afa801efff8a61e6e5c61ed5c5804b8ebb927889ebac4dd",
+      "bytes": 2261,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/reproduce.py",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/reproduce.py",
+      "source_git_blob": "414aba67943916d75d71748797f1246b096a08c7",
+      "git_blob": "414aba67943916d75d71748797f1246b096a08c7",
+      "sha256": "e89d573fff3ca48d84e1bb50b4bdddb39988d31f5f1c745dfead0aea556d373b",
+      "bytes": 10427,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/src/test/java/com/synexia/eclipse/contract/MultiRuleContractTest.java",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/src/test/java/com/synexia/eclipse/contract/MultiRuleContractTest.java",
+      "source_git_blob": "ee6035d574cd339d992fc09a0693d4d2c2334221",
+      "git_blob": "ee6035d574cd339d992fc09a0693d4d2c2334221",
+      "sha256": "2d2f2de668372c068c590cf38d3bccc3ec7c44047461cdd6e98ef0e25a2dc95b",
+      "bytes": 13170,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/META-INF/rewrite/m3-eclipse-rules-forwarding-20261018.yml",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/META-INF/rewrite/m3-eclipse-rules-forwarding-20261018.yml",
+      "source_git_blob": "a3758dd48ae663aa51ac630732260368a363dbf8",
+      "git_blob": "a3758dd48ae663aa51ac630732260368a363dbf8",
+      "sha256": "5215b2b17233fa09be29fcaad3435d703f12c6742c4af8ebc8b1b4ce412d6c0e",
+      "bytes": 508,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/ISchedulingRule.java.txt",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/ISchedulingRule.java.txt",
+      "source_git_blob": "671abb111807b78377eeb5a6e48695854eaedcc9",
+      "git_blob": "671abb111807b78377eeb5a6e48695854eaedcc9",
+      "sha256": "4eca892b5be91919352d890bdd452e9601dba23d00c7ccb69043054c0fc82de0",
+      "bytes": 3329,
+      "license": "EPL-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/M3Rules.java.txt",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/M3Rules.java.txt",
+      "source_git_blob": "e9804316372c01291136080e2b5a3bbd26e2505e",
+      "git_blob": "e9804316372c01291136080e2b5a3bbd26e2505e",
+      "sha256": "512dfb312e823062fd456f0c08840f752bd58fd01740ccd5ee6b58a827d3d2fc",
+      "bytes": 4809,
+      "license": "EPL-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/MultiRule.java.txt",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/MultiRule.java.txt",
+      "source_git_blob": "fe2b0dccd8b837146bc1f648745bf2cf4e2af111",
+      "git_blob": "fe2b0dccd8b837146bc1f648745bf2cf4e2af111",
+      "sha256": "ec0994c463c5de742f222036d66efbf1ef074ab46c06e36b98ac0bd3c8189fbf",
+      "bytes": 3376,
+      "license": "EPL-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/before-MultiRule.java.txt",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/before-MultiRule.java.txt",
+      "source_git_blob": "be58b0dfc1cb059a4ccb63b5271f07486829a8e4",
+      "git_blob": "be58b0dfc1cb059a4ccb63b5271f07486829a8e4",
+      "sha256": "fda7102eb735446c91654af9b76fb5947349e9dcb56af0c190c05ac88a7b8d36",
+      "bytes": 5474,
+      "license": "EPL-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/manifest.tsv",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/manifest.tsv",
+      "source_git_blob": "bda95473ceeba9599e93f9ae4e6edafe8899738e",
+      "git_blob": "bda95473ceeba9599e93f9ae4e6edafe8899738e",
+      "sha256": "1ba22ea8b8a1ac92490acfa4bacc069638602df73b4d0af28e54ed172f0923dc",
+      "bytes": 486,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/parse-context.tsv",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/parse-context.tsv",
+      "source_git_blob": "fbcb3b3e770b6915bc01a2f2be0ab85706ee4eda",
+      "git_blob": "fbcb3b3e770b6915bc01a2f2be0ab85706ee4eda",
+      "sha256": "c4226a04eb45826a3a0835069068ce4323229a35e8342ed3d6c7418d301a9392",
+      "bytes": 175,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/src/test/java/com/synexia/rewrite/M3EclipseRulesForwardingRecipeTest.java",
+      "kind": "canonical-recipe-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/src/test/java/com/synexia/rewrite/M3EclipseRulesForwardingRecipeTest.java",
+      "source_git_blob": "7aacaa7052edf5b86a02ee063e8971144e6a457d",
+      "git_blob": "7aacaa7052edf5b86a02ee063e8971144e6a457d",
+      "sha256": "4dd8600339b2444d3a9255c34191a1d8d7fd34a9c296b366a35b2c877f390972",
+      "bytes": 7129,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/src/main/java/com/synexia/rewrite/M3EditScope.java",
+      "kind": "shared-sdk-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/src/main/java/com/synexia/rewrite/M3EditScope.java",
+      "source_git_blob": "274360816db1e44a2f1796a3bc5cdeff6b0ce6db",
+      "git_blob": "274360816db1e44a2f1796a3bc5cdeff6b0ce6db",
+      "sha256": "962d37d62d740c3e8055c365a048ae7ee0479c26a9f6bbfe741e540d6c1134ab",
+      "bytes": 1052,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/src/main/java/com/synexia/rewrite/M3HashPinnedJavaSnapshotRecipe.java",
+      "kind": "shared-sdk-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/src/main/java/com/synexia/rewrite/M3HashPinnedJavaSnapshotRecipe.java",
+      "source_git_blob": "3bdeeaea9a212fe0c7d1f544510f87c4cd49eb40",
+      "git_blob": "3bdeeaea9a212fe0c7d1f544510f87c4cd49eb40",
+      "sha256": "67f7b81126e4736c7b61b444fa6545153a61e23c012975ca796fcee623ab6625",
+      "bytes": 31181,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/src/main/java/com/synexia/rewrite/M3HashPinnedTextSnapshotRecipe.java",
+      "kind": "shared-sdk-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "9a04e7cf94e2b47570fed61ed508e50dcd80edb1",
+      "source_path": "synexia-openrewrite-recipes/src/main/java/com/synexia/rewrite/M3HashPinnedTextSnapshotRecipe.java",
+      "source_git_blob": "cc5f86ab579d2f4b1b9bc4c26b4592d2d8142244",
+      "git_blob": "cc5f86ab579d2f4b1b9bc4c26b4592d2d8142244",
+      "sha256": "58c94f4b87a6e4a53268808bf0c635fe7bd56e2864cb8fe46483c85efba771d0",
+      "bytes": 20355,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit",
+      "predecessor_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "predecessor_git_blob": "9d0788d3717e017d58345c5c3e62022c2915a3c8"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/src/main/java/com/synexia/rewrite/M3ScopeInference.java",
+      "kind": "shared-sdk-source",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/src/main/java/com/synexia/rewrite/M3ScopeInference.java",
+      "source_git_blob": "d24729950508857280ea1b56d4e930f05137ec85",
+      "git_blob": "d24729950508857280ea1b56d4e930f05137ec85",
+      "sha256": "13660b59f60ec2941ec19e9bc8964ffd4b04689cdc33cd19711fba14b8da09a4",
+      "bytes": 7655,
+      "license": "Apache-2.0",
+      "source_binding": "verified-canonical-commit"
+    }
+  ],
+  "generated_runtime_files": [
+    {
+      "path": "runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/m3/M3Rules.java",
+      "kind": "OpenRewrite-RecipeRun-output",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/M3Rules.java.txt",
+      "source_git_blob": "e9804316372c01291136080e2b5a3bbd26e2505e",
+      "git_blob": "e9804316372c01291136080e2b5a3bbd26e2505e",
+      "sha256": "512dfb312e823062fd456f0c08840f752bd58fd01740ccd5ee6b58a827d3d2fc",
+      "bytes": 4809,
+      "license": "EPL-2.0",
+      "source_binding": "verified-canonical-recipe-and-existing-output",
+      "before_sha256": "ABSENT",
+      "generation": "OpenRewrite RecipeRun getAfter().printAll()"
+    },
+    {
+      "path": "runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/runtime/jobs/MultiRule.java",
+      "kind": "OpenRewrite-RecipeRun-output",
+      "source_repository": "hsoliwal/com.synexia",
+      "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+      "source_path": "synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/MultiRule.java.txt",
+      "source_git_blob": "fe2b0dccd8b837146bc1f648745bf2cf4e2af111",
+      "git_blob": "fe2b0dccd8b837146bc1f648745bf2cf4e2af111",
+      "sha256": "ec0994c463c5de742f222036d66efbf1ef074ab46c06e36b98ac0bd3c8189fbf",
+      "bytes": 3376,
+      "license": "EPL-2.0",
+      "source_binding": "verified-canonical-recipe-and-existing-output",
+      "before_sha256": "fda7102eb735446c91654af9b76fb5947349e9dcb56af0c190c05ac88a7b8d36",
+      "generation": "OpenRewrite RecipeRun getAfter().printAll()"
+    }
+  ],
+  "receiver_metadata": [
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/README.md",
+      "origin": "Authored for this scoped receiving handoff",
+      "license": "Apache-2.0",
+      "binding": "receiving-repository-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/SOURCE_RECEIPT.json",
+      "origin": "Authored for this scoped receiving handoff",
+      "license": "Apache-2.0",
+      "binding": "receiving-repository-commit"
+    },
+    {
+      "path": "docs/M3-SCALE/rules-forwarding-20261018/FILE_PROVENANCE.tsv",
+      "origin": "Authored for this scoped receiving handoff",
+      "license": "Apache-2.0",
+      "binding": "receiving-repository-commit"
+    }
+  ],
+  "closed_receiver_change_paths": [
+    "docs/M3-SCALE/rules-forwarding-20261018/FILE_PROVENANCE.tsv",
+    "docs/M3-SCALE/rules-forwarding-20261018/README.md",
+    "docs/M3-SCALE/rules-forwarding-20261018/SOURCE_RECEIPT.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/CATALOGUE.tsv",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/CONTRACT.md",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/COVERAGE.tsv",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/LICENSE-APACHE-2.0",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/LICENSE-EPL-2.0",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/NOTICE",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/README.md",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/SOURCE_PINS.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-bundle-compile.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-bundle-compile.log",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-bytecode.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-bytecode.log",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.log",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-equinox.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-equinox.log",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-full-bundle-tests.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-full-bundle-tests.log",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-junit/TEST-junit-jupiter.xml",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-junit/TEST-junit-platform-suite.xml",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-junit/TEST-junit-vintage.xml",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-public-api.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-public-api.log",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-upstream-test-compile.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-upstream-test-compile.log",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline/TEST-com.synexia.eclipse.contract.MultiRuleContractTest.xml",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-bundle-compile.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-bundle-compile.log",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-bytecode.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-bytecode.log",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.log",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-equinox.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-equinox.log",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-full-bundle-tests.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-full-bundle-tests.log",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-junit/TEST-junit-jupiter.xml",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-junit/TEST-junit-platform-suite.xml",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-junit/TEST-junit-vintage.xml",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-public-api.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-public-api.log",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-upstream-test-compile.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-upstream-test-compile.log",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate/TEST-com.synexia.eclipse.contract.MultiRuleContractTest.xml",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/osgi-client-compile.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/osgi-client-compile.log",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/osgi-launcher-compile.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/osgi-launcher-compile.log",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/qualification.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.log",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe/TEST-com.synexia.rewrite.M3EclipseRulesForwardingRecipeTest.xml",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/pom.xml",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/JobsEquinoxProof.java",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/MultiRuleOsgiClient.java",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/materialization.json",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/pom.xml",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/reproduce.py",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/proof/src/test/java/com/synexia/eclipse/contract/MultiRuleContractTest.java",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/META-INF/rewrite/m3-eclipse-rules-forwarding-20261018.yml",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/ISchedulingRule.java.txt",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/M3Rules.java.txt",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/MultiRule.java.txt",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/before-MultiRule.java.txt",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/manifest.tsv",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/resources/com/synexia/rewrite/hash-pinned-java/m3-eclipse-rules-forwarding-20261018/parse-context.tsv",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/src/test/java/com/synexia/rewrite/M3EclipseRulesForwardingRecipeTest.java",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/src/main/java/com/synexia/rewrite/M3EditScope.java",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/src/main/java/com/synexia/rewrite/M3HashPinnedJavaSnapshotRecipe.java",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/src/main/java/com/synexia/rewrite/M3HashPinnedTextSnapshotRecipe.java",
+    "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/src/main/java/com/synexia/rewrite/M3ScopeInference.java",
+    "runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/m3/M3Rules.java",
+    "runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/runtime/jobs/MultiRule.java"
+  ],
+  "frozen_proof_stages": [
+    {
+      "stage": "baseline-bundle-compile",
+      "exit_code": 0,
+      "receipt": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-bundle-compile.json"
+    },
+    {
+      "stage": "baseline-bytecode",
+      "exit_code": 0,
+      "receipt": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-bytecode.json"
+    },
+    {
+      "stage": "baseline-contracts",
+      "exit_code": 0,
+      "receipt": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.json"
+    },
+    {
+      "stage": "baseline-equinox",
+      "exit_code": 0,
+      "receipt": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-equinox.json"
+    },
+    {
+      "stage": "baseline-full-bundle-tests",
+      "exit_code": 0,
+      "receipt": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-full-bundle-tests.json"
+    },
+    {
+      "stage": "baseline-public-api",
+      "exit_code": 0,
+      "receipt": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-public-api.json"
+    },
+    {
+      "stage": "baseline-upstream-test-compile",
+      "exit_code": 0,
+      "receipt": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-upstream-test-compile.json"
+    },
+    {
+      "stage": "candidate-bundle-compile",
+      "exit_code": 0,
+      "receipt": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-bundle-compile.json"
+    },
+    {
+      "stage": "candidate-bytecode",
+      "exit_code": 0,
+      "receipt": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-bytecode.json"
+    },
+    {
+      "stage": "candidate-contracts",
+      "exit_code": 0,
+      "receipt": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.json"
+    },
+    {
+      "stage": "candidate-equinox",
+      "exit_code": 0,
+      "receipt": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-equinox.json"
+    },
+    {
+      "stage": "candidate-full-bundle-tests",
+      "exit_code": 0,
+      "receipt": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-full-bundle-tests.json"
+    },
+    {
+      "stage": "candidate-public-api",
+      "exit_code": 0,
+      "receipt": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-public-api.json"
+    },
+    {
+      "stage": "candidate-upstream-test-compile",
+      "exit_code": 0,
+      "receipt": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-upstream-test-compile.json"
+    },
+    {
+      "stage": "osgi-client-compile",
+      "exit_code": 0,
+      "receipt": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/osgi-client-compile.json"
+    },
+    {
+      "stage": "osgi-launcher-compile",
+      "exit_code": 0,
+      "receipt": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/osgi-launcher-compile.json"
+    },
+    {
+      "stage": "recipe-sdk",
+      "exit_code": 0,
+      "receipt": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.json"
+    }
+  ],
+  "proof_execution_source": "The 17 frozen proof-stage records are exact carried canonical evidence. Separate public-mirror SDK compatibility evidence for the selected shared Text owner is not substituted for those records.",
+  "full_tycho_pde_ci_qualified": false,
+  "whole_eclipse_qualified": false,
+  "handoff_review": {
+    "source_readback_verified": true,
+    "closed_change_path_count": 76,
+    "scoped_source_provenance_record_count": 73,
+    "full_git_diff_check_exit_code": 2,
+    "inherited_whitespace_findings": [
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/LICENSE-EPL-2.0",
+        "line": 264,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/LICENSE-EPL-2.0",
+        "line": 265,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.log",
+        "line": 2,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.log",
+        "line": 7,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.log",
+        "line": 10,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.log",
+        "line": 14,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.log",
+        "line": 17,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.log",
+        "line": 21,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.log",
+        "line": 24,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.log",
+        "line": 30,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.log",
+        "line": 32,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.log",
+        "line": 34,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-full-bundle-tests.log",
+        "line": 18,
+        "finding": "new blank line at EOF."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.log",
+        "line": 2,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.log",
+        "line": 7,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.log",
+        "line": 10,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.log",
+        "line": 14,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.log",
+        "line": 17,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.log",
+        "line": 21,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.log",
+        "line": 24,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.log",
+        "line": 30,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.log",
+        "line": 32,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.log",
+        "line": 34,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-full-bundle-tests.log",
+        "line": 18,
+        "finding": "new blank line at EOF."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.log",
+        "line": 2,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.log",
+        "line": 7,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.log",
+        "line": 10,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.log",
+        "line": 14,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.log",
+        "line": 17,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.log",
+        "line": 21,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.log",
+        "line": 24,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.log",
+        "line": 33,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.log",
+        "line": 35,
+        "finding": "trailing whitespace."
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.log",
+        "line": 37,
+        "finding": "trailing whitespace."
+      }
+    ],
+    "inherited_whitespace_files": [
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/LICENSE-EPL-2.0",
+        "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+        "source_git_blob": "d3087e4c54047062ddcc0b6ecd606711bb246ab8"
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-contracts.log",
+        "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+        "source_git_blob": "98af4818b188599513c3917f902701a203d70f51"
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/baseline-full-bundle-tests.log",
+        "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+        "source_git_blob": "32487210ce8fbc7ef9fd00535053a29fc6eb5038"
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-contracts.log",
+        "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+        "source_git_blob": "fa3c260d0b4bc68c77ebf40da8b1aca89cfe0ec1"
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/candidate-full-bundle-tests.log",
+        "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+        "source_git_blob": "d83a2701180468ee85968401c46366cef21de2f3"
+      },
+      {
+        "path": "docs/M3-SCALE/rules-forwarding-20261018/tooling/synexia-openrewrite-recipes/recipe-crates/m3-eclipse-rules-forwarding-20261018/evidence/recipe-sdk.log",
+        "source_revision": "2b61cc39df74eefe44152a16b6098ebfe53c3f8d",
+        "source_git_blob": "4a0726227777573739bae572483dfb6d81529e9d"
+      }
+    ],
+    "inherited_file_bytes_preserved": true,
+    "receiver_authored_and_runtime_diff_check_exit_code": 0,
+    "remaining_70_paths_diff_check_exit_code": 0,
+    "whitespace_policy_changed": false,
+    "product_or_sdk_gates_rerun_by_packaging": false,
+    "packaging_check_scope": "Source identity, closed path set, provenance, readback, and whitespace only; the separate SDK compatibility run is recorded above."
+  },
+  "shared_text_sdk_compatibility": {
+    "text_git_blob": "cc5f86ab579d2f4b1b9bc4c26b4592d2d8142244",
+    "text_sha256": "58c94f4b87a6e4a53268808bf0c635fe7bd56e2864cb8fe46483c85efba771d0",
+    "public_crate_pom_sha256": "b166dc2fa4cd0434b62d808ffb344a3760f71dbe9b3cc712e63aeb9ec12f2087",
+    "completed_utc": "2026-10-18T12:54:40.778587+00:00",
+    "maven_exit_code": 0,
+    "junit": {
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "actual_generated_runtime_outputs_identical": true,
+    "receipt_sha256": "5aa31e6e6b84f384d9d39cc35c7b1375625e2327ab83510ce380b60325c4917f",
+    "maven_log_sha256": "7369d4b94fe9f04d515cd4cde1d1ce572ca154a4056cbc7a2e6194935206ae83",
+    "surefire_xml_sha256": "9fb462e57878a4b85a81d301f7e6d3af42de7ad36dd076c2da9fde962ba81450",
+    "evidence_scope": "Fresh receipt, log, and Surefire XML are retained separately from the frozen public crate.",
+    "test_invocations": 1,
+    "full_17_stage_driver_rerun": false
+  },
+  "canonical_publication_revision": "9a04e7cf94e2b47570fed61ed508e50dcd80edb1",
+  "canonical_publication_tree": "d26411a4886ddb3cfb2590306b0753caa60c1a84",
+  "canonical_publication_branch": "m3/eclipse-runtime-forwarding-20261018",
+  "canonical_source_pull_request": 12357,
+  "qualified_source_base": "69291c18babd233a94b742798b3d1078979bf78c",
+  "publication_parent": "2bfb19847bd09bf28749194d489e8696b4a997b1",
+  "publication_parent_tree": "57536bcc9922de83b8399e309a1d3fa07a96335e",
+  "publication_integration": {
+    "compare_url": "https://github.com/hsoliwal/eclipse.platform/compare/69291c18babd233a94b742798b3d1078979bf78c...2bfb19847bd09bf28749194d489e8696b4a997b1",
+    "intervening_commit_count": 7,
+    "changed_path_count": 29,
+    "changed_path_scope": [
+      {
+        "prefix": ".m3/"
+      },
+      {
+        "exact_path": ".github/workflows/m3-shared-bootstrap-sdk-20261018.yml"
+      }
+    ],
+    "comparison_verification": "The publisher fetched and verified the exact GitHub comparison before choosing the current master as publication parent.",
+    "runtime_paths_changed": false,
+    "root_agents_instructions_changed": false,
+    "closed_76_receiver_paths_changed": false,
+    "qualified_runtime_preimages": [
+      {
+        "path": "runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/m3/M3Rules.java",
+        "before_sha256": "ABSENT",
+        "qualified_before_git_blob": "ABSENT",
+        "unchanged_at_publication_parent": true,
+        "basis": "Publisher-verified complete comparison has no runtime path changes."
+      },
+      {
+        "path": "runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/runtime/jobs/MultiRule.java",
+        "before_sha256": "fda7102eb735446c91654af9b76fb5947349e9dcb56af0c190c05ac88a7b8d36",
+        "qualified_before_git_blob": "be58b0dfc1cb059a4ccb63b5271f07486829a8e4",
+        "unchanged_at_publication_parent": true,
+        "basis": "Publisher-verified complete comparison has no runtime path changes."
+      }
+    ],
+    "publication_method": "Apply the same closed 76-path packet to the publication parent tree through the GitHub tree API, preserving all intervening unrelated work.",
+    "local_review_base": "69291c18babd233a94b742798b3d1078979bf78c",
+    "historical_source_pins_and_execution_evidence_preserved": true,
+    "tests_rerun_for_parent_advance": false
+  }
+}

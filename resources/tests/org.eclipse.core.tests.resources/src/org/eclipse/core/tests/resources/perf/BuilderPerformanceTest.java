@@ -46,7 +46,7 @@ public class BuilderPerformanceTest extends WorkspacePerformanceTest {
 	 */
 	void createAndPopulateProject(final IProject project, final IFolder folder, final int totalResources)
 			throws CoreException {
-		getWorkspace().run((IWorkspaceRunnable) _ -> {
+		getWorkspace().run((IWorkspaceRunnable) unused -> {
 			IProjectDescription desc = project.getWorkspace().newProjectDescription(project.getName());
 			desc.setBuildSpec(new ICommand[] { createCommand(desc, "Builder1"), createCommand(desc, "Builder2"),
 					createCommand(desc, "Builder3"), createCommand(desc, "Builder4"),

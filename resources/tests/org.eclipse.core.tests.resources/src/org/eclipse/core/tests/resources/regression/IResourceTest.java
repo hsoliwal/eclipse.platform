@@ -130,7 +130,7 @@ public class IResourceTest {
 	 */
 	@Test
 	public void testBug31750() {
-		IResourceProxyVisitor visitor = _ -> {
+		IResourceProxyVisitor visitor = unused -> {
 			throw new OperationCanceledException();
 		};
 		assertThrows(OperationCanceledException.class, () -> getWorkspace().getRoot().accept(visitor, IResource.NONE));
@@ -188,7 +188,7 @@ public class IResourceTest {
 			getWorkspace().addResourceChangeListener(listener, IResourceChangeEvent.POST_CHANGE);
 
 			// removing and adding sync info causes phantom to be deleted and recreated
-			getWorkspace().run((IWorkspaceRunnable) _ -> {
+			getWorkspace().run((IWorkspaceRunnable) unused -> {
 				ISynchronizer synchronizer = getWorkspace().getSynchronizer();
 				synchronizer.flushSyncInfo(name, file, IResource.DEPTH_INFINITE);
 				synchronizer.setSyncInfo(name, file, new byte[] { 1 });
@@ -471,7 +471,7 @@ public class IResourceTest {
 
 		final AtomicReference<Executable> listenerInMainThreadCallback = new AtomicReference<>(() -> {
 		});
-		IResourceChangeListener listener = _ -> {
+		IResourceChangeListener listener = unused -> {
 			listenerInMainThreadCallback.set(() -> {
 				assertEquals(newContents, target.readString());
 			});
@@ -486,7 +486,7 @@ public class IResourceTest {
 		listenerInMainThreadCallback.get().execute();
 
 		CoreException exception = assertThrows(CoreException.class, () -> {
-			try (InputStream _ = target.getContents(false)) {
+			try (InputStream unused = target.getContents(false)) {
 			}
 		});
 		assertEquals(IResourceStatus.OUT_OF_SYNC_LOCAL, exception.getStatus().getCode());

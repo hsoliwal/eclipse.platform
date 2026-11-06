@@ -1,0 +1,19 @@
+{
+  "recipe": "com.synexia.eclipse.RulesForwarding20261018",
+  "target_revision": "69291c18babd233a94b742798b3d1078979bf78c",
+  "physical_root": "runtime",
+  "files": [
+    {
+      "path": "runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/m3/M3Rules.java",
+      "before": "ABSENT",
+      "after": "512dfb312e823062fd456f0c08840f752bd58fd01740ccd5ee6b58a827d3d2fc",
+      "source": "OpenRewrite RecipeRun getAfter().printAll()"
+    },
+    {
+      "path": "runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/runtime/jobs/MultiRule.java",
+      "before": "fda7102eb735446c91654af9b76fb5947349e9dcb56af0c190c05ac88a7b8d36",
+      "after": "ec0994c463c5de742f222036d66efbf1ef074ab46c06e36b98ac0bd3c8189fbf",
+      "source": "OpenRewrite RecipeRun getAfter().printAll()"
+    }
+  ]
+}

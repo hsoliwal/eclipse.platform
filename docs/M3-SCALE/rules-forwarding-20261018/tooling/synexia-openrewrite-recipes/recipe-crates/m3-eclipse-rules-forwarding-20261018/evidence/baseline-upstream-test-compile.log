@@ -1,0 +1,4 @@
+/tmp/eclipse-m3-20261018/forks/eclipse.platform/runtime/tests/org.eclipse.core.tests.harness/src/org/eclipse/core/tests/harness/FussyProgressMonitor.java:54: warning: [this-escape] possible 'this' escape before subclass is fully initialized
+		prepare();
+		       ^
+1 warning

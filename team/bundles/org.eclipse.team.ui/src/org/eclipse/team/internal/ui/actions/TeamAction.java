@@ -131,7 +131,7 @@ public abstract class TeamAction extends AbstractHandler implements IObjectActio
 		}
 	};
 
-	private final ISelectionListener selectionListener = (_, selection) -> {
+	private final ISelectionListener selectionListener = (unused, selection) -> {
 		if(selection instanceof IStructuredSelection) {
 			TeamAction.this.selection = (IStructuredSelection)selection;
 		}

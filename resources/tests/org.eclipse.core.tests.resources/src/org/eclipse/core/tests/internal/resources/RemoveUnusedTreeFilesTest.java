@@ -59,6 +59,6 @@ public class RemoveUnusedTreeFilesTest {
 		workspace.save(true, createTestMonitor());
 
 		assertArrayEquals(new String[] { bTree.getName() },
-				bTree.getParentFile().list((_, name) -> name.endsWith(".tree")));
+				bTree.getParentFile().list((unused, name) -> name.endsWith(".tree")));
 	}
 }

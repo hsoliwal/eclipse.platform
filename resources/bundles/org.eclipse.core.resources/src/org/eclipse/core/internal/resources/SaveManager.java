@@ -581,7 +581,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		// Delete the snapshot files, if any.
 		IPath location = workspace.getMetaArea().getSnapshotLocationFor(workspace.getRoot());
 		java.io.File target = location.toFile().getParentFile();
-		FilenameFilter filter = (_, name) -> {
+		FilenameFilter filter = (unused, name) -> {
 			if (!name.endsWith(LocalMetaArea.F_SNAP)) {
 				return false;
 			}
@@ -708,7 +708,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 	}
 
 	protected void removeUnusedTreeFiles() {
-		FilenameFilter filter = (_, name) -> name.endsWith(LocalMetaArea.F_TREE);
+		FilenameFilter filter = (unused, name) -> name.endsWith(LocalMetaArea.F_TREE);
 		// root resource
 		IPath location = workspace.getMetaArea().getTreeLocationFor(workspace.getRoot(), false);
 		removeUnusedTreeFiles(location, filter);
@@ -1605,7 +1605,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 		/* first build a table of ElementTree -> Number of duplicates */
 		Map<ElementTree, Integer> duplicateCount = new LinkedHashMap<>(numTrees * 2 + 1);
 		for (ElementTree tree : trees) {
-			duplicateCount.compute(tree, (_, duplicates) -> (duplicates == null ? 0 : duplicates) + 1);
+			duplicateCount.compute(tree, (unused, duplicates) -> (duplicates == null ? 0 : duplicates) + 1);
 		}
 
 		/* find the oldest tree (a descendent of all other trees) */
@@ -1782,7 +1782,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 			final boolean measure = isMeasuringPersistTimes();
 
 			// Create the visitor
-			IElementContentVisitor visitor = (_, requestor, elementContents) -> {
+			IElementContentVisitor visitor = (unused, requestor, elementContents) -> {
 				ResourceInfo info = (ResourceInfo) elementContents;
 				if (info != null) {
 					try {
@@ -1935,7 +1935,7 @@ public class SaveManager implements IElementInfoFlattener, IManager, IStringPool
 				final long[] snapTimes = new long[2];
 				final boolean measure = isMeasuringPersistTimes();
 
-				IElementContentVisitor visitor = (_, requestor, elementContents) -> {
+				IElementContentVisitor visitor = (unused, requestor, elementContents) -> {
 					ResourceInfo info = (ResourceInfo) elementContents;
 					if (info != null) {
 						try {

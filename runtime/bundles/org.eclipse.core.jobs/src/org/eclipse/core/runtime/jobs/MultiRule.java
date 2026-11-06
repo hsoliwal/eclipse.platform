@@ -10,11 +10,13 @@
  *
  * Contributors:
  *     IBM - Initial API and implementation
+ *     Hitesh Soliwal and Contributors to the Synexia Project - M3 rule forwarding
  *******************************************************************************/
 package org.eclipse.core.runtime.jobs;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+// Modified 2026: forward compound rule behavior to the internal M3 array owner.
+
+import org.eclipse.core.internal.jobs.m3.M3Rules;
 
 /**
  * A MultiRule is a compound scheduling rule that represents a fixed group of child
@@ -44,18 +46,7 @@ public class MultiRule implements ISchedulingRule {
 	 * @since 3.1
 	 */
 	public static ISchedulingRule combine(ISchedulingRule[] ruleArray) {
-		ISchedulingRule result = null;
-		for (ISchedulingRule element : ruleArray) {
-			if (element == null) {
-				continue;
-			}
-			if (result == null) {
-				result = element;
-				continue;
-			}
-			result = combine(result, element);
-		}
-		return result;
+		return M3Rules.combine(ruleArray);
 	}
 
 	/**
@@ -69,39 +60,7 @@ public class MultiRule implements ISchedulingRule {
 	 * @return a combined scheduling rule, or <code>null</code>
 	 */
 	public static ISchedulingRule combine(ISchedulingRule rule1, ISchedulingRule rule2) {
-		if (rule1 == rule2) {
-			return rule1;
-		}
-		if (rule1 == null) {
-			return rule2;
-		}
-		if (rule2 == null) {
-			return rule1;
-		}
-		if (rule1.contains(rule2)) {
-			return rule1;
-		}
-		if (rule2.contains(rule1)) {
-			return rule2;
-		}
-		return new MultiRule(rule1, rule2 );
-	}
-
-	/*
-	 * Collapses an array of rules that may contain MultiRules into an
-	 * array in which no rules are MultiRules.
-	 */
-	private static ISchedulingRule[] flatten(ISchedulingRule[] nestedRules) {
-		ArrayList<ISchedulingRule> myRules = new ArrayList<>(nestedRules.length);
-		for (ISchedulingRule nestedRule : nestedRules) {
-			if (nestedRule instanceof MultiRule) {
-				ISchedulingRule[] children = ((MultiRule) nestedRule).getChildren();
-				myRules.addAll(Arrays.asList(children));
-			} else {
-				myRules.add(nestedRule);
-			}
-		}
-		return myRules.toArray(new ISchedulingRule[myRules.size()]);
+		return M3Rules.combine(rule1, rule2);
 	}
 
 	/**
@@ -110,7 +69,7 @@ public class MultiRule implements ISchedulingRule {
 	 * @param nestedRules the nested rules for this compound rule.
 	 */
 	public MultiRule(ISchedulingRule ... nestedRules) {
-		this.rules = flatten(nestedRules);
+		this.rules = M3Rules.flatten(nestedRules);
 	}
 
 	/**
@@ -118,58 +77,17 @@ public class MultiRule implements ISchedulingRule {
 	 * @return the child rules
 	 */
 	public ISchedulingRule[] getChildren() {
-		return rules.clone();
+		return M3Rules.children(rules);
 	}
 
 	@Override
 	public boolean contains(ISchedulingRule rule) {
-		if (this == rule) {
-			return true;
-		}
-		if (rule instanceof MultiRule) {
-			ISchedulingRule[] otherRules = ((MultiRule) rule).getChildren();
-			//for each child of the target, there must be some child in this rule that contains it.
-			for (ISchedulingRule otherRule : otherRules) {
-				boolean found = false;
-				for (int mine = 0; !found && mine < rules.length; mine++) {
-					found = rules[mine].contains(otherRule);
-				}
-				if (!found) {
-					return false;
-				}
-			}
-			return true;
-		}
-		for (ISchedulingRule rule2 : rules) {
-			if (rule2.contains(rule)) {
-				return true;
-			}
-		}
-		return false;
+		return M3Rules.contains(this, rules, rule);
 	}
 
 	@Override
 	public boolean isConflicting(ISchedulingRule rule) {
-		if (this == rule) {
-			return true;
-		}
-		if (rule instanceof MultiRule) {
-			ISchedulingRule[] otherRules = ((MultiRule) rule).getChildren();
-			for (ISchedulingRule otherRule : otherRules) {
-				for (ISchedulingRule rule2 : rules) {
-					if (rule2.isConflicting(otherRule)) {
-						return true;
-					}
-				}
-			}
-		} else {
-			for (ISchedulingRule rule3 : rules) {
-				if (rule3.isConflicting(rule)) {
-					return true;
-				}
-			}
-		}
-		return false;
+		return M3Rules.isConflicting(this, rules, rule);
 	}
 
 	/*
@@ -177,16 +95,6 @@ public class MultiRule implements ISchedulingRule {
 	 */
 	@Override
 	public String toString() {
-		StringBuilder buffer = new StringBuilder();
-		buffer.append("MultiRule["); //$NON-NLS-1$
-		int last = rules.length - 1;
-		for (int i = 0; i < rules.length; i++) {
-			buffer.append(rules[i]);
-			if (i != last) {
-				buffer.append(',');
-			}
-		}
-		buffer.append(']');
-		return buffer.toString();
+		return M3Rules.describe(rules);
 	}
 }

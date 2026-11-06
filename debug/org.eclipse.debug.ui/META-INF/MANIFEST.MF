@@ -36,6 +36,7 @@ Export-Package: org.eclipse.debug.internal.ui;
  org.eclipse.debug.internal.ui.importexport.breakpoints;x-internal:=true,
  org.eclipse.debug.internal.ui.importexport.launchconfigurations;x-internal:=true,
  org.eclipse.debug.internal.ui.launchConfigurations;x-friends:="org.eclipse.debug.tests",
+ org.eclipse.debug.internal.ui.m3;x-friends:="org.eclipse.debug.tests",
  org.eclipse.debug.internal.ui.memory;x-internal:=true,
  org.eclipse.debug.internal.ui.memory.provisional;x-internal:=true,
  org.eclipse.debug.internal.ui.model.elements;x-friends:="org.eclipse.debug.examples.ui,org.eclipse.jdt.debug.ui,org.eclipse.wst.jsdt.debug.ui",

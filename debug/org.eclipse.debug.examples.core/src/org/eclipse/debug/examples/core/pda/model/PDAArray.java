@@ -18,6 +18,8 @@ package org.eclipse.debug.examples.core.pda.model;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.model.IVariable;
 
+import java.util.regex.Pattern;
+
 public class PDAArray extends PDAValue {
 
 	/**
@@ -34,10 +36,12 @@ public class PDAArray extends PDAValue {
 		return true;
 	}
 
+	private static final Pattern WORDS_PATTERN = Pattern.compile("\\W+"); //$NON-NLS-1$
+
 	@Override
 	public IVariable[] getVariables() throws DebugException {
 		String string = getValueString();
-		String[] words = string.split("\\W+"); //$NON-NLS-1$
+		String[] words = WORDS_PATTERN.split(string);
 		IVariable[] variables = new IVariable[words.length];
 		for (int i = 0; i < words.length; i++) {
 			String word = words[i];

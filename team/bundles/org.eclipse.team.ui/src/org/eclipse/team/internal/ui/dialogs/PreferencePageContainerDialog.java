@@ -152,7 +152,7 @@ public class PreferencePageContainerDialog extends TrayDialog
 		setTitle(TeamUIMessages.PreferencePageContainerDialog_6);
 		applyDialogFont(parent);
 
-		composite.addHelpListener(_ -> currentPage.performHelp());
+		composite.addHelpListener(unused -> currentPage.performHelp());
 
 		return composite;
 	}
@@ -272,7 +272,7 @@ public class PreferencePageContainerDialog extends TrayDialog
 			}
 		};
 
-		fMessageLabel.addDisposeListener(_ -> JFaceResources.getFontRegistry().removeListener(fontListener));
+		fMessageLabel.addDisposeListener(unused -> JFaceResources.getFontRegistry().removeListener(fontListener));
 
 		JFaceResources.getFontRegistry().addListener(fontListener);
 
@@ -387,7 +387,7 @@ public class PreferencePageContainerDialog extends TrayDialog
 				} else {
 					//remove mnemonic see bug 75886
 					String title = currentPage.getTitle();
-					title = title.replaceAll("&", "");//$NON-NLS-1$ //$NON-NLS-2$
+					title = title.replace("&", "");//$NON-NLS-1$ //$NON-NLS-2$
 					setMessage(title);
 				}
 			} else {

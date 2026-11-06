@@ -163,7 +163,7 @@ public final class ResourceTestUtil {
 		}
 		IWorkspaceRunnable body;
 		if (resource.exists()) {
-			body = _ -> resource.setContents(contentStream, true, false, null);
+			body = unused -> resource.setContents(contentStream, true, false, null);
 		} else {
 			body = monitor -> {
 				createInWorkspace(resource.getParent(), monitor);
@@ -253,7 +253,7 @@ public final class ResourceTestUtil {
 	 * project is currently closed.
 	 */
 	public static void removeFromWorkspace(final IResource[] resources) throws CoreException {
-		IWorkspaceRunnable body = _ -> {
+		IWorkspaceRunnable body = unused -> {
 			for (IResource resource : resources) {
 				removeFromWorkspace(resource);
 			}

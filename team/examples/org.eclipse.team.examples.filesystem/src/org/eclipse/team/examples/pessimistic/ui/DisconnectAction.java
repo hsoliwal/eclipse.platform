@@ -52,7 +52,7 @@ public class DisconnectAction extends PessimisticProviderAction {
 		}
 		if (!projects.isEmpty()) {
 			IRunnableWithProgress runnable= monitor -> {
-				IWorkspaceRunnable runnable1= _ -> {
+				IWorkspaceRunnable runnable1= unused -> {
 					for (IProject project : projects) {
 						PessimisticFilesystemProvider provider= getProvider(project);
 						if (provider != null) {

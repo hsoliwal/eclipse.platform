@@ -110,10 +110,7 @@ public abstract class BackgroundEventHandler {
 		}
 		@Override
 		public String toString() {
-			StringBuilder buffer = new StringBuilder();
-			buffer.append("Background Event: "); //$NON-NLS-1$
-			buffer.append(getTypeString());
-			return buffer.toString();
+			return "Background Event: " + getTypeString(); //$NON-NLS-1$
 		}
 		public IResource getResource() {
 			return null;
@@ -143,14 +140,7 @@ public abstract class BackgroundEventHandler {
 		}
 		@Override
 		public String toString() {
-			StringBuilder buffer = new StringBuilder();
-			buffer.append("resource: "); //$NON-NLS-1$
-			buffer.append(resource.getFullPath());
-			buffer.append(" type: "); //$NON-NLS-1$
-			buffer.append(getTypeString());
-			buffer.append(" depth: "); //$NON-NLS-1$
-			buffer.append(getDepthString());
-			return buffer.toString();
+			return "resource: " + resource.getFullPath() + " type: " + getTypeString() + " depth: " + getDepthString(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		protected String getDepthString() {
 			switch (depth) {

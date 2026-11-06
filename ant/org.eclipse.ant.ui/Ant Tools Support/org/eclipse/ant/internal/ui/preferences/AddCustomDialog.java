@@ -138,7 +138,7 @@ public class AddCustomDialog extends StatusDialog {
 		nameField.setLayoutData(data);
 		nameField.setFont(topComposite.getFont());
 		nameField.setText(name);
-		nameField.addModifyListener(_ -> updateStatus());
+		nameField.addModifyListener(unused -> updateStatus());
 	}
 
 	@Override
@@ -288,13 +288,13 @@ public class AddCustomDialog extends StatusDialog {
 		FileSystemElement dummyRoot = new FileSystemElement("Dummy", null, true); //$NON-NLS-1$
 		this.selectionGroup = new TreeAndListGroup(parent, dummyRoot, getFolderProvider(), new WorkbenchLabelProvider(), getFileProvider(), new WorkbenchLabelProvider(), SWT.NONE, 400, 150, false);
 
-		ISelectionChangedListener listener = _ -> updateStatus();
+		ISelectionChangedListener listener = unused -> updateStatus();
 
 		WorkbenchViewerComparator comparator = new WorkbenchViewerComparator();
 		this.selectionGroup.setTreeComparator(comparator);
 		this.selectionGroup.setListSorter(comparator);
 		this.selectionGroup.addSelectionChangedListener(listener);
-		selectionGroup.addDoubleClickListener(_ -> {
+		selectionGroup.addDoubleClickListener(unused -> {
 			if (getButton(IDialogConstants.OK_ID).isEnabled()) {
 				buttonPressed(IDialogConstants.OK_ID);
 			}

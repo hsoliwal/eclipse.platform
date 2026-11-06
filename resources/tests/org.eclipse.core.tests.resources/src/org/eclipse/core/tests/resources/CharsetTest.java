@@ -1153,7 +1153,7 @@ public class CharsetTest {
 			verifier.addExpectedChange(new IResource[] {file1, file2}, IResourceDelta.CHANGED, IResourceDelta.ENCODING);
 			verifier.addExpectedChange(prefs.getParent(), IResourceDelta.CHANGED, 0);
 			verifier.addExpectedChange(prefs, IResourceDelta.CHANGED, IResourceDelta.CONTENT);
-			workspace.run((IWorkspaceRunnable) _ -> {
+			workspace.run((IWorkspaceRunnable) unused -> {
 				file1.setCharset("FOO", createTestMonitor());
 				file2.setCharset("FOO", createTestMonitor());
 			}, createTestMonitor());

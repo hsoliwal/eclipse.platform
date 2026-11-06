@@ -1,0 +1,16 @@
+{
+  "stage": "candidate-equinox",
+  "command": [
+    "/tmp/m3-toolchain/jdk-21.0.12.1+1/bin/java",
+    "-cp",
+    "/tmp/eclipse-m3-20261018/rules-reproduction/osgi-launcher:/tmp/eclipse-m3-20261018/toolchain/eclipse-deps/org.eclipse.osgi-3.24.300.jar",
+    "JobsEquinoxProof",
+    "/tmp/eclipse-m3-20261018/rules-reproduction/candidate-framework",
+    "/tmp/eclipse-m3-20261018/rules-reproduction/osgi-dependencies.list",
+    "/tmp/eclipse-m3-20261018/rules-reproduction/candidate-jobs.jar",
+    "/tmp/eclipse-m3-20261018/rules-reproduction/client.jar",
+    "true"
+  ],
+  "exit_code": 0,
+  "log_sha256": "290126479b6977f33dbdc7434428b1a8ccca28fd0f97d73b2df9420f7bcf051e"
+}

@@ -1,0 +1,5 @@
+step	path_line	rename
+collision	debug/org.eclipse.debug.tests/src/org/eclipse/debug/tests/console/IOConsoleTests.java:331	unused -> unused2
+collision	resources/tests/org.eclipse.core.tests.resources/src/org/eclipse/core/tests/resources/regression/Bug_378156.java:148	unused -> unused2
+collision	team/bundles/org.eclipse.compare/compare/org/eclipse/compare/unifieddiff/internal/UnifiedDiffCodeMiningProvider.java:1050	unused -> unused3
+collision	team/bundles/org.eclipse.team.ui/src/org/eclipse/team/internal/ui/wizards/ExportProjectSetMainPage.java:628	unused -> unused2

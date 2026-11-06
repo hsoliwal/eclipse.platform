@@ -67,7 +67,7 @@ public class ElementTreeIteratorTest {
 		final ElementTree tree = baseTree.newEmptyDelta();
 		modifyTree(tree);
 		final ArrayList<Object> elts = new ArrayList<>();
-		final IElementContentVisitor visitor = (_, _, info) -> {
+		final IElementContentVisitor visitor = (unused, unused2, info) -> {
 			elts.add(info);
 			return true;
 		};
@@ -100,7 +100,7 @@ public class ElementTreeIteratorTest {
 		int n = 3;
 		setupElementTree(tree, n);
 		final ArrayList<IPath> elts = new ArrayList<>();
-		IElementContentVisitor elementVisitor = (_, requestor, _) -> {
+		IElementContentVisitor elementVisitor = (unused, requestor, unused2) -> {
 			elts.add(requestor.requestPath());
 			return true;
 		};

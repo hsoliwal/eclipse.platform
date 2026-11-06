@@ -100,7 +100,7 @@ public class CompareViewerPane extends ViewForm implements ISelectionProvider,
 		addMouseListener(ml);
 		getTopLeft().addMouseListener(ml);
 
-		addDisposeListener(_ -> {
+		addDisposeListener(unused -> {
 			if (fToolBarManager != null) {
 				fToolBarManager.removeAll();
 				fToolBarManager.dispose();

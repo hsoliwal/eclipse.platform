@@ -451,7 +451,7 @@ public class InputPatchPage extends WizardPage {
 				updateWidgetEnablements();
 			}
 		});
-		fPatchFileNameField.addModifyListener(_ -> {
+		fPatchFileNameField.addModifyListener(unused -> {
 			clearErrorMessage();
 			fShowError= true;
 			fPatchRead = false;
@@ -478,7 +478,7 @@ public class InputPatchPage extends WizardPage {
 				updateWidgetEnablements();
 			}
 		});
-		fPatchURLField.addModifyListener(_ -> {
+		fPatchURLField.addModifyListener(unused -> {
 			clearErrorMessage();
 			fShowError = true;
 			fPatchRead = false;
@@ -502,7 +502,7 @@ public class InputPatchPage extends WizardPage {
 			}
 		});
 
-		fTreeViewer.addSelectionChangedListener(_ -> {
+		fTreeViewer.addSelectionChangedListener(unused -> {
 			clearErrorMessage();
 			updateWidgetEnablements();
 		});

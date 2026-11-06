@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="JUnit Jupiter" tests="16" skipped="0" failures="0" errors="0" time="0.287" hostname="995ea8d5231c" timestamp="2026-10-18T00:35:31">
+<properties>
+<property name="file.encoding" value="UTF-8"/>
+<property name="file.separator" value="/"/>
+<property name="java.class.path" value="/tmp/m3-toolchain/pcollections-test-deps/junit-platform-console-standalone-1.10.2.jar"/>
+<property name="java.class.version" value="65.0"/>
+<property name="java.home" value="/tmp/m3-toolchain/jdk-21.0.12.1+1"/>
+<property name="java.io.tmpdir" value="/tmp"/>
+<property name="java.library.path" value="/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib"/>
+<property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
+<property name="java.runtime.version" value="21.0.12.1+1-LTS"/>
+<property name="java.specification.name" value="Java Platform API Specification"/>
+<property name="java.specification.vendor" value="Oracle Corporation"/>
+<property name="java.specification.version" value="21"/>
+<property name="java.vendor" value="Eclipse Adoptium"/>
+<property name="java.vendor.url" value="https://adoptium.net/"/>
+<property name="java.vendor.url.bug" value="https://github.com/adoptium/adoptium-support/issues"/>
+<property name="java.vendor.version" value="Temurin-21.0.12.1+1"/>
+<property name="java.version" value="21.0.12.1"/>
+<property name="java.version.date" value="2026-08-18"/>
+<property name="java.vm.compressedOopsMode" value="32-bit"/>
+<property name="java.vm.info" value="mixed mode, sharing"/>
+<property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/>
+<property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
+<property name="java.vm.specification.vendor" value="Oracle Corporation"/>
+<property name="java.vm.specification.version" value="21"/>
+<property name="java.vm.vendor" value="Eclipse Adoptium"/>
+<property name="java.vm.version" value="21.0.12.1+1-LTS"/>
+<property name="jdk.debug" value="release"/>
+<property name="line.separator" value="
+"/>
+<property name="native.encoding" value="UTF-8"/>
+<property name="os.arch" value="amd64"/>
+<property name="os.name" value="Linux"/>
+<property name="os.version" value="6.18.55"/>
+<property name="path.separator" value=":"/>
+<property name="stderr.encoding" value="UTF-8"/>
+<property name="stdout.encoding" value="UTF-8"/>
+<property name="sun.arch.data.model" value="64"/>
+<property name="sun.boot.library.path" value="/tmp/m3-toolchain/jdk-21.0.12.1+1/lib"/>
+<property name="sun.cpu.endian" value="little"/>
+<property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
+<property name="sun.java.command" value="/tmp/m3-toolchain/pcollections-test-deps/junit-platform-console-standalone-1.10.2.jar execute --disable-ansi-colors --class-path /tmp/eclipse-m3-20261018/rules-reproduction/baseline-upstream-test-classes:/tmp/eclipse-m3-20261018/rules-reproduction/baseline-contracts/test-classes:/tmp/eclipse-m3-20261018/rules-reproduction/baseline-bundle-classes:/tmp/eclipse-m3-20261018/toolchain/eclipse-deps/org.eclipse.equinox.common-3.21.0.jar:/tmp/eclipse-m3-20261018/toolchain/eclipse-deps/org.eclipse.osgi-3.24.300.jar:/tmp/eclipse-m3-20261018/toolchain/eclipse-deps/assertj-core-3.27.5.jar:/tmp/m3-toolchain/pcollections-test-deps/junit-platform-console-standalone-1.10.2.jar --select-class org.eclipse.core.tests.runtime.jobs.MultiRuleTest --select-class com.synexia.eclipse.contract.MultiRuleContractTest --fail-if-no-tests --reports-dir /tmp/eclipse-m3-20261018/rules-reproduction/evidence/baseline-junit --details summary"/>
+<property name="sun.java.launcher" value="SUN_STANDARD"/>
+<property name="sun.jnu.encoding" value="UTF-8"/>
+<property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
+<property name="user.dir" value="/tmp/eclipse-m3-20261018/rules-reproduction"/>
+<property name="user.home" value="/root"/>
+<property name="user.language" value="en"/>
+<property name="user.name" value="root"/>
+<property name="user.timezone" value="America/Los_Angeles"/>
+</properties>
+<testcase name="testCombine()" classname="org.eclipse.core.tests.runtime.jobs.MultiRuleTest" time="0.002">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:org.eclipse.core.tests.runtime.jobs.MultiRuleTest]/[method:testCombine()]
+display-name: testCombine()
+]]></system-out>
+</testcase>
+<testcase name="largeFlatteningRetainsAllReferencesWithoutRetainedInputAliases()" classname="com.synexia.eclipse.contract.MultiRuleContractTest" time="0.008">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.synexia.eclipse.contract.MultiRuleContractTest]/[method:largeFlatteningRetainsAllReferencesWithoutRetainedInputAliases()]
+display-name: largeFlatteningRetainsAllReferencesWithoutRetainedInputAliases()
+]]></system-out>
+</testcase>
+<testcase name="containsUsesOtherMajorOrderAndShortCircuitsTheFirstMissingChild()" classname="com.synexia.eclipse.contract.MultiRuleContractTest" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.synexia.eclipse.contract.MultiRuleContractTest]/[method:containsUsesOtherMajorOrderAndShortCircuitsTheFirstMissingChild()]
+display-name: containsUsesOtherMajorOrderAndShortCircuitsTheFirstMissingChild()
+]]></system-out>
+</testcase>
+<testcase name="exceptionsRetainIdentityAndLaterCallbacksAreNotInvoked()" classname="com.synexia.eclipse.contract.MultiRuleContractTest" time="0.003">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.synexia.eclipse.contract.MultiRuleContractTest]/[method:exceptionsRetainIdentityAndLaterCallbacksAreNotInvoked()]
+display-name: exceptionsRetainIdentityAndLaterCallbacksAreNotInvoked()
+]]></system-out>
+</testcase>
+<testcase name="conflictUsesOtherMajorOrderAndStopsAtFirstMatchingPair()" classname="com.synexia.eclipse.contract.MultiRuleContractTest" time="0.011">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.synexia.eclipse.contract.MultiRuleContractTest]/[method:conflictUsesOtherMajorOrderAndStopsAtFirstMatchingPair()]
+display-name: conflictUsesOtherMajorOrderAndStopsAtFirstMatchingPair()
+]]></system-out>
+</testcase>
+<testcase name="combinesIdentityNullAndContainmentWithoutExtraCallbacks()" classname="com.synexia.eclipse.contract.MultiRuleContractTest" time="0.002">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.synexia.eclipse.contract.MultiRuleContractTest]/[method:combinesIdentityNullAndContainmentWithoutExtraCallbacks()]
+display-name: combinesIdentityNullAndContainmentWithoutExtraCallbacks()
+]]></system-out>
+</testcase>
+<testcase name="preservesNullChildAndNullArgumentBehaviorAtTheObservedPosition()" classname="com.synexia.eclipse.contract.MultiRuleContractTest" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.synexia.eclipse.contract.MultiRuleContractTest]/[method:preservesNullChildAndNullArgumentBehaviorAtTheObservedPosition()]
+display-name: preservesNullChildAndNullArgumentBehaviorAtTheObservedPosition()
+]]></system-out>
+</testcase>
+<testcase name="mutableRulesRemainLiveAndNeverBecomeCachedPredicateResults()" classname="com.synexia.eclipse.contract.MultiRuleContractTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.synexia.eclipse.contract.MultiRuleContractTest]/[method:mutableRulesRemainLiveAndNeverBecomeCachedPredicateResults()]
+display-name: mutableRulesRemainLiveAndNeverBecomeCachedPredicateResults()
+]]></system-out>
+</testcase>
+<testcase name="testIsConflicting()" classname="org.eclipse.core.tests.runtime.jobs.MultiRuleTest" time="0.125">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:org.eclipse.core.tests.runtime.jobs.MultiRuleTest]/[method:testIsConflicting()]
+display-name: testIsConflicting()
+]]></system-out>
+</testcase>
+<testcase name="flattenPreservesDuplicatesNullsOrderAndDefensiveCopies()" classname="com.synexia.eclipse.contract.MultiRuleContractTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.synexia.eclipse.contract.MultiRuleContractTest]/[method:flattenPreservesDuplicatesNullsOrderAndDefensiveCopies()]
+display-name: flattenPreservesDuplicatesNullsOrderAndDefensiveCopies()
+]]></system-out>
+</testcase>
+<testcase name="finiteSetOracleCoversAllFourBitRulePairsAndTargets()" classname="com.synexia.eclipse.contract.MultiRuleContractTest" time="0.057">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.synexia.eclipse.contract.MultiRuleContractTest]/[method:finiteSetOracleCoversAllFourBitRulePairsAndTargets()]
+display-name: finiteSetOracleCoversAllFourBitRulePairsAndTargets()
+]]></system-out>
+</testcase>
+<testcase name="arrayCombineUsesLeftToRightReductionAndOriginalReturnIdentity()" classname="com.synexia.eclipse.contract.MultiRuleContractTest" time="0">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.synexia.eclipse.contract.MultiRuleContractTest]/[method:arrayCombineUsesLeftToRightReductionAndOriginalReturnIdentity()]
+display-name: arrayCombineUsesLeftToRightReductionAndOriginalReturnIdentity()
+]]></system-out>
+</testcase>
+<testcase name="flattenIsOneLevelEvenWhenAnOverriddenProjectionContainsMultiRule()" classname="com.synexia.eclipse.contract.MultiRuleContractTest" time="0.002">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.synexia.eclipse.contract.MultiRuleContractTest]/[method:flattenIsOneLevelEvenWhenAnOverriddenProjectionContainsMultiRule()]
+display-name: flattenIsOneLevelEvenWhenAnOverriddenProjectionContainsMultiRule()
+]]></system-out>
+</testcase>
+<testcase name="flattenCallsEachProjectionOnceAndObservesInputMutationInOrder()" classname="com.synexia.eclipse.contract.MultiRuleContractTest" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.synexia.eclipse.contract.MultiRuleContractTest]/[method:flattenCallsEachProjectionOnceAndObservesInputMutationInOrder()]
+display-name: flattenCallsEachProjectionOnceAndObservesInputMutationInOrder()
+]]></system-out>
+</testcase>
+<testcase name="testContains()" classname="org.eclipse.core.tests.runtime.jobs.MultiRuleTest" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:org.eclipse.core.tests.runtime.jobs.MultiRuleTest]/[method:testContains()]
+display-name: testContains()
+]]></system-out>
+</testcase>
+<testcase name="selfAndEmptyRulesDoNotEvaluateChildrenOrProjectedChildren()" classname="com.synexia.eclipse.contract.MultiRuleContractTest" time="0.001">
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]/[class:com.synexia.eclipse.contract.MultiRuleContractTest]/[method:selfAndEmptyRulesDoNotEvaluateChildrenOrProjectedChildren()]
+display-name: selfAndEmptyRulesDoNotEvaluateChildrenOrProjectedChildren()
+]]></system-out>
+</testcase>
+<system-out><![CDATA[
+unique-id: [engine:junit-jupiter]
+display-name: JUnit Jupiter
+]]></system-out>
+</testsuite>

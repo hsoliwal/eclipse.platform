@@ -57,7 +57,7 @@ public class ThreeWaySynchronizer {
 	 *
 	 * @see BatchingLock#flush(IProgressMonitor)
 	 */
-	private final IFlushOperation flushOperation = (info, _) -> {
+	private final IFlushOperation flushOperation = (info, unused) -> {
 		if (info != null && !info.isEmpty()) {
 			broadcastSyncChanges(info.getChangedResources());
 		}

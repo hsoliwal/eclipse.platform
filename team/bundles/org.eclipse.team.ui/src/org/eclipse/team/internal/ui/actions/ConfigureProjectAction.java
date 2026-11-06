@@ -32,7 +32,7 @@ public class ConfigureProjectAction extends TeamAction {
 	@Override
 	protected void execute(IAction action) throws InvocationTargetException,
 			InterruptedException {
-		run(_ -> {
+		run(unused -> {
 			try {
 				if (!isEnabled()) {
 					return;

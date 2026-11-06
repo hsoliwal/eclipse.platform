@@ -1,0 +1,11 @@
+# Copyright (c) 2026 Synexia, Hitesh Soliwal (hsoliwal@gmail.com) and others.
+# SPDX-License-Identifier: Apache-2.0 OR EPL-2.0
+# View template spec (brief rule 27); inventory row in docs/m3/platform-views/ECLIPSE_PLATFORM_VIEW_INVENTORY.tsv.
+view.id=org.eclipse.debug.ui.VariableView
+element=IVariable
+source=debug-events
+lanes=id:long, name:label, type:label, value:label, depth:byte, changed:bits
+group=none
+sort=id
+presentation=tree
+label=VariableLabelProvider

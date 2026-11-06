@@ -2405,7 +2405,7 @@ public class UnifiedDiffManager {
 		final boolean result[] = new boolean[] { false };
 		try {
 			final IFile fFile = file;
-			ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) _ -> {
+			ResourcesPlugin.getWorkspace().run((IWorkspaceRunnable) unused -> {
 				IStatus status = ResourcesPlugin.getWorkspace().validateEdit(new IFile[] { fFile }, null);
 				if (status != null) {
 					if (status.isOK()) {

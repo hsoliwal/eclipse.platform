@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "target_repository": "https://github.com/hsoliwal/eclipse.platform",
+  "target_revision": "69291c18babd233a94b742798b3d1078979bf78c",
+  "source_repository": "https://github.com/hsoliwal/com.synexia",
+  "source_base_revision": "140c263a90f9803b9c46103c63355a286e0515f0",
+  "recipe": "com.synexia.eclipse.RulesForwarding20261018",
+  "recipe_physical_root": "runtime",
+  "inputs": [
+    {
+      "path": "runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/runtime/jobs/MultiRule.java",
+      "sha256": "fda7102eb735446c91654af9b76fb5947349e9dcb56af0c190c05ac88a7b8d36"
+    },
+    {
+      "path": "runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/runtime/jobs/ISchedulingRule.java",
+      "sha256": "4eca892b5be91919352d890bdd452e9601dba23d00c7ccb69043054c0fc82de0"
+    },
+    {
+      "path": "runtime/bundles/org.eclipse.core.jobs/META-INF/MANIFEST.MF",
+      "sha256": "deab0d166b3a550d96d61ec614b28c62549f019e914bcec397b729144b5d688f"
+    },
+    {
+      "path": "runtime/bundles/org.eclipse.core.jobs/build.properties",
+      "sha256": "aa0650a30be4bd58ba9141f5f73f5348db31d08f91979fd1820d54ebc417cc65"
+    }
+  ],
+  "upstream_fixtures": [
+    {
+      "path": "runtime/tests/org.eclipse.core.tests.runtime/src/org/eclipse/core/tests/runtime/jobs/MultiRuleTest.java",
+      "sha256": "cdf9ee2f681f265259a57f2c05ad9ff8fbbb46faa90e25ea93173e1e2be17df2"
+    },
+    {
+      "path": "runtime/tests/org.eclipse.core.tests.runtime/src/org/eclipse/core/tests/runtime/jobs/AbstractJobTest.java",
+      "sha256": "b740be8dd8b32f496d8894ff4c2ccd2c81d16edcd005e2486209bf3a6cb26f2e"
+    },
+    {
+      "path": "runtime/tests/org.eclipse.core.tests.runtime/src/org/eclipse/core/tests/runtime/jobs/FussyProgressProvider.java",
+      "sha256": "34d3efd915e9c274ba69947d63bcb68c68be28a5195aea9dcf0335a272c0fd40"
+    },
+    {
+      "path": "runtime/tests/org.eclipse.core.tests.runtime/src/org/eclipse/core/tests/runtime/jobs/PathRule.java",
+      "sha256": "439c6c51c4c5f0142ea2732bd71fb5cf2e210633337abdcb572b172905da657f"
+    },
+    {
+      "path": "runtime/tests/org.eclipse.core.tests.harness/src/org/eclipse/core/tests/harness/FussyProgressMonitor.java",
+      "sha256": "9aee0fdc36f13213fc11e0cf4ab5ae16d9fcfaf559041ec599dd87169a8d919f"
+    },
+    {
+      "path": "runtime/tests/org.eclipse.core.tests.harness/src/org/eclipse/core/tests/harness/TestProgressMonitor.java",
+      "sha256": "4f8aa81137db260cd4e20c2bb728a6757e043af209215b62f53b816c7e9fc9e7"
+    }
+  ],
+  "dependencies": {
+    "common": {
+      "filename": "org.eclipse.equinox.common-3.21.0.jar",
+      "sha256": "2545ed27d408f19882695703097e5998bf25652bd0dac76a8e6d1391ec228ab7"
+    },
+    "osgi": {
+      "filename": "org.eclipse.osgi-3.24.300.jar",
+      "sha256": "4a770aa4a78df653af871073c8b4ddd56884895f5fc71d10c40b4289ac7c8b9f"
+    },
+    "assertj": {
+      "filename": "assertj-core-3.27.5.jar",
+      "sha256": "d22ce70d4443c88034917696bdee1063f858c9a47f58ae341cf83f151f7be460"
+    },
+    "junit_console": {
+      "filename": "junit-platform-console-standalone-1.10.2.jar",
+      "sha256": "a1de557821293ce903c213c694165fff532cf92081bac4238b9e05b35f04f43f"
+    }
+  },
+  "sdk": "org.openrewrite:rewrite-java:8.17.1",
+  "java_release": 17,
+  "source_owner_history": [
+    "6d19032f2632e64399a249d686c2d2fba7c0bc4b",
+    "5b65dde88728b98e82163ad0b834b79af82d612d"
+  ]
+}

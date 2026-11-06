@@ -1,0 +1,5 @@
+file	lines	sha256
+diff-stock.txt	390850	3a86fa7195d37d0fd0e9b0c74ca84b59c6f438a76b1ed6e58d608d52e905a21e
+diff-ours.txt	390850	3a86fa7195d37d0fd0e9b0c74ca84b59c6f438a76b1ed6e58d608d52e905a21e
+mismatching lines: 0
+classpath stock: org.eclipse.debug.ui-3.22.0.jar (Maven Central, v20260817-0925); ours: S:/m3-scratch/platform-views/ours/classes in front of it

@@ -91,7 +91,7 @@ public abstract class CompareViewerSwitchingPane extends CompareViewerPane {
 		setViewer(new NullViewer(this));
 
 		addDisposeListener(
-			_ -> {
+			unused -> {
 				if (fViewer != null) {
 					fViewer.removeSelectionChangedListener(CompareViewerSwitchingPane.this);
 				}

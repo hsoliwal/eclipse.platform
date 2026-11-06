@@ -44,13 +44,7 @@ public class ResourceChangeListenerList {
 
 		@Override
 		public String toString() {
-			StringBuilder sb = new StringBuilder();
-			sb.append("Listener [eventMask="); //$NON-NLS-1$
-			sb.append(eventMask);
-			sb.append(", "); //$NON-NLS-1$
-			sb.append(listener);
-			sb.append("]"); //$NON-NLS-1$
-			return sb.toString();
+			return "Listener [eventMask=" + eventMask + ", " + listener + "]"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 	}
 

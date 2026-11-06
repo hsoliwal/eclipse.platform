@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2026 Hitesh Soliwal and Contributors to the Synexia Project
+# SPDX-License-Identifier: Apache-2.0
+type: specs.openrewrite.org/v1beta/recipe
+name: com.synexia.eclipse.RulesForwarding20261018
+displayName: M3 Eclipse compound scheduling rule forwarding
+description: Generate the internal array owner and seven public forwards from exact Eclipse source preimages.
+recipeList:
+  - com.synexia.rewrite.M3HashPinnedJavaSnapshotRecipe:
+      crateName: m3-eclipse-rules-forwarding-20261018

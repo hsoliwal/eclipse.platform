@@ -1,0 +1,63 @@
+== seed 1 flat
+move
+  input f=0 i=-1 n=-1
+  C[null] bps=0:
+  answers bp-89 in=false idx=-1
+remove 2
+  input f=0 i=-1 n=-1
+  C[null] bps=0:
+  answers bp-55 in=false idx=-1
+add 15
+  input f=1048576 i=0 n=15
+    bp0 f=4194305 i=0 n=0
+    bp1 f=4194305 i=1 n=0
+    bp2 f=4194305 i=0 n=0
+    bp3 f=4194305 i=2 n=0
+    bp4 f=4194305 i=0 n=0
+    bp5 f=4194305 i=0 n=0
+    bp6 f=4194305 i=2 n=0
+    bp7 f=4194305 i=7 n=0
+    bp8 f=4194305 i=2 n=0
+    bp9 f=4194305 i=6 n=0
+    bp10 f=4194305 i=1 n=0
+    bp11 f=4194305 i=3 n=0
+    bp12 f=4194305 i=11 n=0
+    bp13 f=4194305 i=2 n=0
+    bp14 f=4194305 i=0 n=0
+  C[null] bps=15: bp14 bp5 bp10 bp13 bp4 bp11 bp8 bp6 bp2 bp0 bp9 bp3 bp1 bp12 bp7
+  answers bp11 in=true idx=5 containers=1; bp0 in=true idx=9 containers=1; bp6 in=true idx=7 containers=1; bp10 in=true idx=2 containers=1; bp-59 in=false idx=-1
+add 3
+  input f=1048576 i=0 n=18
+    bp15 f=4194305 i=8 n=0
+    bp16 f=4194305 i=4 n=0
+    bp17 f=4194305 i=4 n=0
+  C[null] bps=18: bp14 bp5 bp10 bp13 bp17 bp16 bp4 bp11 bp8 bp6 bp15 bp2 bp0 bp9 bp3 bp1 bp12 bp7
+  answers bp5 in=true idx=1 containers=1; bp2 in=true idx=11 containers=1; bp1 in=true idx=15 containers=1; bp4 in=true idx=6 containers=1; bp-16 in=false idx=-1
+change 3
+  C[null] bps=18: bp14 bp5 bp10 bp13 bp17 bp16 bp4 bp11 bp8 bp6 bp15 bp2 bp0 bp9 bp3 bp1 bp12 bp7
+  answers bp0 in=true idx=12 containers=1; bp17 in=true idx=4 containers=1; bp12 in=true idx=16 containers=1; bp3 in=true idx=14 containers=1; bp-70 in=false idx=-1
+sort rebuild=false
+  C[null] bps=18: bp14 bp5 bp10 bp13 bp17 bp16 bp4 bp11 bp8 bp6 bp15 bp2 bp0 bp9 bp3 bp1 bp12 bp7
+  answers bp13 in=true idx=3 containers=1; bp0 in=true idx=12 containers=1; bp9 in=true idx=13 containers=1; bp6 in=true idx=9 containers=1; bp-75 in=false idx=-1
+add 6
+  input f=1048576 i=0 n=24
+    bp18 f=4194305 i=15 n=0
+    bp19 f=4194305 i=6 n=0
+    bp20 f=4194305 i=9 n=0
+    bp21 f=4194305 i=10 n=0
+    bp22 f=4194305 i=21 n=0
+    bp23 f=4194305 i=11 n=0
+  C[null] bps=24: bp14 bp5 bp10 bp13 bp17 bp16 bp19 bp4 bp11 bp20 bp21 bp23 bp8 bp6 bp15 bp2 bp0 bp9 bp3 bp18 bp1 bp12 bp22 bp7
+  answers bp17 in=true idx=4 containers=1; bp9 in=true idx=17 containers=1; bp22 in=true idx=22 containers=1; bp17 in=true idx=4 containers=1; bp-46 in=false idx=-1
+remove 1
+  input f=0 i=-1 n=-1
+    bp16 f=8388610 i=-1 n=-1
+  C[null] bps=23: bp14 bp5 bp10 bp13 bp17 bp19 bp4 bp11 bp20 bp21 bp23 bp8 bp6 bp15 bp2 bp0 bp9 bp3 bp18 bp1 bp12 bp22 bp7
+  answers bp11 in=true idx=7 containers=1; bp4 in=true idx=6 containers=1; bp10 in=true idx=2 containers=1; bp6 in=true idx=12 containers=1; bp-97 in=false idx=-1
+add 2
+  input f=1048576 i=0 n=25
+    bp24 f=4194305 i=10 n=0
+    bp25 f=4194305 i=12 n=0
+  C[null] bps=25: bp14 bp5 bp10 bp13 bp17 bp19 bp4 bp11 bp20 bp21 bp24 bp23 bp25 bp8 bp6 bp15 bp2 bp0 bp9 bp3 bp18 bp1 bp12 bp22 bp7
+  answers bp21 in=true idx=9 containers=1; bp6 in=true idx=14 containers=1; bp14 in=true idx=0 containers=1; bp17 in=true idx=4 containers=1; bp-17 in=false idx=-1
+remo

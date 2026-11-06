@@ -827,11 +827,7 @@ public class Utils {
 		int subStrLen = (maxWidth - ellipsis.length()) / 2;
 		int addtl = (maxWidth - ellipsis.length()) % 2;
 
-		StringBuilder sb = new StringBuilder(maxWidth);
-		sb.append(textValue.substring(0, subStrLen));
-		sb.append(ellipsis);
-		sb.append(textValue.substring(length - subStrLen - addtl));
-		return sb.toString();
+		return textValue.substring(0, subStrLen) + ellipsis + textValue.substring(length - subStrLen - addtl);
 	}
 
 	public static String getTypeName(ISynchronizeParticipant participant) {

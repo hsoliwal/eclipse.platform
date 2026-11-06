@@ -1,0 +1,30 @@
+/tmp/eclipse-m3-20261018/rules-reproduction/candidate/runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/runtime/jobs/Job.java:182: warning: [overloads] create(String,ICoreRunnable) in Job is potentially ambiguous with create(String,IJobFunction) in Job
+	public static Job create(String name, final ICoreRunnable runnable) {
+	                  ^
+/tmp/eclipse-m3-20261018/rules-reproduction/candidate/runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/runtime/jobs/Job.java:230: warning: [overloads] createSystem(String,ICoreRunnable) in Job is potentially ambiguous with createSystem(String,IJobFunction) in Job
+	public static Job createSystem(String name, final ICoreRunnable runnable) {
+	                  ^
+/tmp/eclipse-m3-20261018/rules-reproduction/candidate/runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/JobManager.java:447: warning: [fallthrough] possible fall-through into case
+			case Job.NONE:
+			^
+/tmp/eclipse-m3-20261018/rules-reproduction/candidate/runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/JobManager.java:490: warning: [fallthrough] possible fall-through into case
+			case InternalJob.BLOCKED:
+			^
+/tmp/eclipse-m3-20261018/rules-reproduction/candidate/runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/JobManager.java:511: warning: [fallthrough] possible fall-through into case
+			case InternalJob.ABOUT_TO_SCHEDULE:
+			^
+/tmp/eclipse-m3-20261018/rules-reproduction/candidate/runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/ObjectMap.java:107: warning: [unchecked] unchecked conversion
+		return count == 0 ? Collections.EMPTY_SET : toHashMap().entrySet();
+		                               ^
+  required: Set<Entry<K,V>>
+  found:    Set
+  where K,V are type-variables:
+    K extends Object declared in class ObjectMap
+    V extends Object declared in class ObjectMap
+/tmp/eclipse-m3-20261018/rules-reproduction/candidate/runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/ObjectMap.java:54: warning: [this-escape] possible 'this' escape before subclass is fully initialized
+		putAll(map);
+		      ^
+/tmp/eclipse-m3-20261018/rules-reproduction/candidate/runtime/bundles/org.eclipse.core.jobs/src/org/eclipse/core/internal/jobs/Worker.java:35: warning: [this-escape] possible 'this' escape before subclass is fully initialized
+		this.generalName = getName();
+		                          ^
+8 warnings

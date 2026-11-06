@@ -263,7 +263,7 @@ public abstract class PatchCompareEditorInput extends CompareEditorInput {
 				HunkDiffNode hunkNode = HunkDiffNode.createDiffNode(node, hunkResult, true);
 				Object left = hunkNode.getLeft();
 				if (left instanceof UnmatchedHunkTypedElement element) {
-					element.addContentChangeListener(_ -> {
+					element.addContentChangeListener(unused -> {
 						if (getViewer() == null || getViewer().getControl().isDisposed()) {
 							return;
 						}

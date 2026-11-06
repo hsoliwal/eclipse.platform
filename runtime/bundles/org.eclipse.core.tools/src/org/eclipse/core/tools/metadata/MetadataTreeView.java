@@ -165,7 +165,7 @@ public class MetadataTreeView extends SpyView {
 		viewer.getControl().setMenu(menu);
 
 		// associates double-click to dump file action
-		viewer.addDoubleClickListener(_ -> dumpFileAction.run());
+		viewer.addDoubleClickListener(unused -> dumpFileAction.run());
 	}
 
 	/**

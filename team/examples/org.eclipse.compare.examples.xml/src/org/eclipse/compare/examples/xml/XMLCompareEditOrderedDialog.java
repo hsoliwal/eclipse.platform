@@ -85,7 +85,7 @@ public class XMLCompareEditOrderedDialog extends StatusDialog {
 		fElementText= new Text(inner, SWT.BORDER);
 		fElementText.setText(fMapping.getElement());
 		fElementText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		fElementText.addModifyListener(_ -> doValidation());
+		fElementText.addModifyListener(unused -> doValidation());
 
 		//Signature
 		label= new Label(inner, SWT.NULL);
@@ -97,7 +97,7 @@ public class XMLCompareEditOrderedDialog extends StatusDialog {
 		GridData data= new GridData(GridData.FILL_HORIZONTAL);
 		data.widthHint= convertWidthInCharsToPixels(50);
 		fSignatureText.setLayoutData(data);
-		fSignatureText.addModifyListener(_ -> doValidation());
+		fSignatureText.addModifyListener(unused -> doValidation());
 
 		fElementText.setFocus();
 

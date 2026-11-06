@@ -427,7 +427,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		public FoldedRegionCodeMining(Position position, ICodeMiningProvider provider, ITextViewer viewer,
 				Annotation foldAnnotation, int foldableLines, boolean collapsed, Color separatorColor,
 				Color buttonColor) throws BadLocationException {
-			super(position, provider, _ -> {
+			super(position, provider, unused -> {
 				if (collapsed) {
 					UnifiedDiffManager.expandFoldRegion(viewer, foldAnnotation);
 				} else {
@@ -613,7 +613,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 					store.getBoolean(AbstractTextEditor.PREFERENCE_SHOW_LINE_FEED),
 					store.getInt(AbstractTextEditor.PREFERENCE_WHITESPACE_CHARACTER_ALPHA_VALUE));
 			overlayViewer.addPainter(painter);
-			overlayViewer.getTextWidget().addDisposeListener(_ -> {
+			overlayViewer.getTextWidget().addDisposeListener(unused -> {
 				painter.deactivate(false);
 				painter.dispose();
 			});
@@ -735,7 +735,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		}
 
 		private void clearStyledFonts() {
-			styledFonts.forEach((_, map) -> map.forEach((_, f) -> f.dispose()));
+			styledFonts.forEach((unused, map) -> map.forEach((unused2, f) -> f.dispose()));
 			styledFonts.clear();
 		}
 
@@ -1125,7 +1125,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 	private static WhitespaceConfig readWhitespaceConfigUncached() {
 		IPreferenceStore store = EditorsUI.getPreferenceStore();
 		if (whitespaceConfigListener == null) {
-			whitespaceConfigListener = _ -> cachedWhitespaceConfig = HAS_NO_CACHE;
+			whitespaceConfigListener = unused -> cachedWhitespaceConfig = HAS_NO_CACHE;
 			store.addPropertyChangeListener(whitespaceConfigListener);
 		}
 		if (!store.getBoolean(AbstractTextEditor.PREFERENCE_SHOW_WHITESPACE_CHARACTERS)) {
@@ -1656,8 +1656,8 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		}
 
 		private void clearStyledFonts() {
-			styledFonts.forEach((_, styledFonts1) -> {
-				styledFonts1.forEach((_, styledFont) -> {
+			styledFonts.forEach((unused, styledFonts1) -> {
+				styledFonts1.forEach((unused3, styledFont) -> {
 					styledFont.dispose();
 				});
 				styledFonts1.clear();
@@ -2080,8 +2080,8 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 		// already set
 		if (styleRange.font == null && styleRange.fontStyle > 0) {
 			StyleRange newRange = (StyleRange) styleRange.clone();
-			newRange.font = styledFonts.computeIfAbsent(baseFont, _ -> new HashMap<>())
-					.computeIfAbsent(Integer.valueOf(styleRange.fontStyle), _ -> {
+			newRange.font = styledFonts.computeIfAbsent(baseFont, unused -> new HashMap<>())
+					.computeIfAbsent(Integer.valueOf(styleRange.fontStyle), unused -> {
 						FontData[] fontDatas = baseFont.getFontData();
 						for (FontData fontData : fontDatas) {
 							fontData.setStyle(styleRange.fontStyle);

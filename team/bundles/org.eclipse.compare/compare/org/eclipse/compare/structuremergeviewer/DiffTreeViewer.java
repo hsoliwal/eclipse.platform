@@ -249,7 +249,7 @@ public class DiffTreeViewer extends TreeViewer {
 		setContentProvider(new DiffViewerContentProvider());
 		setLabelProvider(diffViewerLabelProvider);
 
-		addSelectionChangedListener(_ -> updateActions());
+		addSelectionChangedListener(unused -> updateActions());
 		addDoubleClickListener(this::expandCollapseAction);
 
 		setComparator(new DiffViewerComparator());
@@ -466,7 +466,7 @@ public class DiffTreeViewer extends TreeViewer {
 	 *
 	 * @since 2.0
 	 */
-	protected void expandSelection() {
+	public void expandSelection() {
 		ISelection selection= getSelection();
 		if (selection instanceof IStructuredSelection) {
 			Iterator<?> elements= ((IStructuredSelection) selection).iterator();

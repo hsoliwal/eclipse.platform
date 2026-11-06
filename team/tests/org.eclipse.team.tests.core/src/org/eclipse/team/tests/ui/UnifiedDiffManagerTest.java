@@ -135,7 +135,7 @@ public class UnifiedDiffManagerTest {
 	private static final String MAKE_WRITABLE_WITHOUT_CONTEXT_KEY = "org.eclipse.team.ui.validate_edit_with_no_context";
 	private String previousMakeWritable;
 	private final List<IStatus> loggedErrors = synchronizedList(new ArrayList<>());
-	private final ILogListener logListener = (status, _) -> {
+	private final ILogListener logListener = (status, unused) -> {
 		if (status.getSeverity() == IStatus.ERROR) {
 			loggedErrors.add(status);
 		}
