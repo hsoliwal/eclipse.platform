@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
+import org.eclipse.compare.ICompareFilter;
 import org.eclipse.compare.contentmergeviewer.IIgnoreWhitespaceContributor;
 import org.eclipse.compare.contentmergeviewer.ITokenComparator;
 import org.eclipse.compare.contentmergeviewer.TokenComparator;
@@ -57,16 +58,22 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.commands.ActionHandler;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension4;
+import org.eclipse.jface.text.ITextSelection;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextViewer;
+import org.eclipse.jface.text.ITextViewerExtension5;
 import org.eclipse.jface.text.Position;
+import org.eclipse.jface.text.Region;
 import org.eclipse.jface.text.codemining.ICodeMining;
 import org.eclipse.jface.text.source.Annotation;
 import org.eclipse.jface.text.source.AnnotationModel;
@@ -82,7 +89,9 @@ import org.eclipse.jface.text.source.inlined.AbstractInlinedAnnotation;
 import org.eclipse.jface.text.source.projection.ProjectionAnnotation;
 import org.eclipse.jface.text.source.projection.ProjectionAnnotationModel;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
@@ -108,25 +117,43 @@ import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.text.undo.DocumentUndoManagerRegistry;
 import org.eclipse.text.undo.IDocumentUndoListener;
 import org.eclipse.text.undo.IDocumentUndoManager;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.contexts.IContextActivation;
+import org.eclipse.ui.contexts.IContextService;
+import org.eclipse.ui.handlers.IHandlerActivation;
+import org.eclipse.ui.handlers.IHandlerService;
+import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.texteditor.ITextEditor;
+import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 
 public class UnifiedDiffManager {
 
 	private static final String CURRENT_SELECTED_UNIFIED_DIFF_ANNO_KEY = "CURRENT_SELECTED_UNIFIED_DIFF_ANNO_KEY"; //$NON-NLS-1$
 	private static final String UNDO_LISTENER_KEY = "UNIFIED_DIFF_UNDO_LISTENER_KEY"; //$NON-NLS-1$
 	private static final String UNIFIED_DIFF_ANNOTATION_MODEL_LISTENER_KEY = "UNIFIED_DIFF_ANNOTATION_MODEL_LISTENER_KEY"; //$NON-NLS-1$
+	private static final String UNIFIED_DIFF_CONTEXT_ID = "org.eclipse.compare.unifiedDiffScope"; //$NON-NLS-1$
+	private static final String UNIFIED_DIFF_COMMAND_HANDLERS_KEY = "UNIFIED_DIFF_COMMAND_HANDLERS_KEY"; //$NON-NLS-1$
+	static final String ACCEPT_ALL_DIFFS_COMMAND_ID = "org.eclipse.compare.acceptAllDiffs"; //$NON-NLS-1$
+	static final String ACCEPT_CURRENT_DIFF_COMMAND_ID = "org.eclipse.compare.acceptCurrentDiff"; //$NON-NLS-1$
+	static final String HIDE_CURRENT_DIFF_COMMAND_ID = "org.eclipse.compare.hideCurrentDiff"; //$NON-NLS-1$
 	private static final String UNIFIED_DIFF_FOLD_LISTENER_KEY = "UNIFIED_DIFF_FOLD_LISTENER_KEY"; //$NON-NLS-1$
 	private static final String UNIFIED_DIFF_SHADOWED_FOLDS_KEY = "UNIFIED_DIFF_SHADOWED_FOLDS_KEY"; //$NON-NLS-1$
 	private static final String ADDITION_ANNO_TYPE = "org.eclipse.compare.unifieddiff.internal.addition"; //$NON-NLS-1$
 	private static final String DELETION_ANNO_TYPE = "org.eclipse.compare.unifieddiff.internal.deletion"; //$NON-NLS-1$
+	private static final String ADDITION_RULER_ANNO_TYPE = "org.eclipse.compare.unifieddiff.internal.addition.ruler"; //$NON-NLS-1$
+	private static final String DELETION_RULER_ANNO_TYPE = "org.eclipse.compare.unifieddiff.internal.deletion.ruler"; //$NON-NLS-1$
 	private static final String DETAILED_ADDITION_ANNO_TYPE = "org.eclipse.compare.unifieddiff.internal.detailedAddition"; //$NON-NLS-1$
 	private static final String DETAILED_DELETION_ANNO_TYPE = "org.eclipse.compare.unifieddiff.internal.detailedDeletion"; //$NON-NLS-1$
 	private static final String TOOLBAR_COMPOSITE_FOR_ONE_DIFF_KEY = "TOOLBAR_COMPOSITE_FOR_ONE_DIFF_KEY"; //$NON-NLS-1$
 	private static final String TOOLBAR_COMPOSITE_FOR_ALL_DIFFS_KEY = "TOOLBAR_COMPOSITE_FOR_ALL_DIFFS_KEY"; //$NON-NLS-1$
 	private static final String TOOLBAR_ACTION_PRESENTATIONS_KEY = "TOOLBAR_ACTION_PRESENTATIONS_KEY"; //$NON-NLS-1$
 	private static final Map<ITextViewer, List<UnifiedDiff>> diffsByViewer = new HashMap<>();
+	// The workspace file behind each viewer's document, so the accept/revert/undo
+	// actions can run validateEdit lazily, right before they modify the document.
+	private static final Map<ITextViewer, IFile> fileByViewer = new HashMap<>();
 
 	/**
 
@@ -186,15 +213,17 @@ public class UnifiedDiffManager {
 
 	public static IStatus open(ITextEditor editor, String source, UnifiedDiffMode mode, List<Action> additionalActions,
 			TokenComparatorFactory tokenComparatorFactory,
-			IgnoreWhitespaceContributorFactory ignoreWhitespaceContributorFactory, boolean ignoreWhiteSpace,
-			int foldContextLines) {
+			IgnoreWhitespaceContributorFactory ignoreWhitespaceContributorFactory, ICompareFilter[] compareFilters,
+			char leftContributor, char rightContributor, boolean ignoreWhiteSpace, int foldContextLines) {
 		return open(editor, source, mode, additionalActions, tokenComparatorFactory, ignoreWhitespaceContributorFactory,
-				ignoreWhiteSpace, foldContextLines, ToolbarActionPresentations.NONE);
+				compareFilters, leftContributor, rightContributor, ignoreWhiteSpace, foldContextLines,
+				ToolbarActionPresentations.NONE);
 	}
 
 	public static IStatus open(ITextEditor editor, String source, UnifiedDiffMode mode, List<Action> additionalActions,
 			TokenComparatorFactory tokenComparatorFactory,
-			IgnoreWhitespaceContributorFactory ignoreWhitespaceContributorFactory, boolean ignoreWhiteSpace,
+			IgnoreWhitespaceContributorFactory ignoreWhitespaceContributorFactory, ICompareFilter[] compareFilters,
+			char leftContributor, char rightContributor, boolean ignoreWhiteSpace,
 			int foldContextLines, ToolbarActionPresentations toolbarActionPresentations) {
 		ITextViewer viewer = editor.getAdapter(ITextViewer.class);
 		IDocument leftDocument = editor.getDocumentProvider().getDocument(editor.getEditorInput());
@@ -204,8 +233,119 @@ public class UnifiedDiffManager {
 			return Status.CANCEL_STATUS;
 		}
 		IFile file = editor.getEditorInput().getAdapter(IFile.class);
-		return open(viewer, leftDocument, model, file, source, mode, additionalActions, tokenComparatorFactory,
-				ignoreWhitespaceContributorFactory, ignoreWhiteSpace, foldContextLines, toolbarActionPresentations);
+		IStatus status = open(viewer, leftDocument, model, file, source, mode, additionalActions, tokenComparatorFactory,
+				ignoreWhitespaceContributorFactory, compareFilters, leftContributor, rightContributor, ignoreWhiteSpace,
+				foldContextLines, toolbarActionPresentations);
+		if (status.isOK()) {
+			registerCommandHandlers(editor, viewer, model);
+		}
+		return status;
+	}
+
+	private record UnifiedDiffCommandHandlers(IActionBars actionBars, IAction previousNext, IAction previousPrevious,
+			IAction previousNextAnnotation, IAction previousPreviousAnnotation, IHandlerService handlerService,
+			IHandlerActivation hideAllActivation, IHandlerActivation acceptAllActivation,
+			IHandlerActivation acceptCurrentActivation, IHandlerActivation hideCurrentActivation,
+			IContextService contextService, IContextActivation contextActivation) {
+		void dispose() {
+			actionBars.setGlobalActionHandler(ActionFactory.NEXT.getId(), previousNext);
+			actionBars.setGlobalActionHandler(ActionFactory.PREVIOUS.getId(), previousPrevious);
+			actionBars.setGlobalActionHandler(ITextEditorActionDefinitionIds.GOTO_NEXT_ANNOTATION,
+					previousNextAnnotation);
+			actionBars.setGlobalActionHandler(ITextEditorActionDefinitionIds.GOTO_PREVIOUS_ANNOTATION,
+					previousPreviousAnnotation);
+			if (handlerService != null) {
+				if (hideAllActivation != null) {
+					handlerService.deactivateHandler(hideAllActivation);
+				}
+				if (acceptAllActivation != null) {
+					handlerService.deactivateHandler(acceptAllActivation);
+				}
+				if (acceptCurrentActivation != null) {
+					handlerService.deactivateHandler(acceptCurrentActivation);
+				}
+				if (hideCurrentActivation != null) {
+					handlerService.deactivateHandler(hideCurrentActivation);
+				}
+			}
+			if (contextActivation != null && contextService != null) {
+				contextService.deactivateContext(contextActivation);
+			}
+			actionBars.updateActionBars();
+		}
+	}
+
+	private static void registerCommandHandlers(ITextEditor editor, ITextViewer viewer, IAnnotationModel model) {
+		StyledText textWidget = viewer.getTextWidget();
+		if (textWidget == null || textWidget.isDisposed()) {
+			return;
+		}
+		unregisterCommandHandlers(textWidget);
+		IActionBars actionBars = editor.getEditorSite().getActionBars();
+		if (actionBars == null) {
+			return;
+		}
+		IAction previousNext = actionBars.getGlobalActionHandler(ActionFactory.NEXT.getId());
+		IAction previousPrevious = actionBars.getGlobalActionHandler(ActionFactory.PREVIOUS.getId());
+		IAction previousNextAnnotation = actionBars
+				.getGlobalActionHandler(ITextEditorActionDefinitionIds.GOTO_NEXT_ANNOTATION);
+		IAction previousPreviousAnnotation = actionBars
+				.getGlobalActionHandler(ITextEditorActionDefinitionIds.GOTO_PREVIOUS_ANNOTATION);
+		IAction previousAction = createNavigationAction(ActionFactory.PREVIOUS.getCommandId(),
+				new PreviousRunnable(viewer, model, null));
+		IAction nextAction = createNavigationAction(ActionFactory.NEXT.getCommandId(), new NextRunnable(viewer, model, null));
+		IAction hideAllAction = createNavigationAction(HideAllDiffsRunnable.COMMAND_ID,
+				new HideAllDiffsRunnable(viewer, model));
+		IAction acceptAllAction = createNavigationAction(ACCEPT_ALL_DIFFS_COMMAND_ID,
+				new AcceptAllRunnable(viewer, model));
+		IAction acceptCurrentAction = createNavigationAction(ACCEPT_CURRENT_DIFF_COMMAND_ID,
+				() -> applyDiffRightStr(viewer, model));
+		IAction hideCurrentAction = createNavigationAction(HIDE_CURRENT_DIFF_COMMAND_ID,
+				() -> dismissCurrentDiff(viewer, model));
+		IHandlerService handlerService = editor.getSite().getService(IHandlerService.class);
+		IHandlerActivation hideAllActivation = handlerService == null ? null
+				: handlerService.activateHandler(HideAllDiffsRunnable.COMMAND_ID, new ActionHandler(hideAllAction));
+		IHandlerActivation acceptAllActivation = handlerService == null ? null
+				: handlerService.activateHandler(ACCEPT_ALL_DIFFS_COMMAND_ID, new ActionHandler(acceptAllAction));
+		IHandlerActivation acceptCurrentActivation = handlerService == null ? null
+				: handlerService.activateHandler(ACCEPT_CURRENT_DIFF_COMMAND_ID, new ActionHandler(acceptCurrentAction));
+		IHandlerActivation hideCurrentActivation = handlerService == null ? null
+				: handlerService.activateHandler(HIDE_CURRENT_DIFF_COMMAND_ID, new ActionHandler(hideCurrentAction));
+		IContextService contextService = editor.getSite().getService(IContextService.class);
+		IContextActivation contextActivation = contextService == null ? null
+				: contextService.activateContext(UNIFIED_DIFF_CONTEXT_ID);
+		actionBars.setGlobalActionHandler(ActionFactory.PREVIOUS.getId(), previousAction);
+		actionBars.setGlobalActionHandler(ActionFactory.NEXT.getId(), nextAction);
+		actionBars.setGlobalActionHandler(ITextEditorActionDefinitionIds.GOTO_PREVIOUS_ANNOTATION, previousAction);
+		actionBars.setGlobalActionHandler(ITextEditorActionDefinitionIds.GOTO_NEXT_ANNOTATION, nextAction);
+		actionBars.updateActionBars();
+		textWidget.setData(UNIFIED_DIFF_COMMAND_HANDLERS_KEY,
+				new UnifiedDiffCommandHandlers(actionBars, previousNext, previousPrevious, previousNextAnnotation,
+						previousPreviousAnnotation, handlerService, hideAllActivation, acceptAllActivation,
+						acceptCurrentActivation, hideCurrentActivation, contextService, contextActivation));
+	}
+
+	private static Action createNavigationAction(String actionDefinitionId, Runnable runnable) {
+		Action action = new Action() {
+			@Override
+			public void run() {
+				runnable.run();
+			}
+		};
+		action.setActionDefinitionId(actionDefinitionId);
+		return action;
+	}
+
+	private static void unregisterCommandHandlers(StyledText textWidget) {
+		if (textWidget == null) {
+			return;
+		}
+		UnifiedDiffCommandHandlers handlers = (UnifiedDiffCommandHandlers) textWidget
+				.getData(UNIFIED_DIFF_COMMAND_HANDLERS_KEY);
+		if (handlers != null) {
+			textWidget.setData(UNIFIED_DIFF_COMMAND_HANDLERS_KEY, null);
+			handlers.dispose();
+		}
 	}
 
 	/**
@@ -216,17 +356,18 @@ public class UnifiedDiffManager {
 	public static IStatus open(ITextViewer viewer, IDocument leftDocument, IAnnotationModel model, IFile file,
 			String source, UnifiedDiffMode mode, List<Action> additionalActions,
 			TokenComparatorFactory tokenComparatorFactory,
-			IgnoreWhitespaceContributorFactory ignoreWhitespaceContributorFactory, boolean ignoreWhiteSpace,
-			int foldContextLines) {
+			IgnoreWhitespaceContributorFactory ignoreWhitespaceContributorFactory, ICompareFilter[] compareFilters,
+			char leftContributor, char rightContributor, boolean ignoreWhiteSpace, int foldContextLines) {
 		return open(viewer, leftDocument, model, file, source, mode, additionalActions, tokenComparatorFactory,
-				ignoreWhitespaceContributorFactory, ignoreWhiteSpace, foldContextLines,
-				ToolbarActionPresentations.NONE);
+				ignoreWhitespaceContributorFactory, compareFilters, leftContributor, rightContributor, ignoreWhiteSpace,
+				foldContextLines, ToolbarActionPresentations.NONE);
 	}
 
 	public static IStatus open(ITextViewer viewer, IDocument leftDocument, IAnnotationModel model, IFile file,
 			String source, UnifiedDiffMode mode, List<Action> additionalActions,
 			TokenComparatorFactory tokenComparatorFactory,
-			IgnoreWhitespaceContributorFactory ignoreWhitespaceContributorFactory, boolean ignoreWhiteSpace,
+			IgnoreWhitespaceContributorFactory ignoreWhitespaceContributorFactory, ICompareFilter[] compareFilters,
+			char leftContributor, char rightContributor, boolean ignoreWhiteSpace,
 			int foldContextLines, ToolbarActionPresentations toolbarActionPresentations) {
 
 		if (viewer instanceof ProjectionViewer pv) {
@@ -240,14 +381,17 @@ public class UnifiedDiffManager {
 		List<UnifiedDiff> unifiedDiffs;
 		try {
 			unifiedDiffs = computeDiffsWithProgress(leftDocument, rightDocument, mode, tokenComparatorFactory,
-					ignoreWhitespaceContributorFactory, ignoreWhiteSpace);
+					ignoreWhitespaceContributorFactory, compareFilters, leftContributor, rightContributor,
+					ignoreWhiteSpace);
 		} catch (OperationCanceledException | InterruptedException e) {
 			return CANCELED_BY_USER;
 		}
-		// call validateEdit before modifying the leftDocument; in read-only overlay
-		// mode the document is not modified, so skip the check to avoid prompting
-		// the user to make the file writable for a purely read-only diff
-		if (!UnifiedDiffMode.OVERLAY_READ_ONLY_MODE.equals(mode)) {
+		// REPLACE_MODE modifies the document right here (see below), so it validates
+		// the edit up front. The other modes only add annotations now; they modify the
+		// document later, from their accept/revert/undo actions, and validate the edit
+		// there (see validateEdit(ITextViewer)) so a read-only diff never prompts the
+		// user to make the file writable unless an actual change is applied.
+		if (UnifiedDiffMode.REPLACE_MODE.equals(mode)) {
 			if (file != null && !validateEdit(file)) {
 				return Status.CANCEL_STATUS;
 			}
@@ -276,8 +420,15 @@ public class UnifiedDiffManager {
 					Annotation myAnnotation = new UnifiedDiffAnnotation(mode, unifiedDiff);
 					Position position = new Position(unifiedDiff.leftStart, unifiedDiff.rightLength);
 					addOrStage.accept(myAnnotation, position);
+					AnnotationTypeAndText annoTypeAndText = createRulerAnnotationTypeAndText(mode, unifiedDiff);
+					Annotation rulerAnnotation = new UnifiedDiffRulerAnnotation(unifiedDiff, annoTypeAndText);
+					// A fresh Position is required: the annotation model registers each
+					// Position in the document's position category and shifts it on every
+					// document change. Sharing one instance would shift it twice and corrupt
+					// the offsets.
+					addOrStage.accept(rulerAnnotation, new Position(unifiedDiff.leftStart, unifiedDiff.rightLength));
 					for (var detailedDiff : unifiedDiff.detailedDiffs) {
-						if (detailedDiff.rightStr.trim().length() == 0) {
+						if (detailedDiff.rightLength == 0) {
 							continue;
 						}
 						Annotation detailedAnno = new DetailedDiffAnnotation(mode, unifiedDiff);
@@ -286,6 +437,7 @@ public class UnifiedDiffManager {
 						addOrStage.accept(detailedAnno, detailedPos);
 					}
 					diffByAnno.put(myAnnotation, unifiedDiff);
+					diffByAnno.put(rulerAnnotation, unifiedDiff);
 				} catch (BadLocationException e) {
 					error(e);
 				}
@@ -295,8 +447,13 @@ public class UnifiedDiffManager {
 				Annotation myAnnotation = new UnifiedDiffAnnotation(mode, unifiedDiff);
 				Position position = new Position(unifiedDiff.leftStart, unifiedDiff.leftLength);
 				addOrStage.accept(myAnnotation, position);
+				AnnotationTypeAndText annoTypeAndText = createRulerAnnotationTypeAndText(mode, unifiedDiff);
+				Annotation rulerAnnotation = new UnifiedDiffRulerAnnotation(unifiedDiff, annoTypeAndText);
+				// A fresh Position is required: see the comment in the REPLACE_MODE branch
+				// above.
+				addOrStage.accept(rulerAnnotation, new Position(unifiedDiff.leftStart, unifiedDiff.leftLength));
 				for (var detailedDiff : unifiedDiff.detailedDiffs) {
-					if (detailedDiff.leftStr.trim().length() == 0) {
+					if (detailedDiff.leftLength == 0) {
 						continue;
 					}
 					Annotation detailedAnno = new DetailedDiffAnnotation(mode, unifiedDiff);
@@ -305,6 +462,7 @@ public class UnifiedDiffManager {
 					addOrStage.accept(detailedAnno, detailedPos);
 				}
 				diffByAnno.put(myAnnotation, unifiedDiff);
+				diffByAnno.put(rulerAnnotation, unifiedDiff);
 			}
 		}
 		if (annotationsToAdd != null) {
@@ -312,6 +470,9 @@ public class UnifiedDiffManager {
 		}
 
 		UnifiedDiffManager.put(viewer, unifiedDiffs);
+		// Remember the file only now that the open succeeded, so a canceled open above
+		// does not leave a stale viewer -> file entry behind.
+		fileByViewer.put(viewer, file);
 		setToolbarActionPresentations(viewer, toolbarActionPresentations);
 		addPaintListener(viewer, model, mode);
 		addMouseMoveListener(viewer, model);
@@ -329,11 +490,27 @@ public class UnifiedDiffManager {
 
 		if (unifiedDiffs.size() > 0) {
 			runAfterRepaintFinished(viewer.getTextWidget(), () -> {
+				// The diff can be accepted or dismissed before its first paint. In
+				// that case the deferred selection must not access the now-empty list.
+				if (unifiedDiffs.isEmpty()) {
+					return;
+				}
 				Annotation firstAnno = getFirstAnnotationForUnifiedDiff(model, unifiedDiffs.get(0));
+				if (firstAnno == null) {
+					return;
+				}
 				selectAndRevealAnno(viewer, model, firstAnno);
 			});
 		}
 		return Status.OK_STATUS;
+	}
+
+	private static AnnotationTypeAndText createRulerAnnotationTypeAndText(UnifiedDiffMode mode,
+			UnifiedDiff unifiedDiff) {
+		DiffKind kind = diffKind(mode, unifiedDiff);
+		String annoType = kind == DiffKind.DELETION ? DELETION_RULER_ANNO_TYPE : ADDITION_RULER_ANNO_TYPE;
+		String text = createAnnotationText(mode, unifiedDiff, kind);
+		return new AnnotationTypeAndText(annoType, text);
 	}
 
 	/**
@@ -830,13 +1007,15 @@ public class UnifiedDiffManager {
 	 */
 	private static List<UnifiedDiff> computeDiffsWithProgress(IDocument leftDocument, IDocument rightDocument,
 			UnifiedDiffMode mode, TokenComparatorFactory tokenComparatorFactory,
-			IgnoreWhitespaceContributorFactory ignoreWhitespaceContributorFactory, boolean ignoreWhiteSpace)
+			IgnoreWhitespaceContributorFactory ignoreWhitespaceContributorFactory, ICompareFilter[] compareFilters,
+			char leftContributor, char rightContributor, boolean ignoreWhiteSpace)
 			throws InterruptedException {
 		List<List<UnifiedDiff>> computed = new ArrayList<>(1);
 		try {
 			PlatformUI.getWorkbench().getProgressService()
 					.busyCursorWhile(monitor -> computed.add(computeDiffs(leftDocument, rightDocument, mode,
-							tokenComparatorFactory, ignoreWhitespaceContributorFactory, ignoreWhiteSpace, monitor)));
+							tokenComparatorFactory, ignoreWhitespaceContributorFactory, compareFilters, leftContributor,
+							rightContributor, ignoreWhiteSpace, monitor)));
 		} catch (InvocationTargetException e) {
 			error(e);
 			return List.of();
@@ -846,21 +1025,23 @@ public class UnifiedDiffManager {
 
 	private static List<UnifiedDiff> computeDiffs(IDocument leftDocument, IDocument rightDocument, UnifiedDiffMode mode,
 			TokenComparatorFactory tokenComparatorFactory,
-			IgnoreWhitespaceContributorFactory ignoreWhitespaceContributorFactory, boolean ignoreWhiteSpace,
-			IProgressMonitor monitor) {
+			IgnoreWhitespaceContributorFactory ignoreWhitespaceContributorFactory, ICompareFilter[] compareFilters,
+			char leftContributor, char rightContributor, boolean ignoreWhiteSpace, IProgressMonitor monitor) {
 		DocLineComparator left = null, right = null;
 		Optional<IIgnoreWhitespaceContributor> lDocIgnonerWhitespaceContributor = Optional.empty();
 		Optional<IIgnoreWhitespaceContributor> rDocIgnonreWhitespaceContributor = Optional.empty();
 		if (ignoreWhitespaceContributorFactory != null) {
 			lDocIgnonerWhitespaceContributor = ignoreWhitespaceContributorFactory.apply(leftDocument);
-			left = new DocLineComparator(leftDocument, null, ignoreWhiteSpace, null, '?',
+			left = new DocLineComparator(leftDocument, null, ignoreWhiteSpace, compareFilters, leftContributor,
 					lDocIgnonerWhitespaceContributor);
 			rDocIgnonreWhitespaceContributor = ignoreWhitespaceContributorFactory.apply(rightDocument);
-			right = new DocLineComparator(rightDocument, null, ignoreWhiteSpace, null, '?',
+			right = new DocLineComparator(rightDocument, null, ignoreWhiteSpace, compareFilters, rightContributor,
 					rDocIgnonreWhitespaceContributor);
 		} else {
-			left = new DocLineComparator(leftDocument, null, ignoreWhiteSpace);
-			right = new DocLineComparator(rightDocument, null, ignoreWhiteSpace);
+			left = new DocLineComparator(leftDocument, null, ignoreWhiteSpace, compareFilters, leftContributor,
+					Optional.empty());
+			right = new DocLineComparator(rightDocument, null, ignoreWhiteSpace, compareFilters, rightContributor,
+					Optional.empty());
 		}
 		List<UnifiedDiff> unifiedDiffs = new ArrayList<>();
 		SubMonitor progress = SubMonitor.convert(monitor, CompareMessages.UnifiedDiff_computing, 100);
@@ -933,10 +1114,6 @@ public class UnifiedDiffManager {
 						int detailedRightEnd = getTokenEnd(r, detailedDiff.rightStart(), detailedDiff.rightLength());
 						String detailedDiffRightDiffSource = rightDiffSource.substring(detailedRightStart,
 								detailedRightEnd);
-						if (detailedLeftDiffSource.trim().length() == 0
-								&& detailedDiffRightDiffSource.trim().length() == 0) {
-							continue;
-						}
 						diff.detailedDiffs.add(new UnifiedDiff(leftDocument, detailedLeftStart, detailedLeftEnd,
 								detailedLeftDiffSource, rightDocument, detailedRightStart, detailedRightEnd,
 								detailedDiffRightDiffSource, unifiedDiffs, mode));
@@ -988,6 +1165,22 @@ public class UnifiedDiffManager {
 		}
 	}
 
+	private record AnnotationTypeAndText(String type, String text) {
+	}
+
+	private static final class UnifiedDiffRulerAnnotation extends Annotation {
+		private final UnifiedDiff unifiedDiff;
+
+		public UnifiedDiffRulerAnnotation(UnifiedDiff unifiedDiff, AnnotationTypeAndText annotationTypeAndText) {
+			super(annotationTypeAndText.type, false, annotationTypeAndText.text);
+			this.unifiedDiff = unifiedDiff;
+		}
+
+		public UnifiedDiff getUnifiedDiff() {
+			return unifiedDiff;
+		}
+	}
+
 	private static final class DetailedDiffAnnotation extends Annotation {
 		private final UnifiedDiff unifiedDiff;
 
@@ -1000,6 +1193,88 @@ public class UnifiedDiffManager {
 
 		public UnifiedDiff getUnifiedDiff() {
 			return this.unifiedDiff;
+		}
+	}
+
+	private static String createAnnotationText(UnifiedDiffMode mode, UnifiedDiff unifiedDiff, DiffKind kind) {
+		IDocument doc = unifiedDiff.left;
+		if (doc == null) {
+			return kind.text();
+		}
+		int offset = unifiedDiff.leftStart;
+		int length = UnifiedDiffMode.REPLACE_MODE.equals(mode) ? unifiedDiff.rightLength : unifiedDiff.leftLength;
+		try {
+			int docLength = doc.getLength();
+			int startOffset = Math.max(0, Math.min(offset, docLength));
+			int startLine = doc.getLineOfOffset(startOffset) + 1;
+			int endLine;
+			if (length > 0) {
+				int endOffset = Math.max(0, Math.min(offset + length - 1, docLength));
+				endLine = doc.getLineOfOffset(endOffset) + 1;
+			} else {
+				endLine = startLine;
+			}
+			endLine = Math.max(startLine, endLine);
+			if (startLine == endLine) {
+				return NLS.bind(kind.atLineText(), Integer.valueOf(startLine));
+			}
+			return NLS.bind(kind.fromLineToLineText(), Integer.valueOf(startLine), Integer.valueOf(endLine));
+		} catch (BadLocationException e) {
+			error(e);
+			return kind.text();
+		}
+	}
+
+	/**
+	 * Classifies a diff as an addition, deletion, or replacement so the ruler tick
+	 * gets the matching type, color, and tooltip wording (see
+	 * {@link #createRulerAnnotationTypeAndText}). The classification is relative to
+	 * the current document and the direction of the mode, not to the color the tick
+	 * ends up with: in REPLACE_MODE and REVERT_MODE the current document is on the
+	 * left, so an empty right side means the left has extra content and the diff is
+	 * an addition; in OVERLAY_MODE the perspective is reversed and the non-empty
+	 * right side is the addition.
+	 */
+	private static DiffKind diffKind(UnifiedDiffMode mode, UnifiedDiff unifiedDiff) {
+		boolean leftStringIsEmpty = unifiedDiff.leftStr == null || unifiedDiff.leftStr.trim().isEmpty();
+		boolean rightStringIsEmpty = unifiedDiff.rightStr == null || unifiedDiff.rightStr.trim().isEmpty();
+		if (!leftStringIsEmpty && !rightStringIsEmpty) {
+			return DiffKind.REPLACEMENT;
+		}
+		boolean addition = UnifiedDiffMode.REPLACE_MODE.equals(mode) || UnifiedDiffMode.REVERT_MODE.equals(mode)
+				? rightStringIsEmpty
+				: !rightStringIsEmpty;
+		return addition ? DiffKind.ADDITION : DiffKind.DELETION;
+	}
+
+	private enum DiffKind {
+		ADDITION(CompareMessages.UnifiedDiff_addition, CompareMessages.UnifiedDiff_additionAtLine,
+				CompareMessages.UnifiedDiff_additionFromLineToLine),
+		DELETION(CompareMessages.UnifiedDiff_deletion, CompareMessages.UnifiedDiff_deletionAtLine,
+				CompareMessages.UnifiedDiff_deletionFromLineToLine),
+		REPLACEMENT(CompareMessages.UnifiedDiff_replacement, CompareMessages.UnifiedDiff_replacementAtLine,
+				CompareMessages.UnifiedDiff_replacementFromLineToLine);
+
+		private final String text;
+		private final String atLineText;
+		private final String fromLineToLineText;
+
+		DiffKind(String text, String atLineText, String fromLineToLineText) {
+			this.text = text;
+			this.atLineText = atLineText;
+			this.fromLineToLineText = fromLineToLineText;
+		}
+
+		String text() {
+			return text;
+		}
+
+		String atLineText() {
+			return atLineText;
+		}
+
+		String fromLineToLineText() {
+			return fromLineToLineText;
 		}
 	}
 
@@ -1100,6 +1375,7 @@ public class UnifiedDiffManager {
 			return;
 		}
 		StyledText tw = tv.getTextWidget();
+		unregisterCommandHandlers(tw);
 		removeAnnotationModelListener(model, tw);
 		for (UnifiedDiff diff : diffs1) {
 			for (Annotation annotation : getAllAnnotationsForUnifiedDiff(model, diff)) {
@@ -1120,6 +1396,9 @@ public class UnifiedDiffManager {
 	}
 
 	static void uncheckToolbarActionItems(ToolBarManager tm) {
+		if (tm == null) {
+			return;
+		}
 		IContributionItem[] items = tm.getItems();
 		if (items == null) {
 			return;
@@ -1158,19 +1437,70 @@ public class UnifiedDiffManager {
 	}
 
 	private static void applyDiffRightStr(ITextViewer tv, IAnnotationModel model) {
-		StyledText tw = tv.getTextWidget();
-		Composite toolbarCompositeForOneDiff = getToolbarCompositeForOneDiff(tw);
-		if (toolbarCompositeForOneDiff == null) {
-			return;
-		}
-		var anno = (Annotation) toolbarCompositeForOneDiff.getData(CURRENT_SELECTED_UNIFIED_DIFF_ANNO_KEY);
-		if (anno == null) {
-			return;
-		}
-		UnifiedDiff diff = getUnifiedDiffForAnno(anno);
+		UnifiedDiff diff = resolveCurrentDiff(tv, model);
 		if (diff == null) {
 			return;
 		}
+		if (!validateEdit(tv)) {
+			return;
+		}
+		applyDiffRightStr(tv, model, diff);
+	}
+
+	/**
+	 * Resolves the diff the per-diff actions ("Accept Current Diff") operate on.
+	 * Prefers the diff whose toolbar is currently open (mouse hover), and falls
+	 * back to the diff at the caret so the keyboard shortcut works without a
+	 * toolbar being shown.
+	 */
+	private static UnifiedDiff resolveCurrentDiff(ITextViewer tv, IAnnotationModel model) {
+		Composite toolbarCompositeForOneDiff = getToolbarCompositeForOneDiff(tv.getTextWidget());
+		if (toolbarCompositeForOneDiff != null) {
+			var anno = (Annotation) toolbarCompositeForOneDiff.getData(CURRENT_SELECTED_UNIFIED_DIFF_ANNO_KEY);
+			UnifiedDiff diff = getUnifiedDiffForAnno(anno);
+			if (diff != null) {
+				return diff;
+			}
+		}
+		return diffAtCaret(tv, model);
+	}
+
+	/**
+	 * The diff enclosing the caret, or the next diff after it, so that keyboard
+	 * acceptance targets the same diff the user navigated to with Next/Previous.
+	 */
+	private static UnifiedDiff diffAtCaret(ITextViewer tv, IAnnotationModel model) {
+		List<UnifiedDiff> diffs = get(tv);
+		if (diffs == null || diffs.isEmpty()) {
+			return null;
+		}
+		if (!(tv.getSelectionProvider().getSelection() instanceof ITextSelection sel)) {
+			return null;
+		}
+		int offset = sel.getOffset();
+		UnifiedDiff following = null;
+		for (UnifiedDiff diff : diffs) {
+			List<Annotation> annos = getAllAnnotationsForUnifiedDiff(model, diff);
+			Annotation min = getMinPositionAnno(model, annos);
+			if (min == null) {
+				continue;
+			}
+			Position pos = model.getPosition(min);
+			if (pos == null) {
+				continue;
+			}
+			if (offset >= pos.offset && offset <= pos.offset + pos.length) {
+				return diff;
+			}
+			if (pos.offset > offset && following == null) {
+				following = diff;
+			}
+		}
+		return following != null ? following : diffs.get(0);
+	}
+
+	private static void applyDiffRightStr(ITextViewer tv, IAnnotationModel model, UnifiedDiff diff) {
+		StyledText tw = tv.getTextWidget();
 		List<Annotation> annos = getAllAnnotationsForUnifiedDiff(model, diff);
 		List<Position> positions = new ArrayList<>();
 		List<String> replaceStrings = new ArrayList<>();
@@ -1207,12 +1537,11 @@ public class UnifiedDiffManager {
 	 */
 	private static void dismissCurrentDiff(ITextViewer tv, IAnnotationModel model) {
 		StyledText tw = tv.getTextWidget();
-		Composite toolbarCompositeForOneDiff = getToolbarCompositeForOneDiff(tw);
-		if (toolbarCompositeForOneDiff == null) {
+		UnifiedDiff diff = resolveCurrentDiff(tv, model);
+		if (diff == null) {
 			return;
 		}
-		var anno = (Annotation) toolbarCompositeForOneDiff.getData(CURRENT_SELECTED_UNIFIED_DIFF_ANNO_KEY);
-		UnifiedDiff diff = getUnifiedDiffForAnno(anno);
+		Composite toolbarCompositeForOneDiff = getToolbarCompositeForOneDiff(tw);
 		int idx = diff.container.indexOf(diff);
 		if (idx < 0) {
 			throw new IllegalStateException("UnifiedDiff not found in container"); //$NON-NLS-1$
@@ -1280,6 +1609,9 @@ public class UnifiedDiffManager {
 				UnifiedDiff diff = getUnifiedDiffForAnno(anno);
 				int idx = diff.container.indexOf(diff);
 				if (idx < 0) {
+					return;
+				}
+				if (!validateEdit(tv)) {
 					return;
 				}
 				idx++;
@@ -1405,6 +1737,8 @@ public class UnifiedDiffManager {
 			return da.getUnifiedDiff();
 		} else if (anno instanceof UnifiedDiffAnnotation a) {
 			return a.getUnifiedDiff();
+		} else if (anno instanceof UnifiedDiffRulerAnnotation ra) {
+			return ra.getUnifiedDiff();
 		} else if (anno instanceof AbstractInlinedAnnotation inlineAnno) {
 			List<ICodeMining> minings = inlineAnno.getMinings();
 			if (minings.size() == 1 && minings.get(0) instanceof UnifiedDiffLineHeaderCodeMining idlhcm) {
@@ -1520,6 +1854,11 @@ public class UnifiedDiffManager {
 	}
 
 	private static void addToolbarAction(ToolBarManager tm, String text, ImageDescriptor image, Runnable runnable) {
+		addToolbarAction(tm, text, image, null, runnable);
+	}
+
+	private static void addToolbarAction(ToolBarManager tm, String text, ImageDescriptor image,
+			String actionDefinitionId, Runnable runnable) {
 		String tooltip = text;
 		Action action = null;
 		if (image != null) {
@@ -1540,6 +1879,7 @@ public class UnifiedDiffManager {
 			};
 		}
 		action.setToolTipText(tooltip);
+		action.setActionDefinitionId(actionDefinitionId);
 		var actionItem = new ActionContributionItem(action);
 		actionItem.setMode(ActionContributionItem.MODE_FORCE_TEXT);
 		tm.add(actionItem);
@@ -1566,6 +1906,7 @@ public class UnifiedDiffManager {
 			};
 		}
 		a.setToolTipText(action.getToolTipText());
+		a.setActionDefinitionId(action.getActionDefinitionId());
 		var actionItem = new ActionContributionItem(a);
 		actionItem.setMode(ActionContributionItem.MODE_FORCE_TEXT);
 		tm.add(actionItem);
@@ -1701,6 +2042,8 @@ public class UnifiedDiffManager {
 				doit = true;
 			}
 		} else if (ADDITION_ANNO_TYPE.equals(anno.getType()) || DELETION_ANNO_TYPE.equals(anno.getType())
+				|| ADDITION_RULER_ANNO_TYPE.equals(anno.getType())
+				|| DELETION_RULER_ANNO_TYPE.equals(anno.getType())
 				|| DETAILED_ADDITION_ANNO_TYPE.equals(anno.getType())
 				|| DETAILED_DELETION_ANNO_TYPE.equals(anno.getType())) {
 			doit = true;
@@ -1753,6 +2096,7 @@ public class UnifiedDiffManager {
 	static void disposeUnifiedDiff(ITextViewer tv, IAnnotationModel model, StyledText tw) {
 		disposeToolbarForOneDiff(getToolbarCompositeForOneDiff(tw), tv);
 		disposeToolbarForAllDiffs(getToolbarCompositeForAllDiffs(tw), tv);
+		unregisterCommandHandlers(tw);
 		var undoListener = (IDocumentUndoListener) tw.getData(UNDO_LISTENER_KEY);
 		if (undoListener != null) {
 			tw.setData(UNDO_LISTENER_KEY, null);
@@ -1765,6 +2109,7 @@ public class UnifiedDiffManager {
 		removeAnnotationModelListener(model, tw);
 
 		diffsByViewer.remove(tv);
+		fileByViewer.remove(tv);
 
 		if (tw == null || tw.isDisposed()) {
 			// SWT removes listeners automatically when the widget is disposed
@@ -1803,12 +2148,14 @@ public class UnifiedDiffManager {
 		w.addPaintListener(new UnifiedDiffPaintListener(viewer, model, mode));
 	}
 
-	private static class UnifiedDiffPaintListener implements PaintListener {
+	private static class UnifiedDiffPaintListener implements PaintListener, DisposeListener {
 
 		private final IAnnotationModel model;
 		private final ITextViewer viewer;
 		private final Color additionBackgroundColor;
 		private final Color borderColor;
+		private final Color detailedAdditionBackgroundColor;
+		private final Color detailedDeletionBackgroundColor;
 		private final StyledText w;
 
 		public UnifiedDiffPaintListener(ITextViewer viewer, IAnnotationModel model, UnifiedDiffMode mode) {
@@ -1825,9 +2172,19 @@ public class UnifiedDiffManager {
 			RGB interpolated = UnifiedDiffCodeMiningProvider.interpolate(color, background, 0.9);
 			this.additionBackgroundColor = new Color(interpolated);
 			this.borderColor = new Color(UnifiedDiffText.borderColor(color, background));
+			this.detailedAdditionBackgroundColor = new Color(PreferenceConverter.getColor(EditorsUI.getPreferenceStore(),
+					"detailedInlineDiffColor")); //$NON-NLS-1$
+			this.detailedDeletionBackgroundColor = new Color(PreferenceConverter.getColor(EditorsUI.getPreferenceStore(),
+					"detailedDeletionInlineDiffColor")); //$NON-NLS-1$
+			w.addDisposeListener(this);
 		}
 
 		void dispose() {
+			if (!w.isDisposed()) {
+				w.removeDisposeListener(this);
+			}
+			detailedAdditionBackgroundColor.dispose();
+			detailedDeletionBackgroundColor.dispose();
 			if (additionBackgroundColor != null && !additionBackgroundColor.isDisposed()) {
 				additionBackgroundColor.dispose();
 			}
@@ -1837,34 +2194,65 @@ public class UnifiedDiffManager {
 		}
 
 		@Override
+		public void widgetDisposed(DisposeEvent e) {
+			dispose();
+		}
+
+		private record PaintRange(int offset, int length, Color background) {
+		}
+
+		@Override
 		public void paintControl(PaintEvent e) {
+			// Reuse the provider's cached whitespace config instead of re-reading the
+			// store on every repaint; tabWidth is irrelevant to the line delimiters, so
+			// -1 returns the cached instance directly without allocating a stamped copy.
+			UnifiedDiffCodeMiningProvider.WhitespaceConfig whitespace = UnifiedDiffCodeMiningProvider
+					.readWhitespaceConfig(-1);
+			boolean showCarriageReturn = whitespace != null && whitespace.showCarriageReturn();
+			boolean showLineFeed = whitespace != null && whitespace.showLineFeed();
+			int whitespaceAlpha = whitespace != null ? whitespace.alpha() : 0;
 			Rectangle bounds = this.w.getBounds();
 			// Only the damaged lines: getTextBounds lays out every line it is asked for,
 			// so touching every hunk would make each repaint O(document).
 			int firstDamagedLine = this.w.getLineIndex(e.y);
 			int lastDamagedLine = this.w.getLineIndex(e.y + e.height);
+			List<PaintRange> bands = new ArrayList<>();
+			List<PaintRange> details = new ArrayList<>();
 			Iterator<Annotation> it = this.model.getAnnotationIterator();
 			while (it.hasNext()) {
 				Annotation anno = it.next();
-				if (!(ADDITION_ANNO_TYPE.equals(anno.getType()) || DELETION_ANNO_TYPE.equals(anno.getType()))) {
+				String type = anno.getType();
+				boolean main = ADDITION_ANNO_TYPE.equals(type) || DELETION_ANNO_TYPE.equals(type);
+				Color detailedBackground = DETAILED_ADDITION_ANNO_TYPE.equals(type) ? detailedAdditionBackgroundColor
+						: DETAILED_DELETION_ANNO_TYPE.equals(type) ? detailedDeletionBackgroundColor : null;
+				if (!main && (detailedBackground == null || !showCarriageReturn && !showLineFeed)) {
 					continue;
 				}
-				// Fill the area between the last character of the line and the widget boundary.
-				// This is not done via the Annotations.
-				int posOffset;
-				int posLength;
-				{
-					Position pos = this.model.getPosition(anno);
-					if (viewer instanceof ProjectionViewer pv) {
-						posOffset = pv.modelOffset2WidgetOffset(pos.offset);
-						if (posOffset < 0) {
-							continue; // not visible
-						}
-					} else {
-						posOffset = pos.offset;
-					}
-					posLength = pos.length;
+				Position pos = this.model.getPosition(anno);
+				if (pos == null || pos.isDeleted() || pos.length == 0) {
+					continue;
 				}
+				IRegion region = new Region(pos.offset, pos.length);
+				if (viewer instanceof ITextViewerExtension5 extension) {
+					region = extension.modelRange2WidgetRange(region);
+				}
+				if (region == null || region.getLength() == 0) {
+					continue;
+				}
+				int startLine = w.getLineAtOffset(region.getOffset());
+				int endLine = w.getLineAtOffset(region.getOffset() + region.getLength() - 1);
+				if (endLine < firstDamagedLine || startLine > lastDamagedLine) {
+					continue;
+				}
+				(main ? bands : details).add(new PaintRange(region.getOffset(), region.getLength(), detailedBackground));
+			}
+			// Token ranges do not overlap. Sorting once avoids scanning every detailed
+			// range again for each delimiter character on the damaged lines.
+			details.sort(Comparator.comparingInt(PaintRange::offset));
+			// All annotation lookups are complete before walking the damaged lines.
+			for (PaintRange band : bands) {
+				int posOffset = band.offset();
+				int posLength = band.length();
 				int hunkFirstLine = this.w.getLineAtOffset(posOffset);
 				// a band ending on a line delimiter belongs to the line it is on, not to
 				// the next one the delimiter starts; a zero-length band paints nothing
@@ -1887,10 +2275,9 @@ public class UnifiedDiffManager {
 					if (line.length() == 0) {
 						// this.w.getTextBounds seems not to work for empty lines containing only \n in
 						// a document with \r\n as line delimeter
-						int nextLineOffset = this.w.getOffsetAtLine(lineNr + 1);
-						Rectangle nextLineBounds = this.w.getTextBounds(nextLineOffset, nextLineOffset);
-						if (endLineBounds.y + endLineBounds.height < nextLineBounds.y) {
-							endLineBounds.height = nextLineBounds.y - endLineBounds.y;
+						int nextLineY = this.w.getLinePixel(lineNr + 1);
+						if (endLineBounds.y + endLineBounds.height < nextLineY) {
+							endLineBounds.height = nextLineY - endLineBounds.y;
 						}
 					}
 					e.gc.fillRectangle(endLineBounds.x + endLineBounds.width, endLineBounds.y,
@@ -1901,11 +2288,91 @@ public class UnifiedDiffManager {
 					e.gc.fillRectangle(2, endLineBounds.y + endLineBounds.height - this.w.getLineSpacing(),
 							endLineBounds.x + endLineBounds.width, this.w.getLineSpacing());
 
+					// The addition-area background fill above paints over the ¶/¤ markers the
+					// editor's own whitespace painter drew at the line end, so redraw them here.
+					drawLineDelimiter(e, endLineOffset, showCarriageReturn, showLineFeed, whitespaceAlpha, details);
+					// The marker background must not overwrite the band's shared edge.
 					drawBandBorder(e.gc, bounds.width, endLineBounds.y, endLineBounds.height,
 							lineNr == hunkFirstLine, lineNr == lastLine);
 					e.gc.setBackground(this.additionBackgroundColor);
 				}
 			}
+		}
+
+		private void drawLineDelimiter(PaintEvent e, int endLineOffset, boolean showCarriageReturn,
+				boolean showLineFeed, int alpha, List<PaintRange> details) {
+			if ((!showCarriageReturn && !showLineFeed) || endLineOffset >= w.getCharCount()) {
+				return;
+			}
+			if (isFoldedLine(w.getLineAtOffset(endLineOffset))) {
+				// the editor's own painter suppresses the marker on a collapsed region
+				return;
+			}
+			String delimiter = w.getTextRange(endLineOffset, Math.min(2, w.getCharCount() - endLineOffset));
+			Point location = w.getLocationAtOffset(endLineOffset);
+			if (delimiter.startsWith("\r") && showCarriageReturn) { //$NON-NLS-1$
+				location.x += drawDelimiterCharacter(e.gc, UnifiedDiffCodeMiningProvider.WhitespaceConfig.CARRIAGE_RETURN_SIGN,
+						endLineOffset, location, alpha, details);
+			}
+			if ((delimiter.startsWith("\n") || delimiter.startsWith("\r\n")) && showLineFeed) { //$NON-NLS-1$ //$NON-NLS-2$
+				drawDelimiterCharacter(e.gc, UnifiedDiffCodeMiningProvider.WhitespaceConfig.LINE_FEED_SIGN,
+						endLineOffset + (delimiter.startsWith("\r") ? 1 : 0), location, alpha, details); //$NON-NLS-1$
+			}
+		}
+
+		private int drawDelimiterCharacter(GC gc, char sign, int offset, Point location, int alpha,
+				List<PaintRange> details) {
+			String marker = String.valueOf(sign);
+			Point extent = gc.stringExtent(marker);
+			int savedAlpha = gc.getAlpha();
+			Color savedBackground = gc.getBackground();
+			Color savedForeground = gc.getForeground();
+			Color background = detailedBackgroundAtOffset(offset, details);
+			if (background != null) {
+				gc.setAlpha(255);
+				gc.setBackground(background);
+				gc.fillRectangle(location.x, location.y, extent.x, extent.y);
+			}
+			gc.setAlpha(alpha);
+			gc.setForeground(foregroundAtOffset(offset));
+			gc.drawString(marker, location.x, location.y, true);
+			gc.setForeground(savedForeground);
+			gc.setBackground(savedBackground);
+			gc.setAlpha(savedAlpha);
+			return extent.x;
+		}
+
+		private Color detailedBackgroundAtOffset(int offset, List<PaintRange> details) {
+			int low = 0;
+			int high = details.size() - 1;
+			while (low <= high) {
+				int middle = (low + high) >>> 1;
+				PaintRange detail = details.get(middle);
+				if (offset < detail.offset()) {
+					high = middle - 1;
+				} else if (offset >= detail.offset() + detail.length()) {
+					low = middle + 1;
+				} else {
+					return detail.background();
+				}
+			}
+			return null;
+		}
+
+		private Color foregroundAtOffset(int offset) {
+			StyleRange styleRange = offset < w.getCharCount() ? w.getStyleRangeAtOffset(offset) : null;
+			if (styleRange != null && styleRange.foreground != null) {
+				return styleRange.foreground;
+			}
+			return w.getForeground();
+		}
+
+		private boolean isFoldedLine(int widgetLine) {
+			if (viewer instanceof ITextViewerExtension5 extension) {
+				int modelLine = extension.widgetLine2ModelLine(widgetLine);
+				return extension.modelLine2WidgetLine(modelLine + 1) == -1;
+			}
+			return false;
 		}
 
 		/** Draws the thin top/bottom edge of the hunk band on its first/last line. */
@@ -1921,6 +2388,17 @@ public class UnifiedDiffManager {
 				gc.fillRectangle(0, y + height - 1, width, 1);
 			}
 		}
+	}
+
+	/**
+	 * Checks that the file behind the viewer's document may be modified, prompting
+	 * the user to make it writable or check it out if a team provider requires it.
+	 * Returns {@code true} when there is no file to guard, so overlays on documents
+	 * without a workspace file keep working.
+	 */
+	static boolean validateEdit(ITextViewer viewer) {
+		IFile file = fileByViewer.get(viewer);
+		return file == null || validateEdit(file);
 	}
 
 	private static boolean validateEdit(IFile file) {

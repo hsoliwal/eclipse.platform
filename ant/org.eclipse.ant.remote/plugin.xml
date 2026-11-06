@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+    Copyright (c) 2026 Andrey Loskutov and others.
+
+    This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License 2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+        Andrey Loskutov - initial API and implementation
+ -->
+<plugin>
+   <!--
+      Libraries for Ant builds running in a separate JVM (not on the Eclipse runtime).
+      The libraries are compiled for the minimal Java version (see Bundle-RequiredExecutionEnvironment)
+      supported for running Ant in a separate JRE, independently of the Eclipse runtime requirements.
+   -->
+   <extension
+         point="org.eclipse.ant.core.extraClasspathEntries">
+      <extraClasspathEntry
+            eclipseRuntime="false"
+            headless="true"
+            library="lib/antdebug.jar">
+      </extraClasspathEntry>
+      <extraClasspathEntry
+            eclipseRuntime="false"
+            headless="true"
+            library="lib/remote.jar">
+      </extraClasspathEntry>
+      <extraClasspathEntry
+            eclipseRuntime="false"
+            headless="false"
+            library="lib/remoteAnt.jar">
+      </extraClasspathEntry>
+   </extension>
+</plugin>
