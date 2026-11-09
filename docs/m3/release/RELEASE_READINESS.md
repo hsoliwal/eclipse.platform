@@ -11,7 +11,7 @@ Tools and raw evidence: [`docs/m3/jdk21/release-20261109`](../jdk21/release-2026
 | G2b | Parse gate: every tracked Java source (5123 files, test bundles included, test-input folders excluded), JDK 25 javac `--release 21` stopped after parsing | PASS | PARSE_GATE.tsv |
 | G3 | Recipe fixed point (`apply_jdk21.sh` + `apply_jdk21_pins.sh` change nothing on master) | PASS | RECIPE_CHANGES.tsv |
 | G4 | Metadata consistent: Tycho bundle/feature versions match their pom, no EE above 21 in a Java-21 bundle | PASS | META.tsv |
-| G5 | Full Tycho build of this repository on JDK 21 | PENDING | not run locally (disk and time budget); the javac gate G2 covers language level and API |
+| G5 | Full Tycho build of this repository on JDK 21 (`mvn -B clean verify -DskipTests`, fork parent + SDK target from the fork aggregator, other components from the upstream 4.42 I-build repository) | PASS | BUILD SUCCESS in 250 s, modules 124/124 ok, 0 failed, 0 [ERROR] rows (BUILD_G5.tsv, BUILD_G5_ERRORS.tsv, BUILD_G5.log.gz) |
 | G6 | Eclipse SDK product build and launch on JDK 21 | PENDING | aggregator verdict, eclipse.platform.releng.aggregator docs/m3/release/RELEASE_READINESS.md |
 
 ## What this PR changes
@@ -37,6 +37,16 @@ Gate after the fill: 2343 files, 39 roots, 1614 rows in both runs (classpath noi
 1. Approve deleting `resources/bundles/org.eclipse.core.filesystem/src-gen/com/microsoft/windows/*.java` (6 files, dead
    once src-gen left the build); 3c1ea6cbfb deleted them, this PR keeps them.
 2. Runtime check of LocalFile/Win32Handler on Windows with JDK 21 (core.tests.resources filesystem suite): not run here.
+
+## G5 (Tycho build on JDK 21.0.9)
+
+| Attempt | Result |
+| --- | --- |
+| 1 | BUILD FAILURE: 122/123 modules ok; org.eclipse.ant.ui stopped on 3 ECJ NLS errors (the bundle compiles NLS problems as errors; javac does not check NLS, so G2 cannot see them): XmlFormatter 240 `return "" + ...` and the hoisted `ADD_VARIABLE_PATTERN = Pattern.compile("\$\{.*?\}")` field without `//$NON-NLS-1$`, and ExportUtil 648 keeping a tag for the literal that moved into that field |
+| 2 | BUILD SUCCESS: 124/124 modules in 250 s, target/ 313 MB; org.eclipse.core.filesystem with the JNA Win32Handler builds under Tycho |
+
+Fill: `fix_nls_tags.sh` (BLLSE rows of attempt 1). `nls_precheck.sh` (ECJ 3.47 `-warn:+nls,+suppress` over every bundle that
+compiles NLS problems as errors) reproduces exactly those rows on master, so it now runs before each build.
 
 ## Re-run
 
