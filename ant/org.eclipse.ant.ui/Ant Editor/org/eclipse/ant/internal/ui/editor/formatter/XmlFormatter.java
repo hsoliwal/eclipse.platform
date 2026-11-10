@@ -237,7 +237,7 @@ public class XmlFormatter {
 			return IAntCoreConstants.EMPTY_STRING;
 		}
 
-		return "" + XmlDocumentFormatter.getLeadingWhitespace(node.getOffset(), document) + XmlDocumentFormatter.createIndent();
+		return "" + XmlDocumentFormatter.getLeadingWhitespace(node.getOffset(), document) + XmlDocumentFormatter.createIndent(); //$NON-NLS-1$
 	}
 
 	private static Position[] createPositions(int[] positions) {

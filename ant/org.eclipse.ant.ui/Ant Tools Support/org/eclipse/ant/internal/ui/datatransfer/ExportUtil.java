@@ -631,7 +631,7 @@ public class ExportUtil {
 		return false;
 	}
 
-	private static final Pattern ADD_VARIABLE_PATTERN = Pattern.compile("\\$\\{.*?\\}");
+	private static final Pattern ADD_VARIABLE_PATTERN = Pattern.compile("\\$\\{.*?\\}"); //$NON-NLS-1$
 
 	/**
 	 * Add variable/value for Eclipse variable. If given string is no variable, nothing is added.
@@ -645,7 +645,7 @@ public class ExportUtil {
 		if (s == null || s.equals(IAntCoreConstants.EMPTY_STRING)) {
 			return;
 		}
-		Pattern pattern = ADD_VARIABLE_PATTERN; // ${var} //$NON-NLS-1$
+		Pattern pattern = ADD_VARIABLE_PATTERN; // ${var} 
 		Matcher matcher = pattern.matcher(s);
 		while (matcher.find()) {
 			String variable = matcher.group();
