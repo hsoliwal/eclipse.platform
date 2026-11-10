@@ -34,8 +34,13 @@ Gate after the fill: 2343 files, 39 roots, 1614 rows in both runs (classpath noi
 
 ## HOLD (user action)
 
-1. Approve deleting `resources/bundles/org.eclipse.core.filesystem/src-gen/com/microsoft/windows/*.java` (6 files, dead
-   once src-gen left the build); 3c1ea6cbfb deleted them, this PR keeps them.
+1. Done 2026-11-10 (user-approved, branch `m3/jdk21-ffm-cleanup-20261110`): the 6 jextract FFM bindings under
+   `resources/bundles/org.eclipse.core.filesystem/src-gen/com/microsoft/windows/` deleted. src-gen had already left
+   build.properties and .classpath in #32, so no build entry referenced them. They came with upstream 31b3f6afbb (the FFM
+   migration) and stay reachable there and in this fork's history (master 776e96e6c8f4). Kept: `generateWindowsH.bat`
+   (the jextract script of the same upstream commit, which would regenerate src-gen); deleting it needs a separate approval.
+   Gates on that branch: Java-21 residue 0 (2343 files, 39 roots), parse 0 (5117 files), metadata 0 rows, ECJ pre-check 0
+   rows, Tycho build on JDK 21.0.9 BUILD SUCCESS 124/124 in 498 s.
 2. Runtime check of LocalFile/Win32Handler on Windows with JDK 21 (core.tests.resources filesystem suite): not run here.
 
 ## G5 (Tycho build on JDK 21.0.9)
