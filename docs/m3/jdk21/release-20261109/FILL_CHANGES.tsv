@@ -1,4 +1,0 @@
-restore	resources/bundles/org.eclipse.core.filesystem/src/org/eclipse/core/internal/filesystem/local/Win32Handler.java
-buildprops	resources/bundles/org.eclipse.core.filesystem/build.properties
-classpath	resources/bundles/org.eclipse.core.filesystem/.classpath
-manifest	resources/bundles/org.eclipse.core.filesystem/META-INF/MANIFEST.MF
