@@ -42,7 +42,7 @@ automatically a standalone application or an exported API.
 This is the downstream [hsoliwal fork](https://github.com/hsoliwal/eclipse.platform)
 of [Eclipse Platform](https://github.com/eclipse-platform/eclipse.platform).
 The checkout contains the established Platform implementations, an isolated
-[M3 recipe/inventory sidecar](.m3/README.md), and a
+[M3 recipe/inventory sidecar](https://github.com/hsoliwal/com.synexia/blob/develop/forks/eclipse.platform/.m3/README.md), and a
 [source-reference coverage ledger](docs/source-reference/COVERAGE.md).
 The sidecar's inventory/build lanes and the M3 research direction below do not
 establish that runtime integration or performance improvements are qualified.
