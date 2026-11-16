@@ -14,6 +14,8 @@
  *******************************************************************************/
 package org.eclipse.terminal.internal.emulator;
 
+import org.eclipse.terminal.internal.model.CharWidth;
+import org.eclipse.terminal.internal.model.TerminalTextDataStore;
 import org.eclipse.terminal.model.ITerminalTextData;
 import org.eclipse.terminal.model.TerminalStyle;
 
@@ -92,6 +94,22 @@ public class VT100EmulatorBackend implements IVT100EmulatorBackend {
 	int fLines;
 	int fColumns;
 	final private ITerminalTextData fTerminal;
+
+	/**
+	 * What the normal screen held while the alternate one is showing, and null the
+	 * rest of the time, which is also how we know which screen we are on.
+	 */
+	private ITerminalTextData fNormalScreen;
+	private int fNormalMaxHeight;
+	/** in the normal buffer, not on the screen: the screen may be resized meanwhile */
+	private int fNormalCursorLine;
+	private int fNormalCursorColumn;
+	/** the screen the normal buffer was saved from, and whether a wrap was pending on it */
+	private int fNormalLines;
+	private int fNormalColumns;
+	private boolean fNormalWrapPending;
+	/** the rendition the shell had selected: 1049 saves it with the cursor, as DECSC does */
+	private TerminalStyle fNormalStyle;
 	private boolean fVT100LineWrapping;
 	private ScrollRegion fScrollRegion = ScrollRegion.FULL_WINDOW;
 
@@ -100,7 +118,141 @@ public class VT100EmulatorBackend implements IVT100EmulatorBackend {
 	}
 
 	@Override
+	public void enableAlternateScreen(boolean enable, boolean cursor) {
+		synchronized (fTerminal) {
+			if (enable == (fNormalScreen != null)) {
+				// Already on the screen being asked for. Programs do ask twice.
+				return;
+			}
+			if (enable) {
+				fNormalScreen = new TerminalTextDataStore();
+				fNormalScreen.copy(fTerminal);
+				fNormalCursorLine = toAbsoluteLine(fCursorLine);
+				fNormalCursorColumn = fCursorColumn;
+				fNormalLines = fLines;
+				fNormalColumns = fColumns;
+				fNormalWrapPending = fWrapPending;
+				fNormalStyle = fStyle;
+				fNormalMaxHeight = fTerminal.getMaxHeight();
+				// clearing leaves the buffer the size of the screen, which is what the
+				// alternate screen is: no history to scroll back through. Capping the
+				// buffer there keeps it so: scrolling drops the top line instead of
+				// growing the buffer, as a program on this screen expects.
+				clearBuffer();
+				fTerminal.setMaxHeight(fLines);
+				// the rendition carries over: clearing resets it, entering does not
+				setStyle(fNormalStyle);
+				if (!cursor) {
+					// 47 and 1047 move no cursor: it stays on its row and column, a
+					// wrap pending there still pending
+					setCursor(fNormalCursorLine - (fNormalScreen.getHeight() - fLines), fNormalCursorColumn);
+					fWrapPending = fNormalWrapPending;
+				}
+			} else {
+				restoreNormalScreen(cursor);
+			}
+		}
+	}
+
+	/**
+	 * Puts the normal screen back as if it had been resized along with the alternate
+	 * one: the window may have changed while the program had it, and the buffer put
+	 * back is the one from before. Narrower, and every write past its margin throws;
+	 * shorter than the screen, and the top of the screen sits above its first line.
+	 */
+	private void restoreNormalScreen(boolean cursorBack) {
+		// where the program left the cursor, for the modes that keep it there
+		int programLine = fCursorLine;
+		int programColumn = fCursorColumn;
+		boolean programWrapPending = fWrapPending;
+		TerminalStyle programStyle = fStyle;
+		ITerminalTextData saved = fNormalScreen;
+		fNormalScreen = null;
+		// the margins were the full screen program's, not the shell's
+		fScrollRegion = ScrollRegion.FULL_WINDOW;
+		int height = saved.getHeight();
+		int cursor = fNormalCursorLine; // a line of the saved buffer
+		// the height setDimensions would give the normal screen: at least the screen,
+		// and with no history, the rows below the cursor go when the screen shrinks
+		int newHeight = Math.max(fLines, height);
+		if (fLines < fNormalLines && height == fNormalLines) {
+			newHeight = Math.max(fLines, cursor + 1);
+		}
+		fTerminal.setMaxHeight(Math.max(fTerminal.getMaxHeight(), Math.max(height, newHeight)));
+		fTerminal.copy(saved);
+		fTerminal.setDimensions(newHeight, fColumns);
+		// rows the buffer gains are blank: they may still hold what the program drew there
+		for (int line = height; line < newHeight; line++) {
+			fTerminal.cleanLine(line);
+		}
+		// a limit lowered meanwhile takes the oldest lines, never the screen
+		int limit = Math.max(fNormalMaxHeight, fLines);
+		int excess = newHeight - limit;
+		if (excess > 0) {
+			fTerminal.scroll(0, newHeight, -excess);
+			fTerminal.setDimensions(limit, fColumns);
+			cursor -= excess;
+		}
+		fTerminal.setMaxHeight(Math.max(limit, fTerminal.getHeight()));
+		// back to the line the cursor was on, wherever it is on the screen now
+		if (!cursorBack) {
+			// 47 and 1047 save no cursor: it stays on the row and column the program left it
+			setCursor(programLine, programColumn);
+			fWrapPending = programWrapPending && fCursorColumn == fColumns - 1;
+			setStyle(programStyle);
+			return;
+		}
+		setCursor(cursor - (fTerminal.getHeight() - fLines), fNormalCursorColumn);
+		// and to a wrap that was pending there, if the line is as wide as it was
+		fWrapPending = fNormalWrapPending && fColumns == fNormalColumns && fCursorColumn == fColumns - 1;
+		// in the colours the shell was writing in, not the ones the program left selected
+		setStyle(fNormalStyle);
+	}
+
+	@Override
+	public int getBufferLineLimit() {
+		synchronized (fTerminal) {
+			// while the alternate screen shows, the model's limit is that screen's height
+			return fNormalScreen != null ? fNormalMaxHeight : fTerminal.getMaxHeight();
+		}
+	}
+
+	@Override
+	public void setBufferLineLimit(int bufferLineLimit) {
+		if (bufferLineLimit <= 0) {
+			return;
+		}
+		synchronized (fTerminal) {
+			if (fNormalScreen != null) {
+				// the alternate screen keeps its cap; the normal screen gets the limit back
+				fNormalMaxHeight = bufferLineLimit;
+				return;
+			}
+			if (fTerminal.getHeight() > bufferLineLimit) {
+				fTerminal.setDimensions(bufferLineLimit, fTerminal.getWidth());
+			}
+			fTerminal.setMaxHeight(bufferLineLimit);
+		}
+	}
+
+	@Override
 	public void clearAll() {
+		synchronized (fTerminal) {
+			if (fNormalScreen != null) {
+				// Clearing while a full screen program shows clears what is behind it as
+				// well, or leaving the program would bring back what the user cleared:
+				// a blank normal screen, the cursor on the row of it where it was.
+				int row = fNormalCursorLine - (fNormalScreen.getHeight() - fNormalLines);
+				fNormalScreen = new TerminalTextDataStore();
+				fNormalScreen.setDimensions(fNormalLines, fNormalColumns);
+				fNormalCursorLine = Math.max(0, Math.min(row, fNormalLines - 1));
+				fNormalWrapPending = false;
+			}
+			clearBuffer();
+		}
+	}
+
+	private void clearBuffer() {
 		synchronized (fTerminal) {
 			// clear the history
 			int n = fTerminal.getHeight();
@@ -122,6 +274,22 @@ public class VT100EmulatorBackend implements IVT100EmulatorBackend {
 			// relative cursor line
 			int cl = getCursorLine();
 			int cc = getCursorColumn();
+			if (fNormalScreen != null) {
+				// The alternate screen has no history, so its buffer stays exactly as
+				// high as the screen. On a shorter screen the lines above the cursor go
+				// first, as many as it takes to keep the cursor on it; the cap follows
+				// once the buffer is no higher than it, which the buffer requires.
+				int drop = Math.max(0, cl + 1 - lines);
+				if (drop > 0) {
+					fTerminal.scroll(0, fTerminal.getHeight(), -drop);
+				}
+				fLines = lines;
+				fColumns = cols;
+				fTerminal.setDimensions(lines, cols);
+				fTerminal.setMaxHeight(lines);
+				setCursor(cl - drop, cc);
+				return;
+			}
 			int height = fTerminal.getHeight();
 			// absolute cursor line
 			int acl = cl + height - fLines;
@@ -157,18 +325,26 @@ public class VT100EmulatorBackend implements IVT100EmulatorBackend {
 
 	@Override
 	public void insertCharacters(int charactersToInsert) {
+		if (charactersToInsert <= 0) {
+			return; // nothing moves, so no wide character may be broken either
+		}
 		synchronized (fTerminal) {
 			int line = toAbsoluteLine(fCursorLine);
 			int n = charactersToInsert;
+			// A wide character is not left half on the line: one the insertion splits
+			// is blanked whole, and so is one whose second cell it pushes off the end.
+			if (isSecondCell(line, fCursorColumn)) {
+				eraseCells(line, fCursorColumn - 1, fCursorColumn + 1);
+			}
+			if (fCursorColumn + n < fColumns && isSecondCell(line, fColumns - n)) {
+				eraseCells(line, fColumns - n - 1, fColumns - n);
+			}
 			for (int col = fColumns - 1; col >= fCursorColumn + n; col--) {
 				char c = fTerminal.getChar(line, col - n);
 				TerminalStyle style = fTerminal.getStyle(line, col - n);
 				fTerminal.setChar(line, col, c, style);
 			}
-			int last = Math.min(fCursorColumn + n, fColumns);
-			for (int col = fCursorColumn; col < last; col++) {
-				fTerminal.setChar(line, col, '\000', null);
-			}
+			eraseCells(line, fCursorColumn, Math.min(fCursorColumn + n, fColumns));
 		}
 	}
 
@@ -177,7 +353,7 @@ public class VT100EmulatorBackend implements IVT100EmulatorBackend {
 		synchronized (fTerminal) {
 			eraseLineToEnd();
 			for (int line = toAbsoluteLine(fCursorLine + 1); line < toAbsoluteLine(fLines); line++) {
-				fTerminal.cleanLine(line);
+				eraseLine(line);
 			}
 		}
 
@@ -187,7 +363,7 @@ public class VT100EmulatorBackend implements IVT100EmulatorBackend {
 	public void eraseToCursor() {
 		synchronized (fTerminal) {
 			for (int line = toAbsoluteLine(0); line < toAbsoluteLine(fCursorLine); line++) {
-				fTerminal.cleanLine(line);
+				eraseLine(line);
 			}
 			eraseLineToCursor();
 		}
@@ -196,16 +372,57 @@ public class VT100EmulatorBackend implements IVT100EmulatorBackend {
 	@Override
 	public void eraseAll() {
 		synchronized (fTerminal) {
+			// What is on the screen goes into the history before it is erased, as in
+			// Windows Terminal and VTE, so that clearing the screen does not destroy
+			// what the user was reading. It matters on Windows, where ConPTY clears
+			// the screen at the start of every connection. Blank lines at the bottom
+			// of the screen are left out, but not the row a line runs on to: the
+			// history ends where a line ends. The alternate screen keeps no history,
+			// so there the lines simply go.
+			int used = fLines;
+			while (used > 0 && isBlank(toAbsoluteLine(used - 1))) {
+				used--;
+			}
+			while (used > 0 && used < fLines && fTerminal.isWrappedLine(toAbsoluteLine(used - 1))) {
+				used++;
+			}
+			for (int i = 0; i < used; i++) {
+				fTerminal.addLine();
+			}
+			if (used > 0) {
+				// the screen moved down the buffer: the cursor stays on its row of it
+				setCursorLine(fCursorLine);
+			}
 			for (int line = toAbsoluteLine(0); line < toAbsoluteLine(fLines); line++) {
-				fTerminal.cleanLine(line);
+				eraseLine(line);
 			}
 		}
+	}
+
+	private boolean isBlank(int line) {
+		char[] chars = fTerminal.getChars(line);
+		if (chars != null) {
+			for (char c : chars) {
+				if (c != '\000' && c != ' ') {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public void eraseLine() {
 		synchronized (fTerminal) {
-			fTerminal.cleanLine(toAbsoluteLine(fCursorLine));
+			eraseLine(toAbsoluteLine(fCursorLine));
+		}
+	}
+
+	private void eraseLine(int line) {
+		fWrapPending = false; // also when there is nothing to fill
+		fTerminal.cleanLine(line);
+		if (eraseStyle() != null) {
+			eraseCells(line, 0, fColumns);
 		}
 	}
 
@@ -213,19 +430,63 @@ public class VT100EmulatorBackend implements IVT100EmulatorBackend {
 	public void eraseLineToEnd() {
 		synchronized (fTerminal) {
 			int line = toAbsoluteLine(fCursorLine);
-			for (int col = fCursorColumn; col < fColumns; col++) {
-				fTerminal.setChar(line, col, '\000', null);
-			}
+			eraseWhole(line, fCursorColumn, fColumns);
+			// Nothing is left out to the margin, so the line ends where the cursor is.
+			fTerminal.clearWrappedLine(line);
 		}
+	}
+
+	/**
+	 * Erasing either half of a wide character erases all of it, in the same
+	 * background as the rest of the range.
+	 *
+	 * @return where the erase ended, past a wide character it took whole
+	 */
+	private int eraseWhole(int line, int from, int to) {
+		if (isSecondCell(line, from)) {
+			from--;
+		}
+		if (isSecondCell(line, to)) {
+			to++;
+		}
+		eraseCells(line, from, to);
+		return to;
+	}
+
+	/**
+	 * Erasing leaves behind the background a program is writing in, not the one the
+	 * terminal started with (xterm's "back color erase", which every terminal that
+	 * supports colour implements). Colouring a run of a line by setting a background
+	 * and erasing to the end of it is how a program paints anything wider than the
+	 * characters it has to put there, and without this such a line keeps the
+	 * terminal's own colour from its last character on. xterm applies this to every
+	 * erase (EL, ED, ECH) and to the cells insertion and deletion uncover (ICH, DCH).
+	 */
+	private void eraseCells(int line, int from, int to) {
+		fWrapPending = false; // erasing, inserting and deleting all forget a pending wrap
+		if (from < to) {
+			fTerminal.setChars(line, from, new char[to - from], eraseStyle());
+		}
+	}
+
+	/**
+	 * @return the style erased cells take: only the background carries over, what is
+	 *         erased is not bold or underlined; null, as a cell that was never
+	 *         written, when that background is the default one
+	 */
+	private TerminalStyle eraseStyle() {
+		TerminalStyle plain = getDefaultStyle();
+		if (plain == null || fStyle == null) {
+			return fStyle;
+		}
+		TerminalStyle erased = plain.setBackground(fStyle);
+		return erased.equals(plain) ? null : erased;
 	}
 
 	@Override
 	public void eraseLineToCursor() {
 		synchronized (fTerminal) {
-			int line = toAbsoluteLine(fCursorLine);
-			for (int col = 0; col <= fCursorColumn; col++) {
-				fTerminal.setChar(line, col, '\000', null);
-			}
+			eraseWhole(toAbsoluteLine(fCursorLine), 0, fCursorColumn + 1);
 		}
 	}
 
@@ -244,17 +505,27 @@ public class VT100EmulatorBackend implements IVT100EmulatorBackend {
 
 	@Override
 	public void deleteCharacters(int n) {
+		if (n <= 0) {
+			return; // nothing moves, so no wide character may be broken either
+		}
 		synchronized (fTerminal) {
 			int line = toAbsoluteLine(fCursorLine);
+			// deleting either half of a wide character leaves none of it
+			int end = Math.min(fCursorColumn + n, fColumns);
+			if (isSecondCell(line, fCursorColumn)) {
+				eraseCells(line, fCursorColumn - 1, fCursorColumn);
+			}
+			if (isSecondCell(line, end)) {
+				eraseCells(line, end, end + 1);
+			}
 			for (int col = fCursorColumn + n; col < fColumns; col++) {
 				char c = fTerminal.getChar(line, col);
 				TerminalStyle style = fTerminal.getStyle(line, col);
 				fTerminal.setChar(line, col - n, c, style);
 			}
-			int first = Math.max(fCursorColumn, fColumns - n);
-			for (int col = first; col < fColumns; col++) {
-				fTerminal.setChar(line, col, '\000', null);
-			}
+			eraseCells(line, Math.max(fCursorColumn, fColumns - n), fColumns);
+			// what reached the margin moved off it, so the line ends before it (xterm)
+			fTerminal.clearWrappedLine(line);
 		}
 	}
 
@@ -310,19 +581,64 @@ public class VT100EmulatorBackend implements IVT100EmulatorBackend {
 	public void appendString(String buffer) {
 		synchronized (fTerminal) {
 			char[] chars = buffer.toCharArray();
-			if (fInsertMode) {
-				insertCharacters(chars.length);
-			}
 			int line = toAbsoluteLine(fCursorLine);
 			int i = 0;
 			while (i < chars.length) {
 				if (fWrapPending) {
 					line = doLineWrap();
 				}
-				int n = Math.min(fColumns - fCursorColumn, chars.length - i);
-				fTerminal.setChars(line, fCursorColumn, chars, i, n, fStyle);
-				int col = fCursorColumn + n;
-				i += n;
+				int room = fColumns - fCursorColumn;
+				int col;
+				int n = narrowRun(chars, i, room);
+				if (n > 0) {
+					if (fInsertMode) {
+						// room on the line the run goes to, which a wrap may have changed
+						insertCharacters(n);
+					}
+					breakWideChar(line, fCursorColumn);
+					breakWideChar(line, fCursorColumn + n - 1);
+					fTerminal.setChars(line, fCursorColumn, chars, i, n, fStyle);
+					col = fCursorColumn + n;
+					i += n;
+				} else {
+					int codePoint = Character.codePointAt(chars, i);
+					int charsUsed = Character.charCount(codePoint);
+					int width = cellWidth(codePoint);
+					if (width == 0) {
+						// combining marks and other non-printing code points occupy no cell
+						i += charsUsed;
+						continue;
+					}
+					if (width > room) {
+						if (fCursorColumn > 0) {
+							// a wide character is never split across the right margin,
+							// and the cell it leaves unused there is erased
+							eraseCharacters(room);
+							line = doLineWrap();
+							continue;
+						}
+						// terminal narrower than the character itself
+						width = room;
+					}
+					if (fInsertMode) {
+						insertCharacters(width); // room in cells, not characters
+					}
+					breakWideChar(line, fCursorColumn);
+					breakWideChar(line, fCursorColumn + width - 1);
+					if (charsUsed > width) {
+						// a one column terminal: the two chars of a surrogate pair cannot share its cell
+						fTerminal.setChar(line, fCursorColumn, '\uFFFD', fStyle);
+					} else if (charsUsed == 2) {
+						fTerminal.setChars(line, fCursorColumn, chars, i, 2, fStyle);
+					} else {
+						fTerminal.setChar(line, fCursorColumn, chars[i], fStyle);
+						if (width == 2) {
+							fTerminal.setChar(line, fCursorColumn + 1, '\000', fStyle);
+						}
+					}
+					col = fCursorColumn + width;
+					i += charsUsed;
+				}
 				// wrap needed?
 				if (col == fColumns) {
 					if (fVT100LineWrapping) {
@@ -339,6 +655,72 @@ public class VT100EmulatorBackend implements IVT100EmulatorBackend {
 		}
 	}
 
+	/**
+	 * A wide character owns two cells. Overwriting either one leaves the other
+	 * stranded: a filler with nothing in front of it, or a glyph that now spills
+	 * over whatever was written next to it. Blanking the partner before the write
+	 * goes in keeps the line honest, which is what a terminal is expected to do.
+	 */
+	private void breakWideChar(int line, int col) {
+		if (col < 0 || col >= fColumns) {
+			return;
+		}
+		char c = fTerminal.getChar(line, col);
+		if (Character.isLowSurrogate(c)) {
+			// second cell of a character beyond the BMP
+			if (col > 0 && Character.isHighSurrogate(fTerminal.getChar(line, col - 1))) {
+				blank(line, col - 1);
+			}
+		} else if (Character.isHighSurrogate(c)) {
+			if (col + 1 < fColumns && Character.isLowSurrogate(fTerminal.getChar(line, col + 1))) {
+				blank(line, col + 1);
+			}
+		} else if (c == '\000') {
+			if (col > 0 && CharWidth.of(fTerminal.getChar(line, col - 1)) == 2) {
+				blank(line, col - 1);
+			}
+		} else if (CharWidth.of(c) == 2 && col + 1 < fColumns && fTerminal.getChar(line, col + 1) == '\000') {
+			blank(line, col + 1);
+		}
+	}
+
+	/**
+	 * Cells a code point takes on the screen: its display width, except that a
+	 * printable character beyond the BMP always takes two, since its two chars
+	 * cannot share a cell.
+	 */
+	private static int cellWidth(int codePoint) {
+		int width = CharWidth.of(codePoint);
+		return width != 0 && Character.charCount(codePoint) == 2 ? 2 : width;
+	}
+
+	/**
+	 * @return whether the cell is the second of a wide character's two cells
+	 */
+	private boolean isSecondCell(int line, int col) {
+		return col > 0 && col < fColumns && CharWidth.isSecondCell(
+				String.valueOf(new char[] { fTerminal.getChar(line, col - 1), fTerminal.getChar(line, col) }), 1);
+	}
+
+	private void blank(int line, int col) {
+		fTerminal.setChar(line, col, ' ', fTerminal.getStyle(line, col));
+	}
+
+	/**
+	 * Length of the run of characters starting at <code>offset</code> that each
+	 * occupy exactly one cell, so that they can be copied in one block. Capped at
+	 * <code>max</code> cells. Zero when the run does not start with such a
+	 * character, which sends the caller down the code point by code point path.
+	 */
+	private static int narrowRun(char[] chars, int offset, int max) {
+		int n = 0;
+		while (n < max && offset + n < chars.length && !Character.isSurrogate(chars[offset + n])
+				&& CharWidth.of(chars[offset + n]) == 1) {
+			n++;
+		}
+		return n;
+	}
+
 	private int doLineWrap() {
 		int line;
 		line = toAbsoluteLine(fCursorLine);
@@ -353,8 +735,13 @@ public class VT100EmulatorBackend implements IVT100EmulatorBackend {
 	 * MUST be called from a synchronized block!
 	 */
 	private void doNewline() {
+		fWrapPending = false; // DEC STD 070: any move of the cursor forgets a pending wrap
 		if (fCursorLine == fScrollRegion.getBottomLine()) {
-			scrollUp(1);
+			if (fScrollRegion.getTopLine() == 0) {
+				scrollTopAnchoredRegionUpIntoHistory();
+			} else {
+				scrollUp(1);
+			}
 		} else if (fCursorLine + 1 >= fLines) {
 			int h = fTerminal.getHeight();
 			fTerminal.addLine();
@@ -366,6 +753,28 @@ public class VT100EmulatorBackend implements IVT100EmulatorBackend {
 		}
 	}
 
+	/**
+	 * Scrolls a scroll region whose top margin is the top of the screen: the displaced top line
+	 * is moved into the scroll-back history (like xterm/VTE) instead of being discarded.
+	 * MUST be called from a synchronized block!
+	 */
+	private void scrollTopAnchoredRegionUpIntoHistory() {
+		int regionBottom = fScrollRegion.getBottomLine();
+		if (regionBottom == fLines - 1) {
+			fTerminal.addLine();
+		} else if (fTerminal.getMaxHeight() > 0 && fTerminal.getHeight() < fTerminal.getMaxHeight()) {
+			// the history grows, so the former top line stays where it is and becomes history;
+			// shift the lines below the region back down, vacating the bottom line of the region
+			fTerminal.addLine();
+			fTerminal.scroll(toAbsoluteLine(regionBottom), fLines - regionBottom, 1);
+		} else {
+			// one negative shift that snapshots can track, so selections move with the text
+			fTerminal.scroll(0, toAbsoluteLine(regionBottom) + 1, -1);
+		}
+		// the absolute line of the cursor may have changed
+		setCursorLine(fCursorLine);
+	}
+
 	@Override
 	public void processNewline() {
 		synchronized (fTerminal) {
@@ -374,6 +783,7 @@ public class VT100EmulatorBackend implements IVT100EmulatorBackend {
 	}
 
 	private void doReverseLineFeed() {
+		fWrapPending = false;
 		if (fCursorLine == fScrollRegion.getTopLine()) {
 			scrollDown(1);
 		} else {
@@ -436,6 +846,7 @@ public class VT100EmulatorBackend implements IVT100EmulatorBackend {
 				targetLine = fLines - 1;
 			}
 			fCursorLine = targetLine;
+			fWrapPending = false;
 			// We make the assumption that nobody is changing the
 			// terminal cursor except this class!
 			// This assumption gives a huge performance improvement
@@ -503,11 +914,17 @@ public class VT100EmulatorBackend implements IVT100EmulatorBackend {
 
 	@Override
 	public void eraseCharacters(int n) {
+		if (n <= 0) {
+			return; // nothing is erased, so no wide character may be broken either
+		}
 		synchronized (fTerminal) {
 			int line = toAbsoluteLine(fCursorLine);
-			int end = Math.min(fCursorColumn + n, fColumns);
-			for (int col = fCursorColumn; col < end; col++) {
-				fTerminal.setChar(line, col, '\000', null);
+			int end = n >= fColumns - fCursorColumn ? fColumns : fCursorColumn + n;
+			// a wide character the erase ends in is erased whole, maybe up to the margin
+			if (eraseWhole(line, fCursorColumn, end) == fColumns) {
+				// Nothing is left out to the margin, so the line ends before it, as
+				// erasing to the end of the line says (xterm; Ghostty on any ECH).
+				fTerminal.clearWrappedLine(line);
 			}
 		}
 	}

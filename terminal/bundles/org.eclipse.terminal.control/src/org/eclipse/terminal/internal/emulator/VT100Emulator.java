@@ -41,6 +41,7 @@ import static org.eclipse.terminal.model.TerminalColor.YELLOW;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.Arrays;
+import java.util.function.IntConsumer;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.events.ControlEvent;
@@ -119,16 +120,15 @@ public class VT100Emulator implements ControlListener {
 	 */
 	final private IVT100EmulatorBackend text;
 	/**
-	 * This field hold the saved absolute line number of the cursor when
-	 * processing the "ESC 7" and "ESC 8" command sequences.
+	 * The cursor saved by "ESC 7" (and CSI ? 1048 h) for "ESC 8", one slot per screen
+	 * as in xterm: [0] on the normal screen, [1] on the alternate one, so a full screen
+	 * program saving its cursor does not overwrite the one the shell saved.
 	 */
-	private int savedCursorLine = 0;
+	private final int[] savedCursorLine = new int[2];
+	private final int[] savedCursorColumn = new int[2];
 
-	/**
-	 * This field hold the saved column number of the cursor when processing the
-	 * "ESC 7" and "ESC 8" command sequences.
-	 */
-	private int savedCursorColumn = 0;
+	/** whether a program asked for the alternate screen (47, 1047 or 1049) */
+	private boolean alternateScreen;
 
 	/**
 	 * This field holds an array of StringBuffer objects, each of which is one
@@ -195,6 +195,31 @@ public class VT100Emulator implements ControlListener {
 	 */
 	public void setInputStreamReader(Reader reader) {
 		fReader = reader;
+	}
+
+	/**
+	 * @see IVT100EmulatorBackend#setBufferLineLimit(int)
+	 */
+	public void setBufferLineLimit(int bufferLineLimit) {
+		text.setBufferLineLimit(bufferLineLimit);
+	}
+
+	/**
+	 * @see IVT100EmulatorBackend#getBufferLineLimit()
+	 */
+	public int getBufferLineLimit() {
+		return text.getBufferLineLimit();
+	}
+
+	private void saveCursor() {
+		int screen = alternateScreen ? 1 : 0;
+		savedCursorLine[screen] = relativeCursorLine();
+		savedCursorColumn[screen] = getCursorColumn();
+	}
+
+	private void restoreCursor() {
+		int screen = alternateScreen ? 1 : 0;
+		moveCursor(savedCursorLine[screen], savedCursorColumn[screen]);
 	}
 
 	public void setDimensions(int lines, int cols) {
@@ -383,8 +408,7 @@ public class VT100Emulator implements ControlListener {
 					// Save cursor position and character attributes
 
 					ansiState = ANSISTATE_INITIAL;
-					savedCursorLine = relativeCursorLine();
-					savedCursorColumn = getCursorColumn();
+					saveCursor();
 					break;
 
 				case '8':
@@ -392,7 +416,7 @@ public class VT100Emulator implements ControlListener {
 					// position
 
 					ansiState = ANSISTATE_INITIAL;
-					moveCursor(savedCursorLine, savedCursorColumn);
+					restoreCursor();
 					break;
 
 				case 'c':
@@ -486,12 +510,29 @@ public class VT100Emulator implements ControlListener {
 	}
 
 	private void resetTerminal() {
+		// a full reset (ESC c) puts the normal screen back first, history and all, as a
+		// reset before a connection does; else the history stays capped away and a
+		// later CSI ? 1049 l would bring back the screen from before the reset
+		text.enableAlternateScreen(false);
+		alternateScreen = false;
+		// the style first: the screen is erased in its background
+		text.setStyle(text.getDefaultStyle());
 		text.eraseAll();
 		text.setCursor(0, 0);
-		text.setStyle(text.getDefaultStyle());
 		text.setScrollRegion(-1, -1);
 		text.setInsertMode(false);
 		terminal.enableApplicationCursorKeys(false);
+		resetProgramModes();
+	}
+
+	/**
+	 * The modes a program asked for end with a full reset and with its connection: a
+	 * program that hid the cursor and was cut off must not leave the next shell
+	 * without one.
+	 */
+	private void resetProgramModes() {
+		terminal.showCursor(true);
+		terminal.enableBracketedPaste(false);
 	}
 
 	/**
@@ -914,6 +955,10 @@ public class VT100Emulator implements ControlListener {
 				style = style.setBold(true);
 				break;
 
+			case 2:
+				style = style.setDim(true);
+				break;
+
 			case 4:
 				style = style.setUnderline(true);
 				break;
@@ -930,8 +975,14 @@ public class VT100Emulator implements ControlListener {
 				break;
 
 			case 21:
-			case 22:
+				// Double underline in ECMA-48, which is not supported; bold off as before,
+				// as the Linux console long took it. Faint stays.
 				style = style.setBold(false);
+				break;
+
+			case 22:
+				// Normal intensity: undoes both of the two that change it.
+				style = style.setBold(false).setDim(false);
 				break;
 
 			case 24:
@@ -1263,18 +1314,51 @@ public class VT100Emulator implements ControlListener {
 		text.eraseCharacters(getAnsiParameter(0));
 	}
 
+	/**
+	 * Runs the action on each mode of a set or reset. Only the first 16 parameters are
+	 * stored, while every ';' is counted: the ones past them are dropped.
+	 */
+	private void forEachMode(IntConsumer action) {
+		for (int i = 0; i <= nextAnsiParameter && i < ansiParameters.length; i++) {
+			if (ansiParameters[i].length() > 0) { // an empty one names no mode
+				action.accept(getAnsiParameter(i));
+			}
+		}
+	}
+
 	private void processDecPrivateCommand_h() {
-		int param = getAnsiParameter(0);
+		// A program may set several modes at once: ncurses turns the mouse on with CSI ? 1006 ; 1000 h.
+		forEachMode(this::setDecPrivateMode);
+	}
+
+	private void setDecPrivateMode(int param) {
 		switch (param) {
 		case 1:
 			// Enable Application Cursor Keys (DECCKM)
 			terminal.enableApplicationCursorKeys(true);
 			break;
+		case 25:
+			// Show cursor (DECTCEM).
+			terminal.showCursor(true);
+			break;
 		case 47:
 		case 1047:
-		case 1048:
+			// Use Alternate Screen Buffer, the cursor staying where it is.
+			text.enableAlternateScreen(true, false);
+			alternateScreen = true;
+			break;
 		case 1049:
-			// Use Alternate Screen Buffer (ignored).
+			// Save the cursor as DECSC does, then use Alternate Screen Buffer.
+			text.enableAlternateScreen(true, true);
+			alternateScreen = true;
+			break;
+		case 1048:
+			// Save cursor, as ESC 7 does.
+			saveCursor();
+			break;
+		case 2004:
+			// Bracketed paste: pasted text is wrapped so a program can tell it from typing.
+			terminal.enableBracketedPaste(true);
 			break;
 		default:
 			Logger.log("Unsupported command parameter: CSI ?" + param + 'h'); //$NON-NLS-1$
@@ -1283,18 +1367,38 @@ public class VT100Emulator implements ControlListener {
 	}
 
 	private void processDecPrivateCommand_l() {
-		int param = getAnsiParameter(0);
+		forEachMode(this::resetDecPrivateMode);
+	}
+
+	private void resetDecPrivateMode(int param) {
 		switch (param) {
 		case 1:
 			// Enable Normal Cursor Keys (DECCKM)
 			terminal.enableApplicationCursorKeys(false);
 			break;
+		case 25:
+			// Hide cursor (DECTCEM).
+			terminal.showCursor(false);
+			break;
 		case 47:
 		case 1047:
-		case 1048:
+			// Use Normal Screen Buffer, putting back what was on it, the cursor
+			// staying where the program left it. Leaving also resets the margins,
+			// which a repeated request must not do to the normal screen.
+			text.enableAlternateScreen(false, false);
+			alternateScreen = false;
+			break;
 		case 1049:
-			// Use Normal Screen Buffer (ignored, but reset scroll region).
-			text.setScrollRegion(-1, -1);
+			// Use Normal Screen Buffer and restore the cursor saved on the way in.
+			text.enableAlternateScreen(false, true);
+			alternateScreen = false;
+			break;
+		case 1048:
+			// Restore cursor, as ESC 8 does.
+			restoreCursor();
+			break;
+		case 2004:
+			terminal.enableBracketedPaste(false);
 			break;
 		default:
 			Logger.log("Unsupported command parameter: CSI ?" + param + 'l'); //$NON-NLS-1$
@@ -1561,9 +1665,15 @@ public class VT100Emulator implements ControlListener {
 	 */
 	public void resetState() {
 		ansiState = ANSISTATE_INITIAL;
+		// a new connection starts on the normal screen, even if the last one ended
+		// while a full screen program had the alternate one; first, as leaving it puts
+		// back the shell's rendition, which the reset then resets
+		text.enableAlternateScreen(false);
+		alternateScreen = false;
 		text.setStyle(text.getDefaultStyle());
 		text.setScrollRegion(-1, -1);
 		text.setInsertMode(false);
+		resetProgramModes();
 	}
 
 	//	public OutputStream getOutputStream() {

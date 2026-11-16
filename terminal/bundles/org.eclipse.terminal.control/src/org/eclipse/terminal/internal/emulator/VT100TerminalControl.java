@@ -172,13 +172,23 @@ public class VT100TerminalControl implements ITerminalControlForText, ITerminalC
 	 */
 	private final IPropertyChangeListener fPreferenceListener = this::updatePreferences;
 	private final IPropertyChangeListener fFontListener = this::updateFont;
+	// set by the reader job, read by the display thread when pasting
+	private volatile boolean fBracketedPaste;
+	// asked for by the program (DECTCEM); kept on the control, as the canvas is new after a move.
+	// Written with the model it is copied to under fCursorLock, so a model made during a move
+	// cannot miss a hide or show that the reader job makes meanwhile
+	private boolean fCursorHidden;
+	private final Object fCursorLock = new Object();
+	private static final String PASTE_START = "\u001b[200~"; //$NON-NLS-1$
+	private static final String PASTE_END = "\u001b[201~"; //$NON-NLS-1$
 
 	/**
 	 * Is protected by synchronize on this
 	 */
 	volatile private Job fJob;
 
-	private PollingTextCanvasModel fPollingTextCanvasModel;
+	// replaced on the display thread when the tab moves, read by the reader job in showCursor
+	private volatile PollingTextCanvasModel fPollingTextCanvasModel;
 
 	/**
 	 * In some circumstances (e.g PowerShell on Windows) the backspace
@@ -294,7 +304,7 @@ public class VT100TerminalControl implements ITerminalControlForText, ITerminalC
 	private void paste(int clipboardType) {
 		TextTransfer textTransfer = TextTransfer.getInstance();
 		String strText = (String) fClipboard.getContents(textTransfer, clipboardType);
-		pasteString(strText);
+		paste(strText);
 	}
 
 	/**
@@ -309,6 +319,18 @@ public class VT100TerminalControl implements ITerminalControlForText, ITerminalC
 			return false;
 		}
 		sendString(strText);
+		return true;
+	}
+
+	@Override
+	public boolean paste(String text) {
+		if (!isConnected() || text == null || text.isEmpty()) {
+			return false; // nothing to paste: no empty brackets either
+		}
+		// a connector that echoes locally (a stream, telnet without remote echo) gets the
+		// text as it always did: InputStreamMonitor converts the line breaks of a stream
+		ITerminalConnector connector = getTerminalConnector();
+		sendString(connector != null && connector.isLocalEcho() ? text : pasteText(text, fBracketedPaste));
 		return true;
 	}
 
@@ -569,6 +591,71 @@ public class VT100TerminalControl implements ITerminalControlForText, ITerminalC
 		return getCtlText().getShell();
 	}
 
+	private record XtermKey(int number, char last) {
+	}
+
+	/**
+	 * xterm's number and final character for each key: the arrows, Home, End and
+	 * F1-F4 spelled with a letter after 1, the others with a number before ~
+	 * (xterm uses no 16 or 22)
+	 */
+	private static final Map<Integer, XtermKey> XTERM_KEYS = Map.ofEntries(
+			Map.entry(SWT.ARROW_UP, new XtermKey(1, 'A')), Map.entry(SWT.ARROW_DOWN, new XtermKey(1, 'B')),
+			Map.entry(SWT.ARROW_RIGHT, new XtermKey(1, 'C')), Map.entry(SWT.ARROW_LEFT, new XtermKey(1, 'D')),
+			Map.entry(SWT.HOME, new XtermKey(1, 'H')), Map.entry(SWT.END, new XtermKey(1, 'F')),
+			Map.entry(SWT.INSERT, new XtermKey(2, '~')),
+			Map.entry(SWT.PAGE_UP, new XtermKey(5, '~')), Map.entry(SWT.PAGE_DOWN, new XtermKey(6, '~')),
+			Map.entry(SWT.F1, new XtermKey(1, 'P')), Map.entry(SWT.F2, new XtermKey(1, 'Q')),
+			Map.entry(SWT.F3, new XtermKey(1, 'R')), Map.entry(SWT.F4, new XtermKey(1, 'S')),
+			Map.entry(SWT.F5, new XtermKey(15, '~')), Map.entry(SWT.F6, new XtermKey(17, '~')),
+			Map.entry(SWT.F7, new XtermKey(18, '~')), Map.entry(SWT.F8, new XtermKey(19, '~')),
+			Map.entry(SWT.F9, new XtermKey(20, '~')), Map.entry(SWT.F10, new XtermKey(21, '~')),
+			Map.entry(SWT.F11, new XtermKey(23, '~')), Map.entry(SWT.F12, new XtermKey(24, '~')));
+
+	/**
+	 * The special keys in keyPressed are sent only when no modifier is held, so a
+	 * program was never told about Ctrl+End and the rest of them. xterm spells a modified
+	 * special key as the plain one carrying the modifier as a parameter, which is
+	 * what this builds. Keys keyPressed already answered never reach here, so what
+	 * works today keeps working.
+	 *
+	 * @return the sequence, or null when the key is not one that is spelled this way
+	 */
+	public static String modifiedSpecialKey(int keyCode, int modifierKeys) {
+		if ((modifierKeys & SWT.COMMAND) != 0) {
+			// xterm has no spelling for the Mac's Cmd: a combination with it stays in Eclipse
+			return null;
+		}
+		int modifier = 1 + ((modifierKeys & SWT.SHIFT) != 0 ? 1 : 0) + ((modifierKeys & SWT.ALT) != 0 ? 2 : 0)
+				+ ((modifierKeys & SWT.CTRL) != 0 ? 4 : 0);
+		XtermKey key = XTERM_KEYS.get(keyCode);
+		return modifier == 1 || key == null ? null : "\u001b[" + key.number() + ';' + modifier + key.last(); //$NON-NLS-1$
+	}
+
+	/**
+	 * Pasted text as it goes to the program: each line break as the Enter key sends
+	 * it, a CR, as Windows Terminal (CR LF to CR) and tmux (LF to CR) paste. A
+	 * Windows clipboard's CR LF would reach the shell as two breaks, and readline
+	 * then draws two rows for every line: a paste taller than the screen pushes the
+	 * prompt off it, and the redraw on the next key lands where the prompt no
+	 * longer is. With bracketed paste on, the text is marked as pasted.
+	 */
+	public static String pasteText(String text, boolean bracketedPaste) {
+		String lines = text.replace("\r\n", "\r").replace('\n', '\r'); //$NON-NLS-1$ //$NON-NLS-2$
+		return bracketedPaste ? bracketed(lines) : lines;
+	}
+
+	/**
+	 * Marks text as pasted, so that a program takes the newlines in it as part of
+	 * the text rather than as the user pressing return on each line. The text cannot
+	 * end the paste early: every ESC and C1 CSI goes, as xterm does, so no end marker
+	 * can be left over or put together from the pieces around one taken out
+	 * ("ESC[20ESC[201~1~").
+	 */
+	private static String bracketed(String text) {
+		return PASTE_START + text.replace("\u001b", "").replace("\u009b", "") + PASTE_END; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+	}
+
 	protected void sendChar(char chKey, boolean altKeyPressed) {
 		try {
 			int byteToSend = chKey;
@@ -650,22 +737,40 @@ public class VT100TerminalControl implements ITerminalControlForText, ITerminalC
 			fClipboard.dispose();
 			fPollingTextCanvasModel.stopPolling();
 		}
+		// set on this terminal alone (Inverted colors and Scroll Lock in its menu): kept across a move
+		boolean inverted = fCtlText != null && fCtlText.isInvertedColors();
+		boolean scrollLock = fCtlText != null && fCtlText.isScrollLock();
 		if (fWndParent != null && !fWndParent.isDisposed()) {
 			// terminal widget gets a new parent (DnD)
 			fWndParent.dispose();
 		}
+		// the old canvas, if any, went with its parent: the new one measures on the display
+		// until it exists
+		fCtlText = null;
 		setupControls(parent);
 		setCommandInputField(fCommandInputField);
 		setupListeners();
-		if (fPreferenceStore != null && wasDisposed) {
-			updatePreferences(null);
-			fPreferenceStore.addPropertyChangeListener(fPreferenceListener);
+		if (wasDisposed) {
+			if (fPreferenceStore != null) {
+				updatePreferences(null);
+				fPreferenceStore.addPropertyChangeListener(fPreferenceListener);
+			}
+		} else {
+			// moved: the new canvas needs the colors and the font (the defaults without a
+			// preference store), but what was set on this terminal stays, the buffer line
+			// limit included
+			onTerminalColorsChanged();
+			onTerminalFontChanged();
+			setInvertedColors(inverted);
+			setScrollLock(scrollLock);
 		}
 		JFaceResources.getFontRegistry().addListener(fFontListener);
 		setupHelp(fWndParent, TerminalPlugin.HELP_VIEW);
 
 		if (!wasDisposed) {
 			fState = oldState;
+			// the new canvas starts with the cursor off: a connected terminal's cursor blinks
+			fCtlText.setCursorEnabled(isConnected());
 		}
 	}
 
@@ -761,7 +866,11 @@ public class VT100TerminalControl implements ITerminalControlForText, ITerminalC
 		ITerminalTextDataSnapshot snapshot = fTerminalModel.makeSnapshot();
 		// TODO how to get the initial size correctly!
 		snapshot.updateSnapshot(false);
-		fPollingTextCanvasModel = new PollingTextCanvasModel(snapshot);
+		synchronized (fCursorLock) {
+			PollingTextCanvasModel model = new PollingTextCanvasModel(snapshot);
+			model.setCursorHidden(fCursorHidden);
+			fPollingTextCanvasModel = model;
+		}
 		fCtlText = new TextCanvas(fWndParent, fPollingTextCanvasModel, SWT.NONE,
 				new TextLineRenderer(() -> fCtlText, fPollingTextCanvasModel));
 
@@ -1150,6 +1259,12 @@ public class VT100TerminalControl implements ITerminalControlForText, ITerminalC
 					break;
 				}
 
+				// a key Eclipse has a binding for stays with it, as Alt+Right (Quick Access)
+				// and Alt+Up (Maximize) do in this terminal
+				if (escSeq == null && !hasKeyBinding(accelerator)) {
+					escSeq = modifiedSpecialKey(event.keyCode, modifierKeys);
+				}
+
 				if (escSeq == null) {
 					// Any unmapped key should be handled locally by Eclipse
 					event.doit = true;
@@ -1226,6 +1341,18 @@ public class VT100TerminalControl implements ITerminalControlForText, ITerminalC
 			writeToTerminal(charBuffer.toString());
 		}
 
+		/**
+		 * @return whether an Eclipse key binding active here takes the key
+		 */
+		private boolean hasKeyBinding(int accelerator) {
+			if (!PlatformUI.isWorkbenchRunning()) {
+				return false;
+			}
+			IBindingService bindingService = PlatformUI.getWorkbench().getAdapter(IBindingService.class);
+			KeyStroke keyStroke = SWTKeySupport.convertAcceleratorToKeyStroke(accelerator);
+			return bindingService != null && bindingService.getPerfectMatch(KeySequence.getInstance(keyStroke)) != null;
+		}
+
 		/*
 		 * Process given event as Eclipse key binding.
 		 */
@@ -1288,6 +1415,11 @@ public class VT100TerminalControl implements ITerminalControlForText, ITerminalC
 		});
 	}
 
+	@Override
+	public void enableBracketedPaste(boolean enable) {
+		fBracketedPaste = enable;
+	}
+
 	/**
 	 * @param runnable run in display thread
 	 */
@@ -1336,20 +1468,15 @@ public class VT100TerminalControl implements ITerminalControlForText, ITerminalC
 
 	@Override
 	public int getBufferLineLimit() {
-		return fTerminalModel.getMaxHeight();
+		// through the emulator as well: while the alternate screen shows, the model's
+		// limit is that screen's height, and writing it back would cap the history there
+		return fTerminalText.getBufferLineLimit();
 	}
 
 	@Override
 	public void setBufferLineLimit(int bufferLineLimit) {
-		if (bufferLineLimit <= 0) {
-			return;
-		}
-		synchronized (fTerminalModel) {
-			if (fTerminalModel.getHeight() > bufferLineLimit) {
-				fTerminalModel.setDimensions(bufferLineLimit, fTerminalModel.getWidth());
-			}
-			fTerminalModel.setMaxHeight(bufferLineLimit);
-		}
+		// through the emulator, which knows whether the alternate screen is showing
+		fTerminalText.setBufferLineLimit(bufferLineLimit);
 	}
 
 	@Override
@@ -1410,6 +1537,21 @@ public class VT100TerminalControl implements ITerminalControlForText, ITerminalC
 	@Override
 	public String getHoverSelection() {
 		return fCtlText.getHoverSelection();
+	}
+
+	/** @return whether the cursor is drawn when on, not hidden by the program (DECTCEM) */
+	public boolean isCursorShown() {
+		return !fPollingTextCanvasModel.isCursorHidden();
+	}
+
+	@Override
+	public void showCursor(boolean show) {
+		synchronized (fCursorLock) {
+			fCursorHidden = !show;
+			if (fPollingTextCanvasModel != null) {
+				fPollingTextCanvasModel.setCursorHidden(!show);
+			}
+		}
 	}
 
 	@Override
