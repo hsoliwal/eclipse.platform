@@ -57,14 +57,21 @@ public class PosixHandler extends NativeHandler {
 
 		try {
 			PosixFileAttributes attrs = Files.readAttributes(path, PosixFileAttributes.class, LinkOption.NOFOLLOW_LINKS);
+			info.setExists(true);
 
 			if (attrs.isSymbolicLink()) {
 				info.setAttribute(EFS.ATTRIBUTE_SYMLINK, true);
 				info.setStringAttribute(EFS.ATTRIBUTE_LINK_TARGET, Files.readSymbolicLink(path).toString());
-				attrs = Files.readAttributes(path, PosixFileAttributes.class);
+				try {
+					attrs = Files.readAttributes(path, PosixFileAttributes.class);
+				} catch (NoSuchFileException e) {
+					// The link target does not exist, so we cannot read its attributes.
+					// Keep symlink metadata (permissions/timestamp) for dangling links.
+					// Preserve historical "broken target" semantics while still providing link attributes.
+					info.setExists(false);
+				}
 			}
 
-			info.setExists(true);
 			info.setLastModified(attrs.lastModifiedTime().toMillis());
 			info.setLength(attrs.size());
 			info.setDirectory(attrs.isDirectory());

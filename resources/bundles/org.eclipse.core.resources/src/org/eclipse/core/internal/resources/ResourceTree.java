@@ -320,7 +320,8 @@ class ResourceTree implements IResourceTree {
 			// If the file doesn't exist on disk then signal to the workspace to delete the
 			// file and return.
 			IFileStore fileStore = localManager.getStore(file);
-			boolean localExists = fileStore.exists();
+			IFileInfo localFileInfo = fileStore.fetchInfo();
+			boolean localExists = localFileInfo.exists() || localFileInfo.getAttribute(EFS.ATTRIBUTE_SYMLINK);
 			if (!localExists) {
 				deletedFile(file);
 				// Indicate that the delete was successful.

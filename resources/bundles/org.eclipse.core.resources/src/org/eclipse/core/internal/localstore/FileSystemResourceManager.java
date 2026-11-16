@@ -334,7 +334,7 @@ public class FileSystemResourceManager implements ICoreConstants, IManager {
 		} catch (CoreException e) {
 			return null;
 		}
-		if (!fileInfo.exists()) {
+		if (!fileInfo.exists() && !fileInfo.getAttribute(EFS.ATTRIBUTE_SYMLINK)) {
 			return null;
 		}
 		return FileUtil.fileInfoToAttributes(fileInfo);
