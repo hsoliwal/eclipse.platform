@@ -55,11 +55,38 @@ public interface ITerminalControlForText {
 	}
 
 	/**
+	 * Says a program is drawing a screen and has not finished (DEC mode 2026), so
+	 * that the view does not show it half drawn.
+	 *
+	 * @param redrawing whether a screen is being drawn
+	 */
+	default void enableSynchronizedOutput(boolean redrawing) {
+	}
+
+	/**
 	 * Shows or hides the cursor at the program's request (DEC mode 25).
 	 *
 	 * @param show whether the cursor is to be drawn
 	 */
 	default void showCursor(boolean show) {
+	}
+
+	/**
+	 * A program that asks for mouse events wants them instead of the terminal's own
+	 * handling of the mouse, scrolling included.
+	 *
+	 * @param mode 1000 (buttons), 1002 (buttons and drags), 1003 (every move), or 0 for none
+	 */
+	default void enableMouseReporting(int mode) {
+	}
+
+	/**
+	 * SGR encoding (CSI ?1006) reports coordinates as decimal numbers instead of
+	 * single bytes, which is what lets them go past column 223.
+	 *
+	 * @param enable whether to use it
+	 */
+	default void enableSgrMouseEncoding(boolean enable) {
 	}
 
 }

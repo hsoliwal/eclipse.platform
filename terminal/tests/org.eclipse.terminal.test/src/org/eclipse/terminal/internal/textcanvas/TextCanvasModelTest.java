@@ -12,6 +12,7 @@ package org.eclipse.terminal.internal.textcanvas;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.terminal.internal.model.TerminalTextData;
 import org.eclipse.terminal.model.ITerminalTextDataSnapshot;
 import org.junit.jupiter.api.Test;
@@ -56,6 +57,22 @@ public class TextCanvasModelTest {
 	}
 
 	@Test
+	public void testHoverPrefixedSpaceIsBoundary() {
+		TerminalTextData data = new TerminalTextData();
+		data.setDimensions(1, 10);
+		// the space shown in the cell ends a word, whatever prefix was written before it
+		data.setChars(0, 0, "a b".toCharArray(), null);
+		data.setCluster(0, 1, "\u0600 ");
+		ITerminalTextDataSnapshot snapshot = data.makeSnapshot();
+		snapshot.updateSnapshot(true);
+		AbstractTextCanvasModel model = new AbstractTextCanvasModel(snapshot) {
+		};
+		model.expandHoverSelectionAt(0, 2);
+		assertEquals("b", model.getHoverSelectionText());
+		assertEquals(new Point(2, 0), model.getHoverSelectionStart());
+	}
+
+	@Test
 	public void testSelectionCoversWideCharactersWhole() {
 		TerminalTextData data = new TerminalTextData();
 		data.setDimensions(1, 10);
@@ -85,5 +102,144 @@ public class TextCanvasModelTest {
 		};
 		model.setSelection(0, 1, 0, 3);
 		assertEquals("foo bar", model.getSelectedText());
+	}
+
+	@Test
+	public void testSynchronizedOutputHoldsTheViewBackForAWhile() throws InterruptedException {
+		Display display = Display.getCurrent() != null ? null : new Display();
+		try {
+			TerminalTextData data = new TerminalTextData();
+			data.setDimensions(3, 4);
+			data.setChars(0, 0, "a".toCharArray(), null);
+			data.setChars(1, 0, "b".toCharArray(), null);
+			data.setChars(2, 0, "c".toCharArray(), null);
+			ITerminalTextDataSnapshot snapshot = data.makeSnapshot();
+			snapshot.updateSnapshot(true);
+			PollingTextCanvasModel model = new PollingTextCanvasModel(snapshot);
+			model.stopPolling();
+			model.setVisibleRectangle(0, 0, 3, 4);
+			model.setSynchronizedOutput(true);
+			data.setChars(1, 0, "x".toCharArray(), null);
+			model.update();
+			assertEquals('b', model.getTerminalText().getChar(1, 0));
+			// a scroll waits like a poll, and the lines already shown stay where they are
+			model.setVisibleRectangle(1, 0, 2, 4);
+			assertEquals(0, snapshot.getInterestWindowStartLine());
+			assertEquals('b', model.getTerminalText().getChar(1, 0));
+			assertEquals('c', model.getTerminalText().getChar(2, 0));
+			// a new screen begun meanwhile does not hold the view back longer
+			Thread.sleep(150);
+			model.setSynchronizedOutput(false);
+			model.setSynchronizedOutput(true);
+			Thread.sleep(100);
+			model.update();
+			assertEquals(1, snapshot.getInterestWindowStartLine());
+			data.setChars(2, 0, "y".toCharArray(), null);
+			model.setSynchronizedOutput(false);
+			model.update();
+			assertEquals('y', model.getTerminalText().getChar(2, 0));
+		} finally {
+			if (display != null) {
+				display.dispose();
+			}
+		}
+	}
+
+	@Test
+	public void testSelectionCoversWideClusterWhole() {
+		TerminalTextData data = new TerminalTextData();
+		data.setDimensions(1, 10);
+		data.setChars(0, 0, "\u2764\000|".toCharArray(), null);
+		data.setCluster(0, 0, "\u2764\ufe0f"); // a heart made wide by VS16
+		ITerminalTextDataSnapshot snapshot = data.makeSnapshot();
+		snapshot.updateSnapshot(true);
+		AbstractTextCanvasModel model = new AbstractTextCanvasModel(snapshot) {
+		};
+		for (int col : new int[] { 0, 1 }) {
+			model.setSelection(0, 0, col, col);
+			assertEquals("\u2764\ufe0f", model.getSelectedText());
+		}
+	}
+
+	@Test
+	public void testCopiesClusters() {
+		TerminalTextData data = new TerminalTextData();
+		data.setDimensions(1, 12);
+		// a black cat ends in a wide character of the BMP: the empty cells after it stay spaces
+		data.setChars(0, 0, "\ud83d\udc08\000\000x".toCharArray(), null);
+		data.setCluster(0, 0, "\ud83d\udc08\u200d\u2b1b");
+		data.setChars(0, 6, new char[] { '\u00e9' }, null);
+		data.setCluster(0, 6, "e\u0301");
+		ITerminalTextDataSnapshot snapshot = data.makeSnapshot();
+		snapshot.updateSnapshot(true);
+		AbstractTextCanvasModel model = new AbstractTextCanvasModel(snapshot) {
+		};
+		model.setSelection(0, 0, 0, 11);
+		assertEquals("\ud83d\udc08\u200d\u2b1b  x e\u0301", model.getSelectedText());
+		assertEquals("\ud83d\udc08\u200d\u2b1b  x e\u0301", model.getAllText());
+	}
+
+	@Test
+	public void testCopyKeepsWhatANarrowedScreenHolds() {
+		TerminalTextData data = new TerminalTextData();
+		data.setDimensions(1, 6);
+		data.setChars(0, 0, "abcde\ud55c".toCharArray(), null);
+		data.setDimensions(1, 3);
+		ITerminalTextDataSnapshot snapshot = data.makeSnapshot();
+		snapshot.updateSnapshot(true);
+		AbstractTextCanvasModel model = new AbstractTextCanvasModel(snapshot) {
+		};
+		// the row comes whole, as it does again when the screen widens
+		assertEquals("abcde\ud55c", model.getAllText());
+		model.setSelection(0, 0, 0, 2);
+		assertEquals("abcde\ud55c", model.getSelectedText());
+		// a selection that ends inside the screen ends there
+		model.setSelection(0, 0, 0, 1);
+		assertEquals("ab", model.getSelectedText());
+		// a pair the margin cuts comes whole, though the screen shows no half of it
+		TerminalTextData pair = new TerminalTextData();
+		pair.setDimensions(1, 4);
+		pair.setChars(0, 0, "ab\ud83d\ude00".toCharArray(), null);
+		pair.setDimensions(1, 3);
+		ITerminalTextDataSnapshot narrowed = pair.makeSnapshot();
+		narrowed.updateSnapshot(true);
+		assertEquals("ab\ud83d\ude00", new AbstractTextCanvasModel(narrowed) {
+		}.getAllText());
+	}
+
+	@Test
+	public void testHoverWordKeepsClusters() {
+		TerminalTextData data = new TerminalTextData();
+		data.setDimensions(1, 8);
+		data.setChars(0, 0, "a\u2764\000b c".toCharArray(), null);
+		data.setCluster(0, 1, "\u2764\ufe0f"); // a heart made wide by VS16
+		ITerminalTextDataSnapshot snapshot = data.makeSnapshot();
+		snapshot.updateSnapshot(true);
+		AbstractTextCanvasModel model = new AbstractTextCanvasModel(snapshot) {
+		};
+		model.expandHoverSelectionAt(0, 0);
+		assertEquals("a\u2764\ufe0fb", model.getHoverSelectionText());
+	}
+
+	@Test
+	public void testHoverAfterResizeAndWideClusters() {
+		TerminalTextData data = new TerminalTextData();
+		data.setDimensions(1, 5);
+		data.setChars(0, 0, "abcde".toCharArray(), null);
+		data.setDimensions(1, 4); // the row keeps all five characters
+		ITerminalTextDataSnapshot snapshot = data.makeSnapshot();
+		snapshot.updateSnapshot(true);
+		AbstractTextCanvasModel model = new AbstractTextCanvasModel(snapshot) {
+		};
+		model.expandHoverSelectionAt(0, 1);
+		assertEquals("abcd", model.getHoverSelectionText());
+		// the empty cell after a wide character with a mark is still a gap
+		data.setDimensions(1, 6);
+		data.setChars(0, 0, "\u4e2d\000\000x".toCharArray(), null);
+		data.setCluster(0, 0, "\u4e2d\u0301");
+		snapshot.updateSnapshot(true);
+		model.expandHoverSelectionAt(-1, -1); // let go of the last hover first
+		model.expandHoverSelectionAt(0, 0);
+		assertEquals("\u4e2d\u0301", model.getHoverSelectionText());
 	}
 }

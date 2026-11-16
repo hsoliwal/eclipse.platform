@@ -128,7 +128,12 @@ public class VT100Emulator implements ControlListener {
 	private final int[] savedCursorColumn = new int[2];
 
 	/** whether a program asked for the alternate screen (47, 1047 or 1049) */
-	private boolean alternateScreen;
+	private volatile boolean alternateScreen;
+
+	/** @return whether a program shows the alternate screen, as full screen programs do */
+	public boolean isAlternateScreen() {
+		return alternateScreen;
+	}
 
 	/**
 	 * This field holds an array of StringBuffer objects, each of which is one
@@ -202,6 +207,11 @@ public class VT100Emulator implements ControlListener {
 	 */
 	public void setBufferLineLimit(int bufferLineLimit) {
 		text.setBufferLineLimit(bufferLineLimit);
+	}
+
+	/** @return the lines of the screen, which are the last lines of the text */
+	public int getLines() {
+		return text.getLines();
 	}
 
 	/**
@@ -531,8 +541,11 @@ public class VT100Emulator implements ControlListener {
 	 * without one.
 	 */
 	private void resetProgramModes() {
+		terminal.enableSynchronizedOutput(false); // or the screen would stay frozen
 		terminal.showCursor(true);
 		terminal.enableBracketedPaste(false);
+		terminal.enableMouseReporting(0);
+		terminal.enableSgrMouseEncoding(false);
 	}
 
 	/**
@@ -1356,9 +1369,21 @@ public class VT100Emulator implements ControlListener {
 			// Save cursor, as ESC 7 does.
 			saveCursor();
 			break;
+		case 2026:
+			// Synchronized output: the program begins a screen; show it once it is drawn.
+			terminal.enableSynchronizedOutput(true);
+			break;
 		case 2004:
 			// Bracketed paste: pasted text is wrapped so a program can tell it from typing.
 			terminal.enableBracketedPaste(true);
+			break;
+		case 1000: // report button press and release
+		case 1002: // also report drag
+		case 1003: // also report every move
+			terminal.enableMouseReporting(param);
+			break;
+		case 1006:
+			terminal.enableSgrMouseEncoding(true);
 			break;
 		default:
 			Logger.log("Unsupported command parameter: CSI ?" + param + 'h'); //$NON-NLS-1$
@@ -1397,8 +1422,19 @@ public class VT100Emulator implements ControlListener {
 			// Restore cursor, as ESC 8 does.
 			restoreCursor();
 			break;
+		case 2026:
+			terminal.enableSynchronizedOutput(false);
+			break;
 		case 2004:
 			terminal.enableBracketedPaste(false);
+			break;
+		case 1000:
+		case 1002:
+		case 1003:
+			terminal.enableMouseReporting(0);
+			break;
+		case 1006:
+			terminal.enableSgrMouseEncoding(false);
 			break;
 		default:
 			Logger.log("Unsupported command parameter: CSI ?" + param + 'l'); //$NON-NLS-1$

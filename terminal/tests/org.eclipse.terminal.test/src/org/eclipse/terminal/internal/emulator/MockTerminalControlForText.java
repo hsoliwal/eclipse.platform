@@ -66,6 +66,17 @@ public class MockTerminalControlForText implements ITerminalControlForText {
 		return cursorShown;
 	}
 
+	private boolean synchronizedOutput;
+
+	@Override
+	public void enableSynchronizedOutput(boolean redrawing) {
+		synchronizedOutput = redrawing;
+	}
+
+	public boolean isSynchronizedOutput() {
+		return synchronizedOutput;
+	}
+
 	@Override
 	public void enableBracketedPaste(boolean enable) {
 		bracketedPaste = enable;
@@ -73,6 +84,27 @@ public class MockTerminalControlForText implements ITerminalControlForText {
 
 	public boolean isBracketedPaste() {
 		return bracketedPaste;
+	}
+
+	private int mouseMode;
+	private boolean sgrMouse;
+
+	@Override
+	public void enableMouseReporting(int mode) {
+		mouseMode = mode;
+	}
+
+	public int getMouseMode() {
+		return mouseMode;
+	}
+
+	@Override
+	public void enableSgrMouseEncoding(boolean enable) {
+		sgrMouse = enable;
+	}
+
+	public boolean isSgrMouseEncoding() {
+		return sgrMouse;
 	}
 
 	private boolean applicationCursorKeys;

@@ -209,13 +209,36 @@ public class UnifiedDiffManager {
 	 * model, so the one installed on the viewer is used.
 	 */
 	public static IAnnotationModel annotationModelOf(ITextEditor editor) {
-		IAnnotationModel model = editor.getDocumentProvider().getAnnotationModel(editor.getEditorInput());
+		var provider = editor.getDocumentProvider();
+		IAnnotationModel model = provider != null ? provider.getAnnotationModel(editor.getEditorInput()) : null;
 		if (model != null) {
 			return model;
 		}
 		return editor.getAdapter(ITextViewer.class) instanceof ISourceViewer sourceViewer
 				? sourceViewer.getAnnotationModel()
 				: null;
+	}
+
+	public static void dispose(ITextEditor editor) {
+		ITextViewer viewer = editor.getAdapter(ITextViewer.class);
+		if (viewer == null) {
+			return;
+		}
+		StyledText textWidget = viewer.getTextWidget();
+		if (textWidget == null || textWidget.isDisposed()) {
+			return;
+		}
+		// Invalidate computations that yield to the UI event loop before installing
+		// their result, even when no diff has been displayed yet.
+		textWidget.setData(OPEN_REQUEST_KEY, null);
+		IAnnotationModel model = annotationModelOf(editor);
+		if (model != null) {
+			clearAll(viewer, model);
+		}
+		disposeUnifiedDiff(viewer, model, textWidget);
+		textWidget.setData(TOOLBAR_ACTION_PRESENTATIONS_KEY, null);
+		viewer.invalidateTextPresentation();
+		textWidget.redraw();
 	}
 
 	/**
@@ -266,7 +289,7 @@ public class UnifiedDiffManager {
 		IStatus status = open(viewer, leftDocument, model, file, source, mode, additionalActions, tokenComparatorFactory,
 				ignoreWhitespaceContributorFactory, compareFilters, leftContributor, rightContributor, ignoreWhiteSpace,
 				foldContextLines, toolbarActionPresentations, eventListener);
-		if (status.isOK()) {
+		if (status.isOK() && get(viewer) != null) {
 			registerCommandHandlers(editor, viewer, model);
 		}
 		return status;
@@ -2565,28 +2588,24 @@ public class UnifiedDiffManager {
 					} else {
 						endLineBounds = this.w.getTextBounds(endLineOffset, endLineOffset);
 					}
-					endLineBounds.height += this.w.getLineSpacing();
-					if (line.length() == 0) {
-						// this.w.getTextBounds seems not to work for empty lines containing only \n in
-						// a document with \r\n as line delimeter
-						int nextLineY = this.w.getLinePixel(lineNr + 1);
-						if (endLineBounds.y + endLineBounds.height < nextLineY) {
-							endLineBounds.height = nextLineY - endLineBounds.y;
-						}
-					}
-					e.gc.fillRectangle(endLineBounds.x + endLineBounds.width, endLineBounds.y,
-							bounds.width - (endLineBounds.x + endLineBounds.width), endLineBounds.height);
-
-					// annotation painter is not taking line spacing into account - we therefore
-					// need to draw it by our own
-					e.gc.fillRectangle(2, endLineBounds.y + endLineBounds.height - this.w.getLineSpacing(),
-							endLineBounds.x + endLineBounds.width, this.w.getLineSpacing());
+					int rowTop = this.w.getLinePixel(lineNr) + this.w.getLineVerticalIndent(lineNr);
+					int rowBottom = this.w.getLinePixel(lineNr + 1);
+					int rowHeight = Math.max(0, rowBottom - rowTop);
+					e.gc.fillRectangle(endLineBounds.x + endLineBounds.width, rowTop,
+							bounds.width - (endLineBounds.x + endLineBounds.width), rowHeight);
+					Rectangle textBounds = line.isEmpty() ? endLineBounds
+							: this.w.getTextBounds(this.w.getOffsetAtLine(lineNr), endLineOffset - 1);
+					int textTop = Math.clamp(textBounds.y, rowTop, Math.max(rowTop, rowBottom));
+					int textBottom = Math.clamp(textBounds.y + textBounds.height, rowTop, Math.max(rowTop, rowBottom));
+					e.gc.fillRectangle(2, rowTop, endLineBounds.x + endLineBounds.width, Math.max(0, textTop - rowTop));
+					e.gc.fillRectangle(2, textBottom, endLineBounds.x + endLineBounds.width,
+							Math.max(0, rowBottom - textBottom));
 
 					// The addition-area background fill above paints over the ¶/¤ markers the
 					// editor's own whitespace painter drew at the line end, so redraw them here.
 					drawLineDelimiter(e, endLineOffset, showCarriageReturn, showLineFeed, whitespaceAlpha, details);
 					// The marker background must not overwrite the band's shared edge.
-					drawBandBorder(e.gc, bounds.width, endLineBounds.y, endLineBounds.height,
+					drawBandBorder(e.gc, bounds.width, rowTop, rowHeight,
 							lineNr == hunkFirstLine, lineNr == lastLine);
 					e.gc.setBackground(this.additionBackgroundColor);
 				}
