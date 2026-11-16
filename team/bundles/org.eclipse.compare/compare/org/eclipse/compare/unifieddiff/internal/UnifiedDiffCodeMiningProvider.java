@@ -2058,7 +2058,7 @@ public class UnifiedDiffCodeMiningProvider extends AbstractCodeMiningProvider {
 
 	static void openOverlay(StyledText overlay, ITextViewer viewer) {
 		overlay.setData(CLICK_OVERLAY_MARKER_KEY, Boolean.TRUE);
-		overlay.addDisposeListener(_ -> setTextEditorActionsActivated(viewer, true));
+		overlay.addDisposeListener(unused -> setTextEditorActionsActivated(viewer, true));
 		overlay.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent e) {
