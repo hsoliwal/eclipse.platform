@@ -17,6 +17,8 @@
 package org.eclipse.terminal.internal.emulator;
 
 import static org.eclipse.terminal.model.TerminalColor.BLACK;
+import static org.eclipse.terminal.model.TerminalColor.GREEN;
+import static org.eclipse.terminal.model.TerminalColor.RED;
 import static org.eclipse.terminal.model.TerminalColor.WHITE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -24,10 +26,12 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.eclipse.terminal.internal.model.TerminalTextData;
 import org.eclipse.terminal.internal.model.TerminalTextDataStore;
 import org.eclipse.terminal.internal.model.TerminalTextTestHelper;
 import org.eclipse.terminal.model.ITerminalTextData;
 import org.eclipse.terminal.model.ITerminalTextDataReadOnly;
+import org.eclipse.terminal.model.ITerminalTextDataSnapshot;
 import org.eclipse.terminal.model.TerminalStyle;
 import org.junit.jupiter.api.Test;
 
@@ -318,7 +322,31 @@ public class VT100EmulatorBackendTest {
 		vt100.setDimensions(3, 4);
 		fill(term, "0000\n" + "1111\n" + "2222\n" + "3333\n" + "4444\n" + "5555");
 		vt100.eraseAll();
-		assertEqualsTerm("0000\n" + "1111\n" + "2222\n" + "    \n" + "    \n" + "    ", toMultiLineText(term));
+		// the screen goes into the history; with no room to grow, the oldest lines make way
+		assertEqualsTerm("3333\n" + "4444\n" + "5555\n" + "    \n" + "    \n" + "    ", toMultiLineText(term));
+	}
+
+	@Test
+	public void testEraseAllKeepsTheScreenInHistory() {
+		// also on the buffer the terminal actually uses
+		for (ITerminalTextData term : new ITerminalTextData[] { makeITerminalTextData(), new TerminalTextData() }) {
+			IVT100EmulatorBackend vt100 = makeBakend(term);
+			term.setMaxHeight(100);
+			vt100.setDimensions(4, 4);
+			fill(term, "0000\n" + "1111\n" + "2222\n" + "3333\n" + "4444\n" + "    ");
+			vt100.setCursor(2, 1);
+			vt100.eraseAll();
+			// the screen was 2222, 3333, 4444 and a blank line, which is not kept
+			assertEqualsTerm("0000\n" + "1111\n" + "2222\n" + "3333\n" + "4444\n" + "    \n" + "    \n" + "    \n" + "    ",
+					toMultiLineText(term));
+			// erasing does not move the cursor
+			assertEquals(2, vt100.getCursorLine());
+			assertEquals(1, vt100.getCursorColumn());
+			assertEquals(7, term.getCursorLine()); // the model's cursor too, on the screen's row 2
+			// a blank screen adds nothing
+			vt100.eraseAll();
+			assertEquals(9, term.getHeight());
+		}
 	}
 
 	@Test
@@ -979,12 +1007,7 @@ public class VT100EmulatorBackendTest {
 	}
 
 	// ---------------------------------------------------------------------------------------------
-	// Characterization tests for the scrolling behavior.
-	//
-	// These lock the current behavior before any change to how scrolling interacts with the
-	// scroll-back history. The regression guards below MUST keep passing through such a change; the
-	// "currentlyDiscards" test documents the behavior that a future fix for top-anchored scroll
-	// regions (eclipse.platform issue 2680) is expected to change.
+	// Tests for how scrolling interacts with the scroll-back history.
 	// ---------------------------------------------------------------------------------------------
 
 	/**
@@ -1061,14 +1084,11 @@ public class VT100EmulatorBackendTest {
 	}
 
 	/**
-	 * Characterization of the <em>current</em> behavior for a scroll region anchored at the top of
-	 * the screen: a newline at the region bottom scrolls in place and discards the top line, creating
-	 * no history. This is the behavior the planned fix for eclipse.platform issue 2680 will change so
-	 * that the discarded line is added to the scroll-back instead. Until then this documents the
-	 * status quo.
+	 * A newline at the bottom of a top-anchored scroll region moves the displaced top line into
+	 * the scroll-back history instead of discarding it.
 	 */
 	@Test
-	public void testNewlineInTopAnchoredScrollRegionCurrentlyDiscardsTopLine() {
+	public void testNewlineInTopAnchoredScrollRegionMovesTopLineToHistory() {
 		ITerminalTextData term = makeITerminalTextData();
 		IVT100EmulatorBackend vt100 = makeBakend(term);
 		term.setMaxHeight(10);
@@ -1079,11 +1099,829 @@ public class VT100EmulatorBackendTest {
 		vt100.setCursorLine(3);
 		vt100.processNewline();
 
-		assertEquals(5, term.getHeight()); // currently no history is created
-		assertEquals("1111", new String(term.getChars(0))); // "0000" was discarded (lost)
-		assertEquals("2222", new String(term.getChars(1)));
-		assertEquals("3333", new String(term.getChars(2)));
+		assertEquals(6, term.getHeight()); // one line of history was created
+		assertEquals("0000", new String(term.getChars(0))); // ... holding the displaced top line
+		// the screen is now lines 1..5 of the model
+		assertEquals("1111", new String(term.getChars(1)));
+		assertEquals("2222", new String(term.getChars(2)));
+		assertEquals("3333", new String(term.getChars(3)));
+		assertNull(term.getChars(4)); // vacated line at the bottom of the region
+		assertEquals("4444", new String(term.getChars(5))); // footer below the region is untouched
+		assertEquals(3, vt100.getCursorLine()); // cursor stays at the bottom of the region
+	}
+
+	/**
+	 * The same, once the scroll-back is full: the model no longer grows, so the oldest history line
+	 * is dropped instead. This is the steady state of a long running full screen application.
+	 */
+	@Test
+	public void testNewlineInTopAnchoredScrollRegionWithFullHistoryDropsOldestLine() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(6);
+		vt100.setDimensions(5, 4);
+		fill(term, "hhhh\n" + "0000\n" + "1111\n" + "2222\n" + "3333\n" + "4444");
+		assertEquals(6, term.getHeight()); // one line of history, five lines of screen
+
+		vt100.setScrollRegion(0, 3);
+		vt100.setCursorLine(3);
+		vt100.processNewline();
+
+		assertEquals(6, term.getHeight()); // capped, so "hhhh" fell out of the history
+		assertEquals("0000", new String(term.getChars(0))); // the displaced top line took its place
+		assertEquals("1111", new String(term.getChars(1)));
+		assertEquals("2222", new String(term.getChars(2)));
+		assertEquals("3333", new String(term.getChars(3)));
+		assertNull(term.getChars(4)); // vacated line at the bottom of the region
+		assertEquals("4444", new String(term.getChars(5))); // footer below the region is untouched
+		assertEquals(3, vt100.getCursorLine());
+	}
+
+	/**
+	 * With a full history the scroll must reach snapshots as one upward shift of history and region,
+	 * otherwise selections in the region are not moved along with the text.
+	 */
+	@Test
+	public void testNewlineInTopAnchoredScrollRegionWithFullHistoryNotifiesScrollToSnapshots() {
+		ITerminalTextData term = new TerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(6);
+		vt100.setDimensions(5, 4);
+		fill(term, "hhhh\n" + "0000\n" + "1111\n" + "2222\n" + "3333\n" + "4444");
+		ITerminalTextDataSnapshot snapshot = term.makeSnapshot();
+		snapshot.updateSnapshot(true);
+
+		vt100.setScrollRegion(0, 3);
+		vt100.setCursorLine(3);
+		vt100.processNewline();
+		snapshot.updateSnapshot(true);
+
+		assertEquals(0, snapshot.getScrollWindowStartLine());
+		assertEquals(5, snapshot.getScrollWindowSize()); // history and region, not the footer
+		assertEquals(-1, snapshot.getScrollWindowShift());
+		assertEquals("0000", new String(snapshot.getChars(0)));
+		assertEquals("1111", new String(snapshot.getChars(1)));
+		assertEquals("2222", new String(snapshot.getChars(2)));
+		assertEquals("3333", new String(snapshot.getChars(3)));
+		assertNull(snapshot.getChars(4));
+		assertEquals("4444", new String(snapshot.getChars(5)));
+	}
+
+	/**
+	 * A footer of several lines stays in place, both while the history grows and once it is full.
+	 */
+	@Test
+	public void testNewlineInTopAnchoredScrollRegionWithTallFooter() {
+		ITerminalTextData term = new TerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(6);
+		vt100.setDimensions(5, 4);
+		fill(term, "0000\n" + "1111\n" + "2222\n" + "3333\n" + "4444");
+		vt100.setScrollRegion(0, 2);
+		vt100.setCursorLine(2);
+
+		vt100.processNewline(); // the history grows
+		assertEquals(6, term.getHeight());
+		assertEquals("0000", new String(term.getChars(0)));
+		assertEquals("1111", new String(term.getChars(1)));
+		assertEquals("2222", new String(term.getChars(2)));
 		assertNull(term.getChars(3));
-		assertEquals("4444", new String(term.getChars(4))); // footer below the region is untouched
+		assertEquals("3333", new String(term.getChars(4)));
+		assertEquals("4444", new String(term.getChars(5)));
+
+		vt100.processNewline(); // the history is full
+		assertEquals(6, term.getHeight());
+		assertEquals("1111", new String(term.getChars(0)));
+		assertEquals("2222", new String(term.getChars(1)));
+		assertNull(term.getChars(2));
+		assertNull(term.getChars(3));
+		assertEquals("3333", new String(term.getChars(4)));
+		assertEquals("4444", new String(term.getChars(5)));
+		assertEquals(2, vt100.getCursorLine());
+	}
+
+	/**
+	 * A top-anchored scroll region that covers the whole screen has no fixed lines below it, so the
+	 * screen just moves up by one line.
+	 */
+	@Test
+	public void testNewlineInTopAnchoredScrollRegionCoveringWholeScreen() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(10);
+		vt100.setDimensions(5, 4);
+		fill(term, "0000\n" + "1111\n" + "2222\n" + "3333\n" + "4444");
+
+		vt100.setScrollRegion(0, 4); // the region is the whole screen
+		vt100.setCursorLine(4);
+		vt100.processNewline();
+
+		assertEquals(6, term.getHeight());
+		assertEquals("0000", new String(term.getChars(0))); // displaced top line
+		assertEquals("1111", new String(term.getChars(1)));
+		assertEquals("2222", new String(term.getChars(2)));
+		assertEquals("3333", new String(term.getChars(3)));
+		assertEquals("4444", new String(term.getChars(4)));
+		assertNull(term.getChars(5)); // new blank line at the bottom of the screen
+		assertEquals(4, vt100.getCursorLine());
+	}
+
+	@Test
+	public void testAppendStringWide() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(4);
+		vt100.setDimensions(4, 10);
+		vt100.setCursor(0, 0);
+		// a wide character takes two cells, the second holding a null filler
+		vt100.appendString("한글");
+		assertEqualsTerm("한 글       \n" + "          \n" + "          \n" + "          ", toMultiLineText(term));
+		assertEquals(4, vt100.getCursorColumn());
+		vt100.setCursor(1, 0);
+		vt100.appendString("a한b");
+		assertEqualsTerm("한 글       \n" + "a한 b      \n" + "          \n" + "          ", toMultiLineText(term));
+		assertEquals(4, vt100.getCursorColumn());
+		// a character beyond the BMP is two chars in two cells
+		vt100.setCursor(2, 0);
+		vt100.appendString("a😀b");
+		assertEquals(4, vt100.getCursorColumn());
+		assertEquals("a😀b", new String(term.getChars(2), 0, 4));
+		// a combining mark takes no cell
+		vt100.setCursor(3, 0);
+		vt100.appendString("e\u0301x");
+		assertEquals(2, vt100.getCursorColumn());
+	}
+
+	@Test
+	public void testAppendStringWideAtMargin() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(4);
+		vt100.setDimensions(4, 5);
+		vt100.setCursor(0, 0);
+		vt100.appendString("abc한");
+		assertEqualsTerm("abc한 \n" + "     \n" + "     \n" + "     ", toMultiLineText(term));
+		// a wide character is never split across the margin: it goes to the next line whole
+		vt100.setCursor(1, 0);
+		vt100.appendString("abcd한");
+		assertEqualsTerm("abc한 \n" + "abcd \n" + "한    \n" + "     ", toMultiLineText(term));
+		assertTrue(term.isWrappedLine(1));
+		assertEquals(2, vt100.getCursorLine());
+		assertEquals(2, vt100.getCursorColumn());
+	}
+
+	@Test
+	public void testOverwriteHalfOfWide() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(4);
+		vt100.setDimensions(4, 10);
+		// writing over the glyph leaves its filler blank, and over the filler leaves the glyph blank
+		vt100.setCursor(0, 0);
+		vt100.appendString("한글");
+		vt100.setCursor(0, 0);
+		vt100.appendString("x");
+		assertEquals("x 글\000", new String(term.getChars(0), 0, 4));
+		vt100.setCursor(1, 0);
+		vt100.appendString("한글");
+		vt100.setCursor(1, 1);
+		vt100.appendString("x");
+		assertEquals(" x글\000", new String(term.getChars(1), 0, 4));
+		vt100.setCursor(2, 0);
+		vt100.appendString("한글");
+		vt100.setCursor(2, 3);
+		vt100.appendString("나");
+		assertEquals("한\000 나\000", new String(term.getChars(2), 0, 5));
+		// narrow over narrow is untouched by any of this
+		vt100.setCursor(3, 0);
+		vt100.appendString("abcd");
+		vt100.setCursor(3, 1);
+		vt100.appendString("XY");
+		assertEquals("aXYd", new String(term.getChars(3), 0, 4));
+	}
+
+	@Test
+	public void testInsertModeWide() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(1);
+		vt100.setDimensions(1, 10);
+		vt100.setCursor(0, 0);
+		vt100.appendString("abcdef");
+		vt100.setCursorColumn(1);
+		vt100.setInsertMode(true);
+		vt100.appendString("한");
+		// pushes the rest along by two cells, not one
+		assertEquals("a한\000bcdef", new String(term.getChars(0), 0, 8));
+	}
+
+	@Test
+	public void testInsertModeBeyondBmp() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(4);
+		vt100.setDimensions(4, 10);
+		vt100.setCursor(0, 0);
+		vt100.appendString("abc");
+		vt100.setCursorColumn(0);
+		vt100.setInsertMode(true);
+		// U+1D400 is one column wide, but its two chars still take two cells: insert room for both
+		vt100.appendString("\uD835\uDC00");
+		vt100.setInsertMode(false);
+		assertEquals("\uD835\uDC00abc", new String(term.getChars(0), 0, 5));
+	}
+
+	@Test
+	public void testOverwriteHalfOfBeyondBmp() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(4);
+		vt100.setDimensions(4, 10);
+		// writing over either cell of a surrogate pair blanks the other one
+		vt100.setCursor(0, 0);
+		vt100.appendString("a😀b");
+		vt100.setCursor(0, 2);
+		vt100.appendString("x");
+		assertEquals("a xb", new String(term.getChars(0), 0, 4));
+		vt100.setCursor(1, 0);
+		vt100.appendString("a😀b");
+		vt100.setCursor(1, 1);
+		vt100.appendString("x");
+		assertEquals("ax b", new String(term.getChars(1), 0, 4));
+	}
+
+	@Test
+	public void testZeroCountEditsKeepWide() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(1);
+		vt100.setDimensions(1, 5);
+		vt100.setCursor(0, 0);
+		vt100.appendString("a한b");
+		// a count of zero changes nothing, also next to or inside a wide character
+		for (int col : new int[] { 1, 2, 3 }) {
+			vt100.setCursor(0, col);
+			vt100.insertCharacters(0);
+			vt100.deleteCharacters(0);
+			vt100.eraseCharacters(0);
+			assertEquals("a한\000b", new String(term.getChars(0), 0, 4));
+		}
+	}
+
+	@Test
+	public void testEraseCharactersWide() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(3);
+		vt100.setDimensions(3, 5);
+		// erasing either half of a wide character erases all of it
+		vt100.setCursor(0, 0);
+		vt100.appendString("한x");
+		vt100.setCursor(0, 1);
+		vt100.eraseCharacters(1);
+		assertEquals("\000\000x", new String(term.getChars(0), 0, 3));
+		vt100.setCursor(1, 0);
+		vt100.appendString("한x");
+		vt100.setCursor(1, 0);
+		vt100.eraseCharacters(1);
+		assertEquals("\000\000x", new String(term.getChars(1), 0, 3));
+		vt100.setCursor(2, 0);
+		vt100.appendString("a😀b");
+		vt100.setCursor(2, 2);
+		vt100.eraseCharacters(1);
+		assertEquals("a\000\000b", new String(term.getChars(2), 0, 4));
+	}
+
+	@Test
+	public void testEraseLineWide() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(3);
+		vt100.setDimensions(3, 6);
+		vt100.setCursor(0, 0);
+		vt100.appendString("ab한cd");
+		vt100.setCursor(0, 3);
+		vt100.eraseLineToEnd();
+		assertEquals("ab\000\000\000\000", new String(term.getChars(0)));
+		vt100.setCursor(1, 0);
+		vt100.appendString("ab한cd");
+		vt100.setCursor(1, 2);
+		vt100.eraseLineToCursor();
+		assertEquals("\000\000\000\000cd", new String(term.getChars(1)));
+	}
+
+	@Test
+	public void testInsertCharactersWide() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(4);
+		vt100.setDimensions(4, 5);
+		// a wide character pushed half past the margin is erased, as ECH erases
+		vt100.setCursor(0, 0);
+		vt100.appendString("abc한");
+		vt100.setCursor(0, 0);
+		vt100.insertCharacters(1);
+		assertEquals("\000abc\000", new String(term.getChars(0)));
+		// one split by the insertion is erased whole
+		vt100.setCursor(1, 0);
+		vt100.appendString("a한bc");
+		vt100.setCursor(1, 2);
+		vt100.insertCharacters(1);
+		assertEquals("a\000\000\000b", new String(term.getChars(1)));
+		// one at the cursor moves along whole
+		vt100.setCursor(2, 0);
+		vt100.appendString("a한bc");
+		vt100.setCursor(2, 1);
+		vt100.insertCharacters(1);
+		assertEquals("a\000한\000b", new String(term.getChars(2)));
+	}
+
+	@Test
+	public void testDeleteCharactersWide() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(4);
+		vt100.setDimensions(4, 5);
+		// deleting either half of a wide character leaves none of it
+		vt100.setCursor(0, 0);
+		vt100.appendString("a한bc");
+		vt100.setCursor(0, 1);
+		vt100.deleteCharacters(1);
+		assertEquals("a\000bc\000", new String(term.getChars(0)));
+		vt100.setCursor(1, 0);
+		vt100.appendString("a한bc");
+		vt100.setCursor(1, 2);
+		vt100.deleteCharacters(1);
+		assertEquals("a\000bc\000", new String(term.getChars(1)));
+		vt100.setCursor(2, 0);
+		vt100.appendString("ab😀c");
+		vt100.setCursor(2, 0);
+		vt100.deleteCharacters(3);
+		assertEquals("\000c\000\000\000", new String(term.getChars(2)));
+	}
+
+	@Test
+	public void testInsertModeWideWraps() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(2);
+		vt100.setDimensions(2, 5);
+		vt100.setCursor(0, 0);
+		vt100.appendString("abcd");
+		vt100.setCursor(1, 0);
+		vt100.appendString("XYZ");
+		vt100.setCursor(0, 4);
+		vt100.setInsertMode(true);
+		// the character does not fit and wraps: the room is made on the line it goes to
+		vt100.appendString("한");
+		assertEquals("abcd\000", new String(term.getChars(0)));
+		assertEquals("한\000XYZ", new String(term.getChars(1)));
+	}
+
+	@Test
+	public void testAppendStringWideBlanksMargin() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(4);
+		vt100.setDimensions(4, 5);
+		vt100.setCursor(0, 0);
+		vt100.appendString("12345");
+		// the cell a wrapping wide character leaves unused is erased, not left as it was
+		vt100.setCursor(0, 0);
+		vt100.appendString("abcd한");
+		assertEquals("abcd\000", new String(term.getChars(0)));
+		assertEquals("한\000", new String(term.getChars(1), 0, 2));
+		// and a wide character half in that cell is blanked whole
+		vt100.setCursor(2, 0);
+		vt100.appendString("abc한");
+		vt100.setCursor(2, 4);
+		vt100.appendString("가");
+		assertEquals("abc\000\000", new String(term.getChars(2)));
+		assertEquals("가\000", new String(term.getChars(3), 0, 2));
+	}
+
+	@Test
+	public void testAppendStringWideOneColumn() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(4);
+		vt100.setDimensions(4, 1);
+		vt100.setCursor(0, 0);
+		// two chars do not fit in one cell: the pair is replaced, not stored half
+		vt100.appendString("😀");
+		assertEquals("\uFFFD", new String(term.getChars(0)));
+		vt100.setCursor(1, 0);
+		vt100.appendString("한");
+		assertEquals("한", new String(term.getChars(1)));
+	}
+
+	@Test
+	public void testAlternateScreenBuffer() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(100);
+		vt100.setDimensions(3, 10);
+		vt100.setCursor(0, 0);
+		vt100.appendString("one\r\n");
+		for (int i = 0; i < 5; i++) {
+			vt100.appendString("more");
+			vt100.processNewline();
+			vt100.setCursorColumn(0);
+		}
+		vt100.appendString("last");
+		int historyHeight = term.getHeight();
+		assertTrue(historyHeight > 3);
+
+		vt100.enableAlternateScreen(true);
+		// no history to scroll back through, and none accumulates: scrolling drops the top line
+		assertEquals(3, term.getHeight());
+		assertEquals(3, term.getMaxHeight());
+		vt100.appendString("alt");
+		vt100.setCursor(2, 0);
+		vt100.processNewline();
+		vt100.processNewline();
+		assertEquals(3, term.getHeight());
+		assertNull(term.getChars(0));
+
+		// resized while the program had the screen
+		vt100.setDimensions(5, 7);
+		vt100.enableAlternateScreen(false);
+		// the buffer put back is as wide as the screen is now and at least as tall
+		assertEquals(7, term.getWidth());
+		assertTrue(term.getHeight() >= 5);
+		assertEquals(100, term.getMaxHeight());
+		assertEquals("last", new String(term.getChars(term.getHeight() - 1), 0, 4));
+		vt100.appendString("x"); // a write past the old margin used to throw
+		assertEquals(5, vt100.getCursorColumn());
+		// the cursor is back on the line it left, now the bottom of a taller screen
+		assertEquals(4, vt100.getCursorLine());
+		assertEquals("lastx", new String(term.getChars(term.getHeight() - 1), 0, 5));
+	}
+
+	@Test
+	public void testAlternateScreenShrunkKeepsNoHistory() {
+		// also on the buffer the terminal actually uses, which rejects a cap below its height
+		for (ITerminalTextData term : new ITerminalTextData[] { makeITerminalTextData(), new TerminalTextData() }) {
+			IVT100EmulatorBackend vt100 = makeBakend(term);
+			term.setMaxHeight(100);
+			vt100.setDimensions(5, 10);
+			vt100.enableAlternateScreen(true);
+			vt100.setCursor(4, 0);
+			vt100.appendString("bottom");
+			vt100.setDimensions(3, 10);
+			assertEquals(3, term.getHeight());
+			assertEquals(3, term.getMaxHeight());
+			// the lines above the cursor went, the cursor and its line stayed
+			assertEquals(2, vt100.getCursorLine());
+			assertEquals("bottom", new String(term.getChars(2), 0, 6));
+			for (int i = 0; i < 6; i++) {
+				vt100.processNewline();
+				vt100.appendString("x");
+			}
+			// scrolling drops the top line instead of growing back to the old height
+			assertEquals(3, term.getHeight());
+			vt100.setDimensions(6, 10);
+			assertEquals(6, term.getHeight());
+			assertEquals(6, term.getMaxHeight());
+			vt100.enableAlternateScreen(false);
+			assertEquals(100, term.getMaxHeight());
+		}
+	}
+
+	@Test
+	public void testAlternateScreenKeepsALoweredLimit() {
+		for (ITerminalTextData term : new ITerminalTextData[] { makeITerminalTextData(), new TerminalTextData() }) {
+			IVT100EmulatorBackend vt100 = makeBakend(term);
+			term.setMaxHeight(1000);
+			vt100.setDimensions(3, 10);
+			for (int i = 0; i < 750; i++) {
+				vt100.appendString("l" + i);
+				vt100.processNewline();
+				vt100.setCursorColumn(0);
+			}
+			vt100.appendString("last");
+			vt100.enableAlternateScreen(true);
+			vt100.setBufferLineLimit(500); // the preference changes while the program has the screen
+			vt100.enableAlternateScreen(false);
+			// the oldest lines went, not the screen, and the limit holds from now on
+			assertEquals(500, term.getHeight());
+			assertEquals(500, term.getMaxHeight());
+			assertEquals("last", new String(term.getChars(499), 0, 4));
+			assertEquals(2, vt100.getCursorLine());
+			assertEquals(4, vt100.getCursorColumn());
+		}
+	}
+
+	@Test
+	public void testAlternateScreenGrownLeavesNoTextBehind() {
+		for (ITerminalTextData term : new ITerminalTextData[] { makeITerminalTextData(), new TerminalTextData() }) {
+			IVT100EmulatorBackend vt100 = makeBakend(term);
+			term.setMaxHeight(100);
+			vt100.setDimensions(3, 10);
+			vt100.setCursor(0, 0);
+			vt100.appendString("shell");
+			vt100.enableAlternateScreen(true);
+			vt100.setDimensions(6, 10);
+			for (int line = 0; line < 6; line++) {
+				vt100.setCursor(line, 0);
+				vt100.appendString("program");
+			}
+			vt100.enableAlternateScreen(false);
+			// the rows the screen gained show nothing of the program
+			assertEquals(6, term.getHeight());
+			assertEquals("shell", new String(term.getChars(0), 0, 5));
+			for (int line = 1; line < 6; line++) {
+				char[] chars = term.getChars(line);
+				assertTrue(chars == null || new String(chars).trim().replace("\000", "").isEmpty(), "row " + line);
+			}
+		}
+	}
+
+	@Test
+	public void testAlternateScreenShrunkKeepsTheCursorOnItsLine() {
+		for (ITerminalTextData term : new ITerminalTextData[] { makeITerminalTextData(), new TerminalTextData() }) {
+			IVT100EmulatorBackend vt100 = makeBakend(term);
+			term.setMaxHeight(100);
+			vt100.setDimensions(24, 10);
+			vt100.setCursor(0, 0);
+			vt100.appendString("a");
+			vt100.setCursor(1, 0);
+			vt100.appendString("$ ");
+			vt100.enableAlternateScreen(true);
+			vt100.setDimensions(12, 10);
+			vt100.enableAlternateScreen(false);
+			// no history: the unused rows below the cursor go, and the prompt stays where it was
+			assertEquals(12, term.getHeight());
+			assertEquals(1, vt100.getCursorLine());
+			assertEquals(2, vt100.getCursorColumn());
+			vt100.appendString("ls");
+			assertEquals("$ ls", new String(term.getChars(1), 0, 4));
+		}
+	}
+
+	@Test
+	public void testAlternateScreenKeepsAPendingWrap() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(10);
+		vt100.setDimensions(2, 4);
+		vt100.setVT100LineWrapping(true);
+		vt100.setCursor(0, 0);
+		vt100.appendString("abcd"); // the cursor waits on the last column to wrap
+		vt100.enableAlternateScreen(true);
+		vt100.enableAlternateScreen(false);
+		vt100.appendString("e");
+		assertEquals("abcd", new String(term.getChars(0), 0, 4));
+		assertEquals('e', term.getChar(1, 0));
+	}
+
+	@Test
+	public void testAlternateScreenKeepsTheStyle() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(10);
+		vt100.setDimensions(2, 8);
+		vt100.setDefaultStyle(TerminalStyle.getStyle(WHITE, BLACK));
+		TerminalStyle red = TerminalStyle.getStyle(RED, BLACK);
+		vt100.setStyle(red);
+		vt100.enableAlternateScreen(true);
+		// entering keeps what was selected: no SGR reset was sent
+		assertEquals(red, vt100.getStyle());
+		vt100.setStyle(TerminalStyle.getStyle(WHITE, BLACK).setBold(true)); // the program's own
+		vt100.enableAlternateScreen(false);
+		// the shell goes on in its red, and nothing of the program's bold leaks into it
+		assertEquals(red, vt100.getStyle());
+	}
+
+	@Test
+	public void testEraseAllEndsTheHistoryOnALineEnd() {
+		// immediate wrapping: the line runs on to the empty row below, or over a row of spaces first
+		for (String text : new String[] { "ABCD", "ABCD    " }) {
+			for (ITerminalTextData term : new ITerminalTextData[] { makeITerminalTextData(), new TerminalTextData() }) {
+				IVT100EmulatorBackend vt100 = makeBakend(term);
+				term.setMaxHeight(100);
+				vt100.setDimensions(4, 4);
+				vt100.setCursor(0, 0);
+				vt100.appendString(text);
+				assertTrue(term.isWrappedLine(term.getHeight() - 4));
+				vt100.eraseAll();
+				// the rows it runs on to go into the history with it, so the history ends on a line end
+				int top = term.getHeight() - 4;
+				assertFalse(term.isWrappedLine(top - 1), text);
+			}
+		}
+	}
+
+	@Test
+	public void testEraseAllOnTheAlternateScreenKeepsNothing() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(100);
+		vt100.setDimensions(3, 6);
+		vt100.setCursor(0, 0);
+		vt100.appendString("shell");
+		int height = term.getHeight();
+		vt100.enableAlternateScreen(true);
+		vt100.setCursor(0, 0);
+		vt100.appendString("frame");
+		vt100.eraseAll();
+		// a program redrawing there pushes no frames into the history
+		assertEquals(3, term.getHeight());
+		vt100.enableAlternateScreen(false);
+		assertEquals(height, term.getHeight());
+		vt100.setCursor(0, 0);
+		vt100.appendString("again");
+		vt100.eraseAll();
+		assertEquals(height + 1, term.getHeight());
+	}
+
+	@Test
+	public void testEraseKeepsBackground() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(4);
+		vt100.setDimensions(4, 8);
+		vt100.setDefaultStyle(TerminalStyle.getStyle(WHITE, BLACK));
+		TerminalStyle onGreen = TerminalStyle.getStyle(WHITE, GREEN).setBold(true);
+		// a program paints a run wider than its text by setting a background and erasing
+		vt100.setStyle(onGreen);
+		vt100.setCursor(0, 0);
+		vt100.appendString("ab");
+		vt100.eraseLineToEnd();
+		assertEquals(GREEN, term.getStyle(0, 5).getBackgroundTerminalColor());
+		assertEquals(GREEN, term.getStyle(0, 7).getBackgroundTerminalColor());
+		assertFalse(term.getStyle(0, 5).isBold()); // only the background carries over
+		// the same for erase to cursor, whole line, ECH, and the cells ICH and DCH uncover
+		vt100.setCursor(1, 3);
+		vt100.eraseLineToCursor();
+		assertEquals(GREEN, term.getStyle(1, 0).getBackgroundTerminalColor());
+		vt100.setCursor(2, 0);
+		vt100.eraseLine();
+		assertEquals(GREEN, term.getStyle(2, 7).getBackgroundTerminalColor());
+		vt100.setStyle(TerminalStyle.getStyle(WHITE, BLACK));
+		vt100.setCursor(3, 0);
+		vt100.appendString("0123456"); // one short of the margin, so as not to wrap
+		vt100.setStyle(onGreen);
+		vt100.setCursor(3, 1);
+		vt100.eraseCharacters(2);
+		assertEquals(GREEN, term.getStyle(3, 2).getBackgroundTerminalColor());
+		assertEquals(BLACK, term.getStyle(3, 3).getBackgroundTerminalColor());
+		vt100.setCursor(3, 4);
+		vt100.insertCharacters(1);
+		assertEquals(GREEN, term.getStyle(3, 4).getBackgroundTerminalColor());
+		assertEquals('4', term.getChar(3, 5));
+		vt100.deleteCharacters(1);
+		assertEquals(GREEN, term.getStyle(3, 7).getBackgroundTerminalColor());
+		// erasing in the default background leaves the cells unwritten, drawn in the default colours
+		vt100.setStyle(TerminalStyle.getStyle(WHITE, BLACK).setBold(true));
+		vt100.setCursor(0, 0);
+		vt100.eraseToEndOfScreen();
+		assertNull(term.getStyle(2, 7));
+		assertNull(term.getStyle(0, 0));
+	}
+
+	@Test
+	public void testPendingWrapForgottenByCursorMove() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(3);
+		vt100.setDimensions(3, 5);
+		vt100.setVT100LineWrapping(true); // xterm's deferred wrap, as the process connector sets it
+		vt100.setCursor(0, 0);
+		vt100.appendString("abcde"); // fills the row: the wrap is pending, not done
+		// DEC STD 070: a line feed, a cursor move or an erase forgets the pending wrap
+		vt100.processNewline();
+		vt100.appendString("x");
+		assertEquals('x', term.getChar(1, 4));
+		assertFalse(term.isWrappedLine(0));
+		assertFalse(term.isWrappedLine(1));
+		vt100.setCursor(0, 4);
+		vt100.appendString("e");
+		vt100.setCursorLine(2);
+		vt100.appendString("y");
+		assertEquals('y', term.getChar(2, 4));
+		vt100.setCursor(0, 4);
+		vt100.appendString("e");
+		vt100.eraseCharacters(1);
+		vt100.appendString("z");
+		assertEquals('z', term.getChar(0, 4));
+		assertEquals(0, vt100.getCursorLine());
+		// so does erasing the whole line, also in the default colours, which leave nothing to fill
+		vt100.setCursor(0, 4);
+		vt100.appendString("e");
+		vt100.eraseLine();
+		vt100.appendString("w");
+		assertEquals('w', term.getChar(0, 4));
+		assertEquals(0, vt100.getCursorLine());
+		assertFalse(term.isWrappedLine(0));
+		// only writing on is a wrap
+		vt100.setCursor(0, 4);
+		vt100.appendString("ef");
+		assertTrue(term.isWrappedLine(0));
+		assertEquals('f', term.getChar(1, 0));
+	}
+
+	@Test
+	public void testEraseHalfOfWideKeepsBackground() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(3);
+		vt100.setDimensions(3, 8);
+		vt100.setDefaultStyle(TerminalStyle.getStyle(WHITE, BLACK));
+		TerminalStyle onGreen = TerminalStyle.getStyle(WHITE, GREEN);
+		for (int line = 0; line < 3; line++) {
+			vt100.setStyle(TerminalStyle.getStyle(WHITE, BLACK));
+			vt100.setCursor(line, 0);
+			vt100.appendString("\uD55C\uAE00");
+		}
+		// erasing from or to half of a wide character erases both of its cells, in the current background
+		vt100.setStyle(onGreen);
+		vt100.setCursor(0, 1);
+		vt100.eraseLineToEnd();
+		vt100.setCursor(1, 2);
+		vt100.eraseLineToCursor();
+		vt100.setCursor(2, 1);
+		vt100.eraseCharacters(2);
+		for (int line = 0; line < 3; line++) {
+			for (int col = 0; col < 4; col++) {
+				assertEquals(GREEN, term.getStyle(line, col).getBackgroundTerminalColor(), line + "," + col);
+			}
+		}
+		assertEquals('\000', term.getChar(0, 0));
+		assertEquals('\000', term.getChar(1, 3));
+	}
+
+	@Test
+	public void testInsertAndDeleteOnHalfOfWideKeepBackground() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(2);
+		vt100.setDimensions(2, 8);
+		vt100.setDefaultStyle(TerminalStyle.getStyle(WHITE, BLACK));
+		for (int line = 0; line < 2; line++) {
+			vt100.setStyle(TerminalStyle.getStyle(WHITE, BLACK));
+			vt100.setCursor(line, 0);
+			vt100.appendString("\uD55C\uAE00");
+		}
+		// what is left of a wide character ICH or DCH splits goes the way ECH erases it
+		vt100.setStyle(TerminalStyle.getStyle(WHITE, GREEN));
+		vt100.setCursor(0, 1);
+		vt100.deleteCharacters(1);
+		vt100.setCursor(1, 1);
+		vt100.insertCharacters(1);
+		for (int line = 0; line < 2; line++) {
+			assertEquals('\000', term.getChar(line, 0), "line " + line);
+			assertEquals(GREEN, term.getStyle(line, 0).getBackgroundTerminalColor(), "line " + line);
+		}
+	}
+
+	@Test
+	public void testWrappedLineMarkComesOff() {
+		ITerminalTextData term = makeITerminalTextData();
+		IVT100EmulatorBackend vt100 = makeBakend(term);
+		term.setMaxHeight(3);
+		vt100.setDimensions(3, 5);
+		vt100.setCursor(0, 0);
+		// a line the terminal folded is marked as running on to the next
+		vt100.appendString("abcdefg");
+		assertTrue(term.isWrappedLine(0));
+		assertFalse(term.isWrappedLine(1));
+		// writing over part of it leaves it running on: aXcde is still followed by fg
+		vt100.setCursor(0, 1);
+		vt100.appendString("X");
+		assertTrue(term.isWrappedLine(0));
+		// erasing to the end of the line ends it there, as in xterm and Ghostty
+		vt100.setCursor(0, 3);
+		vt100.eraseLineToEnd();
+		assertFalse(term.isWrappedLine(0));
+		// and so does erasing characters as far as the margin, but not short of it
+		vt100.setCursor(0, 0);
+		vt100.appendString("abcdefg");
+		vt100.setCursor(0, 1);
+		vt100.eraseCharacters(2);
+		assertTrue(term.isWrappedLine(0));
+		vt100.eraseCharacters(9);
+		assertFalse(term.isWrappedLine(0));
+		// however large the count
+		vt100.setCursor(0, 0);
+		vt100.appendString("abcdefg");
+		vt100.setCursor(0, 1);
+		vt100.eraseCharacters(Integer.MAX_VALUE);
+		assertFalse(term.isWrappedLine(0));
+		assertEquals('a', term.getChar(0, 0));
+		assertEquals(0, term.getChar(0, 1));
+		// deleting characters pulls blanks in at the margin, so it ends the line too (xterm)
+		vt100.setCursor(0, 0);
+		vt100.appendString("abcdefg");
+		vt100.setCursor(0, 1);
+		vt100.deleteCharacters(1);
+		assertFalse(term.isWrappedLine(0));
+		// erasing the first cell of a wide character at the margin erases it whole, to the margin
+		vt100.setCursor(0, 0);
+		vt100.appendString("abc\ud55cfg");
+		assertTrue(term.isWrappedLine(0));
+		vt100.setCursor(0, 3);
+		vt100.eraseCharacters(1);
+		assertFalse(term.isWrappedLine(0));
 	}
 }

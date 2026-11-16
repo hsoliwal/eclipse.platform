@@ -43,6 +43,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.terminal.control.ITerminalMouseListener;
+import org.eclipse.terminal.internal.model.CharWidth;
 import org.eclipse.terminal.model.ITerminalTextDataReadOnly;
 import org.eclipse.terminal.model.TerminalColor;
 
@@ -57,6 +58,9 @@ public class TextCanvas extends GridCanvas {
 	private final ILinelRenderer fCellRenderer;
 	private boolean fScrollLock;
 	private Point fDraggingStart;
+	/** -1 above the top, 1 below the bottom, 0 while the pointer is inside */
+	private boolean fDragScrolling;
+	private static final int DRAG_SCROLL_INTERVAL = 60;
 	private Point fDraggingEnd;
 	private boolean fHasSelection;
 	private ResizeListener fResizeListener;
@@ -269,21 +273,13 @@ public class TextCanvas extends GridCanvas {
 		});
 		addMouseMoveListener(e -> {
 			if (fDraggingStart != null) {
-				Point curr = screenPointToCell(e.x, e.y);
-				updateHasSelection(e);
-				switch (fSelMode) {
-				case WORD:
-					updateWordSelection(curr);
-					break;
-				case LINE:
-					updateLineSelection(curr);
-					break;
-				case DRAG:
-				default:
-					setSelection(curr);
-					break;
+				// Dragging past an edge keeps the lines beyond it coming into view.
+				if (dragPast(e.y) != 0 && !fDragScrolling) {
+					fDragScrolling = true;
+					getDisplay().timerExec(DRAG_SCROLL_INTERVAL, this::dragScroll);
 				}
-				fCellCanvasModel.expandHoverSelectionAt(-1, -1);
+				updateHasSelection(e);
+				extendSelection(screenPointToCell(e.x, e.y));
 			} else if ((e.stateMask & SWT.MODIFIER_MASK) == SWT.MOD1) {
 				// highlight (underline) word that would be used by MOD1 + mouse click
 				Point pt = screenPointToCell(e.x, e.y);
@@ -295,6 +291,47 @@ public class TextCanvas extends GridCanvas {
 		});
 		setVerticalBarVisible(true);
 		setHorizontalBarVisible(false);
+	}
+
+	/**
+	 * A drag moves the end of the selection to the cell, by characters, words or
+	 * lines as it began: the one way a drag does, whether the pointer moved or the
+	 * view scrolled under it.
+	 */
+	private void extendSelection(Point cell) {
+		switch (fSelMode) {
+		case WORD:
+			updateWordSelection(cell);
+			break;
+		case LINE:
+			updateLineSelection(cell);
+			break;
+		case DRAG:
+		default:
+			setSelection(cell);
+			break;
+		}
+		fCellCanvasModel.expandHoverSelectionAt(-1, -1);
+	}
+
+	/** @return -1 above the canvas, 1 below it, 0 on it */
+	private int dragPast(int y) {
+		return y < 0 ? -1 : y >= getClientArea().height ? 1 : 0;
+	}
+
+	private void dragScroll() {
+		Point p = isDisposed() ? null : toControl(getDisplay().getCursorLocation());
+		// where the pointer is now, not where the last move left it: a new click may have
+		// come in between
+		int past = p == null ? 0 : dragPast(p.y);
+		if (p == null || fDraggingStart == null || past == 0) {
+			fDragScrolling = false;
+			return;
+		}
+		scrollYDelta(past * getCellHeight());
+		extendSelection(screenPointToCell(p.x, p.y));
+		redraw();
+		getDisplay().timerExec(DRAG_SCROLL_INTERVAL, this::dragScroll);
 	}
 
 	private static class Range {
@@ -494,6 +531,11 @@ public class TextCanvas extends GridCanvas {
 		} finally {
 			setRedraw(true);
 		}
+		// NO_REDRAW_RESIZE paints only what a resize uncovers. When the grid gets
+		// narrower, what was drawn in the columns now past its edge stays there.
+		if (getVirtualBounds().width < virtualBounds.width) {
+			redraw();
+		}
 	}
 
 	void scrollToEnd() {
@@ -535,7 +577,38 @@ public class TextCanvas extends GridCanvas {
 
 	@Override
 	protected void drawLine(GC gc, int line, int x, int y, int colFirst, int colLast) {
+		// A wide character spans two cells and has to be drawn from the first of
+		// them. When the damaged area starts on the second one, widen the range so
+		// the glyph is drawn from its own origin. Clipping then keeps only the half
+		// that was actually damaged, which is the half that needed repainting.
+		if (isFillerCell(line, colFirst)) {
+			colFirst--;
+			x -= getCellWidth();
+		}
+		// Same at the other end: a wide character starting in the last cell of the
+		// range would be cut in half by the edge of the range.
+		if (isFillerCell(line, colLast)) {
+			colLast++;
+		}
 		fCellRenderer.drawLine(fCellCanvasModel, gc, line, x, y, colFirst, colLast);
+	}
+
+	/**
+	 * @return whether the cell holds the second half of a wide character
+	 */
+	private boolean isFillerCell(int line, int col) {
+		ITerminalTextDataReadOnly text = fCellCanvasModel.getTerminalText();
+		if (col <= 0 || col >= text.getWidth() || line < 0 || line >= text.getHeight()) {
+			return false;
+		}
+		char c = text.getChar(line, col);
+		char before = text.getChar(line, col - 1);
+		// the filler of a wide character of the BMP, or the low half of a surrogate
+		// pair, whose high half sits in the cell before
+		if (Character.isLowSurrogate(c)) {
+			return Character.isHighSurrogate(before);
+		}
+		return c == '\000' && !Character.isSurrogate(before) && CharWidth.of(before) == 2;
 	}
 
 	@Override

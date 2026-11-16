@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -34,6 +35,7 @@ import java.util.function.Supplier;
 
 import org.eclipse.compare.internal.MergeViewerContentProvider;
 import org.eclipse.compare.unifieddiff.UnifiedDiffMode;
+import org.eclipse.compare.unifieddiff.internal.HideAllDiffsRunnable;
 import org.eclipse.compare.unifieddiff.internal.UnifiedDiffCodeMiningProvider;
 import org.eclipse.compare.unifieddiff.internal.UnifiedDiffCodeMiningProvider.FoldedRegionCodeMining;
 import org.eclipse.compare.unifieddiff.internal.UnifiedDiffCodeMiningProvider.UnifiedDiffFooterCodeMining;
@@ -48,6 +50,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.Document;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.ITextViewer;
 import org.eclipse.jface.text.Position;
 import org.eclipse.jface.text.TextAttribute;
@@ -73,15 +76,20 @@ import org.eclipse.jface.text.source.projection.ProjectionAnnotation;
 import org.eclipse.jface.text.source.projection.ProjectionAnnotationModel;
 import org.eclipse.jface.text.source.projection.ProjectionViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.text.undo.DocumentUndoManagerRegistry;
 import org.eclipse.ui.editors.text.EditorsUI;
@@ -418,6 +426,74 @@ public class UnifiedDiffCodeMiningProviderTest {
 				.isNotEmpty();
 	}
 
+	/** A mining omits only the edge directly adjoining its painted annotation. */
+	@Test
+	public void testMiningAndAnnotationShareSingleBorder() throws Exception {
+		String label = "mining";
+		IDocument rightDocument = new Document(label);
+		List<UnifiedDiff> container = new ArrayList<>();
+		UnifiedDiff overlayReplacement = new UnifiedDiff(document, 0, 1, "x", rightDocument, 0, label.length(), label,
+				container, MODE);
+		UnifiedDiff replaceReplacement = new UnifiedDiff(document, 0, 1, label, rightDocument, 0, 1, "x", container,
+				UnifiedDiffMode.REPLACE_MODE);
+		UnifiedDiff overlayInsertion = new UnifiedDiff(document, 0, 0, "", rightDocument, 0, label.length(), label,
+				container, MODE);
+		container.addAll(List.of(overlayReplacement, replaceReplacement, overlayInsertion));
+
+		Color deletionColor = new Color(display, 11, 22, 33);
+		Color detailedDiffColor = new Color(display, 44, 55, 66);
+		Color borderColor = new Color(display, 77, 88, 99);
+		UnifiedDiffLineHeaderCodeMining overlayHeader = new UnifiedDiffLineHeaderCodeMining(new Position(0, 1),
+				provider, overlayReplacement, 4, deletionColor, detailedDiffColor, borderColor, viewer);
+		UnifiedDiffLineHeaderCodeMining replaceHeader = new UnifiedDiffLineHeaderCodeMining(new Position(0, 1),
+				provider, replaceReplacement, 4, deletionColor, detailedDiffColor, borderColor, viewer);
+		UnifiedDiffLineHeaderCodeMining insertionHeader = new UnifiedDiffLineHeaderCodeMining(new Position(0, 1),
+				provider, overlayInsertion, 4, deletionColor, detailedDiffColor, borderColor, viewer);
+		viewer.getTextWidget().setSize(400, 300);
+		Image image = new Image(display, 400, 300);
+		GC gc = new GC(image);
+		try {
+			Point overlayExtent = overlayHeader.draw(gc, viewer.getTextWidget(), null, 0, 0);
+			int replaceY = overlayExtent.y + 10;
+			Point replaceExtent = replaceHeader.draw(gc, viewer.getTextWidget(), null, 0, replaceY);
+			int insertionY = replaceY + replaceExtent.y + 10;
+			Point insertionExtent = insertionHeader.draw(gc, viewer.getTextWidget(), null, 0, insertionY);
+			int zoom = display.getPrimaryMonitor().getZoom();
+			ImageData data = image.getImageData(zoom);
+			int pixelX = 300 * zoom / 100;
+
+			assertPixelColor(data, pixelX, 0, deletionColor.getRGB(), "overlay mining omits its top border");
+			assertPixelColor(data, pixelX, (overlayExtent.y - 1) * zoom / 100, borderColor.getRGB(),
+					"overlay outer bottom edge");
+			assertPixelColor(data, pixelX, replaceY * zoom / 100, borderColor.getRGB(), "replace outer top edge");
+			assertPixelColor(data, pixelX, (replaceY + replaceExtent.y - 1) * zoom / 100, deletionColor.getRGB(),
+					"replace mining omits its bottom border");
+			assertPixelColor(data, pixelX, insertionY * zoom / 100, borderColor.getRGB(),
+					"standalone insertion top edge");
+			assertPixelColor(data, pixelX, (insertionY + insertionExtent.y - 1) * zoom / 100, borderColor.getRGB(),
+					"standalone insertion bottom edge");
+		} finally {
+			gc.dispose();
+			image.dispose();
+			overlayHeader.dispose();
+			replaceHeader.dispose();
+			insertionHeader.dispose();
+			deletionColor.dispose();
+			detailedDiffColor.dispose();
+			borderColor.dispose();
+		}
+	}
+
+	private static void assertPixelColor(ImageData data, int x, int y, RGB expected, String description) {
+		String context = description + ": pixel=(" + x + ", " + y + "), image=" + data.width + "x" + data.height;
+		assertTrue(x >= 0 && x < data.width && y >= 0 && y < data.height,
+				context + ": sample must be inside the image");
+		RGB actual = data.palette.getRGB(data.getPixel(x, y));
+		assertTrue(Math.abs(actual.red - expected.red) <= 2 && Math.abs(actual.green - expected.green) <= 2
+				&& Math.abs(actual.blue - expected.blue) <= 2,
+				context + ": expected " + expected + " with RGB tolerance ±2 but was " + actual);
+	}
+
 	/**
 	 * The temporary document handed to the editor's presentation reconciler must
 	 * contain the replacements of earlier hunks. Parsers can otherwise reach a
@@ -562,6 +638,114 @@ public class UnifiedDiffCodeMiningProviderTest {
 			gc.dispose();
 			image.dispose();
 		}
+	}
+
+	@Test
+	public void testFooterMiningDisposalDuringPlainDrawingDoesNotLoseHeight() throws Exception {
+		assertFooterDisposalDuringDrawing(false);
+	}
+
+	@Test
+	public void testFooterMiningDisposalDuringStyledDrawingDoesNotLoseHeight() throws Exception {
+		assertFooterDisposalDuringDrawing(true);
+	}
+
+	private void assertFooterDisposalDuringDrawing(boolean styled) throws Exception {
+		switchToDocument(new Document("line 0\nx"));
+		assertTrue(open("line 0\nchanged\n", MODE).isOK());
+		UnifiedDiffFooterCodeMining footer = footerMining();
+		UnifiedDiffFooterCodeMining[] painting = new UnifiedDiffFooterCodeMining[1];
+		Rectangle[] measuredRectangle = new Rectangle[1];
+		ProjectionViewer paintingViewer = new ProjectionViewer(shell, null, null, false, SWT.V_SCROLL) {
+			@Override
+			public List<StyleRange> computeStyleRanges(IDocument syntaxDocument, IRegion region) {
+				// Invalidate the cache after draw measured its size, before it draws the border.
+				measuredRectangle[0] = painting[0].getLastRectangle();
+				painting[0].dispose();
+				return styled ? new ArrayList<>(List.of(new StyleRange(region.getOffset(), region.getLength(),
+						display.getSystemColor(SWT.COLOR_DARK_BLUE), null))) : new ArrayList<>();
+			}
+		};
+		paintingViewer.setDocument(document);
+		paintingViewer.getTextWidget().setSize(400, 100);
+		Color deletionColor = new Color(display, 11, 22, 33);
+		Color detailedDiffColor = new Color(display, 44, 55, 66);
+		Color borderColor = new Color(display, 77, 88, 99);
+		painting[0] = new UnifiedDiffFooterCodeMining(document, provider, footer.getUnifiedDiff(), 4,
+				deletionColor, detailedDiffColor, borderColor, paintingViewer);
+		Rectangle bounds = paintingViewer.getTextWidget().getBounds();
+		Image image = new Image(display, bounds.width, bounds.height);
+		GC gc = new GC(image);
+		try {
+			Color canvasColor = display.getSystemColor(SWT.COLOR_WHITE);
+			gc.setBackground(canvasColor);
+			gc.fillRectangle(image.getBounds());
+			Point size = painting[0].draw(gc, paintingViewer.getTextWidget(), null, 0, 0);
+			int zoom = display.getPrimaryMonitor().getZoom();
+			ImageData data = image.getImageData(zoom);
+			String context = "footer disposal during " + (styled ? "styled" : "plain") + " drawing: widget="
+					+ bounds + ", client=" + paintingViewer.getTextWidget().getClientArea() + ", measured="
+					+ measuredRectangle[0] + ", returned=" + size + ", zoom=" + zoom + "%, native image="
+					+ data.width + "x" + data.height + ", display DPI=" + display.getDPI();
+			assertNotNull(measuredRectangle[0], context + ": must measure before the syntax-coloring callback");
+			assertTrue(size.y > 1 && size.y < bounds.height,
+					context + ": image must contain the band interior, border and following row");
+			assertEquals(new Point(measuredRectangle[0].width, measuredRectangle[0].height), size,
+					context + ": must retain measured extent after cache invalidation");
+			assertNull(painting[0].getLastRectangle(), context + ": disposal must clear the cached rectangle");
+			assertTrue(size.x >= 0 && size.x < bounds.width - 2,
+					context + ": samples must be beyond the label and before the right edge");
+			int sampleX = size.x + (bounds.width - size.x) / 2;
+			assertColorInLogicalPixel(data, zoom, sampleX, 0, deletionColor.getRGB(),
+					context + ": overlay must omit the shared top border");
+			assertColorInLogicalPixel(data, zoom, sampleX, size.y - 2, deletionColor.getRGB(),
+					context + ": band interior immediately above the bottom border");
+			assertColorInLogicalPixel(data, zoom, sampleX, size.y - 1, borderColor.getRGB(),
+					context + ": bottom border must still be painted after disposal at the measured height");
+			assertColorInLogicalPixel(data, zoom, sampleX, size.y, canvasColor.getRGB(),
+					context + ": drawing must not extend below the measured band");
+		} finally {
+			gc.dispose();
+			image.dispose();
+			painting[0].dispose();
+			paintingViewer.getTextWidget().dispose();
+			deletionColor.dispose();
+			detailedDiffColor.dispose();
+			borderColor.dispose();
+		}
+	}
+
+	private static void assertColorInLogicalPixel(ImageData data, int zoom, int logicalX, int logicalY, RGB expected,
+			String description) {
+		int left = (int) Math.floor(logicalX * zoom / 100.0);
+		int top = (int) Math.floor(logicalY * zoom / 100.0);
+		int right = (int) Math.ceil((logicalX + 1) * zoom / 100.0);
+		int bottom = (int) Math.ceil((logicalY + 1) * zoom / 100.0);
+		String context = description + ": logical pixel=(" + logicalX + ", " + logicalY + "), zoom=" + zoom
+				+ "%, image=" + data.width + "x" + data.height + ", native sample=[" + left + ", "
+				+ top + " .. " + right + ", " + bottom + "), expected=" + expected + ", RGB tolerance=±2";
+		assertTrue(left >= 0 && top >= 0 && right <= data.width && bottom <= data.height
+				&& left < right && top < bottom, context + ": sample must be inside the image");
+		boolean matched = false;
+		StringBuilder samples = new StringBuilder();
+		for (int pixelY = top; pixelY < bottom; pixelY++) {
+			for (int pixelX = left; pixelX < right; pixelX++) {
+				RGB actual = data.palette.getRGB(data.getPixel(pixelX, pixelY));
+				samples.append(" (").append(pixelX).append(", ").append(pixelY).append(")=").append(actual);
+				matched |= Math.abs(actual.red - expected.red) <= 2 && Math.abs(actual.green - expected.green) <= 2
+						&& Math.abs(actual.blue - expected.blue) <= 2;
+			}
+		}
+		if (!matched) {
+			int margin = Math.max(1, (int) Math.ceil(zoom / 100.0));
+			for (int pixelY = Math.max(0, top - margin); pixelY < Math.min(data.height, bottom + margin); pixelY++) {
+				if (pixelY < top || pixelY >= bottom) {
+					RGB actual = data.palette.getRGB(data.getPixel(left, pixelY));
+					samples.append(" adjacent (").append(left).append(", ").append(pixelY).append(")=").append(actual);
+				}
+			}
+		}
+		assertTrue(matched, context + ": no matching native pixel; actual samples and adjacent rows:" + samples);
 	}
 
 	/**
@@ -980,7 +1164,7 @@ public class UnifiedDiffCodeMiningProviderTest {
 	}
 
 	@Test
-	public void testClickOverlayUsesWhitespaceCharacterPainter() throws Exception {
+	public void testClickOverlayIsReadOnlyAndUsesWhitespaceCharacterPainter() throws Exception {
 		switchToDocument(new Document("line 0\nline 1 changed"));
 		IStatus status = UnifiedDiffManager.open(viewer, document, model, null, "line 0\nline 1\n", MODE, null,
 				null, null, null, MergeViewerContentProvider.LEFT_CONTRIBUTOR,
@@ -1004,6 +1188,24 @@ public class UnifiedDiffCodeMiningProviderTest {
 			assertThat(children).as("clicking the mining creates an overlay").hasSize(1);
 			assertThat(children[0].getTypedListeners(SWT.Paint, WhitespaceCharacterPainter.class))
 					.as("the overlay uses JFace's whitespace painter").hasSize(1);
+			StyledText overlay = (StyledText) children[0];
+			String text = overlay.getText();
+			assertThat(text).isNotEmpty();
+			overlay.setSelection(0, text.length());
+			assertEquals(text, overlay.getSelectionText(), "the mining text remains selectable for copying");
+			Event typing = new Event();
+			typing.character = 'x';
+			typing.keyCode = 'x';
+			overlay.notifyListeners(SWT.KeyDown, typing);
+			assertEquals(text, overlay.getText(), "typing must not replace the selected mining text");
+			Event deletion = new Event();
+			deletion.character = SWT.BS;
+			deletion.keyCode = SWT.BS;
+			overlay.notifyListeners(SWT.KeyDown, deletion);
+			assertEquals(text, overlay.getText(), "deleting must not remove the selected mining text");
+
+			new HideAllDiffsRunnable(viewer, model).run();
+			assertTrue(overlay.isDisposed(), "Hide All Diffs must close the click-through overlay");
 		} finally {
 			store.setValue(AbstractTextEditor.PREFERENCE_SHOW_WHITESPACE_CHARACTERS, oldShowWhitespace);
 			for (Control child : viewer.getTextWidget().getChildren()) {
