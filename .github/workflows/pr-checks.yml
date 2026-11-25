@@ -11,10 +11,21 @@ on:
 
 jobs:
   check-freeze-period:
+    # The called job requests these scopes; this fork's default GITHUB_TOKEN is read-only,
+    # so without an explicit grant the run fails at startup.
+    permissions:
+      issues: read
     uses: eclipse-platform/eclipse.platform.releng.aggregator/.github/workflows/verifyFreezePeriod.yml@master
   check-merge-commits:
+    # The called job requests these scopes; this fork's default GITHUB_TOKEN is read-only,
+    # so without an explicit grant the run fails at startup.
+    permissions:
+      contents: read
+      pull-requests: read
     uses: eclipse-platform/eclipse.platform.releng.aggregator/.github/workflows/checkMergeCommits.yml@master
   check-versions:
+    # The called workflow declares no scopes (permissions: {}).
+    permissions: {}
     uses: eclipse-platform/eclipse.platform.releng.aggregator/.github/workflows/checkVersions.yml@master
     with:
       botName: Eclipse Platform Bot
